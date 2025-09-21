@@ -1475,4 +1475,33 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get windLabel => 'Viento';
+
+  @override
+  String get filterAlerts => 'Alertas de filtro';
+
+  @override
+  String get alertSource => 'Fuente de alerta';
+
+  @override
+  String get ufobeepOnly => 'UFOBeep Only';
+
+  @override
+  String get ufobeepOnlyDescription =>
+      'Mostrar sólo informes originales de UFOBeep (excluya la base de datos MUFON)';
+
+  @override
+  String get alertDistanceRange => 'Distancia de alerta';
+
+  @override
+  String get showAllAlerts => 'Mostrar todas las alertas';
+
+  @override
+  String get showAll => 'Mostrar todos';
+
+  @override
+  String get distanceSliderDescription =>
+      'Arrastre para ajustar lo lejos que desea ver alertas. Comience desde la distancia de visibilidad del tiempo hasta mostrar todas las alertas independientemente de la distancia.';
+
+  @override
+  String get applyFilters => 'Aplicar filtros';
 }

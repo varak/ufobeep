@@ -646,5 +646,14 @@
   "shareThoughts": "Deel je gedachten over deze waarneming...",
   "postCommand": "Postopdracht",
   "clouds": "Wolken",
-  "windLabel": "Wind"
+  "windLabel": "Wind",
+  "filterAlerts": "Filterwaarschuwingen",
+  "alertSource": "Waarschuwingsbron",
+  "ufobeepOnly": "UFObeep alleen",
+  "ufobeepOnlyDescription": "Alleen originele UFObeep-rapporten tonen (exclusief MUFON-database)",
+  "alertDistanceRange": "Waarschuwingsafstand",
+  "showAllAlerts": "Alle waarschuwingen tonen",
+  "showAll": "Alles tonen",
+  "distanceSliderDescription": "Sleep om aan te passen hoe ver u alerts wilt zien. Begin vanaf de zichtafstand tot alle waarschuwingen, ongeacht de afstand.",
+  "applyFilters": "Filters toepassen"
 }

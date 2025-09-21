@@ -1481,4 +1481,33 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get windLabel => 'Ветер';
+
+  @override
+  String get filterAlerts => 'Предупреждения фильтра';
+
+  @override
+  String get alertSource => 'Источник оповещения';
+
+  @override
+  String get ufobeepOnly => 'НЛО только гудит';
+
+  @override
+  String get ufobeepOnlyDescription =>
+      'Показать только оригинальные отчеты UFOBeep (за исключением базы данных MUFON)';
+
+  @override
+  String get alertDistanceRange => 'Дистанционный диапазон Alert';
+
+  @override
+  String get showAllAlerts => 'Показать все оповещения';
+
+  @override
+  String get showAll => 'Показать все';
+
+  @override
+  String get distanceSliderDescription =>
+      'Перетащите, чтобы отрегулировать, как далеко вы хотите видеть оповещения. Начните с расстояния видимости погоды, показывая все оповещения независимо от расстояния.';
+
+  @override
+  String get applyFilters => 'Применять фильтры';
 }

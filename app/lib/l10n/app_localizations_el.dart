@@ -1477,4 +1477,33 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get windLabel => 'Άνεμος';
+
+  @override
+  String get filterAlerts => 'Συναγερμοί φίλτρου';
+
+  @override
+  String get alertSource => 'Ειδοποίηση πηγής';
+
+  @override
+  String get ufobeepOnly => 'Μόνο UFOBeep';
+
+  @override
+  String get ufobeepOnlyDescription =>
+      'Εμφάνιση μόνο πρωτότυπων αναφορών UFOBeep (αποκλείστε τη βάση δεδομένων MUFON)';
+
+  @override
+  String get alertDistanceRange => 'Ειδοποίηση εύρους απόστασης';
+
+  @override
+  String get showAllAlerts => 'Εμφάνιση όλων των ειδοποιήσεων';
+
+  @override
+  String get showAll => 'Εμφάνιση όλων';
+
+  @override
+  String get distanceSliderDescription =>
+      'Σύρετε για να ρυθμίσετε πόσο μακριά θέλετε να δείτε ειδοποιήσεις. Ξεκινήστε από την απόσταση ορατότητας του καιρού μέχρι την εμφάνιση όλων των ειδοποιήσεων ανεξάρτητα από την απόσταση.';
+
+  @override
+  String get applyFilters => 'Εφαρμογή φίλτρων';
 }

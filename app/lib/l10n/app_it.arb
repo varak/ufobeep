@@ -646,5 +646,14 @@
   "shareThoughts": "Condividi i tuoi pensieri su questo avvistamento...",
   "postCommand": "Comando post",
   "clouds": "Nuvole",
-  "windLabel": "Vento vento"
+  "windLabel": "Vento vento",
+  "filterAlerts": "Filtri avvisi",
+  "alertSource": "Fonte di avviso",
+  "ufobeepOnly": "UFOBeep Solo",
+  "ufobeepOnlyDescription": "Mostra solo report originali UFOBeep (escluso database MUFON)",
+  "alertDistanceRange": "Distanza di allarme",
+  "showAllAlerts": "Mostra tutti gli avvisi",
+  "showAll": "Mostra tutto",
+  "distanceSliderDescription": "Trascina per regolare quanto si desidera vedere gli avvisi. Inizia dalla distanza di visibilità meteo fino a mostrare tutti gli avvisi indipendentemente dalla distanza.",
+  "applyFilters": "Applicare filtri"
 }

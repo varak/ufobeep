@@ -646,5 +646,14 @@
   "shareThoughts": "Podziel się swoimi myślami na temat tego widzenia...",
   "postCommand": "Polecenie pocztowe",
   "clouds": "Chmury",
-  "windLabel": "Wiatr"
+  "windLabel": "Wiatr",
+  "filterAlerts": "Wpisy filtrujące",
+  "alertSource": "Źródło alarmu",
+  "ufobeepOnly": "Tylko UFOBeep",
+  "ufobeepOnlyDescription": "Pokaż tylko oryginalne raporty UFOBeep (z wyłączeniem bazy danych MUFON)",
+  "alertDistanceRange": "Alert Zakres odległości",
+  "showAllAlerts": "Pokaż wszystkie alarmy",
+  "showAll": "Pokaż wszystkie",
+  "distanceSliderDescription": "Przeciągnij, aby dostosować, jak daleko chcesz zobaczyć alarmy. Rozpocznij od odległości widoczności pogody aż do wyświetlenia wszystkich wpisów niezależnie od odległości.",
+  "applyFilters": "Zastosuj filtry"
 }

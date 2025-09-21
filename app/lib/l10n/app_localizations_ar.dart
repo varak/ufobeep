@@ -1456,4 +1456,33 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get windLabel => 'الرياح';
+
+  @override
+  String get filterAlerts => 'تنبيهات للملفات';
+
+  @override
+  String get alertSource => 'المصدر';
+
+  @override
+  String get ufobeepOnly => 'UFOBeep Only';
+
+  @override
+  String get ufobeepOnlyDescription =>
+      'لا تظهر سوى التقارير الأصلية عن الأشعة فوق البنفسجية (باستثناء قاعدة بيانات مونفون)';
+
+  @override
+  String get alertDistanceRange => 'Alert Distance Range';
+
+  @override
+  String get showAllAlerts => 'اظهروا جميع التنبيهات';
+
+  @override
+  String get showAll => 'عرض';
+
+  @override
+  String get distanceSliderDescription =>
+      'لنعدل إلى أي مدى تريد أن ترى تنبيهات ابدأ من مسافة ظهور الطقس حتى تظهر جميع الإنذارات بغض النظر عن المسافة.';
+
+  @override
+  String get applyFilters => 'ملفات التطبيق';
 }

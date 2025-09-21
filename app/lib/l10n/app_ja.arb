@@ -646,5 +646,14 @@
   "shareThoughts": "この視線についてのあなたの考えを共有する...",
   "postCommand": "コマンドの投稿",
   "clouds": "クラウド",
-  "windLabel": "ウインド"
+  "windLabel": "ウインド",
+  "filterAlerts": "フィルターアラート",
+  "alertSource": "アラートソース",
+  "ufobeepOnly": "UFOBeepのみ",
+  "ufobeepOnlyDescription": "オリジナルの UFOBeep レポートのみ(MUFON データベースを除く)",
+  "alertDistanceRange": "アラート距離範囲",
+  "showAllAlerts": "すべてのアラートを表示",
+  "showAll": "すべて表示",
+  "distanceSliderDescription": "アラートを表示する距離を調整するためにドラッグします。 距離に関係なくすべてのアラートを表示するまで、気象可視距離から始めます.",
+  "applyFilters": "フィルターを適用"
 }

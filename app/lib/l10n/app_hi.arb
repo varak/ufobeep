@@ -646,5 +646,14 @@
   "shareThoughts": "इस विचार के बारे में अपने विचारों को साझा करें ...",
   "postCommand": "पोस्ट कमांड",
   "clouds": "क्लाउड",
-  "windLabel": "हवा"
+  "windLabel": "हवा",
+  "filterAlerts": "फ़िल्टर अलर्ट",
+  "alertSource": "चेतावनी स्रोत",
+  "ufobeepOnly": "केवल UFOBeep",
+  "ufobeepOnlyDescription": "केवल मूल UFOBeep रिपोर्ट (MUFON डेटाबेस को छोड़कर) दिखाएं",
+  "alertDistanceRange": "चेतावनी दूरी रेंज",
+  "showAllAlerts": "सभी अलर्ट दिखाएं",
+  "showAll": "सब दिखाओ",
+  "distanceSliderDescription": "जब तक आप अलर्ट देखना चाहते हैं, तब तक समायोजित करने के लिए खींचें। दूरी की परवाह किए बिना सभी अलर्ट दिखाने के लिए मौसम दृश्यता दूरी से शुरू करें।.",
+  "applyFilters": "फ़िल्टर लागू करें"
 }

@@ -646,5 +646,14 @@
   "shareThoughts": "Bu görüş hakkındaki düşüncelerini paylaşın...",
   "postCommand": "Post Komutanlığı",
   "clouds": "Bulutlar",
-  "windLabel": "Rüzgar Rüzgar Rüzgarı"
+  "windLabel": "Rüzgar Rüzgar Rüzgarı",
+  "filterAlerts": "Filtre Uyarıları",
+  "alertSource": "Uyarı Kaynağı",
+  "ufobeepOnly": "UFOBeep Only",
+  "ufobeepOnlyDescription": "Sadece orijinal UFOBeep raporları ( MUFON veritabanı hariç)",
+  "alertDistanceRange": "Alert Distance Range",
+  "showAllAlerts": "Hepsini göster",
+  "showAll": "Hepsini göster",
+  "distanceSliderDescription": "Uyarıları görmek için ne kadar uzağa ayarlayın. Hava görünürlüğünden başlayarak, mesafeye bakılmaksızın tüm uyarıları göstermek için mesafeye başlayın.",
+  "applyFilters": "Uygulamalı Filtreler"
 }

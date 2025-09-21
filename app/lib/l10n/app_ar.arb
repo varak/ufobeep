@@ -646,5 +646,14 @@
   "shareThoughts": "شارك أفكارك حول هذا المنظر...",
   "postCommand": "القيادة",
   "clouds": "السحابات",
-  "windLabel": "الرياح"
+  "windLabel": "الرياح",
+  "filterAlerts": "تنبيهات للملفات",
+  "alertSource": "المصدر",
+  "ufobeepOnly": "UFOBeep Only",
+  "ufobeepOnlyDescription": "لا تظهر سوى التقارير الأصلية عن الأشعة فوق البنفسجية (باستثناء قاعدة بيانات مونفون)",
+  "alertDistanceRange": "Alert Distance Range",
+  "showAllAlerts": "اظهروا جميع التنبيهات",
+  "showAll": "عرض",
+  "distanceSliderDescription": "لنعدل إلى أي مدى تريد أن ترى تنبيهات ابدأ من مسافة ظهور الطقس حتى تظهر جميع الإنذارات بغض النظر عن المسافة.",
+  "applyFilters": "ملفات التطبيق"
 }

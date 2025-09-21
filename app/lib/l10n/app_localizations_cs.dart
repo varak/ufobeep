@@ -1468,4 +1468,33 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get windLabel => 'Vítr';
+
+  @override
+  String get filterAlerts => 'Comment';
+
+  @override
+  String get alertSource => 'Zdroj upozornění';
+
+  @override
+  String get ufobeepOnly => 'Pouze UFOBeep';
+
+  @override
+  String get ufobeepOnlyDescription =>
+      'Zobrazit pouze originální UFOBeep reporty (bez databáze MUFON)';
+
+  @override
+  String get alertDistanceRange => 'Varovné vzdálenosti';
+
+  @override
+  String get showAllAlerts => 'Zobrazit všechny záznamy';
+
+  @override
+  String get showAll => 'Zobrazit vše';
+
+  @override
+  String get distanceSliderDescription =>
+      'Přetáhněte nastavit, jak daleko chcete vidět upozornění. Začněte od meteorologické dohlednosti až po zobrazení všech záznamů bez ohledu na vzdálenost.';
+
+  @override
+  String get applyFilters => 'Aplikovat filtry';
 }

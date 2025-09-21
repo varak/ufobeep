@@ -646,5 +646,14 @@
   "shareThoughts": "שתפו את המחשבות שלכם על המראה הזה...",
   "postCommand": "Post Command",
   "clouds": "עננים",
-  "windLabel": "הרוח"
+  "windLabel": "הרוח",
+  "filterAlerts": "אזהרות filter",
+  "alertSource": "מקור התראה",
+  "ufobeepOnly": "עב\"מ רק",
+  "ufobeepOnlyDescription": "הצג רק דוחות עב\"מ מקוריים (לא כולל MUFON)",
+  "alertDistanceRange": "המונחים: Distance",
+  "showAllAlerts": "הצג את כל האזהרות",
+  "showAll": "הצג All",
+  "distanceSliderDescription": "היכנסו עד כמה רחוק אתם רוצים לראות התראות. התחל ממזג אוויר חשיפה מרחוק כדי להראות את כל האזהרות ללא קשר למרחק.",
+  "applyFilters": "המונחים:"
 }

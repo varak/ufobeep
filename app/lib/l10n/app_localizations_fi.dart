@@ -1468,4 +1468,33 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get windLabel => 'Tuuli';
+
+  @override
+  String get filterAlerts => 'Suodatinhälytykset';
+
+  @override
+  String get alertSource => 'Varoituslähde';
+
+  @override
+  String get ufobeepOnly => 'Vain UFO- piippaus';
+
+  @override
+  String get ufobeepOnlyDescription =>
+      'Näytä vain alkuperäiset UFOBeepin raportit (pois lukien MUFON-tietokanta)';
+
+  @override
+  String get alertDistanceRange => 'Varoitusetäisyysalue';
+
+  @override
+  String get showAllAlerts => 'Näytä kaikki hälytykset';
+
+  @override
+  String get showAll => 'Näytä kaikki';
+
+  @override
+  String get distanceSliderDescription =>
+      'Vedä säätää, kuinka pitkälle haluat nähdä hälytykset. Aloita säänäkyvyysetäisyydestä kaikkien kuulutusten näyttämiseen etäisyydestä riippumatta.';
+
+  @override
+  String get applyFilters => 'Käytä suotimia';
 }

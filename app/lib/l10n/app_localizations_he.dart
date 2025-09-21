@@ -1452,4 +1452,33 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get windLabel => 'הרוח';
+
+  @override
+  String get filterAlerts => 'אזהרות filter';
+
+  @override
+  String get alertSource => 'מקור התראה';
+
+  @override
+  String get ufobeepOnly => 'עב\"מ רק';
+
+  @override
+  String get ufobeepOnlyDescription =>
+      'הצג רק דוחות עב\"מ מקוריים (לא כולל MUFON)';
+
+  @override
+  String get alertDistanceRange => 'המונחים: Distance';
+
+  @override
+  String get showAllAlerts => 'הצג את כל האזהרות';
+
+  @override
+  String get showAll => 'הצג All';
+
+  @override
+  String get distanceSliderDescription =>
+      'היכנסו עד כמה רחוק אתם רוצים לראות התראות. התחל ממזג אוויר חשיפה מרחוק כדי להראות את כל האזהרות ללא קשר למרחק.';
+
+  @override
+  String get applyFilters => 'המונחים:';
 }

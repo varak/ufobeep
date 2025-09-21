@@ -1465,4 +1465,33 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get windLabel => 'हवा';
+
+  @override
+  String get filterAlerts => 'फ़िल्टर अलर्ट';
+
+  @override
+  String get alertSource => 'चेतावनी स्रोत';
+
+  @override
+  String get ufobeepOnly => 'केवल UFOBeep';
+
+  @override
+  String get ufobeepOnlyDescription =>
+      'केवल मूल UFOBeep रिपोर्ट (MUFON डेटाबेस को छोड़कर) दिखाएं';
+
+  @override
+  String get alertDistanceRange => 'चेतावनी दूरी रेंज';
+
+  @override
+  String get showAllAlerts => 'सभी अलर्ट दिखाएं';
+
+  @override
+  String get showAll => 'सब दिखाओ';
+
+  @override
+  String get distanceSliderDescription =>
+      'जब तक आप अलर्ट देखना चाहते हैं, तब तक समायोजित करने के लिए खींचें। दूरी की परवाह किए बिना सभी अलर्ट दिखाने के लिए मौसम दृश्यता दूरी से शुरू करें।.';
+
+  @override
+  String get applyFilters => 'फ़िल्टर लागू करें';
 }

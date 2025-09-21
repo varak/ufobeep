@@ -1470,4 +1470,33 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get windLabel => 'Rüzgar Rüzgar Rüzgarı';
+
+  @override
+  String get filterAlerts => 'Filtre Uyarıları';
+
+  @override
+  String get alertSource => 'Uyarı Kaynağı';
+
+  @override
+  String get ufobeepOnly => 'UFOBeep Only';
+
+  @override
+  String get ufobeepOnlyDescription =>
+      'Sadece orijinal UFOBeep raporları ( MUFON veritabanı hariç)';
+
+  @override
+  String get alertDistanceRange => 'Alert Distance Range';
+
+  @override
+  String get showAllAlerts => 'Hepsini göster';
+
+  @override
+  String get showAll => 'Hepsini göster';
+
+  @override
+  String get distanceSliderDescription =>
+      'Uyarıları görmek için ne kadar uzağa ayarlayın. Hava görünürlüğünden başlayarak, mesafeye bakılmaksızın tüm uyarıları göstermek için mesafeye başlayın.';
+
+  @override
+  String get applyFilters => 'Uygulamalı Filtreler';
 }

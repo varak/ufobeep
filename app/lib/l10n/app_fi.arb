@@ -646,5 +646,14 @@
   "shareThoughts": "Jaa ajatuksesi tästä havainnosta...",
   "postCommand": "Postikomento",
   "clouds": "Pilvet",
-  "windLabel": "Tuuli"
+  "windLabel": "Tuuli",
+  "filterAlerts": "Suodatinhälytykset",
+  "alertSource": "Varoituslähde",
+  "ufobeepOnly": "Vain UFO- piippaus",
+  "ufobeepOnlyDescription": "Näytä vain alkuperäiset UFOBeepin raportit (pois lukien MUFON-tietokanta)",
+  "alertDistanceRange": "Varoitusetäisyysalue",
+  "showAllAlerts": "Näytä kaikki hälytykset",
+  "showAll": "Näytä kaikki",
+  "distanceSliderDescription": "Vedä säätää, kuinka pitkälle haluat nähdä hälytykset. Aloita säänäkyvyysetäisyydestä kaikkien kuulutusten näyttämiseen etäisyydestä riippumatta.",
+  "applyFilters": "Käytä suotimia"
 }

@@ -2873,6 +2873,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Wind'**
   String get windLabel;
+
+  /// No description provided for @filterAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter Alerts'**
+  String get filterAlerts;
+
+  /// No description provided for @alertSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Source'**
+  String get alertSource;
+
+  /// No description provided for @ufobeepOnly.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep Only'**
+  String get ufobeepOnly;
+
+  /// No description provided for @ufobeepOnlyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Show only original UFOBeep reports (exclude MUFON database)'**
+  String get ufobeepOnlyDescription;
+
+  /// No description provided for @alertDistanceRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert Distance Range'**
+  String get alertDistanceRange;
+
+  /// No description provided for @showAllAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Show All Alerts'**
+  String get showAllAlerts;
+
+  /// No description provided for @showAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Show All'**
+  String get showAll;
+
+  /// No description provided for @distanceSliderDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.'**
+  String get distanceSliderDescription;
+
+  /// No description provided for @applyFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply Filters'**
+  String get applyFilters;
 }
 
 class _AppLocalizationsDelegate

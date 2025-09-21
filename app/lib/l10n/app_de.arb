@@ -646,5 +646,14 @@
   "shareThoughts": "Teilen Sie Ihre Gedanken über dieses Sehen...",
   "postCommand": "Post Command",
   "clouds": "Wolken",
-  "windLabel": "Wind"
+  "windLabel": "Wind",
+  "filterAlerts": "Filter Alerts",
+  "alertSource": "Alert Source",
+  "ufobeepOnly": "Nur noch",
+  "ufobeepOnlyDescription": "Nur originale UFOBeep-Berichte anzeigen (ohne MUFON-Datenbank)",
+  "alertDistanceRange": "Alarm Entfernungsbereich",
+  "showAllAlerts": "Alle Alarme anzeigen",
+  "showAll": "Alle anzeigen",
+  "distanceSliderDescription": "Ziehen Sie um, wie weit Sie Alarme sehen möchten. Beginnen Sie von der Entfernung der Wettersicht bis zu allen Warnungen unabhängig von der Entfernung.",
+  "applyFilters": "Filter anwenden"
 }

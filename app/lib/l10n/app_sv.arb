@@ -646,5 +646,14 @@
   "shareThoughts": "Dela dina tankar om denna observation...",
   "postCommand": "Postkommando",
   "clouds": "Moln",
-  "windLabel": "Vind"
+  "windLabel": "Vind",
+  "filterAlerts": "Filter Alerts",
+  "alertSource": "Alert Source",
+  "ufobeepOnly": "Ufobeep bara",
+  "ufobeepOnlyDescription": "Visa endast original UFOBeep-rapporter (exkludera MUFON-databas)",
+  "alertDistanceRange": "Alert Distance Range",
+  "showAllAlerts": "Visa alla varningar",
+  "showAll": "Visa alla",
+  "distanceSliderDescription": "Dra för att justera hur långt du vill se varningar. Börja från väder synlighet avstånd upp till att visa alla varningar oavsett avstånd.",
+  "applyFilters": "Applicera filter"
 }

@@ -1440,4 +1440,32 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get windLabel => '风';
+
+  @override
+  String get filterAlerts => '过滤提醒';
+
+  @override
+  String get alertSource => '警告来源';
+
+  @override
+  String get ufobeepOnly => '仅限UUOBEP';
+
+  @override
+  String get ufobeepOnlyDescription => '只显示原始UFOBEP报告(不包括MUFON数据库)';
+
+  @override
+  String get alertDistanceRange => '警报距离';
+
+  @override
+  String get showAllAlerts => '显示全部提醒';
+
+  @override
+  String get showAll => '全部显示';
+
+  @override
+  String get distanceSliderDescription =>
+      '拖曳以调整要看到提示的距离 。 从天气可见度距离开始,到显示所有警报,无论距离.';
+
+  @override
+  String get applyFilters => '应用过滤器';
 }

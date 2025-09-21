@@ -1442,4 +1442,32 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get windLabel => 'Ღ♥ღ';
+
+  @override
+  String get filterAlerts => '필터 경고';
+
+  @override
+  String get alertSource => 'Alert 소스';
+
+  @override
+  String get ufobeepOnly => 'UFOBeep 만';
+
+  @override
+  String get ufobeepOnlyDescription => '원래 UFOBeep 보고서 만 표시 (MUFON 데이터베이스 제외)';
+
+  @override
+  String get alertDistanceRange => '출력 거리 범위';
+
+  @override
+  String get showAllAlerts => '모든 경고 표시';
+
+  @override
+  String get showAll => '모두보기';
+
+  @override
+  String get distanceSliderDescription =>
+      '경고를보고 싶은 방법을 조정합니다. 거리에 상관없이 모든 경고를 표시하기 위해 날씨 가시 거리에서 시작.';
+
+  @override
+  String get applyFilters => '필터 적용';
 }

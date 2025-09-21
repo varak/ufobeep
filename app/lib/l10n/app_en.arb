@@ -653,9 +653,7 @@
   "ufobeepOnlyDescription": "Show only original UFOBeep reports (exclude MUFON database)",
   "alertDistanceRange": "Alert Distance Range",
   "showAllAlerts": "Show All Alerts",
-  "visibility": "Visibility",
   "showAll": "Show All",
   "distanceSliderDescription": "Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.",
-  "cancel": "Cancel",
   "applyFilters": "Apply Filters"
 }

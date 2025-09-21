@@ -646,5 +646,14 @@
   "shareThoughts": "Del dine tanker om denne observation...",
   "postCommand": "Post- kommando",
   "clouds": "Skyer",
-  "windLabel": "Vind"
+  "windLabel": "Vind",
+  "filterAlerts": "Filterrapporter",
+  "alertSource": "Advarselskilde",
+  "ufobeepOnly": "Kun UFOBeep",
+  "ufobeepOnlyDescription": "Vis kun originale UFOBeep rapporter (udelukker MUFON database)",
+  "alertDistanceRange": "Advarselsafstand",
+  "showAllAlerts": "Vis alle rapporter",
+  "showAll": "Vis alle",
+  "distanceSliderDescription": "Træk for at justere hvor langt du ønsker at se advarsler. Start fra vejrsigtbarhed afstand op til at vise alle indberetninger uanset afstand.",
+  "applyFilters": "Anvend filtre"
 }

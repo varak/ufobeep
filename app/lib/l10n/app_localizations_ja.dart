@@ -1441,4 +1441,32 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get windLabel => 'ウインド';
+
+  @override
+  String get filterAlerts => 'フィルターアラート';
+
+  @override
+  String get alertSource => 'アラートソース';
+
+  @override
+  String get ufobeepOnly => 'UFOBeepのみ';
+
+  @override
+  String get ufobeepOnlyDescription => 'オリジナルの UFOBeep レポートのみ(MUFON データベースを除く)';
+
+  @override
+  String get alertDistanceRange => 'アラート距離範囲';
+
+  @override
+  String get showAllAlerts => 'すべてのアラートを表示';
+
+  @override
+  String get showAll => 'すべて表示';
+
+  @override
+  String get distanceSliderDescription =>
+      'アラートを表示する距離を調整するためにドラッグします。 距離に関係なくすべてのアラートを表示するまで、気象可視距離から始めます.';
+
+  @override
+  String get applyFilters => 'フィルターを適用';
 }
