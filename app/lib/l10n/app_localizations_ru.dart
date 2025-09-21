@@ -1539,4 +1539,10 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get alertBrowsing => 'Оповещение о просмотре';
+
+  @override
+  String get pushAlertsWithinDistance => 'Get notifications within this range';
+
+  @override
+  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
 }

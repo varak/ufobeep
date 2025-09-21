@@ -1495,4 +1495,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get alertBrowsing => '提醒浏览';
+
+  @override
+  String get pushAlertsWithinDistance => 'Get notifications within this range';
+
+  @override
+  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
 }

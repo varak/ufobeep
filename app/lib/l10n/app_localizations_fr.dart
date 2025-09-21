@@ -1540,4 +1540,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get alertBrowsing => 'Navigation d\'alerte';
+
+  @override
+  String get pushAlertsWithinDistance => 'Get notifications within this range';
+
+  @override
+  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
 }

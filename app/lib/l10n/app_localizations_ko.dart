@@ -1497,4 +1497,10 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get alertBrowsing => '비밀번호';
+
+  @override
+  String get pushAlertsWithinDistance => 'Get notifications within this range';
+
+  @override
+  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
 }

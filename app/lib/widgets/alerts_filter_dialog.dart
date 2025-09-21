@@ -127,13 +127,13 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
 
                     // Push Notifications Section
                     _buildSectionTitle(AppLocalizations.of(context)!.pushNotifications),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     _buildNotificationRangeSlider(),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 16),
 
                     // Alert Browsing Section
                     _buildSectionTitle(AppLocalizations.of(context)!.alertBrowsing),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     _buildViewingRangeSlider(),
                   ],
                 ),
@@ -196,108 +196,32 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
   }
 
   Widget _buildNotificationRangeSlider() {
-    // Get current user alert range (30km default)
-    String getNotificationLabel() {
-      final range = _workingFilter!.alertRangeKm ?? 30.0;
-      if (range <= 10.0) {
-        return AppLocalizations.of(context)!.weatherVisibility;
-      } else if (range <= 25.0) {
-        return AppLocalizations.of(context)!.localArea;
-      } else if (range <= 100.0) {
-        return '${AppLocalizations.of(context)!.regional} (${range.toInt()}km)';
-      } else {
-        return 'Wide Range (${range.toInt()}km)';
-      }
-    }
+    final range = _workingFilter!.alertRangeKm ?? 30.0;
 
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Current notification range display
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: AppColors.nightSkyMiddle.withOpacity(0.6),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
-          ),
-          child: Row(
-            children: [
-              const Icon(
-                Icons.notifications_active,
-                color: AppColors.brandPrimary,
-                size: 20,
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      getNotificationLabel(),
-                      style: const TextStyle(
-                        color: AppColors.textPrimary,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    Text(
-                      AppLocalizations.of(context)!.notificationRangeDescription,
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 16),
-
-        // Notification range slider
+        // Compact notification range control
         Row(
           children: [
-            Text(
-              AppLocalizations.of(context)!.weatherVisibility,
-              style: const TextStyle(
-                color: AppColors.textTertiary,
-                fontSize: 11,
-              ),
-            ),
+            const Icon(Icons.notifications_active, color: AppColors.brandPrimary, size: 16),
+            const SizedBox(width: 8),
+            Text('${range.toInt()}km', style: const TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w600)),
             Expanded(
               child: Slider(
-                value: (_workingFilter!.alertRangeKm ?? 30.0).clamp(10.0, 200.0),
+                value: range.clamp(10.0, 200.0),
                 min: 10.0,
                 max: 200.0,
-                divisions: 19, // 10, 20, 30, ..., 200
-                onChanged: (value) {
-                  _updateWorkingFilter(
-                    _workingFilter!.copyWith(alertRangeKm: value),
-                  );
-                },
+                divisions: 19,
+                onChanged: (value) => _updateWorkingFilter(_workingFilter!.copyWith(alertRangeKm: value)),
                 activeColor: AppColors.brandPrimary,
                 inactiveColor: AppColors.textTertiary,
               ),
             ),
-            Text(
-              'Wide (200km)',
-              style: const TextStyle(
-                color: AppColors.textTertiary,
-                fontSize: 11,
-              ),
-            ),
           ],
         ),
-
-        const SizedBox(height: 8),
         Text(
-          'Controls when you receive push notifications for nearby sightings',
-          style: const TextStyle(
-            color: AppColors.textTertiary,
-            fontSize: 10,
-          ),
+          AppLocalizations.of(context)!.pushAlertsWithinDistance,
+          style: const TextStyle(color: AppColors.textTertiary, fontSize: 10),
           textAlign: TextAlign.center,
         ),
       ],

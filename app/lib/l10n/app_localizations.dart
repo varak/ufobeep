@@ -2981,6 +2981,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Alert Browsing'**
   String get alertBrowsing;
+
+  /// No description provided for @pushAlertsWithinDistance.
+  ///
+  /// In en, this message translates to:
+  /// **'Get notifications within this range'**
+  String get pushAlertsWithinDistance;
+
+  /// No description provided for @showAlertsWhenBrowsing.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter what you see in the list'**
+  String get showAlertsWhenBrowsing;
 }
 
 class _AppLocalizationsDelegate

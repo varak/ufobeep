@@ -1496,4 +1496,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get alertBrowsing => 'アラートブラウジング';
+
+  @override
+  String get pushAlertsWithinDistance => 'Get notifications within this range';
+
+  @override
+  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
 }

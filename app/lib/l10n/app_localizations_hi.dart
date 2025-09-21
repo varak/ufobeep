@@ -1523,4 +1523,10 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get alertBrowsing => 'चेतावनी ब्राउज़िंग';
+
+  @override
+  String get pushAlertsWithinDistance => 'Get notifications within this range';
+
+  @override
+  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
 }
