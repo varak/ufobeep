@@ -95,7 +95,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(
-                color: AppColors.darkBackground,
+                color: AppColors.nightSkyMiddle.withOpacity(0.6),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16),
                   topRight: Radius.circular(16),
@@ -137,7 +137,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
             Container(
               padding: const EdgeInsets.all(20),
               decoration: const BoxDecoration(
-                color: AppColors.darkBackground,
+                color: AppColors.nightSkyMiddle.withOpacity(0.6),
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(16),
                   bottomRight: Radius.circular(16),
@@ -214,7 +214,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: AppColors.darkBackground,
+            color: AppColors.nightSkyMiddle.withOpacity(0.6),
             borderRadius: BorderRadius.circular(8),
             border: Border.all(color: AppColors.darkBorder),
           ),
@@ -287,7 +287,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.darkBackground,
+        color: AppColors.nightSkyMiddle.withOpacity(0.6),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: AppColors.darkBorder),
       ),
