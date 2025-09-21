@@ -166,7 +166,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                         foregroundColor: Colors.black,
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
-                      child: const Text('Apply Filters'),
+                      child: Text(AppLocalizations.of(context)!.applyFilters),
                     ),
                   ),
                 ],
@@ -192,7 +192,7 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
   Widget _buildDistanceSlider() {
     String getDistanceLabel() {
       if (_distanceSliderValue >= 100.0) {
-        return 'Show All Alerts';
+        return AppLocalizations.of(context)!.showAllAlerts;
       } else if (_distanceSliderValue <= 0.0) {
         final units = ref.read(userPreferencesProvider)?.units ?? 'metric';
         return units == 'imperial' ? 'Weather Visibility (~3mi)' : 'Weather Visibility (~5km)';
@@ -311,8 +311,8 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'UFOBeep Only',
+                Text(
+                  AppLocalizations.of(context)!.ufobeepOnly,
                   style: TextStyle(
                     color: AppColors.textPrimary,
                     fontSize: 16,
@@ -320,8 +320,8 @@ class _AlertsFilterDialogState extends ConsumerState<AlertsFilterDialog> {
                   ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'Show only original UFOBeep reports (exclude MUFON database)',
+                Text(
+                  AppLocalizations.of(context)!.ufobeepOnlyDescription,
                   style: TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 12,
