@@ -655,5 +655,14 @@
   "showAllAlerts": "Show All Alerts",
   "showAll": "Show All",
   "distanceSliderDescription": "Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.",
-  "applyFilters": "Apply Filters"
+  "applyFilters": "Apply Filters",
+  "notificationRange": "Notification Range",
+  "notificationRangeDescription": "Get push alerts for sightings within this distance",
+  "viewingRange": "Viewing Range",
+  "viewingRangeDescription": "Show sightings within this distance when browsing",
+  "weatherVisibility": "Weather Visibility (~10km)",
+  "localArea": "Local Area (25km)",
+  "regional": "Regional",
+  "pushNotifications": "Push Notifications",
+  "alertBrowsing": "Alert Browsing"
 }
