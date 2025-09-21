@@ -124,7 +124,11 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
             {t('recentUfoBeepsTitle', 'Recent Beeps')}
           </h1>
           <p className="text-text-secondary mb-8">
-            {t('recentUfoBeepsSubtitle', 'Live UFO sighting reports from our global community')}
+            {t('reportsFromCommunity', 'Live UFO sighting reports from our global community and')}{' '}
+            <a href="https://mufon.com" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline">
+              MUFON
+            </a>{' '}
+            {t('mufonDatabase', 'database')}
           </p>
           
           {loading ? (
