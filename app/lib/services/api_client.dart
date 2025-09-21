@@ -420,6 +420,7 @@ class ApiClient {
     double? longitude,
     int? recentHours,
     bool verifiedOnly = false,
+    String? sortBy,  // Sort by: newest, oldest, distance
   }) async {
     try {
       final queryParams = <String, dynamic>{
@@ -451,6 +452,9 @@ class ApiClient {
       }
       if (recentHours != null) {
         queryParams['recent_hours'] = recentHours;
+      }
+      if (sortBy != null) {
+        queryParams['sort_by'] = sortBy;
       }
 
       final response = await ApiClient.dio.get(

@@ -250,7 +250,8 @@ async def get_alerts(
     source: Optional[str] = None,  # Filter by source (ufobeep, mufon)
     max_distance_km: Optional[float] = None,  # Filter by distance from user
     latitude: Optional[float] = None,
-    longitude: Optional[float] = None
+    longitude: Optional[float] = None,
+    sort_by: Optional[str] = None  # Sort by: newest, oldest, distance
 ):
     """Get recent alerts - clean endpoint using service layer with distance calculation"""
     try:
@@ -270,7 +271,8 @@ async def get_alerts(
             source=source,
             max_distance_km=max_distance_km,
             user_latitude=latitude,
-            user_longitude=longitude
+            user_longitude=longitude,
+            sort_by=sort_by
         )
         total_count = await alerts_service.get_total_alerts_count(
             source=source,

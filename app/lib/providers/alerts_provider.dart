@@ -396,6 +396,22 @@ class AlertsList extends _$AlertsList {
     final filter = ref.watch(alertsFilterStateProvider);
     final sourceFilter = filter.showUfoBeepOnly == true ? 'ufobeep' : null;
 
+    // Convert sort option to API parameter
+    String? sortBy;
+    switch (filter.sortBy) {
+      case AlertSortBy.distance:
+        sortBy = 'distance';
+        break;
+      case AlertSortBy.newest:
+        sortBy = 'newest';
+        break;
+      case AlertSortBy.oldest:
+        sortBy = 'oldest';
+        break;
+      default:
+        sortBy = 'newest'; // Default fallback
+    }
+
     // Try to get user location for distance calculation
     double? userLat, userLon;
     try {
@@ -414,6 +430,7 @@ class AlertsList extends _$AlertsList {
       source: sourceFilter,
       latitude: userLat,
       longitude: userLon,
+      sortBy: sortBy,
     );
   }
 
@@ -427,6 +444,7 @@ class AlertsList extends _$AlertsList {
     double? longitude,
     int? recentHours,
     bool verifiedOnly = false,
+    String? sortBy,  // Sort by: newest, oldest, distance
   }) async {
     try {
       final apiClient = ApiClient.instance;
@@ -443,6 +461,7 @@ class AlertsList extends _$AlertsList {
         longitude: longitude,
         recentHours: recentHours,
         verifiedOnly: verifiedOnly,
+        sortBy: sortBy,
       );
 
       debugPrint('UFOBEEP: /alerts API response: success=${response['success']}, message=${response['message']}');
@@ -830,40 +849,7 @@ Future<List<Alert>> filteredAlerts(FilteredAlertsRef ref) async {
     return true;
   }).toList();
 
-  // Apply sorting
-  filteredAlerts.sort((a, b) {
-    int comparison;
-    
-    switch (filter.sortBy) {
-      case AlertSortBy.newest:
-        comparison = b.createdAt.compareTo(a.createdAt);
-        break;
-      case AlertSortBy.oldest:
-        comparison = a.createdAt.compareTo(b.createdAt);
-        break;
-      case AlertSortBy.distance:
-        final distanceA = a.distance ?? double.infinity;
-        final distanceB = b.distance ?? double.infinity;
-        comparison = distanceA.compareTo(distanceB);
-        break;
-      case AlertSortBy.category:
-        comparison = a.category.compareTo(b.category);
-        break;
-      case AlertSortBy.verified:
-        // Verified first, then by creation time
-        if (a.isVerified != b.isVerified) {
-          comparison = b.isVerified ? 1 : -1;
-        } else {
-          comparison = b.createdAt.compareTo(a.createdAt);
-        }
-        break;
-    }
-    
-    // For newest/oldest, ascending means oldest first, descending means newest first
-    // The comparison is already set up correctly, don't negate it
-    return comparison;
-  });
-
+  // Sorting is now handled by the backend API
   return filteredAlerts;
 }
 

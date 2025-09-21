@@ -81,7 +81,7 @@ class AlertsService:
 
             return await conn.fetchval(query, *params)
     
-    async def get_recent_alerts(self, limit: int = 20, offset: int = 0, source: Optional[str] = None, max_distance_km: Optional[float] = None, user_latitude: Optional[float] = None, user_longitude: Optional[float] = None) -> List[Alert]:
+    async def get_recent_alerts(self, limit: int = 20, offset: int = 0, source: Optional[str] = None, max_distance_km: Optional[float] = None, user_latitude: Optional[float] = None, user_longitude: Optional[float] = None, sort_by: Optional[str] = None) -> List[Alert]:
         """Get recent public alerts with clean data structure and filtering"""
         async with self.db_pool.acquire() as conn:
             # Build WHERE clause with filters - same logic as get_total_alerts_count
@@ -111,6 +111,24 @@ class AlertsService:
 
             where_clause = " AND ".join(where_conditions)
 
+            # Build ORDER BY clause based on sort_by parameter
+            order_clause = "s.created_at DESC"  # Default sorting
+            distance_select = ""
+
+            if sort_by == "distance" and user_latitude and user_longitude:
+                # Spatial sorting using PostGIS
+                distance_select = f"""
+                    , ST_Distance(
+                        ST_GeogFromText('POINT(' || s.public_longitude || ' ' || s.public_latitude || ')'),
+                        ST_GeogFromText('POINT({user_longitude} {user_latitude})')
+                    ) / 1000.0 as distance_km
+                """
+                order_clause = "distance_km ASC"
+            elif sort_by == "oldest":
+                order_clause = "s.created_at ASC"
+            elif sort_by == "newest" or not sort_by:
+                order_clause = "s.created_at DESC"
+
             # Add LIMIT and OFFSET parameters
             params.extend([limit, offset])
             limit_param = f"${param_index}"
@@ -122,6 +140,7 @@ class AlertsService:
                        u.username as reporter_username, s.source,
                        COALESCE(s.occurred_at, s.created_at) as occurred_at, s.external_url,
                        COALESCE(c.comment_count, 0) as comment_count, s.short_url
+                       {distance_select}
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
                 LEFT JOIN (
@@ -130,7 +149,7 @@ class AlertsService:
                     GROUP BY sighting_id
                 ) c ON s.id = c.sighting_id
                 WHERE {where_clause}
-                ORDER BY s.created_at DESC
+                ORDER BY {order_clause}
                 LIMIT {limit_param} OFFSET {offset_param}
             """
 
