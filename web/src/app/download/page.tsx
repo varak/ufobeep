@@ -6,9 +6,9 @@ import EmailNotifySignup from '@/components/EmailNotifySignup';
 export default function DownloadPage() {
   const [showInstructions, setShowInstructions] = useState(false);
   
-  const latestVersion = "v1.0.0-beta.8+124";
-  const releaseDate = "September 16, 2025";
-  const apkSize = "219 MB";
+  const latestVersion = "v1.0.0-beta.8+179";
+  const releaseDate = "September 20, 2025";
+  const apkSize = "77.2 MB";
   
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -50,13 +50,14 @@ export default function DownloadPage() {
             🚀 What&apos;s New
           </h2>
           <ul className="space-y-2 text-gray-300">
+            <li>🆕 <strong>Full-Screen Media Viewer:</strong> Swipe through photos/videos with pinch-zoom and video controls</li>
+            <li>🆕 <strong>Enhanced Performance:</strong> 10x faster beep submission and optimized loading</li>
             <li>✅ <strong>Media Upload Complete:</strong> Single-press photo/video upload with progress indicators</li>
             <li>✅ <strong>22 Languages:</strong> Full multilingual support with automatic translation</li>
-            <li>✅ <strong>MUFON Integration:</strong> Professional UFO reports from verified database</li>
-            <li>✅ <strong>Performance Optimized:</strong> Faster loading, streamlined user flows</li>
+            <li>✅ <strong>MUFON Integration:</strong> Professional UFO reports with case numbers and classifications</li>
             <li>✅ <strong>Real-time Alerts:</strong> Instant notifications when UFOs spotted nearby</li>
             <li>✅ <strong>Compass Navigation:</strong> Point phone to find exact UFO location</li>
-            <li>✅ <strong>Community Comments:</strong> Discuss sightings with other witnesses</li>
+            <li>✅ <strong>Community Comments:</strong> Real-time discussion with WebSocket updates</li>
             <li>✅ <strong>Satellite Imagery:</strong> BlackSky and SkyFi integration for verification</li>
           </ul>
         </div>
