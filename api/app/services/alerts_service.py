@@ -44,33 +44,97 @@ class AlertsService:
     def __init__(self, db_pool):
         self.db_pool = db_pool
     
-    async def get_total_alerts_count(self) -> int:
-        """Get total count of public alerts"""
+    async def get_total_alerts_count(self, source: Optional[str] = None, max_distance_km: Optional[float] = None, user_latitude: Optional[float] = None, user_longitude: Optional[float] = None) -> int:
+        """Get total count of public alerts with optional filtering"""
         async with self.db_pool.acquire() as conn:
-            return await conn.fetchval("""
-                SELECT COUNT(*) FROM sightings WHERE is_public = true
-            """)
+            # Build WHERE clause based on filters
+            where_conditions = ["s.is_public = true"]
+            params = []
+            param_index = 1
+
+            # Source filtering
+            if source == 'ufobeep':
+                where_conditions.append(f"(s.source IS NULL OR s.source != 'mufon')")
+            elif source == 'mufon':
+                where_conditions.append(f"s.source = 'mufon'")
+            elif source:
+                where_conditions.append(f"s.source = ${param_index}")
+                params.append(source)
+                param_index += 1
+
+            # Distance filtering (if user location provided)
+            if max_distance_km and user_latitude and user_longitude:
+                where_conditions.append(f"""
+                    ST_DWithin(
+                        ST_GeogFromText('POINT(' || s.public_longitude || ' ' || s.public_latitude || ')'),
+                        ST_GeogFromText('POINT({user_longitude} {user_latitude})'),
+                        {max_distance_km * 1000}
+                    )
+                """)
+
+            where_clause = " AND ".join(where_conditions)
+
+            query = f"""
+                SELECT COUNT(*) FROM sightings s
+                WHERE {where_clause}
+            """
+
+            return await conn.fetchval(query, *params)
     
-    async def get_recent_alerts(self, limit: int = 20, offset: int = 0) -> List[Alert]:
-        """Get recent public alerts with clean data structure"""
+    async def get_recent_alerts(self, limit: int = 20, offset: int = 0, source: Optional[str] = None, max_distance_km: Optional[float] = None, user_latitude: Optional[float] = None, user_longitude: Optional[float] = None) -> List[Alert]:
+        """Get recent public alerts with clean data structure and filtering"""
         async with self.db_pool.acquire() as conn:
-            rows = await conn.fetch("""
-                SELECT s.id::text, s.title, s.description, s.category, s.alert_level, 
+            # Build WHERE clause with filters - same logic as get_total_alerts_count
+            where_conditions = ["s.is_public = true"]
+            params = []
+            param_index = 1
+
+            # Source filtering
+            if source == 'ufobeep':
+                where_conditions.append("(s.source IS NULL OR s.source != 'mufon')")
+            elif source == 'mufon':
+                where_conditions.append("s.source = 'mufon'")
+            elif source:
+                where_conditions.append(f"s.source = ${param_index}")
+                params.append(source)
+                param_index += 1
+
+            # Distance filtering (if user location provided)
+            if max_distance_km and user_latitude and user_longitude:
+                where_conditions.append(f"""
+                    ST_DWithin(
+                        ST_GeogFromText('POINT(' || s.public_longitude || ' ' || s.public_latitude || ')'),
+                        ST_GeogFromText('POINT({user_longitude} {user_latitude})'),
+                        {max_distance_km * 1000}
+                    )
+                """)
+
+            where_clause = " AND ".join(where_conditions)
+
+            # Add LIMIT and OFFSET parameters
+            params.extend([limit, offset])
+            limit_param = f"${param_index}"
+            offset_param = f"${param_index + 1}"
+
+            query = f"""
+                SELECT s.id::text, s.title, s.description, s.category, s.alert_level,
                        s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
-                       u.username as reporter_username, s.source, 
+                       u.username as reporter_username, s.source,
                        COALESCE(s.occurred_at, s.created_at) as occurred_at, s.external_url,
                        COALESCE(c.comment_count, 0) as comment_count, s.short_url
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
                 LEFT JOIN (
-                    SELECT sighting_id, COUNT(*) as comment_count 
-                    FROM comments 
+                    SELECT sighting_id, COUNT(*) as comment_count
+                    FROM comments
                     GROUP BY sighting_id
                 ) c ON s.id = c.sighting_id
-                WHERE s.is_public = true
+                WHERE {where_clause}
                 ORDER BY s.created_at DESC
-                LIMIT $1 OFFSET $2
-            """, limit, offset)
+                LIMIT {limit_param} OFFSET {offset_param}
+            """
+
+            rows = await conn.fetch(query, *params)
             
             alerts = []
             for row in rows:

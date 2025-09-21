@@ -247,6 +247,8 @@ async def get_alerts(
     limit: int = 20,  # Reasonable default for pagination
     offset: int = 0,
     page: Optional[int] = None,  # Page-based pagination support
+    source: Optional[str] = None,  # Filter by source (ufobeep, mufon)
+    max_distance_km: Optional[float] = None,  # Filter by distance from user
     latitude: Optional[float] = None,
     longitude: Optional[float] = None
 ):
@@ -261,9 +263,21 @@ async def get_alerts(
                 page = 1
             offset = (page - 1) * limit
 
-        # Get both the paginated alerts and total count
-        alerts = await alerts_service.get_recent_alerts(limit=limit, offset=offset)
-        total_count = await alerts_service.get_total_alerts_count()
+        # Get both the paginated alerts and total count with filtering
+        alerts = await alerts_service.get_recent_alerts(
+            limit=limit,
+            offset=offset,
+            source=source,
+            max_distance_km=max_distance_km,
+            user_latitude=latitude,
+            user_longitude=longitude
+        )
+        total_count = await alerts_service.get_total_alerts_count(
+            source=source,
+            max_distance_km=max_distance_km,
+            user_latitude=latitude,
+            user_longitude=longitude
+        )
 
         # Calculate pagination metadata
         current_page = (offset // limit) + 1
