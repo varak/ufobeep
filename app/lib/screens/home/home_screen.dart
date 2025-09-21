@@ -16,7 +16,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final filteredAlertsAsync = ref.watch(filteredAlertsProvider);
+    final filteredAlertsAsync = ref.watch(alertsListProvider);
     final filter = ref.watch(alertsFilterStateProvider);
     final isLoading = ref.watch(alertsLoadingStateProvider);
 
@@ -136,14 +136,14 @@ class HomeScreen extends ConsumerWidget {
   }
 
   Widget _buildAsyncBody(
-    BuildContext context, 
-    WidgetRef ref, 
-    AsyncValue<List<Alert>> alertsAsync, 
-    bool isLoading, 
+    BuildContext context,
+    WidgetRef ref,
+    AsyncValue<AlertsListData> alertsAsync,
+    bool isLoading,
     AlertsFilter filter
   ) {
     return alertsAsync.when(
-      data: (alerts) => _buildBody(context, ref, alerts, isLoading, filter),
+      data: (alertsData) => _buildBody(context, ref, alertsData.alerts, isLoading, filter),
       loading: () => const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

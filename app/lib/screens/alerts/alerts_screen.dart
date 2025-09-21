@@ -19,7 +19,7 @@ class AlertsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final alertsAsync = ref.watch(filteredAlertsProvider);
+    final alertsAsync = ref.watch(alertsListProvider);
     final filter = ref.watch(alertsFilterStateProvider);
     final preferencesAsync = ref.watch(userPreferencesProvider);
     final preferences = preferencesAsync;
@@ -87,9 +87,9 @@ class AlertsScreen extends ConsumerWidget {
   }
 
   Widget _buildBody(
-    BuildContext context, 
-    WidgetRef ref, 
-    AsyncValue<List<Alert>> alertsAsync, 
+    BuildContext context,
+    WidgetRef ref,
+    AsyncValue<AlertsListData> alertsAsync,
     AlertsFilter filter,
     UserPreferences? preferences,
   ) {
@@ -97,7 +97,7 @@ class AlertsScreen extends ConsumerWidget {
     final alertsDataAsync = ref.watch(alertsListProvider);
     
     return alertsAsync.when(
-      data: (alerts) => _buildAlertsList(context, ref, alerts, filter, preferences, alertsDataAsync.value),
+      data: (alertsData) => _buildAlertsList(context, ref, alertsData.alerts, filter, preferences, alertsData),
       loading: () => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
