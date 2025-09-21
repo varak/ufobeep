@@ -526,7 +526,7 @@
   "lastPage": "Viimeinen",
   "jumpToPage": "Siirry sivulle",
   "heroTagline": "Hanki hälytykset, milloin mennä ulos ja katsoa ylös",
-  "heroDescription": "Älä koskaan jätä UFO-havaintoa väliin. Hanki reaaliaikainen hälytys, kun joku lähelläsi näkee jotain outoa taivaalla. Osoita puhelimeen ja etsi tarkalleen mistä etsiä.",
+  "heroDescription": "Älä koskaan jätä väliin toista ufo-havaintoa alueellasi",
   "downloadApp": "Lataa sovellus",
   "viewAllBeeps": "Näytä kaikki äänimerkit",
   "sightingsMap": "Näyttökartta",
@@ -664,5 +664,9 @@
   "localArea": "Paikallinen alue (25 km)",
   "regional": "Alueellinen",
   "pushNotifications": "Työnnä ilmoitukset",
-  "alertBrowsing": "Hälytysselaus"
+  "alertBrowsing": "Hälytysselaus",
+  "pushAlertsWithinDistance": "Hanki ilmoituksia tälle alueelle",
+  "showAlertsWhenBrowsing": "Suodata mitä näet luettelossa",
+  "heroMainTagline": "Soita puhelimeen, kun ufot ovat lähellä",
+  "heroSecondaryTagline": "Selvitä milloin ja missä katsoa taivasta"
 }

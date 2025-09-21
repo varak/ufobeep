@@ -2151,7 +2151,7 @@ abstract class AppLocalizations {
   /// No description provided for @heroDescription.
   ///
   /// In en, this message translates to:
-  /// **'Never miss another UFO sighting. Get real-time alerts when someone near you sees something weird in the sky. Point your phone and find exactly where to look.'**
+  /// **'Never miss another UFO sighting in your area'**
   String get heroDescription;
 
   /// No description provided for @downloadApp.
@@ -2993,6 +2993,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Filter what you see in the list'**
   String get showAlertsWhenBrowsing;
+
+  /// No description provided for @heroMainTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Get a beep on your phone when UFOs are spotted nearby'**
+  String get heroMainTagline;
+
+  /// No description provided for @heroSecondaryTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Find out when and where to look at the sky'**
+  String get heroSecondaryTagline;
 }
 
 class _AppLocalizationsDelegate

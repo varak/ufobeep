@@ -1099,7 +1099,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Älä koskaan jätä UFO-havaintoa väliin. Hanki reaaliaikainen hälytys, kun joku lähelläsi näkee jotain outoa taivaalla. Osoita puhelimeen ja etsi tarkalleen mistä etsiä.';
+      'Älä koskaan jätä väliin toista ufo-havaintoa alueellasi';
 
   @override
   String get downloadApp => 'Lataa sovellus';
@@ -1528,8 +1528,14 @@ class AppLocalizationsFi extends AppLocalizations {
   String get alertBrowsing => 'Hälytysselaus';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => 'Hanki ilmoituksia tälle alueelle';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'Suodata mitä näet luettelossa';
+
+  @override
+  String get heroMainTagline => 'Soita puhelimeen, kun ufot ovat lähellä';
+
+  @override
+  String get heroSecondaryTagline => 'Selvitä milloin ja missä katsoa taivasta';
 }

@@ -1098,7 +1098,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Gå aldrig glip af endnu en UFO observation. Få realtidsadvarsler når nogen nær dig ser noget underligt på himlen. Ret din telefon og find præcis hvor du skal kigge.';
+      'Aldrig gå glip af en anden UFO observation i dit område';
 
   @override
   String get downloadApp => 'Download App';
@@ -1527,8 +1527,17 @@ class AppLocalizationsDa extends AppLocalizations {
   String get alertBrowsing => 'Alert browsing';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance =>
+      'Få meddelelser inden for dette område';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'Filtrér hvad du ser på listen';
+
+  @override
+  String get heroMainTagline =>
+      'Få et bip på telefonen, når ufoer er set i nærheden';
+
+  @override
+  String get heroSecondaryTagline =>
+      'Find ud af hvornår og hvor man kan se på himlen';
 }

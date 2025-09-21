@@ -526,7 +526,7 @@
   "lastPage": "Último",
   "jumpToPage": "Saltar a página",
   "heroTagline": "Obtener alertas cuando salir y mirar hacia arriba",
-  "heroDescription": "Nunca pierdas otro avistamiento de OVNI. Obtenga alertas en tiempo real cuando alguien cercano ve algo raro en el cielo. Apunte el teléfono y encuentre exactamente dónde buscar.",
+  "heroDescription": "Nunca pierda otro OVNI avistamiento en su área",
   "downloadApp": "📱 Descargar App",
   "viewAllBeeps": "📋 View All Beeps",
   "sightingsMap": "Mapa de Avistamientos",
@@ -664,5 +664,9 @@
   "localArea": "Zona local (25 km)",
   "regional": "Regional",
   "pushNotifications": "Notificaciones push",
-  "alertBrowsing": "Alerta Browsing"
+  "alertBrowsing": "Alerta Browsing",
+  "pushAlertsWithinDistance": "Obtenga notificaciones dentro de este rango",
+  "showAlertsWhenBrowsing": "Filtrar lo que ves en la lista",
+  "heroMainTagline": "Obtenga una señal en su teléfono cuando los OVNIs están cerca",
+  "heroSecondaryTagline": "Descubre cuándo y dónde mirar el cielo"
 }

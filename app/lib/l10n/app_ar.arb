@@ -526,7 +526,7 @@
   "lastPage": "آخر",
   "jumpToPage": "اقفز على الصفحة",
   "heroTagline": "الحصول على تنبيهات عندما يذهب خارج وانظر إلى ما يصل",
-  "heroDescription": "لا تفوتني رؤية أخرى الحصول على إنذارات في الوقت الحقيقي عندما شخص ما بالقرب منك يرى شيء غريب في السماء. اوجهي هاتفك وابحثي عن المكان المناسب.",
+  "heroDescription": "لا تفوت أبداً رؤية أخرى في منطقتك",
   "downloadApp": "Download App",
   "viewAllBeeps": "View All Beeps",
   "sightingsMap": "Sightings Map",
@@ -664,5 +664,9 @@
   "localArea": "المنطقة المحلية (25 كيلومترا)",
   "regional": "إقليمي",
   "pushNotifications": "الإخطارات بالدفع",
-  "alertBrowsing": "إنذار بروز"
+  "alertBrowsing": "إنذار بروز",
+  "pushAlertsWithinDistance": "الحصول على الإخطارات في هذا النطاق",
+  "showAlertsWhenBrowsing": "اكتب ما تراه في القائمة",
+  "heroMainTagline": "الحصول على الصافرة على هاتفك عندما يتم رصد الأجسام الطائرة في الجوار",
+  "heroSecondaryTagline": "معرفة متى وأين للنظر إلى السماء"
 }

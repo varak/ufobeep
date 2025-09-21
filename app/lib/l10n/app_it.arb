@@ -526,7 +526,7 @@
   "lastPage": "Ultimo",
   "jumpToPage": "Vai alla pagina",
   "heroTagline": "Ricevi avvisi quando uscire e guardare in alto",
-  "heroDescription": "Non perdere mai un altro avvistamento UFO. Ricevi avvisi in tempo reale quando qualcuno vicino a te vede qualcosa di strano nel cielo. Punta il telefono e trova esattamente dove guardare.",
+  "heroDescription": "Non perdere mai un altro avvistamento UFO nella tua zona",
   "downloadApp": "📱 Scarica App",
   "viewAllBeeps": "📋 Vedi tutte le pecore",
   "sightingsMap": "🗺️ Sightings mappa",
@@ -664,5 +664,9 @@
   "localArea": "Area locale (25km)",
   "regional": "Regione",
   "pushNotifications": "Spingere le notifiche",
-  "alertBrowsing": "Avviso di navigazione"
+  "alertBrowsing": "Avviso di navigazione",
+  "pushAlertsWithinDistance": "Ricevi notifiche all'interno di questo range",
+  "showAlertsWhenBrowsing": "Filtra ciò che vedi nella lista",
+  "heroMainTagline": "Ottenere un segnale acustico sul telefono quando gli UFO sono individuati nelle vicinanze",
+  "heroSecondaryTagline": "Scopri quando e dove guardare il cielo"
 }

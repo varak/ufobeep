@@ -526,7 +526,7 @@
   "lastPage": "Letzter Beitrag",
   "jumpToPage": "Zur Seite springen",
   "heroTagline": "Erhalten Sie Alarme, wenn Sie nach draußen gehen und nach oben schauen",
-  "heroDescription": "Verpassen Sie nie eine andere UFO-Sicht. Erhalten Sie Echtzeit-Benachrichtigungen, wenn jemand in der Nähe sieht etwas seltsam am Himmel. Zeigen Sie Ihr Telefon und finden Sie genau, wo Sie suchen.",
+  "heroDescription": "Verpassen Sie nie ein weiteres UFO-Sicht in Ihrer Gegend",
   "downloadApp": "📱 App herunterladen",
   "viewAllBeeps": "Alle Beeps anzeigen",
   "sightingsMap": "🗺️ Sehenswürdigkeiten Karte",
@@ -664,5 +664,9 @@
   "localArea": "Gebiet (25km)",
   "regional": "Gebiet",
   "pushNotifications": "Push-Benachrichtigungen",
-  "alertBrowsing": "Alert Browsing"
+  "alertBrowsing": "Alert Browsing",
+  "pushAlertsWithinDistance": "Erhalten Sie Benachrichtigungen in diesem Bereich",
+  "showAlertsWhenBrowsing": "Filtern, was Sie in der Liste sehen",
+  "heroMainTagline": "Erhalten Sie einen Piep auf Ihrem Handy, wenn UFOs in der Nähe entdeckt werden",
+  "heroSecondaryTagline": "Finden Sie heraus, wann und wo Sie den Himmel sehen"
 }

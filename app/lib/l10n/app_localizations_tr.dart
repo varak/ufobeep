@@ -1101,7 +1101,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Asla başka bir UFO görüşünü kaçırmayın. Yakınınızdaki biri gökyüzünde garip bir şey gördüğünde gerçek zamanlı uyarılar alın. Telefonunuzu işaret edin ve tam olarak nereye bakacağınızı bulun.';
+      'Bölgenizdeki başka bir UFO görüşünü asla kaçırmayın';
 
   @override
   String get downloadApp => 'Download App';
@@ -1530,8 +1530,16 @@ class AppLocalizationsTr extends AppLocalizations {
   String get alertBrowsing => 'Uyarı Browsing';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => 'Bu aralıktaki bildirimleri alın';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'Listede gördüğünüz filtre';
+
+  @override
+  String get heroMainTagline =>
+      'UFO\'ların yakınlaştığında telefonunuzda bir beep alın';
+
+  @override
+  String get heroSecondaryTagline =>
+      'Ne zaman ve gökyüzüne bakmak için öğrenin';
 }

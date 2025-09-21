@@ -1111,7 +1111,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Никогда не пропустите очередное наблюдение НЛО. Получайте оповещения в реальном времени, когда кто-то рядом с вами видит что-то странное в небе. Направьте телефон и найдите, где именно искать.';
+      'Никогда не пропустите еще один НЛО в вашем районе';
 
   @override
   String get downloadApp => 'Скачать приложение';
@@ -1541,8 +1541,17 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alertBrowsing => 'Оповещение о просмотре';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance =>
+      'Получите уведомления в этом диапазоне';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing =>
+      'Отфильтровать то, что вы видите в списке';
+
+  @override
+  String get heroMainTagline =>
+      'Позвоните по телефону, когда НЛО будут замечены поблизости';
+
+  @override
+  String get heroSecondaryTagline => 'Узнайте, когда и где смотреть на небо';
 }

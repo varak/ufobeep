@@ -1098,7 +1098,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Nikdy si nenechte ujít další pozorování UFO. Získejte reálné-čas upozornění, když někdo blízko vás vidí něco divného na obloze. Namiřte telefon a najděte přesně, kde hledat.';
+      'Nikdy si nenechte ujít další pozorování UFO ve vaší oblasti';
 
   @override
   String get downloadApp => 'Name';
@@ -1528,8 +1528,16 @@ class AppLocalizationsCs extends AppLocalizations {
   String get alertBrowsing => 'Name';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance =>
+      'Získat oznámení v rámci tohoto rozsahu';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'Filtrovat to, co vidíte v seznamu';
+
+  @override
+  String get heroMainTagline =>
+      'Zapípněte si na telefon, když je poblíž spatřeno UFO';
+
+  @override
+  String get heroSecondaryTagline => 'Zjistěte, kdy a kde se dívat na oblohu';
 }

@@ -1104,7 +1104,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Nigdy nie przegap kolejnego widoku UFO. Zawiadom o czasie rzeczywistym, gdy ktoś w pobliżu zobaczy coś dziwnego na niebie. Wyceluj w telefon i znajdź dokładnie gdzie szukać.';
+      'Nigdy nie przegap kolejnego UFO widząc w twoim obszarze';
 
   @override
   String get downloadApp => 'Pobierz aplikację';
@@ -1534,8 +1534,15 @@ class AppLocalizationsPl extends AppLocalizations {
   String get alertBrowsing => 'Ostrzeżenie Przeglądanie';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => 'Pobierz powiadomienia w tym zakresie';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'Filtruj to, co widzisz na liście';
+
+  @override
+  String get heroMainTagline => 'Odezwij się, gdy UFO będzie w pobliżu';
+
+  @override
+  String get heroSecondaryTagline =>
+      'Dowiedz się, kiedy i gdzie patrzeć na niebo';
 }

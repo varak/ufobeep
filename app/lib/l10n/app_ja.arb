@@ -526,7 +526,7 @@
   "lastPage": "最近の投稿",
   "jumpToPage": "ページをジャンプ",
   "heroTagline": "外部に行くときにアラートを取得し、調べる",
-  "heroDescription": "UFOを見逃さない。 近くの人が空に奇妙な何かを見たときにリアルタイムのアラートを取得します。 携帯電話をポイントし、どこを見ても正確に見つけてください.",
+  "heroDescription": "あなたのエリアで別のUFOの視線を見逃さない",
   "downloadApp": "◀ アプリのダウンロード",
   "viewAllBeeps": "すべてのビープを見る",
   "sightingsMap": "サイトマップ",
@@ -664,5 +664,9 @@
   "localArea": "ローカルエリア (25km)",
   "regional": "地域紹介",
   "pushNotifications": "プッシュ通知",
-  "alertBrowsing": "アラートブラウジング"
+  "alertBrowsing": "アラートブラウジング",
+  "pushAlertsWithinDistance": "この範囲内で通知を取得する",
+  "showAlertsWhenBrowsing": "リストで見るものをフィルタリング",
+  "heroMainTagline": "UFOが近くにあるときに電話機にビープをつけましょう",
+  "heroSecondaryTagline": "空を眺める時と場所を調べる"
 }

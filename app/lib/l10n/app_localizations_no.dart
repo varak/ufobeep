@@ -1090,8 +1090,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get heroTagline => 'Get alerts when to go outside and look up';
 
   @override
-  String get heroDescription =>
-      'Never miss another UFO sighting. Get real-time alerts when someone near you sees something weird in the sky. Point your phone and find exactly where to look.';
+  String get heroDescription => 'Never miss another UFO sighting in your area';
 
   @override
   String get downloadApp => '📱 Download App';
@@ -1523,4 +1522,12 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+
+  @override
+  String get heroMainTagline =>
+      'Get a beep on your phone when UFOs are spotted nearby';
+
+  @override
+  String get heroSecondaryTagline =>
+      'Find out when and where to look at the sky';
 }

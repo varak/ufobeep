@@ -1105,7 +1105,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Ποτέ μην χάσεις άλλο UFO. Πάρε ειδοποιήσεις σε πραγματικό χρόνο όταν κάποιος κοντά σου δει κάτι περίεργο στον ουρανό. Σημάδεψε το τηλέφωνό σου και βρες πού ακριβώς να ψάξεις.';
+      'Ποτέ μην χάσετε άλλη παρατήρηση UFO στην περιοχή σας';
 
   @override
   String get downloadApp => '📱 Λήψη εφαρμογής';
@@ -1537,8 +1537,17 @@ class AppLocalizationsEl extends AppLocalizations {
   String get alertBrowsing => 'Προειδοποίηση περιήγησης';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance =>
+      'Λήψη ειδοποιήσεων εντός αυτού του εύρους';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'Φιλτράρισμα όσων βλέπετε στη λίστα';
+
+  @override
+  String get heroMainTagline =>
+      'Πάρτε ένα μπιπ στο τηλέφωνό σας όταν UFOs εντοπίζονται κοντά';
+
+  @override
+  String get heroSecondaryTagline =>
+      'Μάθε πότε και πού να κοιτάξεις τον ουρανό';
 }

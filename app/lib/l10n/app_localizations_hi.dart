@@ -1095,7 +1095,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'कभी किसी अन्य यूएफओ दर्शन को याद न करें। जब आपके पास कोई व्यक्ति आकाश में कुछ अजीब चीज़ देखता है तो वास्तविक समय अलर्ट प्राप्त करें। अपने फोन को इंगित करें और ठीक उसी तरह खोजें जहां देखने के लिए।.';
+      'कभी भी अपने क्षेत्र में किसी अन्य यूएफओ दर्शन को याद न करें';
 
   @override
   String get downloadApp => 'App डाउनलोड';
@@ -1525,8 +1525,15 @@ class AppLocalizationsHi extends AppLocalizations {
   String get alertBrowsing => 'चेतावनी ब्राउज़िंग';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => 'इस रेंज के भीतर सूचनाएं प्राप्त करें';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'क्या आप सूची में देखते हैं फ़िल्टर';
+
+  @override
+  String get heroMainTagline =>
+      'जब UFOs पास में देखा जाता है तो अपने फोन पर एक बीप प्राप्त करें';
+
+  @override
+  String get heroSecondaryTagline => 'जब और कहाँ आकाश को देखने के लिए';
 }

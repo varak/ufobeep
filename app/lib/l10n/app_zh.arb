@@ -526,7 +526,7 @@
   "lastPage": "最后一个",
   "jumpToPage": "跳转到页面",
   "heroTagline": "什么时候到外面看看",
-  "heroDescription": "永远不要错过另一个UFO的目击。 当有人在天上看到奇怪的东西时,即刻发出警报. 把电话对准,找到可以找的地方.",
+  "heroDescription": "永远不要错过 在你的区域看到另一个UFO",
   "downloadApp": "QQ 下载 App",
   "viewAllBeeps": "QQ 查看全部蜂窝",
   "sightingsMap": "图像",
@@ -664,5 +664,9 @@
   "localArea": "地区(25公里)",
   "regional": "区域",
   "pushNotifications": "推动通知",
-  "alertBrowsing": "提醒浏览"
+  "alertBrowsing": "提醒浏览",
+  "pushAlertsWithinDistance": "在此范围内获取通知",
+  "showAlertsWhenBrowsing": "过滤列表中看到的内容",
+  "heroMainTagline": "当不明飞行物在附近发现时,在手机上鸣声",
+  "heroSecondaryTagline": "找出何时何地看天空"
 }

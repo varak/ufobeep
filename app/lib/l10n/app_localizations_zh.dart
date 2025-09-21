@@ -1072,8 +1072,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get heroTagline => '什么时候到外面看看';
 
   @override
-  String get heroDescription =>
-      '永远不要错过另一个UFO的目击。 当有人在天上看到奇怪的东西时,即刻发出警报. 把电话对准,找到可以找的地方.';
+  String get heroDescription => '永远不要错过 在你的区域看到另一个UFO';
 
   @override
   String get downloadApp => 'QQ 下载 App';
@@ -1497,8 +1496,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get alertBrowsing => '提醒浏览';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => '在此范围内获取通知';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => '过滤列表中看到的内容';
+
+  @override
+  String get heroMainTagline => '当不明飞行物在附近发现时,在手机上鸣声';
+
+  @override
+  String get heroSecondaryTagline => '找出何时何地看天空';
 }

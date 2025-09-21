@@ -1100,7 +1100,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Mis nooit meer een UFO waarneming. Ontvang real-time waarschuwingen als iemand bij je in de buurt iets raars ziet in de lucht. Richt je telefoon en vind precies waar je moet zoeken.';
+      'Mis nooit een andere UFO waarneming in uw gebied';
 
   @override
   String get downloadApp => 'Download App';
@@ -1529,8 +1529,17 @@ class AppLocalizationsNl extends AppLocalizations {
   String get alertBrowsing => 'Alert bladeren';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance =>
+      'Notificatieberichten binnen dit bereik ophalen';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'Filter wat je ziet in de lijst';
+
+  @override
+  String get heroMainTagline =>
+      'Haal een piep op je telefoon als UFO\'s in de buurt worden gezien';
+
+  @override
+  String get heroSecondaryTagline =>
+      'Zoek uit wanneer en waar naar de hemel te kijken';
 }

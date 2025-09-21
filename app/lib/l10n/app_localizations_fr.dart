@@ -1113,7 +1113,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Ne manquez jamais une autre OVNI. Obtenez des alertes en temps réel quand quelqu\'un près de vous voit quelque chose de bizarre dans le ciel. Pointez votre téléphone et trouvez exactement où chercher.';
+      'Ne manquez jamais une autre OVNI dans votre région';
 
   @override
   String get downloadApp => 'Télécharger l\'application';
@@ -1542,8 +1542,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get alertBrowsing => 'Navigation d\'alerte';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance =>
+      'Obtenir des notifications dans cette plage';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing =>
+      'Filtrer ce que vous voyez dans la liste';
+
+  @override
+  String get heroMainTagline =>
+      'Obtenez un bip sur votre téléphone lorsque les ovnis sont repérés à proximité';
+
+  @override
+  String get heroSecondaryTagline => 'Découvrez quand et où regarder le ciel';
 }

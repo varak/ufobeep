@@ -1084,8 +1084,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get heroTagline => 'קבלו התראות כשאתם יוצאים החוצה ומתבוננים';
 
   @override
-  String get heroDescription =>
-      'לעולם אל תחמיצו מראה עב\"מים נוסף. קבל התראות בזמן אמת כאשר מישהו לידך רואה משהו מוזר בשמים. מצא את הטלפון שלך ולמצוא בדיוק איפה להסתכל.';
+  String get heroDescription => 'לעולם אל תחמיצו עוד עב\"מים שרואים באזור שלכם';
 
   @override
   String get downloadApp => 'להורדה App';
@@ -1510,8 +1509,15 @@ class AppLocalizationsHe extends AppLocalizations {
   String get alertBrowsing => 'תגית: Browsing';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => 'קבל הודעות בטווח זה';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'פילטר מה שרואים ברשימה';
+
+  @override
+  String get heroMainTagline =>
+      'קבל שעון בטלפון שלך כאשר עב\"מים נצפו בקרבת מקום';
+
+  @override
+  String get heroSecondaryTagline => 'גלה מתי והיכן להסתכל על השמיים';
 }

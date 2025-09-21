@@ -1107,7 +1107,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get heroDescription =>
-      'Non perdere mai un altro avvistamento UFO. Ricevi avvisi in tempo reale quando qualcuno vicino a te vede qualcosa di strano nel cielo. Punta il telefono e trova esattamente dove guardare.';
+      'Non perdere mai un altro avvistamento UFO nella tua zona';
 
   @override
   String get downloadApp => '📱 Scarica App';
@@ -1538,8 +1538,16 @@ class AppLocalizationsIt extends AppLocalizations {
   String get alertBrowsing => 'Avviso di navigazione';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance =>
+      'Ricevi notifiche all\'interno di questo range';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'Filtra ciò che vedi nella lista';
+
+  @override
+  String get heroMainTagline =>
+      'Ottenere un segnale acustico sul telefono quando gli UFO sono individuati nelle vicinanze';
+
+  @override
+  String get heroSecondaryTagline => 'Scopri quando e dove guardare il cielo';
 }

@@ -1074,8 +1074,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get heroTagline => '외부로 이동할 때 경고를 얻고 봐';
 
   @override
-  String get heroDescription =>
-      '다른 UFO 보행을 놓치지 마십시오. 누군가가 하늘에서 이상한 것을 볼 때 실시간 경고를 가져옵니다. 휴대폰을 끄고 정확히 어디에서 볼 수 있습니다.';
+  String get heroDescription => '당신의 지역에 다른 UFO 보행을 놓치지 마십시오';
 
   @override
   String get downloadApp => '앱 다운로드';
@@ -1499,8 +1498,14 @@ class AppLocalizationsKo extends AppLocalizations {
   String get alertBrowsing => '비밀번호';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => '이 범위 내에서 알림 받기';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => '목록에서 볼 수있는 필터';
+
+  @override
+  String get heroMainTagline => 'UFO가 근처에 자리 잡을 때 휴대폰에 벳을 끄십시오';
+
+  @override
+  String get heroSecondaryTagline => '하늘을 바라보는 곳';
 }

@@ -526,7 +526,7 @@
   "lastPage": "Poslední",
   "jumpToPage": "Přejít na stránku",
   "heroTagline": "Získejte upozornění, kdy jít ven a podívat se nahoru",
-  "heroDescription": "Nikdy si nenechte ujít další pozorování UFO. Získejte reálné-čas upozornění, když někdo blízko vás vidí něco divného na obloze. Namiřte telefon a najděte přesně, kde hledat.",
+  "heroDescription": "Nikdy si nenechte ujít další pozorování UFO ve vaší oblasti",
   "downloadApp": "Name",
   "viewAllBeeps": "Zobrazit všechny pípy",
   "sightingsMap": "Name",
@@ -664,5 +664,9 @@
   "localArea": "Místní oblast (25km)",
   "regional": "Regionální",
   "pushNotifications": "Stiskněte oznámení",
-  "alertBrowsing": "Name"
+  "alertBrowsing": "Name",
+  "pushAlertsWithinDistance": "Získat oznámení v rámci tohoto rozsahu",
+  "showAlertsWhenBrowsing": "Filtrovat to, co vidíte v seznamu",
+  "heroMainTagline": "Zapípněte si na telefon, když je poblíž spatřeno UFO",
+  "heroSecondaryTagline": "Zjistěte, kdy a kde se dívat na oblohu"
 }

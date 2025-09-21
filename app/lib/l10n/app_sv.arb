@@ -526,7 +526,7 @@
   "lastPage": "Senaste",
   "jumpToPage": "Hoppa till sida",
   "heroTagline": "Få varningar när du ska gå ut och titta upp",
-  "heroDescription": "Missa aldrig en annan UFO-observation. Få realtidsvarningar när någon nära dig ser något konstigt på himlen. Peka din telefon och hitta exakt var du ska titta.",
+  "heroDescription": "Missa aldrig en annan UFO-observation i ditt område",
   "downloadApp": "Nedladdning App",
   "viewAllBeeps": "Visa alla Beeps",
   "sightingsMap": "Sightings Map",
@@ -664,5 +664,9 @@
   "localArea": "Lokalt område (25 km)",
   "regional": "Regional",
   "pushNotifications": "Push Notifications",
-  "alertBrowsing": "Alert Browsing"
+  "alertBrowsing": "Alert Browsing",
+  "pushAlertsWithinDistance": "Få meddelanden inom detta område",
+  "showAlertsWhenBrowsing": "Filtrera vad du ser i listan",
+  "heroMainTagline": "Få ett pip på din telefon när UFOs finns i närheten",
+  "heroSecondaryTagline": "Ta reda på när och var du ska titta på himlen"
 }

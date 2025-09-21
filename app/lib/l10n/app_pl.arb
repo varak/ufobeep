@@ -526,7 +526,7 @@
   "lastPage": "Ostatni",
   "jumpToPage": "Przejdź do strony",
   "heroTagline": "Pobierz ostrzeżenia, kiedy wyjść na zewnątrz i spojrzeć w górę",
-  "heroDescription": "Nigdy nie przegap kolejnego widoku UFO. Zawiadom o czasie rzeczywistym, gdy ktoś w pobliżu zobaczy coś dziwnego na niebie. Wyceluj w telefon i znajdź dokładnie gdzie szukać.",
+  "heroDescription": "Nigdy nie przegap kolejnego UFO widząc w twoim obszarze",
   "downloadApp": "Pobierz aplikację",
   "viewAllBeeps": "Name",
   "sightingsMap": "Mapa przeglądów",
@@ -664,5 +664,9 @@
   "localArea": "Obszar lokalny (25km)",
   "regional": "Regionalne",
   "pushNotifications": "Powiadomienia o uruchomieniu",
-  "alertBrowsing": "Ostrzeżenie Przeglądanie"
+  "alertBrowsing": "Ostrzeżenie Przeglądanie",
+  "pushAlertsWithinDistance": "Pobierz powiadomienia w tym zakresie",
+  "showAlertsWhenBrowsing": "Filtruj to, co widzisz na liście",
+  "heroMainTagline": "Odezwij się, gdy UFO będzie w pobliżu",
+  "heroSecondaryTagline": "Dowiedz się, kiedy i gdzie patrzeć na niebo"
 }

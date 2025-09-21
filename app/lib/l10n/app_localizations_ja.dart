@@ -1073,8 +1073,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get heroTagline => '外部に行くときにアラートを取得し、調べる';
 
   @override
-  String get heroDescription =>
-      'UFOを見逃さない。 近くの人が空に奇妙な何かを見たときにリアルタイムのアラートを取得します。 携帯電話をポイントし、どこを見ても正確に見つけてください.';
+  String get heroDescription => 'あなたのエリアで別のUFOの視線を見逃さない';
 
   @override
   String get downloadApp => '◀ アプリのダウンロード';
@@ -1498,8 +1497,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get alertBrowsing => 'アラートブラウジング';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => 'この範囲内で通知を取得する';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'リストで見るものをフィルタリング';
+
+  @override
+  String get heroMainTagline => 'UFOが近くにあるときに電話機にビープをつけましょう';
+
+  @override
+  String get heroSecondaryTagline => '空を眺める時と場所を調べる';
 }

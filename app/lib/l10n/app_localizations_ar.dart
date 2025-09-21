@@ -1087,8 +1087,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'الحصول على تنبيهات عندما يذهب خارج وانظر إلى ما يصل';
 
   @override
-  String get heroDescription =>
-      'لا تفوتني رؤية أخرى الحصول على إنذارات في الوقت الحقيقي عندما شخص ما بالقرب منك يرى شيء غريب في السماء. اوجهي هاتفك وابحثي عن المكان المناسب.';
+  String get heroDescription => 'لا تفوت أبداً رؤية أخرى في منطقتك';
 
   @override
   String get downloadApp => 'Download App';
@@ -1515,8 +1514,15 @@ class AppLocalizationsAr extends AppLocalizations {
   String get alertBrowsing => 'إنذار بروز';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => 'الحصول على الإخطارات في هذا النطاق';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'اكتب ما تراه في القائمة';
+
+  @override
+  String get heroMainTagline =>
+      'الحصول على الصافرة على هاتفك عندما يتم رصد الأجسام الطائرة في الجوار';
+
+  @override
+  String get heroSecondaryTagline => 'معرفة متى وأين للنظر إلى السماء';
 }

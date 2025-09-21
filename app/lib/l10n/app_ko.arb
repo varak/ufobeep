@@ -526,7 +526,7 @@
   "lastPage": "이름 *",
   "jumpToPage": "공지사항",
   "heroTagline": "외부로 이동할 때 경고를 얻고 봐",
-  "heroDescription": "다른 UFO 보행을 놓치지 마십시오. 누군가가 하늘에서 이상한 것을 볼 때 실시간 경고를 가져옵니다. 휴대폰을 끄고 정확히 어디에서 볼 수 있습니다.",
+  "heroDescription": "당신의 지역에 다른 UFO 보행을 놓치지 마십시오",
   "downloadApp": "앱 다운로드",
   "viewAllBeeps": "All 모두 Beeps",
   "sightingsMap": "Sightings 지도",
@@ -664,5 +664,9 @@
   "localArea": "지역 (25km)",
   "regional": "주요사업",
   "pushNotifications": "푸시 알림",
-  "alertBrowsing": "비밀번호"
+  "alertBrowsing": "비밀번호",
+  "pushAlertsWithinDistance": "이 범위 내에서 알림 받기",
+  "showAlertsWhenBrowsing": "목록에서 볼 수있는 필터",
+  "heroMainTagline": "UFO가 근처에 자리 잡을 때 휴대폰에 벳을 끄십시오",
+  "heroSecondaryTagline": "하늘을 바라보는 곳"
 }
