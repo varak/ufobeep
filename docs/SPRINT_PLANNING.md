@@ -144,14 +144,52 @@
 
 **Definition of Done**: Sub-second response times, smooth scrolling
 
-### Sprint 3 (Weeks 4-5): ONBOARDING & UX
-**Goal**: New users understand and engage with app
-- Tutorial system
+### Sprint 3 (Weeks 4-5): INTERNATIONALIZATION - CRITICAL
+**Goal**: International users get native language experience from first startup
+
+#### DISCOVERED ISSUE: 70+ Hardcoded English Strings in Auth Flows
+**Problem**: Critical screens (startup, login, registration) show English to international users
+**Impact**: Poor first-time experience for non-English speakers
+**Scope**: 6 auth screens with 70+ hardcoded strings (documented in LANGUAGE_AUDIT.md)
+
+**Priority Tasks:**
+- [ ] **Complete auth screen audit** - Sign-in, recovery, phone setup screens
+- [ ] **Add 70+ translation keys** to app_en.arb for auth flows
+- [ ] **Update splash screen** - 9 hardcoded strings → translation keys
+- [ ] **Update email auth** - 15+ strings → translation keys
+- [ ] **Update phone auth** - 20+ strings → translation keys
+- [ ] **Update sign-in screen** - Estimated 15+ strings → translation keys
+- [ ] **Test language detection** - Phone locale → app language
+- [ ] **Run translate.sh** - Generate all 22 language versions
+- [ ] **Test critical auth flows** in Spanish, German, French
+
+**Definition of Done**: International users see native language from app startup through login completion
+
+### Sprint 4 (Weeks 6-8): MOVEMENT DETECTION - CRITICAL FOR PROXIMITY
+**Goal**: True background location tracking for accurate proximity alerts
+
+#### DISCOVERED REQUIREMENT: Continuous Location Tracking
+**Problem**: Device locations become stale when users move, proximity alerts sent to wrong locations
+**Impact**: Users miss nearby UFO alerts because system uses old home/work locations
+**Scope**: 2.5 weeks for cross-platform background location monitoring (documented in MOVEMENT_DETECTION_SPRINT.md)
+
+**Key Requirements:**
+- **Real-time movement detection** - >1km triggers automatic location update
+- **Cross-platform background services** - Android foreground service + iOS background location
+- **Battery optimization** - <5% additional drain with efficient monitoring
+- **Honest user communication** - "We continuously track location for proximity alerts"
+- **No disable option** - Location tracking required for core functionality
+
+**Definition of Done**: Users receive accurate proximity alerts wherever they are, with minimal battery impact
+
+### Sprint 5 (Weeks 9-10): ONBOARDING & UX
+**Goal**: New users understand and engage with app (after language and location support)
+- Tutorial system (language-aware)
 - Empty state improvements
 - User education features
 - **Definition of Done**: 80% user retention after first week
 
-### Sprint 4 (Weeks 6-8): COMMUNITY FEATURES
+### Sprint 6 (Weeks 11-13): COMMUNITY FEATURES
 **Goal**: Enhanced user engagement and retention
 - Subscription management
 - Community features
