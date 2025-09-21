@@ -388,10 +388,14 @@ class AlertsListData {
 // Alerts List Provider
 @riverpod
 class AlertsList extends _$AlertsList {
-  static const int alertsPerPage = 15;
+  static const int alertsPerPage = 20;
   
   @override
   Future<AlertsListData> build() async {
+    // Get filter state
+    final filter = ref.watch(alertsFilterStateProvider);
+    final sourceFilter = filter.showUfoBeepOnly == true ? 'ufobeep' : null;
+
     // Try to get user location for distance calculation
     double? userLat, userLon;
     try {
@@ -403,10 +407,11 @@ class AlertsList extends _$AlertsList {
     } catch (e) {
       debugPrint('Could not get user location for distance calculation: $e');
     }
-    
-    // Fetch first page of alerts from API
+
+    // Fetch first page of alerts from API with filters
     return await _fetchAlertsPage(
       page: 1,
+      source: sourceFilter,
       latitude: userLat,
       longitude: userLon,
     );
@@ -414,6 +419,7 @@ class AlertsList extends _$AlertsList {
 
   Future<AlertsListData> _fetchAlertsPage({
     required int page,
+    String? source,  // Server-side source filtering
     String? category,
     String? minAlertLevel,
     double? maxDistanceKm,
@@ -429,6 +435,7 @@ class AlertsList extends _$AlertsList {
       final response = await apiClient.listAlerts(
         page: page,
         limit: alertsPerPage,
+        source: source,
         category: category,
         minAlertLevel: minAlertLevel,
         maxDistanceKm: maxDistanceKm,

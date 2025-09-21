@@ -284,32 +284,6 @@ class AlertsScreen extends ConsumerWidget {
             ),
           ),
         
-        // Results header
-        Container(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Text(
-                '${visibleAlerts.length} alert${visibleAlerts.length != 1 ? 's' : ''} found',
-                style: const TextStyle(
-                  color: AppColors.textSecondary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              if (preferences != null && visibleAlerts.length < alerts.length) ...[
-                const SizedBox(width: 8),
-                Text(
-                  '(${alerts.length - visibleAlerts.length} ${AppLocalizations.of(context)?.filteredSuffix ?? 'filtered'})',
-                  style: const TextStyle(
-                    color: AppColors.textTertiary,
-                    fontSize: 12,
-                  ),
-                ),
-              ],
-            ],
-          ),
-        ),
         
         // Alerts list with page-based pagination
         Expanded(

@@ -412,6 +412,7 @@ class ApiClient {
     int limit = 20,
     int offset = 0,
     int? page,
+    String? source,  // Server-side source filtering
     String? category,
     String? minAlertLevel,
     double? maxDistanceKm,
@@ -431,6 +432,10 @@ class ApiClient {
         queryParams['page'] = page;
       } else {
         queryParams['offset'] = offset;
+      }
+
+      if (source != null) {
+        queryParams['source'] = source.toLowerCase();
       }
 
       if (category != null) {
