@@ -67,19 +67,55 @@
 
 ## 📋 SPRINT BREAKDOWN
 
-### Sprint 1 (Weeks 1-2): SCALING FOUNDATION
+### Sprint 1 (Weeks 1-2): SCALING FOUNDATION - ZERO COST
 **Goal**: App survives 10K+ alerts without crashing
-- Database pagination and indexing
-- Mobile memory management
-- Virtual scrolling implementation
-- **Definition of Done**: App handles 50K alerts smoothly
 
-### Sprint 2 (Week 3): PERFORMANCE OPTIMIZATION
+#### API Backend Tasks
+- [ ] **Add database indexes** - created_at, source, location fields
+- [ ] **Fix pagination** - Change limit=5000 to limit=20 with offset
+- [ ] **Optimize queries** - Return only essential fields
+- [ ] **Add query logging** - Identify slow queries
+- [ ] **Database connection pooling** - Reuse connections efficiently
+
+#### Mobile App Tasks
+- [ ] **Implement virtual scrolling** - Only render visible alerts
+- [ ] **Add lazy loading** - Load images when scrolled to
+- [ ] **Image cache limits** - Prevent memory overflow
+- [ ] **Fix memory leaks** - Dispose controllers properly
+- [ ] **Compress uploaded images** - Resize before upload
+
+#### Web App Tasks
+- [ ] **Add pagination controls** - Next/previous buttons
+- [ ] **Implement infinite scroll** - Load more as user scrolls
+- [ ] **Optimize image loading** - Use proper sizing and compression
+- [ ] **Add loading states** - Better UX during data fetch
+
+**Definition of Done**: App handles 50K alerts smoothly with <200MB memory usage
+
+### Sprint 2 (Week 3): PERFORMANCE OPTIMIZATION - ZERO COST
 **Goal**: Fast, responsive user experience
-- Async processing implementation
-- Background job optimization
-- Query optimization
-- **Definition of Done**: Sub-second response times
+
+#### API Backend Tasks
+- [ ] **Async proximity alerts** - Don't block beep submission
+- [ ] **Background enrichment processing** - Process after response sent
+- [ ] **Response compression** - Gzip API responses
+- [ ] **Query result caching** - Cache frequent queries in memory
+- [ ] **Batch similar operations** - Reduce database round trips
+
+#### Mobile App Tasks
+- [ ] **Preload next page** - Load when user nears bottom
+- [ ] **Cancel stale requests** - Prevent duplicate API calls
+- [ ] **Optimize state management** - Reduce unnecessary rebuilds
+- [ ] **Image compression** - Reduce upload sizes
+- [ ] **Background sync** - Upload when network available
+
+#### Web App Tasks
+- [ ] **Implement caching** - Browser cache for static content
+- [ ] **Optimize bundle size** - Code splitting and tree shaking
+- [ ] **Add request debouncing** - Prevent spam requests
+- [ ] **Lazy load components** - Load features when needed
+
+**Definition of Done**: Sub-second response times, smooth scrolling
 
 ### Sprint 3 (Weeks 4-5): ONBOARDING & UX
 **Goal**: New users understand and engage with app
