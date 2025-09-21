@@ -244,8 +244,9 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
 
 @router.get("")
 async def get_alerts(
-    limit: int = 5000,  # Show ALL alerts on map
+    limit: int = 20,  # Reasonable default for pagination
     offset: int = 0,
+    page: Optional[int] = None,  # Page-based pagination support
     latitude: Optional[float] = None,
     longitude: Optional[float] = None
 ):
@@ -253,23 +254,36 @@ async def get_alerts(
     try:
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
-        
+
+        # Handle page-based pagination
+        if page is not None:
+            if page < 1:
+                page = 1
+            offset = (page - 1) * limit
+
         # Get both the paginated alerts and total count
         alerts = await alerts_service.get_recent_alerts(limit=limit, offset=offset)
         total_count = await alerts_service.get_total_alerts_count()
-        
+
+        # Calculate pagination metadata
+        current_page = (offset // limit) + 1
+        total_pages = (total_count + limit - 1) // limit  # CEIL(total_count / limit)
+
         # Calculate distances if user location is provided
         api_alerts = [format_alert_response(alert, latitude, longitude) for alert in alerts]
-        
+
         # Don't close the pool - it's shared across the service
-        
+
         return {
             "success": True,
             "data": {
                 "alerts": api_alerts,
                 "total": total_count,
-                "page": (offset // limit) + 1,
-                "limit": limit
+                "page": current_page,
+                "totalPages": total_pages,
+                "limit": limit,
+                "hasNextPage": current_page < total_pages,
+                "hasPrevPage": current_page > 1
             }
         }
         
