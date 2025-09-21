@@ -71,24 +71,31 @@
 **Goal**: App survives 10K+ alerts without crashing
 
 #### API Backend Tasks
-- [ ] **Add database indexes** - created_at, source, location fields
-- [ ] **Fix pagination** - Change limit=5000 to limit=20 with offset
-- [ ] **Optimize queries** - Return only essential fields
-- [ ] **Add query logging** - Identify slow queries
+- [ ] **Add page-based pagination** - `/api/beep?page=1&limit=20` endpoint
+- [ ] **Return pagination metadata** - `{data: alerts, page: 1, totalPages: 150, total: 3000}`
+- [ ] **Add database indexes** - created_at DESC, source+created_at, location fields
+- [ ] **Optimize queries** - Return only essential fields, not full enrichment_data
+- [ ] **Add page count calculations** - `CEIL(total_count / limit)` in queries
+- [ ] **Add query logging** - Identify slow queries with timing
 - [ ] **Database connection pooling** - Reuse connections efficiently
 
 #### Mobile App Tasks
-- [ ] **Implement virtual scrolling** - Only render visible alerts
-- [ ] **Add lazy loading** - Load images when scrolled to
-- [ ] **Image cache limits** - Prevent memory overflow
-- [ ] **Fix memory leaks** - Dispose controllers properly
+- [ ] **Implement PageView widget** - Swipeable pages instead of long lists
+- [ ] **Add page indicators** - "Page 5 of 150" display
+- [ ] **Page navigation controls** - Previous/Next buttons
+- [ ] **Cache multiple pages** - Keep current + 2 adjacent pages in memory
+- [ ] **Lazy image loading** - Load images when page becomes visible
+- [ ] **Jump to page dialog** - Allow direct page entry
+- [ ] **Fix memory leaks** - Dispose controllers on page changes
 - [ ] **Compress uploaded images** - Resize before upload
 
 #### Web App Tasks
-- [ ] **Add pagination controls** - Next/previous buttons
-- [ ] **Implement infinite scroll** - Load more as user scrolls
+- [ ] **Traditional pagination component** - 1 2 3 4 5 ... Next controls
+- [ ] **URL-based navigation** - `/beep?page=5` for bookmarkable pages
+- [ ] **Page size selector** - 10/20/50 alerts per page options
+- [ ] **"Go to page" input** - Direct navigation to any page number
 - [ ] **Optimize image loading** - Use proper sizing and compression
-- [ ] **Add loading states** - Better UX during data fetch
+- [ ] **Add loading states** - Better UX during page changes
 
 **Definition of Done**: App handles 50K alerts smoothly with <200MB memory usage
 
