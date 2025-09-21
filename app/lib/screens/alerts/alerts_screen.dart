@@ -369,6 +369,63 @@ class AlertsScreen extends ConsumerWidget {
                   },
                 ),
               ),
+              // Bottom navigation controls
+              if (alertsData != null)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.darkSurface.withOpacity(0.9),
+                    border: Border(
+                      top: BorderSide(color: AppColors.darkBorder),
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Total count info
+                      Text(
+                        'Showing ${alertsData.alerts.length} of ${alertsData.total}',
+                        style: const TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 12,
+                        ),
+                      ),
+                      // Navigation buttons
+                      Row(
+                        children: [
+                          // Previous page
+                          IconButton(
+                            onPressed: alertsData.hasPrevPage
+                                ? () => _goToPreviousPage(ref, alertsData.page)
+                                : null,
+                            icon: const Icon(Icons.chevron_left),
+                            color: alertsData.hasPrevPage
+                                ? AppColors.brandPrimary
+                                : AppColors.textTertiary,
+                          ),
+                          // Page indicator
+                          Text(
+                            '${alertsData.page}/${alertsData.totalPages}',
+                            style: const TextStyle(
+                              color: AppColors.textSecondary,
+                              fontSize: 14,
+                            ),
+                          ),
+                          // Next page
+                          IconButton(
+                            onPressed: alertsData.hasNextPage
+                                ? () => _goToNextPage(ref, alertsData.page)
+                                : null,
+                            icon: const Icon(Icons.chevron_right),
+                            color: alertsData.hasNextPage
+                                ? AppColors.brandPrimary
+                                : AppColors.textTertiary,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
             ],
           ),
         ),

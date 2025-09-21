@@ -356,9 +356,9 @@ class AlertsListData {
     required this.total,
     required this.currentPage,
     required this.hasMore,
-    required this.totalPages,
-    required this.hasPrevPage,
-    required this.hasNextPage,
+    this.totalPages = 1,
+    this.hasPrevPage = false,
+    this.hasNextPage = false,
   });
 
   // Getter for backward compatibility
@@ -427,8 +427,8 @@ class AlertsList extends _$AlertsList {
       final offset = (page - 1) * alertsPerPage;
       
       final response = await apiClient.listAlerts(
+        page: page,
         limit: alertsPerPage,
-        offset: offset,
         category: category,
         minAlertLevel: minAlertLevel,
         maxDistanceKm: maxDistanceKm,
@@ -469,6 +469,9 @@ class AlertsList extends _$AlertsList {
             total: total,
             currentPage: page,
             hasMore: hasMore,
+            totalPages: alertsData['totalPages'] as int? ?? 1,
+            hasPrevPage: alertsData['hasPrevPage'] as bool? ?? false,
+            hasNextPage: alertsData['hasNextPage'] as bool? ?? false,
           );
         } catch (parseError) {
           debugPrint('UFOBEEP: ERROR parsing alerts: $parseError');

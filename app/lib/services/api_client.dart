@@ -411,6 +411,7 @@ class ApiClient {
   Future<Map<String, dynamic>> listAlerts({
     int limit = 20,
     int offset = 0,
+    int? page,
     String? category,
     String? minAlertLevel,
     double? maxDistanceKm,
@@ -422,9 +423,15 @@ class ApiClient {
     try {
       final queryParams = <String, dynamic>{
         'limit': limit,
-        'offset': offset,
         'verified_only': verifiedOnly,
       };
+
+      // Use page-based pagination if page provided, otherwise use offset
+      if (page != null) {
+        queryParams['page'] = page;
+      } else {
+        queryParams['offset'] = offset;
+      }
 
       if (category != null) {
         queryParams['category'] = category.toLowerCase();
