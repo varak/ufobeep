@@ -253,6 +253,10 @@ GET /api/beep?source=NUFORC&shape=triangle&tier=1,2&near=Las%20Vegas&radius=200&
 - `DELETE /api/beep/{sighting_id}/follow` - Unfollow sighting (status_code=200)
 - `GET /users/{user_id}/subscriptions` - Get user's active subscriptions/follows
 - `POST /devices/register` - Register device for push notifications
+- `POST /devices/update-location` - Update device location for proximity alerts
+- `GET /devices/diagnostics/{device_id}` - Get device diagnostic information (admin)
+- `POST /devices/{device_id}/dnd` - Set Do Not Disturb mode with hours
+- `GET /devices/search/by-username` - Search devices by username (admin)
 
 ## User Preferences
 - `GET /users/preferences` - Get user settings
@@ -343,13 +347,17 @@ UFOBeep uses advanced Next.js middleware for intelligent URL handling:
 - ✅ **Following Alerts Location Display**: Fixed COALESCE for UFOBeep and MUFON location data
 - ✅ **Comment Deletion Documentation**: Added DELETE endpoints to documentation
 
-## Current Status
+## Current Status (September 22, 2025)
 - **API Endpoints**: All `/api/beep/` endpoints fully functional ✅
 - **Map System**: Complete implementation with optimized data loading ✅
 - **Media Upload**: Complete implementation with progress tracking ✅
-- **Mobile App**: Build 109 (v1.0.0-beta.8+109) deployed ✅
+- **Mobile App**: Build 206 (v1.0.0-beta.8+206) deployed ✅
 - **MUFON Integration**: Optimized and working with new endpoints ✅
 - **Backend**: Stable with dual endpoint support ✅
+- **Internationalization**: 70+ auth screen strings translated to 22 languages ✅
+- **Location Tracking**: Efficient geofencing system replacing battery-draining LocationUpdateManager ✅
+- **Privacy Compliance**: GDPR-compliant privacy controls and legal pages ✅
+- **SEO Optimization**: Updated meta descriptions and keyword landing pages ✅
 
 ## Notes
 - All POSTs require `Authorization: Bearer <token>`
