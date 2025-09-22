@@ -501,7 +501,7 @@ abstract class AppLocalizations {
   /// No description provided for @locationPermissionTitle.
   ///
   /// In en, this message translates to:
-  /// **'Location access needed'**
+  /// **'Location Permission Required'**
   String get locationPermissionTitle;
 
   /// No description provided for @locationPermissionBody.
@@ -2181,7 +2181,7 @@ abstract class AppLocalizations {
   /// No description provided for @howItWorks.
   ///
   /// In en, this message translates to:
-  /// **'How UFOBeep Works'**
+  /// **'How It Works'**
   String get howItWorks;
 
   /// No description provided for @backToBeeps.
@@ -3089,6 +3089,348 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'MUFON reports are imported nightly and do not trigger push alerts'**
   String get mufonNoPushInfo;
+
+  /// No description provided for @privacyData.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & Data'**
+  String get privacyData;
+
+  /// No description provided for @privacyPolicyDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'How we protect and use your data'**
+  String get privacyPolicyDesc;
+
+  /// No description provided for @termsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
+  /// No description provided for @termsOfServiceDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal terms and conditions'**
+  String get termsOfServiceDesc;
+
+  /// No description provided for @locationTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Tracking'**
+  String get locationTracking;
+
+  /// No description provided for @locationTrackingDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Background location for proximity alerts'**
+  String get locationTrackingDesc;
+
+  /// No description provided for @locationTrackingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Background Location Tracking'**
+  String get locationTrackingTitle;
+
+  /// No description provided for @locationTrackingExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.'**
+  String get locationTrackingExplanation;
+
+  /// No description provided for @locationTrackingBattery.
+  ///
+  /// In en, this message translates to:
+  /// **'Uses intelligent geofencing for <3% battery impact'**
+  String get locationTrackingBattery;
+
+  /// No description provided for @backgroundLocationTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable Background Tracking'**
+  String get backgroundLocationTracking;
+
+  /// No description provided for @locationTrackingActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitoring location for proximity alerts'**
+  String get locationTrackingActive;
+
+  /// No description provided for @locationTrackingInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Location tracking is disabled'**
+  String get locationTrackingInactive;
+
+  /// No description provided for @locationTrackingDisabledWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'You won\'t receive proximity alerts when you move to new locations'**
+  String get locationTrackingDisabledWarning;
+
+  /// No description provided for @trackingStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking Status'**
+  String get trackingStatus;
+
+  /// No description provided for @monitoringStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Monitoring'**
+  String get monitoringStatus;
+
+  /// No description provided for @active.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// No description provided for @inactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Inactive'**
+  String get inactive;
+
+  /// No description provided for @lastKnownLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Known Location'**
+  String get lastKnownLocation;
+
+  /// No description provided for @lastLocationUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Last Update'**
+  String get lastLocationUpdate;
+
+  /// No description provided for @movementThreshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Movement Threshold'**
+  String get movementThreshold;
+
+  /// No description provided for @updateFrequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Update Frequency'**
+  String get updateFrequency;
+
+  /// No description provided for @batteryImpact.
+  ///
+  /// In en, this message translates to:
+  /// **'Battery Impact'**
+  String get batteryImpact;
+
+  /// No description provided for @dataPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Privacy'**
+  String get dataPrivacy;
+
+  /// No description provided for @locationPermissionExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.'**
+  String get locationPermissionExplanation;
+
+  /// No description provided for @benefitsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Benefits'**
+  String get benefitsTitle;
+
+  /// No description provided for @locationTrackingBenefits.
+  ///
+  /// In en, this message translates to:
+  /// **'• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required'**
+  String get locationTrackingBenefits;
+
+  /// No description provided for @allowLocationAccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow Location Access'**
+  String get allowLocationAccess;
+
+  /// No description provided for @locationPermissionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is required for background tracking'**
+  String get locationPermissionRequired;
+
+  /// No description provided for @locationTrackingEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Background location tracking enabled'**
+  String get locationTrackingEnabled;
+
+  /// No description provided for @locationTrackingDisabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Background location tracking disabled'**
+  String get locationTrackingDisabled;
+
+  /// No description provided for @justNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get justNow;
+
+  /// No description provided for @minutesAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} minutes ago'**
+  String minutesAgo(int minutes);
+
+  /// No description provided for @hoursAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} hours ago'**
+  String hoursAgo(int hours);
+
+  /// No description provided for @daysAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{days} days ago'**
+  String daysAgo(int days);
+
+  /// No description provided for @dataManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Management'**
+  String get dataManagement;
+
+  /// No description provided for @dataManagementDesc.
+  ///
+  /// In en, this message translates to:
+  /// **'Export or delete your account data'**
+  String get dataManagementDesc;
+
+  /// No description provided for @yourDataRights.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Data Rights'**
+  String get yourDataRights;
+
+  /// No description provided for @dataRightsExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'You have full control over your personal data. You can export all your data or permanently delete your account at any time.'**
+  String get dataRightsExplanation;
+
+  /// No description provided for @exportYourData.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Your Data'**
+  String get exportYourData;
+
+  /// No description provided for @exportDataDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Download all your account data'**
+  String get exportDataDescription;
+
+  /// No description provided for @exportData.
+  ///
+  /// In en, this message translates to:
+  /// **'Export Data'**
+  String get exportData;
+
+  /// No description provided for @exportingData.
+  ///
+  /// In en, this message translates to:
+  /// **'Exporting...'**
+  String get exportingData;
+
+  /// No description provided for @exportDataDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.'**
+  String get exportDataDetails;
+
+  /// No description provided for @dataExportedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Data exported successfully'**
+  String get dataExportedSuccessfully;
+
+  /// No description provided for @dataExportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to export data'**
+  String get dataExportFailed;
+
+  /// No description provided for @deleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccount;
+
+  /// No description provided for @deleteAccountDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Permanently remove your account and all data'**
+  String get deleteAccountDescription;
+
+  /// No description provided for @deleteAccountWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.'**
+  String get deleteAccountWarning;
+
+  /// No description provided for @deleteMyAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete My Account'**
+  String get deleteMyAccount;
+
+  /// No description provided for @deletingAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting...'**
+  String get deletingAccount;
+
+  /// No description provided for @deleteAccountConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Account'**
+  String get deleteAccountConfirmTitle;
+
+  /// No description provided for @deleteAccountConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.'**
+  String get deleteAccountConfirmMessage;
+
+  /// No description provided for @dataWillBeDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'The following data will be permanently deleted:'**
+  String get dataWillBeDeleted;
+
+  /// No description provided for @deletedDataList.
+  ///
+  /// In en, this message translates to:
+  /// **'• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data'**
+  String get deletedDataList;
+
+  /// No description provided for @deleteAccountPermanent.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Permanently'**
+  String get deleteAccountPermanent;
+
+  /// No description provided for @accountDeletedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Account deleted successfully'**
+  String get accountDeletedSuccessfully;
+
+  /// No description provided for @accountDeletionFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete account'**
+  String get accountDeletionFailed;
 }
 
 class _AppLocalizationsDelegate

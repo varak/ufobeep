@@ -1587,4 +1587,196 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get mufonNoPushInfo =>
       'MUFON rapporten worden \'s nachts geïmporteerd en niet push waarschuwingen veroorzaken';
+
+  @override
+  String get privacyData => 'Privacy & Data';
+
+  @override
+  String get privacyPolicyDesc => 'How we protect and use your data';
+
+  @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
+  String get termsOfServiceDesc => 'Legal terms and conditions';
+
+  @override
+  String get locationTracking => 'Location Tracking';
+
+  @override
+  String get locationTrackingDesc => 'Background location for proximity alerts';
+
+  @override
+  String get locationTrackingTitle => 'Background Location Tracking';
+
+  @override
+  String get locationTrackingExplanation =>
+      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+
+  @override
+  String get locationTrackingBattery =>
+      'Uses intelligent geofencing for <3% battery impact';
+
+  @override
+  String get backgroundLocationTracking => 'Enable Background Tracking';
+
+  @override
+  String get locationTrackingActive =>
+      'Monitoring location for proximity alerts';
+
+  @override
+  String get locationTrackingInactive => 'Location tracking is disabled';
+
+  @override
+  String get locationTrackingDisabledWarning =>
+      'You won\'t receive proximity alerts when you move to new locations';
+
+  @override
+  String get trackingStatus => 'Tracking Status';
+
+  @override
+  String get monitoringStatus => 'Monitoring';
+
+  @override
+  String get active => 'Active';
+
+  @override
+  String get inactive => 'Inactive';
+
+  @override
+  String get lastKnownLocation => 'Last Known Location';
+
+  @override
+  String get lastLocationUpdate => 'Last Update';
+
+  @override
+  String get movementThreshold => 'Movement Threshold';
+
+  @override
+  String get updateFrequency => 'Update Frequency';
+
+  @override
+  String get batteryImpact => 'Battery Impact';
+
+  @override
+  String get dataPrivacy => 'Data Privacy';
+
+  @override
+  String get locationPermissionExplanation =>
+      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+
+  @override
+  String get benefitsTitle => 'Benefits';
+
+  @override
+  String get locationTrackingBenefits =>
+      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+
+  @override
+  String get allowLocationAccess => 'Allow Location Access';
+
+  @override
+  String get locationPermissionRequired =>
+      'Location permission is required for background tracking';
+
+  @override
+  String get locationTrackingEnabled => 'Background location tracking enabled';
+
+  @override
+  String get locationTrackingDisabled =>
+      'Background location tracking disabled';
+
+  @override
+  String get justNow => 'Just now';
+
+  @override
+  String minutesAgo(int minutes) {
+    return '$minutes minutes ago';
+  }
+
+  @override
+  String hoursAgo(int hours) {
+    return '$hours hours ago';
+  }
+
+  @override
+  String daysAgo(int days) {
+    return '$days days ago';
+  }
+
+  @override
+  String get dataManagement => 'Data Management';
+
+  @override
+  String get dataManagementDesc => 'Export or delete your account data';
+
+  @override
+  String get yourDataRights => 'Your Data Rights';
+
+  @override
+  String get dataRightsExplanation =>
+      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+
+  @override
+  String get exportYourData => 'Export Your Data';
+
+  @override
+  String get exportDataDescription => 'Download all your account data';
+
+  @override
+  String get exportData => 'Export Data';
+
+  @override
+  String get exportingData => 'Exporting...';
+
+  @override
+  String get exportDataDetails =>
+      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+
+  @override
+  String get dataExportedSuccessfully => 'Data exported successfully';
+
+  @override
+  String get dataExportFailed => 'Failed to export data';
+
+  @override
+  String get deleteAccount => 'Delete Account';
+
+  @override
+  String get deleteAccountDescription =>
+      'Permanently remove your account and all data';
+
+  @override
+  String get deleteAccountWarning =>
+      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+
+  @override
+  String get deleteMyAccount => 'Delete My Account';
+
+  @override
+  String get deletingAccount => 'Deleting...';
+
+  @override
+  String get deleteAccountConfirmTitle => 'Delete Account';
+
+  @override
+  String get deleteAccountConfirmMessage =>
+      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+
+  @override
+  String get dataWillBeDeleted =>
+      'The following data will be permanently deleted:';
+
+  @override
+  String get deletedDataList =>
+      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+
+  @override
+  String get deleteAccountPermanent => 'Delete Permanently';
+
+  @override
+  String get accountDeletedSuccessfully => 'Account deleted successfully';
+
+  @override
+  String get accountDeletionFailed => 'Failed to delete account';
 }
