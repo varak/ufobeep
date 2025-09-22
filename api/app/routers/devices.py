@@ -1234,7 +1234,7 @@ async def get_device_diagnostics(device_id: str):
                     "is_active": device_row['is_active'],
                     "last_seen": device_row['last_seen'].isoformat() if device_row['last_seen'] else None,
                     "registered_at": device_row['registered_at'].isoformat() if device_row['registered_at'] else None,
-                    "minutes_since_last_seen": int((datetime.utcnow() - device_row['last_seen']).total_seconds() / 60) if device_row['last_seen'] else None
+                    "minutes_since_last_seen": int((datetime.now(timezone.utc) - device_row['last_seen']).total_seconds() / 60) if device_row['last_seen'] else None
                 },
                 "location": {
                     "has_location": device_row['lat'] is not None and device_row['lon'] is not None,
@@ -1255,7 +1255,7 @@ async def get_device_diagnostics(device_id: str):
                 "settings": {
                     "language": preferences.get('language', 'en'),
                     "units": preferences.get('units', 'metric'),
-                    "dnd_active": device_row['dnd_until'] and device_row['dnd_until'] > datetime.utcnow(),
+                    "dnd_active": device_row['dnd_until'] and device_row['dnd_until'] > datetime.now(timezone.utc),
                     "dnd_until": device_row['dnd_until'].isoformat() if device_row['dnd_until'] else None,
                     "quiet_hours_enabled": preferences.get('quietHoursEnabled', False),
                     "alert_range_km": device_row['alert_range_km']
