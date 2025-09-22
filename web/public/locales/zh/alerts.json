@@ -66,6 +66,5 @@
   "alertBrowsing": "提醒浏览",
   "ufobeepAndMufon": "UFOBEP + 毛里求斯",
   "ufobeepOnlySource": "仅限UUOBEP",
-  "alertRadius": "提醒半径",
-  "alertMeForUfobeep": "通知我UFOBEP(实时)"
+  "alertRadius": "提醒半径"
 }

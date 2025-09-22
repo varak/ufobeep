@@ -66,6 +66,5 @@
   "alertBrowsing": "Alerta de Navegação",
   "ufobeepAndMufon": "UFOBeep + MUFON",
   "ufobeepOnlySource": "Apenas OVNIBeep",
-  "alertRadius": "Alertar o Raio",
-  "alertMeForUfobeep": "Alerta-me para UFOBeep (em tempo real)"
+  "alertRadius": "Alertar o Raio"
 }

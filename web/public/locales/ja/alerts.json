@@ -66,6 +66,5 @@
   "alertBrowsing": "アラートブラウジング",
   "ufobeepAndMufon": "UFOBeep + MUFONの",
   "ufobeepOnlySource": "UFOBeepのみ",
-  "alertRadius": "アラート半径",
-  "alertMeForUfobeep": "UFOBeep(リアルタイム)の通知"
+  "alertRadius": "アラート半径"
 }

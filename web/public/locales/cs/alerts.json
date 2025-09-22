@@ -66,6 +66,5 @@
   "alertBrowsing": "Name",
   "ufobeepAndMufon": "UFOBEep + MUFON",
   "ufobeepOnlySource": "Pouze UFOBeep",
-  "alertRadius": "Alarm radius",
-  "alertMeForUfobeep": "Upozorněte mě na UFOBeep (real-time)"
+  "alertRadius": "Alarm radius"
 }

@@ -66,6 +66,5 @@
   "alertBrowsing": "비밀번호",
   "ufobeepAndMufon": "UFOBeep + 멀티",
   "ufobeepOnlySource": "UFOBeep 만",
-  "alertRadius": "Alert 반경",
-  "alertMeForUfobeep": "UFOBeep에 대한 경고 (현실 시간)"
+  "alertRadius": "Alert 반경"
 }

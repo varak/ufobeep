@@ -66,6 +66,5 @@
   "alertBrowsing": "Ostrzeżenie Przeglądanie",
   "ufobeepAndMufon": "UFOBeep + MUFON",
   "ufobeepOnlySource": "Tylko UFOBeep",
-  "alertRadius": "Alarm Radius",
-  "alertMeForUfobeep": "Zawiadom mnie o UFOBeep (czas rzeczywistym)"
+  "alertRadius": "Alarm Radius"
 }

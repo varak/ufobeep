@@ -66,6 +66,5 @@
   "alertBrowsing": "Alert browsing",
   "ufobeepAndMufon": "UFOBeep + MUFON",
   "ufobeepOnlySource": "Kun UFOBeep",
-  "alertRadius": "Alarm Radius",
-  "alertMeForUfobeep": "Advar mig for UFOBeep (realtid)"
+  "alertRadius": "Alarm Radius"
 }

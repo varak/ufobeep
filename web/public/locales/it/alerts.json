@@ -66,6 +66,5 @@
   "alertBrowsing": "Avviso di navigazione",
   "ufobeepAndMufon": "UFOBeep + MUFON",
   "ufobeepOnlySource": "UFOBeep solo",
-  "alertRadius": "Allerta Radius",
-  "alertMeForUfobeep": "Avvisami per UFOBeep (ora reale)"
+  "alertRadius": "Allerta Radius"
 }

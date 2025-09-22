@@ -66,6 +66,5 @@
   "alertBrowsing": "Hälytysselaus",
   "ufobeepAndMufon": "UFO- piikki + MUFON",
   "ufobeepOnlySource": "Vain UFO- piippi",
-  "alertRadius": "Hälytys Säde",
-  "alertMeForUfobeep": "Hälytä minut UFOBeep (reaaliaikainen)"
+  "alertRadius": "Hälytys Säde"
 }
