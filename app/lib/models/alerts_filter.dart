@@ -97,8 +97,10 @@ class AlertsFilter {
     
     if (showUfoBeepOnly == true) {
       parts.add('UFOBeep only');
+    } else if (showUfoBeepOnly == false) {
+      parts.add('MUFON only');
     }
-    
+
     return parts.isEmpty ? 'All alerts' : parts.join(', ');
   }
 

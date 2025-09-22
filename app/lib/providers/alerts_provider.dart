@@ -572,11 +572,44 @@ class AlertsList extends _$AlertsList {
         debugPrint('Could not get user location for distance calculation: $e');
       }
 
-      // Fetch specific page
+      // Get current filter state to maintain consistency across pages
+      final filter = ref.read(alertsFilterStateProvider);
+
+      // Handle source filter
+      String? sourceFilter;
+      if (filter.showUfoBeepOnly == true) {
+        sourceFilter = 'ufobeep';
+      } else if (filter.showUfoBeepOnly == false) {
+        sourceFilter = 'mufon';
+      } else {
+        sourceFilter = null;
+      }
+
+      // Handle sort option
+      String? sortBy;
+      switch (filter.sortBy) {
+        case AlertSortBy.distance:
+          sortBy = 'distance';
+          break;
+        case AlertSortBy.newest:
+          sortBy = 'newest';
+          break;
+        case AlertSortBy.oldest:
+          sortBy = 'oldest';
+          break;
+        default:
+          sortBy = 'newest';
+      }
+
+      debugPrint('🔧 LOADPAGE DEBUG: page=$page, sourceFilter=$sourceFilter, sortBy=$sortBy');
+
+      // Fetch specific page with current filter parameters
       final alertsData = await _fetchAlertsPage(
         page: page,
+        source: sourceFilter,
         latitude: userLat,
         longitude: userLon,
+        sortBy: sortBy,
       );
 
       state = AsyncData(alertsData);

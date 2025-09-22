@@ -14,11 +14,24 @@ import '../../widgets/alerts/visibility_indicator.dart';
 import '../../widgets/glass_card.dart';
 import '../../theme/app_theme.dart';
 
-class AlertsScreen extends ConsumerWidget {
+class AlertsScreen extends ConsumerStatefulWidget {
   const AlertsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AlertsScreen> createState() => _AlertsScreenState();
+}
+
+class _AlertsScreenState extends ConsumerState<AlertsScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final alertsAsync = ref.watch(alertsListProvider);
     final filter = ref.watch(alertsFilterStateProvider);
     final preferencesAsync = ref.watch(userPreferencesProvider);
@@ -209,16 +222,7 @@ class AlertsScreen extends ConsumerWidget {
             },
           ),
         
-        // Visibility status indicator
-        if (preferences != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            child: VisibilityIndicator(
-              preferences: preferences,
-              weather: currentWeather,
-              compact: true,
-            ),
-          ),
+        // Removed obsolete visibility indicator (10.0 km artifact)
         
         
         // Alerts list with page-based pagination
@@ -271,6 +275,7 @@ class AlertsScreen extends ConsumerWidget {
               // Alerts list for current page
               Expanded(
                 child: ListView.builder(
+                  controller: _scrollController,
                   padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                   itemCount: visibleAlerts.length,
                   itemBuilder: (context, index) {
@@ -346,11 +351,23 @@ class AlertsScreen extends ConsumerWidget {
   void _goToPreviousPage(WidgetRef ref, int currentPage) {
     if (currentPage > 1) {
       ref.read(alertsListProvider.notifier).loadPage(currentPage - 1);
+      _scrollToTop();
     }
   }
 
   void _goToNextPage(WidgetRef ref, int currentPage) {
     ref.read(alertsListProvider.notifier).loadPage(currentPage + 1);
+    _scrollToTop();
+  }
+
+  void _scrollToTop() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 }
 
