@@ -29,6 +29,11 @@ export async function middleware(request: NextRequest) {
   }
   
   // Handle short URLs: /abc23 or /abc23/es (using safe chars: no o,0,i,1,l)
+  // Exclude legal pages from short URL matching
+  if (pathname === '/terms' || pathname === '/privacy' || pathname === '/safety') {
+    return NextResponse.next()
+  }
+
   const shortMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{5})$/)
   const shortWithLangMatch = pathname.match(/^\/([23456789abcdefghjkmnpqrstuvwxyz]{5})\/([a-z]{2})$/)
   
