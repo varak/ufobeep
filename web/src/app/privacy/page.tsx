@@ -152,7 +152,7 @@ export default function PrivacyPage() {
               <h3 className="text-lg font-semibold text-brand-primary mb-2">🛸 Why We Monitor Location</h3>
               <p className="text-text-secondary text-sm">
                 UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings
-                happen near your current location, even when you're away from home or traveling.
+                happen near your current location, even when you&apos;re away from home or traveling.
               </p>
             </div>
 
@@ -164,7 +164,7 @@ export default function PrivacyPage() {
                 <li>• <strong>1km Threshold:</strong> Location updates only when you move more than 1km</li>
                 <li>• <strong>Rate Limited:</strong> Maximum one update every 10 minutes to prevent server overload</li>
                 <li>• <strong>Battery Optimized:</strong> Uses system-managed geofences with &lt;3% battery impact</li>
-                <li>• <strong>Always Permission:</strong> Requires "Always Allow" location permission for background operation</li>
+                <li>• <strong>Always Permission:</strong> Requires &quot;Always Allow&quot; location permission for background operation</li>
               </ul>
             </div>
 
@@ -172,7 +172,7 @@ export default function PrivacyPage() {
               <h3 className="text-lg font-semibold text-semantic-info mb-2">🔋 Battery & Privacy</h3>
               <ul className="text-text-secondary text-sm space-y-2">
                 <li>• <strong>No Continuous GPS:</strong> Uses system geofences instead of constant location polling</li>
-                <li>• <strong>No Location History:</strong> Only your current location is stored, not where you've been</li>
+                <li>• <strong>No Location History:</strong> Only your current location is stored, not where you&apos;ve been</li>
                 <li>• <strong>User Control:</strong> Can be disabled anytime in app settings</li>
                 <li>• <strong>Transparent Operation:</strong> Location tracking status visible in app settings</li>
               </ul>
