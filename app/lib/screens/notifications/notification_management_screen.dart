@@ -139,16 +139,19 @@ class _NotificationManagementScreenState
 
   Future<void> _toggleDndFor1Hour() async {
     final prefsProvider = ref.read(userPreferencesProvider.notifier);
-    
+
     final currentPrefs = ref.read(userPreferencesProvider);
     if (currentPrefs == null) return;
-    
+
     final dndUntil = DateTime.now().add(const Duration(hours: 1));
     final updatedPrefs = currentPrefs.copyWith(dndUntil: dndUntil);
-    
+
     // Update provider and save to storage
     await prefsProvider.updatePreferences(updatedPrefs);
-    
+
+    // Sync DND to backend database
+    await _syncDndToBackend(1); // 1 hour
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('DND enabled for 1 hour'),
@@ -166,6 +169,10 @@ class _NotificationManagementScreenState
       final dndUntil = DateTime.now().add(const Duration(hours: 1));
       final updated = currentPrefs.copyWith(dndUntil: dndUntil);
       await prefsProvider.updatePreferences(updated);
+
+      // Sync DND to backend database
+      await _syncDndToBackend(1); // 1 hour
+
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -177,6 +184,10 @@ class _NotificationManagementScreenState
       // Clear DND by setting dndUntil to null
       final updated = currentPrefs.copyWith(dndUntil: null);
       await prefsProvider.updatePreferences(updated);
+
+      // Sync DND off to backend database
+      await _syncDndToBackend(0); // 0 hours = disable DND
+
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -193,6 +204,10 @@ class _NotificationManagementScreenState
     if (currentPrefs == null) return;
     final until = DateTime.now().add(duration);
     await prefsProvider.updatePreferences(currentPrefs.copyWith(dndUntil: until));
+
+    // Sync DND duration to backend database
+    await _syncDndToBackend(duration.inHours);
+
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -601,10 +616,13 @@ class _NotificationManagementScreenState
     final prefsProvider = ref.read(userPreferencesProvider.notifier);
     final currentPrefs = ref.read(userPreferencesProvider);
     if (currentPrefs == null) return;
-    
+
     final updatedPrefs = currentPrefs.copyWith(dndUntil: null);
     await prefsProvider.updatePreferences(updatedPrefs);
-    
+
+    // Sync DND off to backend database
+    await _syncDndToBackend(0); // 0 hours = disable DND
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('DND disabled'),
@@ -630,6 +648,25 @@ class _NotificationManagementScreenState
     final period = hour >= 12 ? 'PM' : 'AM';
     final displayHour = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
     return '$displayHour:00 $period';
+  }
+
+  Future<void> _syncDndToBackend(int hours) async {
+    try {
+      // Get device ID for API call
+      final deviceId = await beepService.getOrCreateDeviceId();
+
+      // Call backend DND API to sync with database
+      final response = await ApiClient.dio.post('/devices/$deviceId/dnd', data: {'hours': hours});
+
+      if (response.data['success'] == true) {
+        debugPrint('✅ DND synced to backend: ${hours}h');
+      } else {
+        debugPrint('❌ Backend DND sync failed: ${response.data}');
+      }
+    } catch (e) {
+      debugPrint('❌ Failed to sync DND to backend: $e');
+      // Don't fail the operation - local DND still works for app behavior
+    }
   }
 }
 
