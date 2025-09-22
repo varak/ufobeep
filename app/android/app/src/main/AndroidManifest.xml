@@ -140,18 +140,18 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https"
-                      android:host="api.ufobeep.com"
-                      android:pathPrefix="/auth/magic/complete/new" />
+                      android:host="ufobeep.com"
+                      android:pathPrefix="/api/auth/magic/complete/new" />
             </intent-filter>
-            
+
             <!-- Fallback for other magic link paths -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https"
-                      android:host="api.ufobeep.com"
-                      android:pathPrefix="/auth/magic" />
+                      android:host="ufobeep.com"
+                      android:pathPrefix="/api/auth/magic" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

@@ -115,7 +115,6 @@
 	<!-- Associated Domains for App Links -->
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:api.ufobeep.com</string>
 		<string>applinks:ufobeep.com</string>
 	</array>
 </dict>
