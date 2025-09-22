@@ -198,7 +198,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'UFO fotoğraf ve videoları yakalamak için kamera erişimi.';
 
   @override
-  String get locationPermissionTitle => 'Konum access needed needed needed';
+  String get locationPermissionTitle => 'Konum Permission Required';
 
   @override
   String get locationPermissionBody =>
@@ -1116,7 +1116,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get globalSightingNetwork => 'Global Sighting Network';
 
   @override
-  String get howItWorks => 'UFOBeep Nasıl Çalışıyor';
+  String get howItWorks => 'Nasıl çalışır';
 
   @override
   String get backToBeeps => 'Beeps';
@@ -1591,111 +1591,109 @@ class AppLocalizationsTr extends AppLocalizations {
   String get privacyData => 'Privacy & Data';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc => 'Verilerinizi nasıl koruyor ve kullanıyoruz';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'Hizmet Şartları';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => 'Yasal şartlar ve koşullar';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => 'Konum Takip';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc => 'Yakın uyarılar için arka plan yeri';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => 'Plan Yeri Takip';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFOBeep, UFO görüşleriniz şu anki konumunuzun yakınındayken sizi yakın uyarılar göndermek için arka planda izler, hatta evden uzaktayken bile.';
 
   @override
   String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+      'Güvenilir geofencing for Fleming% batarya etkisi için kullanın';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => 'Enable arka plan Takip Takip Takip';
 
   @override
-  String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+  String get locationTrackingActive => 'Yakın uyarılar için yeri izleyin';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => 'Konum izleme engellidir';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+      'Yeni yerlere taşınırken yakın uyarıları almazsınız';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => 'Takip Durumu';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => 'İzleme';
 
   @override
-  String get active => 'Active';
+  String get active => 'Aktif';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => 'Inaktif';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => 'Son Bilinen Konum';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => 'Son Güncelleme';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => 'Hareket Threshold';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => 'Update Frekansı';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => 'Battery Etkisi';
 
   @override
   String get dataPrivacy => 'Data Privacy';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFOBeep, hareketinizi izlemek ve yeni konumlarda olduğunuzda yakın uyarıları göndermek için \'Always Allow\' location permission to monitor your move and send close alerts when you\'re in new locations.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => 'Faydaları';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '• • • Seyahat ettiğiniz her yerde UFO uyarıları alın\n• Otomatik konum güncelleştirmeleri\n• • • Hiçbir manuel kurulum gerekli';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => 'Konum Access';
 
   @override
   String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+      'Konum permission is required for background monitoring';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled => 'Plan yeri izleme etkinleştirdi';
 
   @override
-  String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+  String get locationTrackingDisabled => 'Plan yeri takip engelli';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => 'Sadece şimdi';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '$minutes dakika önce';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '$hours saatler önce';
   }
 
   @override
@@ -1707,75 +1705,364 @@ class AppLocalizationsTr extends AppLocalizations {
   String get dataManagement => 'Data Management';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc => 'İhracat veya hesabınızı sil';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get splashTagline => 'Gerçek zamanlı görüş uyarıları';
+
+  @override
+  String get splashStartingUp => 'Başlayın...';
+
+  @override
+  String get splashInitializationFailed => 'İlkleşme başarısız oldu';
+
+  @override
+  String get splashInitializationFailedTitle => 'İlkleşme Başarısızlık';
+
+  @override
+  String get splashInitializationError =>
+      'Uygulama düzgün bir şekilde başlamadı:';
+
+  @override
+  String get splashRetry => 'Retry';
+
+  @override
+  String get splashContinue => 'Devam etmeye devam et';
+
+  @override
+  String get splashInitializing => 'Başlangıç...';
+
+  @override
+  String signInWelcome(String username) {
+    return 'Hoşgeldiniz $username!';
+  }
+
+  @override
+  String signInFailed(String error) {
+    return 'Sign-in başarısız oldu: $error';
+  }
+
+  @override
+  String get signInPleaseEnterEmail => 'Lütfen e-posta adresinizi girin';
+
+  @override
+  String get signInPleaseEnterValidEmail =>
+      'Lütfen geçerli bir e-posta adresi girin';
+
+  @override
+  String get signInMagicLinkSent =>
+      'Sihirli bağlantı gönderildi! E-postanızı kontrol edin ve giriş için bağlantıyı tıklayın.';
+
+  @override
+  String get signInMagicLinkFailed =>
+      'Büyüyü göndermek için başarısız oldu. Lütfen tekrar deneyin.';
+
+  @override
+  String get signInAllDataCleared => 'Tüm veriler temizlendi';
+
+  @override
+  String get signInSubtitle =>
+      'Gerçek zamanlı UFO uyarıları ve MUFON raporları';
+
+  @override
+  String get signInGoogleLoading => 'Signing in...';
+
+  @override
+  String get signInContinueWithGoogle => 'Google ile devam et';
+
+  @override
+  String get signInOr => 'veya';
+
+  @override
+  String get signInWithEmail => 'E-posta ile oturum açın';
+
+  @override
+  String get signInEmailDescription =>
+      'Size işaret etmek için güvenli bir bağlantı göndereceğiz';
+
+  @override
+  String get signInEmailAddress => 'E-posta adresi';
+
+  @override
+  String get signInEmailPlaceholder => 'your@email.com';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return 'Tekrar ${seconds}s';
+  }
+
+  @override
+  String get signInSending => 'Gönder...';
+
+  @override
+  String get signInSendMagicLink => 'Magic Link Gönder';
+
+  @override
+  String get signInCheckEmail =>
+      'E-postanızı kontrol edin! Bağlantı 15 dakika içinde sona erer.';
+
+  @override
+  String get signInSecureAuth => 'Güvenli Kimlik';
+
+  @override
+  String get signInSecureAuthDescription =>
+      'Google Sign-In\'i anlık erişim için veya 15 dakika içinde sonlanan e-posta sihirli bağlantıları kullanın.';
+
+  @override
+  String get signInClearAllDataDebug => 'Clear All Data (Debug)';
+
+  @override
+  String get emailAuthFailedToSend => 'E-posta göndermek için başarısız oldu';
+
+  @override
+  String get emailAuthFailedToSendTryAgain =>
+      'E-posta göndermeye başarısız oldu. Lütfen tekrar deneyin.';
+
+  @override
+  String get emailAuthInvalidEmail =>
+      'Invalid e-posta adresi. Lütfen formatı kontrol edin.';
+
+  @override
+  String get emailAuthUserNotFound =>
+      'Bu e-posta adresi ile hiçbir hesap bulunamadı.';
+
+  @override
+  String get emailAuthTooManyRequests =>
+      'Çok fazla deneme. Lütfen daha sonra tekrar deneyin.';
+
+  @override
+  String get emailAuthOperationNotAllowed =>
+      'E-posta link işareti-in etkinleştirilmemektedir.';
+
+  @override
+  String get emailAuthQuotaExceeded =>
+      'E-posta kotası aştı. Lütfen yarın tekrar deneyin.';
+
+  @override
+  String get emailAuthVerificationFailed =>
+      'E-posta doğrulama başarısız oldu. Lütfen tekrar deneyin.';
+
+  @override
+  String get emailAuthTitle => 'E-posta Doğrulama';
+
+  @override
+  String get emailAuthVerifyYourEmail => 'E-postanızı onaylayın';
+
+  @override
+  String get emailAuthDescription =>
+      'Hesap kurtarma ve güvenlik için e-posta adresinizi ekleyin. Size güvenli bir işaret bağlantı göndereceğiz.';
+
+  @override
+  String get emailAuthEmailAddress => 'E-posta Adresi';
+
+  @override
+  String get emailAuthEmailPlaceholder => 'your.email@ör.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail => 'Lütfen e-posta adresinizi girin';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail =>
+      'Lütfen geçerli bir e-posta adresi girin';
+
+  @override
+  String get emailAuthCheckEmailToContinue =>
+      'E-postanızı kontrol edin ve devam etmek için doğrulama linkine tıklayın.';
+
+  @override
+  String get emailAuthResendEmail => 'E-posta';
+
+  @override
+  String get emailAuthSendVerificationEmail =>
+      'Verification Gönder E-posta e-posta e-posta';
+
+  @override
+  String get emailAuthHowItWorks => 'E-posta Doğrulama Nasıl Çalışır';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '1. Size güvenli bir işaret gönderiyoruz - bağlantı\n2. E-postanızı kontrol edin ve bağlantıya tıklayın\n3. E-postanız otomatik olarak doğrulanır\n4. Hiçbir şifre gerekli değil!';
+
+  @override
+  String get emailAuthSecurityNotice =>
+      'E-posta doğrulama hesabınızı güvenceye yardımcı olur ve cihazınıza erişimi kaybederseniz hesabı kurtarma sağlar.';
+
+  @override
+  String get phoneAuthFailedToSendCode =>
+      'Doğrulama kodunu göndermeye başarısız oldu. Lütfen tekrar deneyin.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain =>
+      'Invalid doğrulama kodu. Lütfen tekrar deneyin.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return 'Telefon numarası doğrulandı: $phoneNumber';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed =>
+      'Telefon doğrulama başarısız oldu. Lütfen tekrar deneyin.';
+
+  @override
+  String get phoneAuthCodeResent => 'Doğrulama kodu';
+
+  @override
+  String get phoneAuthFailedToResendCode =>
+      'Kodu geri almak için başarısız oldu. Lütfen tekrar deneyin.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber =>
+      'Invalid telefon numarası. Lütfen formatı kontrol edin.';
+
+  @override
+  String get phoneAuthTooManyRequests =>
+      'Çok fazla deneme. Lütfen daha sonra tekrar deneyin.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode =>
+      'Invalid doğrulama kodu. Lütfen kontrol edin ve tekrar deneyin.';
+
+  @override
+  String get phoneAuthSessionExpired =>
+      'Doğrulama seansı sona erdi. Lütfen yeni bir kod talep edin.';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded =>
+      'SMS kotası aştı. Lütfen yarın tekrar deneyin.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse =>
+      'Bu telefon numarası zaten başka bir hesapla bağlantılıdır.';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric =>
+      'Doğrulama başarısız oldu. Lütfen tekrar deneyin.';
+
+  @override
+  String get phoneAuthTitle => 'Telefon Doğrulama';
+
+  @override
+  String get phoneAuthVerifyYourPhone => 'Telefonunuzu doğrulayın';
+
+  @override
+  String get phoneAuthEnterVerificationCode => 'Verification Kod Kodu';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity =>
+      'Hesap kurtarma ve güvenlik için telefon numaranızı ekleyin';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return '$phoneNumber\'a gönderilen 6 dijital kod girin';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => 'Telefon Numarası';
+
+  @override
+  String get phoneAuthPhonePlaceholder => '+1 (555) 123-4567';
+
+  @override
+  String get phoneAuthPleaseEnterPhone => 'Lütfen telefon numaranıza girin';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone =>
+      'Lütfen geçerli bir telefon numarası girin';
+
+  @override
+  String get phoneAuthVerificationCode => 'Doğrulama Kodu';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode => 'Lütfen 6 dijital kodu girin';
+
+  @override
+  String get phoneAuthResendCode => 'Sınırlı Kodu';
+
+  @override
+  String get phoneAuthSendVerificationCode => 'Verification Gönder Kod Kodu';
+
+  @override
+  String get phoneAuthVerifyCode => 'Verify Code';
+
+  @override
+  String get phoneAuthChangePhoneNumber => 'Change Phone Number';
+
+  @override
+  String get phoneAuthSmsNotice =>
+      'Size SMS aracılığıyla doğrulama kodu göndereceğiz. Standart mesaj oranları uygulanabilir.';
+
+  @override
+  String get phoneAuthCodeExpires =>
+      'Kod 60 saniye içinde sona erer. Mesajlarınızı kontrol edin.';
+
+  @override
+  String get yourDataRights => 'Veri Haklarınız';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      'Kişisel verileriniz üzerinde tam kontrole sahipsiniz. Tüm verilerinizi ihraç edebilir veya hesabınızı herhangi bir zamanda kalıcı olarak silebilirsiniz.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => 'Data Your Data';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription => 'Tüm hesap verilerini indirin';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => 'İhracat Data';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => 'İhracat ...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      'Adds: Profil, beeps, yorum, cihaz bilgisi ve tercihleri. Veriler JSON formatında sağlanır.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => 'Veriler başarıyla ihraç edilir';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => 'Veri ihraç etmek için başarısız oldu';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => 'Delete Hesabı';
 
   @override
   String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+      'Sürekli olarak hesabınızı ve tüm verileri ortadan kaldırır';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      'Bu eylem geri alınamaz. Tüm arılar, yorumlar ve hesap verileri kalıcı olarak silinecektir.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => 'Hesabımı';
 
   @override
   String get deletingAccount => 'Deleting...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => 'Delete Hesabı';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      'Hesabınızı silmek istediğinizden kesinlikle emin misiniz? Bu eylem kalıcıdır ve geri alınamaz.';
 
   @override
   String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+      'Aşağıdaki veriler kalıcı olarak silinecektir:';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '• • • Profiliniz ve kullanıcı adı\n• • • Bütün arılarınız ve raporlarınız\n• • • Tüm yorumlarınız\n• Cihaz kayıt verileri\n• Konum ve tercih verileri';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => 'Delete Sürekli';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => 'Hesap silindi başarıyla';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => 'Hesabı silmek için başarısız oldu';
 }

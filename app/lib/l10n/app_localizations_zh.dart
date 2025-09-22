@@ -195,7 +195,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cameraPermissionBody => '授权摄像头拍摄UFO照片和视频.';
 
   @override
-  String get locationPermissionTitle => '需要访问的地点';
+  String get locationPermissionTitle => '需要的位置权限';
 
   @override
   String get locationPermissionBody => '我们用你的位置发送和接收附近的警报.';
@@ -1087,7 +1087,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get globalSightingNetwork => '全球观察网';
 
   @override
-  String get howItWorks => '如何UFOBEP工作';
+  String get howItWorks => '如何运作';
 
   @override
   String get backToBeeps => '回到蜂窝';
@@ -1550,194 +1550,438 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mufonNoPushInfo => 'MUFON报告是夜间输入的,不会触发推力警报';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => '隐私数据( D)';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc => '我们如何保护和使用你的数据';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => '服务条件';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => '法律条款和条件';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => '地点跟踪';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc => '近距离警报的背景位置';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => '背景位置跟踪';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFOBEP在背景中监视你的位置,当UFO的目击发生在你现在的位置附近时,即使你远离家,也会发出近距离警报.';
 
   @override
-  String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+  String get locationTrackingBattery => '使用智能地球圈进行 < 3% 电池撞击';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => '启用背景 跟踪';
 
   @override
-  String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+  String get locationTrackingActive => '监测近距离警报的地点';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => '位置跟踪已禁用';
 
   @override
-  String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+  String get locationTrackingDisabledWarning => '搬去新地方时,不会收到近距离警报';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => '跟踪状态';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => '监测';
 
   @override
-  String get active => 'Active';
+  String get active => '活动';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => '非活动';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => '最后已知位置';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => '上次更新';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => '移动阈值';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => '更新频率';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => '电池撞击';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => '数据隐私';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFOBEP需要“ 永远允许” 位置权限来监视您的移动, 并在您在新位置时发出近距离警报 .';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => '福利';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '• 支助 无论你在哪里旅行,都要收到UFO警报\n• 自动更新位置\n• 支助 不需要手动设置';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => '允许访问位置';
 
   @override
-  String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+  String get locationPermissionRequired => '背景跟踪需要位置许可';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled => '背景位置跟踪启用';
 
   @override
-  String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+  String get locationTrackingDisabled => '背景位置跟踪已禁用';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => '刚才';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '0分钟前';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '0小时前';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return '# 几天前,我来到了这里#';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => '数据管理';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc => '导出或删除您的账户数据';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get splashTagline => '实时目视警报';
 
   @override
-  String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+  String get splashStartingUp => '开始...';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get splashInitializationFailed => '初始化失败';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get splashInitializationFailedTitle => '初始化失败';
 
   @override
-  String get exportData => 'Export Data';
+  String get splashInitializationError => '应用程序未正确初始化 :';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get splashRetry => '重试';
 
   @override
-  String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+  String get splashContinue => '继续';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get splashInitializing => '正在初始化...';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String signInWelcome(String username) {
+    return '欢迎光临!';
+  }
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String signInFailed(String error) {
+    return '签名失败 : – 地点/地点/地点/地点/地点/地点';
+  }
 
   @override
-  String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+  String get signInPleaseEnterEmail => '请输入您的电子邮件地址';
 
   @override
-  String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+  String get signInPleaseEnterValidEmail => '请输入有效的电子邮件地址';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get signInMagicLinkSent => '传送魔法链接! 检查您的电子邮件并点击链接签名 .';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get signInMagicLinkFailed => '发送魔法链接失败 。 请再试一次.';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get signInAllDataCleared => '所有数据已清理';
 
   @override
-  String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+  String get signInSubtitle => '实时UFO目击警报和MUFON报告';
 
   @override
-  String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+  String get signInGoogleLoading => '签名于...';
+
+  @override
+  String get signInContinueWithGoogle => '继续谷歌';
+
+  @override
+  String get signInOr => '或';
+
+  @override
+  String get signInWithEmail => '用电子邮件签名';
+
+  @override
+  String get signInEmailDescription => '我们会给你一个安全的链接 来注册';
+
+  @override
+  String get signInEmailAddress => '电子邮件地址';
+
+  @override
+  String get signInEmailPlaceholder => '请检查date=中的日期值 (帮助) your@email.com';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return '在 _PLACEHOLDER_0_s中再次尝试';
+  }
+
+  @override
+  String get signInSending => '正在发送...';
+
+  @override
+  String get signInSendMagicLink => '发送魔法链接';
+
+  @override
+  String get signInCheckEmail => '检查你的电子邮件! 链接在15分钟后到期.';
+
+  @override
+  String get signInSecureAuth => '安全认证';
+
+  @override
+  String get signInSecureAuthDescription =>
+      '使用Google Sign-In进行即时访问,或者在15分钟内过期的电子邮件魔法链接.';
+
+  @override
+  String get signInClearAllDataDebug => '清除全部数据( 调试)';
+
+  @override
+  String get emailAuthFailedToSend => '发送邮件失败';
+
+  @override
+  String get emailAuthFailedToSendTryAgain => '发送邮件失败 。 请再试一次.';
+
+  @override
+  String get emailAuthInvalidEmail => '无效的电子邮件地址 。 请检查格式 .';
+
+  @override
+  String get emailAuthUserNotFound => '此电子邮件地址找不到账户 .';
+
+  @override
+  String get emailAuthTooManyRequests => '尝试太多。 请稍候再试.';
+
+  @override
+  String get emailAuthOperationNotAllowed => '未启用电子邮件链接签名 .';
+
+  @override
+  String get emailAuthQuotaExceeded => '电子邮件配额超过。 明天再试一次.';
+
+  @override
+  String get emailAuthVerificationFailed => '电子邮件验证失败 。 请再试一次.';
+
+  @override
+  String get emailAuthTitle => '电子邮件验证';
+
+  @override
+  String get emailAuthVerifyYourEmail => '校验您的电子邮件';
+
+  @override
+  String get emailAuthDescription => '添加您的电子邮件地址, 用于账户恢复和安全 。 我们会给你发送一个安全登录链接.';
+
+  @override
+  String get emailAuthEmailAddress => '电子邮件地址';
+
+  @override
+  String get emailAuthEmailPlaceholder => '电子邮件@example.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail => '请输入您的电子邮件地址';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail => '请输入有效的电子邮件地址';
+
+  @override
+  String get emailAuthCheckEmailToContinue => '检查您的电子邮件, 并点击验证链接继续 .';
+
+  @override
+  String get emailAuthResendEmail => '重新发送电子邮件';
+
+  @override
+  String get emailAuthSendVerificationEmail => '发送验证 电子邮件';
+
+  @override
+  String get emailAuthHowItWorks => '电子邮件核查工作如何进行';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '一、导 言 我们给你发送一个安全的登录链接\n2. 国家 检查您的电子邮件并点击链接\n3个 您的电子邮件会自动校验\n4个 不需要密码!';
+
+  @override
+  String get emailAuthSecurityNotice => '电子邮件验证有助于保护您的账户, 并允许在无法访问您的设备时恢复账户 .';
+
+  @override
+  String get phoneAuthFailedToSendCode => '发送验证码失败 。 请再试一次.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain => '无效的校验代码 。 请再试一次.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return '经核实的电话号码: – 地点/地点/地点/地点/地点/地点';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed => '电话验证失败 。 请再试一次.';
+
+  @override
+  String get phoneAuthCodeResent => '核查码很讨厌';
+
+  @override
+  String get phoneAuthFailedToResendCode => '重新发送代码失败 。 请再试一次.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber => '无效的电话号码 。 请检查格式 .';
+
+  @override
+  String get phoneAuthTooManyRequests => '尝试太多。 请稍候再试.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode => '无效的校验代码 。 请再检查一次.';
+
+  @override
+  String get phoneAuthSessionExpired => '核查会话到期 。 请申请新的代码 .';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded => '短信配额超过。 明天再试一次.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse => '这个电话号码已经链接到另一个账户 .';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric => '验证失败 。 请再试一次.';
+
+  @override
+  String get phoneAuthTitle => '电话验证';
+
+  @override
+  String get phoneAuthVerifyYourPhone => '校验您的手机';
+
+  @override
+  String get phoneAuthEnterVerificationCode => '输入校验 代码';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity => '添加您的电话号码用于账户恢复和安全';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return '输入发送到 _PLACEHOLDER_0__的6位数代码';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => '电话号码';
+
+  @override
+  String get phoneAuthPhonePlaceholder => '+1(555) 123-4567';
+
+  @override
+  String get phoneAuthPleaseEnterPhone => '请输入您的电话号码';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone => '请输入有效的电话号码';
+
+  @override
+  String get phoneAuthVerificationCode => '核查码';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode => '请输入六位数代码';
+
+  @override
+  String get phoneAuthResendCode => '重新发送代码';
+
+  @override
+  String get phoneAuthSendVerificationCode => '发送验证 代码';
+
+  @override
+  String get phoneAuthVerifyCode => '校验代码';
+
+  @override
+  String get phoneAuthChangePhoneNumber => '更改电话号码';
+
+  @override
+  String get phoneAuthSmsNotice => '我们会通过短信给你一个验证码 可适用标准的信息费率.';
+
+  @override
+  String get phoneAuthCodeExpires => '代码在60秒后失效 检查您的留言.';
+
+  @override
+  String get yourDataRights => '您的数据权限';
+
+  @override
+  String get dataRightsExplanation => '你完全控制你的个人资料 您可以随时导出您的全部数据或永久删除您的账户 .';
+
+  @override
+  String get exportYourData => '导出您的数据';
+
+  @override
+  String get exportDataDescription => '下载您的账户数据';
+
+  @override
+  String get exportData => '导出数据';
+
+  @override
+  String get exportingData => '导出中...';
+
+  @override
+  String get exportDataDetails => '包括:剖面图,哔声,评论,设备信息,以及首选项. 数据以JSON格式提供.';
+
+  @override
+  String get dataExportedSuccessfully => '数据成功导出';
+
+  @override
+  String get dataExportFailed => '导出数据失败';
+
+  @override
+  String get deleteAccount => '删除账户';
+
+  @override
+  String get deleteAccountDescription => '永久删除您的账户和所有数据';
+
+  @override
+  String get deleteAccountWarning => '这一行动不能取消。 您的所有哔声、 评论和账户数据将被永久删除 .';
+
+  @override
+  String get deleteMyAccount => '删除我的账户';
+
+  @override
+  String get deletingAccount => '正在删除...';
+
+  @override
+  String get deleteAccountConfirmTitle => '删除账户';
+
+  @override
+  String get deleteAccountConfirmMessage => '您确定要删除您的账户吗 ? 这一行动是永久性的,不能取消.';
+
+  @override
+  String get dataWillBeDeleted => '以下数据将永久删除:';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '• 支助 您的配置和用户名\n• 支助 所有你的哔声和报告\n• 支助 所有你的评论\n• 设备登记数据\n• 地点和偏好数据';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => '永久删除';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => '账户已成功删除';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => '删除账户失败';
 }

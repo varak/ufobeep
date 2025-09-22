@@ -198,7 +198,7 @@ class AppLocalizationsNl extends AppLocalizations {
       'Grant camera toegang tot UFO foto\'s en video\'s vastleggen.';
 
   @override
-  String get locationPermissionTitle => 'Toegang tot de locatie vereist';
+  String get locationPermissionTitle => 'Locatie Toestemming vereist';
 
   @override
   String get locationPermissionBody =>
@@ -1115,7 +1115,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get globalSightingNetwork => 'Wereldwijd waarnemingsnetwerk';
 
   @override
-  String get howItWorks => 'Hoe werkt UFObeep';
+  String get howItWorks => 'Hoe het werkt';
 
   @override
   String get backToBeeps => 'Terug naar Beeps';
@@ -1589,194 +1589,481 @@ class AppLocalizationsNl extends AppLocalizations {
       'MUFON rapporten worden \'s nachts geïmporteerd en niet push waarschuwingen veroorzaken';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => 'Privacy & gegevens';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc => 'Hoe wij uw gegevens beschermen en gebruiken';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'Servicevoorwaarden';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => 'Juridische voorwaarden';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => 'Locatie volgen';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc =>
+      'Achtergrondlocatie voor nabijheidswaarschuwingen';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => 'Achtergrondlocatie volgen';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFObeep bewaakt uw locatie op de achtergrond om u nabijheid waarschuwingen te sturen wanneer UFO waarnemingen gebeuren in de buurt van uw huidige locatie, zelfs als je weg van huis.';
 
   @override
   String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+      'Gebruikt intelligente geofencing voor <3% batterij impact';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => 'Achtergrond inschakelen Tracking';
 
   @override
   String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+      'Waarnemingslocatie voor nabijheidswaarschuwingen';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => 'Locatie volgen is uitgeschakeld';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+      'U ontvangt geen nabijheidswaarschuwingen wanneer u naar nieuwe locaties verhuist';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => 'Trackingstatus';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => 'Toezicht';
 
   @override
-  String get active => 'Active';
+  String get active => 'Actief';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => 'Inactief';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => 'Laatste bekende locatie';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => 'Laatste update';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => 'Bewegingsdrempel';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => 'Frequentie bijwerken';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => 'Inslag van de batterij';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => 'Gegevensbescherming';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFObeep heeft \'Always Allow\' location permissie nodig om uw beweging te monitoren en nabijheidswaarschuwingen te verzenden wanneer u op nieuwe locaties bent.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => 'Voordelen';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '• Ontvang UFO waarschuwingen overal waar u reist\n• Automatische locatie updates\n• Geen handmatige installatie vereist';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => 'Locatietoegang toestaan';
 
   @override
   String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+      'Locatie toestemming is vereist voor achtergrond tracking';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled =>
+      'Achtergrondlocatie traceren ingeschakeld';
 
   @override
   String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+      'Achtergrondlocatie volgen uitgeschakeld';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => 'Net';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '__PLAATSHOLDER_0___ minuten geleden';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '__PLAATSHOLDER_0___ uren geleden';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return '__PLAATSHOLDER_0__ dagen geleden';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => 'Gegevensbeheer';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc =>
+      'Uw accountgegevens exporteren of verwijderen';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get splashTagline => 'Signaleringen in realtime';
+
+  @override
+  String get splashStartingUp => 'Starten...';
+
+  @override
+  String get splashInitializationFailed => 'Initialisatie mislukt';
+
+  @override
+  String get splashInitializationFailedTitle => 'Initialisatie mislukt';
+
+  @override
+  String get splashInitializationError => 'De app kon niet goed initialiseren:';
+
+  @override
+  String get splashRetry => 'Opnieuw proberen';
+
+  @override
+  String get splashContinue => 'Doorgaan';
+
+  @override
+  String get splashInitializing => 'Initialiseren...';
+
+  @override
+  String signInWelcome(String username) {
+    return 'Welkom!';
+  }
+
+  @override
+  String signInFailed(String error) {
+    return 'Aanmelden mislukt: __PLAATSHOLDER_0___';
+  }
+
+  @override
+  String get signInPleaseEnterEmail => 'Vul uw e-mailadres in';
+
+  @override
+  String get signInPleaseEnterValidEmail => 'Vul een geldig e-mailadres in';
+
+  @override
+  String get signInMagicLinkSent =>
+      'Magische link verzonden! Controleer uw e-mail en klik op de link om u aan te melden.';
+
+  @override
+  String get signInMagicLinkFailed =>
+      'Kon magische verwijzing niet versturen. Probeer het nog eens.';
+
+  @override
+  String get signInAllDataCleared => 'Alle gegevens zijn gewist';
+
+  @override
+  String get signInSubtitle => 'Real-time UFO waarnemingen en MUFON rapporten';
+
+  @override
+  String get signInGoogleLoading => 'Aanmelden...';
+
+  @override
+  String get signInContinueWithGoogle => 'Doorgaan met Google';
+
+  @override
+  String get signInOr => 'of';
+
+  @override
+  String get signInWithEmail => 'Aanmelden met e-mail';
+
+  @override
+  String get signInEmailDescription =>
+      'We sturen je een beveiligde link om je aan te melden';
+
+  @override
+  String get signInEmailAddress => 'E-mailadres';
+
+  @override
+  String get signInEmailPlaceholder => 'your@email.com';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return 'Probeer opnieuw in __PLACEHOLDER_0_s';
+  }
+
+  @override
+  String get signInSending => 'Verzenden...';
+
+  @override
+  String get signInSendMagicLink => 'Magische koppeling versturen';
+
+  @override
+  String get signInCheckEmail =>
+      'Check je e-mail! De verbinding verloopt over 15 minuten.';
+
+  @override
+  String get signInSecureAuth => 'Veilige authenticatie';
+
+  @override
+  String get signInSecureAuthDescription =>
+      'Gebruik Google Sign-In voor directe toegang, of e-mail magische links die vervallen in 15 minuten.';
+
+  @override
+  String get signInClearAllDataDebug => 'Alle gegevens wissen (debug)';
+
+  @override
+  String get emailAuthFailedToSend => 'Versturen van e-mail is mislukt';
+
+  @override
+  String get emailAuthFailedToSendTryAgain =>
+      'Versturen van e-mail is mislukt. Probeer het nog eens.';
+
+  @override
+  String get emailAuthInvalidEmail =>
+      'Ongeldig e-mailadres. Controleer het formaat.';
+
+  @override
+  String get emailAuthUserNotFound =>
+      'Geen account gevonden met dit e-mailadres.';
+
+  @override
+  String get emailAuthTooManyRequests =>
+      'Te veel pogingen. Probeer het later nog eens.';
+
+  @override
+  String get emailAuthOperationNotAllowed =>
+      'Aanmelden van e-maillink is niet ingeschakeld.';
+
+  @override
+  String get emailAuthQuotaExceeded =>
+      'E-mailquota overschreden. Probeer het morgen opnieuw.';
+
+  @override
+  String get emailAuthVerificationFailed =>
+      'E-mailverificatie mislukt. Probeer het nog eens.';
+
+  @override
+  String get emailAuthTitle => 'E-mailverificatie';
+
+  @override
+  String get emailAuthVerifyYourEmail => 'Uw e-mail verifiëren';
+
+  @override
+  String get emailAuthDescription =>
+      'Voeg uw e-mailadres toe voor accountherstel en beveiliging. We sturen je een beveiligde link.';
+
+  @override
+  String get emailAuthEmailAddress => 'E-mailadres';
+
+  @override
+  String get emailAuthEmailPlaceholder => 'your.email@example.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail => 'Vul uw e-mailadres in';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail => 'Vul een geldig e-mailadres in';
+
+  @override
+  String get emailAuthCheckEmailToContinue =>
+      'Controleer uw e-mail en tik op de verificatie-link om verder te gaan.';
+
+  @override
+  String get emailAuthResendEmail => 'E-mail opnieuw verzenden';
+
+  @override
+  String get emailAuthSendVerificationEmail => 'Verificatie verzenden E-mail';
+
+  @override
+  String get emailAuthHowItWorks => 'Hoe e-mailverificatie werkt';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '1. Wij sturen u een veilige inlog link\n2. Controleer uw e-mail en tik op de link\n3. Uw e-mail wordt automatisch geverifieerd\n4. Geen wachtwoorden nodig!';
+
+  @override
+  String get emailAuthSecurityNotice =>
+      'E-mailverificatie helpt uw account veilig te stellen en maakt accountherstel mogelijk als u de toegang tot uw apparaat verliest.';
+
+  @override
+  String get phoneAuthFailedToSendCode =>
+      'Kon verificatiecode niet versturen. Probeer het nog eens.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain =>
+      'Ongeldige verificatiecode. Probeer het nog eens.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return 'Telefoonnummer geverifieerd: __PLAATSHOLDER_0___';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed =>
+      'Telefoonverificatie mislukt. Probeer het nog eens.';
+
+  @override
+  String get phoneAuthCodeResent => 'Verificatiecode';
+
+  @override
+  String get phoneAuthFailedToResendCode =>
+      'Hersturen van code is mislukt. Probeer het nog eens.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber =>
+      'Ongeldig telefoonnummer. Controleer het formaat.';
+
+  @override
+  String get phoneAuthTooManyRequests =>
+      'Te veel pogingen. Probeer het later nog eens.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode =>
+      'Ongeldige verificatiecode. Controleer en probeer het opnieuw.';
+
+  @override
+  String get phoneAuthSessionExpired =>
+      'De verificatiesessie is verlopen. Vraag een nieuwe code aan.';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded =>
+      'SMS-quotum overschreden. Probeer het morgen opnieuw.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse =>
+      'Dit telefoonnummer is al gekoppeld aan een ander account.';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric =>
+      'Verificatie mislukt. Probeer het nog eens.';
+
+  @override
+  String get phoneAuthTitle => 'Telefooncontrole';
+
+  @override
+  String get phoneAuthVerifyYourPhone => 'Uw telefoon controleren';
+
+  @override
+  String get phoneAuthEnterVerificationCode => 'Verificatie invoeren Rubriek';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity =>
+      'Voeg uw telefoonnummer voor account herstel en beveiliging';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return 'Voer de 6-cijferige code in die naar $phoneNumber is verzonden';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => 'Telefoonnummer';
+
+  @override
+  String get phoneAuthPhonePlaceholder => '+1 (555) 123-4567';
+
+  @override
+  String get phoneAuthPleaseEnterPhone => 'Voer uw telefoonnummer in';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone =>
+      'Voer een geldig telefoonnummer in';
+
+  @override
+  String get phoneAuthVerificationCode => 'Verificatiecode';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode => 'Voer de 6-cijferige code in';
+
+  @override
+  String get phoneAuthResendCode => 'Code opnieuw verzenden';
+
+  @override
+  String get phoneAuthSendVerificationCode => 'Verificatie verzenden Rubriek';
+
+  @override
+  String get phoneAuthVerifyCode => 'Code verifiëren';
+
+  @override
+  String get phoneAuthChangePhoneNumber => 'Telefoonnummer wijzigen';
+
+  @override
+  String get phoneAuthSmsNotice =>
+      'We sturen je een verificatiecode via SMS. Standaard berichtentarieven kunnen van toepassing zijn.';
+
+  @override
+  String get phoneAuthCodeExpires =>
+      'Code verloopt over 60 seconden. Controleer je berichten.';
+
+  @override
+  String get yourDataRights => 'Uw gegevensrechten';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      'U heeft volledige controle over uw persoonlijke gegevens. U kunt al uw gegevens exporteren of permanent uw account te allen tijde verwijderen.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => 'Uw gegevens exporteren';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription => 'Download al uw accountgegevens';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => 'Gegevens exporteren';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => 'Exporteren...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      'Omvat: profiel, piepers, opmerkingen, apparaatinformatie en voorkeuren. Gegevens worden verstrekt in JSON formaat.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => 'Gegevens met succes geëxporteerd';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => 'Exporteren van gegevens is mislukt';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => 'Account verwijderen';
 
   @override
   String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+      'Uw account en alle gegevens definitief verwijderen';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      'Deze actie kan niet ongedaan worden gemaakt. Al uw piepers, opmerkingen en accountgegevens worden permanent verwijderd.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => 'Mijn account verwijderen';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get deletingAccount => 'Verwijderen...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => 'Account verwijderen';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      'Weet u absoluut zeker dat u uw account wilt verwijderen? Deze actie is permanent en kan niet ongedaan worden gemaakt.';
 
   @override
   String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+      'De volgende gegevens worden definitief verwijderd:';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '• Uw profiel en gebruikersnaam\n• Al je piepjes en rapporten\n• Al uw opmerkingen\n• Device registratie gegevens\n• Locatie en voorkeursgegevens';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => 'Permanent verwijderen';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => 'Account succesvol verwijderd';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => 'Verwijderen van account mislukt';
 }

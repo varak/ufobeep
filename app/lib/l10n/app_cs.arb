@@ -83,7 +83,7 @@
   "mediaProcessing": "Zpracovávání médií..",
   "cameraPermissionTitle": "Potřebný přístup kamery",
   "cameraPermissionBody": "Grantová kamera přístup k zachycení UFO fotografie a videa.",
-  "locationPermissionTitle": "Je nutný přístup k místu",
+  "locationPermissionTitle": "Vyžadováno povolení k umístění",
   "locationPermissionBody": "Vaši polohu využíváme k odesílání a přijímání nedalekých upozornění.",
   "microphonePermissionTitle": "Potřebný mikrofon",
   "microphonePermissionBody": "Grant mikrofon přístup pro záznam videa s audio.",
@@ -531,7 +531,7 @@
   "viewAllBeeps": "Zobrazit všechny pípy",
   "sightingsMap": "Name",
   "globalSightingNetwork": "Globální síť pozorování",
-  "howItWorks": "Jak funguje UFOBeep",
+  "howItWorks": "Jak to funguje",
   "backToBeeps": "Zpět na Beeps",
   "loadingDetails": "Načítám detaily pípnutí...",
   "details": "Podrobnosti",
@@ -682,6 +682,199 @@
   "pushAlertsTitle": "Tlačit výstrahy",
   "pushAlertsDescription": "What ping your phone",
   "alertRadius": "Alarm radius",
-  "alertMeForUfobeep": "Upozorněte mě na UFOBeep (real-time)",
-  "mufonNoPushInfo": "Zprávy MUFON jsou dováženy v noci a nespouštějí upozornění na tlačení"
+  "mufonNoPushInfo": "Zprávy MUFON jsou dováženy v noci a nespouštějí upozornění na tlačení",
+  "privacyData": "Ochrana osobních údajů",
+  "privacyPolicyDesc": "Jak chránit a používat Vaše údaje",
+  "termsOfService": "Podmínky služby",
+  "termsOfServiceDesc": "Právní podmínky",
+  "locationTracking": "Sledování polohy",
+  "locationTrackingDesc": "Umístění pozadí pro výstrahy v blízkosti",
+  "locationTrackingTitle": "Sledování polohy pozadí",
+  "locationTrackingExplanation": "UFOBeep sleduje vaši polohu v pozadí poslat vám blízkost upozornění, když pozorování UFO se stane v blízkosti vaší současné polohy, i když jste daleko od domova.",
+  "locationTrackingBattery": "Používá inteligentní geokompresi pro < 3% dopad baterie",
+  "backgroundLocationTracking": "Povolit pozadí Sledování",
+  "locationTrackingActive": "Místo sledování výstrah v blízkosti",
+  "locationTrackingInactive": "Sledování polohy je zakázáno",
+  "locationTrackingDisabledWarning": "Když se přestěhujete na nová místa, nedostanete upozornění na blízkost",
+  "trackingStatus": "Stav sledování",
+  "monitoringStatus": "Sledování",
+  "active": "Aktivní",
+  "inactive": "Neaktivní",
+  "lastKnownLocation": "Poslední známé místo",
+  "lastLocationUpdate": "Poslední aktualizace",
+  "movementThreshold": "Prahová hodnota pohybu",
+  "updateFrequency": "Aktualizovat frekvenci",
+  "batteryImpact": "Dopad baterie",
+  "dataPrivacy": "Ochrana osobních údajů",
+  "locationPermissionExplanation": "UFOBeep potřebuje 'Vždy povolit' povolení k monitorování vašeho pohybu a odeslat upozornění na blízkost, když jste na nových místech.",
+  "benefitsTitle": "Dávky",
+  "locationTrackingBenefits": "• Získejte UFO upozornění všude, kde cestujete\n• Automatické aktualizace polohy\n• Není nutné ruční nastavení",
+  "allowLocationAccess": "Povolit přístup k umístění",
+  "locationPermissionRequired": "Pro sledování pozadí je vyžadováno povolení k umístění",
+  "locationTrackingEnabled": "Sledování polohy pozadí povoleno",
+  "locationTrackingDisabled": "Sledování polohy pozadí zakázáno",
+  "justNow": "Právě teď",
+  "minutesAgo": "Před pár minutami",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "Před pár hodinami",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "Před pár dny",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Správa dat",
+  "dataManagementDesc": "Exportovat nebo smazat data vašeho účtu",
+  "splashTagline": "Záznamy v reálném čase",
+  "splashStartingUp": "Začínám...",
+  "splashInitializationFailed": "Inicializace selhala",
+  "splashInitializationFailedTitle": "Inicializace selhala",
+  "splashInitializationError": "Aplikace nebyla správně inicializována:",
+  "splashRetry": "Znovu",
+  "splashContinue": "Pokračovat",
+  "splashInitializing": "Inicializace...",
+  "signInWelcome": "Vítejte!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Sign- in selhalo: _ _ PLACETETERER _ 0 _ _",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Zadejte prosím svou emailovou adresu",
+  "signInPleaseEnterValidEmail": "Zadejte prosím platnou e-mailovou adresu",
+  "signInMagicLinkSent": "Magické spojení odesláno! Zkontrolujte svůj e-mail a klepněte na odkaz se přihlásit.",
+  "signInMagicLinkFailed": "Nepodařilo se odeslat magický odkaz. Prosím, zkuste to znovu.",
+  "signInAllDataCleared": "Všechny údaje vymazány",
+  "signInSubtitle": "Záznamy o pozorování UFO v reálném čase a zprávy MUFON",
+  "signInGoogleLoading": "Přihlašuji...",
+  "signInContinueWithGoogle": "Pokračovat s Google",
+  "signInOr": "nebo",
+  "signInWithEmail": "Přihlaste se e-mailem",
+  "signInEmailDescription": "Pošleme vám zabezpečené spojení",
+  "signInEmailAddress": "E-mailová adresa",
+  "signInEmailPlaceholder": "your @ email.com",
+  "signInTryAgainIn": "Zkuste to znovu v _ _ PLACETETELER _ 0 _ _ s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Posílám...",
+  "signInSendMagicLink": "Poslat magický odkaz",
+  "signInCheckEmail": "Zkontrolujte si e-mail! Spojení vyprší za 15 minut.",
+  "signInSecureAuth": "Zajistit autentizaci",
+  "signInSecureAuthDescription": "Použijte Google Sign- In pro okamžitý přístup, nebo e-mailové magické odkazy, které vyprší za 15 minut.",
+  "signInClearAllDataDebug": "Vyčistit všechna data (ladit)",
+  "emailAuthFailedToSend": "Nepodařilo se odeslat email",
+  "emailAuthFailedToSendTryAgain": "Nepodařilo se mi poslat email. Prosím, zkuste to znovu.",
+  "emailAuthInvalidEmail": "Neplatná e-mailová adresa. Zkontrolujte prosím formát.",
+  "emailAuthUserNotFound": "S touto e-mailovou adresou není nalezen žádný účet.",
+  "emailAuthTooManyRequests": "Příliš mnoho pokusů. Prosím, zkuste to později.",
+  "emailAuthOperationNotAllowed": "Sign- in není povolen.",
+  "emailAuthQuotaExceeded": "E-mailová kvóta překročena. Prosím, zkuste to zítra znovu.",
+  "emailAuthVerificationFailed": "Ověření e-mailu selhalo. Prosím, zkuste to znovu.",
+  "emailAuthTitle": "Ověření e-mailu",
+  "emailAuthVerifyYourEmail": "Ověřte svůj e-mail",
+  "emailAuthDescription": "Přidejte svou e-mailovou adresu pro obnovu účtu a zabezpečení. Pošleme vám zabezpečený signál.",
+  "emailAuthEmailAddress": "E-mailová adresa",
+  "emailAuthEmailPlaceholder": "your.email @ example.com",
+  "emailAuthPleaseEnterEmail": "Zadejte prosím svou emailovou adresu",
+  "emailAuthPleaseEnterValidEmail": "Zadejte prosím platnou e-mailovou adresu",
+  "emailAuthCheckEmailToContinue": "Zkontrolujte svůj e-mail a klepněte na ověřovací odkaz pokračovat.",
+  "emailAuthResendEmail": "Resend Email",
+  "emailAuthSendVerificationEmail": "Odeslat ověření E-mail",
+  "emailAuthHowItWorks": "Jak funguje e-mailové ověřování",
+  "emailAuthHowItWorksSteps": "1. Posíláme vám zabezpečený signál.\n2. Zkontrolujte svůj e-mail a klepněte na odkaz\n3. Váš e-mail se ověřuje automaticky\n4. Není potřeba hesla!",
+  "emailAuthSecurityNotice": "Ověření e-mailu pomáhá zabezpečit váš účet a umožňuje obnovení účtu, pokud ztratíte přístup ke svému zařízení.",
+  "phoneAuthFailedToSendCode": "Nepodařilo se odeslat ověřovací kód. Prosím, zkuste to znovu.",
+  "phoneAuthInvalidCodeTryAgain": "Neplatný ověřovací kód. Prosím, zkuste to znovu.",
+  "phoneAuthPhoneVerified": "Číslo telefonu ověřeno: _ _ PLACETETERER _ 0 _ _",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Ověření telefonu selhalo. Prosím, zkuste to znovu.",
+  "phoneAuthCodeResent": "Kód ověření je nepřípustný",
+  "phoneAuthFailedToResendCode": "Nepodařilo se mi obnovit kód. Prosím, zkuste to znovu.",
+  "phoneAuthInvalidPhoneNumber": "Neplatné telefonní číslo. Zkontrolujte prosím formát.",
+  "phoneAuthTooManyRequests": "Příliš mnoho pokusů. Prosím, zkuste to později.",
+  "phoneAuthInvalidVerificationCode": "Neplatný ověřovací kód. Prosím zkontrolujte to a zkuste to znovu.",
+  "phoneAuthSessionExpired": "Ověření vypršelo. Vyžádejte si nový kód.",
+  "phoneAuthSmsQuotaExceeded": "Překročená SMS kvóta. Prosím, zkuste to zítra znovu.",
+  "phoneAuthCredentialAlreadyInUse": "Toto telefonní číslo je již připojeno k jinému účtu.",
+  "phoneAuthVerificationFailedGeneric": "Ověření selhalo. Prosím, zkuste to znovu.",
+  "phoneAuthTitle": "Ověření telefonu",
+  "phoneAuthVerifyYourPhone": "Ověřte svůj telefon",
+  "phoneAuthEnterVerificationCode": "Zadejte ověření Kód",
+  "phoneAuthAddPhoneForSecurity": "Přidat své telefonní číslo pro obnovení účtu a zabezpečení",
+  "phoneAuthEnterSixDigitCode": "Zadejte 6místný kód odeslaný na _ _ PLACETETIER _ 0 _ _",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Číslo telefonu",
+  "phoneAuthPhonePlaceholder": "+ 1 (55) 123- 4567",
+  "phoneAuthPleaseEnterPhone": "Zadejte prosím své telefonní číslo",
+  "phoneAuthPleaseEnterValidPhone": "Zadejte prosím platné telefonní číslo",
+  "phoneAuthVerificationCode": "Kód ověření",
+  "phoneAuthPleaseEnterSixDigitCode": "Zadejte prosím 6místný kód",
+  "phoneAuthResendCode": "Kód záznamu",
+  "phoneAuthSendVerificationCode": "Odeslat ověření Kód",
+  "phoneAuthVerifyCode": "Ověřit kód",
+  "phoneAuthChangePhoneNumber": "Změnit telefonní číslo",
+  "phoneAuthSmsNotice": "Pošleme vám ověřovací kód přes SMS. Mohou se použít standardní sazby zpráv.",
+  "phoneAuthCodeExpires": "Kód vyprší za 60 sekund. Zkontrolujte si vzkazy.",
+  "yourDataRights": "Vaše práva k údajům",
+  "dataRightsExplanation": "Máte plnou kontrolu nad vašimi osobními údaji. Všechny své údaje můžete kdykoli exportovat nebo trvale smazat.",
+  "exportYourData": "Exportovat Vaše data",
+  "exportDataDescription": "Stáhnout všechna data vašeho účtu",
+  "exportData": "Exportovat údaje",
+  "exportingData": "Vývoz...",
+  "exportDataDetails": "Zahrnuje: profil, pípnutí, komentáře, informace o zařízení a preference. Údaje jsou poskytovány ve formátu JSON.",
+  "dataExportedSuccessfully": "Úspěšně exportované údaje",
+  "dataExportFailed": "Nepodařilo se exportovat data",
+  "deleteAccount": "Smazat účet",
+  "deleteAccountDescription": "Trvale odstranit váš účet a všechny údaje",
+  "deleteAccountWarning": "Tuto akci nelze odčinit. Všechny vaše pípnutí, komentáře a údaje o účtu budou trvale vymazány.",
+  "deleteMyAccount": "Smazat můj účet",
+  "deletingAccount": "Mazání...",
+  "deleteAccountConfirmTitle": "Smazat účet",
+  "deleteAccountConfirmMessage": "Jste si naprosto jisti, že chcete smazat svůj účet? Tato akce je trvalá a nelze ji odčinit.",
+  "dataWillBeDeleted": "Následující údaje budou trvale vymazány:",
+  "deletedDataList": "• Váš profil a uživatelské jméno\n• Všechny vaše pípnutí a zprávy\n• Všechny vaše komentáře\n• Údaje o registraci zařízení\n• Umístění a preference dat",
+  "deleteAccountPermanent": "Smazat trvale",
+  "accountDeletedSuccessfully": "Účet úspěšně vymazán",
+  "accountDeletionFailed": "Nepodařilo se odstranit účet"
 }

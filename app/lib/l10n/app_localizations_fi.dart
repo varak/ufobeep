@@ -196,7 +196,7 @@ class AppLocalizationsFi extends AppLocalizations {
       'Anna kameran käyttää kaapata UFO kuvia ja videoita.';
 
   @override
-  String get locationPermissionTitle => 'Tarvittava sijainti';
+  String get locationPermissionTitle => 'Sijainti Lupa vaaditaan';
 
   @override
   String get locationPermissionBody =>
@@ -1114,7 +1114,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get globalSightingNetwork => 'Global Sighting Network';
 
   @override
-  String get howItWorks => 'Miten UFO- piip toimii';
+  String get howItWorks => 'Miten se toimii';
 
   @override
   String get backToBeeps => 'Takaisin piipseihin';
@@ -1584,194 +1584,477 @@ class AppLocalizationsFi extends AppLocalizations {
       'MUFON-raportit tuodaan yöllä, eivätkä ne laukaise työntökuulutuksia';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => 'Tietosuoja & tiedot';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc => 'Miten suojaamme ja käytämme tietojasi';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'Käyttöehdot';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => 'Oikeudelliset ehdot';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => 'Sijaintin seuranta';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc => 'Läheisyyskuulutusten taustapaikka';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => 'Taustan sijainnin seuranta';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFOBeep valvoo sijaintisi taustalla lähettää sinulle läheisyyttä hälytyksiä, kun UFO havaintoja tapahtuu lähellä nykyistä sijaintia, vaikka olet poissa kotoa.';
 
   @override
   String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+      'Käyttää älykästä geoferointia alle 3% akun iskuun';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => 'Käytä taustaa Seuranta';
 
   @override
-  String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+  String get locationTrackingActive => 'Läheisyyskuulutusten seurantapaikka';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => 'Sijaintiseuranta ei ole käytössä';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+      'Et saa läheisyyshälytyksiä, kun siirryt uusiin paikkoihin';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => 'Seurantatila';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => 'Seuranta';
 
   @override
-  String get active => 'Active';
+  String get active => 'Aktiivinen';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => 'Ei aktiivinen';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => 'Viimeisin tunnettu sijainti';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => 'Viimeisin päivitys';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => 'Liikkumiskynnys';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => 'Päivitystiheys';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => 'Akun vaikutus';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => 'Tietosuoja';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFOBeep tarvitsee \"Aina Salli\" paikantamisluvan seurata liikettäsi ja lähettää lähetyksiä, kun olet uusissa paikoissa.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => 'Edut';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '• Hanki UFO-hälytykset minne tahansa matkustat\n• Automaattiset sijaintipäivitykset\n• Käsikäyttöisiä asetuksia ei tarvita';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => 'Salli sijainti';
 
   @override
   String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+      'Sijaintilupa vaaditaan taustaseurantaan';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled => 'Taustan sijainnin seuranta käytössä';
 
   @override
   String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+      'Taustan sijainnin seuranta pois käytöstä';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => 'Juuri nyt';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '_Placeholder_0__ minuuttia sitten';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '__PASSIHOLDER_0__ tunteja sitten';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return '_Placeholder_0__ päivää sitten';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => 'Tietojen hallinta';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc => 'Vie tai poista tilisi tiedot';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get splashTagline => 'Reaaliaikaiset havaintohälytykset';
+
+  @override
+  String get splashStartingUp => 'Aloitetaan...';
+
+  @override
+  String get splashInitializationFailed => 'Alustaminen epäonnistui';
+
+  @override
+  String get splashInitializationFailedTitle => 'Alustaminen epäonnistui';
+
+  @override
+  String get splashInitializationError => 'Sovellus ei alustanut oikein:';
+
+  @override
+  String get splashRetry => 'Uudelleen';
+
+  @override
+  String get splashContinue => 'Jatka';
+
+  @override
+  String get splashInitializing => 'Alustetaan...';
+
+  @override
+  String signInWelcome(String username) {
+    return 'Tervetuloa __PAIKKAHOLDER_0__!';
+  }
+
+  @override
+  String signInFailed(String error) {
+    return 'Kirjautuminen epäonnistui: __PAIKKAHOLDER_0___';
+  }
+
+  @override
+  String get signInPleaseEnterEmail => 'Syötä sähköpostiosoite';
+
+  @override
+  String get signInPleaseEnterValidEmail => 'Anna kelvollinen sähköpostiosoite';
+
+  @override
+  String get signInMagicLinkSent =>
+      'Taikalinkki lähetetty! Tarkista sähköpostisi ja klikkaa linkkiä kirjautua sisään.';
+
+  @override
+  String get signInMagicLinkFailed =>
+      'Taikalinkin lähettäminen epäonnistui. Yritä uudestaan.';
+
+  @override
+  String get signInAllDataCleared => 'Kaikki tarkastetut tiedot';
+
+  @override
+  String get signInSubtitle =>
+      'Reaaliaikaiset UFO-havaintohälytykset ja MUFON-raportit';
+
+  @override
+  String get signInGoogleLoading => 'Kirjaudun sisään...';
+
+  @override
+  String get signInContinueWithGoogle => 'Jatka Googlella';
+
+  @override
+  String get signInOr => 'tai';
+
+  @override
+  String get signInWithEmail => 'Kirjaudu sisään sähköpostilla';
+
+  @override
+  String get signInEmailDescription => 'Lähetämme sinulle turvallisen linkin';
+
+  @override
+  String get signInEmailAddress => 'Sähköpostiosoite';
+
+  @override
+  String get signInEmailPlaceholder => 'your@email.com';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return 'Yritä uudelleen __PAIKKAHOLDER_0_s';
+  }
+
+  @override
+  String get signInSending => 'Lähetetään...';
+
+  @override
+  String get signInSendMagicLink => 'Lähetä taikalinkki';
+
+  @override
+  String get signInCheckEmail =>
+      'Tarkista sähköpostisi! Linkki päättyy 15 minuutin kuluttua.';
+
+  @override
+  String get signInSecureAuth => 'Turvallinen tunnistus';
+
+  @override
+  String get signInSecureAuthDescription =>
+      'Käytä Google Sign-In instant pääsy, tai sähköposti magic linkkejä, jotka vanhenevat 15 minuuttia.';
+
+  @override
+  String get signInClearAllDataDebug => 'Tyhjennä kaikki tiedot (debug)';
+
+  @override
+  String get emailAuthFailedToSend => 'Sähköpostin lähettäminen epäonnistui';
+
+  @override
+  String get emailAuthFailedToSendTryAgain =>
+      'Sähköpostin lähettäminen epäonnistui. Yritä uudestaan.';
+
+  @override
+  String get emailAuthInvalidEmail =>
+      'Virheellinen sähköpostiosoite. Tarkistakaa muoto.';
+
+  @override
+  String get emailAuthUserNotFound =>
+      'Tällä sähköpostiosoitteella ei löytynyt tiliä.';
+
+  @override
+  String get emailAuthTooManyRequests =>
+      'Liikaa yrityksiä. Yritä myöhemmin uudestaan.';
+
+  @override
+  String get emailAuthOperationNotAllowed =>
+      'Sähköpostilinkki ei ole käytössä.';
+
+  @override
+  String get emailAuthQuotaExceeded =>
+      'Sähköpostikiintiö ylitettiin. Yritä huomenna uudestaan.';
+
+  @override
+  String get emailAuthVerificationFailed =>
+      'Sähköpostin tarkistus epäonnistui. Yritä uudestaan.';
+
+  @override
+  String get emailAuthTitle => 'Sähköpostin tarkistus';
+
+  @override
+  String get emailAuthVerifyYourEmail => 'Tarkista sähköpostisi';
+
+  @override
+  String get emailAuthDescription =>
+      'Lisää sähköpostiosoite tilisi palautumista ja turvallisuutta varten. Lähetämme sinulle turvallisen yhteyden.';
+
+  @override
+  String get emailAuthEmailAddress => 'Sähköpostiosoite';
+
+  @override
+  String get emailAuthEmailPlaceholder => 'your.email@example.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail => 'Syötä sähköpostiosoite';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail =>
+      'Anna kelvollinen sähköpostiosoite';
+
+  @override
+  String get emailAuthCheckEmailToContinue =>
+      'Tarkista sähköpostisi ja napauta vahvistuslinkkiä jatkaaksesi.';
+
+  @override
+  String get emailAuthResendEmail => 'Palauta sähköposti';
+
+  @override
+  String get emailAuthSendVerificationEmail => 'Lähetä tarkistus Sähköposti';
+
+  @override
+  String get emailAuthHowItWorks => 'Miten sähköpostin tarkistus toimii';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '1. Lähetämme sinulle turvallisen kirjautumislinkin.\n2. Tarkista sähköpostisi ja napauta linkkiä\n3. sähköpostisi varmennetaan automaattisesti\n4. Salasanoja ei tarvita!';
+
+  @override
+  String get emailAuthSecurityNotice =>
+      'Sähköpostin varmistus auttaa turvaamaan tilisi ja mahdollistaa tilin palautuksen, jos menetät pääsyn laitteeseen.';
+
+  @override
+  String get phoneAuthFailedToSendCode =>
+      'Tarkastuskoodia ei voitu lähettää. Yritä uudestaan.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain =>
+      'Virheellinen tarkastuskoodi. Yritä uudestaan.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return 'Puhelinnumero vahvistettu: __PAIKKAHOLDER_0___';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed =>
+      'Puhelintarkastus epäonnistui. Yritä uudestaan.';
+
+  @override
+  String get phoneAuthCodeResent => 'Varmennuskoodi';
+
+  @override
+  String get phoneAuthFailedToResendCode =>
+      'Koodia ei voitu lähettää uudelleen. Yritä uudestaan.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber =>
+      'Virheellinen puhelinnumero. Tarkistakaa muoto.';
+
+  @override
+  String get phoneAuthTooManyRequests =>
+      'Liikaa yrityksiä. Yritä myöhemmin uudestaan.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode =>
+      'Virheellinen tarkastuskoodi. Tarkistakaa ja yrittäkää uudelleen.';
+
+  @override
+  String get phoneAuthSessionExpired =>
+      'Tarkastusaika päättyi. Pyydä uusi koodi.';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded =>
+      'SMS-kiintiö ylitettiin. Yritä huomenna uudestaan.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse =>
+      'Tämä puhelinnumero on jo yhdistetty toiseen tiliin.';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric =>
+      'Varmennus epäonnistui. Yritä uudestaan.';
+
+  @override
+  String get phoneAuthTitle => 'Puhelintarkastus';
+
+  @override
+  String get phoneAuthVerifyYourPhone => 'Tarkista puhelin';
+
+  @override
+  String get phoneAuthEnterVerificationCode => 'Syötä tarkistus Koodi';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity =>
+      'Lisää puhelinnumerosi tilin palautukseen ja tietoturvaan';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return 'Anna 6-numeroinen koodi, joka on lähetetty osoitteeseen __Placeholder_0__';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => 'Puhelinnumero';
+
+  @override
+  String get phoneAuthPhonePlaceholder => '+1 (555) 123- 4567';
+
+  @override
+  String get phoneAuthPleaseEnterPhone => 'Anna puhelinnumerosi';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone =>
+      'Anna voimassa oleva puhelinnumero';
+
+  @override
+  String get phoneAuthVerificationCode => 'Tarkastuskoodi';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode => 'Anna 6-numeroinen koodi';
+
+  @override
+  String get phoneAuthResendCode => 'Hae koodi';
+
+  @override
+  String get phoneAuthSendVerificationCode => 'Lähetä tarkistus Koodi';
+
+  @override
+  String get phoneAuthVerifyCode => 'Tarkista koodi';
+
+  @override
+  String get phoneAuthChangePhoneNumber => 'Vaihda puhelinnumeroa';
+
+  @override
+  String get phoneAuthSmsNotice =>
+      'Lähetämme varmistuskoodin tekstiviestillä. Viestin vakiohintoja voidaan soveltaa.';
+
+  @override
+  String get phoneAuthCodeExpires =>
+      'Koodi päättyy 60 sekunnin kuluttua. Tarkista viestisi.';
+
+  @override
+  String get yourDataRights => 'Tietooikeudet';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      'Sinulla on täysi kontrolli henkilötietoihisi. Voit viedä kaikki tietosi tai poistaa tilisi pysyvästi milloin tahansa.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => 'Vie tietosi';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription => 'Lataa kaikki tilitiedot';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => 'Vie tiedot';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => 'Viedä...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      'Sisältää: profiili, äänimerkit, kommentit, laitteen tiedot ja asetukset. Tiedot toimitetaan JSON-muodossa.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => 'Tiedot vietiin onnistuneesti';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => 'Tietoja ei voitu viedä';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => 'Poista tili';
 
   @override
   String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+      'Poista pysyvästi tilisi ja kaikki tiedot';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      'Tätä toimintaa ei voida perua. Kaikki äänimerkit, kommentit ja tilitiedot poistetaan pysyvästi.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => 'Poista tili';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get deletingAccount => 'Poistan...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => 'Poista tili';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      'Haluatko varmasti poistaa tilisi? Tämä toiminta on pysyvää eikä sitä voida peruuttaa.';
 
   @override
-  String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+  String get dataWillBeDeleted => 'Seuraavat tiedot poistetaan pysyvästi:';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '• Profiilisi ja käyttäjätunnuksesi\n• Kaikki viestit ja raportit\n• Kaikki kommenttisi\n• Laiterekisteritiedot\n• Sijainti- ja etuuskohtelutiedot';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => 'Poista pysyvästi';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => 'Tili poistettu onnistuneesti';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => 'Tiliä ei voitu poistaa';
 }

@@ -83,7 +83,7 @@
   "mediaProcessing": "Επεξεργασία μέσων..",
   "cameraPermissionTitle": "Απαιτείται πρόσβαση κάμερας",
   "cameraPermissionBody": "Επιχορήγηση πρόσβασης κάμερας για να συλλάβει UFO φωτογραφίες και βίντεο.",
-  "locationPermissionTitle": "Απαιτείται πρόσβαση τοποθεσίας",
+  "locationPermissionTitle": "Απαιτούμενη άδεια θέσης",
   "locationPermissionBody": "Χρησιμοποιούμε την τοποθεσία σας για να στείλουμε και να λάβουμε κοντινές ειδοποιήσεις.",
   "microphonePermissionTitle": "Απαιτούμενη πρόσβαση μικροφώνου",
   "microphonePermissionBody": "Επιχορήγηση πρόσβασης μικροφώνου για λήψη βίντεο με ήχο.",
@@ -531,7 +531,7 @@
   "viewAllBeeps": "📋 Δείτε Όλους τους Μπιπς",
   "sightingsMap": "🗺️ Χάρτης παρατήρησης",
   "globalSightingNetwork": "Παγκόσμιο δίκτυο παρατήρησης",
-  "howItWorks": "Πώς λειτουργεί το UFOBeep",
+  "howItWorks": "Πώς Λειτουργεί",
   "backToBeeps": "Επιστροφή στους Μπιπς",
   "loadingDetails": "Φόρτωση λεπτομερειών ήχου...",
   "details": "Λεπτομέρειες",
@@ -682,6 +682,199 @@
   "pushAlertsTitle": "Συναγερμοί ώθησης",
   "pushAlertsDescription": "Τι pings το τηλέφωνό σας",
   "alertRadius": "Ακτίνα ειδοποίησης",
-  "alertMeForUfobeep": "Ειδοποίησέ με για UFOBeep (σε πραγματικό χρόνο)",
-  "mufonNoPushInfo": "Οι αναφορές MUFON εισάγονται τη νύχτα και δεν ενεργοποιούν ειδοποιήσεις ώθησης"
+  "mufonNoPushInfo": "Οι αναφορές MUFON εισάγονται τη νύχτα και δεν ενεργοποιούν ειδοποιήσεις ώθησης",
+  "privacyData": "Ιδιωτικότητα & Δεδομένα",
+  "privacyPolicyDesc": "Πώς προστατεύουμε και χρησιμοποιούμε τα δεδομένα σας",
+  "termsOfService": "Όροι υπηρεσίας",
+  "termsOfServiceDesc": "Νομικοί όροι και προϋποθέσεις",
+  "locationTracking": "Παρακολούθηση τοποθεσίας",
+  "locationTrackingDesc": "Θέση φόντου για τις καταχωρίσεις εγγύτητας",
+  "locationTrackingTitle": "Παρακολούθηση τοποθεσίας φόντου",
+  "locationTrackingExplanation": "UFOBeep παρακολουθεί τη θέση σας στο παρασκήνιο για να σας στείλει ειδοποιήσεις εγγύτητας όταν UFO εμφανίσεις συμβαίνουν κοντά στην τρέχουσα τοποθεσία σας, ακόμη και όταν είστε μακριά από το σπίτι.",
+  "locationTrackingBattery": "Χρησιμοποιεί ευφυή γεωφαινόμενη για την πρόσκρουση μπαταρίας <3%",
+  "backgroundLocationTracking": "Ενεργοποίηση φόντου Παρακολούθηση",
+  "locationTrackingActive": "Θέση παρακολούθησης για καταχωρίσεις εγγύτητας",
+  "locationTrackingInactive": "Η παρακολούθηση τοποθεσίας είναι απενεργοποιημένη",
+  "locationTrackingDisabledWarning": "Δεν θα λάβετε ειδοποιήσεις εγγύτητας όταν μετακομίσετε σε νέες τοποθεσίες",
+  "trackingStatus": "Κατάσταση παρακολούθησης",
+  "monitoringStatus": "Παρακολούθηση",
+  "active": "Ενεργό",
+  "inactive": "Ανενεργός",
+  "lastKnownLocation": "Τελευταία γνωστή τοποθεσία",
+  "lastLocationUpdate": "Τελευταία ενημέρωση",
+  "movementThreshold": "Κατώφλι κίνησης",
+  "updateFrequency": "Συχνότητα ενημέρωσης",
+  "batteryImpact": "Επιπτώσεις μπαταριών",
+  "dataPrivacy": "Προστασία δεδομένων",
+  "locationPermissionExplanation": "Το UFOBeep χρειάζεται άδεια τοποθεσίας 'Πάντα επιτρέπεται' για να παρακολουθεί την κίνησή σας και να στέλνει ειδοποιήσεις εγγύτητας όταν βρίσκεστε σε νέες τοποθεσίες.",
+  "benefitsTitle": "Οφέλη",
+  "locationTrackingBenefits": "• Πάρτε UFO ειδοποιήσεις όπου κι αν ταξιδεύετε\n• Αυτόματη ενημέρωση τοποθεσίας\n• Δεν απαιτείται χειροκίνητη ρύθμιση",
+  "allowLocationAccess": "Επίτρεψε πρόσβαση τοποθεσίας",
+  "locationPermissionRequired": "Απαιτείται άδεια τοποθεσίας για παρακολούθηση ιστορικού",
+  "locationTrackingEnabled": "Ενεργοποίηση εντοπισμού τοποθεσίας φόντου",
+  "locationTrackingDisabled": "Απενεργοποίηση εντοπισμού τοποθεσίας φόντου",
+  "justNow": "Μόλις τώρα",
+  "minutesAgo": "__PLACEHOLDER_0_ πριν από λίγα λεπτά",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "__PLACEHOLDER_0_ ώρες πριν",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "__PACHOLDER_0_ ημέρες πριν",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Διαχείριση δεδομένων",
+  "dataManagementDesc": "Εξαγωγή ή διαγραφή των δεδομένων του λογαριασμού σας",
+  "splashTagline": "Συναγερμοί εντοπισμού σε πραγματικό χρόνο",
+  "splashStartingUp": "Ξεκινώντας...",
+  "splashInitializationFailed": "Αποτυχία αρχικοποίησης",
+  "splashInitializationFailedTitle": "Αποτυχία αρχικοποίησης",
+  "splashInitializationError": "Η εφαρμογή απέτυχε να αρχικοποιήσει σωστά:",
+  "splashRetry": "Επανάληψη",
+  "splashContinue": "Συνέχεια",
+  "splashInitializing": "Αρχικοποίηση...",
+  "signInWelcome": "Καλωσόρισες!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Αποτυχία σύνδεσης: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Παρακαλώ εισάγετε τη διεύθυνση email σας",
+  "signInPleaseEnterValidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email",
+  "signInMagicLinkSent": "Ο μαγικός κρίκος στάλθηκε! Ελέγξτε το email σας και κάντε κλικ στο σύνδεσμο για να συνδεθείτε.",
+  "signInMagicLinkFailed": "Αποτυχία αποστολής μαγικού συνδέσμου. Παρακαλώ προσπαθήστε ξανά.",
+  "signInAllDataCleared": "Εκκαθάριση όλων των δεδομένων",
+  "signInSubtitle": "Συναγερμοί εντοπισμού UFO σε πραγματικό χρόνο και αναφορές MUFON",
+  "signInGoogleLoading": "Υπογραφή...",
+  "signInContinueWithGoogle": "Συνεχίστε με το Google",
+  "signInOr": "ή",
+  "signInWithEmail": "Σύνδεση με Email",
+  "signInEmailDescription": "Θα σου στείλουμε έναν ασφαλή σύνδεσμο για να υπογράψεις",
+  "signInEmailAddress": "Διεύθυνση ηλεκτρονικού ταχυδρομείου",
+  "signInEmailPlaceholder": "your@email.com",
+  "signInTryAgainIn": "Δοκιμάστε ξανά σε __PACHOLDER_0_s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Αποστολή...",
+  "signInSendMagicLink": "Αποστολή μαγικού δεσμού",
+  "signInCheckEmail": "Έλεγξε το email σου! Ο σύνδεσμος λήγει σε 15 λεπτά.",
+  "signInSecureAuth": "Ασφαλής ταυτοποίηση",
+  "signInSecureAuthDescription": "Χρησιμοποιήστε το Google Sign-In για άμεση πρόσβαση, ή email μαγικό συνδέσμους που λήγουν σε 15 λεπτά.",
+  "signInClearAllDataDebug": "Καθαρισμός όλων των δεδομένων (αποσφαλμάτωση)",
+  "emailAuthFailedToSend": "Αποτυχία αποστολής email",
+  "emailAuthFailedToSendTryAgain": "Αποτυχία αποστολής email. Παρακαλώ προσπαθήστε ξανά.",
+  "emailAuthInvalidEmail": "Μη έγκυρη διεύθυνση email. Παρακαλώ ελέγξτε τη μορφή.",
+  "emailAuthUserNotFound": "Δε βρέθηκε λογαριασμός με αυτή τη διεύθυνση email.",
+  "emailAuthTooManyRequests": "Πολλές προσπάθειες. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+  "emailAuthOperationNotAllowed": "Η σύνδεση email δεν είναι ενεργοποιημένη.",
+  "emailAuthQuotaExceeded": "Υπερέβη την ποσόστωση ηλεκτρονικού ταχυδρομείου. Παρακαλώ προσπαθήστε ξανά αύριο.",
+  "emailAuthVerificationFailed": "Η επαλήθευση ηλεκτρονικού ταχυδρομείου απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
+  "emailAuthTitle": "Επαλήθευση ηλεκτρονικού ταχυδρομείου",
+  "emailAuthVerifyYourEmail": "Επαλήθευση του email σας",
+  "emailAuthDescription": "Προσθέστε τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας για την ανάκτηση λογαριασμού και την ασφάλεια. Θα σας στείλουμε έναν ασφαλή σύνδεσμο εισόδου.",
+  "emailAuthEmailAddress": "Διεύθυνση ηλεκτρονικού ταχυδρομείου",
+  "emailAuthEmailPlaceholder": "your.email@example.com",
+  "emailAuthPleaseEnterEmail": "Παρακαλώ εισάγετε τη διεύθυνση email σας",
+  "emailAuthPleaseEnterValidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email",
+  "emailAuthCheckEmailToContinue": "Ελέγξτε το email σας και πατήστε το σύνδεσμο επαλήθευσης για να συνεχίσετε.",
+  "emailAuthResendEmail": "Επαναφορά email",
+  "emailAuthSendVerificationEmail": "Αποστολή επαλήθευσης Ηλεκτρονικό ταχυδρομείο",
+  "emailAuthHowItWorks": "Πώς λειτουργεί η επαλήθευση ηλεκτρονικού ταχυδρομείου",
+  "emailAuthHowItWorksSteps": "1. Σας στέλνουμε ασφαλή σύνδεση εισόδου\n2. Ελέγξτε το email σας και πατήστε το σύνδεσμο\n3. Το email σας επαληθεύεται αυτόματα\n4. Δεν χρειάζονται κωδικοί πρόσβασης!",
+  "emailAuthSecurityNotice": "Η επαλήθευση ηλεκτρονικού ταχυδρομείου βοηθά στην εξασφάλιση του λογαριασμού σας και επιτρέπει την ανάκτηση λογαριασμού αν χάσετε την πρόσβαση στη συσκευή σας.",
+  "phoneAuthFailedToSendCode": "Αποτυχία αποστολής κωδικού επαλήθευσης. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthInvalidCodeTryAgain": "Μη έγκυρος κωδικός επαλήθευσης. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthPhoneVerified": "Επαλήθευση αριθμού τηλεφώνου: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Η επαλήθευση τηλεφώνου απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthCodeResent": "Κωδικός επαλήθευσης",
+  "phoneAuthFailedToResendCode": "Αποτυχία αποστολής κώδικα. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthInvalidPhoneNumber": "Μη έγκυρο αριθμό τηλεφώνου. Παρακαλώ ελέγξτε τη μορφή.",
+  "phoneAuthTooManyRequests": "Πολλές προσπάθειες. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+  "phoneAuthInvalidVerificationCode": "Μη έγκυρος κωδικός επαλήθευσης. Παρακαλώ ελέγξτε και προσπαθήστε ξανά.",
+  "phoneAuthSessionExpired": "Η συνεδρία επαλήθευσης έληξε. Παρακαλώ ζητήστε νέο κωδικό.",
+  "phoneAuthSmsQuotaExceeded": "Υπερέβη την ποσόστωση SMS. Παρακαλώ προσπαθήστε ξανά αύριο.",
+  "phoneAuthCredentialAlreadyInUse": "Αυτός ο αριθμός τηλεφώνου είναι ήδη συνδεδεμένος με άλλο λογαριασμό.",
+  "phoneAuthVerificationFailedGeneric": "Η επαλήθευση απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthTitle": "Επαλήθευση τηλεφώνου",
+  "phoneAuthVerifyYourPhone": "Επαλήθευση του τηλεφώνου σας",
+  "phoneAuthEnterVerificationCode": "Εισαγωγή επαλήθευσης Κωδικός",
+  "phoneAuthAddPhoneForSecurity": "Προσθέστε τον αριθμό τηλεφώνου σας για ανάκτηση λογαριασμού και ασφάλεια",
+  "phoneAuthEnterSixDigitCode": "Εισάγετε τον εξαψήφιο κωδικό που αποστέλλεται στο {phoneNumber}",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Αριθμός τηλεφώνου",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Παρακαλώ εισάγετε τον αριθμό τηλεφώνου σας",
+  "phoneAuthPleaseEnterValidPhone": "Παρακαλώ εισάγετε έναν έγκυρο αριθμό τηλεφώνου",
+  "phoneAuthVerificationCode": "Κωδικός επαλήθευσης",
+  "phoneAuthPleaseEnterSixDigitCode": "Παρακαλώ εισάγετε τον εξαψήφιο κωδικό",
+  "phoneAuthResendCode": "Επαναφορά κώδικα",
+  "phoneAuthSendVerificationCode": "Αποστολή επαλήθευσης Κωδικός",
+  "phoneAuthVerifyCode": "Επαλήθευση κώδικα",
+  "phoneAuthChangePhoneNumber": "Τροποποίηση αριθμού τηλεφώνου",
+  "phoneAuthSmsNotice": "Θα σας στείλουμε έναν κωδικό επαλήθευσης μέσω SMS. Ενδέχεται να ισχύουν τυποποιημένες τιμές μηνυμάτων.",
+  "phoneAuthCodeExpires": "Ο κωδικός λήγει σε 60 δευτερόλεπτα. Ελέγξτε τα μηνύματά σας.",
+  "yourDataRights": "Τα Δικαιώματα των Δεδομένων Σας",
+  "dataRightsExplanation": "Έχετε τον πλήρη έλεγχο των προσωπικών σας δεδομένων. Μπορείτε να εξαγάγετε όλα τα δεδομένα σας ή να διαγράψετε μόνιμα το λογαριασμό σας ανά πάσα στιγμή.",
+  "exportYourData": "Εξαγωγή των δεδομένων σας",
+  "exportDataDescription": "Κατεβάστε όλα τα δεδομένα του λογαριασμού σας",
+  "exportData": "Εξαγωγή δεδομένων",
+  "exportingData": "Εξαγωγή...",
+  "exportDataDetails": "Περιλαμβάνει: προφίλ, μπιπ, σχόλια, πληροφορίες συσκευών και προτιμήσεις. Τα δεδομένα παρέχονται σε μορφή JSON.",
+  "dataExportedSuccessfully": "Τα δεδομένα εξάγονται επιτυχώς",
+  "dataExportFailed": "Αποτυχία εξαγωγής δεδομένων",
+  "deleteAccount": "Διαγραφή λογαριασμού",
+  "deleteAccountDescription": "Διαρκώς αφαιρέστε το λογαριασμό σας και όλα τα δεδομένα",
+  "deleteAccountWarning": "Αυτή η ενέργεια δεν μπορεί να αναιρεθεί. Όλα τα μπιπ, τα σχόλια και τα δεδομένα λογαριασμού σας θα διαγραφούν οριστικά.",
+  "deleteMyAccount": "Διαγραφή του λογαριασμού μου",
+  "deletingAccount": "Διαγραφή...",
+  "deleteAccountConfirmTitle": "Διαγραφή λογαριασμού",
+  "deleteAccountConfirmMessage": "Είστε απολύτως σίγουροι ότι θέλετε να διαγράψετε το λογαριασμό σας; Αυτή η ενέργεια είναι μόνιμη και δεν μπορεί να αναιρεθεί.",
+  "dataWillBeDeleted": "Τα ακόλουθα δεδομένα θα διαγραφούν οριστικά:",
+  "deletedDataList": "• Το προφίλ και το όνομα χρήστη σας\n• Όλα τα μπιπ και οι αναφορές σας\n• Όλα τα σχόλιά σας\n• Δεδομένα εγγραφής συσκευών\n• Δεδομένα τοποθεσίας και προτίμησης",
+  "deleteAccountPermanent": "Διαγραφή μόνιμα",
+  "accountDeletedSuccessfully": "Ο λογαριασμός διαγράφηκε με επιτυχία",
+  "accountDeletionFailed": "Αποτυχία διαγραφής λογαριασμού"
 }

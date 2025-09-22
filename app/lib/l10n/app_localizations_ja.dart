@@ -195,7 +195,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cameraPermissionBody => 'UFO の写真やビデオをキャプチャするためのカメラアクセスを許可します.';
 
   @override
-  String get locationPermissionTitle => '必要な場所へのアクセス';
+  String get locationPermissionTitle => '所在地 許可 必須';
 
   @override
   String get locationPermissionBody => '近隣のアラートを送受信する場所を使用します.';
@@ -1088,7 +1088,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get globalSightingNetwork => 'グローバルサイトネットワーク';
 
   @override
-  String get howItWorks => 'UFOBeepの仕組み';
+  String get howItWorks => '仕組み';
 
   @override
   String get backToBeeps => 'ビープスに戻る';
@@ -1551,194 +1551,446 @@ class AppLocalizationsJa extends AppLocalizations {
   String get mufonNoPushInfo => 'MUFONレポートは、夜間にインポートされ、プッシュアラートをトリガーしません';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => 'プライバシーとデータ';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc => 'データを保護・利用する方法';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'サービス利用規約';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => '法的条件と条件';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => '位置追跡';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc => '近接アラートの背景位置';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => '背景の場所の追跡';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFOBeep は、UFO の視線が、自宅から離れた場合でも、現在の場所の近くで起こるときに、あなたの位置を監視し、近接アラートを送信します.';
 
   @override
-  String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+  String get locationTrackingBattery => '<3%電池の衝撃のための理性的なジオフェンシングを使用して下さい';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => '背景を有効に トラッキング';
 
   @override
-  String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+  String get locationTrackingActive => '近接アラートの監視場所';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => '位置の追跡は無効です';
 
   @override
-  String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+  String get locationTrackingDisabledWarning => '新しい場所に移動すると、近接アラートが届かない';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => '追跡ステータス';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => 'モニタリング';
 
   @override
-  String get active => 'Active';
+  String get active => 'アクティブ';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => 'インアクティブ';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => '最終既知の場所';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => '最終更新日';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => '動きの境界線';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => '更新頻度';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => 'バッテリーの影響';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => 'データプライバシー';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFOBeepは、新しい場所にあるときに、移動を監視し、近接アラートを送信します.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => 'メリット';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '・ 旅行中どこでもUFOアラートを入手\n• 自動位置の更新\n・ 手動セットアップ不要';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => 'ロケーションアクセスを許可する';
 
   @override
-  String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+  String get locationPermissionRequired => '背景追跡のための場所の許可は必須です';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled => '背景位置追跡機能';
 
   @override
-  String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+  String get locationTrackingDisabled => '障害を追跡する背景の場所';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => '今すぐ登録';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '$minutes 分前';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '__PLACEHOLDER_0_時間前';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return '$days 日前';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => 'データ管理';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc => 'アカウントデータのエクスポートまたは削除';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get splashTagline => 'リアルタイムの視力アラート';
+
+  @override
+  String get splashStartingUp => 'スタートアップ.';
+
+  @override
+  String get splashInitializationFailed => '初期化失敗';
+
+  @override
+  String get splashInitializationFailedTitle => '初期化失敗';
+
+  @override
+  String get splashInitializationError => 'アプリが正しく初期化できなかった:';
+
+  @override
+  String get splashRetry => 'リトリート';
+
+  @override
+  String get splashContinue => 'お問い合わせ';
+
+  @override
+  String get splashInitializing => '初期化...';
+
+  @override
+  String signInWelcome(String username) {
+    return 'ようこそ_PLACEHOLDER_0__!';
+  }
+
+  @override
+  String signInFailed(String error) {
+    return 'サインインが失敗しました: ${error}_______________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String get signInPleaseEnterEmail => 'メールアドレスを入力してください';
+
+  @override
+  String get signInPleaseEnterValidEmail => '有効なメールアドレスを入力してください';
+
+  @override
+  String get signInMagicLinkSent =>
+      'マジックリンク送信! 電子メールをチェックし、リンクをクリックしてサインインします.';
+
+  @override
+  String get signInMagicLinkFailed => '魔法のリンクを送信失敗しました。 お問い合わせ.';
+
+  @override
+  String get signInAllDataCleared => 'すべてのデータを消去';
+
+  @override
+  String get signInSubtitle => 'リアルタイム UFO 視線アラートと MUFON レポート';
+
+  @override
+  String get signInGoogleLoading => 'サインイン.';
+
+  @override
+  String get signInContinueWithGoogle => 'Googleでフォローする';
+
+  @override
+  String get signInOr => 'または';
+
+  @override
+  String get signInWithEmail => '電子メールでサインイン';
+
+  @override
+  String get signInEmailDescription => 'サインインに安全なリンクをお送りします';
+
+  @override
+  String get signInEmailAddress => 'メールアドレス';
+
+  @override
+  String get signInEmailPlaceholder => 'お問い合わせ';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return '${seconds}s でもう一度お試しください';
+  }
+
+  @override
+  String get signInSending => '送信...';
+
+  @override
+  String get signInSendMagicLink => 'マジックリンクを送信';
+
+  @override
+  String get signInCheckEmail => 'メールでのお問い合わせ リンクは15分以内です.';
+
+  @override
+  String get signInSecureAuth => '安全な認証';
+
+  @override
+  String get signInSecureAuthDescription =>
+      'Googleサインインを使用して、即時アクセス、または15分で期限切れのマジックリンクを電子メールで送信します.';
+
+  @override
+  String get signInClearAllDataDebug => 'すべてのデータをクリア(デバッグ)';
+
+  @override
+  String get emailAuthFailedToSend => 'メールでのお問い合わせ';
+
+  @override
+  String get emailAuthFailedToSendTryAgain => 'メールでのお問い合わせ お問い合わせ.';
+
+  @override
+  String get emailAuthInvalidEmail => '無効なメールアドレス。 フォーマットをご確認ください.';
+
+  @override
+  String get emailAuthUserNotFound => 'このメールアドレスにアカウントが見つかりません.';
+
+  @override
+  String get emailAuthTooManyRequests => '多くの試み。 もう一度お試しください.';
+
+  @override
+  String get emailAuthOperationNotAllowed => 'メールリンクのサインインが有効になっています.';
+
+  @override
+  String get emailAuthQuotaExceeded => 'メールクォーターが超過しました。 明日は是非お試しください.';
+
+  @override
+  String get emailAuthVerificationFailed => 'メール認証が失敗しました。 お問い合わせ.';
+
+  @override
+  String get emailAuthTitle => 'メール認証';
+
+  @override
+  String get emailAuthVerifyYourEmail => 'メールの確認';
+
+  @override
+  String get emailAuthDescription =>
+      'アカウントの回復とセキュリティのためにメールアドレスを追加します。 安全なサインインリンクをお送りします.';
+
+  @override
+  String get emailAuthEmailAddress => 'メールアドレス';
+
+  @override
+  String get emailAuthEmailPlaceholder => 'メール:info@example.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail => 'メールアドレスを入力してください';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail => '有効なメールアドレスを入力してください';
+
+  @override
+  String get emailAuthCheckEmailToContinue => '確認画面から確認画面をタップすると、確認画面が表示されます.';
+
+  @override
+  String get emailAuthResendEmail => '電子メールを送信します';
+
+  @override
+  String get emailAuthSendVerificationEmail => '確認の送信 電子メール';
+
+  @override
+  String get emailAuthHowItWorks => 'メール検証の仕組み';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '1。 安全なサインインリンクをお送りします\n2。 電子メールをチェックし、リンクをタップ\n3。 電子メールが自動的に確認されます\n4。 パスワード不要!';
+
+  @override
+  String get emailAuthSecurityNotice =>
+      '電子メールの検証は、あなたのアカウントを保護し、あなたのデバイスへのアクセスを失う場合、アカウントの回復を有効にするのに役立ちます.';
+
+  @override
+  String get phoneAuthFailedToSendCode => '認証コードの送信に失敗しました。 お問い合わせ.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain => '無効な検証コード。 お問い合わせ.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return '証明される電話番号: ${phoneNumber}_______________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed => '電話確認が失敗しました。 お問い合わせ.';
+
+  @override
+  String get phoneAuthCodeResent => '認証コードの再入力';
+
+  @override
+  String get phoneAuthFailedToResendCode => 'コードを再送できなかった。 お問い合わせ.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber => '無効な電話番号。 フォーマットをご確認ください.';
+
+  @override
+  String get phoneAuthTooManyRequests => '多くの試み。 もう一度お試しください.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode => '無効な検証コード。 是非お試し下さい.';
+
+  @override
+  String get phoneAuthSessionExpired =>
+      '検証セッションが終了しました。 新しいリクエストコードをリクエストしてください.';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded => 'SMSのquotaは超過しました。 明日は是非お試しください.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse => 'この電話番号は他のアカウントに既にリンクされています.';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric => '検証が失敗しました。 お問い合わせ.';
+
+  @override
+  String get phoneAuthTitle => '電話検証';
+
+  @override
+  String get phoneAuthVerifyYourPhone => 'あなたの携帯電話を検証する';
+
+  @override
+  String get phoneAuthEnterVerificationCode => '認証を入力 コードコード';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity => 'アカウントの回復とセキュリティのために電話番号を追加します';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return '$phoneNumberに送信された6桁のコードを入力してください';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => '電話番号';
+
+  @override
+  String get phoneAuthPhonePlaceholder => '〒107-0052 東京都港区赤坂1-12-32';
+
+  @override
+  String get phoneAuthPleaseEnterPhone => '電話番号を入力してください';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone => '有効な電話番号を入力してください';
+
+  @override
+  String get phoneAuthVerificationCode => '検証コード';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode => '6桁のコードを入力してください';
+
+  @override
+  String get phoneAuthResendCode => 'コードを送信します';
+
+  @override
+  String get phoneAuthSendVerificationCode => '確認の送信 コードコード';
+
+  @override
+  String get phoneAuthVerifyCode => 'コードを検証';
+
+  @override
+  String get phoneAuthChangePhoneNumber => '電話番号変更';
+
+  @override
+  String get phoneAuthSmsNotice => '確認コードをSMSでお送りします。 標準的なメッセージレートは適用できます.';
+
+  @override
+  String get phoneAuthCodeExpires => 'コードの有効期限は60秒です。 メッセージを確認してください.';
+
+  @override
+  String get yourDataRights => 'データの権利';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      '個人データを完全に制御できます。 すべてのデータをエクスポートしたり、いつでもアカウントを永久に削除することができます.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => 'データのエクスポート';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription => 'すべてのアカウントデータをダウンロード';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => '輸出データ';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => '輸出...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      '内容:プロファイル、ビープ、コメント、デバイス情報、および好み。 JSON 形式のデータ提供.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => '正常にエクスポートされたデータ';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => 'データをエクスポートできない';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => 'アカウントの削除';
 
   @override
-  String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+  String get deleteAccountDescription => '永続的にアカウントとすべてのデータを削除';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      'このアクションは元に戻すことができません。 ビープ、コメント、アカウントデータはすべて永久に削除されます.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => '私のアカウントを削除';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get deletingAccount => '削除...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => 'アカウントの削除';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      'アカウントを削除したいかどうかは? このアクションは恒久的であり、元に戻すことはできません.';
 
   @override
-  String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+  String get dataWillBeDeleted => '次のデータは永久に削除されます';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '・ プロフィールとユーザー名\n・ すべてのあなたのビープとレポート\n・ すべてのコメント\n• デバイス登録データ\n•場所と好みのデータ';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => '永久削除';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => '正常に削除されたアカウント';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => 'アカウントを削除できない';
 }

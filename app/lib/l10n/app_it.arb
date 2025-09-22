@@ -83,7 +83,7 @@
   "mediaProcessing": "Elaborazione dei media..",
   "cameraPermissionTitle": "Accesso telecamera necessaria",
   "cameraPermissionBody": "Garantire l'accesso della fotocamera per catturare foto e video UFO.",
-  "locationPermissionTitle": "Accesso alla posizione necessaria",
+  "locationPermissionTitle": "Permesso di posizione richiesto",
   "locationPermissionBody": "Utilizziamo la tua posizione per inviare e ricevere avvisi nelle vicinanze.",
   "microphonePermissionTitle": "Accesso microfonico necessario",
   "microphonePermissionBody": "Garantire l'accesso al microfono per la cattura video con audio.",
@@ -531,7 +531,7 @@
   "viewAllBeeps": "📋 Vedi tutte le pecore",
   "sightingsMap": "🗺️ Sightings mappa",
   "globalSightingNetwork": "Rete di visione globale",
-  "howItWorks": "Come funziona UFOBeep",
+  "howItWorks": "Come funziona",
   "backToBeeps": "Torna a Beeps",
   "loadingDetails": "Caricamento in dettaglio...",
   "details": "Dettagli",
@@ -682,6 +682,199 @@
   "pushAlertsTitle": "Avvisi di spinta",
   "pushAlertsDescription": "Quali pings il telefono",
   "alertRadius": "Allerta Radius",
-  "alertMeForUfobeep": "Avvisami per UFOBeep (ora reale)",
-  "mufonNoPushInfo": "I rapporti MUFON sono importati di notte e non attivano gli avvisi push"
+  "mufonNoPushInfo": "I rapporti MUFON sono importati di notte e non attivano gli avvisi push",
+  "privacyData": "Privacy e dati",
+  "privacyPolicyDesc": "Come proteggiamo e utilizziamo i tuoi dati",
+  "termsOfService": "Termini di servizio",
+  "termsOfServiceDesc": "Termini e condizioni legali",
+  "locationTracking": "Monitoraggio della posizione",
+  "locationTrackingDesc": "Posizione di sfondo per avvisi di prossimità",
+  "locationTrackingTitle": "Background Location Tracking",
+  "locationTrackingExplanation": "UFOBeep monitora la tua posizione in background per inviare avvisi di prossimità quando gli avvistamenti UFO avvengono vicino alla tua posizione attuale, anche quando sei lontano da casa.",
+  "locationTrackingBattery": "Utilizza la geofencing intelligente per l'impatto della batteria <3%",
+  "backgroundLocationTracking": "Abilitare lo sfondo Monitoraggio",
+  "locationTrackingActive": "Luogo di monitoraggio per avvisi di prossimità",
+  "locationTrackingInactive": "Il monitoraggio della posizione è disattivato",
+  "locationTrackingDisabledWarning": "Non riceverai avvisi di prossimità quando ti trasferisci in nuovi luoghi",
+  "trackingStatus": "Stato di monitoraggio",
+  "monitoringStatus": "Monitoraggio",
+  "active": "Attivo",
+  "inactive": "Inattivo",
+  "lastKnownLocation": "Ultima posizione nota",
+  "lastLocationUpdate": "Ultimo aggiornamento",
+  "movementThreshold": "Movimento Soglia",
+  "updateFrequency": "Frequenza di aggiornamento",
+  "batteryImpact": "Impatto della batteria",
+  "dataPrivacy": "Privacy",
+  "locationPermissionExplanation": "UFOBeep ha bisogno del permesso di posizione 'Always Allow' per monitorare il movimento e inviare avvisi di prossimità quando si è in nuove posizioni.",
+  "benefitsTitle": "Vantaggi",
+  "locationTrackingBenefits": "• Ricevi avvisi UFO ovunque viaggi\n• Aggiornamenti automatici della posizione\n• Nessuna configurazione manuale richiesta",
+  "allowLocationAccess": "Consentire l'accesso alla posizione",
+  "locationPermissionRequired": "Il permesso di localizzazione è necessario per il monitoraggio di sfondo",
+  "locationTrackingEnabled": "Inseguimento della posizione di sfondo abilitato",
+  "locationTrackingDisabled": "Inseguimento della posizione di sfondo disabilitato",
+  "justNow": "Adesso",
+  "minutesAgo": "{minutes} minuto fa",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours} ore fa",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{days} giorni fa",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Gestione dei dati",
+  "dataManagementDesc": "Esporta o elimina i dati del tuo account",
+  "splashTagline": "Avvisi di avvistamento in tempo reale",
+  "splashStartingUp": "Cominciare...",
+  "splashInitializationFailed": "L'inizializzazione fallita",
+  "splashInitializationFailedTitle": "Inizializzazione non riuscita",
+  "splashInitializationError": "L'app non ha inizializzato correttamente:",
+  "splashRetry": "Retry",
+  "splashContinue": "Continua",
+  "splashInitializing": "Inizializzazione...",
+  "signInWelcome": "Benvenuto!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Iscrizione fallita: #",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Inserisci il tuo indirizzo email",
+  "signInPleaseEnterValidEmail": "Inserisci un indirizzo email valido",
+  "signInMagicLinkSent": "Link magico inviato! Controlla la tua email e clicca sul link per accedere.",
+  "signInMagicLinkFailed": "Non ha mandato link magico. Per favore riprovate.",
+  "signInAllDataCleared": "Tutti i dati cancellati",
+  "signInSubtitle": "Avvisi di avvistamento UFO in tempo reale e rapporti MUFON",
+  "signInGoogleLoading": "Firma in...",
+  "signInContinueWithGoogle": "Continua con Google",
+  "signInOr": "o",
+  "signInWithEmail": "Accedi con Email",
+  "signInEmailDescription": "Ti invieremo un link sicuro per accedere",
+  "signInEmailAddress": "Indirizzo email",
+  "signInEmailPlaceholder": "tuo@email.com",
+  "signInTryAgainIn": "Riprova in {seconds}s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Invio...",
+  "signInSendMagicLink": "Inviare Magic Link",
+  "signInCheckEmail": "Controlla la tua email! Il link scade tra 15 minuti.",
+  "signInSecureAuth": "Autenticazione sicura",
+  "signInSecureAuthDescription": "Utilizzare Google Sign-In per l'accesso istantaneo, o link magici e-mail che scadono in 15 minuti.",
+  "signInClearAllDataDebug": "Cancella tutti i dati (Debug)",
+  "emailAuthFailedToSend": "Non inviare e-mail",
+  "emailAuthFailedToSendTryAgain": "Non ha inviato email. Per favore riprovate.",
+  "emailAuthInvalidEmail": "Indirizzo email non valido. Si prega di controllare il formato.",
+  "emailAuthUserNotFound": "Nessun account trovato con questo indirizzo email.",
+  "emailAuthTooManyRequests": "Troppi tentativi. Riprova più tardi.",
+  "emailAuthOperationNotAllowed": "Il link email non è abilitato.",
+  "emailAuthQuotaExceeded": "Quota e-mail superata. Riprova domani.",
+  "emailAuthVerificationFailed": "La verifica e-mail è fallita. Per favore riprovate.",
+  "emailAuthTitle": "Verifica e-mail",
+  "emailAuthVerifyYourEmail": "Verifica la tua email",
+  "emailAuthDescription": "Aggiungi il tuo indirizzo email per il recupero e la sicurezza dell'account. Ti invieremo un link sicuro.",
+  "emailAuthEmailAddress": "Indirizzo email",
+  "emailAuthEmailPlaceholder": "your.email@example.com",
+  "emailAuthPleaseEnterEmail": "Inserisci il tuo indirizzo email",
+  "emailAuthPleaseEnterValidEmail": "Inserisci un indirizzo email valido",
+  "emailAuthCheckEmailToContinue": "Controlla la tua email e tocca il link di verifica per continuare.",
+  "emailAuthResendEmail": "Invia un'email",
+  "emailAuthSendVerificationEmail": "Invia la verifica Email",
+  "emailAuthHowItWorks": "Come funziona la verifica e-mail",
+  "emailAuthHowItWorksSteps": "1. Ti inviamo un link sicuro di accesso\n2. Controlla la tua email e tocca il link\n3. La tua email viene verificata automaticamente\n4. Nessuna password necessaria!",
+  "emailAuthSecurityNotice": "La verifica e-mail aiuta a proteggere il tuo account e consente il ripristino dell'account se si perde l'accesso al dispositivo.",
+  "phoneAuthFailedToSendCode": "Non ha inviato il codice di verifica. Per favore riprovate.",
+  "phoneAuthInvalidCodeTryAgain": "Codice di verifica non valido. Per favore riprovate.",
+  "phoneAuthPhoneVerified": "Numero di telefono verificato: #",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "La verifica del telefono è fallita. Per favore riprovate.",
+  "phoneAuthCodeResent": "Codice di verifica risentimento",
+  "phoneAuthFailedToResendCode": "Non ha rimesso in riga il codice. Per favore riprovate.",
+  "phoneAuthInvalidPhoneNumber": "Numero di telefono non valido. Si prega di controllare il formato.",
+  "phoneAuthTooManyRequests": "Troppi tentativi. Riprova più tardi.",
+  "phoneAuthInvalidVerificationCode": "Codice di verifica non valido. Si prega di controllare e riprovare.",
+  "phoneAuthSessionExpired": "Sessione di verifica scaduta. Si prega di richiedere un nuovo codice.",
+  "phoneAuthSmsQuotaExceeded": "La quota SMS è superata. Riprova domani.",
+  "phoneAuthCredentialAlreadyInUse": "Questo numero di telefono è già collegato ad un altro account.",
+  "phoneAuthVerificationFailedGeneric": "La verifica è fallita. Per favore riprovate.",
+  "phoneAuthTitle": "Verifica del telefono",
+  "phoneAuthVerifyYourPhone": "Verifica il tuo telefono",
+  "phoneAuthEnterVerificationCode": "Inserisci la verifica Codice",
+  "phoneAuthAddPhoneForSecurity": "Aggiungi il tuo numero di telefono per il recupero del conto e la sicurezza",
+  "phoneAuthEnterSixDigitCode": "Inserisci il codice a 6 cifre inviato a {phoneNumber}",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Numero di telefono",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Inserisci il tuo numero di telefono",
+  "phoneAuthPleaseEnterValidPhone": "Inserisci un numero di telefono valido",
+  "phoneAuthVerificationCode": "Codice di verifica",
+  "phoneAuthPleaseEnterSixDigitCode": "Inserisci il codice a 6 cifre",
+  "phoneAuthResendCode": "Codice di invio",
+  "phoneAuthSendVerificationCode": "Invia la verifica Codice",
+  "phoneAuthVerifyCode": "Codice di verifica",
+  "phoneAuthChangePhoneNumber": "Cambia il numero di telefono",
+  "phoneAuthSmsNotice": "Ti invieremo un codice di verifica tramite SMS. Possono essere applicate le tariffe dei messaggi standard.",
+  "phoneAuthCodeExpires": "Il codice scade in 60 secondi. Controlla i messaggi.",
+  "yourDataRights": "Diritti dei dati",
+  "dataRightsExplanation": "Hai il pieno controllo sui tuoi dati personali. Puoi esportare tutti i tuoi dati o eliminare definitivamente il tuo account in qualsiasi momento.",
+  "exportYourData": "Esporta i tuoi dati",
+  "exportDataDescription": "Scarica tutti i dati del tuo account",
+  "exportData": "Esportazione dei dati",
+  "exportingData": "Esportazione...",
+  "exportDataDetails": "Include: profilo, bip, commenti, informazioni sul dispositivo e preferenze. I dati sono forniti in formato JSON.",
+  "dataExportedSuccessfully": "I dati esportati con successo",
+  "dataExportFailed": "Non esportare dati",
+  "deleteAccount": "Cancella account",
+  "deleteAccountDescription": "Rimuovere permanentemente il vostro account e tutti i dati",
+  "deleteAccountWarning": "Questa azione non può essere annullata. Tutti i tuoi dati di segnale acustico, commenti e account verranno cancellati definitivamente.",
+  "deleteMyAccount": "Cancella il mio account",
+  "deletingAccount": "Deleting...",
+  "deleteAccountConfirmTitle": "Cancella account",
+  "deleteAccountConfirmMessage": "Sei assolutamente sicuro di voler cancellare il tuo account? Questa azione è permanente e non può essere annullata.",
+  "dataWillBeDeleted": "I seguenti dati verranno cancellati definitivamente:",
+  "deletedDataList": "• Il tuo profilo e nome utente\n• Tutti i tuoi beep e report\n• Tutti i tuoi commenti\n• Dati di registrazione del dispositivo\n• Dati di localizzazione e preferenza",
+  "deleteAccountPermanent": "Eliminare permanentemente",
+  "accountDeletedSuccessfully": "Account cancellato con successo",
+  "accountDeletionFailed": "Non riuscita a cancellare l'account"
 }

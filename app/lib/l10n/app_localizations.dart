@@ -3306,6 +3306,492 @@ abstract class AppLocalizations {
   /// **'Export or delete your account data'**
   String get dataManagementDesc;
 
+  /// No description provided for @splashTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time sighting alerts'**
+  String get splashTagline;
+
+  /// No description provided for @splashStartingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting up...'**
+  String get splashStartingUp;
+
+  /// No description provided for @splashInitializationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Initialization failed'**
+  String get splashInitializationFailed;
+
+  /// No description provided for @splashInitializationFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Initialization Failed'**
+  String get splashInitializationFailedTitle;
+
+  /// No description provided for @splashInitializationError.
+  ///
+  /// In en, this message translates to:
+  /// **'The app failed to initialize properly:'**
+  String get splashInitializationError;
+
+  /// No description provided for @splashRetry.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get splashRetry;
+
+  /// No description provided for @splashContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get splashContinue;
+
+  /// No description provided for @splashInitializing.
+  ///
+  /// In en, this message translates to:
+  /// **'Initializing...'**
+  String get splashInitializing;
+
+  /// No description provided for @signInWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome {username}!'**
+  String signInWelcome(String username);
+
+  /// No description provided for @signInFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign-in failed: {error}'**
+  String signInFailed(String error);
+
+  /// No description provided for @signInPleaseEnterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email address'**
+  String get signInPleaseEnterEmail;
+
+  /// No description provided for @signInPleaseEnterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get signInPleaseEnterValidEmail;
+
+  /// No description provided for @signInMagicLinkSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Magic link sent! Check your email and click the link to sign in.'**
+  String get signInMagicLinkSent;
+
+  /// No description provided for @signInMagicLinkFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send magic link. Please try again.'**
+  String get signInMagicLinkFailed;
+
+  /// No description provided for @signInAllDataCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'All data cleared'**
+  String get signInAllDataCleared;
+
+  /// No description provided for @signInSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Real-time UFO sighting alerts and MUFON reports'**
+  String get signInSubtitle;
+
+  /// No description provided for @signInGoogleLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Signing in...'**
+  String get signInGoogleLoading;
+
+  /// No description provided for @signInContinueWithGoogle.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue with Google'**
+  String get signInContinueWithGoogle;
+
+  /// No description provided for @signInOr.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get signInOr;
+
+  /// No description provided for @signInWithEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Email'**
+  String get signInWithEmail;
+
+  /// No description provided for @signInEmailDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send you a secure link to sign in'**
+  String get signInEmailDescription;
+
+  /// No description provided for @signInEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Email address'**
+  String get signInEmailAddress;
+
+  /// No description provided for @signInEmailPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'your@email.com'**
+  String get signInEmailPlaceholder;
+
+  /// No description provided for @signInTryAgainIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again in {seconds}s'**
+  String signInTryAgainIn(int seconds);
+
+  /// No description provided for @signInSending.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending...'**
+  String get signInSending;
+
+  /// No description provided for @signInSendMagicLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Magic Link'**
+  String get signInSendMagicLink;
+
+  /// No description provided for @signInCheckEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email! The link expires in 15 minutes.'**
+  String get signInCheckEmail;
+
+  /// No description provided for @signInSecureAuth.
+  ///
+  /// In en, this message translates to:
+  /// **'Secure Authentication'**
+  String get signInSecureAuth;
+
+  /// No description provided for @signInSecureAuthDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.'**
+  String get signInSecureAuthDescription;
+
+  /// No description provided for @signInClearAllDataDebug.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear All Data (Debug)'**
+  String get signInClearAllDataDebug;
+
+  /// No description provided for @emailAuthFailedToSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send email'**
+  String get emailAuthFailedToSend;
+
+  /// No description provided for @emailAuthFailedToSendTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send email. Please try again.'**
+  String get emailAuthFailedToSendTryAgain;
+
+  /// No description provided for @emailAuthInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email address. Please check the format.'**
+  String get emailAuthInvalidEmail;
+
+  /// No description provided for @emailAuthUserNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No account found with this email address.'**
+  String get emailAuthUserNotFound;
+
+  /// No description provided for @emailAuthTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please try again later.'**
+  String get emailAuthTooManyRequests;
+
+  /// No description provided for @emailAuthOperationNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Email link sign-in is not enabled.'**
+  String get emailAuthOperationNotAllowed;
+
+  /// No description provided for @emailAuthQuotaExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Email quota exceeded. Please try again tomorrow.'**
+  String get emailAuthQuotaExceeded;
+
+  /// No description provided for @emailAuthVerificationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verification failed. Please try again.'**
+  String get emailAuthVerificationFailed;
+
+  /// No description provided for @emailAuthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Verification'**
+  String get emailAuthTitle;
+
+  /// No description provided for @emailAuthVerifyYourEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Email'**
+  String get emailAuthVerifyYourEmail;
+
+  /// No description provided for @emailAuthDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your email address for account recovery and security. We\'ll send you a secure sign-in link.'**
+  String get emailAuthDescription;
+
+  /// No description provided for @emailAuthEmailAddress.
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get emailAuthEmailAddress;
+
+  /// No description provided for @emailAuthEmailPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'your.email@example.com'**
+  String get emailAuthEmailPlaceholder;
+
+  /// No description provided for @emailAuthPleaseEnterEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email address'**
+  String get emailAuthPleaseEnterEmail;
+
+  /// No description provided for @emailAuthPleaseEnterValidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid email address'**
+  String get emailAuthPleaseEnterValidEmail;
+
+  /// No description provided for @emailAuthCheckEmailToContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your email and tap the verification link to continue.'**
+  String get emailAuthCheckEmailToContinue;
+
+  /// No description provided for @emailAuthResendEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Email'**
+  String get emailAuthResendEmail;
+
+  /// No description provided for @emailAuthSendVerificationEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Verification Email'**
+  String get emailAuthSendVerificationEmail;
+
+  /// No description provided for @emailAuthHowItWorks.
+  ///
+  /// In en, this message translates to:
+  /// **'How Email Verification Works'**
+  String get emailAuthHowItWorks;
+
+  /// No description provided for @emailAuthHowItWorksSteps.
+  ///
+  /// In en, this message translates to:
+  /// **'1. We send you a secure sign-in link\n2. Check your email and tap the link\n3. Your email gets verified automatically\n4. No passwords needed!'**
+  String get emailAuthHowItWorksSteps;
+
+  /// No description provided for @emailAuthSecurityNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Email verification helps secure your account and enables account recovery if you lose access to your device.'**
+  String get emailAuthSecurityNotice;
+
+  /// No description provided for @phoneAuthFailedToSendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to send verification code. Please try again.'**
+  String get phoneAuthFailedToSendCode;
+
+  /// No description provided for @phoneAuthInvalidCodeTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid verification code. Please try again.'**
+  String get phoneAuthInvalidCodeTryAgain;
+
+  /// No description provided for @phoneAuthPhoneVerified.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone number verified: {phoneNumber}'**
+  String phoneAuthPhoneVerified(String phoneNumber);
+
+  /// No description provided for @phoneAuthVerificationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone verification failed. Please try again.'**
+  String get phoneAuthVerificationFailed;
+
+  /// No description provided for @phoneAuthCodeResent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification code resent'**
+  String get phoneAuthCodeResent;
+
+  /// No description provided for @phoneAuthFailedToResendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to resend code. Please try again.'**
+  String get phoneAuthFailedToResendCode;
+
+  /// No description provided for @phoneAuthInvalidPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid phone number. Please check the format.'**
+  String get phoneAuthInvalidPhoneNumber;
+
+  /// No description provided for @phoneAuthTooManyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please try again later.'**
+  String get phoneAuthTooManyRequests;
+
+  /// No description provided for @phoneAuthInvalidVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid verification code. Please check and try again.'**
+  String get phoneAuthInvalidVerificationCode;
+
+  /// No description provided for @phoneAuthSessionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification session expired. Please request a new code.'**
+  String get phoneAuthSessionExpired;
+
+  /// No description provided for @phoneAuthSmsQuotaExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS quota exceeded. Please try again tomorrow.'**
+  String get phoneAuthSmsQuotaExceeded;
+
+  /// No description provided for @phoneAuthCredentialAlreadyInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This phone number is already linked to another account.'**
+  String get phoneAuthCredentialAlreadyInUse;
+
+  /// No description provided for @phoneAuthVerificationFailedGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification failed. Please try again.'**
+  String get phoneAuthVerificationFailedGeneric;
+
+  /// No description provided for @phoneAuthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Verification'**
+  String get phoneAuthTitle;
+
+  /// No description provided for @phoneAuthVerifyYourPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Your Phone'**
+  String get phoneAuthVerifyYourPhone;
+
+  /// No description provided for @phoneAuthEnterVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Verification Code'**
+  String get phoneAuthEnterVerificationCode;
+
+  /// No description provided for @phoneAuthAddPhoneForSecurity.
+  ///
+  /// In en, this message translates to:
+  /// **'Add your phone number for account recovery and security'**
+  String get phoneAuthAddPhoneForSecurity;
+
+  /// No description provided for @phoneAuthEnterSixDigitCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the 6-digit code sent to {phoneNumber}'**
+  String phoneAuthEnterSixDigitCode(String phoneNumber);
+
+  /// No description provided for @phoneAuthPhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneAuthPhoneNumber;
+
+  /// No description provided for @phoneAuthPhonePlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'+1 (555) 123-4567'**
+  String get phoneAuthPhonePlaceholder;
+
+  /// No description provided for @phoneAuthPleaseEnterPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your phone number'**
+  String get phoneAuthPleaseEnterPhone;
+
+  /// No description provided for @phoneAuthPleaseEnterValidPhone.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a valid phone number'**
+  String get phoneAuthPleaseEnterValidPhone;
+
+  /// No description provided for @phoneAuthVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification Code'**
+  String get phoneAuthVerificationCode;
+
+  /// No description provided for @phoneAuthPleaseEnterSixDigitCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter the 6-digit code'**
+  String get phoneAuthPleaseEnterSixDigitCode;
+
+  /// No description provided for @phoneAuthResendCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend Code'**
+  String get phoneAuthResendCode;
+
+  /// No description provided for @phoneAuthSendVerificationCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Send Verification Code'**
+  String get phoneAuthSendVerificationCode;
+
+  /// No description provided for @phoneAuthVerifyCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify Code'**
+  String get phoneAuthVerifyCode;
+
+  /// No description provided for @phoneAuthChangePhoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Phone Number'**
+  String get phoneAuthChangePhoneNumber;
+
+  /// No description provided for @phoneAuthSmsNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'We\'ll send you a verification code via SMS. Standard message rates may apply.'**
+  String get phoneAuthSmsNotice;
+
+  /// No description provided for @phoneAuthCodeExpires.
+  ///
+  /// In en, this message translates to:
+  /// **'Code expires in 60 seconds. Check your messages.'**
+  String get phoneAuthCodeExpires;
+
   /// No description provided for @yourDataRights.
   ///
   /// In en, this message translates to:

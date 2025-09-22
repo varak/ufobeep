@@ -83,7 +83,7 @@
   "mediaProcessing": "Media verwerken..",
   "cameraPermissionTitle": "Cameratoegang nodig",
   "cameraPermissionBody": "Grant camera toegang tot UFO foto's en video's vastleggen.",
-  "locationPermissionTitle": "Toegang tot de locatie vereist",
+  "locationPermissionTitle": "Locatie Toestemming vereist",
   "locationPermissionBody": "Wij gebruiken uw locatie om waarschuwingen in de buurt te versturen en te ontvangen.",
   "microphonePermissionTitle": "Microfoontoegang nodig",
   "microphonePermissionBody": "Geef microfoon toegang voor video-opname met audio.",
@@ -531,7 +531,7 @@
   "viewAllBeeps": "Bekijk alle piepers",
   "sightingsMap": "Kaart van de waarneming",
   "globalSightingNetwork": "Wereldwijd waarnemingsnetwerk",
-  "howItWorks": "Hoe werkt UFObeep",
+  "howItWorks": "Hoe het werkt",
   "backToBeeps": "Terug naar Beeps",
   "loadingDetails": "Bezig met laden van piepgegevens...",
   "details": "Gegevens",
@@ -682,6 +682,199 @@
   "pushAlertsTitle": "Waarschuwingen indrukken",
   "pushAlertsDescription": "Wat pings je telefoon",
   "alertRadius": "Waarschuw Straal",
-  "alertMeForUfobeep": "Waarschuw me voor UFObeep (real-time)",
-  "mufonNoPushInfo": "MUFON rapporten worden 's nachts geïmporteerd en niet push waarschuwingen veroorzaken"
+  "mufonNoPushInfo": "MUFON rapporten worden 's nachts geïmporteerd en niet push waarschuwingen veroorzaken",
+  "privacyData": "Privacy & gegevens",
+  "privacyPolicyDesc": "Hoe wij uw gegevens beschermen en gebruiken",
+  "termsOfService": "Servicevoorwaarden",
+  "termsOfServiceDesc": "Juridische voorwaarden",
+  "locationTracking": "Locatie volgen",
+  "locationTrackingDesc": "Achtergrondlocatie voor nabijheidswaarschuwingen",
+  "locationTrackingTitle": "Achtergrondlocatie volgen",
+  "locationTrackingExplanation": "UFObeep bewaakt uw locatie op de achtergrond om u nabijheid waarschuwingen te sturen wanneer UFO waarnemingen gebeuren in de buurt van uw huidige locatie, zelfs als je weg van huis.",
+  "locationTrackingBattery": "Gebruikt intelligente geofencing voor <3% batterij impact",
+  "backgroundLocationTracking": "Achtergrond inschakelen Tracking",
+  "locationTrackingActive": "Waarnemingslocatie voor nabijheidswaarschuwingen",
+  "locationTrackingInactive": "Locatie volgen is uitgeschakeld",
+  "locationTrackingDisabledWarning": "U ontvangt geen nabijheidswaarschuwingen wanneer u naar nieuwe locaties verhuist",
+  "trackingStatus": "Trackingstatus",
+  "monitoringStatus": "Toezicht",
+  "active": "Actief",
+  "inactive": "Inactief",
+  "lastKnownLocation": "Laatste bekende locatie",
+  "lastLocationUpdate": "Laatste update",
+  "movementThreshold": "Bewegingsdrempel",
+  "updateFrequency": "Frequentie bijwerken",
+  "batteryImpact": "Inslag van de batterij",
+  "dataPrivacy": "Gegevensbescherming",
+  "locationPermissionExplanation": "UFObeep heeft 'Always Allow' location permissie nodig om uw beweging te monitoren en nabijheidswaarschuwingen te verzenden wanneer u op nieuwe locaties bent.",
+  "benefitsTitle": "Voordelen",
+  "locationTrackingBenefits": "• Ontvang UFO waarschuwingen overal waar u reist\n• Automatische locatie updates\n• Geen handmatige installatie vereist",
+  "allowLocationAccess": "Locatietoegang toestaan",
+  "locationPermissionRequired": "Locatie toestemming is vereist voor achtergrond tracking",
+  "locationTrackingEnabled": "Achtergrondlocatie traceren ingeschakeld",
+  "locationTrackingDisabled": "Achtergrondlocatie volgen uitgeschakeld",
+  "justNow": "Net",
+  "minutesAgo": "__PLAATSHOLDER_0___ minuten geleden",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "__PLAATSHOLDER_0___ uren geleden",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "__PLAATSHOLDER_0__ dagen geleden",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Gegevensbeheer",
+  "dataManagementDesc": "Uw accountgegevens exporteren of verwijderen",
+  "splashTagline": "Signaleringen in realtime",
+  "splashStartingUp": "Starten...",
+  "splashInitializationFailed": "Initialisatie mislukt",
+  "splashInitializationFailedTitle": "Initialisatie mislukt",
+  "splashInitializationError": "De app kon niet goed initialiseren:",
+  "splashRetry": "Opnieuw proberen",
+  "splashContinue": "Doorgaan",
+  "splashInitializing": "Initialiseren...",
+  "signInWelcome": "Welkom!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Aanmelden mislukt: __PLAATSHOLDER_0___",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Vul uw e-mailadres in",
+  "signInPleaseEnterValidEmail": "Vul een geldig e-mailadres in",
+  "signInMagicLinkSent": "Magische link verzonden! Controleer uw e-mail en klik op de link om u aan te melden.",
+  "signInMagicLinkFailed": "Kon magische verwijzing niet versturen. Probeer het nog eens.",
+  "signInAllDataCleared": "Alle gegevens zijn gewist",
+  "signInSubtitle": "Real-time UFO waarnemingen en MUFON rapporten",
+  "signInGoogleLoading": "Aanmelden...",
+  "signInContinueWithGoogle": "Doorgaan met Google",
+  "signInOr": "of",
+  "signInWithEmail": "Aanmelden met e-mail",
+  "signInEmailDescription": "We sturen je een beveiligde link om je aan te melden",
+  "signInEmailAddress": "E-mailadres",
+  "signInEmailPlaceholder": "your@email.com",
+  "signInTryAgainIn": "Probeer opnieuw in __PLACEHOLDER_0_s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Verzenden...",
+  "signInSendMagicLink": "Magische koppeling versturen",
+  "signInCheckEmail": "Check je e-mail! De verbinding verloopt over 15 minuten.",
+  "signInSecureAuth": "Veilige authenticatie",
+  "signInSecureAuthDescription": "Gebruik Google Sign-In voor directe toegang, of e-mail magische links die vervallen in 15 minuten.",
+  "signInClearAllDataDebug": "Alle gegevens wissen (debug)",
+  "emailAuthFailedToSend": "Versturen van e-mail is mislukt",
+  "emailAuthFailedToSendTryAgain": "Versturen van e-mail is mislukt. Probeer het nog eens.",
+  "emailAuthInvalidEmail": "Ongeldig e-mailadres. Controleer het formaat.",
+  "emailAuthUserNotFound": "Geen account gevonden met dit e-mailadres.",
+  "emailAuthTooManyRequests": "Te veel pogingen. Probeer het later nog eens.",
+  "emailAuthOperationNotAllowed": "Aanmelden van e-maillink is niet ingeschakeld.",
+  "emailAuthQuotaExceeded": "E-mailquota overschreden. Probeer het morgen opnieuw.",
+  "emailAuthVerificationFailed": "E-mailverificatie mislukt. Probeer het nog eens.",
+  "emailAuthTitle": "E-mailverificatie",
+  "emailAuthVerifyYourEmail": "Uw e-mail verifiëren",
+  "emailAuthDescription": "Voeg uw e-mailadres toe voor accountherstel en beveiliging. We sturen je een beveiligde link.",
+  "emailAuthEmailAddress": "E-mailadres",
+  "emailAuthEmailPlaceholder": "your.email@example.com",
+  "emailAuthPleaseEnterEmail": "Vul uw e-mailadres in",
+  "emailAuthPleaseEnterValidEmail": "Vul een geldig e-mailadres in",
+  "emailAuthCheckEmailToContinue": "Controleer uw e-mail en tik op de verificatie-link om verder te gaan.",
+  "emailAuthResendEmail": "E-mail opnieuw verzenden",
+  "emailAuthSendVerificationEmail": "Verificatie verzenden E-mail",
+  "emailAuthHowItWorks": "Hoe e-mailverificatie werkt",
+  "emailAuthHowItWorksSteps": "1. Wij sturen u een veilige inlog link\n2. Controleer uw e-mail en tik op de link\n3. Uw e-mail wordt automatisch geverifieerd\n4. Geen wachtwoorden nodig!",
+  "emailAuthSecurityNotice": "E-mailverificatie helpt uw account veilig te stellen en maakt accountherstel mogelijk als u de toegang tot uw apparaat verliest.",
+  "phoneAuthFailedToSendCode": "Kon verificatiecode niet versturen. Probeer het nog eens.",
+  "phoneAuthInvalidCodeTryAgain": "Ongeldige verificatiecode. Probeer het nog eens.",
+  "phoneAuthPhoneVerified": "Telefoonnummer geverifieerd: __PLAATSHOLDER_0___",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Telefoonverificatie mislukt. Probeer het nog eens.",
+  "phoneAuthCodeResent": "Verificatiecode",
+  "phoneAuthFailedToResendCode": "Hersturen van code is mislukt. Probeer het nog eens.",
+  "phoneAuthInvalidPhoneNumber": "Ongeldig telefoonnummer. Controleer het formaat.",
+  "phoneAuthTooManyRequests": "Te veel pogingen. Probeer het later nog eens.",
+  "phoneAuthInvalidVerificationCode": "Ongeldige verificatiecode. Controleer en probeer het opnieuw.",
+  "phoneAuthSessionExpired": "De verificatiesessie is verlopen. Vraag een nieuwe code aan.",
+  "phoneAuthSmsQuotaExceeded": "SMS-quotum overschreden. Probeer het morgen opnieuw.",
+  "phoneAuthCredentialAlreadyInUse": "Dit telefoonnummer is al gekoppeld aan een ander account.",
+  "phoneAuthVerificationFailedGeneric": "Verificatie mislukt. Probeer het nog eens.",
+  "phoneAuthTitle": "Telefooncontrole",
+  "phoneAuthVerifyYourPhone": "Uw telefoon controleren",
+  "phoneAuthEnterVerificationCode": "Verificatie invoeren Rubriek",
+  "phoneAuthAddPhoneForSecurity": "Voeg uw telefoonnummer voor account herstel en beveiliging",
+  "phoneAuthEnterSixDigitCode": "Voer de 6-cijferige code in die naar {phoneNumber} is verzonden",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Telefoonnummer",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Voer uw telefoonnummer in",
+  "phoneAuthPleaseEnterValidPhone": "Voer een geldig telefoonnummer in",
+  "phoneAuthVerificationCode": "Verificatiecode",
+  "phoneAuthPleaseEnterSixDigitCode": "Voer de 6-cijferige code in",
+  "phoneAuthResendCode": "Code opnieuw verzenden",
+  "phoneAuthSendVerificationCode": "Verificatie verzenden Rubriek",
+  "phoneAuthVerifyCode": "Code verifiëren",
+  "phoneAuthChangePhoneNumber": "Telefoonnummer wijzigen",
+  "phoneAuthSmsNotice": "We sturen je een verificatiecode via SMS. Standaard berichtentarieven kunnen van toepassing zijn.",
+  "phoneAuthCodeExpires": "Code verloopt over 60 seconden. Controleer je berichten.",
+  "yourDataRights": "Uw gegevensrechten",
+  "dataRightsExplanation": "U heeft volledige controle over uw persoonlijke gegevens. U kunt al uw gegevens exporteren of permanent uw account te allen tijde verwijderen.",
+  "exportYourData": "Uw gegevens exporteren",
+  "exportDataDescription": "Download al uw accountgegevens",
+  "exportData": "Gegevens exporteren",
+  "exportingData": "Exporteren...",
+  "exportDataDetails": "Omvat: profiel, piepers, opmerkingen, apparaatinformatie en voorkeuren. Gegevens worden verstrekt in JSON formaat.",
+  "dataExportedSuccessfully": "Gegevens met succes geëxporteerd",
+  "dataExportFailed": "Exporteren van gegevens is mislukt",
+  "deleteAccount": "Account verwijderen",
+  "deleteAccountDescription": "Uw account en alle gegevens definitief verwijderen",
+  "deleteAccountWarning": "Deze actie kan niet ongedaan worden gemaakt. Al uw piepers, opmerkingen en accountgegevens worden permanent verwijderd.",
+  "deleteMyAccount": "Mijn account verwijderen",
+  "deletingAccount": "Verwijderen...",
+  "deleteAccountConfirmTitle": "Account verwijderen",
+  "deleteAccountConfirmMessage": "Weet u absoluut zeker dat u uw account wilt verwijderen? Deze actie is permanent en kan niet ongedaan worden gemaakt.",
+  "dataWillBeDeleted": "De volgende gegevens worden definitief verwijderd:",
+  "deletedDataList": "• Uw profiel en gebruikersnaam\n• Al je piepjes en rapporten\n• Al uw opmerkingen\n• Device registratie gegevens\n• Locatie en voorkeursgegevens",
+  "deleteAccountPermanent": "Permanent verwijderen",
+  "accountDeletedSuccessfully": "Account succesvol verwijderd",
+  "accountDeletionFailed": "Verwijderen van account mislukt"
 }

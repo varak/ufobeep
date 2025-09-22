@@ -198,7 +198,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Επιχορήγηση πρόσβασης κάμερας για να συλλάβει UFO φωτογραφίες και βίντεο.';
 
   @override
-  String get locationPermissionTitle => 'Απαιτείται πρόσβαση τοποθεσίας';
+  String get locationPermissionTitle => 'Απαιτούμενη άδεια θέσης';
 
   @override
   String get locationPermissionBody =>
@@ -1120,7 +1120,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get globalSightingNetwork => 'Παγκόσμιο δίκτυο παρατήρησης';
 
   @override
-  String get howItWorks => 'Πώς λειτουργεί το UFOBeep';
+  String get howItWorks => 'Πώς Λειτουργεί';
 
   @override
   String get backToBeeps => 'Επιστροφή στους Μπιπς';
@@ -1597,194 +1597,496 @@ class AppLocalizationsEl extends AppLocalizations {
       'Οι αναφορές MUFON εισάγονται τη νύχτα και δεν ενεργοποιούν ειδοποιήσεις ώθησης';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => 'Ιδιωτικότητα & Δεδομένα';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc =>
+      'Πώς προστατεύουμε και χρησιμοποιούμε τα δεδομένα σας';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'Όροι υπηρεσίας';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => 'Νομικοί όροι και προϋποθέσεις';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => 'Παρακολούθηση τοποθεσίας';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc =>
+      'Θέση φόντου για τις καταχωρίσεις εγγύτητας';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => 'Παρακολούθηση τοποθεσίας φόντου';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFOBeep παρακολουθεί τη θέση σας στο παρασκήνιο για να σας στείλει ειδοποιήσεις εγγύτητας όταν UFO εμφανίσεις συμβαίνουν κοντά στην τρέχουσα τοποθεσία σας, ακόμη και όταν είστε μακριά από το σπίτι.';
 
   @override
   String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+      'Χρησιμοποιεί ευφυή γεωφαινόμενη για την πρόσκρουση μπαταρίας <3%';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => 'Ενεργοποίηση φόντου Παρακολούθηση';
 
   @override
   String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+      'Θέση παρακολούθησης για καταχωρίσεις εγγύτητας';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive =>
+      'Η παρακολούθηση τοποθεσίας είναι απενεργοποιημένη';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+      'Δεν θα λάβετε ειδοποιήσεις εγγύτητας όταν μετακομίσετε σε νέες τοποθεσίες';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => 'Κατάσταση παρακολούθησης';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => 'Παρακολούθηση';
 
   @override
-  String get active => 'Active';
+  String get active => 'Ενεργό';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => 'Ανενεργός';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => 'Τελευταία γνωστή τοποθεσία';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => 'Τελευταία ενημέρωση';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => 'Κατώφλι κίνησης';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => 'Συχνότητα ενημέρωσης';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => 'Επιπτώσεις μπαταριών';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => 'Προστασία δεδομένων';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'Το UFOBeep χρειάζεται άδεια τοποθεσίας \'Πάντα επιτρέπεται\' για να παρακολουθεί την κίνησή σας και να στέλνει ειδοποιήσεις εγγύτητας όταν βρίσκεστε σε νέες τοποθεσίες.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => 'Οφέλη';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '• Πάρτε UFO ειδοποιήσεις όπου κι αν ταξιδεύετε\n• Αυτόματη ενημέρωση τοποθεσίας\n• Δεν απαιτείται χειροκίνητη ρύθμιση';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => 'Επίτρεψε πρόσβαση τοποθεσίας';
 
   @override
   String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+      'Απαιτείται άδεια τοποθεσίας για παρακολούθηση ιστορικού';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled =>
+      'Ενεργοποίηση εντοπισμού τοποθεσίας φόντου';
 
   @override
   String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+      'Απενεργοποίηση εντοπισμού τοποθεσίας φόντου';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => 'Μόλις τώρα';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '__PLACEHOLDER_0_ πριν από λίγα λεπτά';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '__PLACEHOLDER_0_ ώρες πριν';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return '__PACHOLDER_0_ ημέρες πριν';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => 'Διαχείριση δεδομένων';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc =>
+      'Εξαγωγή ή διαγραφή των δεδομένων του λογαριασμού σας';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get splashTagline => 'Συναγερμοί εντοπισμού σε πραγματικό χρόνο';
+
+  @override
+  String get splashStartingUp => 'Ξεκινώντας...';
+
+  @override
+  String get splashInitializationFailed => 'Αποτυχία αρχικοποίησης';
+
+  @override
+  String get splashInitializationFailedTitle => 'Αποτυχία αρχικοποίησης';
+
+  @override
+  String get splashInitializationError =>
+      'Η εφαρμογή απέτυχε να αρχικοποιήσει σωστά:';
+
+  @override
+  String get splashRetry => 'Επανάληψη';
+
+  @override
+  String get splashContinue => 'Συνέχεια';
+
+  @override
+  String get splashInitializing => 'Αρχικοποίηση...';
+
+  @override
+  String signInWelcome(String username) {
+    return 'Καλωσόρισες!';
+  }
+
+  @override
+  String signInFailed(String error) {
+    return 'Αποτυχία σύνδεσης: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String get signInPleaseEnterEmail =>
+      'Παρακαλώ εισάγετε τη διεύθυνση email σας';
+
+  @override
+  String get signInPleaseEnterValidEmail =>
+      'Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email';
+
+  @override
+  String get signInMagicLinkSent =>
+      'Ο μαγικός κρίκος στάλθηκε! Ελέγξτε το email σας και κάντε κλικ στο σύνδεσμο για να συνδεθείτε.';
+
+  @override
+  String get signInMagicLinkFailed =>
+      'Αποτυχία αποστολής μαγικού συνδέσμου. Παρακαλώ προσπαθήστε ξανά.';
+
+  @override
+  String get signInAllDataCleared => 'Εκκαθάριση όλων των δεδομένων';
+
+  @override
+  String get signInSubtitle =>
+      'Συναγερμοί εντοπισμού UFO σε πραγματικό χρόνο και αναφορές MUFON';
+
+  @override
+  String get signInGoogleLoading => 'Υπογραφή...';
+
+  @override
+  String get signInContinueWithGoogle => 'Συνεχίστε με το Google';
+
+  @override
+  String get signInOr => 'ή';
+
+  @override
+  String get signInWithEmail => 'Σύνδεση με Email';
+
+  @override
+  String get signInEmailDescription =>
+      'Θα σου στείλουμε έναν ασφαλή σύνδεσμο για να υπογράψεις';
+
+  @override
+  String get signInEmailAddress => 'Διεύθυνση ηλεκτρονικού ταχυδρομείου';
+
+  @override
+  String get signInEmailPlaceholder => 'your@email.com';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return 'Δοκιμάστε ξανά σε __PACHOLDER_0_s';
+  }
+
+  @override
+  String get signInSending => 'Αποστολή...';
+
+  @override
+  String get signInSendMagicLink => 'Αποστολή μαγικού δεσμού';
+
+  @override
+  String get signInCheckEmail =>
+      'Έλεγξε το email σου! Ο σύνδεσμος λήγει σε 15 λεπτά.';
+
+  @override
+  String get signInSecureAuth => 'Ασφαλής ταυτοποίηση';
+
+  @override
+  String get signInSecureAuthDescription =>
+      'Χρησιμοποιήστε το Google Sign-In για άμεση πρόσβαση, ή email μαγικό συνδέσμους που λήγουν σε 15 λεπτά.';
+
+  @override
+  String get signInClearAllDataDebug =>
+      'Καθαρισμός όλων των δεδομένων (αποσφαλμάτωση)';
+
+  @override
+  String get emailAuthFailedToSend => 'Αποτυχία αποστολής email';
+
+  @override
+  String get emailAuthFailedToSendTryAgain =>
+      'Αποτυχία αποστολής email. Παρακαλώ προσπαθήστε ξανά.';
+
+  @override
+  String get emailAuthInvalidEmail =>
+      'Μη έγκυρη διεύθυνση email. Παρακαλώ ελέγξτε τη μορφή.';
+
+  @override
+  String get emailAuthUserNotFound =>
+      'Δε βρέθηκε λογαριασμός με αυτή τη διεύθυνση email.';
+
+  @override
+  String get emailAuthTooManyRequests =>
+      'Πολλές προσπάθειες. Παρακαλώ προσπαθήστε ξανά αργότερα.';
+
+  @override
+  String get emailAuthOperationNotAllowed =>
+      'Η σύνδεση email δεν είναι ενεργοποιημένη.';
+
+  @override
+  String get emailAuthQuotaExceeded =>
+      'Υπερέβη την ποσόστωση ηλεκτρονικού ταχυδρομείου. Παρακαλώ προσπαθήστε ξανά αύριο.';
+
+  @override
+  String get emailAuthVerificationFailed =>
+      'Η επαλήθευση ηλεκτρονικού ταχυδρομείου απέτυχε. Παρακαλώ προσπαθήστε ξανά.';
+
+  @override
+  String get emailAuthTitle => 'Επαλήθευση ηλεκτρονικού ταχυδρομείου';
+
+  @override
+  String get emailAuthVerifyYourEmail => 'Επαλήθευση του email σας';
+
+  @override
+  String get emailAuthDescription =>
+      'Προσθέστε τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας για την ανάκτηση λογαριασμού και την ασφάλεια. Θα σας στείλουμε έναν ασφαλή σύνδεσμο εισόδου.';
+
+  @override
+  String get emailAuthEmailAddress => 'Διεύθυνση ηλεκτρονικού ταχυδρομείου';
+
+  @override
+  String get emailAuthEmailPlaceholder => 'your.email@example.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail =>
+      'Παρακαλώ εισάγετε τη διεύθυνση email σας';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail =>
+      'Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email';
+
+  @override
+  String get emailAuthCheckEmailToContinue =>
+      'Ελέγξτε το email σας και πατήστε το σύνδεσμο επαλήθευσης για να συνεχίσετε.';
+
+  @override
+  String get emailAuthResendEmail => 'Επαναφορά email';
+
+  @override
+  String get emailAuthSendVerificationEmail =>
+      'Αποστολή επαλήθευσης Ηλεκτρονικό ταχυδρομείο';
+
+  @override
+  String get emailAuthHowItWorks =>
+      'Πώς λειτουργεί η επαλήθευση ηλεκτρονικού ταχυδρομείου';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '1. Σας στέλνουμε ασφαλή σύνδεση εισόδου\n2. Ελέγξτε το email σας και πατήστε το σύνδεσμο\n3. Το email σας επαληθεύεται αυτόματα\n4. Δεν χρειάζονται κωδικοί πρόσβασης!';
+
+  @override
+  String get emailAuthSecurityNotice =>
+      'Η επαλήθευση ηλεκτρονικού ταχυδρομείου βοηθά στην εξασφάλιση του λογαριασμού σας και επιτρέπει την ανάκτηση λογαριασμού αν χάσετε την πρόσβαση στη συσκευή σας.';
+
+  @override
+  String get phoneAuthFailedToSendCode =>
+      'Αποτυχία αποστολής κωδικού επαλήθευσης. Παρακαλώ προσπαθήστε ξανά.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain =>
+      'Μη έγκυρος κωδικός επαλήθευσης. Παρακαλώ προσπαθήστε ξανά.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return 'Επαλήθευση αριθμού τηλεφώνου: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed =>
+      'Η επαλήθευση τηλεφώνου απέτυχε. Παρακαλώ προσπαθήστε ξανά.';
+
+  @override
+  String get phoneAuthCodeResent => 'Κωδικός επαλήθευσης';
+
+  @override
+  String get phoneAuthFailedToResendCode =>
+      'Αποτυχία αποστολής κώδικα. Παρακαλώ προσπαθήστε ξανά.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber =>
+      'Μη έγκυρο αριθμό τηλεφώνου. Παρακαλώ ελέγξτε τη μορφή.';
+
+  @override
+  String get phoneAuthTooManyRequests =>
+      'Πολλές προσπάθειες. Παρακαλώ προσπαθήστε ξανά αργότερα.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode =>
+      'Μη έγκυρος κωδικός επαλήθευσης. Παρακαλώ ελέγξτε και προσπαθήστε ξανά.';
+
+  @override
+  String get phoneAuthSessionExpired =>
+      'Η συνεδρία επαλήθευσης έληξε. Παρακαλώ ζητήστε νέο κωδικό.';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded =>
+      'Υπερέβη την ποσόστωση SMS. Παρακαλώ προσπαθήστε ξανά αύριο.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse =>
+      'Αυτός ο αριθμός τηλεφώνου είναι ήδη συνδεδεμένος με άλλο λογαριασμό.';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric =>
+      'Η επαλήθευση απέτυχε. Παρακαλώ προσπαθήστε ξανά.';
+
+  @override
+  String get phoneAuthTitle => 'Επαλήθευση τηλεφώνου';
+
+  @override
+  String get phoneAuthVerifyYourPhone => 'Επαλήθευση του τηλεφώνου σας';
+
+  @override
+  String get phoneAuthEnterVerificationCode => 'Εισαγωγή επαλήθευσης Κωδικός';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity =>
+      'Προσθέστε τον αριθμό τηλεφώνου σας για ανάκτηση λογαριασμού και ασφάλεια';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return 'Εισάγετε τον εξαψήφιο κωδικό που αποστέλλεται στο $phoneNumber';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => 'Αριθμός τηλεφώνου';
+
+  @override
+  String get phoneAuthPhonePlaceholder => '+1 (555) 123-4567';
+
+  @override
+  String get phoneAuthPleaseEnterPhone =>
+      'Παρακαλώ εισάγετε τον αριθμό τηλεφώνου σας';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone =>
+      'Παρακαλώ εισάγετε έναν έγκυρο αριθμό τηλεφώνου';
+
+  @override
+  String get phoneAuthVerificationCode => 'Κωδικός επαλήθευσης';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode =>
+      'Παρακαλώ εισάγετε τον εξαψήφιο κωδικό';
+
+  @override
+  String get phoneAuthResendCode => 'Επαναφορά κώδικα';
+
+  @override
+  String get phoneAuthSendVerificationCode => 'Αποστολή επαλήθευσης Κωδικός';
+
+  @override
+  String get phoneAuthVerifyCode => 'Επαλήθευση κώδικα';
+
+  @override
+  String get phoneAuthChangePhoneNumber => 'Τροποποίηση αριθμού τηλεφώνου';
+
+  @override
+  String get phoneAuthSmsNotice =>
+      'Θα σας στείλουμε έναν κωδικό επαλήθευσης μέσω SMS. Ενδέχεται να ισχύουν τυποποιημένες τιμές μηνυμάτων.';
+
+  @override
+  String get phoneAuthCodeExpires =>
+      'Ο κωδικός λήγει σε 60 δευτερόλεπτα. Ελέγξτε τα μηνύματά σας.';
+
+  @override
+  String get yourDataRights => 'Τα Δικαιώματα των Δεδομένων Σας';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      'Έχετε τον πλήρη έλεγχο των προσωπικών σας δεδομένων. Μπορείτε να εξαγάγετε όλα τα δεδομένα σας ή να διαγράψετε μόνιμα το λογαριασμό σας ανά πάσα στιγμή.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => 'Εξαγωγή των δεδομένων σας';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription =>
+      'Κατεβάστε όλα τα δεδομένα του λογαριασμού σας';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => 'Εξαγωγή δεδομένων';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => 'Εξαγωγή...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      'Περιλαμβάνει: προφίλ, μπιπ, σχόλια, πληροφορίες συσκευών και προτιμήσεις. Τα δεδομένα παρέχονται σε μορφή JSON.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => 'Τα δεδομένα εξάγονται επιτυχώς';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => 'Αποτυχία εξαγωγής δεδομένων';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => 'Διαγραφή λογαριασμού';
 
   @override
   String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+      'Διαρκώς αφαιρέστε το λογαριασμό σας και όλα τα δεδομένα';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      'Αυτή η ενέργεια δεν μπορεί να αναιρεθεί. Όλα τα μπιπ, τα σχόλια και τα δεδομένα λογαριασμού σας θα διαγραφούν οριστικά.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => 'Διαγραφή του λογαριασμού μου';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get deletingAccount => 'Διαγραφή...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => 'Διαγραφή λογαριασμού';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      'Είστε απολύτως σίγουροι ότι θέλετε να διαγράψετε το λογαριασμό σας; Αυτή η ενέργεια είναι μόνιμη και δεν μπορεί να αναιρεθεί.';
 
   @override
   String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+      'Τα ακόλουθα δεδομένα θα διαγραφούν οριστικά:';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '• Το προφίλ και το όνομα χρήστη σας\n• Όλα τα μπιπ και οι αναφορές σας\n• Όλα τα σχόλιά σας\n• Δεδομένα εγγραφής συσκευών\n• Δεδομένα τοποθεσίας και προτίμησης';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => 'Διαγραφή μόνιμα';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully =>
+      'Ο λογαριασμός διαγράφηκε με επιτυχία';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => 'Αποτυχία διαγραφής λογαριασμού';
 }

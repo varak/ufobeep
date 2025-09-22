@@ -1698,6 +1698,295 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dataManagementDesc => 'Export or delete your account data';
 
   @override
+  String get splashTagline => 'Real-time sighting alerts';
+
+  @override
+  String get splashStartingUp => 'Starting up...';
+
+  @override
+  String get splashInitializationFailed => 'Initialization failed';
+
+  @override
+  String get splashInitializationFailedTitle => 'Initialization Failed';
+
+  @override
+  String get splashInitializationError =>
+      'The app failed to initialize properly:';
+
+  @override
+  String get splashRetry => 'Retry';
+
+  @override
+  String get splashContinue => 'Continue';
+
+  @override
+  String get splashInitializing => 'Initializing...';
+
+  @override
+  String signInWelcome(String username) {
+    return 'Welcome $username!';
+  }
+
+  @override
+  String signInFailed(String error) {
+    return 'Sign-in failed: $error';
+  }
+
+  @override
+  String get signInPleaseEnterEmail => 'Please enter your email address';
+
+  @override
+  String get signInPleaseEnterValidEmail =>
+      'Please enter a valid email address';
+
+  @override
+  String get signInMagicLinkSent =>
+      'Magic link sent! Check your email and click the link to sign in.';
+
+  @override
+  String get signInMagicLinkFailed =>
+      'Failed to send magic link. Please try again.';
+
+  @override
+  String get signInAllDataCleared => 'All data cleared';
+
+  @override
+  String get signInSubtitle =>
+      'Real-time UFO sighting alerts and MUFON reports';
+
+  @override
+  String get signInGoogleLoading => 'Signing in...';
+
+  @override
+  String get signInContinueWithGoogle => 'Continue with Google';
+
+  @override
+  String get signInOr => 'or';
+
+  @override
+  String get signInWithEmail => 'Sign in with Email';
+
+  @override
+  String get signInEmailDescription =>
+      'We\'ll send you a secure link to sign in';
+
+  @override
+  String get signInEmailAddress => 'Email address';
+
+  @override
+  String get signInEmailPlaceholder => 'your@email.com';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return 'Try again in ${seconds}s';
+  }
+
+  @override
+  String get signInSending => 'Sending...';
+
+  @override
+  String get signInSendMagicLink => 'Send Magic Link';
+
+  @override
+  String get signInCheckEmail =>
+      'Check your email! The link expires in 15 minutes.';
+
+  @override
+  String get signInSecureAuth => 'Secure Authentication';
+
+  @override
+  String get signInSecureAuthDescription =>
+      'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.';
+
+  @override
+  String get signInClearAllDataDebug => 'Clear All Data (Debug)';
+
+  @override
+  String get emailAuthFailedToSend => 'Failed to send email';
+
+  @override
+  String get emailAuthFailedToSendTryAgain =>
+      'Failed to send email. Please try again.';
+
+  @override
+  String get emailAuthInvalidEmail =>
+      'Invalid email address. Please check the format.';
+
+  @override
+  String get emailAuthUserNotFound =>
+      'No account found with this email address.';
+
+  @override
+  String get emailAuthTooManyRequests =>
+      'Too many attempts. Please try again later.';
+
+  @override
+  String get emailAuthOperationNotAllowed =>
+      'Email link sign-in is not enabled.';
+
+  @override
+  String get emailAuthQuotaExceeded =>
+      'Email quota exceeded. Please try again tomorrow.';
+
+  @override
+  String get emailAuthVerificationFailed =>
+      'Email verification failed. Please try again.';
+
+  @override
+  String get emailAuthTitle => 'Email Verification';
+
+  @override
+  String get emailAuthVerifyYourEmail => 'Verify Your Email';
+
+  @override
+  String get emailAuthDescription =>
+      'Add your email address for account recovery and security. We\'ll send you a secure sign-in link.';
+
+  @override
+  String get emailAuthEmailAddress => 'Email Address';
+
+  @override
+  String get emailAuthEmailPlaceholder => 'your.email@example.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail => 'Please enter your email address';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail =>
+      'Please enter a valid email address';
+
+  @override
+  String get emailAuthCheckEmailToContinue =>
+      'Check your email and tap the verification link to continue.';
+
+  @override
+  String get emailAuthResendEmail => 'Resend Email';
+
+  @override
+  String get emailAuthSendVerificationEmail => 'Send Verification Email';
+
+  @override
+  String get emailAuthHowItWorks => 'How Email Verification Works';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '1. We send you a secure sign-in link\n2. Check your email and tap the link\n3. Your email gets verified automatically\n4. No passwords needed!';
+
+  @override
+  String get emailAuthSecurityNotice =>
+      'Email verification helps secure your account and enables account recovery if you lose access to your device.';
+
+  @override
+  String get phoneAuthFailedToSendCode =>
+      'Failed to send verification code. Please try again.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain =>
+      'Invalid verification code. Please try again.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return 'Phone number verified: $phoneNumber';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed =>
+      'Phone verification failed. Please try again.';
+
+  @override
+  String get phoneAuthCodeResent => 'Verification code resent';
+
+  @override
+  String get phoneAuthFailedToResendCode =>
+      'Failed to resend code. Please try again.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber =>
+      'Invalid phone number. Please check the format.';
+
+  @override
+  String get phoneAuthTooManyRequests =>
+      'Too many attempts. Please try again later.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode =>
+      'Invalid verification code. Please check and try again.';
+
+  @override
+  String get phoneAuthSessionExpired =>
+      'Verification session expired. Please request a new code.';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded =>
+      'SMS quota exceeded. Please try again tomorrow.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse =>
+      'This phone number is already linked to another account.';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric =>
+      'Verification failed. Please try again.';
+
+  @override
+  String get phoneAuthTitle => 'Phone Verification';
+
+  @override
+  String get phoneAuthVerifyYourPhone => 'Verify Your Phone';
+
+  @override
+  String get phoneAuthEnterVerificationCode => 'Enter Verification Code';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity =>
+      'Add your phone number for account recovery and security';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return 'Enter the 6-digit code sent to $phoneNumber';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => 'Phone Number';
+
+  @override
+  String get phoneAuthPhonePlaceholder => '+1 (555) 123-4567';
+
+  @override
+  String get phoneAuthPleaseEnterPhone => 'Please enter your phone number';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone =>
+      'Please enter a valid phone number';
+
+  @override
+  String get phoneAuthVerificationCode => 'Verification Code';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode =>
+      'Please enter the 6-digit code';
+
+  @override
+  String get phoneAuthResendCode => 'Resend Code';
+
+  @override
+  String get phoneAuthSendVerificationCode => 'Send Verification Code';
+
+  @override
+  String get phoneAuthVerifyCode => 'Verify Code';
+
+  @override
+  String get phoneAuthChangePhoneNumber => 'Change Phone Number';
+
+  @override
+  String get phoneAuthSmsNotice =>
+      'We\'ll send you a verification code via SMS. Standard message rates may apply.';
+
+  @override
+  String get phoneAuthCodeExpires =>
+      'Code expires in 60 seconds. Check your messages.';
+
+  @override
   String get yourDataRights => 'Your Data Rights';
 
   @override

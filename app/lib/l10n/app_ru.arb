@@ -83,7 +83,7 @@
   "mediaProcessing": "Обработка медиа..",
   "cameraPermissionTitle": "Доступ к камере необходим",
   "cameraPermissionBody": "Предоставление доступа к камере для съемки фотографий и видео НЛО.",
-  "locationPermissionTitle": "Доступ к местоположению необходим",
+  "locationPermissionTitle": "Требуется разрешение на местоположение",
   "locationPermissionBody": "Мы используем ваше местоположение для отправки и получения близлежащих предупреждений.",
   "microphonePermissionTitle": "Доступ к микрофону необходим",
   "microphonePermissionBody": "Предоставление микрофонного доступа для захвата видео с помощью аудио.",
@@ -531,7 +531,7 @@
   "viewAllBeeps": "Смотреть все клипы",
   "sightingsMap": "️ Карта достопримечательностей",
   "globalSightingNetwork": "Глобальная сеть наблюдения",
-  "howItWorks": "Как работает UFOBeep",
+  "howItWorks": "Как это работает",
   "backToBeeps": "Вернуться в Beeps",
   "loadingDetails": "Загрузка звуковых деталей...",
   "details": "Подробности",
@@ -682,6 +682,199 @@
   "pushAlertsTitle": "Push Alert",
   "pushAlertsDescription": "Что пингует ваш телефон",
   "alertRadius": "Предупреждение Радиус",
-  "alertMeForUfobeep": "Предупредите меня об НЛОБипе (в реальном времени)",
-  "mufonNoPushInfo": "Сообщения MUFON импортируются ночью и не вызывают push-оповещений"
+  "mufonNoPushInfo": "Сообщения MUFON импортируются ночью и не вызывают push-оповещений",
+  "privacyData": "Конфиденциальность и данные",
+  "privacyPolicyDesc": "Как мы защищаем и используем ваши данные",
+  "termsOfService": "Условия обслуживания",
+  "termsOfServiceDesc": "Правовые положения и условия",
+  "locationTracking": "Отслеживание местоположения",
+  "locationTrackingDesc": "Справочное местоположение для оповещений о близости",
+  "locationTrackingTitle": "Справочное отслеживание местоположения",
+  "locationTrackingExplanation": "UFOBeep отслеживает ваше местоположение в фоновом режиме, чтобы отправлять вам оповещения о близости, когда наблюдения НЛО происходят вблизи вашего текущего местоположения, даже когда вы находитесь вдали от дома.",
+  "locationTrackingBattery": "Использование интеллектуального геозонирования для <3% воздействия батареи",
+  "backgroundLocationTracking": "Включить Background Отслеживание",
+  "locationTrackingActive": "Мониторинг местоположения оповещений о близости",
+  "locationTrackingInactive": "Отслеживание местоположения отключено",
+  "locationTrackingDisabledWarning": "Вы не будете получать оповещения о близости при переезде в новые места",
+  "trackingStatus": "Статус отслеживания",
+  "monitoringStatus": "Мониторинг",
+  "active": "Активный",
+  "inactive": "Неактивный",
+  "lastKnownLocation": "Последнее известное место",
+  "lastLocationUpdate": "Последнее обновление",
+  "movementThreshold": "Порог движения",
+  "updateFrequency": "Обновление частоты",
+  "batteryImpact": "Влияние батареи",
+  "dataPrivacy": "Конфиденциальность данных",
+  "locationPermissionExplanation": "UFOBeep нуждается в разрешении «Всегда разрешать» местоположение, чтобы отслеживать ваше движение и отправлять оповещения о близости, когда вы находитесь в новых местах.",
+  "benefitsTitle": "Преимущества",
+  "locationTrackingBenefits": "• Получайте предупреждения об НЛО, где бы вы ни путешествовали\n• Автоматические обновления местоположения\n• Не требуется ручная настройка",
+  "allowLocationAccess": "Разрешить доступ к местоположению",
+  "locationPermissionRequired": "Разрешение на местоположение требуется для отслеживания фона",
+  "locationTrackingEnabled": "Фоновое отслеживание местоположения включено",
+  "locationTrackingDisabled": "Фоновое отслеживание местоположения отключено",
+  "justNow": "Только сейчас",
+  "minutesAgo": "____________________________",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "____________________________",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "___________________",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Управление данными",
+  "dataManagementDesc": "Экспорт или удаление данных вашей учетной записи",
+  "splashTagline": "Оповещения о наблюдении в реальном времени",
+  "splashStartingUp": "Начинать...",
+  "splashInitializationFailed": "Инициализация провалилась",
+  "splashInitializationFailedTitle": "Инициализация провалилась",
+  "splashInitializationError": "Приложение не смогло правильно инициализировать:",
+  "splashRetry": "Повторять",
+  "splashContinue": "Продолжать",
+  "splashInitializing": "Инициировать...",
+  "signInWelcome": "Добро пожаловать ________!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Регистрация не удалась: {error}",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Пожалуйста, введите свой адрес электронной почты",
+  "signInPleaseEnterValidEmail": "Пожалуйста, введите действительный адрес электронной почты",
+  "signInMagicLinkSent": "Волшебная ссылка отправлена! Проверьте свою электронную почту и нажмите ссылку, чтобы войти.",
+  "signInMagicLinkFailed": "Не удалось отправить волшебную ссылку. Пожалуйста, попробуйте еще раз.",
+  "signInAllDataCleared": "Все данные очищены",
+  "signInSubtitle": "Оповещения о наблюдении НЛО в реальном времени и отчеты MUFON",
+  "signInGoogleLoading": "Подписаться в...",
+  "signInContinueWithGoogle": "Продолжайте с Google",
+  "signInOr": "или",
+  "signInWithEmail": "Войти с Email",
+  "signInEmailDescription": "Мы отправим вам безопасную ссылку для входа",
+  "signInEmailAddress": "Адрес электронной почты",
+  "signInEmailPlaceholder": "your@email.com",
+  "signInTryAgainIn": "Попробуйте снова в {seconds}s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Отправить...",
+  "signInSendMagicLink": "Отправить Magic Link",
+  "signInCheckEmail": "Проверьте свою электронную почту! Связь заканчивается через 15 минут.",
+  "signInSecureAuth": "Безопасная аутентификация",
+  "signInSecureAuthDescription": "Используйте Google Sign-In для мгновенного доступа или магических ссылок по электронной почте, срок действия которых истекает через 15 минут.",
+  "signInClearAllDataDebug": "Чистые все данные (Debug)",
+  "emailAuthFailedToSend": "Не удалось отправить e-mail",
+  "emailAuthFailedToSendTryAgain": "Не удалось отправить электронную почту. Пожалуйста, попробуйте еще раз.",
+  "emailAuthInvalidEmail": "Недействительный адрес электронной почты. Пожалуйста, проверьте формат.",
+  "emailAuthUserNotFound": "Никакой учетной записи с этим адресом электронной почты не найдено.",
+  "emailAuthTooManyRequests": "Слишком много попыток Пожалуйста, попробуйте еще раз позже.",
+  "emailAuthOperationNotAllowed": "Вход по электронной почте не включен.",
+  "emailAuthQuotaExceeded": "Квота на электронную почту превышена. Попробуйте еще раз завтра.",
+  "emailAuthVerificationFailed": "Проверка электронной почты не удалась. Пожалуйста, попробуйте еще раз.",
+  "emailAuthTitle": "Проверка электронной почты",
+  "emailAuthVerifyYourEmail": "Проверьте свою электронную почту",
+  "emailAuthDescription": "Добавьте свой адрес электронной почты для восстановления учетной записи и безопасности. Мы отправим вам безопасную ссылку для входа.",
+  "emailAuthEmailAddress": "Адрес электронной почты",
+  "emailAuthEmailPlaceholder": "your.email@example.com",
+  "emailAuthPleaseEnterEmail": "Пожалуйста, введите свой адрес электронной почты",
+  "emailAuthPleaseEnterValidEmail": "Пожалуйста, введите действительный адрес электронной почты",
+  "emailAuthCheckEmailToContinue": "Проверьте свою электронную почту и нажмите ссылку проверки, чтобы продолжить.",
+  "emailAuthResendEmail": "Отправить e-mail",
+  "emailAuthSendVerificationEmail": "Отправить проверку Электронная почта",
+  "emailAuthHowItWorks": "Как работает проверка электронной почты",
+  "emailAuthHowItWorksSteps": "1. Мы присылаем вам безопасную ссылку\n2. Проверьте свою электронную почту и нажмите ссылку\n3. Ваша электронная почта проверяется автоматически\n4. Пароли не нужны!",
+  "emailAuthSecurityNotice": "Проверка электронной почты помогает защитить вашу учетную запись и позволяет восстановить учетную запись, если вы потеряете доступ к своему устройству.",
+  "phoneAuthFailedToSendCode": "Не удалось отправить код проверки. Пожалуйста, попробуйте еще раз.",
+  "phoneAuthInvalidCodeTryAgain": "Недействительный код проверки. Пожалуйста, попробуйте еще раз.",
+  "phoneAuthPhoneVerified": "Номер телефона проверен: {phoneNumber}",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Проверка телефона не удалась. Пожалуйста, попробуйте еще раз.",
+  "phoneAuthCodeResent": "Проверочный код возмущается",
+  "phoneAuthFailedToResendCode": "Не удалось отправить код. Пожалуйста, попробуйте еще раз.",
+  "phoneAuthInvalidPhoneNumber": "Недействительный номер телефона. Пожалуйста, проверьте формат.",
+  "phoneAuthTooManyRequests": "Слишком много попыток Пожалуйста, попробуйте еще раз позже.",
+  "phoneAuthInvalidVerificationCode": "Недействительный код проверки. Пожалуйста, проверьте и попробуйте еще раз.",
+  "phoneAuthSessionExpired": "Сеанс проверки истек. Пожалуйста, запросите новый код.",
+  "phoneAuthSmsQuotaExceeded": "Квота SMS превышена. Попробуйте еще раз завтра.",
+  "phoneAuthCredentialAlreadyInUse": "Этот номер телефона уже привязан к другому аккаунту.",
+  "phoneAuthVerificationFailedGeneric": "Проверка провалилась. Пожалуйста, попробуйте еще раз.",
+  "phoneAuthTitle": "Проверка телефонов",
+  "phoneAuthVerifyYourPhone": "Проверьте свой телефон",
+  "phoneAuthEnterVerificationCode": "Введите проверку Код",
+  "phoneAuthAddPhoneForSecurity": "Добавьте свой номер телефона для восстановления учетной записи и безопасности",
+  "phoneAuthEnterSixDigitCode": "Введите 6-значный код, отправленный в {phoneNumber}",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Телефонный номер",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Пожалуйста, введите номер телефона",
+  "phoneAuthPleaseEnterValidPhone": "Пожалуйста, введите действительный номер телефона",
+  "phoneAuthVerificationCode": "Кодекс проверки",
+  "phoneAuthPleaseEnterSixDigitCode": "Пожалуйста, введите 6-значный код",
+  "phoneAuthResendCode": "Отправить код",
+  "phoneAuthSendVerificationCode": "Отправить проверку Код",
+  "phoneAuthVerifyCode": "Проверить код",
+  "phoneAuthChangePhoneNumber": "Изменить номер телефона",
+  "phoneAuthSmsNotice": "Мы отправим вам код проверки через SMS. Могут применяться стандартные тарифы сообщений.",
+  "phoneAuthCodeExpires": "Код истекает через 60 секунд. Проверьте свои сообщения.",
+  "yourDataRights": "Ваши права на данные",
+  "dataRightsExplanation": "Вы полностью контролируете свои персональные данные. Вы можете экспортировать все свои данные или навсегда удалить свою учетную запись в любое время.",
+  "exportYourData": "Экспорт ваших данных",
+  "exportDataDescription": "Скачать все данные вашей учетной записи",
+  "exportData": "Экспортные данные",
+  "exportingData": "Экспортировать...",
+  "exportDataDetails": "Включает: профиль, звуковые сигналы, комментарии, информацию об устройстве и предпочтения. Данные представлены в формате JSON.",
+  "dataExportedSuccessfully": "Данные успешно экспортируются",
+  "dataExportFailed": "Не удалось экспортировать данные",
+  "deleteAccount": "Удалить аккаунт",
+  "deleteAccountDescription": "Постоянно удаляйте свою учетную запись и все данные",
+  "deleteAccountWarning": "Это действие не может быть отменено. Все ваши сигналы, комментарии и данные учетной записи будут навсегда удалены.",
+  "deleteMyAccount": "Удалить мой аккаунт",
+  "deletingAccount": "Удаление...",
+  "deleteAccountConfirmTitle": "Удалить аккаунт",
+  "deleteAccountConfirmMessage": "Вы абсолютно уверены, что хотите удалить свой аккаунт? Это действие является постоянным и не может быть отменено.",
+  "dataWillBeDeleted": "Следующие данные будут навсегда удалены:",
+  "deletedDataList": "• Ваш профиль и имя пользователя\n• Все ваши сигналы и отчеты\n• Все ваши комментарии\n• Данные о регистрации устройств\n• Данные о местоположении и предпочтениях",
+  "deleteAccountPermanent": "Удалить навсегда",
+  "accountDeletedSuccessfully": "Удаленный аккаунт успешно",
+  "accountDeletionFailed": "Не удалось удалить аккаунт"
 }

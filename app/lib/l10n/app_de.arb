@@ -83,7 +83,7 @@
   "mediaProcessing": "Medien bearbeiten..",
   "cameraPermissionTitle": "Kamerazugriff erforderlich",
   "cameraPermissionBody": "Ermöglichen Sie die Kamera Zugriff auf UFO-Fotos und Videos.",
-  "locationPermissionTitle": "Standortzugang erforderlich",
+  "locationPermissionTitle": "Standort Benötigt",
   "locationPermissionBody": "Wir nutzen Ihren Standort, um Alarme in der Nähe zu senden und zu empfangen.",
   "microphonePermissionTitle": "Mikrofonzugriff erforderlich",
   "microphonePermissionBody": "Geben Sie Mikrofonzugriff für Videoaufnahme mit Audio.",
@@ -531,7 +531,7 @@
   "viewAllBeeps": "Alle Beeps anzeigen",
   "sightingsMap": "🗺️ Sehenswürdigkeiten Karte",
   "globalSightingNetwork": "Global Sighting Network",
-  "howItWorks": "Wie UFOBeep funktioniert",
+  "howItWorks": "Wie es funktioniert",
   "backToBeeps": "Zurück zu Beeps",
   "loadingDetails": "Beep Details laden...",
   "details": "Details",
@@ -682,6 +682,199 @@
   "pushAlertsTitle": "Pressalerts",
   "pushAlertsDescription": "Was pings your phone",
   "alertRadius": "Über uns",
-  "alertMeForUfobeep": "Alarmieren Sie mich für UFOBeep (real-time)",
-  "mufonNoPushInfo": "MUFON-Berichte werden nachts importiert und keine Push-Benachrichtigungen auslösen"
+  "mufonNoPushInfo": "MUFON-Berichte werden nachts importiert und keine Push-Benachrichtigungen auslösen",
+  "privacyData": "Datenschutz und Daten",
+  "privacyPolicyDesc": "Wie wir Ihre Daten schützen und nutzen",
+  "termsOfService": "Geschäftsbedingungen",
+  "termsOfServiceDesc": "Rechtliche Bedingungen",
+  "locationTracking": "Standort Tracking",
+  "locationTrackingDesc": "Hintergrundort für Näherungsalarme",
+  "locationTrackingTitle": "Zurück zur Übersicht",
+  "locationTrackingExplanation": "UFOBeep überwacht Ihren Standort im Hintergrund, um Ihnen Nähenwarnungen zu senden, wenn UFO-Sichtungen in der Nähe Ihres aktuellen Standorts passieren, auch wenn Sie weg von zu Hause sind.",
+  "locationTrackingBattery": "Verwendet intelligentes Geofencing für <3% Batterieaufprall",
+  "backgroundLocationTracking": "Hintergrund aktivieren Tracking",
+  "locationTrackingActive": "Überwachungsort für Näherungsalarme",
+  "locationTrackingInactive": "Standortverfolgung ist deaktiviert",
+  "locationTrackingDisabledWarning": "Sie erhalten keine Näherungswarnungen, wenn Sie zu neuen Standorten bewegen",
+  "trackingStatus": "Status verfolgen",
+  "monitoringStatus": "Überwachung",
+  "active": "Aktiv",
+  "inactive": "Inaktiv",
+  "lastKnownLocation": "Letzte bekannte Lage",
+  "lastLocationUpdate": "Letzte Aktualisierung",
+  "movementThreshold": "Bewegung Schwelle",
+  "updateFrequency": "Aktualisieren der Häufigkeit",
+  "batteryImpact": "Batteriewirkung",
+  "dataPrivacy": "Datenschutz",
+  "locationPermissionExplanation": "UFOBeep benötigt 'Always Allow' Standortberechtigung, um Ihre Bewegung zu überwachen und Näherungswarnungen zu senden, wenn Sie an neuen Standorten sind.",
+  "benefitsTitle": "Leistungen",
+  "locationTrackingBenefits": "• Erhalten Sie UFO-Benachrichtigungen, wohin Sie reisen\n• Automatische Standortaktualisierungen\n• Keine manuelle Einrichtung erforderlich",
+  "allowLocationAccess": "Zugang zum Standort",
+  "locationPermissionRequired": "Standortberechtigung ist für das Hintergrundtracking erforderlich",
+  "locationTrackingEnabled": "Hintergrund Standortverfolgung aktiviert",
+  "locationTrackingDisabled": "Hintergrundortverfolgung deaktiviert",
+  "justNow": "Jetzt",
+  "minutesAgo": "__PLACEHOLDER_0_ vor Minuten",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "__PLACEHOLDER_0_ vor Stunden",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "__PLACEHOLDER_0_ vor Tagen",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Datenverwaltung",
+  "dataManagementDesc": "Exportieren oder löschen Sie Ihre Kontodaten",
+  "splashTagline": "Echtzeit-Fernsehen",
+  "splashStartingUp": "Ich fange an...",
+  "splashInitializationFailed": "Initialisierung gescheitert",
+  "splashInitializationFailedTitle": "Initialisierung fehlgeschlagen",
+  "splashInitializationError": "Die App konnte nicht richtig initialisieren:",
+  "splashRetry": "Wiederkehr",
+  "splashContinue": "Fortsetzung",
+  "splashInitializing": "Die erste...",
+  "signInWelcome": "Willkommen {username}!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Sign-in versagt: {error}",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Bitte geben Sie Ihre E-Mail-Adresse ein",
+  "signInPleaseEnterValidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+  "signInMagicLinkSent": "Magic Link gesendet! Überprüfen Sie Ihre E-Mail und klicken Sie auf den Link, um sich anzumelden.",
+  "signInMagicLinkFailed": "Versäumt, magischen Link zu senden. Bitte versuchen Sie es noch mal.",
+  "signInAllDataCleared": "Alle Daten löschen",
+  "signInSubtitle": "Echtzeit-UFO-Sichtungen und MUFON-Berichte",
+  "signInGoogleLoading": "Anmeldung...",
+  "signInContinueWithGoogle": "Weiter mit Google",
+  "signInOr": "oder",
+  "signInWithEmail": "Mit E-Mail anmelden",
+  "signInEmailDescription": "Wir senden Ihnen einen sicheren Link zum Anmelden",
+  "signInEmailAddress": "Kontaktadresse",
+  "signInEmailPlaceholder": "ihr@email.com",
+  "signInTryAgainIn": "Versuchen Sie noch einmal in __PLACEHOLDER_0_s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Ich schicke...",
+  "signInSendMagicLink": "Magic Link senden",
+  "signInCheckEmail": "Überprüfen Sie Ihre E-Mail! Der Link läuft in 15 Minuten ab.",
+  "signInSecureAuth": "Sichere Authentifizierung",
+  "signInSecureAuthDescription": "Verwenden Sie Google Sign-In für sofortigen Zugriff oder E-Mail magische Links, die in 15 Minuten ablaufen.",
+  "signInClearAllDataDebug": "Alle Daten löschen (Debug)",
+  "emailAuthFailedToSend": "Nicht an E-Mail senden",
+  "emailAuthFailedToSendTryAgain": "Versäumt, E-Mail zu senden. Bitte versuchen Sie es noch mal.",
+  "emailAuthInvalidEmail": "Invalide E-Mail-Adresse. Bitte überprüfen Sie das Format.",
+  "emailAuthUserNotFound": "Kein Konto mit dieser E-Mail-Adresse gefunden.",
+  "emailAuthTooManyRequests": "Zu viele Versuche. Bitte versuchen Sie es später wieder.",
+  "emailAuthOperationNotAllowed": "Email link sign-in ist nicht aktiviert.",
+  "emailAuthQuotaExceeded": "Email Quote überschritten. Bitte versuchen Sie es morgen wieder.",
+  "emailAuthVerificationFailed": "E-Mail-Verifikation gescheitert. Bitte versuchen Sie es noch mal.",
+  "emailAuthTitle": "Email Verifikation",
+  "emailAuthVerifyYourEmail": "Verifizieren Sie Ihre E-Mail",
+  "emailAuthDescription": "Fügen Sie Ihre E-Mail-Adresse für Kontowiederherstellung und Sicherheit. Wir schicken Ihnen einen sicheren Sign-in-Link.",
+  "emailAuthEmailAddress": "Email Adresse",
+  "emailAuthEmailPlaceholder": "ihre.email@example.com",
+  "emailAuthPleaseEnterEmail": "Bitte geben Sie Ihre E-Mail-Adresse ein",
+  "emailAuthPleaseEnterValidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein",
+  "emailAuthCheckEmailToContinue": "Überprüfen Sie Ihre E-Mail und tippen Sie auf den Verifikationslink, um fortzufahren.",
+  "emailAuthResendEmail": "E-Mail senden",
+  "emailAuthSendVerificationEmail": "Verifikation senden E-Mail senden",
+  "emailAuthHowItWorks": "Wie Email Verification funktioniert",
+  "emailAuthHowItWorksSteps": "ANHANG Wir senden Ihnen einen sicheren Anmeldelink\n2. Überprüfen Sie Ihre E-Mail und tippen Sie auf den Link\n3. Ihre E-Mail wird automatisch überprüft\n4. Keine Passwörter erforderlich!",
+  "emailAuthSecurityNotice": "E-Mail-Verifikation hilft, Ihr Konto zu sichern und ermöglicht Kontowiederherstellung, wenn Sie Zugriff auf Ihr Gerät verlieren.",
+  "phoneAuthFailedToSendCode": "Nicht versendet. Bitte versuchen Sie es noch mal.",
+  "phoneAuthInvalidCodeTryAgain": "Ungültiger Verifikationscode. Bitte versuchen Sie es noch mal.",
+  "phoneAuthPhoneVerified": "Telefonnummer verifiziert: {phoneNumber}",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Die Telefonprüfung ist fehlgeschlagen. Bitte versuchen Sie es noch mal.",
+  "phoneAuthCodeResent": "Überprüfungscode resent",
+  "phoneAuthFailedToResendCode": "Versäumt, Code zu ändern. Bitte versuchen Sie es noch mal.",
+  "phoneAuthInvalidPhoneNumber": "Ungültige Telefonnummer. Bitte überprüfen Sie das Format.",
+  "phoneAuthTooManyRequests": "Zu viele Versuche. Bitte versuchen Sie es später wieder.",
+  "phoneAuthInvalidVerificationCode": "Ungültiger Verifikationscode. Bitte überprüfen und nochmal versuchen.",
+  "phoneAuthSessionExpired": "Die Überprüfungssitzung ist abgelaufen. Bitte einen neuen Code anfordern.",
+  "phoneAuthSmsQuotaExceeded": "SMS Quote überschritten. Bitte versuchen Sie es morgen wieder.",
+  "phoneAuthCredentialAlreadyInUse": "Diese Telefonnummer ist bereits mit einem anderen Konto verknüpft.",
+  "phoneAuthVerificationFailedGeneric": "Die Überprüfung ist fehlgeschlagen. Bitte versuchen Sie es noch mal.",
+  "phoneAuthTitle": "Telefon Verifikation",
+  "phoneAuthVerifyYourPhone": "Verifizieren Sie Ihr Telefon",
+  "phoneAuthEnterVerificationCode": "Verifikation eingeben Code",
+  "phoneAuthAddPhoneForSecurity": "Fügen Sie Ihre Telefonnummer für Konto Erholung und Sicherheit",
+  "phoneAuthEnterSixDigitCode": "Geben Sie den 6-stelligen Code an {phoneNumber}",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Telefonnummer",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Bitte geben Sie Ihre Telefonnummer ein",
+  "phoneAuthPleaseEnterValidPhone": "Bitte geben Sie eine gültige Telefonnummer ein",
+  "phoneAuthVerificationCode": "Prüfkodex",
+  "phoneAuthPleaseEnterSixDigitCode": "Bitte geben Sie den 6-stelligen Code ein",
+  "phoneAuthResendCode": "Artikel 2",
+  "phoneAuthSendVerificationCode": "Verifikation senden Code",
+  "phoneAuthVerifyCode": "Verifizieren Sie den Code",
+  "phoneAuthChangePhoneNumber": "Telefonnummer ändern",
+  "phoneAuthSmsNotice": "Wir senden Ihnen einen Verifizierungscode per SMS. Es können Standard-Nachrichtraten gelten.",
+  "phoneAuthCodeExpires": "Der Code läuft in 60 Sekunden ab. Überprüfen Sie Ihre Nachrichten.",
+  "yourDataRights": "Ihre Datenrechte",
+  "dataRightsExplanation": "Sie haben die volle Kontrolle über Ihre persönlichen Daten. Sie können alle Ihre Daten exportieren oder Ihr Konto jederzeit dauerhaft löschen.",
+  "exportYourData": "Exportieren Sie Ihre Daten",
+  "exportDataDescription": "Alle Ihre Kontodaten herunterladen",
+  "exportData": "Ausfuhrdaten",
+  "exportingData": "Exportieren...",
+  "exportDataDetails": "Inklusive: Profil, Beeps, Kommentare, Geräteinfos und Präferenzen. Daten werden im JSON-Format bereitgestellt.",
+  "dataExportedSuccessfully": "Daten erfolgreich exportiert",
+  "dataExportFailed": "Nicht zur Ausfuhr von Daten",
+  "deleteAccount": "Löschen Konto",
+  "deleteAccountDescription": "Entfernen Sie Ihr Konto und alle Daten dauerhaft",
+  "deleteAccountWarning": "Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Beeps, Kommentare und Kontodaten werden dauerhaft gelöscht.",
+  "deleteMyAccount": "Mein Konto löschen",
+  "deletingAccount": "Löschen...",
+  "deleteAccountConfirmTitle": "Löschen Konto",
+  "deleteAccountConfirmMessage": "Sind Sie sicher, dass Sie Ihr Konto löschen möchten? Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden.",
+  "dataWillBeDeleted": "Folgende Daten werden dauerhaft gelöscht:",
+  "deletedDataList": "• Ihr Profil und Benutzername\n• Alle Ihre Beeps und Berichte\n• Alle Kommentare\n• Daten zur Geräteregistrierung\n• Standort- und Präferenzdaten",
+  "deleteAccountPermanent": "Dauerhaft löschen",
+  "accountDeletedSuccessfully": "Konto gelöscht erfolgreich",
+  "accountDeletionFailed": "Nicht zu löschen Konto"
 }

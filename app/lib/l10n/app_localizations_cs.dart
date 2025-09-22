@@ -198,7 +198,7 @@ class AppLocalizationsCs extends AppLocalizations {
       'Grantová kamera přístup k zachycení UFO fotografie a videa.';
 
   @override
-  String get locationPermissionTitle => 'Je nutný přístup k místu';
+  String get locationPermissionTitle => 'Vyžadováno povolení k umístění';
 
   @override
   String get locationPermissionBody =>
@@ -1113,7 +1113,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get globalSightingNetwork => 'Globální síť pozorování';
 
   @override
-  String get howItWorks => 'Jak funguje UFOBeep';
+  String get howItWorks => 'Jak to funguje';
 
   @override
   String get backToBeeps => 'Zpět na Beeps';
@@ -1586,194 +1586,478 @@ class AppLocalizationsCs extends AppLocalizations {
       'Zprávy MUFON jsou dováženy v noci a nespouštějí upozornění na tlačení';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => 'Ochrana osobních údajů';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc => 'Jak chránit a používat Vaše údaje';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'Podmínky služby';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => 'Právní podmínky';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => 'Sledování polohy';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc => 'Umístění pozadí pro výstrahy v blízkosti';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => 'Sledování polohy pozadí';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFOBeep sleduje vaši polohu v pozadí poslat vám blízkost upozornění, když pozorování UFO se stane v blízkosti vaší současné polohy, i když jste daleko od domova.';
 
   @override
   String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+      'Používá inteligentní geokompresi pro < 3% dopad baterie';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => 'Povolit pozadí Sledování';
 
   @override
-  String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+  String get locationTrackingActive => 'Místo sledování výstrah v blízkosti';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => 'Sledování polohy je zakázáno';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+      'Když se přestěhujete na nová místa, nedostanete upozornění na blízkost';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => 'Stav sledování';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => 'Sledování';
 
   @override
-  String get active => 'Active';
+  String get active => 'Aktivní';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => 'Neaktivní';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => 'Poslední známé místo';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => 'Poslední aktualizace';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => 'Prahová hodnota pohybu';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => 'Aktualizovat frekvenci';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => 'Dopad baterie';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => 'Ochrana osobních údajů';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFOBeep potřebuje \'Vždy povolit\' povolení k monitorování vašeho pohybu a odeslat upozornění na blízkost, když jste na nových místech.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => 'Dávky';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '• Získejte UFO upozornění všude, kde cestujete\n• Automatické aktualizace polohy\n• Není nutné ruční nastavení';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => 'Povolit přístup k umístění';
 
   @override
   String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+      'Pro sledování pozadí je vyžadováno povolení k umístění';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled => 'Sledování polohy pozadí povoleno';
 
   @override
-  String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+  String get locationTrackingDisabled => 'Sledování polohy pozadí zakázáno';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => 'Právě teď';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return 'Před pár minutami';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return 'Před pár hodinami';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return 'Před pár dny';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => 'Správa dat';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc => 'Exportovat nebo smazat data vašeho účtu';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get splashTagline => 'Záznamy v reálném čase';
+
+  @override
+  String get splashStartingUp => 'Začínám...';
+
+  @override
+  String get splashInitializationFailed => 'Inicializace selhala';
+
+  @override
+  String get splashInitializationFailedTitle => 'Inicializace selhala';
+
+  @override
+  String get splashInitializationError =>
+      'Aplikace nebyla správně inicializována:';
+
+  @override
+  String get splashRetry => 'Znovu';
+
+  @override
+  String get splashContinue => 'Pokračovat';
+
+  @override
+  String get splashInitializing => 'Inicializace...';
+
+  @override
+  String signInWelcome(String username) {
+    return 'Vítejte!';
+  }
+
+  @override
+  String signInFailed(String error) {
+    return 'Sign- in selhalo: _ _ PLACETETERER _ 0 _ _';
+  }
+
+  @override
+  String get signInPleaseEnterEmail => 'Zadejte prosím svou emailovou adresu';
+
+  @override
+  String get signInPleaseEnterValidEmail =>
+      'Zadejte prosím platnou e-mailovou adresu';
+
+  @override
+  String get signInMagicLinkSent =>
+      'Magické spojení odesláno! Zkontrolujte svůj e-mail a klepněte na odkaz se přihlásit.';
+
+  @override
+  String get signInMagicLinkFailed =>
+      'Nepodařilo se odeslat magický odkaz. Prosím, zkuste to znovu.';
+
+  @override
+  String get signInAllDataCleared => 'Všechny údaje vymazány';
+
+  @override
+  String get signInSubtitle =>
+      'Záznamy o pozorování UFO v reálném čase a zprávy MUFON';
+
+  @override
+  String get signInGoogleLoading => 'Přihlašuji...';
+
+  @override
+  String get signInContinueWithGoogle => 'Pokračovat s Google';
+
+  @override
+  String get signInOr => 'nebo';
+
+  @override
+  String get signInWithEmail => 'Přihlaste se e-mailem';
+
+  @override
+  String get signInEmailDescription => 'Pošleme vám zabezpečené spojení';
+
+  @override
+  String get signInEmailAddress => 'E-mailová adresa';
+
+  @override
+  String get signInEmailPlaceholder => 'your @ email.com';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return 'Zkuste to znovu v _ _ PLACETETELER _ 0 _ _ s';
+  }
+
+  @override
+  String get signInSending => 'Posílám...';
+
+  @override
+  String get signInSendMagicLink => 'Poslat magický odkaz';
+
+  @override
+  String get signInCheckEmail =>
+      'Zkontrolujte si e-mail! Spojení vyprší za 15 minut.';
+
+  @override
+  String get signInSecureAuth => 'Zajistit autentizaci';
+
+  @override
+  String get signInSecureAuthDescription =>
+      'Použijte Google Sign- In pro okamžitý přístup, nebo e-mailové magické odkazy, které vyprší za 15 minut.';
+
+  @override
+  String get signInClearAllDataDebug => 'Vyčistit všechna data (ladit)';
+
+  @override
+  String get emailAuthFailedToSend => 'Nepodařilo se odeslat email';
+
+  @override
+  String get emailAuthFailedToSendTryAgain =>
+      'Nepodařilo se mi poslat email. Prosím, zkuste to znovu.';
+
+  @override
+  String get emailAuthInvalidEmail =>
+      'Neplatná e-mailová adresa. Zkontrolujte prosím formát.';
+
+  @override
+  String get emailAuthUserNotFound =>
+      'S touto e-mailovou adresou není nalezen žádný účet.';
+
+  @override
+  String get emailAuthTooManyRequests =>
+      'Příliš mnoho pokusů. Prosím, zkuste to později.';
+
+  @override
+  String get emailAuthOperationNotAllowed => 'Sign- in není povolen.';
+
+  @override
+  String get emailAuthQuotaExceeded =>
+      'E-mailová kvóta překročena. Prosím, zkuste to zítra znovu.';
+
+  @override
+  String get emailAuthVerificationFailed =>
+      'Ověření e-mailu selhalo. Prosím, zkuste to znovu.';
+
+  @override
+  String get emailAuthTitle => 'Ověření e-mailu';
+
+  @override
+  String get emailAuthVerifyYourEmail => 'Ověřte svůj e-mail';
+
+  @override
+  String get emailAuthDescription =>
+      'Přidejte svou e-mailovou adresu pro obnovu účtu a zabezpečení. Pošleme vám zabezpečený signál.';
+
+  @override
+  String get emailAuthEmailAddress => 'E-mailová adresa';
+
+  @override
+  String get emailAuthEmailPlaceholder => 'your.email @ example.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail =>
+      'Zadejte prosím svou emailovou adresu';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail =>
+      'Zadejte prosím platnou e-mailovou adresu';
+
+  @override
+  String get emailAuthCheckEmailToContinue =>
+      'Zkontrolujte svůj e-mail a klepněte na ověřovací odkaz pokračovat.';
+
+  @override
+  String get emailAuthResendEmail => 'Resend Email';
+
+  @override
+  String get emailAuthSendVerificationEmail => 'Odeslat ověření E-mail';
+
+  @override
+  String get emailAuthHowItWorks => 'Jak funguje e-mailové ověřování';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '1. Posíláme vám zabezpečený signál.\n2. Zkontrolujte svůj e-mail a klepněte na odkaz\n3. Váš e-mail se ověřuje automaticky\n4. Není potřeba hesla!';
+
+  @override
+  String get emailAuthSecurityNotice =>
+      'Ověření e-mailu pomáhá zabezpečit váš účet a umožňuje obnovení účtu, pokud ztratíte přístup ke svému zařízení.';
+
+  @override
+  String get phoneAuthFailedToSendCode =>
+      'Nepodařilo se odeslat ověřovací kód. Prosím, zkuste to znovu.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain =>
+      'Neplatný ověřovací kód. Prosím, zkuste to znovu.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return 'Číslo telefonu ověřeno: _ _ PLACETETERER _ 0 _ _';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed =>
+      'Ověření telefonu selhalo. Prosím, zkuste to znovu.';
+
+  @override
+  String get phoneAuthCodeResent => 'Kód ověření je nepřípustný';
+
+  @override
+  String get phoneAuthFailedToResendCode =>
+      'Nepodařilo se mi obnovit kód. Prosím, zkuste to znovu.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber =>
+      'Neplatné telefonní číslo. Zkontrolujte prosím formát.';
+
+  @override
+  String get phoneAuthTooManyRequests =>
+      'Příliš mnoho pokusů. Prosím, zkuste to později.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode =>
+      'Neplatný ověřovací kód. Prosím zkontrolujte to a zkuste to znovu.';
+
+  @override
+  String get phoneAuthSessionExpired =>
+      'Ověření vypršelo. Vyžádejte si nový kód.';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded =>
+      'Překročená SMS kvóta. Prosím, zkuste to zítra znovu.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse =>
+      'Toto telefonní číslo je již připojeno k jinému účtu.';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric =>
+      'Ověření selhalo. Prosím, zkuste to znovu.';
+
+  @override
+  String get phoneAuthTitle => 'Ověření telefonu';
+
+  @override
+  String get phoneAuthVerifyYourPhone => 'Ověřte svůj telefon';
+
+  @override
+  String get phoneAuthEnterVerificationCode => 'Zadejte ověření Kód';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity =>
+      'Přidat své telefonní číslo pro obnovení účtu a zabezpečení';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return 'Zadejte 6místný kód odeslaný na _ _ PLACETETIER _ 0 _ _';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => 'Číslo telefonu';
+
+  @override
+  String get phoneAuthPhonePlaceholder => '+ 1 (55) 123- 4567';
+
+  @override
+  String get phoneAuthPleaseEnterPhone => 'Zadejte prosím své telefonní číslo';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone =>
+      'Zadejte prosím platné telefonní číslo';
+
+  @override
+  String get phoneAuthVerificationCode => 'Kód ověření';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode => 'Zadejte prosím 6místný kód';
+
+  @override
+  String get phoneAuthResendCode => 'Kód záznamu';
+
+  @override
+  String get phoneAuthSendVerificationCode => 'Odeslat ověření Kód';
+
+  @override
+  String get phoneAuthVerifyCode => 'Ověřit kód';
+
+  @override
+  String get phoneAuthChangePhoneNumber => 'Změnit telefonní číslo';
+
+  @override
+  String get phoneAuthSmsNotice =>
+      'Pošleme vám ověřovací kód přes SMS. Mohou se použít standardní sazby zpráv.';
+
+  @override
+  String get phoneAuthCodeExpires =>
+      'Kód vyprší za 60 sekund. Zkontrolujte si vzkazy.';
+
+  @override
+  String get yourDataRights => 'Vaše práva k údajům';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      'Máte plnou kontrolu nad vašimi osobními údaji. Všechny své údaje můžete kdykoli exportovat nebo trvale smazat.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => 'Exportovat Vaše data';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription => 'Stáhnout všechna data vašeho účtu';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => 'Exportovat údaje';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => 'Vývoz...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      'Zahrnuje: profil, pípnutí, komentáře, informace o zařízení a preference. Údaje jsou poskytovány ve formátu JSON.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => 'Úspěšně exportované údaje';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => 'Nepodařilo se exportovat data';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => 'Smazat účet';
 
   @override
   String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+      'Trvale odstranit váš účet a všechny údaje';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      'Tuto akci nelze odčinit. Všechny vaše pípnutí, komentáře a údaje o účtu budou trvale vymazány.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => 'Smazat můj účet';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get deletingAccount => 'Mazání...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => 'Smazat účet';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      'Jste si naprosto jisti, že chcete smazat svůj účet? Tato akce je trvalá a nelze ji odčinit.';
 
   @override
-  String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+  String get dataWillBeDeleted => 'Následující údaje budou trvale vymazány:';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '• Váš profil a uživatelské jméno\n• Všechny vaše pípnutí a zprávy\n• Všechny vaše komentáře\n• Údaje o registraci zařízení\n• Umístění a preference dat';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => 'Smazat trvale';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => 'Účet úspěšně vymazán';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => 'Nepodařilo se odstranit účet';
 }

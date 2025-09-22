@@ -197,7 +197,7 @@ class AppLocalizationsHi extends AppLocalizations {
       'UFO फ़ोटो और वीडियो पर कब्जा करने के लिए कैमरा का उपयोग करें।.';
 
   @override
-  String get locationPermissionTitle => 'आवश्यक स्थान';
+  String get locationPermissionTitle => 'स्थान अनुमति आवश्यक';
 
   @override
   String get locationPermissionBody =>
@@ -1110,7 +1110,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get globalSightingNetwork => 'वैश्विक दृष्टि नेटवर्क';
 
   @override
-  String get howItWorks => 'कैसे UFOBeep वर्क्स';
+  String get howItWorks => 'यह कैसे काम करता है';
 
   @override
   String get backToBeeps => 'बैक टू बीप';
@@ -1582,194 +1582,478 @@ class AppLocalizationsHi extends AppLocalizations {
       'MUFON रिपोर्ट को रात में आयात किया जाता है और पुश अलर्ट को ट्रिगर नहीं करता है';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => 'गोपनीयता और डेटा';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc =>
+      'हम आपके डेटा की सुरक्षा और उपयोग कैसे करते हैं';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'सेवा की शर्तें';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => 'नियम और शर्तें';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => 'स्थान ट्रैकिंग';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc => 'निकटता अलर्ट के लिए पृष्ठभूमि स्थान';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => 'पृष्ठभूमि स्थान ट्रैकिंग';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'यूएफओबीप पृष्ठभूमि में आपके स्थान की निगरानी करता है ताकि आप निकटता अलर्ट भेज सकें जब यूएफओ दर्शन आपके वर्तमान स्थान के पास हो, भले ही आप घर से दूर हों।.';
 
   @override
   String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+      '<3% बैटरी प्रभाव के लिए बुद्धिमान geofencing का उपयोग करता है';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => 'पृष्ठभूमि सक्षम करें ट्रैकिंग';
 
   @override
-  String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+  String get locationTrackingActive => 'निकटता अलर्ट के लिए निगरानी स्थान';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => 'स्थान ट्रैकिंग अक्षम है';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+      'जब आप नए स्थानों पर जाते हैं तो आपको निकटता अलर्ट नहीं मिलेगा';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => 'ट्रैकिंग स्थिति';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => 'निगरानी';
 
   @override
-  String get active => 'Active';
+  String get active => 'सक्रिय';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => 'निष्क्रिय';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => 'अंतिम ज्ञात स्थान';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => 'अंतिम अपडेट';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => 'आंदोलन थ्रेसहोल्ड';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => 'अद्यतन आवृत्ति';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => 'बैटरी प्रभाव';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => 'गोपनीयता';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFOBeep को अपने आंदोलन की निगरानी के लिए \'Always Allow\' स्थान अनुमति की आवश्यकता होती है और जब आप नए स्थानों में हों तो निकटता अलर्ट भेज सकते हैं।.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => 'लाभ';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '• जहां भी आप यात्रा करते हैं, यूएफओ अलर्ट प्राप्त करें\n• स्वचालित स्थान अद्यतन\n• मैनुअल सेटअप की आवश्यकता नहीं है';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => 'स्थान पहुँच की अनुमति';
 
   @override
   String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+      'पृष्ठभूमि ट्रैकिंग के लिए स्थान अनुमति की आवश्यकता है';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled => 'पृष्ठभूमि स्थान ट्रैकिंग सक्षम';
 
   @override
-  String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+  String get locationTrackingDisabled => 'पृष्ठभूमि स्थान ट्रैकिंग अक्षम';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => 'अभी';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '0_0_0_0_0 मिनट पहले';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '${hours}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return '${days}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => 'डेटा प्रबंधन';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc => 'अपने खाता डेटा को निर्यात या हटाएं';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get splashTagline => 'रियल टाइम दर्शन अलर्ट';
+
+  @override
+  String get splashStartingUp => 'शुरू करना.';
+
+  @override
+  String get splashInitializationFailed => 'आरंभीकरण विफल';
+
+  @override
+  String get splashInitializationFailedTitle => 'आरंभीकरण विफल';
+
+  @override
+  String get splashInitializationError =>
+      'एप्लिकेशन ठीक से शुरू करने में विफल रहा:';
+
+  @override
+  String get splashRetry => 'Retry';
+
+  @override
+  String get splashContinue => 'जारी';
+
+  @override
+  String get splashInitializing => 'शुरू करना.';
+
+  @override
+  String signInWelcome(String username) {
+    return 'आपका स्वागत है!';
+  }
+
+  @override
+  String signInFailed(String error) {
+    return 'साइन-इन विफल: _ _ _ _ _ _ _ _ _';
+  }
+
+  @override
+  String get signInPleaseEnterEmail => 'कृपया अपना ईमेल पता दर्ज करें';
+
+  @override
+  String get signInPleaseEnterValidEmail => 'कृपया एक वैध ईमेल पता दर्ज करें';
+
+  @override
+  String get signInMagicLinkSent =>
+      'जादू लिंक भेजा! अपने ईमेल को चेक करें और साइन इन करने के लिए लिंक पर क्लिक करें।.';
+
+  @override
+  String get signInMagicLinkFailed =>
+      'जादू लिंक भेजने में विफल रहा। फिर से प्रयास करें।.';
+
+  @override
+  String get signInAllDataCleared => 'सभी डेटा समाशोधित';
+
+  @override
+  String get signInSubtitle =>
+      'रियल टाइम यूएफओ दर्शन अलर्ट और एमयूएफएन रिपोर्ट';
+
+  @override
+  String get signInGoogleLoading => 'साइन इन करें...';
+
+  @override
+  String get signInContinueWithGoogle => 'गूगल के साथ जारी';
+
+  @override
+  String get signInOr => 'या';
+
+  @override
+  String get signInWithEmail => 'ईमेल के साथ साइन इन करें';
+
+  @override
+  String get signInEmailDescription =>
+      'हम आपको साइन इन करने के लिए एक सुरक्षित लिंक भेज देंगे';
+
+  @override
+  String get signInEmailAddress => 'ईमेल पता';
+
+  @override
+  String get signInEmailPlaceholder => 'email.com';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return 'फिर से कोशिश करो __PLACEHOLDER_0_s';
+  }
+
+  @override
+  String get signInSending => 'भेजना...';
+
+  @override
+  String get signInSendMagicLink => 'जादू लिंक भेजें';
+
+  @override
+  String get signInCheckEmail =>
+      'अपने ईमेल की जाँच करें! लिंक 15 मिनट में समाप्त हो जाता है।.';
+
+  @override
+  String get signInSecureAuth => 'सुरक्षित प्रमाणीकरण';
+
+  @override
+  String get signInSecureAuthDescription =>
+      'तत्काल पहुंच के लिए Google साइन-इन का उपयोग करें, या ईमेल जादू लिंक जो 15 मिनट में समाप्त हो जाते हैं।.';
+
+  @override
+  String get signInClearAllDataDebug => 'सभी डेटा (Debug) साफ़ करें';
+
+  @override
+  String get emailAuthFailedToSend => 'ईमेल भेजने में विफल';
+
+  @override
+  String get emailAuthFailedToSendTryAgain =>
+      'ईमेल भेजने में विफल रहा। फिर से प्रयास करें।.';
+
+  @override
+  String get emailAuthInvalidEmail =>
+      'अमान्य ईमेल पता। कृपया प्रारूप की जांच करें।.';
+
+  @override
+  String get emailAuthUserNotFound => 'इस ईमेल पते के साथ कोई खाता नहीं मिला।.';
+
+  @override
+  String get emailAuthTooManyRequests =>
+      'बहुत सारे प्रयास। बाद में फिर से प्रयास करें।.';
+
+  @override
+  String get emailAuthOperationNotAllowed =>
+      'ईमेल लिंक साइन-इन सक्षम नहीं है।.';
+
+  @override
+  String get emailAuthQuotaExceeded =>
+      'ईमेल कोटा से अधिक हो गया। कल फिर से प्रयास करें।.';
+
+  @override
+  String get emailAuthVerificationFailed =>
+      'ईमेल सत्यापन विफल रहा। फिर से प्रयास करें।.';
+
+  @override
+  String get emailAuthTitle => 'ईमेल सत्यापन';
+
+  @override
+  String get emailAuthVerifyYourEmail => 'अपना ईमेल सत्यापित करें';
+
+  @override
+  String get emailAuthDescription =>
+      'खाता वसूली और सुरक्षा के लिए अपना ईमेल पता जोड़ें। हम आपको एक सुरक्षित साइन-इन लिंक भेज देंगे।.';
+
+  @override
+  String get emailAuthEmailAddress => 'ईमेल पता';
+
+  @override
+  String get emailAuthEmailPlaceholder => 'email@example.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail => 'कृपया अपना ईमेल पता दर्ज करें';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail =>
+      'कृपया एक वैध ईमेल पता दर्ज करें';
+
+  @override
+  String get emailAuthCheckEmailToContinue =>
+      'अपने ईमेल की जाँच करें और सत्यापन लिंक को जारी रखने के लिए टैप करें।.';
+
+  @override
+  String get emailAuthResendEmail => 'ईमेल भेजना';
+
+  @override
+  String get emailAuthSendVerificationEmail => 'सत्यापन ईमेल';
+
+  @override
+  String get emailAuthHowItWorks => 'कैसे ईमेल सत्यापन कार्य';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '1. हम आपको एक सुरक्षित साइन-इन लिंक भेजते हैं\n2. अपने ईमेल की जाँच करें और लिंक टैप करें\n3. आपका ईमेल स्वचालित रूप से सत्यापित हो जाता है\n4. पासवर्ड की जरूरत नहीं!';
+
+  @override
+  String get emailAuthSecurityNotice =>
+      'ईमेल सत्यापन आपके खाते को सुरक्षित रखने में मदद करता है और खाते की वसूली को सक्षम बनाता है यदि आप अपने डिवाइस तक पहुंच खो देते हैं।.';
+
+  @override
+  String get phoneAuthFailedToSendCode =>
+      'सत्यापन कोड भेजने में विफल रहा। फिर से प्रयास करें।.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain =>
+      'अमान्य सत्यापन कोड। फिर से प्रयास करें।.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return 'फोन नंबर सत्यापित: _ _ _ _ _ _ _ _ _';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed =>
+      'फोन सत्यापन विफल रहा। फिर से प्रयास करें।.';
+
+  @override
+  String get phoneAuthCodeResent => 'सत्यापन कोड resent';
+
+  @override
+  String get phoneAuthFailedToResendCode =>
+      'कोड को पुनः भेजने में विफल रहा। फिर से प्रयास करें।.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber =>
+      'फोन नंबर कृपया प्रारूप की जांच करें।.';
+
+  @override
+  String get phoneAuthTooManyRequests =>
+      'बहुत सारे प्रयास। बाद में फिर से प्रयास करें।.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode =>
+      'अमान्य सत्यापन कोड। फिर से जाँच करें और कोशिश करें।.';
+
+  @override
+  String get phoneAuthSessionExpired =>
+      'सत्यापन सत्र समाप्त हो गया। कृपया एक नया कोड अनुरोध करें।.';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded =>
+      'एसएमएस कोटा से अधिक हो गया। कल फिर से प्रयास करें।.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse =>
+      'यह फ़ोन नंबर पहले से ही दूसरे खाते से जुड़ा हुआ है।.';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric =>
+      'सत्यापन विफल रहा। फिर से प्रयास करें।.';
+
+  @override
+  String get phoneAuthTitle => 'फोन सत्यापन';
+
+  @override
+  String get phoneAuthVerifyYourPhone => 'अपने फ़ोन को सत्यापित करें';
+
+  @override
+  String get phoneAuthEnterVerificationCode => 'सत्यापन कोड';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity =>
+      'खाता वसूली और सुरक्षा के लिए अपना फोन नंबर जोड़ें';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return '6-digits कोड में प्रवेश करें __PLACEHOLDER_0_';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => 'फ़ोन नंबर';
+
+  @override
+  String get phoneAuthPhonePlaceholder => '+18 (5123-4567)';
+
+  @override
+  String get phoneAuthPleaseEnterPhone => 'कृपया अपना फ़ोन नंबर दर्ज करें';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone => 'कृपया मान्य फोन नंबर दर्ज करें';
+
+  @override
+  String get phoneAuthVerificationCode => 'सत्यापन कोड';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode => 'कृपया 6-digit कोड दर्ज करें';
+
+  @override
+  String get phoneAuthResendCode => 'कोड भेजना';
+
+  @override
+  String get phoneAuthSendVerificationCode => 'सत्यापन कोड';
+
+  @override
+  String get phoneAuthVerifyCode => 'कोड सत्यापित करें';
+
+  @override
+  String get phoneAuthChangePhoneNumber => 'फोन नंबर बदलें';
+
+  @override
+  String get phoneAuthSmsNotice =>
+      'हम आपको एसएमएस के माध्यम से सत्यापन कोड भेजेंगे। मानक संदेश दरें लागू हो सकती हैं।.';
+
+  @override
+  String get phoneAuthCodeExpires =>
+      'कोड 60 सेकंड में समाप्त हो जाता है। अपने संदेश की जाँच करें।.';
+
+  @override
+  String get yourDataRights => 'आपका डेटा अधिकार';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      'आपके पास अपने व्यक्तिगत डेटा पर पूर्ण नियंत्रण है। आप अपने सभी डेटा को निर्यात कर सकते हैं या स्थायी रूप से किसी भी समय अपने खाते को हटा सकते हैं।.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => 'अपना डेटा निर्यात करें';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription => 'अपने सभी खाता डेटा को डाउनलोड करें';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => 'निर्यात डेटा';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => 'निर्यात...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      'इसमें शामिल हैं: प्रोफाइल, बीप, टिप्पणियां, डिवाइस की जानकारी, और प्राथमिकताएं। डेटा JSON प्रारूप में प्रदान किया जाता है।.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => 'सफलतापूर्वक निर्यात किया गया';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => 'डेटा निर्यात करने में विफल';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => 'खाता हटाएं';
 
   @override
   String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+      'अपने खाते और सभी डेटा को स्थायी रूप से हटा दें';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      'यह कार्रवाई नहीं की जा सकती है। आपके सभी बीप, टिप्पणियां और खाता डेटा को स्थायी रूप से हटा दिया जाएगा।.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => 'मेरा खाता हटाएं';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get deletingAccount => '...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => 'खाता हटाएं';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      'क्या आप अपने खाते को हटाना चाहते हैं? यह क्रिया स्थायी है और इसे बिना सोचे समझे नहीं सकता।.';
 
   @override
   String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+      'निम्नलिखित डेटा को स्थायी रूप से हटा दिया जाएगा:';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '• आपकी प्रोफ़ाइल और उपयोगकर्ता नाम\n• आपकी बीप और रिपोर्ट\n• आपकी टिप्पणियां\n• डिवाइस पंजीकरण डेटा\n• स्थान और वरीयता डेटा';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => 'स्थायी रूप से हटाएं';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => 'खाता सफलतापूर्वक हटा दिया गया';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => 'खाते को हटाने में विफल';
 }

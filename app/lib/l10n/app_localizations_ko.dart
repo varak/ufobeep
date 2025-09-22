@@ -1089,7 +1089,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get globalSightingNetwork => '글로벌 Sighting Network';
 
   @override
-  String get howItWorks => 'UFOBeep 작동 방법';
+  String get howItWorks => '어떻게 작동합니까';
 
   @override
   String get backToBeeps => 'Beeps로 돌아가기';
@@ -1552,194 +1552,446 @@ class AppLocalizationsKo extends AppLocalizations {
   String get mufonNoPushInfo => 'MUFON 보고서는 밤에 수입되고 경고를 유발하지 않습니다';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => '개인정보 및 자료';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc => '데이터 보호 및 사용 방법';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => '이용 약관';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => '법률 용어 및 조건';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => '위치 추적';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc => '근접 경고를 위한 배경 위치';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => '배경 위치 추적';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFOBeep은 현재 위치 근처에있을 때 UFO 시야가 발생할 때 배경의 위치를 모니터링합니다.';
 
   @override
-  String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+  String get locationTrackingBattery => '<3> 배터리 충격을 위한 지적인 geofencing 사용';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => '사용 방법 제품정보';
 
   @override
-  String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+  String get locationTrackingActive => '근접 경고를 위한 감시 위치';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => '위치 추적은 비활성화';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+      '당신은 새로운 위치로 이동할 때 근접 경고를받지 않습니다';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => '추적 상태';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => '관련 기사';
 
   @override
-  String get active => 'Active';
+  String get active => '지원하다';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => '제품정보';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => '마지막 Known 위치';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => '마지막 업데이트';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => '운동 위협';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => '업데이트 빈도';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => '배터리 충격';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => '데이터 보호';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFOBeep은 \'Always Allow\' 위치 권한을 필요로하여 이동을 모니터링하고 새로운 위치에있을 때 근접 경고를 보냅니다.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => '이름 *';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '· 여행중인 UFO 알림 받기\n• 자동 위치 업데이트\n· 수동 설정 없음';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => '오시는 길';
 
   @override
-  String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+  String get locationPermissionRequired => '위치 권한은 배경 추적에 필수';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled => '배경 위치 추적 가능';
 
   @override
-  String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+  String get locationTrackingDisabled => '배경 위치 추적 해제';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => '지금 시작';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '$minutes 분 전';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '$hours시간 전';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return '$days 일 전';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => '데이터 관리';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc => '계정 데이터를 내보내거나 삭제';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get splashTagline => '실시간 시력 경고';
+
+  @override
+  String get splashStartingUp => '시작 ...';
+
+  @override
+  String get splashInitializationFailed => '초기화 실패';
+
+  @override
+  String get splashInitializationFailedTitle => '초기화 실패';
+
+  @override
+  String get splashInitializationError => '앱은 제대로 초기화하지 못했습니다';
+
+  @override
+  String get splashRetry => '이름 *';
+
+  @override
+  String get splashContinue => '계속하기';
+
+  @override
+  String get splashInitializing => '초기화 ...';
+
+  @override
+  String signInWelcome(String username) {
+    return '환영합니다 $username!';
+  }
+
+  @override
+  String signInFailed(String error) {
+    return '로그인 실패: ₢ 킹';
+  }
+
+  @override
+  String get signInPleaseEnterEmail => '자주 묻는 질문';
+
+  @override
+  String get signInPleaseEnterValidEmail => '자주 묻는 질문';
+
+  @override
+  String get signInMagicLinkSent => '매직 링크 전송! 자주 묻는 질문.';
+
+  @override
+  String get signInMagicLinkFailed => '마술 연결을 보낼 실패. 다시 시도하십시오.';
+
+  @override
+  String get signInAllDataCleared => '모든 데이터 정리';
+
+  @override
+  String get signInSubtitle => '실시간 UFO 시력 경고 및 MUFON 보고서';
+
+  @override
+  String get signInGoogleLoading => '로그인 ...';
+
+  @override
+  String get signInContinueWithGoogle => '계속 Google';
+
+  @override
+  String get signInOr => '또는';
+
+  @override
+  String get signInWithEmail => '로그인';
+
+  @override
+  String get signInEmailDescription => '로그인할 수 있는 안전한 링크를 보낼 수 있습니다';
+
+  @override
+  String get signInEmailAddress => '이메일 주소';
+
+  @override
+  String get signInEmailPlaceholder => '이메일: support@email.com';
+
+  @override
+  String signInTryAgainIn(int seconds) {
+    return '${seconds}s에서 다시 시도하십시오';
+  }
+
+  @override
+  String get signInSending => '이름 *.';
+
+  @override
+  String get signInSendMagicLink => 'Magic Link에 대해';
+
+  @override
+  String get signInCheckEmail => '자주 묻는 질문 링크는 15 분에 만료됩니다.';
+
+  @override
+  String get signInSecureAuth => '보안 인증';
+
+  @override
+  String get signInSecureAuthDescription =>
+      'Google Sign-In을 사용하여 즉시 액세스하거나 15 분 이내에 만료 된 마법 링크를 사용하십시오.';
+
+  @override
+  String get signInClearAllDataDebug => '모든 데이터 삭제 (Debug)';
+
+  @override
+  String get emailAuthFailedToSend => '이메일 보내기';
+
+  @override
+  String get emailAuthFailedToSendTryAgain => '이메일 보내기 다시 시도하십시오.';
+
+  @override
+  String get emailAuthInvalidEmail => '잘못된 이메일 주소. 형식을 확인하십시오.';
+
+  @override
+  String get emailAuthUserNotFound => '이 이메일 주소로 계정이 없습니다.';
+
+  @override
+  String get emailAuthTooManyRequests => '너무 많은 시도. 나중에 다시 시도하십시오.';
+
+  @override
+  String get emailAuthOperationNotAllowed => '이메일 링크 로그인이 활성화되지 않습니다.';
+
+  @override
+  String get emailAuthQuotaExceeded => '이메일 할당량 초과. 자주 묻는 질문.';
+
+  @override
+  String get emailAuthVerificationFailed => '이메일 검증 실패. 다시 시도하십시오.';
+
+  @override
+  String get emailAuthTitle => '이메일 Verification';
+
+  @override
+  String get emailAuthVerifyYourEmail => '자주 묻는 질문';
+
+  @override
+  String get emailAuthDescription =>
+      '계정 복구 및 보안에 대한 이메일 주소를 추가하십시오. 보안 로그인 링크를 보내드립니다.';
+
+  @override
+  String get emailAuthEmailAddress => '이메일 주소';
+
+  @override
+  String get emailAuthEmailPlaceholder => '이메일: sales@example.com';
+
+  @override
+  String get emailAuthPleaseEnterEmail => '자주 묻는 질문';
+
+  @override
+  String get emailAuthPleaseEnterValidEmail => '자주 묻는 질문';
+
+  @override
+  String get emailAuthCheckEmailToContinue => '이메일 확인 및 인증 링크를 계속 탭합니다.';
+
+  @override
+  String get emailAuthResendEmail => '이메일 보내기';
+
+  @override
+  String get emailAuthSendVerificationEmail => '인증 받기 이름 *';
+
+  @override
+  String get emailAuthHowItWorks => '이메일 검증 작업';
+
+  @override
+  String get emailAuthHowItWorksSteps =>
+      '1. 명세 보안 로그인 링크를 보내주십시오.\n2. 명세 자주 묻는 질문\n3. 명세 귀하의 이메일은 자동으로 확인됩니다.\n4. 명세 암호가 필요 없습니다!';
+
+  @override
+  String get emailAuthSecurityNotice =>
+      '이메일 확인은 계정 보안을 돕고 기기에 액세스하는 경우 계정 복구를 활성화합니다.';
+
+  @override
+  String get phoneAuthFailedToSendCode => '인증 코드를 보낼 실패. 다시 시도하십시오.';
+
+  @override
+  String get phoneAuthInvalidCodeTryAgain => '잘못된 인증 코드. 다시 시도하십시오.';
+
+  @override
+  String phoneAuthPhoneVerified(String phoneNumber) {
+    return '전화 번호 확인: ₢ 킹';
+  }
+
+  @override
+  String get phoneAuthVerificationFailed => '전화 검증 실패. 다시 시도하십시오.';
+
+  @override
+  String get phoneAuthCodeResent => '검증 코드 resent';
+
+  @override
+  String get phoneAuthFailedToResendCode => '코드를 다시 보낼 실패. 다시 시도하십시오.';
+
+  @override
+  String get phoneAuthInvalidPhoneNumber => '잘못된 전화 번호. 형식을 확인하십시오.';
+
+  @override
+  String get phoneAuthTooManyRequests => '너무 많은 시도. 나중에 다시 시도하십시오.';
+
+  @override
+  String get phoneAuthInvalidVerificationCode => '잘못된 인증 코드. 자주 묻는 질문.';
+
+  @override
+  String get phoneAuthSessionExpired => '검증 세션이 만료되었습니다. 새 코드를 요청하십시오.';
+
+  @override
+  String get phoneAuthSmsQuotaExceeded => 'SMS 할당량 초과. 자주 묻는 질문.';
+
+  @override
+  String get phoneAuthCredentialAlreadyInUse => '이 전화 번호는 이미 다른 계정에 연결됩니다.';
+
+  @override
+  String get phoneAuthVerificationFailedGeneric => '검증 실패. 다시 시도하십시오.';
+
+  @override
+  String get phoneAuthTitle => '전화 검증';
+
+  @override
+  String get phoneAuthVerifyYourPhone => '휴대폰 인증';
+
+  @override
+  String get phoneAuthEnterVerificationCode => '자주 묻는 질문 이름 *';
+
+  @override
+  String get phoneAuthAddPhoneForSecurity => '계정 복구 및 보안에 대한 휴대폰 번호를 추가';
+
+  @override
+  String phoneAuthEnterSixDigitCode(String phoneNumber) {
+    return '$phoneNumber로 보내진 6자리 코드를 입력하십시오';
+  }
+
+  @override
+  String get phoneAuthPhoneNumber => '전화번호';
+
+  @override
+  String get phoneAuthPhonePlaceholder => 'EAN 코드: 4260327154';
+
+  @override
+  String get phoneAuthPleaseEnterPhone => '휴대폰 번호를 입력';
+
+  @override
+  String get phoneAuthPleaseEnterValidPhone => '휴대폰 번호를 입력하세요';
+
+  @override
+  String get phoneAuthVerificationCode => '인증 코드';
+
+  @override
+  String get phoneAuthPleaseEnterSixDigitCode => '6자리 코드를 입력하세요';
+
+  @override
+  String get phoneAuthResendCode => '비밀번호';
+
+  @override
+  String get phoneAuthSendVerificationCode => '인증 받기 이름 *';
+
+  @override
+  String get phoneAuthVerifyCode => 'Verify 코드';
+
+  @override
+  String get phoneAuthChangePhoneNumber => '휴대폰 번호';
+
+  @override
+  String get phoneAuthSmsNotice =>
+      'SMS를 통해 인증 코드를 보내드립니다. 표준 메시지 요금은 적용할 수 있습니다.';
+
+  @override
+  String get phoneAuthCodeExpires => '코드는 60 초에 만료됩니다. 메시지 확인.';
+
+  @override
+  String get yourDataRights => '귀하의 데이터 권리';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      '개인 데이터에 대한 전체 제어가 있습니다. 모든 데이터를 내보내거나 영구적으로 계정을 삭제할 수 있습니다.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => '데이터 내보내기';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription => '모든 계정 데이터를 다운로드';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => '수출 자료';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => '수출 ...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      '포함 : 프로필, 양, 의견, 장치 정보 및 선호 사항. JSON 형식으로 데이터가 제공됩니다.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => '성공적으로 수출되는 자료';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => '수출 자료에 실패';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => '계정 삭제';
 
   @override
-  String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+  String get deleteAccountDescription => '영구적으로 계정과 모든 데이터를 제거';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      '이 동작은 undone일 수 없습니다. 모든 양, 의견 및 계정 데이터는 영구적으로 삭제됩니다.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => '내 계정 삭제';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get deletingAccount => '관련 기사.';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => '계정 삭제';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      '계정을 삭제하시겠습니까? 이 작업은 영구적이며 undone이 될 수 없습니다.';
 
   @override
-  String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+  String get dataWillBeDeleted => '다음 데이터는 영구적으로 삭제됩니다';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '· 사용자 이름\n· 당신의 양 및 보고\n· 모든 의견\n• 장치 등록 자료\n• 위치 및 선호 데이터';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => '영구적으로 삭제';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => '계정 삭제';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => '계정 삭제';
 }

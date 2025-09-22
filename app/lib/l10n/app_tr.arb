@@ -83,7 +83,7 @@
   "mediaProcessing": "İşleme medyası..",
   "cameraPermissionTitle": "Camera access needed needed needed needed",
   "cameraPermissionBody": "UFO fotoğraf ve videoları yakalamak için kamera erişimi.",
-  "locationPermissionTitle": "Konum access needed needed needed",
+  "locationPermissionTitle": "Konum Permission Required",
   "locationPermissionBody": "Konumunuzu yakındaki uyarıları göndermek ve almak için kullanıyoruz.",
   "microphonePermissionTitle": "Mikrophone erişim gerekli gerekli",
   "microphonePermissionBody": "Video için mikrofon erişimi ses ile yakalamak için.",
@@ -531,7 +531,7 @@
   "viewAllBeeps": "View All Beeps",
   "sightingsMap": "Sightings Map",
   "globalSightingNetwork": "Global Sighting Network",
-  "howItWorks": "UFOBeep Nasıl Çalışıyor",
+  "howItWorks": "Nasıl çalışır",
   "backToBeeps": "Beeps",
   "loadingDetails": "Yükleniyor beep detayları...",
   "details": "Detaylar",
@@ -682,6 +682,199 @@
   "pushAlertsTitle": "Push Alerts",
   "pushAlertsDescription": "Telefonunuzu ne yapıyor",
   "alertRadius": "Uyarı Radius",
-  "alertMeForUfobeep": "Beni UFOBeep için (gerçek zamanlı)",
-  "mufonNoPushInfo": "MUFON raporları gece ithal edilir ve uyarıları tetiklemezler"
+  "mufonNoPushInfo": "MUFON raporları gece ithal edilir ve uyarıları tetiklemezler",
+  "privacyData": "Privacy & Data",
+  "privacyPolicyDesc": "Verilerinizi nasıl koruyor ve kullanıyoruz",
+  "termsOfService": "Hizmet Şartları",
+  "termsOfServiceDesc": "Yasal şartlar ve koşullar",
+  "locationTracking": "Konum Takip",
+  "locationTrackingDesc": "Yakın uyarılar için arka plan yeri",
+  "locationTrackingTitle": "Plan Yeri Takip",
+  "locationTrackingExplanation": "UFOBeep, UFO görüşleriniz şu anki konumunuzun yakınındayken sizi yakın uyarılar göndermek için arka planda izler, hatta evden uzaktayken bile.",
+  "locationTrackingBattery": "Güvenilir geofencing for Fleming% batarya etkisi için kullanın",
+  "backgroundLocationTracking": "Enable arka plan Takip Takip Takip",
+  "locationTrackingActive": "Yakın uyarılar için yeri izleyin",
+  "locationTrackingInactive": "Konum izleme engellidir",
+  "locationTrackingDisabledWarning": "Yeni yerlere taşınırken yakın uyarıları almazsınız",
+  "trackingStatus": "Takip Durumu",
+  "monitoringStatus": "İzleme",
+  "active": "Aktif",
+  "inactive": "Inaktif",
+  "lastKnownLocation": "Son Bilinen Konum",
+  "lastLocationUpdate": "Son Güncelleme",
+  "movementThreshold": "Hareket Threshold",
+  "updateFrequency": "Update Frekansı",
+  "batteryImpact": "Battery Etkisi",
+  "dataPrivacy": "Data Privacy",
+  "locationPermissionExplanation": "UFOBeep, hareketinizi izlemek ve yeni konumlarda olduğunuzda yakın uyarıları göndermek için 'Always Allow' location permission to monitor your move and send close alerts when you're in new locations.",
+  "benefitsTitle": "Faydaları",
+  "locationTrackingBenefits": "• • • Seyahat ettiğiniz her yerde UFO uyarıları alın\n• Otomatik konum güncelleştirmeleri\n• • • Hiçbir manuel kurulum gerekli",
+  "allowLocationAccess": "Konum Access",
+  "locationPermissionRequired": "Konum permission is required for background monitoring",
+  "locationTrackingEnabled": "Plan yeri izleme etkinleştirdi",
+  "locationTrackingDisabled": "Plan yeri takip engelli",
+  "justNow": "Sadece şimdi",
+  "minutesAgo": "{minutes} dakika önce",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours} saatler önce",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{days} days ago",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Data Management",
+  "dataManagementDesc": "İhracat veya hesabınızı sil",
+  "splashTagline": "Gerçek zamanlı görüş uyarıları",
+  "splashStartingUp": "Başlayın...",
+  "splashInitializationFailed": "İlkleşme başarısız oldu",
+  "splashInitializationFailedTitle": "İlkleşme Başarısızlık",
+  "splashInitializationError": "Uygulama düzgün bir şekilde başlamadı:",
+  "splashRetry": "Retry",
+  "splashContinue": "Devam etmeye devam et",
+  "splashInitializing": "Başlangıç...",
+  "signInWelcome": "Hoşgeldiniz {username}!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Sign-in başarısız oldu: {error}",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Lütfen e-posta adresinizi girin",
+  "signInPleaseEnterValidEmail": "Lütfen geçerli bir e-posta adresi girin",
+  "signInMagicLinkSent": "Sihirli bağlantı gönderildi! E-postanızı kontrol edin ve giriş için bağlantıyı tıklayın.",
+  "signInMagicLinkFailed": "Büyüyü göndermek için başarısız oldu. Lütfen tekrar deneyin.",
+  "signInAllDataCleared": "Tüm veriler temizlendi",
+  "signInSubtitle": "Gerçek zamanlı UFO uyarıları ve MUFON raporları",
+  "signInGoogleLoading": "Signing in...",
+  "signInContinueWithGoogle": "Google ile devam et",
+  "signInOr": "veya",
+  "signInWithEmail": "E-posta ile oturum açın",
+  "signInEmailDescription": "Size işaret etmek için güvenli bir bağlantı göndereceğiz",
+  "signInEmailAddress": "E-posta adresi",
+  "signInEmailPlaceholder": "your@email.com",
+  "signInTryAgainIn": "Tekrar {seconds}s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Gönder...",
+  "signInSendMagicLink": "Magic Link Gönder",
+  "signInCheckEmail": "E-postanızı kontrol edin! Bağlantı 15 dakika içinde sona erer.",
+  "signInSecureAuth": "Güvenli Kimlik",
+  "signInSecureAuthDescription": "Google Sign-In'i anlık erişim için veya 15 dakika içinde sonlanan e-posta sihirli bağlantıları kullanın.",
+  "signInClearAllDataDebug": "Clear All Data (Debug)",
+  "emailAuthFailedToSend": "E-posta göndermek için başarısız oldu",
+  "emailAuthFailedToSendTryAgain": "E-posta göndermeye başarısız oldu. Lütfen tekrar deneyin.",
+  "emailAuthInvalidEmail": "Invalid e-posta adresi. Lütfen formatı kontrol edin.",
+  "emailAuthUserNotFound": "Bu e-posta adresi ile hiçbir hesap bulunamadı.",
+  "emailAuthTooManyRequests": "Çok fazla deneme. Lütfen daha sonra tekrar deneyin.",
+  "emailAuthOperationNotAllowed": "E-posta link işareti-in etkinleştirilmemektedir.",
+  "emailAuthQuotaExceeded": "E-posta kotası aştı. Lütfen yarın tekrar deneyin.",
+  "emailAuthVerificationFailed": "E-posta doğrulama başarısız oldu. Lütfen tekrar deneyin.",
+  "emailAuthTitle": "E-posta Doğrulama",
+  "emailAuthVerifyYourEmail": "E-postanızı onaylayın",
+  "emailAuthDescription": "Hesap kurtarma ve güvenlik için e-posta adresinizi ekleyin. Size güvenli bir işaret bağlantı göndereceğiz.",
+  "emailAuthEmailAddress": "E-posta Adresi",
+  "emailAuthEmailPlaceholder": "your.email@ör.com",
+  "emailAuthPleaseEnterEmail": "Lütfen e-posta adresinizi girin",
+  "emailAuthPleaseEnterValidEmail": "Lütfen geçerli bir e-posta adresi girin",
+  "emailAuthCheckEmailToContinue": "E-postanızı kontrol edin ve devam etmek için doğrulama linkine tıklayın.",
+  "emailAuthResendEmail": "E-posta",
+  "emailAuthSendVerificationEmail": "Verification Gönder E-posta e-posta e-posta",
+  "emailAuthHowItWorks": "E-posta Doğrulama Nasıl Çalışır",
+  "emailAuthHowItWorksSteps": "1. Size güvenli bir işaret gönderiyoruz - bağlantı\n2. E-postanızı kontrol edin ve bağlantıya tıklayın\n3. E-postanız otomatik olarak doğrulanır\n4. Hiçbir şifre gerekli değil!",
+  "emailAuthSecurityNotice": "E-posta doğrulama hesabınızı güvenceye yardımcı olur ve cihazınıza erişimi kaybederseniz hesabı kurtarma sağlar.",
+  "phoneAuthFailedToSendCode": "Doğrulama kodunu göndermeye başarısız oldu. Lütfen tekrar deneyin.",
+  "phoneAuthInvalidCodeTryAgain": "Invalid doğrulama kodu. Lütfen tekrar deneyin.",
+  "phoneAuthPhoneVerified": "Telefon numarası doğrulandı: {phoneNumber}",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Telefon doğrulama başarısız oldu. Lütfen tekrar deneyin.",
+  "phoneAuthCodeResent": "Doğrulama kodu",
+  "phoneAuthFailedToResendCode": "Kodu geri almak için başarısız oldu. Lütfen tekrar deneyin.",
+  "phoneAuthInvalidPhoneNumber": "Invalid telefon numarası. Lütfen formatı kontrol edin.",
+  "phoneAuthTooManyRequests": "Çok fazla deneme. Lütfen daha sonra tekrar deneyin.",
+  "phoneAuthInvalidVerificationCode": "Invalid doğrulama kodu. Lütfen kontrol edin ve tekrar deneyin.",
+  "phoneAuthSessionExpired": "Doğrulama seansı sona erdi. Lütfen yeni bir kod talep edin.",
+  "phoneAuthSmsQuotaExceeded": "SMS kotası aştı. Lütfen yarın tekrar deneyin.",
+  "phoneAuthCredentialAlreadyInUse": "Bu telefon numarası zaten başka bir hesapla bağlantılıdır.",
+  "phoneAuthVerificationFailedGeneric": "Doğrulama başarısız oldu. Lütfen tekrar deneyin.",
+  "phoneAuthTitle": "Telefon Doğrulama",
+  "phoneAuthVerifyYourPhone": "Telefonunuzu doğrulayın",
+  "phoneAuthEnterVerificationCode": "Verification Kod Kodu",
+  "phoneAuthAddPhoneForSecurity": "Hesap kurtarma ve güvenlik için telefon numaranızı ekleyin",
+  "phoneAuthEnterSixDigitCode": "{phoneNumber}'a gönderilen 6 dijital kod girin",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Telefon Numarası",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Lütfen telefon numaranıza girin",
+  "phoneAuthPleaseEnterValidPhone": "Lütfen geçerli bir telefon numarası girin",
+  "phoneAuthVerificationCode": "Doğrulama Kodu",
+  "phoneAuthPleaseEnterSixDigitCode": "Lütfen 6 dijital kodu girin",
+  "phoneAuthResendCode": "Sınırlı Kodu",
+  "phoneAuthSendVerificationCode": "Verification Gönder Kod Kodu",
+  "phoneAuthVerifyCode": "Verify Code",
+  "phoneAuthChangePhoneNumber": "Change Phone Number",
+  "phoneAuthSmsNotice": "Size SMS aracılığıyla doğrulama kodu göndereceğiz. Standart mesaj oranları uygulanabilir.",
+  "phoneAuthCodeExpires": "Kod 60 saniye içinde sona erer. Mesajlarınızı kontrol edin.",
+  "yourDataRights": "Veri Haklarınız",
+  "dataRightsExplanation": "Kişisel verileriniz üzerinde tam kontrole sahipsiniz. Tüm verilerinizi ihraç edebilir veya hesabınızı herhangi bir zamanda kalıcı olarak silebilirsiniz.",
+  "exportYourData": "Data Your Data",
+  "exportDataDescription": "Tüm hesap verilerini indirin",
+  "exportData": "İhracat Data",
+  "exportingData": "İhracat ...",
+  "exportDataDetails": "Adds: Profil, beeps, yorum, cihaz bilgisi ve tercihleri. Veriler JSON formatında sağlanır.",
+  "dataExportedSuccessfully": "Veriler başarıyla ihraç edilir",
+  "dataExportFailed": "Veri ihraç etmek için başarısız oldu",
+  "deleteAccount": "Delete Hesabı",
+  "deleteAccountDescription": "Sürekli olarak hesabınızı ve tüm verileri ortadan kaldırır",
+  "deleteAccountWarning": "Bu eylem geri alınamaz. Tüm arılar, yorumlar ve hesap verileri kalıcı olarak silinecektir.",
+  "deleteMyAccount": "Hesabımı",
+  "deletingAccount": "Deleting...",
+  "deleteAccountConfirmTitle": "Delete Hesabı",
+  "deleteAccountConfirmMessage": "Hesabınızı silmek istediğinizden kesinlikle emin misiniz? Bu eylem kalıcıdır ve geri alınamaz.",
+  "dataWillBeDeleted": "Aşağıdaki veriler kalıcı olarak silinecektir:",
+  "deletedDataList": "• • • Profiliniz ve kullanıcı adı\n• • • Bütün arılarınız ve raporlarınız\n• • • Tüm yorumlarınız\n• Cihaz kayıt verileri\n• Konum ve tercih verileri",
+  "deleteAccountPermanent": "Delete Sürekli",
+  "accountDeletedSuccessfully": "Hesap silindi başarıyla",
+  "accountDeletionFailed": "Hesabı silmek için başarısız oldu"
 }
