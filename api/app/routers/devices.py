@@ -1149,13 +1149,16 @@ async def devices_health_check():
 @router.post("/{device_id}/dnd")
 async def set_device_dnd(
     device_id: str,
-    hours: int = 1  # Default 1 hour for snooze button
+    request: dict
 ):
     """Set DND (Do Not Disturb) for device - used by snooze button and DND settings"""
     try:
         db_pool = await get_db()
 
         async with db_pool.acquire() as conn:
+            # Get hours from request body
+            hours = request.get('hours', 1)  # Default 1 hour if not specified
+
             # Set dnd_until to NOW() + hours
             dnd_until = datetime.utcnow() + timedelta(hours=hours) if hours > 0 else None
 
