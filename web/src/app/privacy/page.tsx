@@ -143,17 +143,17 @@ export default function PrivacyPage() {
           </section>
 
           <section className="mb-8">
-            <h2 className="text-2xl font-semibold text-text-primary mb-4">Matrix Protocol Integration</h2>
-            
+            <h2 className="text-2xl font-semibold text-text-primary mb-4">Comments and Discussion</h2>
+
             <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
               <p className="text-text-secondary mb-4">
-                UFOBeep uses the Matrix protocol for chat functionality, which provides:
+                UFOBeep includes a commenting system for sighting discussions:
               </p>
               <ul className="text-text-secondary space-y-2">
-                <li>• <strong>End-to-end Encryption:</strong> Your messages are encrypted between participants</li>
-                <li>• <strong>Decentralized:</strong> No single point of control or failure</li>
-                <li>• <strong>Federation:</strong> You can use your existing Matrix account or we&apos;ll create one</li>
-                <li>• <strong>Data Portability:</strong> Your chat history belongs to you</li>
+                <li>• <strong>Public Comments:</strong> Comments on sightings are visible to all users</li>
+                <li>• <strong>Moderation:</strong> Comments are subject to community guidelines</li>
+                <li>• <strong>User Control:</strong> You can edit or delete your own comments</li>
+                <li>• <strong>Data Storage:</strong> Comments are stored securely on our servers</li>
               </ul>
             </div>
           </section>
@@ -178,7 +178,7 @@ export default function PrivacyPage() {
                   <li>• Permanently delete your account</li>
                   <li>• Remove personal information</li>
                   <li>• Anonymous reports remain public</li>
-                  <li>• Matrix chat data handled separately</li>
+                  <li>• Comments on reports remain public</li>
                 </ul>
               </div>
             </div>
@@ -232,9 +232,7 @@ export default function PrivacyPage() {
                 Questions about this privacy policy or your data? Contact us at:
               </p>
               <ul className="text-text-secondary space-y-2">
-                <li>• <strong>Email:</strong> privacy@ufobeep.com</li>
-                <li>• <strong>Matrix:</strong> @privacy:ufobeep.com</li>
-                <li>• <strong>Mail:</strong> UFOBeep Privacy Officer, [Address]</li>
+                <li>• <strong>Email:</strong> support@ufobeep.com</li>
               </ul>
             </div>
           </section>
@@ -263,8 +261,8 @@ export default function PrivacyPage() {
               <Link href="/safety" className="text-brand-primary hover:text-brand-primary-light transition-colors">
                 Safety Guidelines
               </Link>
-              <a href="mailto:privacy@ufobeep.com" className="text-brand-primary hover:text-brand-primary-light transition-colors">
-                Contact Privacy Team
+              <a href="mailto:support@ufobeep.com" className="text-brand-primary hover:text-brand-primary-light transition-colors">
+                Contact Support
               </a>
             </div>
           </div>

@@ -83,7 +83,7 @@ export default function TermsPage() {
               <ul className="text-text-secondary space-y-2">
                 <li>• Platform for reporting and viewing sighting reports</li>
                 <li>• Real-time alerts for nearby incidents</li>
-                <li>• Community discussion via Matrix protocol</li>
+                <li>• Community discussion via comments system</li>
                 <li>• AR compass navigation to sighting locations</li>
                 <li>• Environmental data enrichment (weather, celestial, satellites)</li>
               </ul>
@@ -171,7 +171,7 @@ export default function TermsPage() {
                   <ul className="text-text-secondary text-sm space-y-1">
                     <li>• Location data is jittered for privacy</li>
                     <li>• No personal data sales or advertising</li>
-                    <li>• Matrix integration for secure chat</li>
+                    <li>• Commenting system for discussions</li>
                     <li>• Data portability rights</li>
                   </ul>
                 </div>
@@ -336,9 +336,7 @@ export default function TermsPage() {
                   Questions about these terms or our services? Reach out to us:
                 </p>
                 <ul className="text-text-secondary space-y-2">
-                  <li>• <strong>Email:</strong> legal@ufobeep.com</li>
-                  <li>• <strong>Matrix:</strong> @legal:ufobeep.com</li>
-                  <li>• <strong>Mail:</strong> UFOBeep Legal Department, [Address]</li>
+                  <li>• <strong>Email:</strong> support@ufobeep.com</li>
                 </ul>
               </div>
 
@@ -362,8 +360,8 @@ export default function TermsPage() {
               <Link href="/safety" className="text-brand-primary hover:text-brand-primary-light transition-colors">
                 Safety Guidelines
               </Link>
-              <a href="mailto:legal@ufobeep.com" className="text-brand-primary hover:text-brand-primary-light transition-colors">
-                Contact Legal Team
+              <a href="mailto:support@ufobeep.com" className="text-brand-primary hover:text-brand-primary-light transition-colors">
+                Contact Support
               </a>
             </div>
           </div>
