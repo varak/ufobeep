@@ -28,6 +28,7 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
     super.initState();
     // Initialize from current filter state
     final currentFilter = ref.read(alertsFilterStateProvider);
+    final userPrefs = ref.read(userPreferencesProvider);
 
     // Initialize source filter
     if (currentFilter.showUfoBeepOnly == true) {
@@ -43,8 +44,8 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
         ? SortOption.nearest
         : SortOption.newest;
 
-    // Ensure initial value is in dropdown options
-    final currentRadius = currentFilter.alertRangeKm ?? 25.0;
+    // Read alert range from user preferences (not filter state)
+    final currentRadius = userPrefs?.alertRangeKm ?? 25.0;
     final radiusOptions = [10.0, 25.0, 50.0, 100.0, 200.0];
     _pushRadiusKm = radiusOptions.contains(currentRadius) ? currentRadius : 25.0;
   }
@@ -309,10 +310,18 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
 
     ref.read(alertsFilterStateProvider.notifier).updateFilter(newFilter);
 
+    // Also update user preferences to sync with backend device table
+    final userPrefs = ref.read(userPreferencesProvider);
+    if (userPrefs != null) {
+      ref.read(userPreferencesProvider.notifier).updatePreferences(
+        userPrefs.copyWith(alertRangeKm: _pushRadiusKm)
+      );
+    }
+
     // Force AlertsList provider to rebuild with new filter
     ref.invalidate(alertsListProvider);
 
-    debugPrint('🔧 DIALOG: Filter applied and AlertsList invalidated');
+    debugPrint('🔧 DIALOG: Filter applied, user preferences updated, and AlertsList invalidated');
 
     Navigator.of(context).pop();
   }

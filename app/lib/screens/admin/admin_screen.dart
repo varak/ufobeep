@@ -52,19 +52,16 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       _deviceId = await beepService.getOrCreateDeviceId();
       _fcmToken = await pushNotificationService.getCachedToken();
       
-      // Get engagement metrics
-      await _loadEngagementMetrics();
-      
-      // Get current location
+      // Temporarily disable admin API calls to prevent sign-out bug
+      // TODO: Re-enable once auth interceptor is fixed
+      // await _loadEngagementMetrics();
+      // await _loadRecentAlerts();
+      // await _loadRateLimitStatus();
+
+      // Get current location (safe, doesn't use admin APIs)
       if (permissionService.locationGranted) {
         _currentPosition = await permissionService.getCurrentLocation();
       }
-      
-      // Load recent alerts for witness aggregation analysis
-      await _loadRecentAlerts();
-      
-      // Load rate limiting status
-      await _loadRateLimitStatus();
       
       setState(() => _statusMessage = 'Admin mode ready');
     } catch (e) {
@@ -78,7 +75,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
     try {
       final apiClient = ApiClient.instance;
       final response = await apiClient.getJson('/admin/engagement/summary');
-      
+
       if (response['success'] == true) {
         setState(() {
           _engagementMetrics = response['data'];
@@ -86,7 +83,8 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       }
     } catch (e) {
       debugPrint('Failed to load engagement metrics: $e');
-      // Don't show error to user - engagement metrics are optional
+      // Ignore admin API failures - don't let them affect user authentication
+      // This prevents sign-out when users access admin screen without admin permissions
     }
   }
 
