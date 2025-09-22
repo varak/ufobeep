@@ -349,7 +349,7 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
           _buildDetailRow(Icons.timer, AppLocalizations.of(context)!.updateFrequency, '10 minutes max'),
           const SizedBox(height: 12),
           _buildDetailRow(Icons.battery_saver, AppLocalizations.of(context)!.batteryImpact, '<3% drain'),
-          const SizedBox(height, 12),
+          const SizedBox(height: 12),
           _buildDetailRow(Icons.shield, AppLocalizations.of(context)!.dataPrivacy, 'Device only'),
         ],
       ),

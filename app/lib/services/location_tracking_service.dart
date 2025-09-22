@@ -138,7 +138,7 @@ class LocationTrackingService {
   Future<Position?> _getCurrentPosition() async {
     try {
       final position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.balanced, // Balance accuracy vs battery
+        desiredAccuracy: LocationAccuracy.medium, // Balance accuracy vs battery
         timeLimit: const Duration(seconds: 15),
       );
 
@@ -159,7 +159,7 @@ class LocationTrackingService {
   Future<void> _startGeofenceMonitoring(Position centerPosition) async {
     // Use Geolocator's position stream with distance filter for geofence-like behavior
     const LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.balanced,
+      accuracy: LocationAccuracy.medium,
       distanceFilter: 1000, // Trigger when moved 1km (our geofence radius in meters)
     );
 
