@@ -556,7 +556,7 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
         return None
         
     try:
-        # Create Firebase message with high priority for background delivery
+        # Create Firebase message optimized for Android 15 instant delivery
         message = messaging.Message(
             notification=messaging.Notification(
                 title=title,
@@ -566,10 +566,12 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
             token=token,
             android=messaging.AndroidConfig(
                 priority="high",  # High priority for background delivery
-                ttl=timedelta(minutes=5),  # Short TTL for immediate delivery
+                ttl=timedelta(seconds=30),  # Short TTL for Android 15 instant delivery
+                collapse_key="ufo_alert",  # Prevent queue bloat on Android 15
                 notification=messaging.AndroidNotification(
-                    channel_id="ufobeep_beeps",
-                    sound="default"
+                    channel_id="ufobeep_alerts",  # Correct channel ID
+                    sound="default",
+                    priority="high"  # Explicit notification priority
                 ),
                 data={k: str(v) for k, v in data.items()}
             )
