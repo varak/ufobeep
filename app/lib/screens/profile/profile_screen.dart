@@ -118,8 +118,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               const SizedBox(height: 24),
               _buildAppSettings(userPreferences),
               const SizedBox(height: 24),
+              _buildPrivacySection(),
+              const SizedBox(height: 24),
             ],
-            
+
             // Permissions Management
             _buildPermissionsSection(),
             
@@ -307,7 +309,68 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ],
     );
   }
-  
+
+  Widget _buildPrivacySection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4),
+          child: Text(
+            AppLocalizations.of(context)!.privacyData,
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+        const SizedBox(height: 16),
+
+        GlassCard(
+          child: Column(
+            children: [
+              _buildNavItemWithSubtitle(
+                icon: Icons.shield_outlined,
+                title: AppLocalizations.of(context)!.privacyPolicy,
+                subtitle: AppLocalizations.of(context)!.privacyPolicyDesc,
+                onTap: () => _openPrivacyPolicy(),
+                isFirst: true,
+              ),
+
+              _buildDivider(),
+
+              _buildNavItemWithSubtitle(
+                icon: Icons.gavel_outlined,
+                title: AppLocalizations.of(context)!.termsOfService,
+                subtitle: AppLocalizations.of(context)!.termsOfServiceDesc,
+                onTap: () => _openTermsOfService(),
+              ),
+
+              _buildDivider(),
+
+              _buildNavItemWithSubtitle(
+                icon: Icons.my_location_outlined,
+                title: AppLocalizations.of(context)!.locationTracking,
+                subtitle: AppLocalizations.of(context)!.locationTrackingDesc,
+                onTap: () => context.push('/profile/location-tracking'),
+              ),
+
+              _buildDivider(),
+
+              _buildNavItemWithSubtitle(
+                icon: Icons.folder_delete_outlined,
+                title: AppLocalizations.of(context)!.dataManagement,
+                subtitle: AppLocalizations.of(context)!.dataManagementDesc,
+                onTap: () => context.push('/profile/data-management'),
+                isLast: true,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildPermissionsSection() {
     return FutureBuilder<List<Permission>>(
       future: _getAppPermissions(),
@@ -982,6 +1045,20 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       ref.read(userPreferencesProvider.notifier).updatePreferences(
         preferences.copyWith(mediaOnlyAlerts: enabled),
       );
+    }
+  }
+
+  Future<void> _openPrivacyPolicy() async {
+    final url = Uri.parse('https://ufobeep.com/privacy');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
+    }
+  }
+
+  Future<void> _openTermsOfService() async {
+    final url = Uri.parse('https://ufobeep.com/terms');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
     }
   }
 

@@ -19,6 +19,8 @@ import '../screens/map/map_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/user_registration_screen.dart';
 import '../screens/profile/language_settings_screen.dart';
+import '../screens/profile/location_tracking_screen.dart';
+import '../screens/profile/data_management_screen.dart';
 import '../screens/auth/account_recovery_screen.dart';
 import '../screens/auth/phone_setup_screen.dart';
 import '../screens/auth/firebase_phone_auth_screen.dart';
@@ -471,6 +473,18 @@ GoRouter appRouter(AppRouterRef ref) {
                 path: 'notifications',
                 name: 'notification-management',
                 builder: (context, state) => const NotificationManagementScreen(),
+              ),
+              // Location Tracking Settings
+              GoRoute(
+                path: 'location-tracking',
+                name: 'location-tracking',
+                builder: (context, state) => const LocationTrackingScreen(),
+              ),
+              // Data Management
+              GoRoute(
+                path: 'data-management',
+                name: 'data-management',
+                builder: (context, state) => const DataManagementScreen(),
               ),
             ],
           ),

@@ -267,6 +267,42 @@ class DeviceService {
     return {};
   }
 
+  /// Update device location with specific coordinates (for background tracking)
+  Future<bool> updateDeviceLocationWithCoordinates(double latitude, double longitude) async {
+    try {
+      final deviceId = await getDeviceId();
+
+      // Validate coordinates
+      if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180) {
+        print('Device location update: Invalid coordinates lat=$latitude, lon=$longitude');
+        return false;
+      }
+
+      // Update device location via API
+      final url = Uri.parse('${env.AppEnvironment.apiBaseUrl}/devices/$deviceId/location');
+      final response = await _httpClient.patch(
+        url,
+        headers: await _getAuthHeaders(),
+        body: jsonEncode({
+          'lat': latitude,
+          'lon': longitude,
+          'updated_at': DateTime.now().toIso8601String(),
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        print('Device location updated via coordinates: lat=$latitude, lon=$longitude');
+        return true;
+      } else {
+        print('Device location update failed: ${response.statusCode} ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      print('Error updating device location with coordinates: $e');
+      return false;
+    }
+  }
+
   /// Update device location for proximity alerts
   Future<bool> updateDeviceLocation() async {
     try {

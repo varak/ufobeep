@@ -27,6 +27,7 @@ import 'services/api_client.dart';
 import 'services/auth_repository.dart';
 import 'services/device_registration_manager.dart';
 import 'services/location_update_manager.dart';
+import 'services/location_tracking_service.dart';
 import 'services/sensor_service.dart';
 import 'services/deep_link_service.dart';
 import 'features/auth/deep_link_handler.dart';
@@ -103,6 +104,12 @@ void main() async {
     );
     await locationManager.start();
     debugPrint('✅ LocationUpdateManager started in background');
+  });
+
+  // Initialize LocationTrackingService for background movement detection
+  Future.delayed(Duration.zero, () async {
+    await locationTrackingService.initialize();
+    debugPrint('✅ LocationTrackingService initialized for background movement detection');
   });
   
   final sharedPreferences = results[1] as SharedPreferences;

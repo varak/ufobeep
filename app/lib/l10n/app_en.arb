@@ -682,5 +682,86 @@
   "pushAlertsTitle": "Push Alerts",
   "pushAlertsDescription": "What pings your phone",
   "alertRadius": "Alert Radius",
-  "mufonNoPushInfo": "MUFON reports are imported nightly and do not trigger push alerts"
+  "mufonNoPushInfo": "MUFON reports are imported nightly and do not trigger push alerts",
+  "privacyData": "Privacy & Data",
+  "privacyPolicy": "Privacy Policy",
+  "privacyPolicyDesc": "How we protect and use your data",
+  "termsOfService": "Terms of Service",
+  "termsOfServiceDesc": "Legal terms and conditions",
+  "locationTracking": "Location Tracking",
+  "locationTrackingDesc": "Background location for proximity alerts",
+  "locationTrackingTitle": "Background Location Tracking",
+  "locationTrackingExplanation": "UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you're away from home.",
+  "locationTrackingBattery": "Uses intelligent geofencing for <3% battery impact",
+  "backgroundLocationTracking": "Enable Background Tracking",
+  "locationTrackingActive": "Monitoring location for proximity alerts",
+  "locationTrackingInactive": "Location tracking is disabled",
+  "locationTrackingDisabledWarning": "You won't receive proximity alerts when you move to new locations",
+  "trackingStatus": "Tracking Status",
+  "monitoringStatus": "Monitoring",
+  "active": "Active",
+  "inactive": "Inactive",
+  "lastKnownLocation": "Last Known Location",
+  "lastLocationUpdate": "Last Update",
+  "howItWorks": "How It Works",
+  "movementThreshold": "Movement Threshold",
+  "updateFrequency": "Update Frequency",
+  "batteryImpact": "Battery Impact",
+  "dataPrivacy": "Data Privacy",
+  "locationPermissionTitle": "Location Permission Required",
+  "locationPermissionExplanation": "UFOBeep needs 'Always Allow' location permission to monitor your movement and send proximity alerts when you're in new locations.",
+  "benefitsTitle": "Benefits",
+  "locationTrackingBenefits": "• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required",
+  "allowLocationAccess": "Allow Location Access",
+  "locationPermissionRequired": "Location permission is required for background tracking",
+  "locationTrackingEnabled": "Background location tracking enabled",
+  "locationTrackingDisabled": "Background location tracking disabled",
+  "justNow": "Just now",
+  "minutesAgo": "{minutes} minutes ago",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours} hours ago",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{days} days ago",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Data Management",
+  "dataManagementDesc": "Export or delete your account data",
+  "yourDataRights": "Your Data Rights",
+  "dataRightsExplanation": "You have full control over your personal data. You can export all your data or permanently delete your account at any time.",
+  "exportYourData": "Export Your Data",
+  "exportDataDescription": "Download all your account data",
+  "exportData": "Export Data",
+  "exportingData": "Exporting...",
+  "exportDataDetails": "Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.",
+  "dataExportedSuccessfully": "Data exported successfully",
+  "dataExportFailed": "Failed to export data",
+  "deleteAccount": "Delete Account",
+  "deleteAccountDescription": "Permanently remove your account and all data",
+  "deleteAccountWarning": "This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.",
+  "deleteMyAccount": "Delete My Account",
+  "deletingAccount": "Deleting...",
+  "deleteAccountConfirmTitle": "Delete Account",
+  "deleteAccountConfirmMessage": "Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.",
+  "dataWillBeDeleted": "The following data will be permanently deleted:",
+  "deletedDataList": "• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data",
+  "deleteAccountPermanent": "Delete Permanently",
+  "accountDeletedSuccessfully": "Account deleted successfully",
+  "accountDeletionFailed": "Failed to delete account"
 }
