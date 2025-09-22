@@ -569,8 +569,7 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
                 ttl=timedelta(seconds=30),  # Android 15 optimization - 49s→17s improvement
                 notification=messaging.AndroidNotification(
                     channel_id="ufobeep_beeps",
-                    sound="default",
-                    priority="high"  # Explicit high priority for Android 15
+                    sound="default"
                 ),
                 data={k: str(v) for k, v in data.items()}
             )
