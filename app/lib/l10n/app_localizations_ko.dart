@@ -1549,8 +1549,5 @@ class AppLocalizationsKo extends AppLocalizations {
   String get alertRadius => 'Alert 반경';
 
   @override
-  String get alertMeForUfobeep => 'UFOBeep에 대한 경고 (현실 시간)';
-
-  @override
   String get mufonNoPushInfo => 'MUFON 보고서는 밤에 수입되고 경고를 유발하지 않습니다';
 }

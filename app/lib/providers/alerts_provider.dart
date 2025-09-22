@@ -394,7 +394,16 @@ class AlertsList extends _$AlertsList {
   Future<AlertsListData> build() async {
     // Get filter state
     final filter = ref.watch(alertsFilterStateProvider);
-    final sourceFilter = filter.showUfoBeepOnly == true ? 'ufobeep' : null;
+
+    // Handle all three source filter cases
+    String? sourceFilter;
+    if (filter.showUfoBeepOnly == true) {
+      sourceFilter = 'ufobeep';  // UFOBeep only
+    } else if (filter.showUfoBeepOnly == false) {
+      sourceFilter = 'mufon';   // MUFON only
+    } else {
+      sourceFilter = null;      // Both sources
+    }
 
     // Convert sort option to API parameter
     String? sortBy;
@@ -412,6 +421,8 @@ class AlertsList extends _$AlertsList {
         sortBy = 'newest'; // Default fallback
     }
 
+    debugPrint('🔧 FILTER DEBUG: sourceFilter=$sourceFilter, sortBy=$sortBy, showUfoBeepOnly=${filter.showUfoBeepOnly}');
+
     // Try to get user location for distance calculation
     double? userLat, userLon;
     try {
@@ -423,6 +434,8 @@ class AlertsList extends _$AlertsList {
     } catch (e) {
       debugPrint('Could not get user location for distance calculation: $e');
     }
+
+    debugPrint('🌍 LOCATION DEBUG: userLat=$userLat, userLon=$userLon');
 
     // Fetch first page of alerts from API with filters
     return await _fetchAlertsPage(
@@ -574,6 +587,7 @@ class AlertsList extends _$AlertsList {
   }
 
   Future<void> loadMore({
+    String? source,
     String? category,
     String? minAlertLevel,
     double? maxDistanceKm,
@@ -581,6 +595,7 @@ class AlertsList extends _$AlertsList {
     double? longitude,
     int? recentHours,
     bool verifiedOnly = false,
+    String? sortBy,
   }) async {
     final currentData = state.value;
     if (currentData == null || !currentData.hasMore) return;
@@ -588,6 +603,7 @@ class AlertsList extends _$AlertsList {
     final nextPage = currentData.currentPage + 1;
     final newPageData = await _fetchAlertsPage(
       page: nextPage,
+      source: source,
       category: category,
       minAlertLevel: minAlertLevel,
       maxDistanceKm: maxDistanceKm,
@@ -595,6 +611,7 @@ class AlertsList extends _$AlertsList {
       longitude: longitude,
       recentHours: recentHours,
       verifiedOnly: verifiedOnly,
+      sortBy: sortBy,
     );
     
     final updatedData = currentData.copyWith(
@@ -732,6 +749,7 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
 class AlertsFilterState extends _$AlertsFilterState {
   @override
   AlertsFilter build() {
+    // Start with default filter - will be overridden by user selections
     return const AlertsFilter();
   }
 

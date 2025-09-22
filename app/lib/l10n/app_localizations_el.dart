@@ -1593,10 +1593,6 @@ class AppLocalizationsEl extends AppLocalizations {
   String get alertRadius => 'Ακτίνα ειδοποίησης';
 
   @override
-  String get alertMeForUfobeep =>
-      'Ειδοποίησέ με για UFOBeep (σε πραγματικό χρόνο)';
-
-  @override
   String get mufonNoPushInfo =>
       'Οι αναφορές MUFON εισάγονται τη νύχτα και δεν ενεργοποιούν ειδοποιήσεις ώθησης';
 }

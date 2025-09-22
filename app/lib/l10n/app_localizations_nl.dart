@@ -1585,9 +1585,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get alertRadius => 'Waarschuw Straal';
 
   @override
-  String get alertMeForUfobeep => 'Waarschuw me voor UFObeep (real-time)';
-
-  @override
   String get mufonNoPushInfo =>
       'MUFON rapporten worden \'s nachts geïmporteerd en niet push waarschuwingen veroorzaken';
 }

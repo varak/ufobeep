@@ -3084,12 +3084,6 @@ abstract class AppLocalizations {
   /// **'Alert Radius'**
   String get alertRadius;
 
-  /// No description provided for @alertMeForUfobeep.
-  ///
-  /// In en, this message translates to:
-  /// **'Alert me for UFOBeep (real-time)'**
-  String get alertMeForUfobeep;
-
   /// No description provided for @mufonNoPushInfo.
   ///
   /// In en, this message translates to:

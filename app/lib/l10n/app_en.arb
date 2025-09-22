@@ -682,6 +682,5 @@
   "pushAlertsTitle": "Push Alerts",
   "pushAlertsDescription": "What pings your phone",
   "alertRadius": "Alert Radius",
-  "alertMeForUfobeep": "Alert me for UFOBeep (real-time)",
   "mufonNoPushInfo": "MUFON reports are imported nightly and do not trigger push alerts"
 }

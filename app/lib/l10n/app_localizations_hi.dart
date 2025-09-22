@@ -1578,9 +1578,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get alertRadius => 'चेतावनी त्रिज्या';
 
   @override
-  String get alertMeForUfobeep => 'मुझे UFOBeep (real-time) के लिए चेतावनी दें';
-
-  @override
   String get mufonNoPushInfo =>
       'MUFON रिपोर्ट को रात में आयात किया जाता है और पुश अलर्ट को ट्रिगर नहीं करता है';
 }

@@ -20,7 +20,7 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
   // Simplified filter state
   SourceFilter _sourceFilter = SourceFilter.both;
   SortOption _sortOption = SortOption.newest;
-  double _pushRadiusKm = 30.0;
+  double _pushRadiusKm = 25.0;  // Default to 25km (exists in dropdown)
   bool _ufobeepAlertsEnabled = true;
 
   @override
@@ -43,7 +43,10 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
         ? SortOption.nearest
         : SortOption.newest;
 
-    _pushRadiusKm = currentFilter.alertRangeKm ?? 30.0;
+    // Ensure initial value is in dropdown options
+    final currentRadius = currentFilter.alertRangeKm ?? 25.0;
+    final radiusOptions = [10.0, 25.0, 50.0, 100.0, 200.0];
+    _pushRadiusKm = radiusOptions.contains(currentRadius) ? currentRadius : 25.0;
   }
 
   @override
@@ -235,13 +238,8 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
           ),
           const SizedBox(height: 12),
 
-          SwitchListTile(
-            title: Text(l10n.alertMeForUfobeep),
-            value: _ufobeepAlertsEnabled,
-            onChanged: (value) => setState(() => _ufobeepAlertsEnabled = value),
-            contentPadding: EdgeInsets.zero,
-          ),
-          const SizedBox(height: 8),
+          // Removed confusing toggle - UFOBeep alerts should always be enabled
+          // Users control the radius, not whether alerts are enabled
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -306,7 +304,16 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
       clearUfoBeepOnly: _sourceFilter == SourceFilter.both,
     );
 
+    debugPrint('🔧 DIALOG: Applying filter - source=$_sourceFilter, sort=$_sortOption, radius=$_pushRadiusKm');
+    debugPrint('🔧 DIALOG: New filter - showUfoBeepOnly=$showUfoBeepOnly, sortBy=$sortBy');
+
     ref.read(alertsFilterStateProvider.notifier).updateFilter(newFilter);
+
+    // Force AlertsList provider to rebuild with new filter
+    ref.invalidate(alertsListProvider);
+
+    debugPrint('🔧 DIALOG: Filter applied and AlertsList invalidated');
+
     Navigator.of(context).pop();
   }
 }

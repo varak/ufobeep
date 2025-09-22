@@ -1584,9 +1584,6 @@ class AppLocalizationsTr extends AppLocalizations {
   String get alertRadius => 'Uyarı Radius';
 
   @override
-  String get alertMeForUfobeep => 'Beni UFOBeep için (gerçek zamanlı)';
-
-  @override
   String get mufonNoPushInfo =>
       'MUFON raporları gece ithal edilir ve uyarıları tetiklemezler';
 }

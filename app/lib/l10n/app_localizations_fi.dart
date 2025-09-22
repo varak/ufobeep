@@ -1580,9 +1580,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get alertRadius => 'Hälytys Säde';
 
   @override
-  String get alertMeForUfobeep => 'Hälytä minut UFOBeep (reaaliaikainen)';
-
-  @override
   String get mufonNoPushInfo =>
       'MUFON-raportit tuodaan yöllä, eivätkä ne laukaise työntökuulutuksia';
 }

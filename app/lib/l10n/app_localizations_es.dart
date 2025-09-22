@@ -1589,9 +1589,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get alertRadius => 'Alerta Radius';
 
   @override
-  String get alertMeForUfobeep => 'Alertame para UFOBeep (tiempo real)';
-
-  @override
   String get mufonNoPushInfo =>
       'Los informes de MUFON son importados nocturnamente y no activan alertas de presión';
 }

@@ -1548,8 +1548,5 @@ class AppLocalizationsJa extends AppLocalizations {
   String get alertRadius => 'アラート半径';
 
   @override
-  String get alertMeForUfobeep => 'UFOBeep(リアルタイム)の通知';
-
-  @override
   String get mufonNoPushInfo => 'MUFONレポートは、夜間にインポートされ、プッシュアラートをトリガーしません';
 }

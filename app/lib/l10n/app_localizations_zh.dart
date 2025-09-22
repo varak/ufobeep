@@ -1547,8 +1547,5 @@ class AppLocalizationsZh extends AppLocalizations {
   String get alertRadius => '提醒半径';
 
   @override
-  String get alertMeForUfobeep => '通知我UFOBEP(实时)';
-
-  @override
   String get mufonNoPushInfo => 'MUFON报告是夜间输入的,不会触发推力警报';
 }

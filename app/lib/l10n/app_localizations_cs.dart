@@ -1582,9 +1582,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get alertRadius => 'Alarm radius';
 
   @override
-  String get alertMeForUfobeep => 'Upozorněte mě na UFOBeep (real-time)';
-
-  @override
   String get mufonNoPushInfo =>
       'Zprávy MUFON jsou dováženy v noci a nespouštějí upozornění na tlačení';
 }

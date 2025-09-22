@@ -1566,9 +1566,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get alertRadius => 'Alert Radius';
 
   @override
-  String get alertMeForUfobeep => 'تنبيه لي ل OFOBeep (الوقت الحقيقي)';
-
-  @override
   String get mufonNoPushInfo =>
       'تستورد تقارير وزارة المالية الوطنية ليلاً ولا تطلق إنذارات بالدفع';
 }

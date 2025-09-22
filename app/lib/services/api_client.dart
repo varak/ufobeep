@@ -445,10 +445,13 @@ class ApiClient {
       if (minAlertLevel != null) {
         queryParams['min_alert_level'] = minAlertLevel.toLowerCase();
       }
-      if (maxDistanceKm != null && latitude != null && longitude != null) {
-        queryParams['max_distance_km'] = maxDistanceKm;
+      // Add location parameters for distance-based operations (sorting, filtering)
+      if (latitude != null && longitude != null) {
         queryParams['latitude'] = latitude;
         queryParams['longitude'] = longitude;
+      }
+      if (maxDistanceKm != null) {
+        queryParams['max_distance_km'] = maxDistanceKm;
       }
       if (recentHours != null) {
         queryParams['recent_hours'] = recentHours;
@@ -457,10 +460,14 @@ class ApiClient {
         queryParams['sort_by'] = sortBy;
       }
 
+      debugPrint('🌐 API REQUEST: GET /beep with params: $queryParams');
+
       final response = await ApiClient.dio.get(
         '/beep',
         queryParameters: queryParams,
       );
+
+      debugPrint('🌐 API RESPONSE: status=${response.statusCode}');
 
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
         return response.data as Map<String, dynamic>;

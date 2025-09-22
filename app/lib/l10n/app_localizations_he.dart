@@ -1561,9 +1561,6 @@ class AppLocalizationsHe extends AppLocalizations {
   String get alertRadius => 'תגית: Radius';
 
   @override
-  String get alertMeForUfobeep => 'התראה לי על עב\"ם (זמן אמת)';
-
-  @override
   String get mufonNoPushInfo =>
       'דוחות MUFON מיובאים בלילה ואינם מעוררים התראות';
 }

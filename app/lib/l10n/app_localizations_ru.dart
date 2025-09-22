@@ -1597,10 +1597,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get alertRadius => 'Предупреждение Радиус';
 
   @override
-  String get alertMeForUfobeep =>
-      'Предупредите меня об НЛОБипе (в реальном времени)';
-
-  @override
   String get mufonNoPushInfo =>
       'Сообщения MUFON импортируются ночью и не вызывают push-оповещений';
 }
