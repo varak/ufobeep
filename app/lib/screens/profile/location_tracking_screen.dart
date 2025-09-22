@@ -24,14 +24,23 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
   }
 
   Future<void> _loadTrackingStatus() async {
-    final enabled = await locationTrackingService.isTrackingEnabled();
-    final status = locationTrackingService.getTrackingStatus();
+    try {
+      final enabled = await locationTrackingService.isTrackingEnabled();
+      final status = locationTrackingService.getTrackingStatus();
 
-    setState(() {
-      _isTrackingEnabled = enabled;
-      _trackingStatus = status;
-      _isLoading = false;
-    });
+      setState(() {
+        _isTrackingEnabled = enabled;
+        _trackingStatus = status;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print('Error loading tracking status: $e');
+      setState(() {
+        _isTrackingEnabled = false;
+        _trackingStatus = null;
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -383,50 +392,66 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
   }
 
   Future<void> _toggleLocationTracking(bool enabled) async {
-    if (enabled) {
-      // Check permission before enabling
-      final permission = await Permission.locationAlways.status;
+    try {
+      if (enabled) {
+        // Check permission before enabling
+        final permission = await Permission.locationAlways.status;
 
-      if (permission != PermissionStatus.granted) {
-        final result = await _showPermissionDialog();
-        if (!result) return;
-
-        final newPermission = await Permission.locationAlways.request();
-        if (newPermission != PermissionStatus.granted) {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(AppLocalizations.of(context)!.locationPermissionRequired),
-                backgroundColor: AppColors.semanticError,
-              ),
-            );
+        if (permission != PermissionStatus.granted) {
+          final result = await _showPermissionDialog();
+          if (!result) {
+            // User declined permission dialog
+            await _loadTrackingStatus(); // Refresh to ensure UI matches service state
+            return;
           }
-          return;
+
+          final newPermission = await Permission.locationAlways.request();
+          if (newPermission != PermissionStatus.granted) {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(AppLocalizations.of(context)!.locationPermissionRequired),
+                  backgroundColor: AppColors.semanticError,
+                ),
+              );
+            }
+            // Refresh status to ensure UI is accurate
+            await _loadTrackingStatus();
+            return;
+          }
         }
       }
-    }
 
-    // Update tracking enabled state
-    await locationTrackingService.setTrackingEnabled(enabled);
+      // Update tracking enabled state
+      await locationTrackingService.setTrackingEnabled(enabled);
 
-    setState(() {
-      _isTrackingEnabled = enabled;
-    });
+      // Always refresh status after any change to ensure UI is accurate
+      await _loadTrackingStatus();
 
-    // Refresh status
-    await _loadTrackingStatus();
-
-    if (mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            enabled
-                ? AppLocalizations.of(context)!.locationTrackingEnabled
-                : AppLocalizations.of(context)!.locationTrackingDisabled,
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              enabled
+                  ? AppLocalizations.of(context)!.locationTrackingEnabled
+                  : AppLocalizations.of(context)!.locationTrackingDisabled,
+            ),
+            backgroundColor: AppColors.brandPrimary,
           ),
-          backgroundColor: AppColors.brandPrimary,
-        ),
-      );
+        );
+      }
+    } catch (e) {
+      print('Error toggling location tracking: $e');
+      // Ensure UI reflects actual state if toggle fails
+      await _loadTrackingStatus();
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Location tracking toggle failed. Please try again.'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
     }
   }
 
