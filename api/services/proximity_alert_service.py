@@ -170,6 +170,7 @@ class ProximityAlertService:
                     logger.info("Rate limiting disabled - sending proximity alerts regardless of frequency")
                 
                 # SPATIAL QUERY: Get devices within 200km using PostGIS spatial index
+                # Includes SQL-level DND and quiet hours checking for optimal scaling
                 query = """
                     SELECT DISTINCT ON (device_id)
                         device_id, push_token, platform, lat, lon,
