@@ -1,8 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import '../config/environment.dart';
+import 'auth_repository.dart';
 import 'device_service.dart';
 
 /// Background location tracking service using geofence-based movement detection
@@ -223,26 +227,39 @@ class LocationTrackingService {
     return true;
   }
 
-  /// Update server with new location using existing device service
+  /// Update server with new location using the same endpoint as LocationUpdateManager
   Future<bool> _updateServerLocation(Position position) async {
     try {
-      final deviceService = DeviceService();
-
       print('LocationTracking: Updating server location to ${position.latitude}, ${position.longitude}');
 
-      // Use the new method with specific coordinates
-      final success = await deviceService.updateDeviceLocationWithCoordinates(
-        position.latitude,
-        position.longitude,
-      );
+      // Use the same API endpoint as LocationUpdateManager for consistency
+      final authRepo = AuthRepository();
+      final accessToken = await authRepo.getAccessToken();
 
-      if (success) {
-        print('LocationTracking: ✅ Server location updated successfully');
-      } else {
-        print('LocationTracking: ❌ Server location update failed');
+      if (accessToken == null || accessToken.isEmpty) {
+        print('LocationTracking: No access token available');
+        return false;
       }
 
-      return success;
+      final response = await http.post(
+        Uri.parse('${AppEnvironment.apiBaseUrl}/devices/update-location'),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'lat': position.latitude,
+          'lon': position.longitude,
+        }),
+      );
+
+      if (response.statusCode == 204) {
+        print('LocationTracking: ✅ Server location updated successfully');
+        return true;
+      } else {
+        print('LocationTracking: ❌ Server location update failed: ${response.statusCode} ${response.body}');
+        return false;
+      }
     } catch (e) {
       print('LocationTracking: Error updating server location: $e');
       return false;
@@ -328,11 +345,10 @@ class LocationTrackingService {
 
   /// Initialize tracking service (call from app startup)
   Future<void> initialize() async {
-    final trackingEnabled = await isTrackingEnabled();
-    if (trackingEnabled) {
-      print('LocationTracking: Auto-starting background monitoring');
-      await startBackgroundMonitoring();
-    }
+    // Auto-enable for ALL users (authenticated and anonymous) for proximity alerts
+    // This replaces LocationUpdateManager with battery-efficient geofencing
+    await setTrackingEnabled(true);
+    print('LocationTracking: Auto-enabled geofence monitoring for all users (replaces battery-draining LocationUpdateManager)');
   }
 
   /// Stop monitoring and cleanup

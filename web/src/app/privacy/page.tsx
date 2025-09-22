@@ -66,10 +66,13 @@ export default function PrivacyPage() {
             <div className="bg-dark-surface border border-dark-border rounded-lg p-6 mb-6">
               <h3 className="text-xl font-medium text-brand-primary mb-3">Location Data</h3>
               <ul className="text-text-secondary space-y-2">
-                <li>• <strong>Precise Location:</strong> Used internally for distance calculations and alert targeting</li>
-                <li>• <strong>Jittered Location:</strong> Public coordinates are randomly offset by 100-300 meters</li>
-                <li>• <strong>No Historical Tracking:</strong> We don&apos;t store location history or track your movements</li>
-                <li>• <strong>Location Required:</strong> Location permission is mandatory for app functionality</li>
+                <li>• <strong>Current Location:</strong> Used for proximity alerts when UFO sightings happen nearby</li>
+                <li>• <strong>Background Monitoring:</strong> We monitor your location in the background to send accurate proximity alerts when you move</li>
+                <li>• <strong>Movement Detection:</strong> Location is updated when you move more than 1km from your last known position</li>
+                <li>• <strong>Battery Efficient:</strong> Uses intelligent geofencing technology with &lt;3% battery impact</li>
+                <li>• <strong>Rate Limited:</strong> Location updates are limited to once every 10 minutes maximum</li>
+                <li>• <strong>Jittered Public Display:</strong> When you report sightings, coordinates are randomly offset by 100-300 meters for privacy</li>
+                <li>• <strong>No Historical Storage:</strong> We only store your current location, not location history or movement patterns</li>
               </ul>
             </div>
 
@@ -114,7 +117,7 @@ export default function PrivacyPage() {
                   <li>• Advertising or marketing</li>
                   <li>• Selling to third parties</li>
                   <li>• Building user profiles</li>
-                  <li>• Location tracking or surveillance</li>
+                  <li>• Tracking your movements or creating location history</li>
                 </ul>
               </div>
             </div>
@@ -138,6 +141,40 @@ export default function PrivacyPage() {
                 <li>• <strong>Safety Concerns:</strong> Preventing harm to users or others</li>
                 <li>• <strong>Service Providers:</strong> Third-party services that help us operate (with data processing agreements)</li>
                 <li>• <strong>Business Transfer:</strong> In case of merger or acquisition (users will be notified)</li>
+              </ul>
+            </div>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-text-primary mb-4">Background Location Monitoring</h2>
+
+            <div className="bg-brand-primary bg-opacity-10 border border-brand-primary border-opacity-20 rounded-lg p-6 mb-6">
+              <h3 className="text-lg font-semibold text-brand-primary mb-2">🛸 Why We Monitor Location</h3>
+              <p className="text-text-secondary text-sm">
+                UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings
+                happen near your current location, even when you're away from home or traveling.
+              </p>
+            </div>
+
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6 mb-6">
+              <h3 className="text-xl font-medium text-brand-primary mb-3">How Background Monitoring Works</h3>
+              <ul className="text-text-secondary space-y-2">
+                <li>• <strong>Intelligent Geofencing:</strong> Creates invisible 2km boundaries around your location</li>
+                <li>• <strong>Movement Detection:</strong> Only activates when you cross geofence boundaries</li>
+                <li>• <strong>1km Threshold:</strong> Location updates only when you move more than 1km</li>
+                <li>• <strong>Rate Limited:</strong> Maximum one update every 10 minutes to prevent server overload</li>
+                <li>• <strong>Battery Optimized:</strong> Uses system-managed geofences with &lt;3% battery impact</li>
+                <li>• <strong>Always Permission:</strong> Requires "Always Allow" location permission for background operation</li>
+              </ul>
+            </div>
+
+            <div className="bg-semantic-info bg-opacity-10 border border-semantic-info border-opacity-20 rounded-lg p-6">
+              <h3 className="text-lg font-semibold text-semantic-info mb-2">🔋 Battery & Privacy</h3>
+              <ul className="text-text-secondary text-sm space-y-2">
+                <li>• <strong>No Continuous GPS:</strong> Uses system geofences instead of constant location polling</li>
+                <li>• <strong>No Location History:</strong> Only your current location is stored, not where you've been</li>
+                <li>• <strong>User Control:</strong> Can be disabled anytime in app settings</li>
+                <li>• <strong>Transparent Operation:</strong> Location tracking status visible in app settings</li>
               </ul>
             </div>
           </section>
