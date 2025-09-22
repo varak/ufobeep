@@ -169,7 +169,7 @@ class _SignInScreenState extends State<SignInScreen> {
     // Show snackbar after clearing
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
+        SnackBar(
           content: Text(AppLocalizations.of(context)!.signInAllDataCleared),
           backgroundColor: AppColors.brandPrimary,
         ),
@@ -305,21 +305,21 @@ class _SignInScreenState extends State<SignInScreen> {
                 
                 const SizedBox(height: 24),
                 
-                const Row(
+                Row(
                   children: [
-                    Expanded(child: Divider(color: Colors.white30)),
+                    const Expanded(child: Divider(color: Colors.white30)),
                     Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
                         AppLocalizations.of(context)!.signInOr,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white70,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                     ),
-                    Expanded(child: Divider(color: Colors.white30)),
+                    const Expanded(child: Divider(color: Colors.white30)),
                   ],
                 ),
                 
@@ -509,10 +509,10 @@ class _SignInScreenState extends State<SignInScreen> {
                                 size: 20,
                               ),
                               const SizedBox(width: 12),
-                              const Expanded(
+                              Expanded(
                                 child: Text(
                                   AppLocalizations.of(context)!.signInCheckEmail,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
                                   ),

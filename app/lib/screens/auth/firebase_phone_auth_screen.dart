@@ -190,7 +190,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
           
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 content: Text(AppLocalizations.of(context)!.phoneAuthCodeResent),
                 backgroundColor: AppColors.semanticSuccess,
               ),
