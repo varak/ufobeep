@@ -26,18 +26,36 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
 
   Future<void> _loadPreferences() async {
     try {
+      // Always detect device language for app store compliance
+      final deviceLang = ui.PlatformDispatcher.instance.locale.languageCode;
+      final deviceLanguageSupported = LocaleConfig.supportedLocales
+          .any((l) => l.languageCode == deviceLang);
+
       final prefsJson = _prefs.getString(_prefsKey);
       if (prefsJson != null) {
         final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
-        state = UserPreferences.fromJson(prefsMap);
+        final savedPrefs = UserPreferences.fromJson(prefsMap);
+
+        // Respect device language if it's different from saved preference
+        // This ensures app follows device language changes for app store compliance
+        final shouldUseDeviceLanguage = deviceLanguageSupported &&
+                                       savedPrefs.language != deviceLang;
+
+        state = shouldUseDeviceLanguage
+            ? savedPrefs.copyWith(language: deviceLang)
+            : savedPrefs;
+
+        // Update stored preferences if we changed to device language
+        if (shouldUseDeviceLanguage) {
+          try {
+            final jsonStr = jsonEncode(state!.toJson());
+            await _prefs.setString(_prefsKey, jsonStr);
+          } catch (_) {}
+        }
       } else {
         // First run: detect device locale and use it if supported
-        final deviceLang = ui.PlatformDispatcher.instance.locale.languageCode;
-        final supported = LocaleConfig.supportedLocales
-            .any((l) => l.languageCode == deviceLang);
-
         final initial = UserPreferences(
-          language: supported ? deviceLang : AppEnvironment.defaultLocale,
+          language: deviceLanguageSupported ? deviceLang : AppEnvironment.defaultLocale,
           alertRangeKm: 10.0,
         );
         state = initial;
