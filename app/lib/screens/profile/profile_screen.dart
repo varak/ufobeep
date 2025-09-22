@@ -233,15 +233,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         GlassCard(
           child: Column(
             children: [
-              _buildSimpleSettingItem(
-                icon: Icons.notifications_outlined,
-                title: AppLocalizations.of(context)!.alertRange,
-                value: preferences.alertRangeDisplay,
-                onTap: () => _showRangeSelector(preferences),
-                isFirst: true,
-              ),
-              
-              _buildDivider(),
+              // Removed Alert Range - now handled in filter dialog
               
               _buildSimpleSettingItem(
                 icon: Icons.language_outlined,
@@ -811,22 +803,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     );
   }
 
-  // Settings action methods
-  void _showRangeSelector(UserPreferences preferences) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Alert Range'),
-        content: Text('Current: ${preferences.alertRangeDisplay}'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
+  // Alert Range setting removed - now handled in filter dialog
 
   void _showLanguageSelector(UserPreferences preferences) {
     showDialog(

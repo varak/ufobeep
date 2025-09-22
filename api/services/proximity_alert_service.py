@@ -6,7 +6,7 @@ import logging
 from app.services.push_service import send_to_token
 
 from app.routers.admin import rate_limit_enabled, rate_limit_threshold
-from app.utils.dnd_utils import is_in_quiet_window, is_dnd_active, should_override_quiet_hours
+# DND/snooze now handled by database dnd_until column check in spatial query
 
 logger = logging.getLogger(__name__)
 
@@ -173,7 +173,7 @@ class ProximityAlertService:
                 query = """
                     SELECT DISTINCT ON (device_id)
                         device_id, push_token, platform, lat, lon,
-                        alert_range_km, preferences, snooze_until,
+                        alert_range_km, preferences, snooze_until, dnd_until,
                         ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 as distance_km
                     FROM devices
                     WHERE is_active = true
@@ -183,6 +183,7 @@ class ProximityAlertService:
                       AND location IS NOT NULL
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                       AND (snooze_until IS NULL OR snooze_until <= NOW())
+                      AND (dnd_until IS NULL OR dnd_until <= NOW())
                       AND ST_DWithin(location, ST_Point($2, $1)::geography, 200000)
                     ORDER BY device_id, updated_at DESC, distance_km
                 """
@@ -195,29 +196,9 @@ class ProximityAlertService:
                 for row in rows:
                     # Parse user preferences
                     user_alert_range = row['alert_range_km'] or 30.0  # Visible default: 30km
-                    preferences = row['preferences'] or {}
-                    dnd_settings = preferences.get('dnd', {}) if isinstance(preferences, dict) else {}
-                    
-                    # Check quiet hours with emergency override
-                    in_quiet_hours = False
-                    if dnd_settings.get('enabled'):
-                        quiet_start = dnd_settings.get('start')  # e.g. "22:00"
-                        quiet_end = dnd_settings.get('end')      # e.g. "07:00"
-                        device_timezone = preferences.get('timezone')
-                        
-                        in_quiet_hours = is_in_quiet_window(
-                            current_time, quiet_start, quiet_end, device_timezone
-                        )
-                        
-                        # Check emergency override
-                        if in_quiet_hours and should_override_quiet_hours(witness_count):
-                            in_quiet_hours = False  # Override quiet hours for high-witness events
-                            logger.info(f"Emergency override: {witness_count} witnesses bypasses quiet hours for device {row['device_id']}")
-                    
-                    # Skip if in quiet hours (unless overridden)
-                    if in_quiet_hours:
-                        logger.debug(f"Skipping device {row['device_id']} due to quiet hours")
-                        continue
+
+                    # DND/snooze is now handled by database query (dnd_until column)
+                    # No need for complex preferences.dnd logic
                     
                     # Use database-calculated distance (no Python calculations needed)
                     distance_km = float(row['distance_km'])
@@ -232,7 +213,6 @@ class ProximityAlertService:
                             'device_lat': row['lat'],
                             'device_lon': row['lon'],
                             'user_alert_range': user_alert_range,
-                            'quiet_hours_bypassed': in_quiet_hours == False and dnd_settings.get('enabled'),
                             'preferences': row['preferences']
                         })
                         logger.debug(f"SPATIAL: Device {row['device_id']} INCLUDED (distance: {distance_km:.2f}km, user range: {user_alert_range}km)")
@@ -253,94 +233,10 @@ class ProximityAlertService:
                 
         except Exception as e:
             logger.error(f"Error getting devices within {radius_km}km: {e}")
-            logger.warning(f"PostGIS not available, falling back to haversine calculation for {radius_km}km radius")
-            # Fallback to basic distance calculation if PostGIS not available
-            return await self._get_devices_within_radius_fallback(lat, lon, radius_km, exclude_device_id, witness_count)
+            # No fallback - fail properly so we can debug PostGIS issues
+            raise e
     
-    async def _get_devices_within_radius_fallback(self, lat: float, lon: float, radius_km: float, exclude_device_id: str, witness_count: int = 1) -> List[dict]:
-        """Fallback method using haversine distance calculation"""
-        try:
-            logger.info(f"FALLBACK: Searching for devices within {radius_km}km of ({lat}, {lon}), excluding {exclude_device_id}")
-            
-            async with self.db_pool.acquire() as conn:
-                # SPATIAL QUERY: Get devices within maximum possible range (200km) using spatial index
-                query = """
-                    SELECT
-                        device_id, push_token, platform, lat, lon,
-                        alert_range_km, preferences, snooze_until,
-                        ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 as distance_km
-                    FROM devices
-                    WHERE is_active = true
-                      AND push_token IS NOT NULL
-                      AND device_id != $3
-                      AND location IS NOT NULL
-                      AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
-                      AND (snooze_until IS NULL OR snooze_until <= NOW())
-                      AND ST_DWithin(location, ST_Point($2, $1)::geography, 200000)
-                    ORDER BY distance_km
-                """
-
-                rows = await conn.fetch(query, lat, lon, exclude_device_id)
-                logger.info(f"SPATIAL: Found {len(rows)} devices within 200km using spatial index")
-                
-                # Filter by user preferences and distance
-                nearby_devices = []
-                current_time = datetime.utcnow()
-                
-                for row in rows:
-                    # Parse user preferences
-                    user_alert_range = row['alert_range_km'] or 30.0  # Visible default: 30km
-                    preferences = row['preferences'] or {}
-                    dnd_settings = preferences.get('dnd', {}) if isinstance(preferences, dict) else {}
-                    
-                    # Check quiet hours with emergency override
-                    in_quiet_hours = False
-                    if dnd_settings.get('enabled'):
-                        quiet_start = dnd_settings.get('start')  # e.g. "22:00"
-                        quiet_end = dnd_settings.get('end')      # e.g. "07:00"
-                        device_timezone = preferences.get('timezone')
-                        
-                        in_quiet_hours = is_in_quiet_window(
-                            current_time, quiet_start, quiet_end, device_timezone
-                        )
-                        
-                        # Check emergency override
-                        if in_quiet_hours and should_override_quiet_hours(witness_count):
-                            in_quiet_hours = False  # Override quiet hours for high-witness events
-                            logger.info(f"FALLBACK Emergency override: {witness_count} witnesses bypasses quiet hours for device {row['device_id']}")
-                    
-                    # Skip if in quiet hours (unless overridden)
-                    if in_quiet_hours:
-                        logger.debug(f"FALLBACK: Skipping device {row['device_id']} due to quiet hours")
-                        continue
-                    
-                    device_lat = float(row['lat'])
-                    device_lon = float(row['lon'])
-                    
-                    # Calculate distance using haversine formula
-                    distance_km = self._haversine_distance(lat, lon, device_lat, device_lon)
-                    logger.debug(f"FALLBACK: Device {row['device_id']} at ({device_lat}, {device_lon}) is {distance_km:.2f}km away")
-                    
-                    # Respect user's alert range preference instead of hardcoded radius_km
-                    if distance_km <= user_alert_range:
-                        nearby_devices.append({
-                            'device_id': row['device_id'],
-                            'push_token': row['push_token'],
-                            'platform': row['platform'],
-                            'distance_km': round(distance_km, 2),
-                            'device_lat': device_lat,
-                            'device_lon': device_lon,
-                            'user_alert_range': user_alert_range,
-                            'preferences': row['preferences']
-                        })
-                        logger.info(f"FALLBACK: Device {row['device_id']} INCLUDED (distance: {distance_km:.2f}km, user range: {user_alert_range}km)")
-                
-                logger.warning(f"FALLBACK RESULT: Found {len(nearby_devices)} devices within {radius_km}km")
-                return nearby_devices
-                
-        except Exception as e:
-            logger.error(f"Error in fallback device radius query: {e}")
-            return []
+    # Removed fallback method - PostGIS should work or fail properly
     
     def _haversine_distance(self, lat1: float, lon1: float, lat2: float, lon2: float) -> float:
         """Calculate the great circle distance between two points on earth in kilometers"""

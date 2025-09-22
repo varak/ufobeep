@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import List, Optional
 from uuid import uuid4
 import logging
@@ -1144,3 +1144,36 @@ async def devices_health_check():
             "error": str(e),
             "timestamp": datetime.utcnow().isoformat()
         }
+
+# DND/Snooze endpoint
+@router.post("/{device_id}/dnd")
+async def set_device_dnd(
+    device_id: str,
+    hours: int = 1  # Default 1 hour for snooze button
+):
+    """Set DND (Do Not Disturb) for device - used by snooze button and DND settings"""
+    try:
+        db_pool = await get_db()
+
+        async with db_pool.acquire() as conn:
+            # Set dnd_until to NOW() + hours
+            dnd_until = datetime.utcnow() + timedelta(hours=hours) if hours > 0 else None
+
+            await conn.execute("""
+                UPDATE devices
+                SET dnd_until = $1, updated_at = NOW()
+                WHERE device_id = $2
+            """, dnd_until, device_id)
+
+            logger.info(f"Set DND for device {device_id} until {dnd_until}")
+
+            return {
+                "success": True,
+                "device_id": device_id,
+                "dnd_until": dnd_until.isoformat() if dnd_until else None,
+                "message": f"DND set for {hours} hours" if hours > 0 else "DND disabled"
+            }
+
+    except Exception as e:
+        logger.error(f"Error setting DND for device {device_id}: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to set DND: {str(e)}")

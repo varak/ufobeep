@@ -1109,17 +1109,26 @@ class PushNotificationService {
   
   void _handleSnoozeAction(String sightingId) async {
     print('📱 SNOOZE ACTION: User snoozed alerts for 1 hour: $sightingId');
-    
+
     try {
-      // Enable 1-hour DND using the UserPreferences system
-      await _enableDndFor1Hour();
-      
-      print('✅ SNOOZE SUCCESS: Enabled DND for 1 hour via snooze');
-      
-      // TODO: Add backend sync once the public API is available
-      // The local DND setting will be synced when user opens the app next
+      // Get device ID for API call
+      final deviceId = await _deviceService.getDeviceId();
+
+      // Call backend API to set DND in database
+      final response = await _dio.post('/devices/$deviceId/dnd', data: {'hours': 1});
+
+      if (response.data['success'] == true) {
+        print('✅ SNOOZE SUCCESS: Backend DND enabled for 1 hour');
+
+        // Also update local preferences for immediate UI feedback
+        await _enableDndFor1Hour();
+      } else {
+        print('❌ SNOOZE ERROR: Backend API failed: ${response.data}');
+      }
     } catch (e) {
-      print('❌ SNOOZE ERROR: Failed to enable DND: $e');
+      print('❌ SNOOZE ERROR: Failed to call DND API: $e');
+      // Fallback to local-only DND for graceful degradation
+      await _enableDndFor1Hour();
     }
   }
   
