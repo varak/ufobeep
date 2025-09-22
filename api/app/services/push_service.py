@@ -567,6 +567,7 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
             android=messaging.AndroidConfig(
                 priority="high",  # High priority for background delivery
                 ttl=timedelta(seconds=30),  # Android 15 optimization - force immediate delivery
+                collapse_key="ufo_alert",  # Prevent Android 15 message queue delays
                 notification=messaging.AndroidNotification(
                     channel_id="ufobeep_beeps",
                     sound="default"
