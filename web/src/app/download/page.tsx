@@ -6,9 +6,9 @@ import EmailNotifySignup from '@/components/EmailNotifySignup';
 export default function DownloadPage() {
   const [showInstructions, setShowInstructions] = useState(false);
   
-  const latestVersion = "v1.0.0-beta.8+179";
-  const releaseDate = "September 20, 2025";
-  const apkSize = "77.2 MB";
+  const latestVersion = "v1.0.0-beta.8+206";
+  const releaseDate = "September 22, 2025";
+  const apkSize = "257 MB";
   
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -50,15 +50,16 @@ export default function DownloadPage() {
             🚀 What&apos;s New
           </h2>
           <ul className="space-y-2 text-gray-300">
-            <li>🆕 <strong>Full-Screen Media Viewer:</strong> Swipe through photos/videos with pinch-zoom and video controls</li>
-            <li>🆕 <strong>Enhanced Performance:</strong> 10x faster beep submission and optimized loading</li>
-            <li>✅ <strong>Media Upload Complete:</strong> Single-press photo/video upload with progress indicators</li>
-            <li>✅ <strong>22 Languages:</strong> Full multilingual support with automatic translation</li>
-            <li>✅ <strong>MUFON Integration:</strong> Professional UFO reports with case numbers and classifications</li>
+            <li>🆕 <strong>Smart Location Tracking:</strong> Battery-efficient geofencing for accurate proximity alerts (&lt;3% battery drain)</li>
+            <li>🆕 <strong>Full Internationalization:</strong> Automatic device language detection - app appears in your phone's language</li>
+            <li>🆕 <strong>Privacy & Data Controls:</strong> GDPR-compliant data export/deletion and transparent location tracking settings</li>
+            <li>🆕 <strong>Fixed Magic Link Authentication:</strong> Seamless email sign-in without navigation errors</li>
+            <li>✅ <strong>22 Languages:</strong> Splash screen, sign-in, and auth flows in native languages (Spanish, German, French, etc.)</li>
+            <li>✅ <strong>App Store Ready:</strong> Working privacy policy and terms of service links</li>
             <li>✅ <strong>Real-time Alerts:</strong> Instant notifications when UFOs spotted nearby</li>
             <li>✅ <strong>Compass Navigation:</strong> Point phone to find exact UFO location</li>
             <li>✅ <strong>Community Comments:</strong> Real-time discussion with WebSocket updates</li>
-            <li>✅ <strong>Satellite Imagery:</strong> BlackSky and SkyFi integration for verification</li>
+            <li>✅ <strong>MUFON Integration:</strong> Professional UFO reports with case numbers and classifications</li>
           </ul>
         </div>
 
@@ -160,7 +161,7 @@ export default function DownloadPage() {
             <div>
               <p className="font-semibold mb-2">Essential:</p>
               <ul className="space-y-1 text-sm">
-                <li>📍 <strong>Location:</strong> For proximity alerts</li>
+                <li>📍 <strong>Location (Always):</strong> Background monitoring for proximity alerts</li>
                 <li>📷 <strong>Camera:</strong> To capture sightings</li>
                 <li>🔔 <strong>Notifications:</strong> For UFO alerts</li>
               </ul>
