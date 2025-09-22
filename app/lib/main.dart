@@ -96,17 +96,18 @@ void main() async {
     debugPrint('✅ DeviceRegistrationManager started asynchronously');
   });
   
-  // Initialize LocationUpdateManager asynchronously to prevent blocking startup
-  Future.delayed(Duration.zero, () async {
-    final locationManager = LocationUpdateManager(
-      auth: auth,
-      baseUrl: AppEnvironment.apiBaseUrl,
-    );
-    await locationManager.start();
-    debugPrint('✅ LocationUpdateManager started in background');
-  });
+  // LocationUpdateManager disabled - replaced with efficient geofence-based LocationTrackingService
+  // Battery-draining continuous GPS monitoring replaced with smart geofencing
+  // Future.delayed(Duration.zero, () async {
+  //   final locationManager = LocationUpdateManager(
+  //     auth: auth,
+  //     baseUrl: AppEnvironment.apiBaseUrl,
+  //   );
+  //   await locationManager.start();
+  //   debugPrint('✅ LocationUpdateManager started in background');
+  // });
 
-  // Initialize LocationTrackingService for background movement detection
+  // Initialize efficient geofence-based LocationTrackingService (replaces LocationUpdateManager)
   Future.delayed(Duration.zero, () async {
     await locationTrackingService.initialize();
     debugPrint('✅ LocationTrackingService initialized for background movement detection');
