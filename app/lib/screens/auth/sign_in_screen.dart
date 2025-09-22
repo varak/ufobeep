@@ -8,6 +8,7 @@ import '../../services/social_auth_service.dart';
 import '../../services/user_service.dart';
 import '../../services/ui_feedback.dart';
 import '../../widgets/glass_card.dart';
+import '../../l10n/app_localizations.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -70,7 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
         debugPrint('✅ Google Sign-In successful for: ${result.email}');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Welcome ${result.username ?? result.email}!'),
+            content: Text(AppLocalizations.of(context)!.signInWelcome(result.username ?? result.email ?? '')),
             backgroundColor: AppColors.semanticSuccess,
           ),
         );
@@ -84,7 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
       debugPrint('❌ Google Sign-In failed: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Sign-in failed: $e'),
+          content: Text(AppLocalizations.of(context)!.signInFailed(e.toString())),
           backgroundColor: AppColors.semanticError,
         ),
       );
@@ -102,14 +103,14 @@ class _SignInScreenState extends State<SignInScreen> {
     
     if (_emailController.text.trim().isEmpty) {
       setState(() {
-        _errorMessage = 'Please enter your email address';
+        _errorMessage = AppLocalizations.of(context)!.signInPleaseEnterEmail;
       });
       return;
     }
 
     if (!_emailController.text.trim().contains('@')) {
       setState(() {
-        _errorMessage = 'Please enter a valid email address';
+        _errorMessage = AppLocalizations.of(context)!.signInPleaseEnterValidEmail;
       });
       return;
     }
@@ -124,7 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
       await AuthService().sendMagicLink(_emailController.text.trim());
       
       setState(() {
-        _successMessage = 'Magic link sent! Check your email and click the link to sign in.';
+        _successMessage = AppLocalizations.of(context)!.signInMagicLinkSent;
         _magicLinkSent = true;
       });
       
@@ -134,7 +135,7 @@ class _SignInScreenState extends State<SignInScreen> {
     } catch (e) {
       debugPrint('❌ Magic link failed: $e');
       setState(() {
-        _errorMessage = 'Failed to send magic link. Please try again.';
+        _errorMessage = AppLocalizations.of(context)!.signInMagicLinkFailed;
       });
     } finally {
       if (mounted) {
@@ -169,7 +170,7 @@ class _SignInScreenState extends State<SignInScreen> {
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('All data cleared'),
+          content: Text(AppLocalizations.of(context)!.signInAllDataCleared),
           backgroundColor: AppColors.brandPrimary,
         ),
       );
@@ -246,8 +247,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       
                       const SizedBox(height: 8),
                       
-                      const Text(
-                        'Real-time UFO sighting alerts and MUFON reports',
+                      Text(
+                        AppLocalizations.of(context)!.signInSubtitle,
                         style: TextStyle(
                           color: Colors.white70,
                           fontSize: 16,
@@ -285,7 +286,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             },
                           ),
                     label: Text(
-                      _isGoogleLoading ? 'Signing in...' : 'Continue with Google',
+                      _isGoogleLoading ? AppLocalizations.of(context)!.signInGoogleLoading : AppLocalizations.of(context)!.signInContinueWithGoogle,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -310,7 +311,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
-                        'or',
+                        AppLocalizations.of(context)!.signInOr,
                         style: TextStyle(
                           color: Colors.white70,
                           fontSize: 14,
@@ -330,8 +331,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text(
-                        'Sign in with Email',
+                      Text(
+                        AppLocalizations.of(context)!.signInWithEmail,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -342,8 +343,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       
                       const SizedBox(height: 8),
                       
-                      const Text(
-                        'We\'ll send you a secure link to sign in',
+                      Text(
+                        AppLocalizations.of(context)!.signInEmailDescription,
                         style: TextStyle(
                           color: Colors.white70,
                           fontSize: 14,
@@ -359,9 +360,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         keyboardType: TextInputType.emailAddress,
                         style: const TextStyle(color: Colors.white),
                         decoration: InputDecoration(
-                          labelText: 'Email address',
+                          labelText: AppLocalizations.of(context)!.signInEmailAddress,
                           labelStyle: const TextStyle(color: Colors.white70),
-                          hintText: 'your@email.com',
+                          hintText: AppLocalizations.of(context)!.signInEmailPlaceholder,
                           hintStyle: const TextStyle(color: Colors.white54),
                           prefixIcon: const Icon(Icons.email, color: Colors.white70),
                           fillColor: Colors.transparent,
@@ -400,10 +401,10 @@ class _SignInScreenState extends State<SignInScreen> {
                               : const Icon(Icons.send),
                           label: Text(
                             _cooldownSeconds > 0 
-                                ? 'Try again in ${_cooldownSeconds}s'
-                                : _isMagicLinkLoading 
-                                    ? 'Sending...' 
-                                    : 'Send Magic Link',
+                                ? AppLocalizations.of(context)!.signInTryAgainIn(_cooldownSeconds)
+                                : _isMagicLinkLoading
+                                    ? AppLocalizations.of(context)!.signInSending
+                                    : AppLocalizations.of(context)!.signInSendMagicLink,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -510,7 +511,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               const SizedBox(width: 12),
                               const Expanded(
                                 child: Text(
-                                  'Check your email! The link expires in 15 minutes.',
+                                  AppLocalizations.of(context)!.signInCheckEmail,
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 14,
@@ -541,8 +542,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             size: 20,
                           ),
                           const SizedBox(width: 8),
-                          const Text(
-                            'Secure Authentication',
+                          Text(
+                            AppLocalizations.of(context)!.signInSecureAuth,
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -552,8 +553,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         ],
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.',
+                      Text(
+                        AppLocalizations.of(context)!.signInSecureAuthDescription,
                         style: TextStyle(
                           color: Colors.white70,
                           fontSize: 12,
@@ -570,8 +571,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 Center(
                   child: TextButton(
                     onPressed: _handleClearAllData,
-                    child: const Text(
-                      'Clear All Data (Debug)',
+                    child: Text(
+                      AppLocalizations.of(context)!.signInClearAllDataDebug,
                       style: TextStyle(
                         color: Colors.white70,
                         fontSize: 12,

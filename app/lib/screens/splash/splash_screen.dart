@@ -10,6 +10,7 @@ import '../../providers/initialization_provider.dart';
 import '../../services/auth_service.dart';
 import '../../services/auth_repository.dart';
 import '../../widgets/splash/loading_animation.dart';
+import '../../l10n/app_localizations.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -148,16 +149,16 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
       barrierDismissible: false,
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.darkSurface,
-        title: const Text(
-          'Initialization Failed',
+        title: Text(
+          AppLocalizations.of(context)!.splashInitializationFailedTitle,
           style: TextStyle(color: AppColors.semanticError),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'The app failed to initialize properly:',
+            Text(
+              AppLocalizations.of(context)!.splashInitializationError,
               style: TextStyle(color: AppColors.textSecondary),
             ),
             const SizedBox(height: 12),
@@ -187,14 +188,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               Navigator.of(context).pop();
               _retryInitialization();
             },
-            child: const Text('Retry'),
+            child: Text(AppLocalizations.of(context)!.splashRetry),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               context.go('/sign-in');
             },
-            child: const Text('Continue'),
+            child: Text(AppLocalizations.of(context)!.splashContinue),
           ),
         ],
       ),
@@ -247,7 +248,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
               Navigator.of(context).pop();
               onDismiss?.call();
             },
-            child: const Text('OK', style: TextStyle(color: AppColors.brandPrimary)),
+            child: Text(AppLocalizations.of(context)!.ok, style: const TextStyle(color: AppColors.brandPrimary)),
           ),
         ],
       ),
@@ -299,7 +300,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
         ),
         const SizedBox(height: 8),
         Text(
-          'Real-time sighting alerts',
+          AppLocalizations.of(context)!.splashTagline,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: AppColors.textSecondary,
           ),
@@ -323,8 +324,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           ),
           message: initMessage.when(
             data: (message) => message,
-            loading: () => 'Starting up...',
-            error: (_, __) => 'Initialization failed',
+            loading: () => AppLocalizations.of(context)!.splashStartingUp,
+            error: (_, __) => AppLocalizations.of(context)!.splashInitializationFailed,
           ),
           isError: hasError,
         ),
@@ -347,8 +348,8 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
           ),
           const SizedBox(height: 4),
         ],
-        const Text(
-          'Initializing...',
+        Text(
+          AppLocalizations.of(context)!.splashInitializing,
           style: TextStyle(
             color: AppColors.textTertiary,
             fontSize: 11,

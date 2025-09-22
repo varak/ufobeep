@@ -743,6 +743,122 @@
   },
   "dataManagement": "Data Management",
   "dataManagementDesc": "Export or delete your account data",
+  "splashTagline": "Real-time sighting alerts",
+  "splashStartingUp": "Starting up...",
+  "splashInitializationFailed": "Initialization failed",
+  "splashInitializationFailedTitle": "Initialization Failed",
+  "splashInitializationError": "The app failed to initialize properly:",
+  "splashRetry": "Retry",
+  "splashContinue": "Continue",
+  "splashInitializing": "Initializing...",
+  "signInWelcome": "Welcome {username}!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Sign-in failed: {error}",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Please enter your email address",
+  "signInPleaseEnterValidEmail": "Please enter a valid email address",
+  "signInMagicLinkSent": "Magic link sent! Check your email and click the link to sign in.",
+  "signInMagicLinkFailed": "Failed to send magic link. Please try again.",
+  "signInAllDataCleared": "All data cleared",
+  "signInSubtitle": "Real-time UFO sighting alerts and MUFON reports",
+  "signInGoogleLoading": "Signing in...",
+  "signInContinueWithGoogle": "Continue with Google",
+  "signInOr": "or",
+  "signInWithEmail": "Sign in with Email",
+  "signInEmailDescription": "We'll send you a secure link to sign in",
+  "signInEmailAddress": "Email address",
+  "signInEmailPlaceholder": "your@email.com",
+  "signInTryAgainIn": "Try again in {seconds}s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Sending...",
+  "signInSendMagicLink": "Send Magic Link",
+  "signInCheckEmail": "Check your email! The link expires in 15 minutes.",
+  "signInSecureAuth": "Secure Authentication",
+  "signInSecureAuthDescription": "Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.",
+  "signInClearAllDataDebug": "Clear All Data (Debug)",
+  "emailAuthFailedToSend": "Failed to send email",
+  "emailAuthFailedToSendTryAgain": "Failed to send email. Please try again.",
+  "emailAuthInvalidEmail": "Invalid email address. Please check the format.",
+  "emailAuthUserNotFound": "No account found with this email address.",
+  "emailAuthTooManyRequests": "Too many attempts. Please try again later.",
+  "emailAuthOperationNotAllowed": "Email link sign-in is not enabled.",
+  "emailAuthQuotaExceeded": "Email quota exceeded. Please try again tomorrow.",
+  "emailAuthVerificationFailed": "Email verification failed. Please try again.",
+  "emailAuthTitle": "Email Verification",
+  "emailAuthVerifyYourEmail": "Verify Your Email",
+  "emailAuthDescription": "Add your email address for account recovery and security. We'll send you a secure sign-in link.",
+  "emailAuthEmailAddress": "Email Address",
+  "emailAuthEmailPlaceholder": "your.email@example.com",
+  "emailAuthPleaseEnterEmail": "Please enter your email address",
+  "emailAuthPleaseEnterValidEmail": "Please enter a valid email address",
+  "emailAuthCheckEmailToContinue": "Check your email and tap the verification link to continue.",
+  "emailAuthResendEmail": "Resend Email",
+  "emailAuthSendVerificationEmail": "Send Verification Email",
+  "emailAuthHowItWorks": "How Email Verification Works",
+  "emailAuthHowItWorksSteps": "1. We send you a secure sign-in link\n2. Check your email and tap the link\n3. Your email gets verified automatically\n4. No passwords needed!",
+  "emailAuthSecurityNotice": "Email verification helps secure your account and enables account recovery if you lose access to your device.",
+  "phoneAuthFailedToSendCode": "Failed to send verification code. Please try again.",
+  "phoneAuthInvalidCodeTryAgain": "Invalid verification code. Please try again.",
+  "phoneAuthPhoneVerified": "Phone number verified: {phoneNumber}",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Phone verification failed. Please try again.",
+  "phoneAuthCodeResent": "Verification code resent",
+  "phoneAuthFailedToResendCode": "Failed to resend code. Please try again.",
+  "phoneAuthInvalidPhoneNumber": "Invalid phone number. Please check the format.",
+  "phoneAuthTooManyRequests": "Too many attempts. Please try again later.",
+  "phoneAuthInvalidVerificationCode": "Invalid verification code. Please check and try again.",
+  "phoneAuthSessionExpired": "Verification session expired. Please request a new code.",
+  "phoneAuthSmsQuotaExceeded": "SMS quota exceeded. Please try again tomorrow.",
+  "phoneAuthCredentialAlreadyInUse": "This phone number is already linked to another account.",
+  "phoneAuthVerificationFailedGeneric": "Verification failed. Please try again.",
+  "phoneAuthTitle": "Phone Verification",
+  "phoneAuthVerifyYourPhone": "Verify Your Phone",
+  "phoneAuthEnterVerificationCode": "Enter Verification Code",
+  "phoneAuthAddPhoneForSecurity": "Add your phone number for account recovery and security",
+  "phoneAuthEnterSixDigitCode": "Enter the 6-digit code sent to {phoneNumber}",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Phone Number",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Please enter your phone number",
+  "phoneAuthPleaseEnterValidPhone": "Please enter a valid phone number",
+  "phoneAuthVerificationCode": "Verification Code",
+  "phoneAuthPleaseEnterSixDigitCode": "Please enter the 6-digit code",
+  "phoneAuthResendCode": "Resend Code",
+  "phoneAuthSendVerificationCode": "Send Verification Code",
+  "phoneAuthVerifyCode": "Verify Code",
+  "phoneAuthChangePhoneNumber": "Change Phone Number",
+  "phoneAuthSmsNotice": "We'll send you a verification code via SMS. Standard message rates may apply.",
+  "phoneAuthCodeExpires": "Code expires in 60 seconds. Check your messages.",
   "yourDataRights": "Your Data Rights",
   "dataRightsExplanation": "You have full control over your personal data. You can export all your data or permanently delete your account at any time.",
   "exportYourData": "Export Your Data",

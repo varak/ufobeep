@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import '../../services/firebase_auth_service.dart';
 import '../../theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 
 class FirebaseEmailAuthScreen extends StatefulWidget {
   const FirebaseEmailAuthScreen({super.key});
@@ -59,14 +60,14 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
       } else {
         setState(() {
           _isLoading = false;
-          _errorMessage = result['error'] ?? 'Failed to send email';
+          _errorMessage = result['error'] ?? AppLocalizations.of(context)!.emailAuthFailedToSend;
         });
       }
     } catch (e) {
       debugPrint('Error sending email link: $e');
       setState(() {
         _isLoading = false;
-        _errorMessage = 'Failed to send email. Please try again.';
+        _errorMessage = AppLocalizations.of(context)!.emailAuthFailedToSendTryAgain;
       });
     }
   }
@@ -74,17 +75,17 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
   String _getErrorMessage(FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-email':
-        return 'Invalid email address. Please check the format.';
+        return AppLocalizations.of(context)!.emailAuthInvalidEmail;
       case 'user-not-found':
-        return 'No account found with this email address.';
+        return AppLocalizations.of(context)!.emailAuthUserNotFound;
       case 'too-many-requests':
-        return 'Too many attempts. Please try again later.';
+        return AppLocalizations.of(context)!.emailAuthTooManyRequests;
       case 'operation-not-allowed':
-        return 'Email link sign-in is not enabled.';
+        return AppLocalizations.of(context)!.emailAuthOperationNotAllowed;
       case 'quota-exceeded':
-        return 'Email quota exceeded. Please try again tomorrow.';
+        return AppLocalizations.of(context)!.emailAuthQuotaExceeded;
       default:
-        return e.message ?? 'Email verification failed. Please try again.';
+        return e.message ?? AppLocalizations.of(context)!.emailAuthVerificationFailed;
     }
   }
 
@@ -99,8 +100,8 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Email Verification',
+        title: Text(
+          AppLocalizations.of(context)!.emailAuthTitle,
           style: TextStyle(color: AppColors.textPrimary),
         ),
       ),
@@ -113,8 +114,8 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Header
-                const Text(
-                  'Verify Your Email',
+                Text(
+                  AppLocalizations.of(context)!.emailAuthVerifyYourEmail,
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -125,8 +126,8 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
                 
                 const SizedBox(height: 16),
                 
-                const Text(
-                  'Add your email address for account recovery and security. We\'ll send you a secure sign-in link.',
+                Text(
+                  AppLocalizations.of(context)!.emailAuthDescription,
                   style: TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 16,
@@ -142,8 +143,8 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(color: AppColors.textPrimary),
                   decoration: InputDecoration(
-                    labelText: 'Email Address',
-                    hintText: 'your.email@example.com',
+                    labelText: AppLocalizations.of(context)!.emailAuthEmailAddress,
+                    hintText: AppLocalizations.of(context)!.emailAuthEmailPlaceholder,
                     labelStyle: const TextStyle(color: AppColors.textSecondary),
                     prefixIcon: const Icon(Icons.email, color: AppColors.textSecondary),
                     border: OutlineInputBorder(
@@ -163,10 +164,10 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
                   ),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
-                      return 'Please enter your email address';
+                      return AppLocalizations.of(context)!.emailAuthPleaseEnterEmail;
                     }
                     if (!value.contains('@') || !value.contains('.')) {
-                      return 'Please enter a valid email address';
+                      return AppLocalizations.of(context)!.emailAuthPleaseEnterValidEmail;
                     }
                     return null;
                   },
@@ -200,8 +201,8 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          'Check your email and tap the verification link to continue.',
+                        Text(
+                          AppLocalizations.of(context)!.emailAuthCheckEmailToContinue,
                           style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 12,
@@ -254,7 +255,7 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
                             ),
                           )
                         : Text(
-                            _successMessage != null ? 'Resend Email' : 'Send Verification Email',
+                            _successMessage != null ? AppLocalizations.of(context)!.emailAuthResendEmail : AppLocalizations.of(context)!.emailAuthSendVerificationEmail,
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -284,8 +285,8 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
                             size: 20,
                           ),
                           const SizedBox(width: 8),
-                          const Text(
-                            'How Email Verification Works',
+                          Text(
+                            AppLocalizations.of(context)!.emailAuthHowItWorks,
                             style: TextStyle(
                               color: AppColors.textPrimary,
                               fontWeight: FontWeight.w600,
@@ -295,11 +296,8 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      const Text(
-                        '1. We send you a secure sign-in link\n'
-                        '2. Check your email and tap the link\n'
-                        '3. Your email gets verified automatically\n'
-                        '4. No passwords needed!',
+                      Text(
+                        AppLocalizations.of(context)!.emailAuthHowItWorksSteps,
                         style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 14,
@@ -313,8 +311,8 @@ class _FirebaseEmailAuthScreenState extends State<FirebaseEmailAuthScreen> {
                 const Spacer(),
                 
                 // Footer Info
-                const Text(
-                  'Email verification helps secure your account and enables account recovery if you lose access to your device.',
+                Text(
+                  AppLocalizations.of(context)!.emailAuthSecurityNotice,
                   style: TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 12,

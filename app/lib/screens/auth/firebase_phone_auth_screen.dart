@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import '../../theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 
 class FirebasePhoneAuthScreen extends StatefulWidget {
   const FirebasePhoneAuthScreen({super.key});
@@ -92,7 +93,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
       debugPrint('Error sending verification code: $e');
       setState(() {
         _isLoading = false;
-        _errorMessage = 'Failed to send verification code. Please try again.';
+        _errorMessage = AppLocalizations.of(context)!.phoneAuthFailedToSendCode;
       });
     }
   }
@@ -120,7 +121,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
         if (e is FirebaseAuthException) {
           _errorMessage = _getErrorMessage(e);
         } else {
-          _errorMessage = 'Invalid verification code. Please try again.';
+          _errorMessage = AppLocalizations.of(context)!.phoneAuthInvalidCodeTryAgain;
         }
       });
     }
@@ -135,7 +136,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Phone number verified: ${userCredential.user?.phoneNumber}'),
+            content: Text(AppLocalizations.of(context)!.phoneAuthPhoneVerified(userCredential.user?.phoneNumber ?? '')),
             backgroundColor: AppColors.semanticSuccess,
           ),
         );
@@ -149,7 +150,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
         if (e is FirebaseAuthException) {
           _errorMessage = _getErrorMessage(e);
         } else {
-          _errorMessage = 'Phone verification failed. Please try again.';
+          _errorMessage = AppLocalizations.of(context)!.phoneAuthVerificationFailed;
         }
       });
     }
@@ -190,7 +191,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
-                content: Text('Verification code resent'),
+                content: Text(AppLocalizations.of(context)!.phoneAuthCodeResent),
                 backgroundColor: AppColors.semanticSuccess,
               ),
             );
@@ -207,7 +208,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
     } catch (e) {
       setState(() {
         _isLoading = false;
-        _errorMessage = 'Failed to resend code. Please try again.';
+        _errorMessage = AppLocalizations.of(context)!.phoneAuthFailedToResendCode;
       });
     }
   }
@@ -215,9 +216,9 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
   String _getErrorMessage(FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-phone-number':
-        return 'Invalid phone number. Please check the format.';
+        return AppLocalizations.of(context)!.phoneAuthInvalidPhoneNumber;
       case 'too-many-requests':
-        return 'Too many attempts. Please try again later.';
+        return AppLocalizations.of(context)!.phoneAuthTooManyRequests;
       case 'invalid-verification-code':
         return 'Invalid verification code. Please check and try again.';
       case 'session-expired':
@@ -242,8 +243,8 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => context.pop(),
         ),
-        title: const Text(
-          'Phone Verification',
+        title: Text(
+          AppLocalizations.of(context)!.phoneAuthTitle,
           style: TextStyle(color: AppColors.textPrimary),
         ),
       ),
@@ -257,7 +258,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
               children: [
                 // Header
                 Text(
-                  _isPhoneStep ? 'Verify Your Phone' : 'Enter Verification Code',
+                  _isPhoneStep ? AppLocalizations.of(context)!.phoneAuthVerifyYourPhone : AppLocalizations.of(context)!.phoneAuthEnterVerificationCode,
                   style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
@@ -270,8 +271,8 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
                 
                 Text(
                   _isPhoneStep 
-                    ? 'Add your phone number for account recovery and security'
-                    : 'Enter the 6-digit code sent to ${_phoneController.text}',
+                    ? AppLocalizations.of(context)!.phoneAuthAddPhoneForSecurity
+                    : AppLocalizations.of(context)!.phoneAuthEnterSixDigitCode(_phoneController.text),
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 16,
@@ -288,8 +289,8 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
                     keyboardType: TextInputType.phone,
                     style: const TextStyle(color: AppColors.textPrimary),
                     decoration: InputDecoration(
-                      labelText: 'Phone Number',
-                      hintText: '+1 (555) 123-4567',
+                      labelText: AppLocalizations.of(context)!.phoneAuthPhoneNumber,
+                      hintText: AppLocalizations.of(context)!.phoneAuthPhonePlaceholder,
                       labelStyle: const TextStyle(color: AppColors.textSecondary),
                       prefixIcon: const Icon(Icons.phone, color: AppColors.textSecondary),
                       border: OutlineInputBorder(
@@ -312,11 +313,11 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
                     ],
                     validator: (value) {
                       if (value == null || value.trim().isEmpty) {
-                        return 'Please enter your phone number';
+                        return AppLocalizations.of(context)!.phoneAuthPleaseEnterPhone;
                       }
                       final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
                       if (digits.length < 10) {
-                        return 'Please enter a valid phone number';
+                        return AppLocalizations.of(context)!.phoneAuthPleaseEnterValidPhone;
                       }
                       return null;
                     },
@@ -335,7 +336,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
                     textAlign: TextAlign.center,
                     maxLength: 6,
                     decoration: InputDecoration(
-                      labelText: 'Verification Code',
+                      labelText: AppLocalizations.of(context)!.phoneAuthVerificationCode,
                       labelStyle: const TextStyle(color: AppColors.textSecondary),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -358,7 +359,7 @@ class _FirebasePhoneAuthScreenState extends State<FirebasePhoneAuthScreen> {
                     ],
                     validator: (value) {
                       if (value == null || value.length != 6) {
-                        return 'Please enter the 6-digit code';
+                        return AppLocalizations.of(context)!.phoneAuthPleaseEnterSixDigitCode;
                       }
                       return null;
                     },
