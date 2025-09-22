@@ -1180,3 +1180,141 @@ async def set_device_dnd(
     except Exception as e:
         logger.error(f"Error setting DND for device {device_id}: {e}")
         raise HTTPException(status_code=500, detail=f"Failed to set DND: {str(e)}")
+
+# Remote diagnostics endpoints for admin troubleshooting
+@router.get("/diagnostics/{device_id}")
+async def get_device_diagnostics(device_id: str):
+    """Get comprehensive diagnostics for a specific device - admin use"""
+    try:
+        db_pool = await get_db()
+
+        async with db_pool.acquire() as conn:
+            # Get device info with user details
+            device_row = await conn.fetchrow("""
+                SELECT d.*, u.username, u.email
+                FROM devices d
+                LEFT JOIN users u ON d.user_id = u.id
+                WHERE d.device_id = $1
+            """, device_id)
+
+            if not device_row:
+                raise HTTPException(status_code=404, detail="Device not found")
+
+            # Get recent activity
+            recent_beeps = await conn.fetch("""
+                SELECT id, title, created_at
+                FROM sightings
+                WHERE reporter_id = $1
+                ORDER BY created_at DESC
+                LIMIT 3
+            """, str(device_row['user_id']) if device_row['user_id'] else device_id)
+
+            # Parse preferences safely
+            preferences = device_row['preferences'] or {}
+            if isinstance(preferences, str):
+                import json
+                try:
+                    preferences = json.loads(preferences)
+                except:
+                    preferences = {}
+
+            # Build comprehensive diagnostics
+            diagnostics = {
+                "device_info": {
+                    "device_id": device_row['device_id'],
+                    "username": device_row['username'],
+                    "email": device_row['email'],
+                    "platform": device_row['platform'],
+                    "app_version": device_row['app_version'],
+                    "device_model": device_row['device_model'],
+                    "manufacturer": device_row['manufacturer'],
+                    "os_version": device_row['os_version']
+                },
+                "status": {
+                    "is_active": device_row['is_active'],
+                    "last_seen": device_row['last_seen'].isoformat() if device_row['last_seen'] else None,
+                    "registered_at": device_row['registered_at'].isoformat() if device_row['registered_at'] else None,
+                    "minutes_since_last_seen": int((datetime.utcnow() - device_row['last_seen']).total_seconds() / 60) if device_row['last_seen'] else None
+                },
+                "location": {
+                    "has_location": device_row['lat'] is not None and device_row['lon'] is not None,
+                    "latitude": float(device_row['lat']) if device_row['lat'] else None,
+                    "longitude": float(device_row['lon']) if device_row['lon'] else None,
+                    "location_accuracy": "GPS coordinates available" if device_row['lat'] else "No location data"
+                },
+                "notifications": {
+                    "push_enabled": device_row['push_enabled'],
+                    "has_push_token": device_row['push_token'] is not None,
+                    "push_provider": device_row['push_provider'],
+                    "alert_notifications": device_row['alert_notifications'],
+                    "chat_notifications": device_row['chat_notifications'],
+                    "system_notifications": device_row['system_notifications'],
+                    "token_preview": device_row['push_token'][:20] + '...' if device_row['push_token'] else None,
+                    "token_valid": device_row['push_token'] is not None and len(device_row['push_token']) > 100
+                },
+                "settings": {
+                    "language": preferences.get('language', 'en'),
+                    "units": preferences.get('units', 'metric'),
+                    "dnd_active": device_row['dnd_until'] and device_row['dnd_until'] > datetime.utcnow(),
+                    "dnd_until": device_row['dnd_until'].isoformat() if device_row['dnd_until'] else None,
+                    "quiet_hours_enabled": preferences.get('quietHoursEnabled', False),
+                    "alert_range_km": device_row['alert_range_km']
+                },
+                "recent_activity": {
+                    "recent_beeps_count": len(recent_beeps),
+                    "recent_beeps": [
+                        {
+                            "id": str(beep['id']),
+                            "title": beep['title'],
+                            "created_at": beep['created_at'].isoformat()
+                        } for beep in recent_beeps
+                    ]
+                },
+                "generated_at": datetime.utcnow().isoformat()
+            }
+
+            return {
+                "success": True,
+                "data": diagnostics
+            }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting device diagnostics: {e}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving diagnostics: {str(e)}")
+
+@router.get("/search/by-username")
+async def search_devices_by_username(username: str):
+    """Search for devices by username - admin use"""
+    try:
+        db_pool = await get_db()
+
+        async with db_pool.acquire() as conn:
+            devices = await conn.fetch("""
+                SELECT d.device_id, d.last_seen, d.is_active, d.push_enabled,
+                       u.username, u.email, d.registered_at
+                FROM devices d
+                LEFT JOIN users u ON d.user_id = u.id
+                WHERE u.username ILIKE $1 OR u.email ILIKE $1
+                ORDER BY d.last_seen DESC NULLS LAST
+            """, f'%{username}%')
+
+            return {
+                "success": True,
+                "data": [
+                    {
+                        "device_id": device['device_id'],
+                        "username": device['username'],
+                        "email": device['email'],
+                        "last_seen": device['last_seen'].isoformat() if device['last_seen'] else None,
+                        "is_active": device['is_active'],
+                        "push_enabled": device['push_enabled'],
+                        "registered_at": device['registered_at'].isoformat() if device['registered_at'] else None
+                    } for device in devices
+                ]
+            }
+
+    except Exception as e:
+        logger.error(f"Error searching devices: {e}")
+        raise HTTPException(status_code=500, detail=f"Error searching devices: {str(e)}")

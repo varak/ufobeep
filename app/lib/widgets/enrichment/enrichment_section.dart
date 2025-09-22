@@ -8,7 +8,7 @@ import '../../utils/unit_conversion.dart';
 import '../../providers/user_preferences_provider.dart';
 import 'premium_satellite_card.dart';
 
-class EnrichmentSection extends StatelessWidget {
+class EnrichmentSection extends ConsumerWidget {
   const EnrichmentSection({
     super.key,
     required this.enrichmentData,
@@ -27,7 +27,9 @@ class EnrichmentSection extends StatelessWidget {
   final String? reporterUsername;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userPrefs = ref.watch(userPreferencesProvider);
+    final units = userPrefs?.units ?? 'metric';
     // Skip enrichment data display for MUFON cases
     final isMufonCase = alertSource == 'mufon' || reporterUsername == 'MUFON_Database';
     if (isMufonCase) {
@@ -307,7 +309,7 @@ class EnrichmentSection extends StatelessWidget {
                 final callsign = a['callsign'] ?? '';
                 final distance = a['distance_km']?.toDouble() ?? 0.0;
                 final altitude = a['altitude_ft'];
-                
+
                 return Container(
                   margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.all(12),
@@ -325,9 +327,15 @@ class EnrichmentSection extends StatelessWidget {
                           style: const TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w500),
                         ),
                       ),
-                      Text(
-                        '${distance.toStringAsFixed(1)}km away${altitude != null ? ' • ${altitude}ft' : ''}',
-                        style: const TextStyle(color: AppColors.textTertiary, fontSize: 12),
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final userPrefs = ref.watch(userPreferencesProvider);
+                          final units = userPrefs?.units ?? 'metric';
+                          return Text(
+                            '${UnitConversion.formatDistance(distance * 1000, units)} away${altitude != null ? ' • ${altitude}ft' : ''}',
+                            style: const TextStyle(color: AppColors.textTertiary, fontSize: 12),
+                          );
+                        },
                       ),
                     ],
                   ),

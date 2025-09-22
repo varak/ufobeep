@@ -7,6 +7,8 @@ import '../../services/permission_service.dart';
 import '../../services/sound_service.dart';
 import '../../services/api_client.dart';
 import '../../theme/app_theme.dart';
+import '../../utils/unit_conversion.dart';
+import '../../providers/user_preferences_provider.dart';
 import '../debug/push_debug_screen.dart';
 import 'dart:convert';
 import 'dart:math' as math;
@@ -331,7 +333,11 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
             // Aggregation Analysis Result
             if (_selectedAlertAggregation != null) _buildAggregationResultCard(),
             const SizedBox(height: 16),
-            
+
+            // Remote Diagnostics Section
+            _buildRemoteDiagnosticsCard(),
+            const SizedBox(height: 16),
+
             // Last Test Result
             if (_lastTestResult != null) _buildTestResultCard(),
           ],
@@ -715,7 +721,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(
-                    '${alert['witness_count'] ?? 1} witnesses • ${alert['distance_km']?.toStringAsFixed(1) ?? '?'}km',
+                    '${alert['witness_count'] ?? 1} witnesses • ${_formatDistance(alert['distance_km'])}',
                     style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
                   ),
                   trailing: ElevatedButton(
@@ -1522,6 +1528,260 @@ class _AdminScreenState extends ConsumerState<AdminScreen> {
       await SoundService.I.play(AlertSound.gpsFail);
     } finally {
       setState(() => _isLoading = false);
+    }
+  }
+
+  String _formatDistance(double? distanceKm) {
+    if (distanceKm == null) return '?';
+    final userPrefs = ref.read(userPreferencesProvider);
+    final units = userPrefs?.units ?? 'metric';
+    return UnitConversion.formatDistance(distanceKm * 1000, units);
+  }
+
+  Widget _buildRemoteDiagnosticsCard() {
+    return Card(
+      color: AppColors.darkSurface,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '🔍 Remote Diagnostics',
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Troubleshoot user issues by username',
+              style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _usernameController,
+              style: const TextStyle(color: AppColors.textPrimary),
+              decoration: const InputDecoration(
+                labelText: 'Username',
+                labelStyle: TextStyle(color: AppColors.textSecondary),
+                hintText: 'Enter username to diagnose',
+                hintStyle: TextStyle(color: AppColors.textTertiary),
+                border: OutlineInputBorder(),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.brandPrimary),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: _isLoading ? null : _searchDevicesByUsername,
+                    icon: const Icon(Icons.search),
+                    label: const Text('Search Devices'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.brandPrimary,
+                      foregroundColor: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (_deviceSearchResults.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              const Text(
+                'Found Devices:',
+                style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 8),
+              ..._deviceSearchResults.map((device) => Card(
+                color: AppColors.nightSkyMiddle,
+                margin: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  title: Text(
+                    device['username'] ?? 'Unknown User',
+                    style: const TextStyle(color: AppColors.textPrimary),
+                  ),
+                  subtitle: Text(
+                    'Last seen: ${_formatLastSeen(device['last_seen'])}',
+                    style: const TextStyle(color: AppColors.textSecondary),
+                  ),
+                  trailing: ElevatedButton(
+                    onPressed: () => _getDeviceDiagnostics(device['device_id']),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.warning,
+                      foregroundColor: Colors.black,
+                    ),
+                    child: const Text('Diagnose'),
+                  ),
+                ),
+              )),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  final TextEditingController _usernameController = TextEditingController();
+  List<Map<String, dynamic>> _deviceSearchResults = [];
+
+  Future<void> _searchDevicesByUsername() async {
+    final username = _usernameController.text.trim();
+    if (username.isEmpty) return;
+
+    setState(() {
+      _isLoading = true;
+      _statusMessage = 'Searching devices for username: $username';
+    });
+
+    try {
+      final apiClient = ApiClient.instance;
+      final response = await apiClient.getJson('/devices/search/by-username?username=${Uri.encodeComponent(username)}');
+
+      if (response['success'] == true) {
+        setState(() {
+          _deviceSearchResults = List<Map<String, dynamic>>.from(response['data'] ?? []);
+          _statusMessage = 'Found ${_deviceSearchResults.length} device(s) for $username';
+        });
+      } else {
+        setState(() {
+          _deviceSearchResults = [];
+          _statusMessage = 'No devices found for username: $username';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _deviceSearchResults = [];
+        _statusMessage = 'Error searching devices: $e';
+      });
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _getDeviceDiagnostics(String deviceId) async {
+    setState(() {
+      _isLoading = true;
+      _statusMessage = 'Loading diagnostics for device: $deviceId';
+    });
+
+    try {
+      final apiClient = ApiClient.instance;
+      final response = await apiClient.getJson('/devices/diagnostics/$deviceId');
+
+      if (response['success'] == true) {
+        _showDiagnosticsResult(response['data']);
+        setState(() => _statusMessage = 'Diagnostics loaded successfully');
+      } else {
+        setState(() => _statusMessage = 'Failed to load diagnostics');
+      }
+    } catch (e) {
+      setState(() => _statusMessage = 'Error loading diagnostics: $e');
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
+  void _showDiagnosticsResult(Map<String, dynamic> diagnostics) {
+    final deviceInfo = diagnostics['device_info'] ?? {};
+    final status = diagnostics['status'] ?? {};
+    final location = diagnostics['location'] ?? {};
+    final notifications = diagnostics['notifications'] ?? {};
+    final settings = diagnostics['settings'] ?? {};
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: Text(
+          'Device Diagnostics: ${deviceInfo['username'] ?? 'Unknown'}',
+          style: const TextStyle(color: AppColors.textPrimary),
+        ),
+        content: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildDiagnosticSection('Device', [
+                'ID: ${deviceInfo['device_id'] ?? 'Unknown'}',
+                'Version: ${deviceInfo['app_version'] ?? 'Unknown'}',
+                'Platform: ${deviceInfo['platform'] ?? 'Unknown'}',
+                'Last Seen: ${_formatLastSeen(status['last_seen'])}',
+              ]),
+              _buildDiagnosticSection('Location', [
+                'GPS: ${location['has_location'] == true ? '✅ Available' : '❌ Missing'}',
+                if (location['latitude'] != null) 'Coords: ${location['latitude']}, ${location['longitude']}',
+              ]),
+              _buildDiagnosticSection('Notifications', [
+                'Push Enabled: ${notifications['push_enabled'] == true ? '✅ Yes' : '❌ No'}',
+                'FCM Token: ${notifications['has_push_token'] == true ? '✅ Valid' : '❌ Missing'}',
+                'Token: ${notifications['token_preview'] ?? 'None'}',
+              ]),
+              _buildDiagnosticSection('Settings', [
+                'Language: ${settings['language'] ?? 'en'}',
+                'Units: ${settings['units'] ?? 'metric'}',
+                'DND: ${settings['dnd_active'] == true ? '⏰ Active' : '✅ Off'}',
+                'Alert Range: ${settings['alert_range_km'] ?? 30}km',
+              ]),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Close', style: TextStyle(color: AppColors.brandPrimary)),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDiagnosticSection(String title, List<String> items) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: const TextStyle(
+            color: AppColors.brandPrimary,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 4),
+        ...items.map((item) => Padding(
+          padding: const EdgeInsets.only(left: 8, bottom: 2),
+          child: Text(
+            item,
+            style: const TextStyle(
+              color: AppColors.textSecondary,
+              fontSize: 12,
+              fontFamily: 'monospace',
+            ),
+          ),
+        )),
+        const SizedBox(height: 12),
+      ],
+    );
+  }
+
+  String _formatLastSeen(String? lastSeen) {
+    if (lastSeen == null) return 'Never';
+    try {
+      final date = DateTime.parse(lastSeen);
+      final diff = DateTime.now().difference(date);
+      if (diff.inMinutes < 60) {
+        return '${diff.inMinutes}m ago';
+      } else if (diff.inHours < 24) {
+        return '${diff.inHours}h ago';
+      } else {
+        return '${diff.inDays}d ago';
+      }
+    } catch (e) {
+      return 'Unknown';
     }
   }
 }
