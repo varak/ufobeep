@@ -51,7 +51,7 @@ export default function DownloadPage() {
           </h2>
           <ul className="space-y-2 text-gray-300">
             <li>🆕 <strong>Smart Location Tracking:</strong> Battery-efficient geofencing for accurate proximity alerts (&lt;3% battery drain)</li>
-            <li>🆕 <strong>Full Internationalization:</strong> Automatic device language detection - app appears in your phone's language</li>
+            <li>🆕 <strong>Full Internationalization:</strong> Automatic device language detection - app appears in your phone&apos;s language</li>
             <li>🆕 <strong>Privacy & Data Controls:</strong> GDPR-compliant data export/deletion and transparent location tracking settings</li>
             <li>🆕 <strong>Fixed Magic Link Authentication:</strong> Seamless email sign-in without navigation errors</li>
             <li>✅ <strong>22 Languages:</strong> Splash screen, sign-in, and auth flows in native languages (Spanish, German, French, etc.)</li>
