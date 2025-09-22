@@ -48,25 +48,41 @@ export async function GET() {
     <priority>0.7</priority>
   </url>
   
-  <!-- Sample Alert Pages (examples for demonstration) -->
+  <!-- Download Pages -->
   <url>
-    <loc>${baseUrl}/beep/1</loc>
+    <loc>${baseUrl}/download</loc>
     <lastmod>${currentDate}</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Keyword Landing Pages -->
+  <url>
+    <loc>${baseUrl}/ufo-beep</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>${baseUrl}/beep/2</loc>
+    <loc>${baseUrl}/ufo-app</loc>
     <lastmod>${currentDate}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-  
+
   <url>
-    <loc>${baseUrl}/beep/3</loc>
+    <loc>${baseUrl}/ovni</loc>
     <lastmod>${currentDate}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Map and Interactive Pages -->
+  <url>
+    <loc>${baseUrl}/map</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
