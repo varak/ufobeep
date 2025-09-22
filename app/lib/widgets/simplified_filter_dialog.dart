@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../theme/app_theme.dart';
 import '../models/alerts_filter.dart';
 import '../providers/alerts_provider.dart';
+import '../providers/user_preferences_provider.dart';
 import '../l10n/app_localizations.dart';
 
 enum SourceFilter { both, ufobeepOnly, mufonOnly }
