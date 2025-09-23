@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server'
 
 const API_BASE = process.env.API_BASE_URL || 'http://localhost:8000'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     const adminKey = request.headers.get('X-Admin-Key')
