@@ -91,7 +91,13 @@ export default function AdminUsersPage() {
   }
 
   const deleteUser = async (userId: string, username: string) => {
-    if (!confirm(`Are you sure you want to delete user ${username}? This cannot be undone.`)) {
+    if (!confirm(`⚠️ COMPREHENSIVE DELETE WARNING ⚠️\n\nThis will permanently delete user "${username}" and ALL associated data:\n\n✅ User profile and account\n✅ All uploaded beeps/sightings\n✅ All media files and photos\n✅ All comments made by user\n✅ All follows and notifications\n\nThis action CANNOT be undone and will free up storage space.\n\nType "${username}" to confirm deletion:`)) {
+      return
+    }
+
+    const confirmation = prompt(`Type "${username}" to confirm permanent deletion:`)
+    if (confirmation !== username) {
+      alert('Deletion cancelled - username did not match')
       return
     }
 
@@ -102,7 +108,12 @@ export default function AdminUsersPage() {
       })
 
       if (response.ok) {
-        alert(`User ${username} deleted successfully`)
+        const result = await response.json()
+        if (result.details) {
+          alert(`✅ User ${username} comprehensively deleted!\n\nCleaned up:\n• ${result.details.sightings_deleted} sightings\n• ${result.details.comments_deleted} comments\n• ${result.details.files_deleted} files\n• ${result.details.storage_freed_mb}MB storage freed\n\nAll data permanently removed.`)
+        } else {
+          alert(`User ${username} deleted successfully`)
+        }
         loadData() // Reload the list
       } else {
         alert('Failed to delete user')
@@ -110,6 +121,39 @@ export default function AdminUsersPage() {
     } catch (error) {
       console.error('Error deleting user:', error)
       alert('Error deleting user')
+    }
+  }
+
+  const exportUserData = async (userId: string, username: string, format: string = 'csv') => {
+    try {
+      const response = await fetch(`/api/admin/users/${userId}/export?format=${format}`, {
+        headers: { 'X-Admin-Key': adminKey }
+      })
+
+      if (response.ok) {
+        if (format === 'csv') {
+          const blob = await response.blob()
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `user_data_${username}_${new Date().toISOString().split('T')[0]}.csv`
+          a.click()
+        } else {
+          const data = await response.json()
+          const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+          const url = window.URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `user_data_${username}_${new Date().toISOString().split('T')[0]}.json`
+          a.click()
+        }
+        alert(`User data for ${username} exported successfully`)
+      } else {
+        alert('Failed to export user data')
+      }
+    } catch (error) {
+      console.error('Error exporting user data:', error)
+      alert('Error exporting user data')
     }
   }
 
@@ -258,12 +302,22 @@ export default function AdminUsersPage() {
                         </div>
                       </td>
                       <td className="p-3">
-                        <button
-                          onClick={() => deleteUser(user.id, user.username)}
-                          className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
-                        >
-                          Delete
-                        </button>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => exportUserData(user.id, user.username, 'csv')}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
+                            title="Export all user data (GDPR)"
+                          >
+                            📄 Export
+                          </button>
+                          <button
+                            onClick={() => deleteUser(user.id, user.username)}
+                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
+                            title="Comprehensive delete - removes ALL user data"
+                          >
+                            🗑️ Delete
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
