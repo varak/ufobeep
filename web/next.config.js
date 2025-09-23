@@ -74,17 +74,7 @@ const nextConfig = {
     ];
   },
 
-  // Redirects for admin interface only
-  async redirects() {
-    return [
-      {
-        source: '/admin/:path*',
-        // api.ufobeep.com is deprecated; route admin under main domain
-        destination: '/api/admin/:path*',
-        permanent: false,
-      },
-    ];
-  },
+  // Redirects - removed admin redirect that was conflicting with admin page
   
   // Webpack configuration
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
