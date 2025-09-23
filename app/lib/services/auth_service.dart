@@ -304,12 +304,12 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       print('MAGIC LINK DEBUG: URL: ${actionCodeSettings.url}');
       print('MAGIC LINK DEBUG: Package: ${actionCodeSettings.androidPackageName}');
 
-      // Send the magic link email
-      print('MAGIC LINK DEBUG: Calling Firebase sendSignInLinkToEmail...');
-      await _auth.sendSignInLinkToEmail(
-        email: email,
-        actionCodeSettings: actionCodeSettings,
-      );
+      // DISABLED: Firebase magic link (use backend API instead)
+      // print('MAGIC LINK DEBUG: Calling Firebase sendSignInLinkToEmail...');
+      // await _auth.sendSignInLinkToEmail(
+      //   email: email,
+      //   actionCodeSettings: actionCodeSettings,
+      // );
 
       // Store the email locally for verification
       final prefs = await SharedPreferences.getInstance();
