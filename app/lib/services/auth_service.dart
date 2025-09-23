@@ -316,7 +316,7 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       await prefs.setString(_pendingEmailKey, email);
 
       // CRITICAL FIX: Actually call backend API to send magic link
-      final userService = UserService();
+      final userService = UserService.instance;
       await userService.sendMagicLink(email);
 
       print('MAGIC LINK DEBUG: Magic link sent successfully to: $email');
