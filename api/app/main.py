@@ -516,23 +516,23 @@ async def admin_users_list(request: Request, search: str = "", limit: int = 50):
         async with database_service.pool.acquire() as conn:
             if search:
                 users = await conn.fetch("""
-                    SELECT u.id, u.username, u.email, u.created_at, u.last_login,
+                    SELECT DISTINCT ON (u.id) u.id, u.username, u.email, u.created_at, u.last_login,
                            d.device_model, d.manufacturer as device_manufacturer,
                            d.os_version, d.app_version
                     FROM users u
                     LEFT JOIN devices d ON u.id = d.user_id
                     WHERE u.username ILIKE $1 OR u.email ILIKE $1
-                    ORDER BY u.created_at DESC
+                    ORDER BY u.id, u.created_at DESC
                     LIMIT $2
                 """, f"%{search}%", limit)
             else:
                 users = await conn.fetch("""
-                    SELECT u.id, u.username, u.email, u.created_at, u.last_login,
+                    SELECT DISTINCT ON (u.id) u.id, u.username, u.email, u.created_at, u.last_login,
                            d.device_model, d.manufacturer as device_manufacturer,
                            d.os_version, d.app_version
                     FROM users u
                     LEFT JOIN devices d ON u.id = d.user_id
-                    ORDER BY u.created_at DESC
+                    ORDER BY u.id, u.created_at DESC
                     LIMIT $1
                 """, limit)
 
