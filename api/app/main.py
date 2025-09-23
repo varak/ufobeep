@@ -548,26 +548,92 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
         raise HTTPException(status_code=403, detail="Admin access required")
 
     try:
-        # Get database session for SQLAlchemy models
-        from app.database import SessionLocal
-        from app.models import User
-        from app.routers.user_data import export_user_data as gdpr_export
+        async with database_service.pool.acquire() as conn:
+            # Get user data
+            user_data = await conn.fetchrow("""
+                SELECT id, username, email, device_model, device_manufacturer,
+                       os_version, app_version, acquisition_source, marketing_consent,
+                       created_at, last_active_at, display_name, bio, location,
+                       device_language, timezone, screen_resolution
+                FROM users WHERE id = $1
+            """, user_id)
 
-        db = SessionLocal()
-        try:
-            # Get user to verify they exist
-            user = db.query(User).filter(User.id == user_id).first()
-            if not user:
+            if not user_data:
                 raise HTTPException(status_code=404, detail="User not found")
 
-            # Call the comprehensive export function directly
-            export_data = await gdpr_export(current_user=user, db=db)
+            # Get user's sightings
+            sightings = await conn.fetch("""
+                SELECT id, title, description, short_url, location, latitude, longitude,
+                       occurred_at, created_at, category, status, source, external_id
+                FROM sightings WHERE reporter_id = $1
+            """, user_id)
 
-            # Add admin metadata
-            export_data["admin_export"] = {
-                "exported_by": "admin",
-                "export_type": "comprehensive_gdpr",
-                "admin_timestamp": datetime.now().isoformat()
+            # Get user's comments
+            comments = await conn.fetch("""
+                SELECT c.id, c.content, c.created_at, c.sighting_id,
+                       s.title as sighting_title
+                FROM comments c
+                LEFT JOIN sightings s ON c.sighting_id = s.id
+                WHERE c.user_id = $1
+            """, user_id)
+
+            # Get user's devices
+            devices = await conn.fetch("""
+                SELECT device_id, platform, push_token, app_version,
+                       created_at, last_active, is_active
+                FROM devices WHERE user_id = $1
+            """, user_id)
+
+            # Get user's follows
+            follows = await conn.fetch("""
+                SELECT f.sighting_id, f.created_at, s.title as sighting_title
+                FROM follows f
+                LEFT JOIN sightings s ON f.sighting_id = s.id
+                WHERE f.user_id = $1
+            """, user_id)
+
+            # Prepare comprehensive export data
+            export_data = {
+                "export_metadata": {
+                    "generated_at": datetime.now().isoformat(),
+                    "user_id": str(user_data["id"]),
+                    "username": user_data["username"],
+                    "export_version": "1.0",
+                    "total_beeps": len(sightings),
+                    "total_comments": len(comments),
+                    "total_follows": len(follows),
+                    "total_devices": len(devices)
+                },
+                "user_profile": {
+                    "id": str(user_data["id"]),
+                    "username": user_data["username"],
+                    "email": user_data["email"],
+                    "display_name": user_data["display_name"],
+                    "bio": user_data["bio"],
+                    "location": user_data["location"],
+                    "created_at": user_data["created_at"].isoformat() if user_data["created_at"] else None,
+                    "last_active_at": user_data["last_active_at"].isoformat() if user_data["last_active_at"] else None,
+                    "marketing_consent": user_data["marketing_consent"],
+                    "acquisition_source": user_data["acquisition_source"]
+                },
+                "device_data": {
+                    "device_model": user_data["device_model"],
+                    "device_manufacturer": user_data["device_manufacturer"],
+                    "os_version": user_data["os_version"],
+                    "app_version": user_data["app_version"],
+                    "device_language": user_data["device_language"],
+                    "timezone": user_data["timezone"],
+                    "screen_resolution": user_data["screen_resolution"]
+                },
+                "beeps": [dict(s) for s in sightings],
+                "comments": [dict(c) for c in comments],
+                "devices": [dict(d) for d in devices],
+                "follows": [dict(f) for f in follows],
+                "admin_export": {
+                    "exported_by": "admin",
+                    "export_type": "comprehensive_gdpr",
+                    "admin_timestamp": datetime.now().isoformat()
+                }
             }
 
             if format == "csv":
@@ -575,7 +641,6 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
                 import io
                 from fastapi.responses import Response
 
-                # Create comprehensive CSV export
                 output = io.StringIO()
                 writer = csv.writer(output)
 
@@ -587,6 +652,11 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
                 writer.writerow([])
                 writer.writerow(["=== USER PROFILE ==="])
                 for key, value in export_data["user_profile"].items():
+                    writer.writerow([key, str(value) if value is not None else ""])
+
+                writer.writerow([])
+                writer.writerow(["=== DEVICE DATA ==="])
+                for key, value in export_data["device_data"].items():
                     writer.writerow([key, str(value) if value is not None else ""])
 
                 writer.writerow([])
@@ -605,21 +675,16 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
                     for comment in export_data["comments"]:
                         writer.writerow([str(comment[h]) if comment[h] is not None else "" for h in headers])
 
-                # Add other sections as needed...
-
                 csv_data = output.getvalue()
                 output.close()
 
                 return Response(
                     content=csv_data,
                     media_type="text/csv",
-                    headers={"Content-Disposition": f"attachment; filename=comprehensive_user_data_{user.username}_{datetime.now().strftime('%Y%m%d')}.csv"}
+                    headers={"Content-Disposition": f"attachment; filename=comprehensive_user_data_{user_data['username']}_{datetime.now().strftime('%Y%m%d')}.csv"}
                 )
 
             return export_data
-
-        finally:
-            db.close()
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to export user data: {str(e)}")
@@ -632,52 +697,83 @@ async def admin_delete_user_account(user_id: str, request: Request):
         raise HTTPException(status_code=403, detail="Admin access required")
 
     try:
-        # Get database session for SQLAlchemy models
-        from app.database import SessionLocal
-        from app.models import User
-        from app.routers.user_data import delete_user_account as gdpr_delete
+        async with database_service.pool.acquire() as conn:
+            async with conn.transaction():
+                # Get username first
+                user_record = await conn.fetchrow("SELECT username FROM users WHERE id = $1", user_id)
+                if not user_record:
+                    raise HTTPException(status_code=404, detail="User not found")
 
-        db = SessionLocal()
-        try:
-            # Get user to verify they exist and get username
-            user = db.query(User).filter(User.id == user_id).first()
-            if not user:
-                raise HTTPException(status_code=404, detail="User not found")
+                username = user_record['username']
 
-            username = user.username
+                # STEP 1: Delete all comments made by this user
+                comments_deleted = await conn.execute("DELETE FROM comments WHERE user_id = $1", user_id)
+                comments_count = int(comments_deleted.split()[-1]) if comments_deleted.split()[-1].isdigit() else 0
 
-            # Call the comprehensive deletion function directly
-            deletion_result = await gdpr_delete(current_user=user, db=db)
+                # STEP 2: Get user's sightings
+                sightings = await conn.fetch("SELECT id FROM sightings WHERE reporter_id = $1", user_id)
+                sightings_count = len(sightings)
 
-            # Transform the GDPR deletion result to match admin interface expectations
-            admin_result = {
-                "success": deletion_result.get("success", True),
-                "message": f"User {username} deleted successfully with comprehensive GDPR cleanup",
-                "details": {
-                    "user_id": user_id,
-                    "username": username,
-                    "sightings_deleted": deletion_result.get("deleted_data", {}).get("sightings", 0),
-                    "comments_deleted": deletion_result.get("deleted_data", {}).get("comments", 0),
-                    "files_deleted": deletion_result.get("deleted_data", {}).get("media_files", 0),
-                    "storage_freed_mb": 0,  # TODO: Calculate from media files if available
-                    "deleted_records": {
-                        "sightings": deletion_result.get("deleted_data", {}).get("sightings", 0),
-                        "comments": deletion_result.get("deleted_data", {}).get("comments", 0),
-                        "devices": deletion_result.get("deleted_data", {}).get("devices", 0),
-                        "follows": deletion_result.get("deleted_data", {}).get("follows", 0),
-                        "alerts": deletion_result.get("deleted_data", {}).get("alerts", 0),
-                        "magic_links": deletion_result.get("deleted_data", {}).get("magic_links", 0),
-                        "marketing_records": deletion_result.get("deleted_data", {}).get("marketing_records", 0),
-                        "analytics_events": deletion_result.get("deleted_data", {}).get("analytics_events", 0),
-                        "media_files": deletion_result.get("deleted_data", {}).get("media_files", 0)
+                # STEP 3: Delete media and related data for each sighting
+                media_files_deleted = 0
+                for sighting in sightings:
+                    sighting_id = sighting['id']
+
+                    # Delete media files
+                    media_deleted = await conn.execute("DELETE FROM media_files WHERE sighting_id = $1", sighting_id)
+                    media_files_deleted += int(media_deleted.split()[-1]) if media_deleted.split()[-1].isdigit() else 0
+
+                # STEP 4: Delete follows, alerts for user's sightings
+                follows_deleted = 0
+                alerts_deleted = 0
+                for sighting in sightings:
+                    sighting_id = sighting['id']
+
+                    follows_result = await conn.execute("DELETE FROM follows WHERE sighting_id = $1", sighting_id)
+                    follows_deleted += int(follows_result.split()[-1]) if follows_result.split()[-1].isdigit() else 0
+
+                    alerts_result = await conn.execute("DELETE FROM alerts WHERE sighting_id = $1", sighting_id)
+                    alerts_deleted += int(alerts_result.split()[-1]) if alerts_result.split()[-1].isdigit() else 0
+
+                # STEP 5: Delete user's sightings
+                sightings_deleted = await conn.execute("DELETE FROM sightings WHERE reporter_id = $1", user_id)
+                final_sightings_count = int(sightings_deleted.split()[-1]) if sightings_deleted.split()[-1].isdigit() else 0
+
+                # STEP 6: Delete user's devices
+                devices_deleted = await conn.execute("DELETE FROM devices WHERE user_id = $1", user_id)
+                devices_count = int(devices_deleted.split()[-1]) if devices_deleted.split()[-1].isdigit() else 0
+
+                # STEP 7: Delete user's follows
+                user_follows_deleted = await conn.execute("DELETE FROM follows WHERE user_id = $1", user_id)
+                user_follows_count = int(user_follows_deleted.split()[-1]) if user_follows_deleted.split()[-1].isdigit() else 0
+
+                # STEP 8: Finally delete the user
+                user_deleted = await conn.execute("DELETE FROM users WHERE id = $1", user_id)
+                user_deletion_success = "DELETE 1" in user_deleted
+
+                if not user_deletion_success:
+                    raise HTTPException(status_code=500, detail="Failed to delete user record")
+
+                return {
+                    "success": True,
+                    "message": f"User {username} deleted successfully with comprehensive cleanup",
+                    "details": {
+                        "user_id": user_id,
+                        "username": username,
+                        "sightings_deleted": final_sightings_count,
+                        "comments_deleted": comments_count,
+                        "files_deleted": media_files_deleted,
+                        "storage_freed_mb": 0,
+                        "deleted_records": {
+                            "sightings": final_sightings_count,
+                            "comments": comments_count,
+                            "devices": devices_count,
+                            "follows": follows_deleted + user_follows_count,
+                            "alerts": alerts_deleted,
+                            "media_files": media_files_deleted
+                        }
                     }
                 }
-            }
-
-            return admin_result
-
-        finally:
-            db.close()
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete user account: {str(e)}")
