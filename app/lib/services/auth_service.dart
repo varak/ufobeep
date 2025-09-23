@@ -17,6 +17,7 @@ import 'api_client.dart';
 import 'auth_repository.dart';
 import 'storage.dart';
 import 'device_registration_manager.dart';
+import 'user_service.dart';
 import '../config/environment.dart';
 import '../models/user_preferences.dart';
 import '../features/auth/auth_gate.dart';
@@ -313,6 +314,10 @@ class AuthService extends ChangeNotifier implements AuthStateProvider {
       // Store the email locally for verification
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_pendingEmailKey, email);
+
+      // CRITICAL FIX: Actually call backend API to send magic link
+      final userService = UserService();
+      await userService.sendMagicLink(email);
 
       print('MAGIC LINK DEBUG: Magic link sent successfully to: $email');
       print('MAGIC LINK DEBUG: Email stored locally for verification');
