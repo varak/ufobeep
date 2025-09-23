@@ -159,8 +159,8 @@ class AlertsService:
             for row in rows:
                 location = self._extract_location(row["sensor_data"], row["enrichment_data"])
                 
-                # Debug logging for location extraction
-                print(f"DEBUG: Alert {row['id'][:8]}... source={row['source']}, location={location}")
+                # Debug logging disabled for production (was causing massive log spam)
+                # print(f"DEBUG: Alert {row['id'][:8]}... source={row['source']}, location={location}")
                 
                 # Allow MUFON alerts without location data
                 if location or row["source"] == "mufon":
