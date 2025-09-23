@@ -769,7 +769,7 @@ async def admin_delete_user_account(user_id: str, request: Request):
                 final_sightings_count = int(sightings_deleted.split()[-1]) if sightings_deleted.split()[-1].isdigit() else 0
 
                 # STEP 6: Delete user's devices
-                devices_deleted = await conn.execute("DELETE FROM devices WHERE user_id = $1", user_id)
+                devices_deleted = await conn.execute("DELETE FROM user_devices WHERE user_id = $1", user_id)
                 devices_count = int(devices_deleted.split()[-1]) if devices_deleted.split()[-1].isdigit() else 0
 
                 # STEP 7: Delete user's follows
