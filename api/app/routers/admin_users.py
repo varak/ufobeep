@@ -4,6 +4,7 @@ Provides admin access to user data for marketing and analytics
 """
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
 from typing import List, Optional, Dict, Any
 import logging
 from datetime import datetime, timedelta
@@ -12,6 +13,8 @@ import uuid
 
 from app.services.database_service import get_database_pool
 from app.middleware.firebase_auth import RequiredAuth, FirebaseUser
+from app.database import get_db
+from app.models import User
 from pydantic import BaseModel
 
 logger = logging.getLogger(__name__)
@@ -60,13 +63,13 @@ class UserStats(BaseModel):
     language_breakdown: List[Dict[str, Any]]
 
 # Database dependency - now uses shared pool
-async def get_db() -> asyncpg.Pool:
+async def get_db_pool() -> asyncpg.Pool:
     """Get database connection pool from service"""
     return await get_database_pool()
 
 @router.get("/", response_model=List[UserSummary])
 async def get_users(
-    pool: asyncpg.Pool = Depends(get_db),
+    db: Session = Depends(get_db),
     skip: int = Query(0, description="Number of users to skip"),
     limit: int = Query(100, description="Number of users to return"),
     search: Optional[str] = Query(None, description="Search by username or email"),
@@ -345,202 +348,199 @@ async def update_user_device_data(
 @router.delete("/{user_id}")
 async def delete_user_account(
     user_id: str,
-    pool: asyncpg.Pool = Depends(get_db)
+    db: Session = Depends(get_db)
 ):
-    """Delete user account completely with comprehensive cleanup (GDPR compliance)"""
+    """Delete user account completely with comprehensive cleanup (GDPR compliance) - Uses comprehensive GDPR API"""
 
-    async with pool.acquire() as conn:
-        # First check if user exists and get username
-        user_record = await conn.fetchrow("""
-            SELECT username FROM users WHERE id = $1
-        """, user_id)
+    # Get user to verify they exist and get username
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
 
-        if not user_record:
-            raise HTTPException(status_code=404, detail="User not found")
+    username = user.username
 
-        username = user_record['username']
+    try:
+        # Import and use the comprehensive GDPR deletion function
+        from app.routers.user_data import delete_user_account as gdpr_delete
 
-        async with conn.transaction():
-            # STEP 1: Delete all comments made by this user (anywhere on platform)
-            comments_deleted = await conn.execute("""
-                DELETE FROM comments WHERE user_id = $1
-            """, user_id)
-            comments_count = int(comments_deleted.split()[-1]) if comments_deleted.split()[-1].isdigit() else 0
+        # Call the comprehensive deletion function directly
+        deletion_result = await gdpr_delete(current_user=user, db=db)
 
-            # STEP 2: Get all sightings by this user to delete their media and beeps
-            sightings = await conn.fetch("""
-                SELECT id::text FROM sightings WHERE reporter_id = $1
-            """, user_id)
-
-            # STEP 3: Delete all user's sightings using comprehensive cleanup
-            total_deleted_files = 0
-            total_freed_bytes = 0
-            total_sightings_deleted = 0
-            deleted_records = {"comments": comments_count}
-
-            if sightings:
-                # Import admin service for comprehensive sighting deletion
-                from app.services.admin_service import AdminService
-                admin_service = AdminService(pool)
-
-                # Delete each sighting with full cleanup
-                for sighting in sightings:
-                    sighting_id = sighting['id']
-                    try:
-                        result = await admin_service.delete_sighting(sighting_id)
-                        if result['success']:
-                            total_sightings_deleted += 1
-                            total_deleted_files += result['deleted_files']
-                            total_freed_bytes += result['freed_bytes']
-
-                            # Aggregate deleted records
-                            for table, count in result['deleted_records'].items():
-                                if isinstance(count, int):
-                                    deleted_records[table] = deleted_records.get(table, 0) + count
-                    except Exception as e:
-                        logger.error(f"Error deleting sighting {sighting_id}: {e}")
-
-            # STEP 4: Delete any remaining user data (follows, notifications, etc.)
-            user_related_tables = [
-                'follows',
-                'alert_deliveries',
-                'alert_notifications'
-            ]
-
-            for table in user_related_tables:
-                try:
-                    result = await conn.execute(f"""
-                        DELETE FROM {table} WHERE user_id = $1
-                    """, user_id)
-                    count = int(result.split()[-1]) if result.split()[-1].isdigit() else 0
-                    if count > 0:
-                        deleted_records[table] = count
-                except Exception as e:
-                    logger.error(f"Error deleting from {table}: {e}")
-
-            # STEP 5: Finally delete the user record itself
-            user_deleted = await conn.execute("""
-                DELETE FROM users WHERE id = $1
-            """, user_id)
-            user_deletion_success = "DELETE 1" in user_deleted
-
-            if not user_deletion_success:
-                raise HTTPException(status_code=500, detail="Failed to delete user record")
-
-            logger.info(f"Admin: Comprehensively deleted user {username} ({user_id}) - "
-                       f"{total_sightings_deleted} sightings, {comments_count} comments, "
-                       f"{total_deleted_files} files, {round(total_freed_bytes / (1024 * 1024), 2)}MB freed")
-
-            return {
-                "success": True,
-                "message": f"User {username} deleted successfully with comprehensive cleanup",
-                "details": {
-                    "user_id": user_id,
-                    "username": username,
-                    "sightings_deleted": total_sightings_deleted,
-                    "comments_deleted": comments_count,
-                    "files_deleted": total_deleted_files,
-                    "storage_freed_mb": round(total_freed_bytes / (1024 * 1024), 2),
-                    "deleted_records": deleted_records
+        # Transform the GDPR deletion result to match admin interface expectations
+        admin_result = {
+            "success": deletion_result.get("success", True),
+            "message": f"User {username} deleted successfully with comprehensive GDPR cleanup",
+            "details": {
+                "user_id": user_id,
+                "username": username,
+                "sightings_deleted": deletion_result.get("deleted_data", {}).get("sightings", 0),
+                "comments_deleted": deletion_result.get("deleted_data", {}).get("comments", 0),
+                "files_deleted": deletion_result.get("deleted_data", {}).get("media_files", 0),
+                "storage_freed_mb": 0,  # TODO: Calculate from media files if available
+                "deleted_records": {
+                    "sightings": deletion_result.get("deleted_data", {}).get("sightings", 0),
+                    "comments": deletion_result.get("deleted_data", {}).get("comments", 0),
+                    "devices": deletion_result.get("deleted_data", {}).get("devices", 0),
+                    "follows": deletion_result.get("deleted_data", {}).get("follows", 0),
+                    "alerts": deletion_result.get("deleted_data", {}).get("alerts", 0),
+                    "magic_links": deletion_result.get("deleted_data", {}).get("magic_links", 0),
+                    "marketing_records": deletion_result.get("deleted_data", {}).get("marketing_records", 0),
+                    "analytics_events": deletion_result.get("deleted_data", {}).get("analytics_events", 0),
+                    "media_files": deletion_result.get("deleted_data", {}).get("media_files", 0)
                 }
             }
+        }
+
+        # Log comprehensive deletion details
+        total_records = sum(admin_result["details"]["deleted_records"].values())
+        logger.info(f"Admin: Comprehensive GDPR deletion for user {username} ({user_id}) - "
+                   f"{admin_result['details']['sightings_deleted']} sightings, "
+                   f"{admin_result['details']['comments_deleted']} comments, "
+                   f"{admin_result['details']['files_deleted']} media files, "
+                   f"{total_records} total records deleted")
+
+        return admin_result
+
+    except Exception as e:
+        logger.error(f"Error in comprehensive GDPR deletion for user {username}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to delete user account comprehensively: {str(e)}")
 
 @router.get("/{user_id}/export")
 async def export_user_data(
     user_id: str,
-    pool: asyncpg.Pool = Depends(get_db),
+    db: Session = Depends(get_db),
     format: str = Query("json", description="Export format: json or csv")
 ):
-    """Export all user data for GDPR compliance"""
+    """Export all user data for GDPR compliance - Uses comprehensive GDPR API"""
 
-    async with pool.acquire() as conn:
-        # Get user details
-        user = await conn.fetchrow("""
-            SELECT * FROM users WHERE id = $1
-        """, user_id)
+    # Get user to verify they exist
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
 
-        if not user:
-            raise HTTPException(status_code=404, detail="User not found")
+    try:
+        # Import and use the comprehensive export function
+        from app.routers.user_data import export_user_data as gdpr_export
 
-        # Get user's sightings
-        sightings = await conn.fetch("""
-            SELECT * FROM sightings WHERE reporter_id = $1
-        """, user_id)
-
-        # Get user's comments
-        comments = await conn.fetch("""
-            SELECT c.*, s.title as sighting_title
-            FROM comments c
-            LEFT JOIN sightings s ON c.sighting_id = s.id
-            WHERE c.user_id = $1
-        """, user_id)
-
-        # Get user's follows
-        follows = await conn.fetch("""
-            SELECT f.*, s.title as sighting_title
-            FROM follows f
-            LEFT JOIN sightings s ON f.sighting_id = s.id
-            WHERE f.user_id = $1
-        """, user_id)
-
-        # Prepare export data
-        export_data = {
-            "user_profile": dict(user) if user else {},
-            "sightings": [dict(s) for s in sightings],
-            "comments": [dict(c) for c in comments],
-            "follows": [dict(f) for f in follows],
-            "export_timestamp": datetime.now().isoformat(),
-            "total_records": {
-                "sightings": len(sightings),
-                "comments": len(comments),
-                "follows": len(follows)
-            }
-        }
+        # Call the comprehensive export function directly
+        export_data = await gdpr_export(current_user=user, db=db)
 
         if format == "csv":
             import csv
             import io
 
-            # Create CSV with multiple sheets for different data types
+            # Create comprehensive CSV export
             output = io.StringIO()
-
-            # User profile
             writer = csv.writer(output)
-            writer.writerow(["=== USER PROFILE ==="])
-            if user:
-                for key, value in user.items():
-                    writer.writerow([key, str(value) if value is not None else ""])
+
+            # Export metadata
+            writer.writerow(["=== EXPORT METADATA ==="])
+            for key, value in export_data["export_metadata"].items():
+                writer.writerow([key, str(value)])
 
             writer.writerow([])
-            writer.writerow(["=== SIGHTINGS ==="])
-            if sightings:
-                # Headers
-                headers = list(sightings[0].keys()) if sightings else []
+            writer.writerow(["=== USER PROFILE ==="])
+            for key, value in export_data["user_profile"].items():
+                writer.writerow([key, str(value) if value is not None else ""])
+
+            writer.writerow([])
+            writer.writerow(["=== USER SETTINGS ==="])
+            for key, value in export_data["user_settings"].items():
+                writer.writerow([key, str(value) if value is not None else ""])
+
+            writer.writerow([])
+            writer.writerow(["=== DEVICE DATA ==="])
+            for key, value in export_data["device_data"].items():
+                writer.writerow([key, str(value) if value is not None else ""])
+
+            writer.writerow([])
+            writer.writerow(["=== BEEPS/SIGHTINGS ==="])
+            if export_data["beeps"]:
+                headers = list(export_data["beeps"][0].keys())
                 writer.writerow(headers)
-                # Data
-                for sighting in sightings:
-                    writer.writerow([str(sighting[h]) if sighting[h] is not None else "" for h in headers])
+                for beep in export_data["beeps"]:
+                    writer.writerow([str(beep[h]) if beep[h] is not None else "" for h in headers])
 
             writer.writerow([])
             writer.writerow(["=== COMMENTS ==="])
-            if comments:
-                headers = list(comments[0].keys()) if comments else []
+            if export_data["comments"]:
+                headers = list(export_data["comments"][0].keys())
                 writer.writerow(headers)
-                for comment in comments:
+                for comment in export_data["comments"]:
                     writer.writerow([str(comment[h]) if comment[h] is not None else "" for h in headers])
+
+            writer.writerow([])
+            writer.writerow(["=== FOLLOWS ==="])
+            if export_data["follows"]:
+                headers = list(export_data["follows"][0].keys())
+                writer.writerow(headers)
+                for follow in export_data["follows"]:
+                    writer.writerow([str(follow[h]) if follow[h] is not None else "" for h in headers])
+
+            writer.writerow([])
+            writer.writerow(["=== DEVICES ==="])
+            if export_data["devices"]:
+                headers = list(export_data["devices"][0].keys())
+                writer.writerow(headers)
+                for device in export_data["devices"]:
+                    writer.writerow([str(device[h]) if device[h] is not None else "" for h in headers])
+
+            writer.writerow([])
+            writer.writerow(["=== MEDIA FILES ==="])
+            if export_data["media_files"]:
+                headers = list(export_data["media_files"][0].keys())
+                writer.writerow(headers)
+                for media in export_data["media_files"]:
+                    writer.writerow([str(media[h]) if media[h] is not None else "" for h in headers])
+
+            writer.writerow([])
+            writer.writerow(["=== AUTHENTICATION HISTORY ==="])
+            if export_data["authentication_history"]:
+                headers = list(export_data["authentication_history"][0].keys())
+                writer.writerow(headers)
+                for auth in export_data["authentication_history"]:
+                    writer.writerow([str(auth[h]) if auth[h] is not None else "" for h in headers])
+
+            writer.writerow([])
+            writer.writerow(["=== ALERTS ==="])
+            if export_data["alerts"]:
+                headers = list(export_data["alerts"][0].keys())
+                writer.writerow(headers)
+                for alert in export_data["alerts"]:
+                    writer.writerow([str(alert[h]) if alert[h] is not None else "" for h in headers])
+
+            writer.writerow([])
+            writer.writerow(["=== ANALYTICS ==="])
+            if export_data["analytics"]:
+                headers = list(export_data["analytics"][0].keys())
+                writer.writerow(headers)
+                for event in export_data["analytics"]:
+                    writer.writerow([str(event[h]) if event[h] is not None else "" for h in headers])
+
+            writer.writerow([])
+            writer.writerow(["=== EMAIL MARKETING ==="])
+            if export_data["email_marketing"]:
+                headers = list(export_data["email_marketing"][0].keys())
+                writer.writerow(headers)
+                for marketing in export_data["email_marketing"]:
+                    writer.writerow([str(marketing[h]) if marketing[h] is not None else "" for h in headers])
 
             csv_data = output.getvalue()
             output.close()
 
-            logger.info(f"Admin: Exported user data for {user['username']} as CSV")
+            logger.info(f"Admin: Comprehensive GDPR export for {user.username} as CSV - {export_data['export_metadata']['total_beeps']} beeps, {export_data['export_metadata']['total_comments']} comments")
 
             from fastapi.responses import Response
             return Response(
                 content=csv_data,
                 media_type="text/csv",
-                headers={"Content-Disposition": f"attachment; filename=user_data_{user['username']}_{datetime.now().strftime('%Y%m%d')}.csv"}
+                headers={"Content-Disposition": f"attachment; filename=comprehensive_user_data_{user.username}_{datetime.now().strftime('%Y%m%d')}.csv"}
             )
 
         else:  # JSON format
-            logger.info(f"Admin: Exported user data for {user['username']} as JSON")
+            logger.info(f"Admin: Comprehensive GDPR export for {user.username} as JSON - {export_data['export_metadata']['total_beeps']} beeps, {export_data['export_metadata']['total_comments']} comments")
             return export_data
+
+    except Exception as e:
+        logger.error(f"Error in comprehensive GDPR export for user {user.username}: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to export comprehensive user data: {str(e)}")

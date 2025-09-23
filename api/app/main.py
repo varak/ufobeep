@@ -540,6 +540,148 @@ async def admin_users_list(request: Request, search: str = "", limit: int = 50):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/admin/users/{user_id}/export")
+async def admin_export_user_data(user_id: str, request: Request, format: str = "json"):
+    """Admin endpoint: Export comprehensive user data for GDPR testing"""
+    admin_key = request.headers.get("X-Admin-Key")
+    if admin_key != "ufobeep_admin_2025":
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    try:
+        # Get database session for SQLAlchemy models
+        from app.database import SessionLocal
+        from app.models import User
+        from app.routers.user_data import export_user_data as gdpr_export
+
+        db = SessionLocal()
+        try:
+            # Get user to verify they exist
+            user = db.query(User).filter(User.id == user_id).first()
+            if not user:
+                raise HTTPException(status_code=404, detail="User not found")
+
+            # Call the comprehensive export function directly
+            export_data = await gdpr_export(current_user=user, db=db)
+
+            # Add admin metadata
+            export_data["admin_export"] = {
+                "exported_by": "admin",
+                "export_type": "comprehensive_gdpr",
+                "admin_timestamp": datetime.now().isoformat()
+            }
+
+            if format == "csv":
+                import csv
+                import io
+                from fastapi.responses import Response
+
+                # Create comprehensive CSV export
+                output = io.StringIO()
+                writer = csv.writer(output)
+
+                # Export metadata
+                writer.writerow(["=== EXPORT METADATA ==="])
+                for key, value in export_data["export_metadata"].items():
+                    writer.writerow([key, str(value)])
+
+                writer.writerow([])
+                writer.writerow(["=== USER PROFILE ==="])
+                for key, value in export_data["user_profile"].items():
+                    writer.writerow([key, str(value) if value is not None else ""])
+
+                writer.writerow([])
+                writer.writerow(["=== BEEPS/SIGHTINGS ==="])
+                if export_data["beeps"]:
+                    headers = list(export_data["beeps"][0].keys())
+                    writer.writerow(headers)
+                    for beep in export_data["beeps"]:
+                        writer.writerow([str(beep[h]) if beep[h] is not None else "" for h in headers])
+
+                writer.writerow([])
+                writer.writerow(["=== COMMENTS ==="])
+                if export_data["comments"]:
+                    headers = list(export_data["comments"][0].keys())
+                    writer.writerow(headers)
+                    for comment in export_data["comments"]:
+                        writer.writerow([str(comment[h]) if comment[h] is not None else "" for h in headers])
+
+                # Add other sections as needed...
+
+                csv_data = output.getvalue()
+                output.close()
+
+                return Response(
+                    content=csv_data,
+                    media_type="text/csv",
+                    headers={"Content-Disposition": f"attachment; filename=comprehensive_user_data_{user.username}_{datetime.now().strftime('%Y%m%d')}.csv"}
+                )
+
+            return export_data
+
+        finally:
+            db.close()
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to export user data: {str(e)}")
+
+@app.delete("/api/admin/users/{user_id}")
+async def admin_delete_user_account(user_id: str, request: Request):
+    """Admin endpoint: Comprehensive user account deletion for GDPR testing"""
+    admin_key = request.headers.get("X-Admin-Key")
+    if admin_key != "ufobeep_admin_2025":
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    try:
+        # Get database session for SQLAlchemy models
+        from app.database import SessionLocal
+        from app.models import User
+        from app.routers.user_data import delete_user_account as gdpr_delete
+
+        db = SessionLocal()
+        try:
+            # Get user to verify they exist and get username
+            user = db.query(User).filter(User.id == user_id).first()
+            if not user:
+                raise HTTPException(status_code=404, detail="User not found")
+
+            username = user.username
+
+            # Call the comprehensive deletion function directly
+            deletion_result = await gdpr_delete(current_user=user, db=db)
+
+            # Transform the GDPR deletion result to match admin interface expectations
+            admin_result = {
+                "success": deletion_result.get("success", True),
+                "message": f"User {username} deleted successfully with comprehensive GDPR cleanup",
+                "details": {
+                    "user_id": user_id,
+                    "username": username,
+                    "sightings_deleted": deletion_result.get("deleted_data", {}).get("sightings", 0),
+                    "comments_deleted": deletion_result.get("deleted_data", {}).get("comments", 0),
+                    "files_deleted": deletion_result.get("deleted_data", {}).get("media_files", 0),
+                    "storage_freed_mb": 0,  # TODO: Calculate from media files if available
+                    "deleted_records": {
+                        "sightings": deletion_result.get("deleted_data", {}).get("sightings", 0),
+                        "comments": deletion_result.get("deleted_data", {}).get("comments", 0),
+                        "devices": deletion_result.get("deleted_data", {}).get("devices", 0),
+                        "follows": deletion_result.get("deleted_data", {}).get("follows", 0),
+                        "alerts": deletion_result.get("deleted_data", {}).get("alerts", 0),
+                        "magic_links": deletion_result.get("deleted_data", {}).get("magic_links", 0),
+                        "marketing_records": deletion_result.get("deleted_data", {}).get("marketing_records", 0),
+                        "analytics_events": deletion_result.get("deleted_data", {}).get("analytics_events", 0),
+                        "media_files": deletion_result.get("deleted_data", {}).get("media_files", 0)
+                    }
+                }
+            }
+
+            return admin_result
+
+        finally:
+            db.close()
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete user account: {str(e)}")
+
 # Clean unified alerts architecture using alerts.router
 
 # Duplicate alert endpoints removed - now handled by alerts.router
