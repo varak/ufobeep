@@ -91,13 +91,7 @@ export default function AdminUsersPage() {
   }
 
   const deleteUser = async (userId: string, username: string) => {
-    if (!confirm(`⚠️ COMPREHENSIVE DELETE WARNING ⚠️\n\nThis will permanently delete user "${username}" and ALL associated data:\n\n✅ User profile and account\n✅ All uploaded beeps/sightings\n✅ All media files and photos\n✅ All comments made by user\n✅ All follows and notifications\n\nThis action CANNOT be undone and will free up storage space.\n\nType "${username}" to confirm deletion:`)) {
-      return
-    }
-
-    const confirmation = prompt(`Type "${username}" to confirm permanent deletion:`)
-    if (confirmation !== username) {
-      alert('Deletion cancelled - username did not match')
+    if (!confirm(`⚠️ COMPREHENSIVE DELETE WARNING ⚠️\n\nThis will permanently delete user "${username}" and ALL associated data:\n\n✅ User profile and account\n✅ All uploaded beeps/sightings\n✅ All media files and photos\n✅ All comments made by user\n✅ All follows and notifications\n\nThis action CANNOT be undone and will free up storage space.\n\nClick OK to confirm deletion.`)) {
       return
     }
 
