@@ -21,6 +21,7 @@ import '../screens/profile/user_registration_screen.dart';
 import '../screens/profile/language_settings_screen.dart';
 import '../screens/profile/location_tracking_screen.dart';
 import '../screens/profile/data_management_screen.dart';
+import '../screens/onboarding/onboarding_screen.dart';
 import '../screens/auth/account_recovery_screen.dart';
 import '../screens/auth/phone_setup_screen.dart';
 import '../screens/auth/firebase_phone_auth_screen.dart';
@@ -182,6 +183,13 @@ GoRouter appRouter(AppRouterRef ref) {
         path: '/splash',
         name: 'splash',
         builder: (context, state) => const SplashScreen(),
+      ),
+
+      // Onboarding flow
+      GoRoute(
+        path: '/onboarding',
+        name: 'onboarding',
+        builder: (context, state) => const OnboardingScreen(),
       ),
 
       // Sign In Screen (for unauthenticated users)

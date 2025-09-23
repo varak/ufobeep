@@ -11,6 +11,7 @@ import '../../services/auth_service.dart';
 import '../../services/auth_repository.dart';
 import '../../widgets/splash/loading_animation.dart';
 import '../../l10n/app_localizations.dart';
+import '../onboarding/onboarding_screen.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
@@ -79,9 +80,18 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
 
   Future<void> _navigateBasedOnAuthState() async {
     if (!mounted) return;
-    
-    debugPrint('SPLASH DEBUG: Starting auth-based navigation');
-    
+
+    debugPrint('SPLASH DEBUG: Starting navigation flow');
+
+    // Check if onboarding is needed first
+    final onboardingCompleted = await OnboardingService.isOnboardingCompleted();
+    if (!onboardingCompleted) {
+      debugPrint('SPLASH DEBUG: Onboarding needed, navigating to onboarding');
+      context.go('/onboarding');
+      return;
+    }
+
+    debugPrint('SPLASH DEBUG: Onboarding complete, checking auth state');
     final authRepo = AuthRepository();
     
     // Wait for AuthRepository to be ready with timeout protection
