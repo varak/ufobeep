@@ -768,15 +768,37 @@ async def admin_delete_user_account(user_id: str, request: Request):
                 sightings_deleted = await conn.execute("DELETE FROM sightings WHERE reporter_id = $1", user_id)
                 final_sightings_count = int(sightings_deleted.split()[-1]) if sightings_deleted.split()[-1].isdigit() else 0
 
-                # STEP 6: Delete user's devices
-                devices_deleted = await conn.execute("DELETE FROM user_devices WHERE user_id = $1", user_id)
-                devices_count = int(devices_deleted.split()[-1]) if devices_deleted.split()[-1].isdigit() else 0
+                # STEP 6: Delete user's devices (try both table names)
+                devices_count = 0
+                try:
+                    # Try user_devices table first
+                    devices_deleted = await conn.execute("DELETE FROM user_devices WHERE user_id = $1", user_id)
+                    devices_count = int(devices_deleted.split()[-1]) if devices_deleted.split()[-1].isdigit() else 0
+                except:
+                    # Fallback to devices table if user_devices doesn't exist
+                    try:
+                        devices_deleted = await conn.execute("DELETE FROM devices WHERE user_id = $1", user_id)
+                        devices_count = int(devices_deleted.split()[-1]) if devices_deleted.split()[-1].isdigit() else 0
+                    except:
+                        pass  # No devices table either
 
                 # STEP 7: Delete user's follows
                 user_follows_deleted = await conn.execute("DELETE FROM follows WHERE user_id = $1", user_id)
                 user_follows_count = int(user_follows_deleted.split()[-1]) if user_follows_deleted.split()[-1].isdigit() else 0
 
-                # STEP 8: Finally delete the user
+                # STEP 8: Delete email marketing records
+                email_marketing_deleted = await conn.execute("DELETE FROM email_marketing WHERE user_id = $1", user_id)
+                email_marketing_count = int(email_marketing_deleted.split()[-1]) if email_marketing_deleted.split()[-1].isdigit() else 0
+
+                # STEP 9: Delete analytics events
+                analytics_deleted = await conn.execute("DELETE FROM analytics_events WHERE user_id = $1", user_id)
+                analytics_count = int(analytics_deleted.split()[-1]) if analytics_deleted.split()[-1].isdigit() else 0
+
+                # STEP 10: Delete any media files uploaded by this user
+                user_media_deleted = await conn.execute("DELETE FROM media_files WHERE uploaded_by_user_id = $1", user_id)
+                user_media_count = int(user_media_deleted.split()[-1]) if user_media_deleted.split()[-1].isdigit() else 0
+
+                # STEP 11: Finally delete the user
                 user_deleted = await conn.execute("DELETE FROM users WHERE id = $1", user_id)
                 user_deletion_success = "DELETE 1" in user_deleted
 
@@ -799,7 +821,9 @@ async def admin_delete_user_account(user_id: str, request: Request):
                             "devices": devices_count,
                             "follows": follows_deleted + user_follows_count,
                             "alerts": alerts_deleted,
-                            "media_files": media_files_deleted
+                            "media_files": media_files_deleted + user_media_count,
+                            "email_marketing": email_marketing_count,
+                            "analytics_events": analytics_count
                         }
                     }
                 }
