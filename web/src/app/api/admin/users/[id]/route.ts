@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
   try {
     const adminKey = request.headers.get('X-Admin-Key')
@@ -15,8 +15,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Admin key required' }, { status: 401 })
     }
 
-    // Await params to get the id
-    const { id } = await params
+    const { id } = params
 
     const backendUrl = `${API_BASE}/api/admin/users/${id}`
 
