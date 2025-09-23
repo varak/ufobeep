@@ -540,6 +540,15 @@ async def admin_users_list(request: Request, search: str = "", limit: int = 50):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/admin/users/{user_id}/export/test")
+async def admin_export_user_data_test(user_id: str, request: Request):
+    """Test endpoint for debugging"""
+    admin_key = request.headers.get("X-Admin-Key")
+    if admin_key != "ufobeep_admin_2025":
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    return {"test": "working", "user_id": user_id, "timestamp": datetime.now().isoformat()}
+
 @app.get("/api/admin/users/{user_id}/export")
 async def admin_export_user_data(user_id: str, request: Request, format: str = "json"):
     """Admin endpoint: Export comprehensive user data for GDPR testing"""
