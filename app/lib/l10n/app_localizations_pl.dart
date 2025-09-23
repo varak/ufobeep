@@ -2105,4 +2105,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get getStarted => 'Zacznij';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

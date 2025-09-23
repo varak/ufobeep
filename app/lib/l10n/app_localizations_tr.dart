@@ -2099,4 +2099,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get getStarted => 'Başlayın';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

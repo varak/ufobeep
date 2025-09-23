@@ -2014,4 +2014,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get getStarted => '开始';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

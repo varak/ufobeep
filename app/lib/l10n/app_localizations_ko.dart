@@ -2027,4 +2027,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get getStarted => '시작하기';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

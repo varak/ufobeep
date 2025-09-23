@@ -2058,4 +2058,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get getStarted => 'להתחיל';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

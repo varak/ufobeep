@@ -2089,4 +2089,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get getStarted => 'Get Started';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

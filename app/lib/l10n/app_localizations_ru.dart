@@ -2121,4 +2121,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get getStarted => 'Начинай';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

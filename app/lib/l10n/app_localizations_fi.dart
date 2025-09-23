@@ -2091,4 +2091,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get getStarted => 'Aloita';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

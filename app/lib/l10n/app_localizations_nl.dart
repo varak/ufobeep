@@ -2100,4 +2100,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get getStarted => 'Starten';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

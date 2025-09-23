@@ -2090,4 +2090,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get getStarted => 'शुरू करना';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

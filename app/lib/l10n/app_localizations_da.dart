@@ -2098,4 +2098,7 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get getStarted => 'Start';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

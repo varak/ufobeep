@@ -2071,4 +2071,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get getStarted => 'ابدأ';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

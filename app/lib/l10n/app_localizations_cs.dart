@@ -2094,4 +2094,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get getStarted => 'Začít';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

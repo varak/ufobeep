@@ -2090,4 +2090,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get getStarted => 'Kom igång';
+
+  @override
+  String get viewOnboardingAgain => 'View Onboarding Again';
 }

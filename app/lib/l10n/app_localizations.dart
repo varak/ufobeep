@@ -3945,25 +3945,25 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingCompassTitle.
   ///
   /// In en, this message translates to:
-  /// **'Find UFOs with Compass'**
+  /// **'See Where They Looked'**
   String get onboardingCompassTitle;
 
   /// No description provided for @onboardingCompassBody.
   ///
   /// In en, this message translates to:
-  /// **'Use AR compass navigation to see exactly where UFOs were spotted. Point your phone and go!'**
+  /// **'Compass shows you the exact direction the witness was looking when they saw the UFO. Point your phone and look!'**
   String get onboardingCompassBody;
 
   /// No description provided for @onboardingCommunityTitle.
   ///
   /// In en, this message translates to:
-  /// **'Join the Community'**
+  /// **'Connect with Skywatchers'**
   String get onboardingCommunityTitle;
 
   /// No description provided for @onboardingCommunityBody.
   ///
   /// In en, this message translates to:
-  /// **'Connect with thousands of skywatchers. Access professional MUFON data and real-time discussions.'**
+  /// **'Read the latest UFO sightings over your morning coffee. Access professional MUFON data and connect with fellow skywatchers.'**
   String get onboardingCommunityBody;
 
   /// No description provided for @skip.
@@ -3977,6 +3977,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get Started'**
   String get getStarted;
+
+  /// No description provided for @viewOnboardingAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'View Onboarding Again'**
+  String get viewOnboardingAgain;
 }
 
 class _AppLocalizationsDelegate
