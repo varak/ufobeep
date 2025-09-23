@@ -876,5 +876,15 @@
   "deletedDataList": "• Ihr Profil und Benutzername\n• Alle Ihre Beeps und Berichte\n• Alle Kommentare\n• Daten zur Geräteregistrierung\n• Standort- und Präferenzdaten",
   "deleteAccountPermanent": "Dauerhaft löschen",
   "accountDeletedSuccessfully": "Konto gelöscht erfolgreich",
-  "accountDeletionFailed": "Nicht zu löschen Konto"
+  "accountDeletionFailed": "Nicht zu löschen Konto",
+  "onboardingWelcomeTitle": "Willkommen bei UFOBeep",
+  "onboardingWelcomeBody": "Erhalten Sie sofort Alarme, wenn UFOs in der Nähe Ihres Standorts entdeckt werden. Verpassen Sie nie wieder einen Blick!",
+  "onboardingReportTitle": "Siehst du was? Bitte!",
+  "onboardingReportBody": "Erfassen Sie Fotos und Videos von UFO-Sichtungen. Teilen Sie sofort mit der globalen Gemeinschaft.",
+  "onboardingCompassTitle": "Finden Sie UFOs mit Kompass",
+  "onboardingCompassBody": "Verwenden Sie AR-Kompass-Navigation, um genau zu sehen, wo UFOs entdeckt wurden. Zeig dein Handy und geh!",
+  "onboardingCommunityTitle": "Mitglied der Gemeinschaft",
+  "onboardingCommunityBody": "Verbinden Sie mit Tausenden von Skywatchern. Zugriff auf professionelle MUFON-Daten und Echtzeitgespräche.",
+  "skip": "Skip user information",
+  "getStarted": "Erste Schritte"
 }

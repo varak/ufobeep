@@ -1993,4 +1993,38 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'アカウントを削除できない';
+
+  @override
+  String get onboardingWelcomeTitle => 'UFOBeepへようこそ';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'UFO があなたの場所の近くで見つけられたら即刻の警報を得て下さい。 再び目撃を逃さない!';
+
+  @override
+  String get onboardingReportTitle => 'お問い合わせ お問い合わせ!';
+
+  @override
+  String get onboardingReportBody =>
+      'UFOの視線の写真やビデオをキャプチャします。 世界中のコミュニティと即座に共有できます.';
+
+  @override
+  String get onboardingCompassTitle => 'CompassでUFOを見つける';
+
+  @override
+  String get onboardingCompassBody =>
+      'AR のコンパスのナビゲーションを使用して、UFO がスポット化された場所を正確に確認します。 携帯電話をポイントして行く!';
+
+  @override
+  String get onboardingCommunityTitle => 'コミュニティに参加する';
+
+  @override
+  String get onboardingCommunityBody =>
+      '何千人ものスカイウォッチを繋いでいます。 プロフェッショナルなMUFONデータとリアルタイムのディスカッションにアクセス.';
+
+  @override
+  String get skip => 'ツイート';
+
+  @override
+  String get getStarted => '始める';
 }

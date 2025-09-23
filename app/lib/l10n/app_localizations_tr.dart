@@ -2065,4 +2065,38 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Hesabı silmek için başarısız oldu';
+
+  @override
+  String get onboardingWelcomeTitle => 'UFOBeep\'e hoş geldiniz';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'UFO\'ların konumunuzun yakınında görüldüğünde anlık uyarılar alın. Asla tekrar bir görüş kaçırmayın!';
+
+  @override
+  String get onboardingReportTitle => 'Bir şey görün? Beep it!';
+
+  @override
+  String get onboardingReportBody =>
+      'UFO manzaralarının fotoğraflarını ve videolarını yakalayın. Küresel toplulukla anında paylaşın.';
+
+  @override
+  String get onboardingCompassTitle => 'Compass ile UFO\'ları bulun';
+
+  @override
+  String get onboardingCompassBody =>
+      'UFO\'ların tam olarak nerede görüldüğünü görmek için AR compass navigasyonunu kullanın. Telefonunuzu açın ve gidin!';
+
+  @override
+  String get onboardingCommunityTitle => 'Topluluka katılın';
+
+  @override
+  String get onboardingCommunityBody =>
+      'Binlerce gök gözlemcisi ile bağlantı kurun. Profesyonel MUFON verileri ve gerçek zamanlı tartışmalar.';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get getStarted => 'Başlayın';
 }

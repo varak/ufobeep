@@ -2024,4 +2024,38 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'נכשל למחוק את החשבון';
+
+  @override
+  String get onboardingWelcomeTitle => 'ברוכים הבאים ל- UFOBeep';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'קבל התראות מיידיות כאשר עב\"מים נצפו ליד המיקום שלך. לעולם אל תחמיצו שוב מראה!';
+
+  @override
+  String get onboardingReportTitle => 'רואים משהו? היזהרו!';
+
+  @override
+  String get onboardingReportBody =>
+      'לצלם תמונות וסרטונים של מראה עב\"מים. שתפו עם הקהילה העולמית מיד.';
+
+  @override
+  String get onboardingCompassTitle => 'מצא עב\"מים עם Compass';
+
+  @override
+  String get onboardingCompassBody =>
+      'השתמש ב- AR מצפן ניווט כדי לראות בדיוק היכן נמצאו עב\"מים. מצא את הטלפון שלך וללכת!';
+
+  @override
+  String get onboardingCommunityTitle => 'הצטרף לקהילה';
+
+  @override
+  String get onboardingCommunityBody =>
+      'צור קשר עם אלפי צופים. גישה למידע מקצועי MUFON ושיחות בזמן אמת.';
+
+  @override
+  String get skip => 'דלג';
+
+  @override
+  String get getStarted => 'להתחיל';
 }

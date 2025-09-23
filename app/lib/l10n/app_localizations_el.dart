@@ -2089,4 +2089,38 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Αποτυχία διαγραφής λογαριασμού';
+
+  @override
+  String get onboardingWelcomeTitle => 'Καλώς ήρθατε στο UFOBeep';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'Πάρε άμεση ειδοποίηση όταν τα UFO εντοπιστούν κοντά στην τοποθεσία σου. Ποτέ μην χάσετε μια ματιά ξανά!';
+
+  @override
+  String get onboardingReportTitle => 'Βλέπεις κάτι; Χτύπα το!';
+
+  @override
+  String get onboardingReportBody =>
+      'Συλλάβετε φωτογραφίες και βίντεο από UFO θεάσεις. Μοιραστείτε με την παγκόσμια κοινότητα αμέσως.';
+
+  @override
+  String get onboardingCompassTitle => 'Βρείτε ΑΤΙΑ με Πυξίδα';
+
+  @override
+  String get onboardingCompassBody =>
+      'Χρησιμοποιήστε AR πυξίδα πλοήγησης για να δείτε ακριβώς όπου UFOs εντοπίστηκαν. Σημάδεψε το τηλέφωνό σου και φύγε!';
+
+  @override
+  String get onboardingCommunityTitle => 'Συμμετοχή στην Κοινότητα';
+
+  @override
+  String get onboardingCommunityBody =>
+      'Συνδέσου με χιλιάδες παρατηρητές του ουρανού. Πρόσβαση σε επαγγελματικά δεδομένα MUFON και συζητήσεις σε πραγματικό χρόνο.';
+
+  @override
+  String get skip => 'Παράλειψη';
+
+  @override
+  String get getStarted => 'Ξεκινήστε';
 }

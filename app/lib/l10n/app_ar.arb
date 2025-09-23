@@ -876,5 +876,15 @@
   "deletedDataList": "• ملفك الشخصي واسم المستخدم\n• كل الصافرات والتقارير\n• كل تعليقاتك\n● بيانات تسجيل الأجهزة\n● بيانات الموقع والأفضليات",
   "deleteAccountPermanent": "تحذف بصفة دائمة",
   "accountDeletedSuccessfully": "الحساب المحذوف بنجاح",
-  "accountDeletionFailed": "عدم حذف الحساب"
+  "accountDeletionFailed": "عدم حذف الحساب",
+  "onboardingWelcomeTitle": "مرحبا بكم في UFOBeep",
+  "onboardingWelcomeBody": "الحصول على إنذارات فورية عندما يتم رصد طائرات يو إف أوز بالقرب من موقعك. لا تفوتني رؤية ثانية!",
+  "onboardingReportTitle": "أترى شيئاً؟ !",
+  "onboardingReportBody": "التقط صور و أشرطة فيديو لمشاهدات منظمة الطيران المدني شارك مع المجتمع العالمي على الفور.",
+  "onboardingCompassTitle": "اعثروا على مركب",
+  "onboardingCompassBody": "استخدموا الملاحه البوصلة لأرى بالضبط أين تم رصد الأجسام الغريبة اوجه هاتفك واذهب!",
+  "onboardingCommunityTitle": "الانضمام إلى الجماعة",
+  "onboardingCommunityBody": "اتصلي بالآلاف من المشاهدين Access professional MUFON data and real-time discussions.",
+  "skip": "Skip",
+  "getStarted": "ابدأ"
 }

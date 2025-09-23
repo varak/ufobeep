@@ -876,5 +876,15 @@
   "deletedDataList": "• Il tuo profilo e nome utente\n• Tutti i tuoi beep e report\n• Tutti i tuoi commenti\n• Dati di registrazione del dispositivo\n• Dati di localizzazione e preferenza",
   "deleteAccountPermanent": "Eliminare permanentemente",
   "accountDeletedSuccessfully": "Account cancellato con successo",
-  "accountDeletionFailed": "Non riuscita a cancellare l'account"
+  "accountDeletionFailed": "Non riuscita a cancellare l'account",
+  "onboardingWelcomeTitle": "Benvenuti a UFOBeep",
+  "onboardingWelcomeBody": "Ricevi avvisi istantanei quando gli UFO sono avvistati vicino alla tua posizione. Non perdere mai più un avvistamento!",
+  "onboardingReportTitle": "Vedi qualcosa? Beep!",
+  "onboardingReportBody": "Cattura foto e video di avvistamenti UFO. Condividi immediatamente con la comunità globale.",
+  "onboardingCompassTitle": "Trova UFOs con bussola",
+  "onboardingCompassBody": "Utilizzare la navigazione della bussola AR per vedere esattamente dove gli UFO sono stati individuati. Punta il telefono e vai!",
+  "onboardingCommunityTitle": "Unisciti alla Comunità",
+  "onboardingCommunityBody": "Connettiti con migliaia di skywatcher. Accedi ai dati professionali MUFON e alle discussioni in tempo reale.",
+  "skip": "Salta",
+  "getStarted": "Iniziare"
 }

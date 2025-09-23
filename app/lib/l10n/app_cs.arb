@@ -876,5 +876,15 @@
   "deletedDataList": "• Váš profil a uživatelské jméno\n• Všechny vaše pípnutí a zprávy\n• Všechny vaše komentáře\n• Údaje o registraci zařízení\n• Umístění a preference dat",
   "deleteAccountPermanent": "Smazat trvale",
   "accountDeletedSuccessfully": "Účet úspěšně vymazán",
-  "accountDeletionFailed": "Nepodařilo se odstranit účet"
+  "accountDeletionFailed": "Nepodařilo se odstranit účet",
+  "onboardingWelcomeTitle": "Vítejte v UFOBeepu",
+  "onboardingWelcomeBody": "Získejte okamžité upozornění, až budou UFO spatřeny poblíž vaší pozice. Už nikdy nezmeškej pozorování!",
+  "onboardingReportTitle": "Vidíš něco? Píp to!",
+  "onboardingReportBody": "Zachyťte fotografie a videa pozorování UFO. Okamžitě se podělte s globální komunitou.",
+  "onboardingCompassTitle": "Najít UFO s Compass",
+  "onboardingCompassBody": "Použijte navigaci AR kompasu, abyste viděli, kde byly UFO spatřeny. Namiř telefon a jeď!",
+  "onboardingCommunityTitle": "Přidejte se ke Společenství",
+  "onboardingCommunityBody": "Spojte se s tisíci pozorovateli. Přístup k profesionálním údajům MUFON a diskusím v reálném čase.",
+  "skip": "Přeskočit",
+  "getStarted": "Začít"
 }

@@ -876,5 +876,15 @@
   "deletedDataList": "• Seu perfil e nome de usuário\n• Todos os seus beeps e relatórios\n• Todos os seus comentários\n• Dados de registro de dispositivos\n• Dados de localização e de preferência",
   "deleteAccountPermanent": "Apagar Permanentemente",
   "accountDeletedSuccessfully": "Conta apagada com sucesso",
-  "accountDeletionFailed": "Falha ao apagar a conta"
+  "accountDeletionFailed": "Falha ao apagar a conta",
+  "onboardingWelcomeTitle": "Bem-vindo ao OVNIBeep",
+  "onboardingWelcomeBody": "Receba alertas instantâneos quando os OVNIs forem vistos perto da sua localização. Nunca mais percas uma visão!",
+  "onboardingReportTitle": "Vês alguma coisa? Bip!",
+  "onboardingReportBody": "Capture fotos e vídeos de avistamentos de OVNIs. Compartilhe com a comunidade global instantaneamente.",
+  "onboardingCompassTitle": "Encontrar OVNIs com Bússola",
+  "onboardingCompassBody": "Use a navegação da bússola AR para ver exatamente onde os OVNIs foram vistos. Aponta o telefone e vai!",
+  "onboardingCommunityTitle": "Juntar-se à Comunidade",
+  "onboardingCommunityBody": "Conecte-se com milhares de observadores do céu. Acesse dados MUFON profissionais e discussões em tempo real.",
+  "skip": "Pular",
+  "getStarted": "Iniciar"
 }

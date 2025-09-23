@@ -2055,4 +2055,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Failed to delete account';
+
+  @override
+  String get onboardingWelcomeTitle => 'Welcome to UFOBeep';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'Get instant alerts when UFOs are spotted near your location. Never miss a sighting again!';
+
+  @override
+  String get onboardingReportTitle => 'See something? Beep it!';
+
+  @override
+  String get onboardingReportBody =>
+      'Capture photos and videos of UFO sightings. Share with the global community instantly.';
+
+  @override
+  String get onboardingCompassTitle => 'Find UFOs with Compass';
+
+  @override
+  String get onboardingCompassBody =>
+      'Use AR compass navigation to see exactly where UFOs were spotted. Point your phone and go!';
+
+  @override
+  String get onboardingCommunityTitle => 'Join the Community';
+
+  @override
+  String get onboardingCommunityBody =>
+      'Connect with thousands of skywatchers. Access professional MUFON data and real-time discussions.';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get getStarted => 'Get Started';
 }

@@ -2057,4 +2057,38 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Tiliä ei voitu poistaa';
+
+  @override
+  String get onboardingWelcomeTitle => 'Tervetuloa UFO- piippiin';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'Hanki hälytys, kun ufot ovat lähellä sijaintiasi. Älkää jättäkö havaintoa väliin!';
+
+  @override
+  String get onboardingReportTitle => 'Näetkö jotain? Piip!';
+
+  @override
+  String get onboardingReportBody =>
+      'Ota kuvia ja videoita UFO-havaintoja. Jaa maailman yhteisön kanssa välittömästi.';
+
+  @override
+  String get onboardingCompassTitle => 'Etsi ufoja Kompassilla';
+
+  @override
+  String get onboardingCompassBody =>
+      'Käytä AR kompassi navigointi nähdä tarkalleen missä ufot havaittiin. Osoita puhelimeen ja mene!';
+
+  @override
+  String get onboardingCommunityTitle => 'Liittyminen yhteisöön';
+
+  @override
+  String get onboardingCommunityBody =>
+      'Yhdistäkää tuhansiin pilvenpiirtäjiin. Ammatillinen MUFON-data ja reaaliaikaiset keskustelut.';
+
+  @override
+  String get skip => 'Ohita';
+
+  @override
+  String get getStarted => 'Aloita';
 }

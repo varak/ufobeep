@@ -2037,4 +2037,38 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'عدم حذف الحساب';
+
+  @override
+  String get onboardingWelcomeTitle => 'مرحبا بكم في UFOBeep';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'الحصول على إنذارات فورية عندما يتم رصد طائرات يو إف أوز بالقرب من موقعك. لا تفوتني رؤية ثانية!';
+
+  @override
+  String get onboardingReportTitle => 'أترى شيئاً؟ !';
+
+  @override
+  String get onboardingReportBody =>
+      'التقط صور و أشرطة فيديو لمشاهدات منظمة الطيران المدني شارك مع المجتمع العالمي على الفور.';
+
+  @override
+  String get onboardingCompassTitle => 'اعثروا على مركب';
+
+  @override
+  String get onboardingCompassBody =>
+      'استخدموا الملاحه البوصلة لأرى بالضبط أين تم رصد الأجسام الغريبة اوجه هاتفك واذهب!';
+
+  @override
+  String get onboardingCommunityTitle => 'الانضمام إلى الجماعة';
+
+  @override
+  String get onboardingCommunityBody =>
+      'اتصلي بالآلاف من المشاهدين Access professional MUFON data and real-time discussions.';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get getStarted => 'ابدأ';
 }

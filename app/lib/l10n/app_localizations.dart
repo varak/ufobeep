@@ -3917,6 +3917,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to delete account'**
   String get accountDeletionFailed;
+
+  /// No description provided for @onboardingWelcomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to UFOBeep'**
+  String get onboardingWelcomeTitle;
+
+  /// No description provided for @onboardingWelcomeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Get instant alerts when UFOs are spotted near your location. Never miss a sighting again!'**
+  String get onboardingWelcomeBody;
+
+  /// No description provided for @onboardingReportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'See something? Beep it!'**
+  String get onboardingReportTitle;
+
+  /// No description provided for @onboardingReportBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture photos and videos of UFO sightings. Share with the global community instantly.'**
+  String get onboardingReportBody;
+
+  /// No description provided for @onboardingCompassTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Find UFOs with Compass'**
+  String get onboardingCompassTitle;
+
+  /// No description provided for @onboardingCompassBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Use AR compass navigation to see exactly where UFOs were spotted. Point your phone and go!'**
+  String get onboardingCompassBody;
+
+  /// No description provided for @onboardingCommunityTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Join the Community'**
+  String get onboardingCommunityTitle;
+
+  /// No description provided for @onboardingCommunityBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect with thousands of skywatchers. Access professional MUFON data and real-time discussions.'**
+  String get onboardingCommunityBody;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @getStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get getStarted;
 }
 
 class _AppLocalizationsDelegate

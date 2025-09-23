@@ -876,5 +876,15 @@
   "deletedDataList": "• • • Profiliniz ve kullanıcı adı\n• • • Bütün arılarınız ve raporlarınız\n• • • Tüm yorumlarınız\n• Cihaz kayıt verileri\n• Konum ve tercih verileri",
   "deleteAccountPermanent": "Delete Sürekli",
   "accountDeletedSuccessfully": "Hesap silindi başarıyla",
-  "accountDeletionFailed": "Hesabı silmek için başarısız oldu"
+  "accountDeletionFailed": "Hesabı silmek için başarısız oldu",
+  "onboardingWelcomeTitle": "UFOBeep'e hoş geldiniz",
+  "onboardingWelcomeBody": "UFO'ların konumunuzun yakınında görüldüğünde anlık uyarılar alın. Asla tekrar bir görüş kaçırmayın!",
+  "onboardingReportTitle": "Bir şey görün? Beep it!",
+  "onboardingReportBody": "UFO manzaralarının fotoğraflarını ve videolarını yakalayın. Küresel toplulukla anında paylaşın.",
+  "onboardingCompassTitle": "Compass ile UFO'ları bulun",
+  "onboardingCompassBody": "UFO'ların tam olarak nerede görüldüğünü görmek için AR compass navigasyonunu kullanın. Telefonunuzu açın ve gidin!",
+  "onboardingCommunityTitle": "Topluluka katılın",
+  "onboardingCommunityBody": "Binlerce gök gözlemcisi ile bağlantı kurun. Profesyonel MUFON verileri ve gerçek zamanlı tartışmalar.",
+  "skip": "Skip",
+  "getStarted": "Başlayın"
 }

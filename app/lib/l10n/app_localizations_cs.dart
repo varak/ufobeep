@@ -2060,4 +2060,38 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Nepodařilo se odstranit účet';
+
+  @override
+  String get onboardingWelcomeTitle => 'Vítejte v UFOBeepu';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'Získejte okamžité upozornění, až budou UFO spatřeny poblíž vaší pozice. Už nikdy nezmeškej pozorování!';
+
+  @override
+  String get onboardingReportTitle => 'Vidíš něco? Píp to!';
+
+  @override
+  String get onboardingReportBody =>
+      'Zachyťte fotografie a videa pozorování UFO. Okamžitě se podělte s globální komunitou.';
+
+  @override
+  String get onboardingCompassTitle => 'Najít UFO s Compass';
+
+  @override
+  String get onboardingCompassBody =>
+      'Použijte navigaci AR kompasu, abyste viděli, kde byly UFO spatřeny. Namiř telefon a jeď!';
+
+  @override
+  String get onboardingCommunityTitle => 'Přidejte se ke Společenství';
+
+  @override
+  String get onboardingCommunityBody =>
+      'Spojte se s tisíci pozorovateli. Přístup k profesionálním údajům MUFON a diskusím v reálném čase.';
+
+  @override
+  String get skip => 'Přeskočit';
+
+  @override
+  String get getStarted => 'Začít';
 }

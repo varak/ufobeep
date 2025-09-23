@@ -876,5 +876,15 @@
   "deletedDataList": "・ プロフィールとユーザー名\n・ すべてのあなたのビープとレポート\n・ すべてのコメント\n• デバイス登録データ\n•場所と好みのデータ",
   "deleteAccountPermanent": "永久削除",
   "accountDeletedSuccessfully": "正常に削除されたアカウント",
-  "accountDeletionFailed": "アカウントを削除できない"
+  "accountDeletionFailed": "アカウントを削除できない",
+  "onboardingWelcomeTitle": "UFOBeepへようこそ",
+  "onboardingWelcomeBody": "UFO があなたの場所の近くで見つけられたら即刻の警報を得て下さい。 再び目撃を逃さない!",
+  "onboardingReportTitle": "お問い合わせ お問い合わせ!",
+  "onboardingReportBody": "UFOの視線の写真やビデオをキャプチャします。 世界中のコミュニティと即座に共有できます.",
+  "onboardingCompassTitle": "CompassでUFOを見つける",
+  "onboardingCompassBody": "AR のコンパスのナビゲーションを使用して、UFO がスポット化された場所を正確に確認します。 携帯電話をポイントして行く!",
+  "onboardingCommunityTitle": "コミュニティに参加する",
+  "onboardingCommunityBody": "何千人ものスカイウォッチを繋いでいます。 プロフェッショナルなMUFONデータとリアルタイムのディスカッションにアクセス.",
+  "skip": "ツイート",
+  "getStarted": "始める"
 }

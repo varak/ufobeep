@@ -1984,4 +1984,34 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => '删除账户失败';
+
+  @override
+  String get onboardingWelcomeTitle => '欢迎来到UFOBEP';
+
+  @override
+  String get onboardingWelcomeBody => '发现不明飞行物时立即发出警报 永远不要错过一次目击!';
+
+  @override
+  String get onboardingReportTitle => '看到什么了吗? 鸣吧!';
+
+  @override
+  String get onboardingReportBody => '捕捉UFO目击的照片和视频. 立即与全球社会分享.';
+
+  @override
+  String get onboardingCompassTitle => '用 Compass 查找 UFOs';
+
+  @override
+  String get onboardingCompassBody => '使用AR罗盘导航,以精确地查看不明飞行物的发现地点. 瞄准你的电话,走!';
+
+  @override
+  String get onboardingCommunityTitle => '加入共同体';
+
+  @override
+  String get onboardingCommunityBody => '与千方百计的观天者连络. 获取MUFON专业数据和实时讨论.';
+
+  @override
+  String get skip => '跳过';
+
+  @override
+  String get getStarted => '开始';
 }

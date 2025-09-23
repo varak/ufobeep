@@ -876,5 +876,15 @@
   "deletedDataList": "•• Din profil och användarnamn\n•• Alla dina pip och rapporter\n•• Alla dina kommentarer\n• Enhetsregistreringsdata\n• Plats- och preferensdata",
   "deleteAccountPermanent": "Ta bort permanent",
   "accountDeletedSuccessfully": "Kontot raderat framgångsrikt",
-  "accountDeletionFailed": "Underlåten att ta bort konto"
+  "accountDeletionFailed": "Underlåten att ta bort konto",
+  "onboardingWelcomeTitle": "Välkommen till UFOBeep",
+  "onboardingWelcomeBody": "Få omedelbara varningar när UFOs är placerade nära din plats. Missa aldrig en observation igen!",
+  "onboardingReportTitle": "Se något? Beep it!",
+  "onboardingReportBody": "Fånga bilder och videor av UFO-observationer. Dela med det globala samhället omedelbart.",
+  "onboardingCompassTitle": "Hitta UFOs med Compass",
+  "onboardingCompassBody": "Använd AR kompassnavigering för att se exakt var UFO upptäcktes. Peka din telefon och gå!",
+  "onboardingCommunityTitle": "Gå med i gemenskapen",
+  "onboardingCommunityBody": "Anslut med tusentals skywatchers. Få tillgång till professionell MUFON-data och realtidsdiskussioner.",
+  "skip": "Skip",
+  "getStarted": "Kom igång"
 }

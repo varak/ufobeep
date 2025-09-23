@@ -2087,4 +2087,38 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Не удалось удалить аккаунт';
+
+  @override
+  String get onboardingWelcomeTitle => 'Добро пожаловать в UFOBeep';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'Получайте мгновенные оповещения, когда НЛО замечены рядом с вашим местоположением. Никогда больше не пропустите просмотр!';
+
+  @override
+  String get onboardingReportTitle => 'Видишь что-нибудь? Ударь!';
+
+  @override
+  String get onboardingReportBody =>
+      'Фотографии и видео наблюдений НЛО. Немедленно поделитесь с мировым сообществом.';
+
+  @override
+  String get onboardingCompassTitle => 'Найти НЛО с компасом';
+
+  @override
+  String get onboardingCompassBody =>
+      'Используйте навигацию по компасу AR, чтобы точно увидеть, где были обнаружены НЛО. Направь телефон и иди!';
+
+  @override
+  String get onboardingCommunityTitle => 'Присоединяйтесь к сообществу';
+
+  @override
+  String get onboardingCommunityBody =>
+      'Свяжитесь с тысячами наблюдателей. Доступ к профессиональным данным MUFON и обсуждениям в режиме реального времени.';
+
+  @override
+  String get skip => 'Пропустить';
+
+  @override
+  String get getStarted => 'Начинай';
 }

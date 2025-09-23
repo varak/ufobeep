@@ -2074,4 +2074,38 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Non riuscita a cancellare l\'account';
+
+  @override
+  String get onboardingWelcomeTitle => 'Benvenuti a UFOBeep';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'Ricevi avvisi istantanei quando gli UFO sono avvistati vicino alla tua posizione. Non perdere mai più un avvistamento!';
+
+  @override
+  String get onboardingReportTitle => 'Vedi qualcosa? Beep!';
+
+  @override
+  String get onboardingReportBody =>
+      'Cattura foto e video di avvistamenti UFO. Condividi immediatamente con la comunità globale.';
+
+  @override
+  String get onboardingCompassTitle => 'Trova UFOs con bussola';
+
+  @override
+  String get onboardingCompassBody =>
+      'Utilizzare la navigazione della bussola AR per vedere esattamente dove gli UFO sono stati individuati. Punta il telefono e vai!';
+
+  @override
+  String get onboardingCommunityTitle => 'Unisciti alla Comunità';
+
+  @override
+  String get onboardingCommunityBody =>
+      'Connettiti con migliaia di skywatcher. Accedi ai dati professionali MUFON e alle discussioni in tempo reale.';
+
+  @override
+  String get skip => 'Salta';
+
+  @override
+  String get getStarted => 'Iniziare';
 }

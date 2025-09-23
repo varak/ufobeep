@@ -1994,4 +1994,37 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => '계정 삭제';
+
+  @override
+  String get onboardingWelcomeTitle => 'UFOBeep에 오신 것을 환영합니다';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'UFO가 위치 근처에 자리 잡을 때 즉시 알림을 받으십시오. 다시 시야를 놓치지 마세요!';
+
+  @override
+  String get onboardingReportTitle => '뭔가요? 뚱 베어!';
+
+  @override
+  String get onboardingReportBody => 'UFO 광경 사진 및 동영상 캡처. 글로벌 커뮤니티를 즉시 공유합니다.';
+
+  @override
+  String get onboardingCompassTitle => 'Compass로 UFO 찾기';
+
+  @override
+  String get onboardingCompassBody =>
+      'AR compass 내비게이션을 사용하여 UFO가 눈에 띄는지 정확히 볼 수 있습니다. 휴대 전화와 이동!';
+
+  @override
+  String get onboardingCommunityTitle => '커뮤니티';
+
+  @override
+  String get onboardingCommunityBody =>
+      '수천 명의 skywatchers와 연결하십시오. 액세스 전문 MUFON 데이터 및 실시간 토론.';
+
+  @override
+  String get skip => '팟캐스트';
+
+  @override
+  String get getStarted => '시작하기';
 }

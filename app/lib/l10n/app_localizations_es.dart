@@ -2079,4 +2079,38 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'Failed to delete account';
+
+  @override
+  String get onboardingWelcomeTitle => 'Bienvenido a UFOBeep';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'Obtenga alertas instantáneas cuando los OVNIs están localizados cerca de su ubicación. ¡Nunca te pierdas de vista!';
+
+  @override
+  String get onboardingReportTitle => '¿Ves algo? ¡Cógelo!';
+
+  @override
+  String get onboardingReportBody =>
+      'Captura fotos y videos de los avistamientos OVNI. Compartir con la comunidad mundial al instante.';
+
+  @override
+  String get onboardingCompassTitle => 'Encuentra OVNIs con Compass';
+
+  @override
+  String get onboardingCompassBody =>
+      'Utilice la navegación de la brújula AR para ver exactamente dónde se vieron los OVNIs. ¡Apunta tu teléfono y vete!';
+
+  @override
+  String get onboardingCommunityTitle => 'Únase a la Comunidad';
+
+  @override
+  String get onboardingCommunityBody =>
+      'Conéctate con miles de observadores del cielo. Acceso a datos profesionales de MUFON y discusiones en tiempo real.';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get getStarted => 'Empieza';
 }

@@ -876,5 +876,15 @@
   "deletedDataList": "• Uw profiel en gebruikersnaam\n• Al je piepjes en rapporten\n• Al uw opmerkingen\n• Device registratie gegevens\n• Locatie en voorkeursgegevens",
   "deleteAccountPermanent": "Permanent verwijderen",
   "accountDeletedSuccessfully": "Account succesvol verwijderd",
-  "accountDeletionFailed": "Verwijderen van account mislukt"
+  "accountDeletionFailed": "Verwijderen van account mislukt",
+  "onboardingWelcomeTitle": "Welkom bij UFObeep",
+  "onboardingWelcomeBody": "Ontvang onmiddellijke waarschuwingen wanneer UFO's worden gezien in de buurt van uw locatie. Mis nooit meer een waarneming!",
+  "onboardingReportTitle": "Zie je iets? Piep het!",
+  "onboardingReportBody": "Foto's en video's van UFO waarnemingen. Deel direct met de wereldwijde gemeenschap.",
+  "onboardingCompassTitle": "Zoek UFO's met Kompas",
+  "onboardingCompassBody": "Gebruik AR kompasnavigatie om precies te zien waar UFO's werden gezien. Richt je telefoon en ga!",
+  "onboardingCommunityTitle": "Toetreding tot de Gemeenschap",
+  "onboardingCommunityBody": "Maak contact met duizenden skywatchers. Toegang tot professionele MUFON-gegevens en real-time discussies.",
+  "skip": "Overslaan",
+  "getStarted": "Starten"
 }

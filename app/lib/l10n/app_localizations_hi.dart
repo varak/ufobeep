@@ -2056,4 +2056,38 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get accountDeletionFailed => 'खाते को हटाने में विफल';
+
+  @override
+  String get onboardingWelcomeTitle => 'UFOBeep में आपका स्वागत है';
+
+  @override
+  String get onboardingWelcomeBody =>
+      'तत्काल अलर्ट प्राप्त करें जब यूएफओ आपके स्थान के पास स्पॉट हो जाता है। फिर कभी नहीं याद आती!';
+
+  @override
+  String get onboardingReportTitle => 'कुछ देखें? इसे बीप करें!';
+
+  @override
+  String get onboardingReportBody =>
+      'यूएफओ दर्शनों की तस्वीरें और वीडियो कैप्चर करें। तत्काल वैश्विक समुदाय के साथ साझा करें।.';
+
+  @override
+  String get onboardingCompassTitle => 'Compass साथ UFOs खोजें';
+
+  @override
+  String get onboardingCompassBody =>
+      'वास्तव में जहां UFOs देखा गया था देखने के लिए AR कम्पास नेविगेशन का उपयोग करें। अपने फोन को इंगित करें और जाओ!';
+
+  @override
+  String get onboardingCommunityTitle => 'समुदाय में शामिल हों';
+
+  @override
+  String get onboardingCommunityBody =>
+      'हजारों स्काईवॉकर्स से कनेक्ट करें। पेशेवर MUFON डेटा और वास्तविक समय चर्चाओं तक पहुंचें।.';
+
+  @override
+  String get skip => 'लॉग इन';
+
+  @override
+  String get getStarted => 'शुरू करना';
 }

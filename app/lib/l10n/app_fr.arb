@@ -876,5 +876,15 @@
   "deletedDataList": "• Votre profil et votre nom d'utilisateur\n• Tous vos bips et rapports\n• Tous vos commentaires\n• Données d'enregistrement des périphériques\n• Données de localisation et de préférence",
   "deleteAccountPermanent": "Supprimer définitivement",
   "accountDeletedSuccessfully": "Compte supprimé avec succès",
-  "accountDeletionFailed": "Impossible de supprimer le compte"
+  "accountDeletionFailed": "Impossible de supprimer le compte",
+  "onboardingWelcomeTitle": "Bienvenue à UFOBeep",
+  "onboardingWelcomeBody": "Obtenez des alertes instantanées lorsque les ovnis sont repérés près de votre emplacement. Ne ratez plus jamais une observation !",
+  "onboardingReportTitle": "Tu vois quelque chose ? Bipez !",
+  "onboardingReportBody": "Capturer des photos et des vidéos d'OVNI. Partagez instantanément avec la communauté mondiale.",
+  "onboardingCompassTitle": "Trouver des ovnis avec Compass",
+  "onboardingCompassBody": "Utilisez la navigation par compas AR pour voir exactement où les ovnis ont été repérés. Pointez votre téléphone et partez !",
+  "onboardingCommunityTitle": "Rejoignez la Communauté",
+  "onboardingCommunityBody": "Connectez-vous à des milliers d'observateurs. Accédez aux données professionnelles MUFON et aux discussions en temps réel.",
+  "skip": "Sauter",
+  "getStarted": "Commencer"
 }
