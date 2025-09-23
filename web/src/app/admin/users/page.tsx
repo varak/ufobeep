@@ -47,7 +47,7 @@ export default function AdminUsersPage() {
       setLoading(true)
 
       // Load user statistics
-      const statsResponse = await fetch('/api/admin/users/stats', {
+      const statsResponse = await fetch('/admin-api/users/stats', {
         headers: { 'X-Admin-Key': adminKey }
       })
       if (statsResponse.ok) {
@@ -56,7 +56,7 @@ export default function AdminUsersPage() {
       }
 
       // Load users list
-      const usersResponse = await fetch(`/api/admin/users?search=${search}&limit=50`, {
+      const usersResponse = await fetch(`/admin-api/users?search=${search}&limit=50`, {
         headers: { 'X-Admin-Key': adminKey }
       })
       if (usersResponse.ok) {
@@ -73,7 +73,7 @@ export default function AdminUsersPage() {
 
   const exportMarketingEmails = async () => {
     try {
-      const response = await fetch('/api/admin/users/export/marketing-emails?format=csv', {
+      const response = await fetch('/admin-api/users/export/marketing-emails?format=csv', {
         headers: { 'X-Admin-Key': adminKey }
       })
 
@@ -102,7 +102,7 @@ export default function AdminUsersPage() {
     }
 
     try {
-      const response = await fetch(`/api/admin/users/${userId}`, {
+      const response = await fetch(`/admin-api/users/${userId}`, {
         method: 'DELETE',
         headers: { 'X-Admin-Key': adminKey }
       })
@@ -127,7 +127,7 @@ export default function AdminUsersPage() {
   const exportUserData = async (userId: string, username: string, format: string = 'csv') => {
     try {
       // Call via Next.js API route to avoid CORS issues
-      const response = await fetch(`/api/admin/users/${userId}/export?format=${format}`, {
+      const response = await fetch(`/admin-api/users/${userId}/export?format=${format}`, {
         headers: { 'X-Admin-Key': adminKey }
       })
 
