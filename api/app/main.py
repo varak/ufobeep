@@ -7,6 +7,8 @@ from app.middleware.request_middleware import RequestTimeoutMiddleware, ErrorHan
 from app.config.environment import settings
 from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, users, firebase_users, auth_magic, comments, share_cards, media_uploads
 from app.routers import admin_simple as admin
+# TODO: Fix admin_users and user_data routers to use asyncpg pattern
+# from app.routers import admin_users, user_data
 from routers import feeds as feeds_router
 from app.services.media_service import get_media_service
 from app.services.alerts_service import AlertsService
@@ -468,6 +470,75 @@ app.include_router(websockets.router)
 app.include_router(media_uploads.router)
 # Include feeds router for data ingestion
 app.include_router(feeds_router.router)
+
+# Simple admin endpoints for user data viewing
+@app.get("/api/admin/users/stats")
+async def admin_user_stats(request: Request):
+    """Get basic user statistics"""
+    admin_key = request.headers.get("X-Admin-Key")
+    if admin_key != "ufobeep_admin_2025":
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    try:
+        async with database_service.pool.acquire() as conn:
+            total_users = await conn.fetchval("SELECT COUNT(*) FROM users")
+
+            return {
+                "total_users": total_users or 0,
+                "active_users_7d": 0,  # TODO: Implement when we have last_active_at data
+                "active_users_30d": 0,
+                "marketing_consent_count": 0  # TODO: Implement when we capture consent
+            }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/admin/users")
+async def admin_users_list(request: Request, search: str = "", limit: int = 50):
+    """Get users list for admin"""
+    admin_key = request.headers.get("X-Admin-Key")
+    if admin_key != "ufobeep_admin_2025":
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    try:
+        async with database_service.pool.acquire() as conn:
+            if search:
+                users = await conn.fetch("""
+                    SELECT id, username, email, device_model, device_manufacturer,
+                           os_version, app_version, acquisition_source, marketing_consent,
+                           created_at, last_active_at
+                    FROM users
+                    WHERE username ILIKE $1 OR email ILIKE $1
+                    ORDER BY created_at DESC
+                    LIMIT $2
+                """, f"%{search}%", limit)
+            else:
+                users = await conn.fetch("""
+                    SELECT id, username, email, device_model, device_manufacturer,
+                           os_version, app_version, acquisition_source, marketing_consent,
+                           created_at, last_active_at
+                    FROM users
+                    ORDER BY created_at DESC
+                    LIMIT $1
+                """, limit)
+
+            return [
+                {
+                    "id": str(user["id"]),
+                    "username": user["username"],
+                    "email": user["email"],
+                    "device_model": user["device_model"],
+                    "device_manufacturer": user["device_manufacturer"],
+                    "os_version": user["os_version"],
+                    "app_version": user["app_version"],
+                    "acquisition_source": user["acquisition_source"],
+                    "marketing_consent": user["marketing_consent"] or False,
+                    "created_at": user["created_at"].isoformat() if user["created_at"] else None,
+                    "last_active_at": user["last_active_at"].isoformat() if user["last_active_at"] else None
+                }
+                for user in users
+            ]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 # Clean unified alerts architecture using alerts.router
 
