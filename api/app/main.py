@@ -549,12 +549,13 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
 
     try:
         async with database_service.pool.acquire() as conn:
-            # Get user data
+            # Get user data (only columns that exist)
             user_data = await conn.fetchrow("""
-                SELECT id, username, email, device_model, device_manufacturer,
-                       os_version, app_version, acquisition_source, marketing_consent,
-                       created_at, last_active_at, display_name, bio, location,
-                       device_language, timezone, screen_resolution
+                SELECT id, username, email, display_name, bio, location,
+                       created_at, last_login, is_verified, email_verified,
+                       preferred_language, alert_range_km, min_alert_level,
+                       push_notifications, email_notifications, share_location,
+                       public_profile, units_metric, is_active
                 FROM users WHERE id = $1
             """, user_id)
 
@@ -612,18 +613,20 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
                     "bio": user_data["bio"],
                     "location": user_data["location"],
                     "created_at": user_data["created_at"].isoformat() if user_data["created_at"] else None,
-                    "last_active_at": user_data["last_active_at"].isoformat() if user_data["last_active_at"] else None,
-                    "marketing_consent": user_data["marketing_consent"],
-                    "acquisition_source": user_data["acquisition_source"]
+                    "last_login": user_data["last_login"].isoformat() if user_data["last_login"] else None,
+                    "is_verified": user_data["is_verified"],
+                    "email_verified": user_data["email_verified"],
+                    "preferred_language": user_data["preferred_language"],
+                    "is_active": user_data["is_active"]
                 },
-                "device_data": {
-                    "device_model": user_data["device_model"],
-                    "device_manufacturer": user_data["device_manufacturer"],
-                    "os_version": user_data["os_version"],
-                    "app_version": user_data["app_version"],
-                    "device_language": user_data["device_language"],
-                    "timezone": user_data["timezone"],
-                    "screen_resolution": user_data["screen_resolution"]
+                "user_settings": {
+                    "alert_range_km": float(user_data["alert_range_km"]) if user_data["alert_range_km"] else None,
+                    "min_alert_level": user_data["min_alert_level"],
+                    "push_notifications": user_data["push_notifications"],
+                    "email_notifications": user_data["email_notifications"],
+                    "share_location": user_data["share_location"],
+                    "public_profile": user_data["public_profile"],
+                    "units_metric": user_data["units_metric"]
                 },
                 "beeps": [dict(s) for s in sightings],
                 "comments": [dict(c) for c in comments],
@@ -655,8 +658,8 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
                     writer.writerow([key, str(value) if value is not None else ""])
 
                 writer.writerow([])
-                writer.writerow(["=== DEVICE DATA ==="])
-                for key, value in export_data["device_data"].items():
+                writer.writerow(["=== USER SETTINGS ==="])
+                for key, value in export_data["user_settings"].items():
                     writer.writerow([key, str(value) if value is not None else ""])
 
                 writer.writerow([])
