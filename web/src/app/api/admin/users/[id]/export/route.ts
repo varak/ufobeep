@@ -9,17 +9,17 @@ export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const adminKey = request.headers.get('X-Admin-Key')
+  if (!adminKey) {
+    return NextResponse.json({ error: 'Admin key required' }, { status: 401 })
+  }
+
+  const { searchParams } = new URL(request.url)
+  const format = searchParams.get('format') || 'json'
+
+  const backendUrl = `${API_BASE}/api/admin/users/${params.id}/export?format=${format}`
+
   try {
-    const adminKey = request.headers.get('X-Admin-Key')
-    if (!adminKey) {
-      return NextResponse.json({ error: 'Admin key required' }, { status: 401 })
-    }
-
-    const { searchParams } = new URL(request.url)
-    const format = searchParams.get('format') || 'json'
-
-    const backendUrl = `${API_BASE}/api/admin/users/${params.id}/export?format=${format}`
-
     console.log('Admin export - calling backend:', backendUrl)
 
     const response = await fetch(backendUrl, {
@@ -33,7 +33,12 @@ export async function GET(
     if (!response.ok) {
       const errorText = await response.text()
       console.error('Admin export - backend error:', errorText)
-      throw new Error(`Backend responded with ${response.status}: ${errorText}`)
+      return NextResponse.json({
+        error: 'Backend export failed',
+        status: response.status,
+        details: errorText,
+        backend_url: backendUrl
+      }, { status: response.status })
     }
 
     if (format === 'csv') {
@@ -54,7 +59,7 @@ export async function GET(
     return NextResponse.json({
       error: 'Failed to export user data',
       details: error instanceof Error ? error.message : String(error),
-      backend_url: `${API_BASE}/api/admin/users/${params.id}/export`
+      backend_url: backendUrl
     }, { status: 500 })
   }
 }
