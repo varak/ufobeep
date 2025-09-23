@@ -74,7 +74,17 @@ const nextConfig = {
     ];
   },
 
-  // Redirects - removed admin redirect that was conflicting with admin page
+  // Redirects - admin API but preserve admin pages
+  async redirects() {
+    return [
+      // Only redirect /admin without any path to avoid conflicts with /admin/users page
+      {
+        source: '/admin',
+        destination: '/api/admin',
+        permanent: false,
+      },
+    ];
+  },
   
   // Webpack configuration
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
