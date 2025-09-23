@@ -2080,18 +2080,18 @@ class AppLocalizationsDa extends AppLocalizations {
       'Optag billeder og videoer af UFO observationer. Del med det globale samfund med det samme.';
 
   @override
-  String get onboardingCompassTitle => 'Find ufoer med kompas';
+  String get onboardingCompassTitle => 'Se hvor de kiggede';
 
   @override
   String get onboardingCompassBody =>
-      'Brug AR kompas navigation for at se præcis, hvor ufoer blev opdaget. Ret din telefon og gå!';
+      'Kompas viser dig den præcise retning vidnet kiggede, da de så UFO. Ret din telefon og se!';
 
   @override
-  String get onboardingCommunityTitle => 'Fællesskabet';
+  String get onboardingCommunityTitle => 'Forbind med Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Tilslut med tusindvis af skywatchers. Få adgang til professionelle MUFON data og realtid diskussioner.';
+      'Læs de seneste UFO observationer over din morgen kaffe. Få adgang til professionelle MUFON data og oprette forbindelse med andre skywatchers.';
 
   @override
   String get skip => 'Skip';
@@ -2100,5 +2100,5 @@ class AppLocalizationsDa extends AppLocalizations {
   String get getStarted => 'Start';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'Vis Onboarding igen';
 }

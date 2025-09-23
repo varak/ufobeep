@@ -2095,18 +2095,18 @@ class AppLocalizationsEs extends AppLocalizations {
       'Captura fotos y videos de los avistamientos OVNI. Compartir con la comunidad mundial al instante.';
 
   @override
-  String get onboardingCompassTitle => 'Encuentra OVNIs con Compass';
+  String get onboardingCompassTitle => 'A ver dónde miraban';
 
   @override
   String get onboardingCompassBody =>
-      'Utilice la navegación de la brújula AR para ver exactamente dónde se vieron los OVNIs. ¡Apunta tu teléfono y vete!';
+      'Compass le muestra la dirección exacta que el testigo estaba mirando cuando vieron al OVNI. ¡Apunta tu teléfono y mira!';
 
   @override
-  String get onboardingCommunityTitle => 'Únase a la Comunidad';
+  String get onboardingCommunityTitle => 'Conéctese con Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Conéctate con miles de observadores del cielo. Acceso a datos profesionales de MUFON y discusiones en tiempo real.';
+      'Lea los últimos avistamientos de OVNI sobre su café de la mañana. Acceda a datos profesionales de MUFON y conéctese con otros observadores de cielo.';
 
   @override
   String get skip => 'Skip';
@@ -2115,5 +2115,5 @@ class AppLocalizationsEs extends AppLocalizations {
   String get getStarted => 'Empieza';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'Ver A bordo de nuevo';
 }

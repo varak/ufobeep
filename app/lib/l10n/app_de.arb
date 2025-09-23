@@ -881,10 +881,11 @@
   "onboardingWelcomeBody": "Erhalten Sie sofort Alarme, wenn UFOs in der Nähe Ihres Standorts entdeckt werden. Verpassen Sie nie wieder einen Blick!",
   "onboardingReportTitle": "Siehst du was? Bitte!",
   "onboardingReportBody": "Erfassen Sie Fotos und Videos von UFO-Sichtungen. Teilen Sie sofort mit der globalen Gemeinschaft.",
-  "onboardingCompassTitle": "Finden Sie UFOs mit Kompass",
-  "onboardingCompassBody": "Verwenden Sie AR-Kompass-Navigation, um genau zu sehen, wo UFOs entdeckt wurden. Zeig dein Handy und geh!",
-  "onboardingCommunityTitle": "Mitglied der Gemeinschaft",
-  "onboardingCommunityBody": "Verbinden Sie mit Tausenden von Skywatchern. Zugriff auf professionelle MUFON-Daten und Echtzeitgespräche.",
+  "onboardingCompassTitle": "Sehen Sie, wo sie sahen",
+  "onboardingCompassBody": "Compass zeigt Ihnen die genaue Richtung, die der Zeuge sah, als sie die UFO sahen. Zeig dein Handy und schau!",
+  "onboardingCommunityTitle": "Verbindung mit Skywatchern",
+  "onboardingCommunityBody": "Lesen Sie die neuesten UFO Sehenswürdigkeiten über Ihren Morgenkaffee. Zugriff auf professionelle MUFON-Daten und Verbindung mit anderen Skywatchern.",
   "skip": "Skip user information",
-  "getStarted": "Erste Schritte"
+  "getStarted": "Erste Schritte",
+  "viewOnboardingAgain": "Onboarding erneut ansehen"
 }

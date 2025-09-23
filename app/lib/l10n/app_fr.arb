@@ -881,10 +881,11 @@
   "onboardingWelcomeBody": "Obtenez des alertes instantanées lorsque les ovnis sont repérés près de votre emplacement. Ne ratez plus jamais une observation !",
   "onboardingReportTitle": "Tu vois quelque chose ? Bipez !",
   "onboardingReportBody": "Capturer des photos et des vidéos d'OVNI. Partagez instantanément avec la communauté mondiale.",
-  "onboardingCompassTitle": "Trouver des ovnis avec Compass",
-  "onboardingCompassBody": "Utilisez la navigation par compas AR pour voir exactement où les ovnis ont été repérés. Pointez votre téléphone et partez !",
-  "onboardingCommunityTitle": "Rejoignez la Communauté",
-  "onboardingCommunityBody": "Connectez-vous à des milliers d'observateurs. Accédez aux données professionnelles MUFON et aux discussions en temps réel.",
+  "onboardingCompassTitle": "Voir où ils regardaient",
+  "onboardingCompassBody": "Compass vous montre la direction exacte que le témoin regardait quand ils ont vu l'ovni. Pointez votre téléphone et regardez !",
+  "onboardingCommunityTitle": "Connexion avec Skywatchers",
+  "onboardingCommunityBody": "Lisez les dernières observations d'OVNI sur votre café du matin. Accédez aux données MUFON professionnelles et connectez-vous à d'autres skywatchers.",
   "skip": "Sauter",
-  "getStarted": "Commencer"
+  "getStarted": "Commencer",
+  "viewOnboardingAgain": "Afficher à nouveau à bord"
 }

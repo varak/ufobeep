@@ -881,10 +881,11 @@
   "onboardingWelcomeBody": "UFO'ların konumunuzun yakınında görüldüğünde anlık uyarılar alın. Asla tekrar bir görüş kaçırmayın!",
   "onboardingReportTitle": "Bir şey görün? Beep it!",
   "onboardingReportBody": "UFO manzaralarının fotoğraflarını ve videolarını yakalayın. Küresel toplulukla anında paylaşın.",
-  "onboardingCompassTitle": "Compass ile UFO'ları bulun",
-  "onboardingCompassBody": "UFO'ların tam olarak nerede görüldüğünü görmek için AR compass navigasyonunu kullanın. Telefonunuzu açın ve gidin!",
-  "onboardingCommunityTitle": "Topluluka katılın",
-  "onboardingCommunityBody": "Binlerce gök gözlemcisi ile bağlantı kurun. Profesyonel MUFON verileri ve gerçek zamanlı tartışmalar.",
+  "onboardingCompassTitle": "Nerede Baktıklarını Gördüler",
+  "onboardingCompassBody": "Compass, tanıkın UFO'yu gördüklerinde aradığını gösteriyor. Telefonunuzu açın ve görün!",
+  "onboardingCommunityTitle": "Skywatchers ile Bağlan",
+  "onboardingCommunityBody": "Sabah kahveniz üzerinde en son UFO görüşlerini okuyun. Profesyonel MUFON verilerine erişim ve diğer gök gözlemcileriyle bağlantı kurun.",
   "skip": "Skip",
-  "getStarted": "Başlayın"
+  "getStarted": "Başlayın",
+  "viewOnboardingAgain": "View Onboarding Again"
 }

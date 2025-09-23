@@ -2072,18 +2072,18 @@ class AppLocalizationsHi extends AppLocalizations {
       'यूएफओ दर्शनों की तस्वीरें और वीडियो कैप्चर करें। तत्काल वैश्विक समुदाय के साथ साझा करें।.';
 
   @override
-  String get onboardingCompassTitle => 'Compass साथ UFOs खोजें';
+  String get onboardingCompassTitle => 'वे कहाँ दिखते हैं';
 
   @override
   String get onboardingCompassBody =>
-      'वास्तव में जहां UFOs देखा गया था देखने के लिए AR कम्पास नेविगेशन का उपयोग करें। अपने फोन को इंगित करें और जाओ!';
+      'कम्पास आपको सटीक दिशा दिखाता है कि गवाह यूएफओ को देखने पर देख रहे थे। अपने फोन और देखो!';
 
   @override
-  String get onboardingCommunityTitle => 'समुदाय में शामिल हों';
+  String get onboardingCommunityTitle => 'Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'हजारों स्काईवॉकर्स से कनेक्ट करें। पेशेवर MUFON डेटा और वास्तविक समय चर्चाओं तक पहुंचें।.';
+      'अपनी सुबह की कॉफी पर नवीनतम यूएफओ दृश्यों को पढ़ें। पेशेवर MUFON डेटा तक पहुंचें और साथी स्काईवॉशर से जुड़ें।.';
 
   @override
   String get skip => 'लॉग इन';
@@ -2092,5 +2092,5 @@ class AppLocalizationsHi extends AppLocalizations {
   String get getStarted => 'शुरू करना';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'फिर से ऑनबोर्डिंग देखें';
 }

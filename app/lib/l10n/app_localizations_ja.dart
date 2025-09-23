@@ -2009,18 +2009,18 @@ class AppLocalizationsJa extends AppLocalizations {
       'UFOの視線の写真やビデオをキャプチャします。 世界中のコミュニティと即座に共有できます.';
 
   @override
-  String get onboardingCompassTitle => 'CompassでUFOを見つける';
+  String get onboardingCompassTitle => '彼らが探している場所を見る';
 
   @override
   String get onboardingCompassBody =>
-      'AR のコンパスのナビゲーションを使用して、UFO がスポット化された場所を正確に確認します。 携帯電話をポイントして行く!';
+      'Compass は、UFO を見たときに目撃した証人が探していた正確な方向を示します。 電話で見てみる!';
 
   @override
-  String get onboardingCommunityTitle => 'コミュニティに参加する';
+  String get onboardingCommunityTitle => 'Skywatchersとつながる';
 
   @override
   String get onboardingCommunityBody =>
-      '何千人ものスカイウォッチを繋いでいます。 プロフェッショナルなMUFONデータとリアルタイムのディスカッションにアクセス.';
+      '朝のコーヒーを眺めながら最新のUFOを眺めましょう。 プロフェッショナルなMUFONデータにアクセスし、仲間のSkywatchersに接続します.';
 
   @override
   String get skip => 'ツイート';
@@ -2029,5 +2029,5 @@ class AppLocalizationsJa extends AppLocalizations {
   String get getStarted => '始める';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => '再びオンボーディングを見る';
 }

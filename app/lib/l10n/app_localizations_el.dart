@@ -2105,18 +2105,18 @@ class AppLocalizationsEl extends AppLocalizations {
       'Συλλάβετε φωτογραφίες και βίντεο από UFO θεάσεις. Μοιραστείτε με την παγκόσμια κοινότητα αμέσως.';
 
   @override
-  String get onboardingCompassTitle => 'Βρείτε ΑΤΙΑ με Πυξίδα';
+  String get onboardingCompassTitle => 'Βλέπε Πού Κοίταξαν';
 
   @override
   String get onboardingCompassBody =>
-      'Χρησιμοποιήστε AR πυξίδα πλοήγησης για να δείτε ακριβώς όπου UFOs εντοπίστηκαν. Σημάδεψε το τηλέφωνό σου και φύγε!';
+      'Η πυξίδα σας δείχνει την ακριβή κατεύθυνση που έψαχνε ο μάρτυρας όταν είδαν το UFO. Σημάδεψε το τηλέφωνό σου και κοίτα!';
 
   @override
-  String get onboardingCommunityTitle => 'Συμμετοχή στην Κοινότητα';
+  String get onboardingCommunityTitle => 'Σύνδεση με τους Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Συνδέσου με χιλιάδες παρατηρητές του ουρανού. Πρόσβαση σε επαγγελματικά δεδομένα MUFON και συζητήσεις σε πραγματικό χρόνο.';
+      'Διαβάστε τις τελευταίες εμφανίσεις UFO πάνω από τον πρωινό καφέ σας. Πρόσβαση σε επαγγελματικά δεδομένα MUFON και σύνδεση με συναδέλφους παρατηρητές του ουρανού.';
 
   @override
   String get skip => 'Παράλειψη';
@@ -2125,5 +2125,5 @@ class AppLocalizationsEl extends AppLocalizations {
   String get getStarted => 'Ξεκινήστε';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'Προβολή και πάλι επί του σκάφους';
 }

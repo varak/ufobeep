@@ -2090,18 +2090,18 @@ class AppLocalizationsIt extends AppLocalizations {
       'Cattura foto e video di avvistamenti UFO. Condividi immediatamente con la comunità globale.';
 
   @override
-  String get onboardingCompassTitle => 'Trova UFOs con bussola';
+  String get onboardingCompassTitle => 'Vedi dove guardavano';
 
   @override
   String get onboardingCompassBody =>
-      'Utilizzare la navigazione della bussola AR per vedere esattamente dove gli UFO sono stati individuati. Punta il telefono e vai!';
+      'Compasso mostra la direzione esatta che il testimone stava guardando quando hanno visto l\'UFO. Punta il telefono e guarda!';
 
   @override
-  String get onboardingCommunityTitle => 'Unisciti alla Comunità';
+  String get onboardingCommunityTitle => 'Connettiti con Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Connettiti con migliaia di skywatcher. Accedi ai dati professionali MUFON e alle discussioni in tempo reale.';
+      'Leggi gli ultimi avvistamenti UFO sul tuo caffè del mattino. Accedere ai dati MUFON professionali e connettersi con altri skywatcher.';
 
   @override
   String get skip => 'Salta';
@@ -2110,5 +2110,5 @@ class AppLocalizationsIt extends AppLocalizations {
   String get getStarted => 'Iniziare';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'Visualizza di nuovo a bordo';
 }

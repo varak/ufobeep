@@ -2009,18 +2009,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get onboardingReportBody => 'UFO 광경 사진 및 동영상 캡처. 글로벌 커뮤니티를 즉시 공유합니다.';
 
   @override
-  String get onboardingCompassTitle => 'Compass로 UFO 찾기';
+  String get onboardingCompassTitle => '그들이 보는 곳';
 
   @override
   String get onboardingCompassBody =>
-      'AR compass 내비게이션을 사용하여 UFO가 눈에 띄는지 정확히 볼 수 있습니다. 휴대 전화와 이동!';
+      'Compass는 그들이 UFO를 보았을 때 정확한 방향을 보여줍니다. 휴대 전화와 봐!';
 
   @override
-  String get onboardingCommunityTitle => '커뮤니티';
+  String get onboardingCommunityTitle => 'Skywatchers와 연결';
 
   @override
   String get onboardingCommunityBody =>
-      '수천 명의 skywatchers와 연결하십시오. 액세스 전문 MUFON 데이터 및 실시간 토론.';
+      '당신의 아침 커피 위에 최신 UFO 광경을 읽으십시오. 전문 MUFON 데이터를 액세스하고 동료 skywatchers와 연결하십시오.';
 
   @override
   String get skip => '팟캐스트';
@@ -2029,5 +2029,5 @@ class AppLocalizationsKo extends AppLocalizations {
   String get getStarted => '시작하기';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => '다시보기';
 }

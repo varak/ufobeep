@@ -881,10 +881,11 @@
   "onboardingWelcomeBody": "Ontvang onmiddellijke waarschuwingen wanneer UFO's worden gezien in de buurt van uw locatie. Mis nooit meer een waarneming!",
   "onboardingReportTitle": "Zie je iets? Piep het!",
   "onboardingReportBody": "Foto's en video's van UFO waarnemingen. Deel direct met de wereldwijde gemeenschap.",
-  "onboardingCompassTitle": "Zoek UFO's met Kompas",
-  "onboardingCompassBody": "Gebruik AR kompasnavigatie om precies te zien waar UFO's werden gezien. Richt je telefoon en ga!",
-  "onboardingCommunityTitle": "Toetreding tot de Gemeenschap",
-  "onboardingCommunityBody": "Maak contact met duizenden skywatchers. Toegang tot professionele MUFON-gegevens en real-time discussies.",
+  "onboardingCompassTitle": "Kijk waar ze keken",
+  "onboardingCompassBody": "Kompas toont je de exacte richting die de getuige keek toen ze de UFO zagen. Richt je telefoon en kijk!",
+  "onboardingCommunityTitle": "Verbinden met Skywatchers",
+  "onboardingCommunityBody": "Lees de laatste UFO waarnemingen over uw ochtend koffie. Toegang tot professionele MUFON gegevens en verbinding met collega-skywatchers.",
   "skip": "Overslaan",
-  "getStarted": "Starten"
+  "getStarted": "Starten",
+  "viewOnboardingAgain": "Weer aan boord bekijken"
 }

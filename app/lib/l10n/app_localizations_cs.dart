@@ -2076,18 +2076,18 @@ class AppLocalizationsCs extends AppLocalizations {
       'Zachyťte fotografie a videa pozorování UFO. Okamžitě se podělte s globální komunitou.';
 
   @override
-  String get onboardingCompassTitle => 'Najít UFO s Compass';
+  String get onboardingCompassTitle => 'Uvidíme, kde budou hledat';
 
   @override
   String get onboardingCompassBody =>
-      'Použijte navigaci AR kompasu, abyste viděli, kde byly UFO spatřeny. Namiř telefon a jeď!';
+      'Kompas ukazuje přesný směr, kterým se svědek díval, když viděl UFO. Namiř telefon a podívej se!';
 
   @override
-  String get onboardingCommunityTitle => 'Přidejte se ke Společenství';
+  String get onboardingCommunityTitle => 'Spojte se s Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Spojte se s tisíci pozorovateli. Přístup k profesionálním údajům MUFON a diskusím v reálném čase.';
+      'Přečtěte si poslední pozorování UFO nad ranní kávu. Přístup k profesionálním údajům MUFON a spojit se s kolegy skywatchers.';
 
   @override
   String get skip => 'Přeskočit';
@@ -2096,5 +2096,5 @@ class AppLocalizationsCs extends AppLocalizations {
   String get getStarted => 'Začít';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'Zobrazit Znovu na palubě';
 }

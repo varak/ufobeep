@@ -881,10 +881,11 @@
   "onboardingWelcomeBody": "Uzyskaj natychmiastowy alarm, gdy UFO zostaną zauważone w pobliżu twojej lokalizacji. Nigdy więcej nie przegap widoku!",
   "onboardingReportTitle": "Widzisz coś? Pip!",
   "onboardingReportBody": "Uchwycić zdjęcia i filmy z obserwacji UFO. Natychmiast podziel się z globalną społecznością.",
-  "onboardingCompassTitle": "Znajdź UFO z kompasem",
-  "onboardingCompassBody": "Użyj nawigacji kompasu AR, aby zobaczyć dokładnie, gdzie UFO zostały zauważone. Wyceluj w telefon i idź!",
-  "onboardingCommunityTitle": "Dołącz do Wspólnoty",
-  "onboardingCommunityBody": "Połącz się z tysiącami obserwatorów. Dostęp do profesjonalnych danych MUFON i dyskusji w czasie rzeczywistym.",
+  "onboardingCompassTitle": "Zobacz, gdzie patrzyli",
+  "onboardingCompassBody": "Kompas pokazuje dokładny kierunek, w którym patrzył świadek, gdy zobaczył UFO. Wyceluj w telefon i patrz!",
+  "onboardingCommunityTitle": "Połącz się z obserwatorami",
+  "onboardingCommunityBody": "Przeczytaj najnowsze obserwacje UFO nad poranną kawą. Dostęp do profesjonalnych danych MUFON i połączyć się z innymi obserwatorami.",
   "skip": "Pomiń",
-  "getStarted": "Zacznij"
+  "getStarted": "Zacznij",
+  "viewOnboardingAgain": "Zobacz ponownie na pokładzie"
 }

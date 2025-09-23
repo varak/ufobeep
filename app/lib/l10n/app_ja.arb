@@ -881,10 +881,11 @@
   "onboardingWelcomeBody": "UFO があなたの場所の近くで見つけられたら即刻の警報を得て下さい。 再び目撃を逃さない!",
   "onboardingReportTitle": "お問い合わせ お問い合わせ!",
   "onboardingReportBody": "UFOの視線の写真やビデオをキャプチャします。 世界中のコミュニティと即座に共有できます.",
-  "onboardingCompassTitle": "CompassでUFOを見つける",
-  "onboardingCompassBody": "AR のコンパスのナビゲーションを使用して、UFO がスポット化された場所を正確に確認します。 携帯電話をポイントして行く!",
-  "onboardingCommunityTitle": "コミュニティに参加する",
-  "onboardingCommunityBody": "何千人ものスカイウォッチを繋いでいます。 プロフェッショナルなMUFONデータとリアルタイムのディスカッションにアクセス.",
+  "onboardingCompassTitle": "彼らが探している場所を見る",
+  "onboardingCompassBody": "Compass は、UFO を見たときに目撃した証人が探していた正確な方向を示します。 電話で見てみる!",
+  "onboardingCommunityTitle": "Skywatchersとつながる",
+  "onboardingCommunityBody": "朝のコーヒーを眺めながら最新のUFOを眺めましょう。 プロフェッショナルなMUFONデータにアクセスし、仲間のSkywatchersに接続します.",
   "skip": "ツイート",
-  "getStarted": "始める"
+  "getStarted": "始める",
+  "viewOnboardingAgain": "再びオンボーディングを見る"
 }

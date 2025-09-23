@@ -2081,18 +2081,18 @@ class AppLocalizationsTr extends AppLocalizations {
       'UFO manzaralarının fotoğraflarını ve videolarını yakalayın. Küresel toplulukla anında paylaşın.';
 
   @override
-  String get onboardingCompassTitle => 'Compass ile UFO\'ları bulun';
+  String get onboardingCompassTitle => 'Nerede Baktıklarını Gördüler';
 
   @override
   String get onboardingCompassBody =>
-      'UFO\'ların tam olarak nerede görüldüğünü görmek için AR compass navigasyonunu kullanın. Telefonunuzu açın ve gidin!';
+      'Compass, tanıkın UFO\'yu gördüklerinde aradığını gösteriyor. Telefonunuzu açın ve görün!';
 
   @override
-  String get onboardingCommunityTitle => 'Topluluka katılın';
+  String get onboardingCommunityTitle => 'Skywatchers ile Bağlan';
 
   @override
   String get onboardingCommunityBody =>
-      'Binlerce gök gözlemcisi ile bağlantı kurun. Profesyonel MUFON verileri ve gerçek zamanlı tartışmalar.';
+      'Sabah kahveniz üzerinde en son UFO görüşlerini okuyun. Profesyonel MUFON verilerine erişim ve diğer gök gözlemcileriyle bağlantı kurun.';
 
   @override
   String get skip => 'Skip';

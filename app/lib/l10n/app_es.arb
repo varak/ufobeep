@@ -881,10 +881,11 @@
   "onboardingWelcomeBody": "Obtenga alertas instantáneas cuando los OVNIs están localizados cerca de su ubicación. ¡Nunca te pierdas de vista!",
   "onboardingReportTitle": "¿Ves algo? ¡Cógelo!",
   "onboardingReportBody": "Captura fotos y videos de los avistamientos OVNI. Compartir con la comunidad mundial al instante.",
-  "onboardingCompassTitle": "Encuentra OVNIs con Compass",
-  "onboardingCompassBody": "Utilice la navegación de la brújula AR para ver exactamente dónde se vieron los OVNIs. ¡Apunta tu teléfono y vete!",
-  "onboardingCommunityTitle": "Únase a la Comunidad",
-  "onboardingCommunityBody": "Conéctate con miles de observadores del cielo. Acceso a datos profesionales de MUFON y discusiones en tiempo real.",
+  "onboardingCompassTitle": "A ver dónde miraban",
+  "onboardingCompassBody": "Compass le muestra la dirección exacta que el testigo estaba mirando cuando vieron al OVNI. ¡Apunta tu teléfono y mira!",
+  "onboardingCommunityTitle": "Conéctese con Skywatchers",
+  "onboardingCommunityBody": "Lea los últimos avistamientos de OVNI sobre su café de la mañana. Acceda a datos profesionales de MUFON y conéctese con otros observadores de cielo.",
   "skip": "Skip",
-  "getStarted": "Empieza"
+  "getStarted": "Empieza",
+  "viewOnboardingAgain": "Ver A bordo de nuevo"
 }

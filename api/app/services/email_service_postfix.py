@@ -19,9 +19,9 @@ logger = logging.getLogger(__name__)
 class PostfixEmailService:
     """Production email service using properly configured Postfix"""
     
-    def __init__(self, 
+    def __init__(self,
                  smtp_host: str = "localhost",
-                 smtp_port: int = 25,
+                 smtp_port: int = 587,
                  from_email: str = "noreply@ufobeep.com",
                  from_name: str = "UFOBeep"):
         self.smtp_host = smtp_host
@@ -229,7 +229,7 @@ class PostfixEmailService:
             html_part = MIMEText(html_content, 'html')
             msg.attach(html_part)
             
-            # Send via local postfix
+            # Send via local postfix SMTP
             with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
                 server.send_message(msg)
             

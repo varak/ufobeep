@@ -2071,18 +2071,18 @@ class AppLocalizationsNo extends AppLocalizations {
       'Capture photos and videos of UFO sightings. Share with the global community instantly.';
 
   @override
-  String get onboardingCompassTitle => 'Find UFOs with Compass';
+  String get onboardingCompassTitle => 'See Where They Looked';
 
   @override
   String get onboardingCompassBody =>
-      'Use AR compass navigation to see exactly where UFOs were spotted. Point your phone and go!';
+      'Compass shows you the exact direction the witness was looking when they saw the UFO. Point your phone and look!';
 
   @override
-  String get onboardingCommunityTitle => 'Join the Community';
+  String get onboardingCommunityTitle => 'Connect with Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Connect with thousands of skywatchers. Access professional MUFON data and real-time discussions.';
+      'Read the latest UFO sightings over your morning coffee. Access professional MUFON data and connect with fellow skywatchers.';
 
   @override
   String get skip => 'Skip';

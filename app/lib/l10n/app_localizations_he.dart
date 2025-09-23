@@ -2040,18 +2040,18 @@ class AppLocalizationsHe extends AppLocalizations {
       'לצלם תמונות וסרטונים של מראה עב\"מים. שתפו עם הקהילה העולמית מיד.';
 
   @override
-  String get onboardingCompassTitle => 'מצא עב\"מים עם Compass';
+  String get onboardingCompassTitle => 'ראו היכן הם נראים';
 
   @override
   String get onboardingCompassBody =>
-      'השתמש ב- AR מצפן ניווט כדי לראות בדיוק היכן נמצאו עב\"מים. מצא את הטלפון שלך וללכת!';
+      'Compass מראה לך את הכיוון המדויק שהעד חיפש כשראו את העב\"ם. מצא את הטלפון והמראה שלך!';
 
   @override
-  String get onboardingCommunityTitle => 'הצטרף לקהילה';
+  String get onboardingCommunityTitle => 'צור קשר עם Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'צור קשר עם אלפי צופים. גישה למידע מקצועי MUFON ושיחות בזמן אמת.';
+      'קראו את מראה העב\"ם האחרון מעל קפה הבוקר. גישה למידע מקצועי MUFON ולהתחבר עם צופים אחרים.';
 
   @override
   String get skip => 'דלג';
@@ -2060,5 +2060,5 @@ class AppLocalizationsHe extends AppLocalizations {
   String get getStarted => 'להתחיל';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'שוב Onboarding';
 }

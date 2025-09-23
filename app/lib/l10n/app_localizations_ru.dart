@@ -2103,18 +2103,18 @@ class AppLocalizationsRu extends AppLocalizations {
       'Фотографии и видео наблюдений НЛО. Немедленно поделитесь с мировым сообществом.';
 
   @override
-  String get onboardingCompassTitle => 'Найти НЛО с компасом';
+  String get onboardingCompassTitle => 'Посмотрите, где они смотрели';
 
   @override
   String get onboardingCompassBody =>
-      'Используйте навигацию по компасу AR, чтобы точно увидеть, где были обнаружены НЛО. Направь телефон и иди!';
+      'Компас показывает точное направление взгляда свидетеля, когда они видели НЛО. Покажите телефон и посмотрите!';
 
   @override
-  String get onboardingCommunityTitle => 'Присоединяйтесь к сообществу';
+  String get onboardingCommunityTitle => 'Связь с Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Свяжитесь с тысячами наблюдателей. Доступ к профессиональным данным MUFON и обсуждениям в режиме реального времени.';
+      'Читайте последние наблюдения НЛО за утренним кофе. Получите доступ к профессиональным данным MUFON и свяжитесь с другими наблюдателями.';
 
   @override
   String get skip => 'Пропустить';
@@ -2123,5 +2123,5 @@ class AppLocalizationsRu extends AppLocalizations {
   String get getStarted => 'Начинай';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'Смотреть онлайн Onboarding Again';
 }

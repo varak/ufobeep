@@ -2073,18 +2073,18 @@ class AppLocalizationsFi extends AppLocalizations {
       'Ota kuvia ja videoita UFO-havaintoja. Jaa maailman yhteisön kanssa välittömästi.';
 
   @override
-  String get onboardingCompassTitle => 'Etsi ufoja Kompassilla';
+  String get onboardingCompassTitle => 'Katso, mistä he etsivät';
 
   @override
   String get onboardingCompassBody =>
-      'Käytä AR kompassi navigointi nähdä tarkalleen missä ufot havaittiin. Osoita puhelimeen ja mene!';
+      'Kompassi näyttää tarkan suunnan, jota todistaja katsoi nähdessään UFO:n. Osoita puhelimeen ja katso!';
 
   @override
-  String get onboardingCommunityTitle => 'Liittyminen yhteisöön';
+  String get onboardingCommunityTitle => 'Yhdistä Skywatchereihin';
 
   @override
   String get onboardingCommunityBody =>
-      'Yhdistäkää tuhansiin pilvenpiirtäjiin. Ammatillinen MUFON-data ja reaaliaikaiset keskustelut.';
+      'Lue uusimmat UFO-havainnot aamukahvin äärellä. Käytä ammattikäyttöön tarkoitettua MUFON-dataa ja ota yhteys toisiin skywatchereihin.';
 
   @override
   String get skip => 'Ohita';
@@ -2093,5 +2093,5 @@ class AppLocalizationsFi extends AppLocalizations {
   String get getStarted => 'Aloita';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'Näytä uudelleen aluksella';
 }

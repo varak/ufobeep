@@ -881,10 +881,11 @@
   "onboardingWelcomeBody": "Získejte okamžité upozornění, až budou UFO spatřeny poblíž vaší pozice. Už nikdy nezmeškej pozorování!",
   "onboardingReportTitle": "Vidíš něco? Píp to!",
   "onboardingReportBody": "Zachyťte fotografie a videa pozorování UFO. Okamžitě se podělte s globální komunitou.",
-  "onboardingCompassTitle": "Najít UFO s Compass",
-  "onboardingCompassBody": "Použijte navigaci AR kompasu, abyste viděli, kde byly UFO spatřeny. Namiř telefon a jeď!",
-  "onboardingCommunityTitle": "Přidejte se ke Společenství",
-  "onboardingCommunityBody": "Spojte se s tisíci pozorovateli. Přístup k profesionálním údajům MUFON a diskusím v reálném čase.",
+  "onboardingCompassTitle": "Uvidíme, kde budou hledat",
+  "onboardingCompassBody": "Kompas ukazuje přesný směr, kterým se svědek díval, když viděl UFO. Namiř telefon a podívej se!",
+  "onboardingCommunityTitle": "Spojte se s Skywatchers",
+  "onboardingCommunityBody": "Přečtěte si poslední pozorování UFO nad ranní kávu. Přístup k profesionálním údajům MUFON a spojit se s kolegy skywatchers.",
   "skip": "Přeskočit",
-  "getStarted": "Začít"
+  "getStarted": "Začít",
+  "viewOnboardingAgain": "Zobrazit Znovu na palubě"
 }

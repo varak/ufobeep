@@ -2053,18 +2053,18 @@ class AppLocalizationsAr extends AppLocalizations {
       'التقط صور و أشرطة فيديو لمشاهدات منظمة الطيران المدني شارك مع المجتمع العالمي على الفور.';
 
   @override
-  String get onboardingCompassTitle => 'اعثروا على مركب';
+  String get onboardingCompassTitle => 'انظر إلى أين بدوا';
 
   @override
   String get onboardingCompassBody =>
-      'استخدموا الملاحه البوصلة لأرى بالضبط أين تم رصد الأجسام الغريبة اوجه هاتفك واذهب!';
+      'البوصلة تُظهر لك الإتجاه الذي كان ينظر إليه الشاهد عندما رأوا مكتب الطوارئ صوب هاتفك وانظر!';
 
   @override
-  String get onboardingCommunityTitle => 'الانضمام إلى الجماعة';
+  String get onboardingCommunityTitle => 'الاتصال مع Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'اتصلي بالآلاف من المشاهدين Access professional MUFON data and real-time discussions.';
+      'إقرأ آخر مشاهدات \"يو إف أو\" على قهوتك الصباحية الحصول على البيانات المهنية MUFON والتواصل مع زملاء مراقبة السماء.';
 
   @override
   String get skip => 'Skip';
@@ -2073,5 +2073,5 @@ class AppLocalizationsAr extends AppLocalizations {
   String get getStarted => 'ابدأ';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'مشاهدة على متن الطائرة مرة أخرى';
 }

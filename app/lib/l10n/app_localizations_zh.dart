@@ -1998,16 +1998,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get onboardingReportBody => '捕捉UFO目击的照片和视频. 立即与全球社会分享.';
 
   @override
-  String get onboardingCompassTitle => '用 Compass 查找 UFOs';
+  String get onboardingCompassTitle => '看他们看哪里';
 
   @override
-  String get onboardingCompassBody => '使用AR罗盘导航,以精确地查看不明飞行物的发现地点. 瞄准你的电话,走!';
+  String get onboardingCompassBody => 'Compass告诉你目击证人看到UFO时正在寻找的确切方向. 指着手机看!';
 
   @override
-  String get onboardingCommunityTitle => '加入共同体';
+  String get onboardingCommunityTitle => '连接监视天线';
 
   @override
-  String get onboardingCommunityBody => '与千方百计的观天者连络. 获取MUFON专业数据和实时讨论.';
+  String get onboardingCommunityBody =>
+      '读读早上咖啡上最新的UFO的目击记录 获取专业的MUFON数据,并与同行的天空观测员连接.';
 
   @override
   String get skip => '跳过';
@@ -2016,5 +2017,5 @@ class AppLocalizationsZh extends AppLocalizations {
   String get getStarted => '开始';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => '再次查看登机';
 }

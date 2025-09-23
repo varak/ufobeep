@@ -2082,18 +2082,18 @@ class AppLocalizationsNl extends AppLocalizations {
       'Foto\'s en video\'s van UFO waarnemingen. Deel direct met de wereldwijde gemeenschap.';
 
   @override
-  String get onboardingCompassTitle => 'Zoek UFO\'s met Kompas';
+  String get onboardingCompassTitle => 'Kijk waar ze keken';
 
   @override
   String get onboardingCompassBody =>
-      'Gebruik AR kompasnavigatie om precies te zien waar UFO\'s werden gezien. Richt je telefoon en ga!';
+      'Kompas toont je de exacte richting die de getuige keek toen ze de UFO zagen. Richt je telefoon en kijk!';
 
   @override
-  String get onboardingCommunityTitle => 'Toetreding tot de Gemeenschap';
+  String get onboardingCommunityTitle => 'Verbinden met Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Maak contact met duizenden skywatchers. Toegang tot professionele MUFON-gegevens en real-time discussies.';
+      'Lees de laatste UFO waarnemingen over uw ochtend koffie. Toegang tot professionele MUFON gegevens en verbinding met collega-skywatchers.';
 
   @override
   String get skip => 'Overslaan';
@@ -2102,5 +2102,5 @@ class AppLocalizationsNl extends AppLocalizations {
   String get getStarted => 'Starten';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'Weer aan boord bekijken';
 }
