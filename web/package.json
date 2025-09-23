@@ -23,6 +23,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-i18next": "^15.6.1",
+    "@sentry/nextjs": "^8.40.0",
     "sharp": "^0.33.4",
     "supercluster": "^7.1.5"
   },
