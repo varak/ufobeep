@@ -23,7 +23,7 @@ Get instant alerts when UFOs are spotted near your location. See exactly where t
 
 📍 FIND UFO LOCATIONS
 • Live map shows all UFO sightings
-• Compass points you to exact location
+• Compass shows which direction witnesses were looking
 • See multiple witnesses and confirmations
 
 📱 CAPTURE & SHARE
@@ -32,9 +32,9 @@ Get instant alerts when UFOs are spotted near your location. See exactly where t
 • Join global community discussions
 
 ✅ TRUSTED DATA
-• Thousands of real sightings
+• Real UFO sightings database
 • Professional MUFON case integration
-• Active community verification
+• Growing community of skywatchers
 
 🌍 22 LANGUAGES SUPPORTED
 Automatically detects your phone's language and displays the app in your native language.

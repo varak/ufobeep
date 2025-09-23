@@ -15,6 +15,7 @@ import '../../config/environment.dart';
 import '../../widgets/glass_card.dart';
 import '../../widgets/profile/language_selector.dart';
 import '../admin/admin_screen.dart';
+import '../onboarding/onboarding_screen.dart';
 import '../../l10n/app_localizations.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
@@ -129,7 +130,12 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             
             // Hidden Admin Access (debug builds and beta versions)
             if (kDebugMode || _appVersion.contains('beta')) _buildAdminAccess(),
-            
+
+            // View Onboarding Again Button
+            _buildViewOnboardingButton(),
+
+            const SizedBox(height: 16),
+
             // Logout Button
             _buildLogoutButton(),
           ],
@@ -637,6 +643,35 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         ),
         const SizedBox(height: 24),
       ],
+    );
+  }
+
+  Widget _buildViewOnboardingButton() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: OutlinedButton.icon(
+        onPressed: () async {
+          // Reset onboarding flag and navigate to onboarding
+          await OnboardingService.resetOnboarding();
+          if (mounted) {
+            context.go('/onboarding');
+          }
+        },
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.brandPrimary,
+          side: const BorderSide(color: AppColors.brandPrimary),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        icon: const Icon(Icons.help_outline, size: 20),
+        label: Text(
+          AppLocalizations.of(context)!.viewOnboardingAgain,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+      ),
     );
   }
 
