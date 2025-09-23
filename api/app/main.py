@@ -571,16 +571,18 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
             if not user_data:
                 raise HTTPException(status_code=404, detail="User not found")
 
-            # Get user's sightings
+            # Get user's sightings (only existing columns)
             sightings = await conn.fetch("""
-                SELECT id, title, description, short_url, location, latitude, longitude,
-                       occurred_at, created_at, category, status, source, external_id
+                SELECT id, title, description, category, witness_count, is_public,
+                       tags, media_info, sensor_data, alert_level, status,
+                       created_at, updated_at, enrichment_data, reporter_id,
+                       firebase_uid, source
                 FROM sightings WHERE reporter_id = $1
             """, user_id)
 
             # Get user's comments
             comments = await conn.fetch("""
-                SELECT c.id, c.content, c.created_at, c.sighting_id,
+                SELECT c.id, c.body, c.created_at, c.sighting_id, c.media_url,
                        s.title as sighting_title
                 FROM comments c
                 LEFT JOIN sightings s ON c.sighting_id = s.id
@@ -589,8 +591,10 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
 
             # Get user's devices
             devices = await conn.fetch("""
-                SELECT device_id, platform, push_token, app_version,
-                       created_at, last_active, is_active
+                SELECT device_id, platform, push_token, app_version, os_version,
+                       device_model, manufacturer, push_enabled, is_active,
+                       last_seen, timezone, locale, created_at, updated_at,
+                       lat, lon, alert_range_km
                 FROM devices WHERE user_id = $1
             """, user_id)
 
