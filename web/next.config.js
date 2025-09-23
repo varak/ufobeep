@@ -66,12 +66,6 @@ const nextConfig = {
         destination: '/api/debug/:path*',
       },
 
-      // Admin routes - handle locally in Next.js
-      {
-        source: '/api/admin/:path*',
-        destination: '/api/admin/:path*',
-      },
-
       // All other API routes - proxy to backend
       {
         source: '/api/:path*',
