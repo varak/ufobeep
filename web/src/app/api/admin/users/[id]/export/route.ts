@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const API_BASE = 'http://ufobeep.com:8000'
+const API_BASE = 'http://localhost:8000'
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic'
