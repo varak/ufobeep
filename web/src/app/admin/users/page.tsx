@@ -126,8 +126,8 @@ export default function AdminUsersPage() {
 
   const exportUserData = async (userId: string, username: string, format: string = 'csv') => {
     try {
-      // Call the working backend API directly since frontend route is broken
-      const response = await fetch(`https://ufobeep.com/api/admin/users/${userId}/export?format=${format}`, {
+      // Call the working backend API directly
+      const response = await fetch(`https://ufobeep.com:8000/api/admin/users/${userId}/export?format=${format}`, {
         headers: { 'X-Admin-Key': adminKey }
       })
 
