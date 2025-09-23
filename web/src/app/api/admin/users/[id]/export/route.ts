@@ -20,14 +20,20 @@ export async function GET(
 
     const backendUrl = `${API_BASE}/api/admin/users/${params.id}/export?format=${format}`
 
+    console.log('Admin export - calling backend:', backendUrl)
+
     const response = await fetch(backendUrl, {
       headers: {
         'X-Admin-Key': adminKey,
       },
     })
 
+    console.log('Admin export - backend response:', response.status, response.statusText)
+
     if (!response.ok) {
-      throw new Error(`Backend responded with ${response.status}`)
+      const errorText = await response.text()
+      console.error('Admin export - backend error:', errorText)
+      throw new Error(`Backend responded with ${response.status}: ${errorText}`)
     }
 
     if (format === 'csv') {
@@ -45,6 +51,10 @@ export async function GET(
 
   } catch (error) {
     console.error('Admin export user data API error:', error)
-    return NextResponse.json({ error: 'Failed to export user data' }, { status: 500 })
+    return NextResponse.json({
+      error: 'Failed to export user data',
+      details: error instanceof Error ? error.message : String(error),
+      backend_url: `${API_BASE}/api/admin/users/${params.id}/export`
+    }, { status: 500 })
   }
 }
