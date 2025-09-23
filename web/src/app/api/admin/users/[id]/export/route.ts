@@ -50,8 +50,15 @@ export async function GET(
       return NextResponse.json(data)
     }
 
-  } catch (error) {
-    console.error('Admin export user API error:', error)
-    return NextResponse.json({ error: 'Failed to export user data' }, { status: 500 })
+  } catch (error: any) {
+    console.error('Admin export user API error:', {
+      message: error.message,
+      stack: error.stack,
+      cause: error.cause
+    })
+    return NextResponse.json({
+      error: 'Failed to export user data',
+      details: error.message
+    }, { status: 500 })
   }
 }
