@@ -5,7 +5,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.middleware.request_middleware import RequestTimeoutMiddleware, ErrorHandlingMiddleware
 from app.config.environment import settings
-from app.core.sentry_config import init_sentry
 from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, users, firebase_users, auth_magic, comments, share_cards, media_uploads
 from app.routers import admin_simple as admin
 # TODO: Fix admin_users and user_data routers to use asyncpg pattern
@@ -98,9 +97,6 @@ MEDIA_DIR.mkdir(exist_ok=True)
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    # Initialize Sentry for error tracking
-    init_sentry()
-
     settings.log_configuration()
     
     # CRITICAL: Initialize Firebase EXACTLY ONCE at startup

@@ -30,7 +30,6 @@ import 'services/location_update_manager.dart';
 import 'services/location_tracking_service.dart';
 import 'services/sensor_service.dart';
 import 'services/deep_link_service.dart';
-import 'services/sentry_service.dart';
 import 'features/auth/deep_link_handler.dart';
 
 import 'theme/app_theme.dart';
@@ -38,20 +37,8 @@ import 'theme/app_theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Sentry for crash reporting
-  await SentryService.initialize();
-
   // Add error handling so crashes show instead of white screen
   FlutterError.onError = (details) {
-    // Send to Sentry
-    SentryService.captureException(
-      details.exception,
-      stackTrace: details.stack,
-      extra: {
-        'context': details.context?.toString(),
-        'library': details.library,
-      },
-    );
     FlutterError.presentError(details);
     debugPrint('🚨 FlutterError: ${details.exceptionAsString()}\n${details.stack}');
   };

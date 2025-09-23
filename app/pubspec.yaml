@@ -78,8 +78,6 @@ dependencies:
   firebase_analytics: ^11.3.3
   package_info_plus: ^8.0.3
 
-  # Error Reporting & Crash Analytics
-  sentry_flutter: ^8.10.0
   
   # Social Authentication - MP15
   google_sign_in: ^6.2.1

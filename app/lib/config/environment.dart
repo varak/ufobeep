@@ -135,10 +135,6 @@ class AppEnvironment {
   
   static bool get enableAnalytics => dotenv.env['ENABLE_ANALYTICS']?.toLowerCase() == 'true' && !isDebug;
 
-  // Error Tracking & Monitoring
-  static String? get sentryDsn => dotenv.env['SENTRY_DSN'];
-
-  static bool get enableSentry => sentryDsn != null && sentryDsn!.isNotEmpty && !isDebug;
   
   // Locale Configuration
   static String get defaultLocale => dotenv.env['DEFAULT_LOCALE'] ?? 'en';

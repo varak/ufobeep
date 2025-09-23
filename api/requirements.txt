@@ -27,11 +27,6 @@ aiohttp==3.10.11              # Alternative HTTP client for specific services
 python-dotenv==1.0.1          # Environment variable management
 
 # ============================================================================
-# 📊 MONITORING & ERROR TRACKING
-# ============================================================================
-sentry-sdk[fastapi]==2.19.0       # Error tracking and performance monitoring
-
-# ============================================================================
 # 🔒 SECURITY & AUTHENTICATION
 # ============================================================================
 python-jose[cryptography]==3.3.0  # JWT token handling
