@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UFOBeep Admin Tools - GDPR Compliance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #0f1419;
+            color: #ccd6f6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            background: #1a1f2e;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #2a2f3e;
+        }
+        h1 { color: #00d4ff; margin-bottom: 30px; }
+        h2 { color: #00ff88; margin-top: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; color: #a0a6b8; }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            background: #2a2f3e;
+            border: 1px solid #404550;
+            border-radius: 6px;
+            color: #ccd6f6;
+            font-size: 14px;
+        }
+        button {
+            background: #00ff88;
+            color: #0f1419;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover { background: #00d973; }
+        button.danger { background: #e74c3c; color: white; }
+        button.danger:hover { background: #c0392b; }
+        .result {
+            background: #2a2f3e;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 6px;
+            border-left: 4px solid #00ff88;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .error { border-left-color: #e74c3c; }
+        .auth { background: #333844; padding: 20px; border-radius: 8px; margin-bottom: 30px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛸 UFOBeep Admin Tools - GDPR Compliance</h1>
+
+        <div class="auth">
+            <div class="form-group">
+                <label>Admin Key:</label>
+                <input type="password" id="adminKey" placeholder="Enter admin key" value="">
+            </div>
+            <button onclick="authenticate()">Authenticate</button>
+            <div id="authStatus"></div>
+        </div>
+
+        <div id="adminTools" style="display: none;">
+            <h2>📊 User Data Export (GDPR Compliance)</h2>
+            <div class="form-group">
+                <label>Username or User ID:</label>
+                <input type="text" id="userTarget" placeholder="e.g. vibrant.passage.2705 or UUID">
+            </div>
+            <button onclick="exportUserData('json')">📄 Export JSON</button>
+            <button onclick="exportUserData('csv')">📊 Export CSV</button>
+
+            <h2>🗑️ User Account Deletion (GDPR Compliance)</h2>
+            <div class="form-group">
+                <label>Username to Delete:</label>
+                <input type="text" id="deleteTarget" placeholder="e.g. vibrant.passage.2705">
+            </div>
+            <button class="danger" onclick="deleteUser()">🗑️ Delete Account & All Data</button>
+
+            <div id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        let adminKey = '';
+
+        function authenticate() {
+            adminKey = document.getElementById('adminKey').value;
+            if (adminKey === 'ufobeep_admin_2025') {
+                document.getElementById('authStatus').innerHTML = '<span style="color: #00ff88;">✅ Authenticated</span>';
+                document.getElementById('adminTools').style.display = 'block';
+            } else {
+                document.getElementById('authStatus').innerHTML = '<span style="color: #e74c3c;">❌ Invalid admin key</span>';
+            }
+        }
+
+        async function exportUserData(format) {
+            const target = document.getElementById('userTarget').value;
+            if (!target) {
+                showResult('Please enter a username or user ID', true);
+                return;
+            }
+
+            showResult('Exporting user data...', false);
+
+            try {
+                // Call backend API directly
+                const response = await fetch(`https://ufobeep.com/api/admin/users/${encodeURIComponent(target)}/export?format=${format}`, {
+                    headers: {
+                        'X-Admin-Key': adminKey
+                    }
+                });
+
+                if (response.ok) {
+                    if (format === 'csv') {
+                        const csvData = await response.text();
+                        downloadFile(csvData, `user_export_${target}_${new Date().toISOString().split('T')[0]}.csv`, 'text/csv');
+                        showResult(`✅ CSV export downloaded for user: ${target}`, false);
+                    } else {
+                        const jsonData = await response.json();
+                        downloadFile(JSON.stringify(jsonData, null, 2), `user_export_${target}_${new Date().toISOString().split('T')[0]}.json`, 'application/json');
+                        showResult(`✅ JSON export downloaded for user: ${target}\\n\\nSummary:\\n• ${jsonData.export_metadata.total_beeps} sightings\\n• ${jsonData.export_metadata.total_comments} comments\\n• ${jsonData.export_metadata.total_devices} devices\\n• ${jsonData.export_metadata.total_follows} follows`, false);
+                    }
+                } else {
+                    const errorData = await response.json();
+                    showResult(`❌ Export failed: ${errorData.error}\\nDetails: ${errorData.details || 'Unknown error'}`, true);
+                }
+            } catch (error) {
+                showResult(`❌ Export failed: ${error.message}`, true);
+            }
+        }
+
+        async function deleteUser() {
+            const target = document.getElementById('deleteTarget').value;
+            if (!target) {
+                showResult('Please enter a username to delete', true);
+                return;
+            }
+
+            if (!confirm(`⚠️ PERMANENT DELETION WARNING ⚠️\\n\\nThis will permanently delete user "${target}" and ALL associated data:\\n\\n✅ User profile and account\\n✅ All uploaded beeps/sightings\\n✅ All media files and photos\\n✅ All comments made by user\\n✅ All follows and notifications\\n\\nThis action CANNOT be undone.\\n\\nType "${target}" to confirm:`)) {
+                return;
+            }
+
+            const confirmation = prompt(`Type "${target}" to confirm permanent deletion:`);
+            if (confirmation !== target) {
+                showResult('❌ Deletion cancelled - username did not match', true);
+                return;
+            }
+
+            showResult('Deleting user account comprehensively...', false);
+
+            try {
+                // Call backend API directly
+                const response = await fetch(`https://ufobeep.com/api/admin/users/${encodeURIComponent(target)}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-Admin-Key': adminKey
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showResult(`✅ User ${target} comprehensively deleted!\\n\\nCleaned up:\\n• ${result.details.sightings_deleted} sightings\\n• ${result.details.comments_deleted} comments\\n• ${result.details.files_deleted} files\\n\\nAll data permanently removed for GDPR compliance.`, false);
+                } else {
+                    const errorData = await response.json();
+                    showResult(`❌ Deletion failed: ${errorData.error}\\nDetails: ${errorData.details || 'Unknown error'}`, true);
+                }
+            } catch (error) {
+                showResult(`❌ Deletion failed: ${error.message}`, true);
+            }
+        }
+
+        function downloadFile(content, filename, contentType) {
+            const blob = new Blob([content], { type: contentType });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        function showResult(message, isError) {
+            const results = document.getElementById('results');
+            results.innerHTML = `<div class="result ${isError ? 'error' : ''}">${message}</div>`;
+        }
+    </script>
+</body>
+</html>
