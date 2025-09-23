@@ -110,11 +110,12 @@ export default function AdminUsersPage() {
         }
         loadData() // Reload the list
       } else {
-        alert('Failed to delete user')
+        const errorData = await response.json()
+        alert(`Failed to delete user: ${errorData.details || errorData.error || 'Unknown error'}`)
       }
     } catch (error) {
       console.error('Error deleting user:', error)
-      alert('Error deleting user')
+      alert(`Error deleting user: ${error}`)
     }
   }
 

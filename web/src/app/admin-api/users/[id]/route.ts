@@ -27,14 +27,19 @@ export async function DELETE(
     })
 
     if (!response.ok) {
-      throw new Error(`Backend responded with ${response.status}`)
+      const errorText = await response.text()
+      console.error(`Backend delete error: ${response.status} - ${errorText}`)
+      throw new Error(`Backend responded with ${response.status}: ${errorText}`)
     }
 
     const data = await response.json()
     return NextResponse.json(data)
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Admin delete user API error:', error)
-    return NextResponse.json({ error: 'Failed to delete user' }, { status: 500 })
+    return NextResponse.json({
+      error: 'Failed to delete user',
+      details: error.message
+    }, { status: 500 })
   }
 }
