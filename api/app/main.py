@@ -144,10 +144,23 @@ async def lifespan(app: FastAPI):
                     alert_level TEXT DEFAULT 'low',
                     status TEXT DEFAULT 'created',
                     enrichment_data JSONB,
+                    reporter_id UUID REFERENCES users(id),
                     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
                     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
                 )
             """)
+
+            # Add reporter_id column if it doesn't exist
+            try:
+                await conn.execute("""
+                    ALTER TABLE sightings ADD COLUMN IF NOT EXISTS reporter_id UUID REFERENCES users(id)
+                """)
+                print("✅ Added reporter_id column to sightings table")
+            except Exception as e:
+                if "already exists" in str(e).lower():
+                    print("✅ reporter_id column already exists in sightings table")
+                else:
+                    print(f"Note: reporter_id column setup warning: {e}")
             
 
             await conn.execute("""
@@ -503,21 +516,23 @@ async def admin_users_list(request: Request, search: str = "", limit: int = 50):
         async with database_service.pool.acquire() as conn:
             if search:
                 users = await conn.fetch("""
-                    SELECT id, username, email, device_model, device_manufacturer,
-                           os_version, app_version, acquisition_source, marketing_consent,
-                           created_at, last_active_at
-                    FROM users
-                    WHERE username ILIKE $1 OR email ILIKE $1
-                    ORDER BY created_at DESC
+                    SELECT u.id, u.username, u.email, u.created_at, u.last_login,
+                           d.device_model, d.manufacturer as device_manufacturer,
+                           d.os_version, d.app_version
+                    FROM users u
+                    LEFT JOIN devices d ON u.id = d.user_id
+                    WHERE u.username ILIKE $1 OR u.email ILIKE $1
+                    ORDER BY u.created_at DESC
                     LIMIT $2
                 """, f"%{search}%", limit)
             else:
                 users = await conn.fetch("""
-                    SELECT id, username, email, device_model, device_manufacturer,
-                           os_version, app_version, acquisition_source, marketing_consent,
-                           created_at, last_active_at
-                    FROM users
-                    ORDER BY created_at DESC
+                    SELECT u.id, u.username, u.email, u.created_at, u.last_login,
+                           d.device_model, d.manufacturer as device_manufacturer,
+                           d.os_version, d.app_version
+                    FROM users u
+                    LEFT JOIN devices d ON u.id = d.user_id
+                    ORDER BY u.created_at DESC
                     LIMIT $1
                 """, limit)
 
@@ -530,10 +545,10 @@ async def admin_users_list(request: Request, search: str = "", limit: int = 50):
                     "device_manufacturer": user["device_manufacturer"],
                     "os_version": user["os_version"],
                     "app_version": user["app_version"],
-                    "acquisition_source": user["acquisition_source"],
-                    "marketing_consent": user["marketing_consent"] or False,
+                    "acquisition_source": None,  # Not available in current schema
+                    "marketing_consent": False,  # Not available in current schema
                     "created_at": user["created_at"].isoformat() if user["created_at"] else None,
-                    "last_active_at": user["last_active_at"].isoformat() if user["last_active_at"] else None
+                    "last_active_at": user["last_login"].isoformat() if user["last_login"] else None
                 }
                 for user in users
             ]
@@ -561,7 +576,7 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
             # Get user data (only columns that exist)
             user_data = await conn.fetchrow("""
                 SELECT id, username, email, display_name, bio, location,
-                       created_at, last_login, is_verified, email_verified,
+                       created_at, last_login, is_verified,
                        preferred_language, alert_range_km, min_alert_level,
                        push_notifications, email_notifications, share_location,
                        public_profile, units_metric, is_active
@@ -576,7 +591,7 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
                 SELECT id, title, description, category, witness_count, is_public,
                        tags, media_info, sensor_data, alert_level, status,
                        created_at, updated_at, enrichment_data, reporter_id,
-                       firebase_uid, source
+                       source
                 FROM sightings WHERE reporter_id = $1
             """, user_id)
 
@@ -591,10 +606,9 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
 
             # Get user's devices
             devices = await conn.fetch("""
-                SELECT device_id, platform, push_token, app_version, os_version,
-                       device_model, manufacturer, push_enabled, is_active,
-                       last_seen, timezone, locale, created_at, updated_at,
-                       lat, lon, alert_range_km
+                SELECT device_id, device_name, platform, app_version, os_version,
+                       device_model, manufacturer, push_token, push_enabled,
+                       is_active, last_seen, timezone, locale, created_at, updated_at
                 FROM devices WHERE user_id = $1
             """, user_id)
 
@@ -628,7 +642,6 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
                     "created_at": user_data["created_at"].isoformat() if user_data["created_at"] else None,
                     "last_login": user_data["last_login"].isoformat() if user_data["last_login"] else None,
                     "is_verified": user_data["is_verified"],
-                    "email_verified": user_data["email_verified"],
                     "preferred_language": user_data["preferred_language"],
                     "is_active": user_data["is_active"]
                 },
