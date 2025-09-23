@@ -768,9 +768,16 @@ async def admin_delete_user_account(user_id: str, request: Request):
                 sightings_deleted = await conn.execute("DELETE FROM sightings WHERE reporter_id = $1", user_id)
                 final_sightings_count = int(sightings_deleted.split()[-1]) if sightings_deleted.split()[-1].isdigit() else 0
 
-                # STEP 6: Delete user's devices
-                devices_deleted = await conn.execute("DELETE FROM user_devices WHERE user_id = $1", user_id)
+                # STEP 6: Delete from both device tables
+                # Delete from user_devices table
+                user_devices_deleted = await conn.execute("DELETE FROM user_devices WHERE user_id = $1", user_id)
+                user_devices_count = int(user_devices_deleted.split()[-1]) if user_devices_deleted.split()[-1].isdigit() else 0
+
+                # Delete from devices table
+                devices_deleted = await conn.execute("DELETE FROM devices WHERE user_id = $1", user_id)
                 devices_count = int(devices_deleted.split()[-1]) if devices_deleted.split()[-1].isdigit() else 0
+
+                total_devices_count = user_devices_count + devices_count
 
                 # STEP 7: Delete user's follows
                 user_follows_deleted = await conn.execute("DELETE FROM follows WHERE user_id = $1", user_id)
@@ -808,7 +815,7 @@ async def admin_delete_user_account(user_id: str, request: Request):
                         "deleted_records": {
                             "sightings": final_sightings_count,
                             "comments": comments_count,
-                            "devices": devices_count,
+                            "devices": total_devices_count,
                             "follows": follows_deleted + user_follows_count,
                             "alerts": alerts_deleted,
                             "media_files": media_files_deleted + user_media_count,
