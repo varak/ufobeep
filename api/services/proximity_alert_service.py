@@ -157,8 +157,12 @@ class ProximityAlertService:
                 # Convert to device list with all needed info
                 devices = []
                 for row in rows:
-                    # Get alert range from preferences JSON, fallback to alert_range_km column, then default
-                    preferences = row['preferences'] or {}
+                    # Get alert range from preferences JSON, fallback to alert_range_km column
+                    import json
+                    try:
+                        preferences = json.loads(row['preferences']) if row['preferences'] else {}
+                    except (json.JSONDecodeError, TypeError):
+                        preferences = {}
                     user_alert_range = preferences.get('alertRangeKm', row['alert_range_km'])
 
                     devices.append({
