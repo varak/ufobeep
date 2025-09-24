@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "Kuulutukset",
-  "tabBeep": "Piip",
-  "tabChat": "Keskustelu",
-  "tabMap": "Kartta",
-  "tabSettings": "Asetukset",
-  "mufonDatabaseEntryDate": "Päivämäärä Tietokanta",
-  "databaseEntry": "Tietokannan tietue",
-  "mufonDatabaseReport": "MUFON Tapausnumero:"
+  "tabAlerts": "Alerts",
+  "tabBeep": "Beep",
+  "tabChat": "Chat",
+  "tabMap": "Map",
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry",
+  "mufonDatabaseReport": "MUFON Case Number:"
 }

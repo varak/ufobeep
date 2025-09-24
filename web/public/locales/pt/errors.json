@@ -1,11 +1,12 @@
 {
-  "errorGeneric": "Algo correu mal.",
-  "errorNoLocation": "Localização não disponível. Tente novamente fora com visão clara do céu.",
-  "errorNoCamera": "Câmera indisponível neste dispositivo.",
-  "errorUploadFailed": "O envio falhou. Por favor, tente de novo.",
-  "errorPermissionDenied": "Permissão negada.",
-  "errorInvalidUsername": "Esse nome de usuário não está disponível.",
-  "errorNotFound": "Beep não encontrado",
-  "errorLoadError": "Falha ao carregar os detalhes do bip",
-  "failed": "Falha"
+  "errorGeneric": "Something went wrong.",
+  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
+  "errorNoCamera": "Camera unavailable on this device.",
+  "errorUploadFailed": "Upload failed. Please try again.",
+  "errorPermissionDenied": "Permission denied.",
+  "errorInvalidUsername": "That username isn’t available.",
+  "errorNotFound": "Beep not found",
+  "errorLoadError": "Failed to load beep details",
+  "failed": "Failed",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

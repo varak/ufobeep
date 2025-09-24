@@ -1,6 +1,6 @@
 {
-  "welcomeTitle": "UFOBeepへようこそ",
-  "settings": "コンテンツ",
-  "settingsTitle": "コンテンツ",
-  "pageOf": "ページの {currentPage}_ の {totalPages}_ ({totalCount}_の総ビープ)"
+  "welcomeTitle": "Welcome to UFOBeep",
+  "settings": "Settings",
+  "settingsTitle": "Settings",
+  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)"
 }

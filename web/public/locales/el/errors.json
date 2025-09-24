@@ -1,11 +1,12 @@
 {
-  "errorGeneric": "Κάτι πήγε στραβά.",
-  "errorNoLocation": "Τοποθεσία μη διαθέσιμη. Δοκιμάστε ξανά έξω με καθαρή θέα στον ουρανό.",
-  "errorNoCamera": "Η κάμερα δεν είναι διαθέσιμη σε αυτή τη συσκευή.",
-  "errorUploadFailed": "Η αποστολή απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
-  "errorPermissionDenied": "Η άδεια απορρίπτεται.",
-  "errorInvalidUsername": "Αυτό το όνομα χρήστη δεν είναι διαθέσιμο.",
-  "errorNotFound": "Το σήμα δεν βρέθηκε",
-  "errorLoadError": "Αποτυχία φόρτωσης λεπτομερειών ηχητικού σήματος",
-  "failed": "Αποτυχία"
+  "errorGeneric": "Something went wrong.",
+  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
+  "errorNoCamera": "Camera unavailable on this device.",
+  "errorUploadFailed": "Upload failed. Please try again.",
+  "errorPermissionDenied": "Permission denied.",
+  "errorInvalidUsername": "That username isn’t available.",
+  "errorNotFound": "Beep not found",
+  "errorLoadError": "Failed to load beep details",
+  "failed": "Failed",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

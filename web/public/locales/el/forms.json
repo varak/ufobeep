@@ -1,5 +1,5 @@
 {
-  "username": "Όνομα χρήστη",
-  "usernameUpdated": "Ενημέρωση ονόματος χρήστη",
-  "submitBeep": "Αποστολή μπιπ"
+  "username": "Username",
+  "usernameUpdated": "Username updated",
+  "submitBeep": "Send Beep"
 }

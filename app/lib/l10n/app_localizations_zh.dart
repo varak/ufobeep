@@ -9,1100 +9,1118 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get appName => '打开';
+  String get appName => 'UFOBeep';
 
   @override
-  String get ok => '还好';
+  String get ok => 'OK';
 
   @override
-  String get cancel => '取消';
+  String get cancel => 'Cancel';
 
   @override
-  String get close => '关闭';
+  String get close => 'Close';
 
   @override
-  String get save => '保存';
+  String get save => 'Save';
 
   @override
-  String get delete => '删除';
+  String get delete => 'Delete';
 
   @override
-  String get edit => '编辑';
+  String get edit => 'Edit';
 
   @override
-  String get retry => '重试';
+  String get retry => 'Retry';
 
   @override
-  String get yes => '对';
+  String get yes => 'Yes';
 
   @override
-  String get no => '没有';
+  String get no => 'No';
 
   @override
-  String get back => '回来';
+  String get back => 'Back';
 
   @override
-  String get next => '下一个';
+  String get next => 'Next';
 
   @override
-  String get done => '写好了';
+  String get done => 'Done';
 
   @override
-  String get loading => '正在装入..';
+  String get loading => 'Loading…';
 
   @override
-  String get processing => '正在处理..';
+  String get processing => 'Processing…';
 
   @override
-  String get errorGeneric => '出了点问题.';
+  String get errorGeneric => 'Something went wrong.';
 
   @override
-  String get networkError => '网络错误 。 检查你的连接.';
+  String get networkError => 'Network error. Check your connection.';
 
   @override
-  String get permissionsRequired => '需要权限';
+  String get permissionsRequired => 'Permissions required';
 
   @override
-  String get learnMore => '学更多';
+  String get learnMore => 'Learn more';
 
   @override
-  String get welcomeTitle => '欢迎来到UFOBEP';
+  String get welcomeTitle => 'Welcome to UFOBeep';
 
   @override
-  String get welcomeSubtitle => '在你附近实时UFO警报';
+  String get welcomeSubtitle => 'Real-time UFO alerts near you';
 
   @override
-  String get signIn => '签名';
+  String get signIn => 'Sign in';
 
   @override
-  String get signOut => '签字';
+  String get signOut => 'Sign out';
 
   @override
-  String get continueAsGuest => '继续做客';
+  String get continueAsGuest => 'Continue as guest';
 
   @override
-  String get enterUsername => '输入用户名';
+  String get enterUsername => 'Enter a username';
 
   @override
-  String get username => '用户名';
+  String get username => 'Username';
 
   @override
-  String get usernameUpdated => '用户名已更新';
+  String get usernameUpdated => 'Username updated';
 
   @override
-  String get profile => '简介';
+  String get profile => 'Profile';
 
   @override
-  String get settings => '设置';
+  String get settings => 'Settings';
 
   @override
-  String get tabAlerts => '警报';
+  String get tabAlerts => 'Alerts';
 
   @override
-  String get tabBeep => '哔';
+  String get tabBeep => 'Beep';
 
   @override
-  String get tabChat => '聊天';
+  String get tabChat => 'Chat';
 
   @override
-  String get tabMap => '地图';
+  String get tabMap => 'Map';
 
   @override
-  String get tabSettings => '设置';
+  String get tabSettings => 'Settings';
 
   @override
-  String get alertsTitle => '近距离警告';
+  String get alertsTitle => 'Nearby Alerts';
 
   @override
-  String get noAlerts => '附近还没有警报.';
+  String get noAlerts => 'No alerts nearby yet.';
 
   @override
-  String get pullToRefresh => '拉来拉去';
+  String get pullToRefresh => 'Pull to refresh';
 
   @override
   String alertDistance(String distance) {
-    return '离开这里';
+    return '$distance away';
   }
 
   @override
   String alertDirection(int bearing) {
-    return '夹着... PLACEHOLDER_0..';
+    return 'Bearing $bearing°';
   }
 
   @override
-  String get viewAlert => '查看提醒';
+  String get viewAlert => 'View alert';
 
   @override
-  String get viewOnMap => '在地图上查看';
+  String get viewOnMap => 'View on map';
 
   @override
-  String get iSeeItToo => '我也看见了';
+  String get iSeeItToo => 'I see it too';
 
   @override
-  String get confirmWitnessed => '确认你目睹了这次目击?';
+  String get confirmWitnessed => 'Confirm you witnessed this sighting?';
 
   @override
-  String get witnessConfirmed => '谢谢,你的确认已经公布.';
+  String get witnessConfirmed => 'Thanks — your confirmation was posted.';
 
   @override
-  String get createBeepTitle => '发出哔声';
+  String get createBeepTitle => 'Send a Beep';
 
   @override
-  String get beepExplain => '抓住你看到的 并提醒附近的监视者.';
+  String get beepExplain => 'Capture what you see and alert nearby watchers.';
 
   @override
-  String get capturePhoto => '抓取照片';
+  String get capturePhoto => 'Capture photo';
 
   @override
-  String get captureVideo => '抓取视频';
+  String get captureVideo => 'Capture video';
 
   @override
-  String get pickFromGallery => '从画廊中选择';
+  String get pickFromGallery => 'Choose from gallery';
 
   @override
-  String get descriptionHint => '描述你在天空中看到的..';
+  String get descriptionHint => 'Describe what you\'re seeing in the sky…';
 
   @override
-  String get submitBeep => '发出哔声';
+  String get submitBeep => 'Send Beep';
 
   @override
-  String get beepSent => '发出哔声';
+  String get beepSent => 'Beep sent';
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return '哔声成功发送';
+    return 'Beep sent successfully';
   }
 
   @override
-  String get uploadingMedia => '正在上传媒体..';
+  String get uploadingMedia => 'Uploading media…';
 
   @override
-  String get includeLocation => '包含位置';
+  String get includeLocation => 'Include location';
 
   @override
-  String get includeTimestamp => '包含时间戳';
+  String get includeTimestamp => 'Include timestamp';
 
   @override
-  String get beepFailed => '发送哔声失败 .';
+  String get beepFailed => 'Failed to send Beep.';
 
   @override
-  String get mediaProcessing => '正在处理媒体..';
+  String get mediaProcessing => 'Processing media…';
 
   @override
-  String get cameraPermissionTitle => '需要摄像';
+  String get cameraPermissionTitle => 'Camera access needed';
 
   @override
-  String get cameraPermissionBody => '授权摄像头拍摄UFO照片和视频.';
+  String get cameraPermissionBody =>
+      'Grant camera access to capture UFO photos and videos.';
 
   @override
-  String get locationPermissionTitle => '需要的位置权限';
+  String get locationPermissionTitle => 'Location Permission Required';
 
   @override
-  String get locationPermissionBody => '我们用你的位置发送和接收附近的警报.';
+  String get locationPermissionBody =>
+      'We use your location to send and receive nearby alerts.';
 
   @override
-  String get microphonePermissionTitle => '需要使用微型电话';
+  String get microphonePermissionTitle => 'Microphone access needed';
 
   @override
-  String get microphonePermissionBody => '允许麦克风进入 视频捕捉带音频.';
+  String get microphonePermissionBody =>
+      'Grant microphone access for video capture with audio.';
 
   @override
-  String get openSettings => '打开设置';
+  String get openSettings => 'Open settings';
 
   @override
-  String get alertDetailTitle => '查看细节';
+  String get alertDetailTitle => 'Sighting Details';
 
   @override
   String reportedBy(String username) {
-    return '由_PLACEHOLDER_0___报导';
+    return 'Reported by $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return '报告_PLACEHOLDER_0__';
+    return 'Reported $timeAgo';
   }
 
   @override
   String distanceAway(String distance) {
-    return '– 地点/地点/地点/地点/地点/地点';
+    return '$distance';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return '持械反对:_PLACEHOLDER_0_____________________';
+    return 'Bearing to object: $bearing°';
   }
 
   @override
-  String get openCompass => '打开指南针';
+  String get openCompass => 'Open compass';
 
   @override
-  String get openAR => '打开 AR 覆盖';
+  String get openAR => 'Open AR overlay';
 
   @override
-  String get openChat => '打开聊天';
+  String get openChat => 'Open chat';
 
   @override
-  String get commentsTitle => '评论';
+  String get commentsTitle => 'Comments';
 
   @override
-  String get addComment => '添加注释..';
+  String get addComment => 'Add a comment…';
 
   @override
-  String get send => '发送';
+  String get send => 'Send';
 
   @override
-  String get commentPosted => '张贴的评论';
+  String get commentPosted => 'Comment posted';
 
   @override
-  String get autoFollowEnabled => '你们现在正在遵守这一警告.';
+  String get autoFollowEnabled => 'You’re now following this alert.';
 
   @override
-  String get noCommentsYet => '还没有评论。 成为第一个评论者!';
+  String get noCommentsYet => 'No comments yet. Be the first to comment!';
 
   @override
-  String get newCommentNotification => '新的评论你跟踪.';
+  String get newCommentNotification => 'New comment on a sighting you follow.';
 
   @override
-  String get mapTitle => '现场地图';
+  String get mapTitle => 'Live Map';
 
   @override
-  String get compassTitle => '指南针';
+  String get compassTitle => 'Compass';
 
   @override
-  String get compassSettings => '指南针设置';
+  String get compassSettings => 'Compass Settings';
 
   @override
-  String get compassMode => '编译模式';
+  String get compassMode => 'Compass Mode';
 
   @override
-  String get compassStandardMode => '标准模式';
+  String get compassStandardMode => 'Standard Mode';
 
   @override
-  String get compassPilotMode => '试点模式';
+  String get compassPilotMode => 'Pilot Mode';
 
   @override
-  String get compassStandardDescription => '基本航向和导航';
+  String get compassStandardDescription => 'Basic heading and navigation';
 
   @override
-  String get compassPilotDescription => '带有ETA和矢量的高级导航';
+  String get compassPilotDescription =>
+      'Advanced navigation with ETA and vectoring';
 
   @override
   String pointingTo(String direction) {
-    return '指向  _PLACEHOLDER_0__ (英语)';
+    return 'Pointing to $direction';
   }
 
   @override
-  String get calibratingCompass => '校准指南针..';
+  String get calibratingCompass => 'Calibrating compass…';
 
   @override
-  String get openAROverlay => '打开 AR 覆盖';
+  String get openAROverlay => 'Open AR overlay';
 
   @override
-  String get pushTitleAlertNearby => '你身边的UFO警报';
+  String get pushTitleAlertNearby => 'UFO alert near you';
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return '[永久失效連結] [永久失效連結] [永久失效連結] 互联网档案馆的存檔,存档日期2013-07-01.';
+    return 'A new sighting was reported $distance away.';
   }
 
   @override
-  String get pushTitleComment => '新评论';
+  String get pushTitleComment => 'New comment';
 
   @override
-  String get pushBodyComment => '有人评论你跟踪的一幕.';
+  String get pushBodyComment => 'Someone commented on a sighting you follow.';
 
   @override
-  String get pushTitleWitness => '证人确认';
+  String get pushTitleWitness => 'Witness confirmation';
 
   @override
-  String get temperature => '温度';
+  String get temperature => 'Temperature';
 
   @override
-  String get pushBodyWitness => '一个用户确认他们看到了同一个对象.';
+  String get pushBodyWitness => 'A user confirmed they see the same object.';
 
   @override
-  String get weather => '天气';
+  String get weather => 'Weather';
 
   @override
   String cloudCover(int percent) {
-    return '云盖曰: - 地点 - 地点';
+    return 'Cloud cover: $percent%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return '风速:_PLACEHOLDER_0__PLACEHOLDER_1_';
+    return 'Wind: $speed $unit';
   }
 
   @override
-  String get nearbyAircraft => '近地点飞机';
+  String get nearbyAircraft => 'Nearby aircraft';
 
   @override
-  String get noAircraft => '附近没有飞机';
+  String get noAircraft => 'No aircraft nearby';
 
   @override
-  String get loadingContext => '正在装入环境背景..';
+  String get loadingContext => 'Loading environmental context…';
 
   @override
-  String get settingsTitle => '设置';
+  String get settingsTitle => 'Settings';
 
   @override
-  String get notifications => '通知';
+  String get notifications => 'Notifications';
 
   @override
-  String get enablePushNotifications => '获取通知供今后评论';
+  String get enablePushNotifications => 'Get notifications for future comments';
 
   @override
-  String get quietHours => '安静时间';
+  String get quietHours => 'Quiet hours';
 
   @override
-  String get quietHoursDesc => '选定时数之间的静态提示 .';
+  String get quietHoursDesc => 'Silence alerts between selected hours.';
 
   @override
-  String get quietHoursEnabled => '启用安静时间';
+  String get quietHoursEnabled => 'Enable quiet hours';
 
   @override
-  String get quietHoursFrom => '从';
+  String get quietHoursFrom => 'From';
 
   @override
-  String get quietHoursUntil => '直至';
+  String get quietHoursUntil => 'Until';
 
   @override
-  String get quietHoursDefaultTime => '默认安静时间';
+  String get quietHoursDefaultTime => 'Default quiet hours';
 
   @override
-  String get emergencyOverride => '紧急控制';
+  String get emergencyOverride => 'Emergency override';
 
   @override
-  String get emergencyOverrideDesc => '允许静时紧急报警';
+  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
 
   @override
-  String get dndMode => '不要烦恼';
+  String get dndMode => 'Do Not Disturb';
 
   @override
-  String get dndUntil => '不要打扰到这里';
+  String get dndUntil => 'Do not disturb until';
 
   @override
   String dndEnabled(Object time) {
-    return 'DND 启用至 __ PLACEHOLDER_ 0___';
+    return 'DND enabled until $time';
   }
 
   @override
-  String get dndDisabled => 'DND 已禁用';
+  String get dndDisabled => 'DND disabled';
 
   @override
-  String get quietHoursActive => '静默时间活动';
+  String get quietHoursActive => 'Quiet hours active';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return '安静时间: (原始内容存档于2017-09-01) (中文(中国大陆) )';
+    return 'Quiet hours: $start - $end';
   }
 
   @override
-  String get pushNotificationUfoAlert => '不明飞行物 警报';
+  String get pushNotificationUfoAlert => 'UFO Alert';
 
   @override
-  String get pushNotificationAnomalyAlert => '异常警报';
+  String get pushNotificationAnomalyAlert => 'Anomaly Alert';
 
   @override
-  String get pushNotificationNearby => '临近';
+  String get pushNotificationNearby => 'Nearby';
 
   @override
-  String get pushNotificationInYourArea => '在你的区域。 点击查看细节.';
+  String get pushNotificationInYourArea => 'in your area. Tap to view details.';
 
   @override
   String pushNotificationCommented(Object username) {
-    return '– PLACEHOLDER_0_ 评论';
+    return '$username commented';
   }
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '–PLACEHOLDER_0__评论_PLACEHOLDER_1_';
+    return '$username commented on $beepTitle';
   }
 
   @override
-  String get pushNotificationGeneric => '打开';
+  String get pushNotificationGeneric => 'UFOBeep';
 
   @override
-  String get pushNotificationNewSighting => '附近新出现';
+  String get pushNotificationNewSighting => 'New sighting nearby';
 
   @override
-  String get language => '语言';
+  String get language => 'Language';
 
   @override
-  String get chooseLanguage => '选择语言';
+  String get chooseLanguage => 'Choose language';
 
   @override
-  String get units => '单位';
+  String get units => 'Units';
 
   @override
-  String get unitsImperial => '帝国语( mi, mph)';
+  String get unitsImperial => 'Imperial (mi, mph)';
 
   @override
-  String get unitsMetric => '计量(公里,公里/小时)';
+  String get unitsMetric => 'Metric (km, km/h)';
 
   @override
-  String get privacyPolicy => '隐私政策';
+  String get privacyPolicy => 'Privacy Policy';
 
   @override
-  String get termsOfUse => '使用条件';
+  String get termsOfUse => 'Terms of Use';
 
   @override
-  String get errorNoLocation => '没有位置 。 再用清空的天眼试试看.';
+  String get errorNoLocation =>
+      'Location unavailable. Try again outside with clear sky view.';
 
   @override
-  String get errorNoCamera => '此设备没有摄像头 .';
+  String get errorNoCamera => 'Camera unavailable on this device.';
 
   @override
-  String get errorUploadFailed => '上传失败 。 请再试一次.';
+  String get errorUploadFailed => 'Upload failed. Please try again.';
 
   @override
-  String get errorPermissionDenied => '拒绝许可.';
+  String get errorPermissionDenied => 'Permission denied.';
 
   @override
-  String get errorInvalidUsername => '这个用户名不可用 .';
+  String get errorInvalidUsername => 'That username isn’t available.';
 
   @override
-  String get nothingToShow => '还没显示什么.';
+  String get nothingToShow => 'Nothing to show yet.';
 
   @override
-  String get storeShortDesc => '即时UFO警报接近你 抓住,确认,实时聊天.';
+  String get storeShortDesc =>
+      'Instant UFO alerts near you. Capture, confirm, and chat in real time.';
 
   @override
   String get storeLongDesc =>
-      'UFOBEP在附近发现UFO时发出实时警报. 捕捉照片和录像,用水龙头证实目击情况,查看方向和距离,并与天空观察者同行聊天.';
+      'UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.';
 
   @override
-  String get keywords => 'UFO、UAP、OVNI、aliens、视觉、天空表、警报、雷达、辅助设备';
+  String get keywords =>
+      'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
 
   @override
-  String get noAlertsFound => '没有匹配的提示';
+  String get noAlertsFound => 'No matching alerts';
 
   @override
-  String get alertsFilterHelp => '尝试调整过滤器以查看更多结果';
+  String get alertsFilterHelp =>
+      'Try adjusting your filters to see more results';
 
   @override
-  String get verified => '已验证';
+  String get verified => 'Verified';
 
   @override
-  String get beepOnly => '只鸣';
+  String get beepOnly => 'Beep Only';
 
   @override
-  String get reportOnly => '仅限文本';
+  String get reportOnly => 'Text Only';
 
   @override
-  String get videoOnly => '仅限视频';
+  String get videoOnly => 'Video Only';
 
   @override
-  String get imageOnly => '只有图像';
+  String get imageOnly => 'Image Only';
 
   @override
-  String get mediaOnly => '仅限媒体';
+  String get mediaOnly => 'Media Only';
 
   @override
-  String get timeJustNow => '刚才';
+  String get timeJustNow => 'just now';
 
   @override
   String timeDaysAgo(int count) {
-    return '# 几天前,我来到了这里#';
+    return '$count days ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '0小时前';
+    return '$count hours ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '0分钟前';
+    return '$count minutes ago';
   }
 
   @override
-  String get loadMoreAlerts => '装入更多提醒';
+  String get loadMoreAlerts => 'Load More Alerts';
 
   @override
-  String get toggleMufonTooltip => '切换MUFON的目击';
+  String get toggleMufonTooltip => 'Toggle MUFON sightings';
 
   @override
-  String get showMufonData => '显示 MUFON 数据';
+  String get showMufonData => 'Show MUFON data';
 
   @override
-  String get hideMufonData => '隐藏 MUFON 数据';
+  String get hideMufonData => 'Hide MUFON data';
 
   @override
-  String get showingUfoBeepOnly => '只显示 UFOBEP 报告';
+  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
 
   @override
-  String get showingAllReports => '显示包括MUFON数据库在内的所有报告';
+  String get showingAllReports =>
+      'Showing all reports including MUFON database';
 
   @override
-  String get filteredSuffix => '过滤';
+  String get filteredSuffix => 'filtered';
 
   @override
-  String get detailsTitle => '细节';
+  String get detailsTitle => 'Details';
 
   @override
-  String get mufonCase => '毛里求斯 大小写';
+  String get mufonCase => 'MUFON Case';
 
   @override
-  String get mufonSighting => 'MUFON 观察报告';
+  String get mufonSighting => 'MUFON Sighting Report';
 
   @override
-  String get mufonLightSighting => 'MUFON 灯光观察报告';
+  String get mufonLightSighting => 'MUFON Light Sighting Report';
 
   @override
-  String get mufonSphereSighting => 'MUFON 球面观察报告';
+  String get mufonSphereSighting => 'MUFON Sphere Sighting Report';
 
   @override
-  String get mufonDiscSighting => '毛里求斯 磁盘透视报告';
+  String get mufonDiscSighting => 'MUFON Disc Sighting Report';
 
   @override
-  String get mufonTriangleSighting => '毛里求斯 三角观测报告';
+  String get mufonTriangleSighting => 'MUFON Triangle Sighting Report';
 
   @override
-  String get mufonCigarSighting => 'MUFON 雪茄观察报告';
+  String get mufonCigarSighting => 'MUFON Cigar Sighting Report';
 
   @override
-  String get mufonOvalSighting => 'MUFON OVAL 观察报告';
+  String get mufonOvalSighting => 'MUFON Oval Sighting Report';
 
   @override
-  String get mufonRectangleSighting => '毛里求斯 矩形瞄准报告';
+  String get mufonRectangleSighting => 'MUFON Rectangle Sighting Report';
 
   @override
-  String get mufonCylinderSighting => 'MUFON 圆柱形探测报告';
+  String get mufonCylinderSighting => 'MUFON Cylinder Sighting Report';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang观察报告';
+  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting Report';
 
   @override
-  String get mufonStarlikeSighting => '毛里求斯 星光照视报告';
+  String get mufonStarlikeSighting => 'MUFON Starlike Sighting Report';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON案 详细情况';
+    return 'MUFON Case #$caseNumber Details';
   }
 
   @override
-  String get sightingDate => '观察日期';
+  String get sightingDate => 'Sighting Date';
 
   @override
-  String get mufonDatabaseEntryDate => '输入 MUFON 的日期 数据库';
+  String get mufonDatabaseEntryDate => 'Date Entered into MUFON Database';
 
   @override
-  String get databaseEntry => '数据库条目';
+  String get databaseEntry => 'Database Entry';
 
   @override
-  String get shareLink => '共享链接';
+  String get shareLink => 'Share Link';
 
   @override
-  String get linkCopied => '链接复制到剪贴板';
+  String get linkCopied => 'Link copied to clipboard';
 
   @override
-  String get locationLabel => '地点 :';
+  String get locationLabel => 'Location:';
 
   @override
-  String get distanceLabel => '距离';
+  String get distanceLabel => 'Distance';
 
   @override
-  String get timeLabel => '时间 :';
+  String get timeLabel => 'Time:';
 
   @override
-  String get reportedByLabel => '报告';
+  String get reportedByLabel => 'Reported by';
 
   @override
-  String get unknownLocation => '未知位置';
+  String get unknownLocation => 'Unknown Location';
 
   @override
-  String get locationUnknown => '位置未知';
+  String get locationUnknown => 'Location Unknown';
 
   @override
-  String get witnessesLabel => '证人';
+  String get witnessesLabel => 'Witnesses';
 
   @override
   String witnessesCountMessage(int count) {
-    return '人们确认这次目击';
+    return '$count people confirmed this sighting';
   }
 
   @override
-  String get photoAnalysisTitle => '照片分析';
+  String get photoAnalysisTitle => 'Photo Analysis';
 
   @override
   String mediaItemsProcessed(int count) {
-    return '分析:_PLACEHOLDER_0_媒体文件已处理';
+    return 'Analysis: $count media file(s) processed';
   }
 
   @override
-  String get addMoreMedia => '添加更多内容';
+  String get addMoreMedia => 'Add More';
 
   @override
-  String get addMedia => '添加媒体';
+  String get addMedia => 'Add Media';
 
   @override
-  String get retakePhoto => '重取照片';
+  String get retakePhoto => 'Retake Photo';
 
   @override
-  String get retakeVideo => '重取视频';
+  String get retakeVideo => 'Retake Video';
 
   @override
-  String get camera => '摄影机';
+  String get camera => 'Camera';
 
   @override
-  String get gallery => '图片库';
+  String get gallery => 'Gallery';
 
   @override
-  String get basicSettings => '基本设置';
+  String get basicSettings => 'Basic Settings';
 
   @override
-  String get appSettings => '应用程序设置';
+  String get appSettings => 'App Settings';
 
   @override
-  String get timeFormat => '时间格式';
+  String get timeFormat => 'Time Format';
 
   @override
-  String get timeFormat24Hour => '24小时(14:30)';
+  String get timeFormat24Hour => '24-hour (14:30)';
 
   @override
-  String get timeFormat12Hour => '12小时(下午2: 30)';
+  String get timeFormat12Hour => '12-hour (2:30 PM)';
 
   @override
-  String get timeFormatDesc => '以24小时或12小时格式显示时间';
+  String get timeFormatDesc => 'Display time in 24-hour or 12-hour format';
 
   @override
-  String get alertRange => '警报范围';
+  String get alertRange => 'Alert Range';
 
   @override
-  String get manageNotificationsDesc => '管理订阅设置( S)';
+  String get manageNotificationsDesc => 'Manage subscriptions & settings';
 
   @override
-  String get permissionsTitle => '权限';
+  String get permissionsTitle => 'Permissions';
 
   @override
-  String get permissionLocation => '地点';
+  String get permissionLocation => 'Location';
 
   @override
-  String get permissionCamera => '摄影机';
+  String get permissionCamera => 'Camera';
 
   @override
-  String get permissionNotifications => '通知';
+  String get permissionNotifications => 'Notifications';
 
   @override
-  String get permissionPhotos => '照片';
+  String get permissionPhotos => 'Photos';
 
   @override
-  String get permissionGranted => '获准';
+  String get permissionGranted => 'Granted';
 
   @override
-  String get permissionNotGranted => '不予批准';
+  String get permissionNotGranted => 'Not granted';
 
   @override
-  String get permissionGrant => '赠款';
+  String get permissionGrant => 'Grant';
 
   @override
-  String get generateUsername => '生成新用户名';
+  String get generateUsername => 'Generate new username';
 
   @override
-  String get adminTools => '管理工具';
+  String get adminTools => 'Admin Tools';
 
   @override
-  String get openAdminPanel => '打开管理面板';
+  String get openAdminPanel => 'Open Admin Panel';
 
   @override
-  String get webAdminInterface => 'Web 管理员界面';
+  String get webAdminInterface => 'Web Admin Interface';
 
   @override
-  String get adminBetaNotice => '贝塔只构建。 用于测试近距离警报、推进通知和系统诊断的行政管理工具.';
+  String get adminBetaNotice =>
+      'Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.';
 
   @override
-  String get whatDoYouSee => '你看见什么了?';
+  String get whatDoYouSee => 'What do you see?';
 
   @override
-  String get ufo => '不明飞行物';
+  String get ufo => 'UFO';
 
   @override
-  String get sighting => '观察';
+  String get sighting => 'Sighting';
 
   @override
-  String get ufoSighting => '不明飞行物 警报';
+  String get ufoSighting => 'UFOBeep UFO Alert';
 
   @override
-  String get envAnalysisTitle => '环境分析';
+  String get envAnalysisTitle => 'Environmental Analysis';
 
   @override
-  String get envAnalysisPending => '待分析';
+  String get envAnalysisPending => 'Analysis Pending';
 
   @override
-  String get envAnalysisPendingDesc => '一旦开始处理,将可获得环境数据.';
+  String get envAnalysisPendingDesc =>
+      'Environmental data will be available once processing begins.';
 
   @override
-  String get unknownAircraft => '未知飞机';
+  String get unknownAircraft => 'Unknown Aircraft';
 
   @override
-  String get moreAircraft => '更多飞机';
+  String get moreAircraft => 'more aircraft';
 
   @override
-  String get premiumImageryTitle => '钚卫星 图像';
+  String get premiumImageryTitle => 'Premium Satellite Imagery';
 
   @override
-  String get premiumImagerySubtitle => '高分辨率商业图像';
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
 
   @override
-  String get sightingTypeLabel => '类型';
+  String get sightingTypeLabel => 'Type';
 
   @override
-  String get ufoTypeSphere => '球体';
+  String get ufoTypeSphere => 'Sphere';
 
   @override
-  String get ufoTypeTriangle => '三角形';
+  String get ufoTypeTriangle => 'Triangle';
 
   @override
-  String get ufoTypeDisk => '磁盘';
+  String get ufoTypeDisk => 'Disk';
 
   @override
-  String get ufoTypeLight => '光线';
+  String get ufoTypeLight => 'Light';
 
   @override
-  String get ufoTypeFireball => '火球';
+  String get ufoTypeFireball => 'Fireball';
 
   @override
-  String get ufoTypeCylinder => '圆柱';
+  String get ufoTypeCylinder => 'Cylinder';
 
   @override
-  String get ufoTypeCigar => '雪茄';
+  String get ufoTypeCigar => 'Cigar';
 
   @override
-  String get ufoTypeRectangle => '矩形';
+  String get ufoTypeRectangle => 'Rectangle';
 
   @override
-  String get ufoTypeFormation => '组建';
+  String get ufoTypeFormation => 'Formation';
 
   @override
-  String get ufoTypeUnknown => '未知';
+  String get ufoTypeUnknown => 'Unknown';
 
   @override
-  String get ufoTypeBoomerang => 'Boom';
+  String get ufoTypeBoomerang => 'Boomerang';
 
   @override
-  String get ufoTypeDiamond => '钻石';
+  String get ufoTypeDiamond => 'Diamond';
 
   @override
-  String get ufoTypeOval => '奥巴马';
+  String get ufoTypeOval => 'Oval';
 
   @override
-  String get ufoTypeCone => '锥形';
+  String get ufoTypeCone => 'Cone';
 
   @override
-  String get ufoTypeCross => '交叉';
+  String get ufoTypeCross => 'Cross';
 
   @override
-  String get ufoTypeDumbbell => '哑铃';
+  String get ufoTypeDumbbell => 'Dumbbell';
 
   @override
-  String get ufoTypeTeardrop => '泪滴';
+  String get ufoTypeTeardrop => 'Teardrop';
 
   @override
-  String get ufoTypeTicTac => '塔克语Name';
+  String get ufoTypeTicTac => 'Tic Tac';
 
   @override
-  String get ufoTypeBullet => '子弹';
+  String get ufoTypeBullet => 'Bullet';
 
   @override
-  String get ufoTypeSaturn => '土星号';
+  String get ufoTypeSaturn => 'Saturn';
 
   @override
-  String get ufoTypeStarLike => '像星星一样';
+  String get ufoTypeStarLike => 'Star-like';
 
   @override
-  String get ufoTypeBlimp => '闪烁';
+  String get ufoTypeBlimp => 'Blimp';
 
   @override
-  String get shapeTriangle => '三角形';
+  String get shapeTriangle => 'triangle';
 
   @override
-  String get shapeDisc => '盘片';
+  String get shapeDisc => 'disc';
 
   @override
-  String get shapeDisk => '磁盘';
+  String get shapeDisk => 'disk';
 
   @override
-  String get shapeSphere => '区域';
+  String get shapeSphere => 'sphere';
 
   @override
-  String get shapeCigar => '雪茄';
+  String get shapeCigar => 'cigar';
 
   @override
-  String get shapeLight => '光线';
+  String get shapeLight => 'light';
 
   @override
-  String get shapeBoomerang => 'boom';
+  String get shapeBoomerang => 'boomerang';
 
   @override
-  String get shapeDiamond => '钻石';
+  String get shapeDiamond => 'diamond';
 
   @override
-  String get shapeRectangle => '矩形';
+  String get shapeRectangle => 'rectangle';
 
   @override
-  String get shapeOval => '椭圆';
+  String get shapeOval => 'oval';
 
   @override
-  String get shapeCone => '圆锥';
+  String get shapeCone => 'cone';
 
   @override
-  String get shapeCross => '横';
+  String get shapeCross => 'cross';
 
   @override
-  String get shapeCylinder => '圆柱形';
+  String get shapeCylinder => 'cylinder';
 
   @override
-  String get shapeDumbbell => '哑铃';
+  String get shapeDumbbell => 'dumbbell';
 
   @override
-  String get shapeTeardrop => '泪滴';
+  String get shapeTeardrop => 'teardrop';
 
   @override
-  String get shapeTicTac => '盘点';
+  String get shapeTicTac => 'tic-tac';
 
   @override
-  String get shapeBullet => '子弹';
+  String get shapeBullet => 'bullet';
 
   @override
-  String get shapeSaturn => '静坐';
+  String get shapeSaturn => 'saturn';
 
   @override
-  String get shapeStarlike => '像星星一样';
+  String get shapeStarlike => 'starlike';
 
   @override
-  String get shapeBlimp => '蓝宝石';
+  String get shapeBlimp => 'blimp';
 
   @override
-  String get shapeFireball => '火球';
+  String get shapeFireball => 'fireball';
 
   @override
-  String get shapeFormation => '编队';
+  String get shapeFormation => 'formation';
 
   @override
-  String get shapeUnknown => '不详';
+  String get shapeUnknown => 'unknown';
 
   @override
-  String get actionsTitle => '行动';
+  String get actionsTitle => 'Actions';
 
   @override
-  String get addPhotosAndVideos => '添加照片和视频( V)';
+  String get addPhotosAndVideos => 'Add Photos & Videos';
 
   @override
-  String get howToReportToMufon => '如何向毛里求斯财政部报告';
+  String get howToReportToMufon => 'How to Report to MUFON';
 
   @override
-  String get reportToMufon => '向毛里求斯财政部报告';
+  String get reportToMufon => 'Report to MUFON';
 
   @override
-  String get whyReportToMufon => '为什么向MUFON报告?';
+  String get whyReportToMufon => 'Why Report to MUFON?';
 
   @override
-  String get openMufonReport => '打开MUFON 报告';
+  String get openMufonReport => 'Open MUFON Report';
 
   @override
-  String get confirmedWitness => '你确认了这次目击';
+  String get confirmedWitness => 'You confirmed this sighting';
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '人们已经确认这次目击';
+    return '$count people have confirmed this sighting';
   }
 
   @override
-  String get aircraftTrackingTitle => '飞机跟踪';
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
 
   @override
-  String get weatherConditionsTitle => '天气条件';
+  String get weatherConditionsTitle => 'Weather Conditions';
 
   @override
-  String get noSatellitePasses => '未发现可见的卫星通过';
+  String get noSatellitePasses => 'No visible satellite passes found';
 
   @override
-  String get contentAnalysisTitle => '内容分析';
+  String get contentAnalysisTitle => 'Content Analysis';
 
   @override
-  String get contentSafe => '内容是安全的';
+  String get contentSafe => 'Content is safe';
 
   @override
-  String get contentFlagged => '标注供审查的内容';
+  String get contentFlagged => 'Content flagged for review';
 
   @override
-  String get confidenceLabel => '信心';
+  String get confidenceLabel => 'Confidence';
 
   @override
-  String get methodLabel => '方法';
+  String get methodLabel => 'Method';
 
   @override
-  String get premiumImageryAccessOnly => '精度卫星图像仅提供给:';
+  String get premiumImageryAccessOnly =>
+      'Premium satellite imagery is only available to:';
 
   @override
-  String get premiumAccessCreators => '提醒创建者';
+  String get premiumAccessCreators => 'Alert creators';
 
   @override
-  String get premiumAccessWitnesses => '在可见范围内确认的证人';
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
 
   @override
-  String get comingSoon => '快来了';
+  String get comingSoon => 'Coming Soon';
 
   @override
-  String get directionDistanceTitle => '方向距离( D)';
+  String get directionDistanceTitle => 'Direction & Distance';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return '毛里求斯 案件QQPLACEHOLDER_0___';
+    return 'MUFON Case #$caseNumber';
   }
 
   @override
-  String get satellitePassesTitle => '卫星通行证';
+  String get satellitePassesTitle => 'Satellite Passes';
 
   @override
-  String get satellitePassExplanation => '可见卫星在目视时间内通过. 许多UFO报告实际上是卫星或空间碎片.';
+  String get satellitePassExplanation =>
+      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
 
   @override
-  String get followingAlert => '注意后 - 你会收到评论通知';
+  String get followingAlert =>
+      'Following alert - you\'ll get comment notifications';
 
   @override
-  String get unfollowedAlert => '未遵循提醒 - 没有更多评论通知';
+  String get unfollowedAlert =>
+      'Unfollowed alert - no more comment notifications';
 
   @override
-  String get alertFollowError => '更新跟随状态出错';
+  String get alertFollowError => 'Error updating follow status';
 
   @override
-  String get notificationChannelAlerts => 'UFOBEP 警报';
+  String get notificationChannelAlerts => 'UFOBeep Alerts';
 
   @override
-  String get notificationChannelAlertsDesc => '关于UFO哔声和近距离警报的通知';
+  String get notificationChannelAlertsDesc =>
+      'Notifications for UFO beeps and proximity alerts';
 
   @override
-  String get notificationSightingTitle => '不明飞行物 警报';
+  String get notificationSightingTitle => 'UFOBeep UFO Alert';
 
   @override
-  String get notificationSightingUrgent => '紧急UFO 警报';
+  String get notificationSightingUrgent => '⚠️ URGENT UFOBeep UFO Alert';
 
   @override
-  String get notificationSightingEmergency => '紧急UFO 警报';
+  String get notificationSightingEmergency => '🚨 EMERGENCY UFOBeep UFO Alert';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '靠近... PLACEHOLDER_0_ 靠近... PLACEHOLDER_ 1_';
+    return '$witnessText near $locationName';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '~PLACEHOLDER_0_评论';
+    return '💬 $username commented';
   }
 
   @override
-  String get notificationWitnessText => '新视觉';
+  String get notificationWitnessText => 'New sighting';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '证人';
+    return '$count witnesses';
   }
 
   @override
-  String get notificationActionSnooze => '斯努兹 1小时';
+  String get notificationActionSnooze => 'Snooze 1h';
 
   @override
-  String get notificationActionDismiss => '开除';
+  String get notificationActionDismiss => 'Dismiss';
 
   @override
   String notificationDistance(String distance) {
-    return '离开这里';
+    return '$distance away';
   }
 
   @override
-  String get unknown => '不详';
+  String get unknown => 'unknown';
 
   @override
-  String get report => '报告';
+  String get report => 'report';
 
   @override
-  String get mufon => '木冯';
+  String get mufon => 'mufon';
 
   @override
-  String get recentUfoBeepsTitle => '近期的UFO 黄蜂';
+  String get recentUfoBeepsTitle => 'Recent UFO Beeps';
 
   @override
-  String get recentUfoBeepsSubtitle => '我们全球社会的目击UFO实况报道';
+  String get recentUfoBeepsSubtitle =>
+      'Live UFO sighting reports from our global community';
 
   @override
   String get recentUfoBeepsDescription =>
-      '此饲料结合了我们移动应用用户的实时UFOBEP\"哔哩哔哩\"与MUFON数据库的历史报告.';
+      'This feed combines real-time UFOBeep \"beeps\" from our mobile app users with historical reports from the MUFON database.';
 
   @override
-  String get loadingBeeps => '正在装入最近的蜂鸣...';
+  String get loadingBeeps => 'Loading recent beeps...';
 
   @override
-  String get noBeepsAvailable => '目前没有哔声.';
+  String get noBeepsAvailable => 'No beeps available at the moment.';
 
   @override
-  String get anomalyReported => '异常报告';
+  String get anomalyReported => 'Anomaly reported';
 
   @override
-  String get copyShortLink => '复制短链接';
+  String get copyShortLink => 'Copy short link';
 
   @override
-  String get shareAlert => '共享提醒';
+  String get shareAlert => 'Share alert';
 
   @override
-  String get ufoSightingAlert => '不明飞行物 观察警报';
+  String get ufoSightingAlert => 'UFO Sighting Alert';
 
   @override
-  String get previousPage => '上一个';
+  String get previousPage => 'Previous';
 
   @override
-  String get nextPage => '下一个';
+  String get nextPage => 'Next';
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return '页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆 页面存档备份,存于互联网档案馆';
+    return 'Page $currentPage of $totalPages ($totalCount total beeps)';
   }
 
   @override
-  String get firstPage => '第一届';
+  String get firstPage => 'First';
 
   @override
-  String get lastPage => '最后一个';
+  String get lastPage => 'Last';
 
   @override
-  String get jumpToPage => '跳转到页面';
+  String get jumpToPage => 'Jump to page';
 
   @override
-  String get heroTagline => '什么时候到外面看看';
+  String get heroTagline => 'Get alerts when to go outside and look up';
 
   @override
-  String get heroDescription => '永远不要错过 在你的区域看到另一个UFO';
+  String get heroDescription => 'Never miss another UFO sighting in your area';
 
   @override
-  String get downloadApp => 'QQ 下载 App';
+  String get downloadApp => '📱 Download App';
 
   @override
-  String get viewAllBeeps => 'QQ 查看全部蜂窝';
+  String get viewAllBeeps => '📋 View All Beeps';
 
   @override
-  String get sightingsMap => '图像';
+  String get sightingsMap => '🗺️ Sightings Map';
 
   @override
-  String get globalSightingNetwork => '全球观察网';
+  String get globalSightingNetwork => 'Global Sighting Network';
 
   @override
-  String get howItWorks => '如何运作';
+  String get howItWorks => 'How It Works';
 
   @override
-  String get backToBeeps => '回到蜂窝';
+  String get backToBeeps => 'Back to Beeps';
 
   @override
-  String get loadingDetails => '正在装入哔声细节...';
+  String get loadingDetails => 'Loading beep details...';
 
   @override
-  String get details => '细节';
+  String get details => 'Details';
 
   @override
-  String get location => '地点';
+  String get location => 'Location';
 
   @override
-  String get timeAgo => '刚才';
+  String get timeAgo => 'ago';
 
   @override
   String get timeMinutes => 'm';
@@ -1114,921 +1132,981 @@ class AppLocalizationsZh extends AppLocalizations {
   String get timeDays => 'd';
 
   @override
-  String get distanceKm => '公里';
+  String get distanceKm => 'km';
 
   @override
-  String get distanceMiles => '英里数';
+  String get distanceMiles => 'miles';
 
   @override
-  String get distanceNearby => '附近';
+  String get distanceNearby => 'nearby';
 
   @override
-  String get ufobeepWitnesses => '证人';
+  String get ufobeepWitnesses => 'Witnesses';
 
   @override
-  String get ufobeepConfirmations => '确认';
+  String get ufobeepConfirmations => 'Confirmations';
 
   @override
-  String get ufobeepAlertLevel => '警报级别';
+  String get ufobeepAlertLevel => 'Alert Level';
 
   @override
-  String get ufobeepReportType => 'UFOUBUP 报告';
+  String get ufobeepReportType => 'UFOBeep Report';
 
   @override
-  String get mufonAttribution => '毛里求斯 数据库报告';
+  String get mufonAttribution => 'MUFON Database Report';
 
   @override
-  String get mufonCaseNumber => '案例#';
+  String get mufonCaseNumber => 'Case #';
 
   @override
-  String get mufonGenericTitle => 'MUFON 观察报告';
+  String get mufonGenericTitle => 'MUFON Sighting Report';
 
   @override
-  String get mufonSphere => '球体';
+  String get mufonSphere => 'Sphere';
 
   @override
-  String get mufonLight => '光线';
+  String get mufonLight => 'Light';
 
   @override
-  String get mufonDisk => '磁盘';
+  String get mufonDisk => 'Disk';
 
   @override
-  String get mufonTriangle => '三角形';
+  String get mufonTriangle => 'Triangle';
 
   @override
-  String get mufonCigar => '雪茄';
+  String get mufonCigar => 'Cigar';
 
   @override
-  String get mufonOval => '奥巴马';
+  String get mufonOval => 'Oval';
 
   @override
-  String get mufonCylinder => '圆柱';
+  String get mufonCylinder => 'Cylinder';
 
   @override
-  String get mufonRectangle => '矩形';
+  String get mufonRectangle => 'Rectangle';
 
   @override
-  String get mufonDiamond => '钻石';
+  String get mufonDiamond => 'Diamond';
 
   @override
-  String get mufonFireball => '火球';
+  String get mufonFireball => 'Fireball';
 
   @override
-  String get mufonFlash => '闪光';
+  String get mufonFlash => 'Flash';
 
   @override
-  String get mufonFormation => '组建';
+  String get mufonFormation => 'Formation';
 
   @override
-  String get mufonChanging => '变化';
+  String get mufonChanging => 'Changing';
 
   @override
-  String get mufonChevron => '雪佛龙';
+  String get mufonChevron => 'Chevron';
 
   @override
-  String get mufonCone => '锥形';
+  String get mufonCone => 'Cone';
 
   @override
-  String get mufonCross => '交叉';
+  String get mufonCross => 'Cross';
 
   @override
-  String get mufonEgg => '鸡蛋';
+  String get mufonEgg => 'Egg';
 
   @override
-  String get mufonOther => '对象';
+  String get mufonOther => 'Object';
 
   @override
-  String get mufonUnknown => '未知对象';
+  String get mufonUnknown => 'Unknown Object';
 
   @override
   String mufonTitleFormat(Object classification) {
-    return '毛里求斯 报告';
+    return 'MUFON $classification Report';
   }
 
   @override
-  String get nuforcAttribution => '努福尔茨 数据库报告';
+  String get nuforcAttribution => 'NUFORC Database Report';
 
   @override
-  String get nuforcCaseNumber => '案例#';
+  String get nuforcCaseNumber => 'Case #';
 
   @override
-  String get nuforcGenericTitle => '努福尔茨 观察报告';
+  String get nuforcGenericTitle => 'NUFORC Sighting Report';
 
   @override
-  String get mediaImageNotFound => '未找到图像';
+  String get mediaImageNotFound => 'Image not found';
 
   @override
-  String get mediaPlayVideo => '播放视频';
+  String get mediaPlayVideo => 'Play Video';
 
   @override
-  String get mediaViewImage => '查看图像';
+  String get mediaViewImage => 'View Image';
 
   @override
   String mediaCount(Object count) {
-    return '_PLACEHOLDER_0_图像';
+    return '$count images';
   }
 
   @override
-  String get mediaCountSingle => '1 张图像';
+  String get mediaCountSingle => '1 image';
 
   @override
   String mediaMoreImages(Object count) {
-    return '再来一点';
+    return '+$count more';
   }
 
   @override
-  String get errorNotFound => '未找到哔声';
+  String get errorNotFound => 'Beep not found';
 
   @override
-  String get errorLoadError => '装入哔声细节失败';
+  String get errorLoadError => 'Failed to load beep details';
 
   @override
-  String get shareYourThoughts => '分享你对这次目击的看法...';
+  String get shareYourThoughts => 'Share your thoughts about this sighting...';
 
   @override
-  String get postComment => '邮政注释';
+  String get postComment => 'Post Comment';
 
   @override
-  String get loggedInAs => '登录为';
+  String get loggedInAs => 'Logged in as';
 
   @override
-  String get logout => '注销';
+  String get logout => 'Logout';
 
   @override
-  String get notFollowing => '没有';
+  String get notFollowing => 'Not following';
 
   @override
-  String get follow => '跟着';
+  String get follow => 'Follow';
 
   @override
-  String get navRecentBeeps => '最近的蜂类';
+  String get navRecentBeeps => 'Recent Beeps';
 
   @override
-  String get navMap => '地图';
+  String get navMap => 'Map';
 
   @override
-  String get navDownloadApp => '下载 App';
+  String get navDownloadApp => 'Download App';
 
   @override
-  String get alertLevel => '警报级别';
+  String get alertLevel => 'Alert Level';
 
   @override
-  String get witnesses => '证人';
+  String get witnesses => 'Witnesses';
 
   @override
-  String get confirmations => '确认';
+  String get confirmations => 'Confirmations';
 
   @override
-  String get reporterLabel => '用户报告';
+  String get reporterLabel => 'Reported by user';
 
   @override
-  String get coordinatesLabel => '坐标';
+  String get coordinatesLabel => 'Coordinates';
 
   @override
-  String get eventTime => '活动时间';
+  String get eventTime => 'Event time';
 
   @override
-  String get reportedTime => '报告时间';
+  String get reportedTime => 'Reported time';
 
   @override
-  String get addedToUfobeep => '添加到UFOBEP';
+  String get addedToUfobeep => 'Added to UFOBeep';
 
   @override
-  String get mufonDatabaseReport => '毛里求斯 案件编号 :';
+  String get mufonDatabaseReport => 'MUFON Case Number:';
 
   @override
-  String get copyShortLinkTitle => '复制链接到剪贴板';
+  String get copyShortLinkTitle => 'Copy link to clipboard';
 
   @override
-  String get imageNotFound => '未找到图像';
+  String get imageNotFound => 'Image not found';
 
   @override
-  String get ufoSightingAlt => '不明飞行物 哔声UFO警报';
+  String get ufoSightingAlt => 'UFOBeep UFO alert';
 
   @override
-  String get celestialDataTitle => '天体';
+  String get celestialDataTitle => 'Celestial Objects';
 
   @override
-  String get visiblePlanets => '可见行星';
+  String get visiblePlanets => 'Visible Planets';
 
   @override
-  String get locationDataTitle => '地点信息';
+  String get locationDataTitle => 'Location Information';
 
   @override
-  String get timezone => '时区';
+  String get timezone => 'Timezone';
 
   @override
-  String get coordinates => '坐标';
+  String get coordinates => 'Coordinates';
 
   @override
-  String get processingSummaryTitle => '处理摘要';
+  String get processingSummaryTitle => 'Processing Summary';
 
   @override
-  String get processingTime => '处理时间';
+  String get processingTime => 'Processing Time';
 
   @override
-  String get successful => '成功';
+  String get successful => 'Successful';
 
   @override
-  String get failed => '失败';
+  String get failed => 'Failed';
 
   @override
-  String get locationEnrichmentTitle => '地点细节';
+  String get locationEnrichmentTitle => 'Location Details';
 
   @override
-  String get aircraftDataSource => '数据来源';
+  String get aircraftDataSource => 'Data Source';
 
   @override
-  String get noAircraftDetected => '未发现飞机';
+  String get noAircraftDetected => 'No aircraft detected';
 
   @override
-  String get sightingReport => '观察报告';
+  String get sightingReport => 'Sighting Report';
 
   @override
-  String get ufoAlert => '不明飞行物 警报';
+  String get ufoAlert => 'UFO Alert';
 
   @override
-  String get alert => '警报';
+  String get alert => 'Alert';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO 警告 - 附近新视觉';
+  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
 
   @override
-  String get notificationTickerComment => '关于 UFO 提醒的新注释';
+  String get notificationTickerComment => 'New Comment on UFO Alert';
 
   @override
-  String get weatherConditions => '天气条件';
+  String get weatherConditions => 'Weather Conditions';
 
   @override
-  String get visibility => '可见度';
+  String get visibility => 'Visibility';
 
   @override
-  String get humidity => '湿度';
+  String get humidity => 'Humidity';
 
   @override
-  String get pressure => '压力';
+  String get pressure => 'Pressure';
 
   @override
-  String get locationDetails => '地点细节';
+  String get locationDetails => 'Location Details';
 
   @override
-  String get city => '城市';
+  String get city => 'City';
 
   @override
-  String get state => '状态';
+  String get state => 'State';
 
   @override
-  String get country => '国家';
+  String get country => 'Country';
 
   @override
-  String get satelliteActivity => '卫星活动';
+  String get satelliteActivity => 'Satellite Activity';
 
   @override
-  String get satellitesVisibleOverhead => '视时间和地点可见的卫星';
+  String get satellitesVisibleOverhead =>
+      'Satellites visible overhead at sighting time & location';
 
   @override
-  String get dataSource => '数据来源';
+  String get dataSource => 'Data Source';
 
   @override
-  String get blackskyImagery => '黑色天空图像';
+  String get blackskyImagery => 'BlackSky Imagery';
 
   @override
-  String get resolution => '决议';
+  String get resolution => 'Resolution';
 
   @override
-  String get groundResolution => '35厘米地面分辨率';
+  String get groundResolution => '35cm ground resolution';
 
   @override
-  String get delivery => '交付';
+  String get delivery => 'Delivery';
 
   @override
-  String get averageDelivery => '平均90分钟';
+  String get averageDelivery => '90-minute average';
 
   @override
-  String get cost => '费用';
+  String get cost => 'Cost';
 
   @override
-  String get skyfiSatelliteImagery => '天线卫星 图像';
+  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
 
   @override
-  String get region => '地区';
+  String get region => 'Region';
 
   @override
-  String get remoteArea => '远程区域';
+  String get remoteArea => 'Remote Area';
 
   @override
-  String get startingPrice => '开始价格';
+  String get startingPrice => 'Starting Price';
 
   @override
-  String get coverage => '覆盖范围';
+  String get coverage => 'Coverage';
 
   @override
-  String get confidenceCoverage => '95%的信心';
+  String get confidenceCoverage => '95% confidence';
 
   @override
-  String get status => '状态';
+  String get status => 'Status';
 
   @override
-  String get shareThoughts => '分享你对这次目击的看法...';
+  String get shareThoughts => 'Share your thoughts about this sighting...';
 
   @override
-  String get postCommand => '邮局命令';
+  String get postCommand => 'Post Command';
 
   @override
-  String get clouds => '云层';
+  String get clouds => 'Clouds';
 
   @override
-  String get windLabel => '风';
+  String get windLabel => 'Wind';
 
   @override
-  String get filterAlerts => '过滤提醒';
+  String get filterAlerts => 'Filter Alerts';
 
   @override
-  String get alertSource => '警告来源';
+  String get alertSource => 'Alert Source';
 
   @override
-  String get ufobeepOnly => '仅限UUOBEP';
+  String get ufobeepOnly => 'UFOBeep Only';
 
   @override
-  String get ufobeepOnlyDescription => '只显示原始UFOBEP报告(不包括MUFON数据库)';
+  String get ufobeepOnlyDescription =>
+      'Show only original UFOBeep reports (exclude MUFON database)';
 
   @override
-  String get alertDistanceRange => '警报距离';
+  String get alertDistanceRange => 'Alert Distance Range';
 
   @override
-  String get showAllAlerts => '显示全部提醒';
+  String get showAllAlerts => 'Show All Alerts';
 
   @override
-  String get showAll => '全部显示';
+  String get showAll => 'Show All';
 
   @override
   String get distanceSliderDescription =>
-      '拖曳以调整要看到提示的距离 。 从天气可见度距离开始,到显示所有警报,无论距离.';
+      'Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.';
 
   @override
-  String get applyFilters => '应用过滤器';
+  String get applyFilters => 'Apply Filters';
 
   @override
-  String get notificationRange => '通知范围';
+  String get notificationRange => 'Notification Range';
 
   @override
-  String get notificationRangeDescription => '得到推进警报,在这个距离内看到';
+  String get notificationRangeDescription =>
+      'Get push alerts for sightings within this distance';
 
   @override
-  String get viewingRange => '查看范围';
+  String get viewingRange => 'Viewing Range';
 
   @override
-  String get viewingRangeDescription => '浏览时显示此距离内的目视';
+  String get viewingRangeDescription =>
+      'Show sightings within this distance when browsing';
 
   @override
-  String get weatherVisibility => '天气可见度( ~10km)';
+  String get weatherVisibility => 'Weather Visibility (~10km)';
 
   @override
-  String get localArea => '地区(25公里)';
+  String get localArea => 'Local Area (25km)';
 
   @override
-  String get regional => '区域';
+  String get regional => 'Regional';
 
   @override
-  String get pushNotifications => '推动通知';
+  String get pushNotifications => 'Push Notifications';
 
   @override
-  String get alertBrowsing => '提醒浏览';
+  String get alertBrowsing => 'Alert Browsing';
 
   @override
-  String get pushAlertsWithinDistance => '在此范围内获取通知';
+  String get pushAlertsWithinDistance => 'Get notifications within this range';
 
   @override
-  String get showAlertsWhenBrowsing => '过滤列表中看到的内容';
+  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
 
   @override
-  String get heroMainTagline => '当不明飞行物在附近发现时,在手机上鸣声';
+  String get heroMainTagline =>
+      'Get a beep on your phone when UFOs are spotted nearby';
 
   @override
-  String get heroSecondaryTagline => '找出何时何地看天空';
+  String get heroSecondaryTagline =>
+      'Find out when and where to look at the sky';
 
   @override
-  String get sourceFilters => '来源';
+  String get sourceFilters => 'Source';
 
   @override
-  String get sourceFiltersDescription => '选择种子中出现的报告';
+  String get sourceFiltersDescription =>
+      'Choose which reports appear in your feed';
 
   @override
-  String get ufobeepAndMufon => 'UFOBEP + 毛里求斯';
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
 
   @override
-  String get ufobeepOnlySource => '仅限UUOBEP';
+  String get ufobeepOnlySource => 'UFOBeep only';
 
   @override
-  String get mufonOnlySource => '仅指毛里求斯';
+  String get mufonOnlySource => 'MUFON only';
 
   @override
-  String get browseFilters => '浏览';
+  String get browseFilters => 'Browse';
 
   @override
-  String get browseFiltersDescription => '如何查看和排序提醒';
+  String get browseFiltersDescription => 'How to view and sort alerts';
 
   @override
-  String get sortByNewest => '最新数据';
+  String get sortByNewest => 'Newest';
 
   @override
-  String get sortByNearest => '最接近';
+  String get sortByNearest => 'Nearest';
 
   @override
-  String get sortBy => '排序为';
+  String get sortBy => 'Sort by';
 
   @override
-  String get pushAlertsTitle => '推进提醒';
+  String get pushAlertsTitle => 'Push Alerts';
 
   @override
-  String get pushAlertsDescription => '手机响什么';
+  String get pushAlertsDescription => 'What pings your phone';
 
   @override
-  String get alertRadius => '提醒半径';
+  String get alertRadius => 'Alert Radius';
 
   @override
-  String get mufonNoPushInfo => 'MUFON报告是夜间输入的,不会触发推力警报';
+  String get mufonNoPushInfo =>
+      'MUFON reports are imported nightly and do not trigger push alerts';
 
   @override
-  String get privacyData => '隐私数据( D)';
+  String get privacyData => 'Privacy & Data';
 
   @override
-  String get privacyPolicyDesc => '我们如何保护和使用你的数据';
+  String get privacyPolicyDesc => 'How we protect and use your data';
 
   @override
-  String get termsOfService => '服务条件';
+  String get termsOfService => 'Terms of Service';
 
   @override
-  String get termsOfServiceDesc => '法律条款和条件';
+  String get termsOfServiceDesc => 'Legal terms and conditions';
 
   @override
-  String get locationTracking => '地点跟踪';
+  String get locationTracking => 'Location Tracking';
 
   @override
-  String get locationTrackingDesc => '近距离警报的背景位置';
+  String get locationTrackingDesc => 'Background location for proximity alerts';
 
   @override
-  String get locationTrackingTitle => '背景位置跟踪';
+  String get locationTrackingTitle => 'Background Location Tracking';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBEP在背景中监视你的位置,当UFO的目击发生在你现在的位置附近时,即使你远离家,也会发出近距离警报.';
+      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
 
   @override
-  String get locationTrackingBattery => '使用智能地球圈进行 < 3% 电池撞击';
+  String get locationTrackingBattery =>
+      'Uses intelligent geofencing for <3% battery impact';
 
   @override
-  String get backgroundLocationTracking => '启用背景 跟踪';
+  String get backgroundLocationTracking => 'Enable Background Tracking';
 
   @override
-  String get locationTrackingActive => '监测近距离警报的地点';
+  String get locationTrackingActive =>
+      'Monitoring location for proximity alerts';
 
   @override
-  String get locationTrackingInactive => '位置跟踪已禁用';
+  String get locationTrackingInactive => 'Location tracking is disabled';
 
   @override
-  String get locationTrackingDisabledWarning => '搬去新地方时,不会收到近距离警报';
+  String get locationTrackingDisabledWarning =>
+      'You won\'t receive proximity alerts when you move to new locations';
 
   @override
-  String get trackingStatus => '跟踪状态';
+  String get trackingStatus => 'Tracking Status';
 
   @override
-  String get monitoringStatus => '监测';
+  String get monitoringStatus => 'Monitoring';
 
   @override
-  String get active => '活动';
+  String get active => 'Active';
 
   @override
-  String get inactive => '非活动';
+  String get inactive => 'Inactive';
 
   @override
-  String get lastKnownLocation => '最后已知位置';
+  String get lastKnownLocation => 'Last Known Location';
 
   @override
-  String get lastLocationUpdate => '上次更新';
+  String get lastLocationUpdate => 'Last Update';
 
   @override
-  String get movementThreshold => '移动阈值';
+  String get movementThreshold => 'Movement Threshold';
 
   @override
-  String get updateFrequency => '更新频率';
+  String get updateFrequency => 'Update Frequency';
 
   @override
-  String get batteryImpact => '电池撞击';
+  String get batteryImpact => 'Battery Impact';
 
   @override
-  String get dataPrivacy => '数据隐私';
+  String get dataPrivacy => 'Data Privacy';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBEP需要“ 永远允许” 位置权限来监视您的移动, 并在您在新位置时发出近距离警报 .';
+      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
 
   @override
-  String get benefitsTitle => '福利';
+  String get benefitsTitle => 'Benefits';
 
   @override
   String get locationTrackingBenefits =>
-      '• 支助 无论你在哪里旅行,都要收到UFO警报\n• 自动更新位置\n• 支助 不需要手动设置';
+      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
 
   @override
-  String get allowLocationAccess => '允许访问位置';
+  String get allowLocationAccess => 'Allow Location Access';
 
   @override
-  String get locationPermissionRequired => '背景跟踪需要位置许可';
+  String get locationPermissionRequired =>
+      'Location permission is required for background tracking';
 
   @override
-  String get locationTrackingEnabled => '背景位置跟踪启用';
+  String get locationTrackingEnabled => 'Background location tracking enabled';
 
   @override
-  String get locationTrackingDisabled => '背景位置跟踪已禁用';
+  String get locationTrackingDisabled =>
+      'Background location tracking disabled';
 
   @override
-  String get justNow => '刚才';
+  String get justNow => 'Just now';
 
   @override
   String minutesAgo(int minutes) {
-    return '0分钟前';
+    return '$minutes minutes ago';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '0小时前';
+    return '$hours hours ago';
   }
 
   @override
   String daysAgo(int days) {
-    return '# 几天前,我来到了这里#';
+    return '$days days ago';
   }
 
   @override
-  String get dataManagement => '数据管理';
+  String get dataManagement => 'Data Management';
 
   @override
-  String get dataManagementDesc => '导出或删除您的账户数据';
+  String get dataManagementDesc => 'Export or delete your account data';
 
   @override
-  String get splashTagline => '实时目视警报';
+  String get splashTagline => 'Real-time sighting alerts';
 
   @override
-  String get splashStartingUp => '开始...';
+  String get splashStartingUp => 'Starting up...';
 
   @override
-  String get splashInitializationFailed => '初始化失败';
+  String get splashInitializationFailed => 'Initialization failed';
 
   @override
-  String get splashInitializationFailedTitle => '初始化失败';
+  String get splashInitializationFailedTitle => 'Initialization Failed';
 
   @override
-  String get splashInitializationError => '应用程序未正确初始化 :';
+  String get splashInitializationError =>
+      'The app failed to initialize properly:';
 
   @override
-  String get splashRetry => '重试';
+  String get splashRetry => 'Retry';
 
   @override
-  String get splashContinue => '继续';
+  String get splashContinue => 'Continue';
 
   @override
-  String get splashInitializing => '正在初始化...';
+  String get splashInitializing => 'Initializing...';
 
   @override
   String signInWelcome(String username) {
-    return '欢迎光临!';
+    return 'Welcome $username!';
   }
 
   @override
   String signInFailed(String error) {
-    return '签名失败 : – 地点/地点/地点/地点/地点/地点';
+    return 'Sign-in failed: $error';
   }
 
   @override
-  String get signInPleaseEnterEmail => '请输入您的电子邮件地址';
+  String get signInPleaseEnterEmail => 'Please enter your email address';
 
   @override
-  String get signInPleaseEnterValidEmail => '请输入有效的电子邮件地址';
+  String get signInPleaseEnterValidEmail =>
+      'Please enter a valid email address';
 
   @override
-  String get signInMagicLinkSent => '传送魔法链接! 检查您的电子邮件并点击链接签名 .';
+  String get signInMagicLinkSent =>
+      'Magic link sent! Check your email and click the link to sign in.';
 
   @override
-  String get signInMagicLinkFailed => '发送魔法链接失败 。 请再试一次.';
+  String get signInMagicLinkFailed =>
+      'Failed to send magic link. Please try again.';
 
   @override
-  String get signInAllDataCleared => '所有数据已清理';
+  String get signInAllDataCleared => 'All data cleared';
 
   @override
-  String get signInSubtitle => '实时UFO目击警报和MUFON报告';
+  String get signInSubtitle =>
+      'Real-time UFO sighting alerts and MUFON reports';
 
   @override
-  String get signInGoogleLoading => '签名于...';
+  String get signInGoogleLoading => 'Signing in...';
 
   @override
-  String get signInContinueWithGoogle => '继续谷歌';
+  String get signInContinueWithGoogle => 'Continue with Google';
 
   @override
-  String get signInOr => '或';
+  String get signInOr => 'or';
 
   @override
-  String get signInWithEmail => '用电子邮件签名';
+  String get signInWithEmail => 'Sign in with Email';
 
   @override
-  String get signInEmailDescription => '我们会给你一个安全的链接 来注册';
+  String get signInEmailDescription =>
+      'We\'ll send you a secure link to sign in';
 
   @override
-  String get signInEmailAddress => '电子邮件地址';
+  String get signInEmailAddress => 'Email address';
 
   @override
-  String get signInEmailPlaceholder => '请检查date=中的日期值 (帮助) your@email.com';
+  String get signInEmailPlaceholder => 'your@email.com';
 
   @override
   String signInTryAgainIn(int seconds) {
-    return '在 _PLACEHOLDER_0_s中再次尝试';
+    return 'Try again in ${seconds}s';
   }
 
   @override
-  String get signInSending => '正在发送...';
+  String get signInSending => 'Sending...';
 
   @override
-  String get signInSendMagicLink => '发送魔法链接';
+  String get signInSendMagicLink => 'Send Magic Link';
 
   @override
-  String get signInCheckEmail => '检查你的电子邮件! 链接在15分钟后到期.';
+  String get signInCheckEmail =>
+      'Check your email! The link expires in 15 minutes.';
 
   @override
-  String get signInSecureAuth => '安全认证';
+  String get signInSecureAuth => 'Secure Authentication';
 
   @override
   String get signInSecureAuthDescription =>
-      '使用Google Sign-In进行即时访问,或者在15分钟内过期的电子邮件魔法链接.';
+      'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.';
 
   @override
-  String get signInClearAllDataDebug => '清除全部数据( 调试)';
+  String get signInClearAllDataDebug => 'Clear All Data (Debug)';
 
   @override
-  String get emailAuthFailedToSend => '发送邮件失败';
+  String get emailAuthFailedToSend => 'Failed to send email';
 
   @override
-  String get emailAuthFailedToSendTryAgain => '发送邮件失败 。 请再试一次.';
+  String get emailAuthFailedToSendTryAgain =>
+      'Failed to send email. Please try again.';
 
   @override
-  String get emailAuthInvalidEmail => '无效的电子邮件地址 。 请检查格式 .';
+  String get emailAuthInvalidEmail =>
+      'Invalid email address. Please check the format.';
 
   @override
-  String get emailAuthUserNotFound => '此电子邮件地址找不到账户 .';
+  String get emailAuthUserNotFound =>
+      'No account found with this email address.';
 
   @override
-  String get emailAuthTooManyRequests => '尝试太多。 请稍候再试.';
+  String get emailAuthTooManyRequests =>
+      'Too many attempts. Please try again later.';
 
   @override
-  String get emailAuthOperationNotAllowed => '未启用电子邮件链接签名 .';
+  String get emailAuthOperationNotAllowed =>
+      'Email link sign-in is not enabled.';
 
   @override
-  String get emailAuthQuotaExceeded => '电子邮件配额超过。 明天再试一次.';
+  String get emailAuthQuotaExceeded =>
+      'Email quota exceeded. Please try again tomorrow.';
 
   @override
-  String get emailAuthVerificationFailed => '电子邮件验证失败 。 请再试一次.';
+  String get emailAuthVerificationFailed =>
+      'Email verification failed. Please try again.';
 
   @override
-  String get emailAuthTitle => '电子邮件验证';
+  String get emailAuthTitle => 'Email Verification';
 
   @override
-  String get emailAuthVerifyYourEmail => '校验您的电子邮件';
+  String get emailAuthVerifyYourEmail => 'Verify Your Email';
 
   @override
-  String get emailAuthDescription => '添加您的电子邮件地址, 用于账户恢复和安全 。 我们会给你发送一个安全登录链接.';
+  String get emailAuthDescription =>
+      'Add your email address for account recovery and security. We\'ll send you a secure sign-in link.';
 
   @override
-  String get emailAuthEmailAddress => '电子邮件地址';
+  String get emailAuthEmailAddress => 'Email Address';
 
   @override
-  String get emailAuthEmailPlaceholder => '电子邮件@example.com';
+  String get emailAuthEmailPlaceholder => 'your.email@example.com';
 
   @override
-  String get emailAuthPleaseEnterEmail => '请输入您的电子邮件地址';
+  String get emailAuthPleaseEnterEmail => 'Please enter your email address';
 
   @override
-  String get emailAuthPleaseEnterValidEmail => '请输入有效的电子邮件地址';
+  String get emailAuthPleaseEnterValidEmail =>
+      'Please enter a valid email address';
 
   @override
-  String get emailAuthCheckEmailToContinue => '检查您的电子邮件, 并点击验证链接继续 .';
+  String get emailAuthCheckEmailToContinue =>
+      'Check your email and tap the verification link to continue.';
 
   @override
-  String get emailAuthResendEmail => '重新发送电子邮件';
+  String get emailAuthResendEmail => 'Resend Email';
 
   @override
-  String get emailAuthSendVerificationEmail => '发送验证 电子邮件';
+  String get emailAuthSendVerificationEmail => 'Send Verification Email';
 
   @override
-  String get emailAuthHowItWorks => '电子邮件核查工作如何进行';
+  String get emailAuthHowItWorks => 'How Email Verification Works';
 
   @override
   String get emailAuthHowItWorksSteps =>
-      '一、导 言 我们给你发送一个安全的登录链接\n2. 国家 检查您的电子邮件并点击链接\n3个 您的电子邮件会自动校验\n4个 不需要密码!';
+      '1. We send you a secure sign-in link\n2. Check your email and tap the link\n3. Your email gets verified automatically\n4. No passwords needed!';
 
   @override
-  String get emailAuthSecurityNotice => '电子邮件验证有助于保护您的账户, 并允许在无法访问您的设备时恢复账户 .';
+  String get emailAuthSecurityNotice =>
+      'Email verification helps secure your account and enables account recovery if you lose access to your device.';
 
   @override
-  String get phoneAuthFailedToSendCode => '发送验证码失败 。 请再试一次.';
+  String get phoneAuthFailedToSendCode =>
+      'Failed to send verification code. Please try again.';
 
   @override
-  String get phoneAuthInvalidCodeTryAgain => '无效的校验代码 。 请再试一次.';
+  String get phoneAuthInvalidCodeTryAgain =>
+      'Invalid verification code. Please try again.';
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return '经核实的电话号码: – 地点/地点/地点/地点/地点/地点';
+    return 'Phone number verified: $phoneNumber';
   }
 
   @override
-  String get phoneAuthVerificationFailed => '电话验证失败 。 请再试一次.';
+  String get phoneAuthVerificationFailed =>
+      'Phone verification failed. Please try again.';
 
   @override
-  String get phoneAuthCodeResent => '核查码很讨厌';
+  String get phoneAuthCodeResent => 'Verification code resent';
 
   @override
-  String get phoneAuthFailedToResendCode => '重新发送代码失败 。 请再试一次.';
+  String get phoneAuthFailedToResendCode =>
+      'Failed to resend code. Please try again.';
 
   @override
-  String get phoneAuthInvalidPhoneNumber => '无效的电话号码 。 请检查格式 .';
+  String get phoneAuthInvalidPhoneNumber =>
+      'Invalid phone number. Please check the format.';
 
   @override
-  String get phoneAuthTooManyRequests => '尝试太多。 请稍候再试.';
+  String get phoneAuthTooManyRequests =>
+      'Too many attempts. Please try again later.';
 
   @override
-  String get phoneAuthInvalidVerificationCode => '无效的校验代码 。 请再检查一次.';
+  String get phoneAuthInvalidVerificationCode =>
+      'Invalid verification code. Please check and try again.';
 
   @override
-  String get phoneAuthSessionExpired => '核查会话到期 。 请申请新的代码 .';
+  String get phoneAuthSessionExpired =>
+      'Verification session expired. Please request a new code.';
 
   @override
-  String get phoneAuthSmsQuotaExceeded => '短信配额超过。 明天再试一次.';
+  String get phoneAuthSmsQuotaExceeded =>
+      'SMS quota exceeded. Please try again tomorrow.';
 
   @override
-  String get phoneAuthCredentialAlreadyInUse => '这个电话号码已经链接到另一个账户 .';
+  String get phoneAuthCredentialAlreadyInUse =>
+      'This phone number is already linked to another account.';
 
   @override
-  String get phoneAuthVerificationFailedGeneric => '验证失败 。 请再试一次.';
+  String get phoneAuthVerificationFailedGeneric =>
+      'Verification failed. Please try again.';
 
   @override
-  String get phoneAuthTitle => '电话验证';
+  String get phoneAuthTitle => 'Phone Verification';
 
   @override
-  String get phoneAuthVerifyYourPhone => '校验您的手机';
+  String get phoneAuthVerifyYourPhone => 'Verify Your Phone';
 
   @override
-  String get phoneAuthEnterVerificationCode => '输入校验 代码';
+  String get phoneAuthEnterVerificationCode => 'Enter Verification Code';
 
   @override
-  String get phoneAuthAddPhoneForSecurity => '添加您的电话号码用于账户恢复和安全';
+  String get phoneAuthAddPhoneForSecurity =>
+      'Add your phone number for account recovery and security';
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return '输入发送到 _PLACEHOLDER_0__的6位数代码';
+    return 'Enter the 6-digit code sent to $phoneNumber';
   }
 
   @override
-  String get phoneAuthPhoneNumber => '电话号码';
+  String get phoneAuthPhoneNumber => 'Phone Number';
 
   @override
-  String get phoneAuthPhonePlaceholder => '+1(555) 123-4567';
+  String get phoneAuthPhonePlaceholder => '+1 (555) 123-4567';
 
   @override
-  String get phoneAuthPleaseEnterPhone => '请输入您的电话号码';
+  String get phoneAuthPleaseEnterPhone => 'Please enter your phone number';
 
   @override
-  String get phoneAuthPleaseEnterValidPhone => '请输入有效的电话号码';
+  String get phoneAuthPleaseEnterValidPhone =>
+      'Please enter a valid phone number';
 
   @override
-  String get phoneAuthVerificationCode => '核查码';
+  String get phoneAuthVerificationCode => 'Verification Code';
 
   @override
-  String get phoneAuthPleaseEnterSixDigitCode => '请输入六位数代码';
+  String get phoneAuthPleaseEnterSixDigitCode =>
+      'Please enter the 6-digit code';
 
   @override
-  String get phoneAuthResendCode => '重新发送代码';
+  String get phoneAuthResendCode => 'Resend Code';
 
   @override
-  String get phoneAuthSendVerificationCode => '发送验证 代码';
+  String get phoneAuthSendVerificationCode => 'Send Verification Code';
 
   @override
-  String get phoneAuthVerifyCode => '校验代码';
+  String get phoneAuthVerifyCode => 'Verify Code';
 
   @override
-  String get phoneAuthChangePhoneNumber => '更改电话号码';
+  String get phoneAuthChangePhoneNumber => 'Change Phone Number';
 
   @override
-  String get phoneAuthSmsNotice => '我们会通过短信给你一个验证码 可适用标准的信息费率.';
+  String get phoneAuthSmsNotice =>
+      'We\'ll send you a verification code via SMS. Standard message rates may apply.';
 
   @override
-  String get phoneAuthCodeExpires => '代码在60秒后失效 检查您的留言.';
+  String get phoneAuthCodeExpires =>
+      'Code expires in 60 seconds. Check your messages.';
 
   @override
-  String get yourDataRights => '您的数据权限';
+  String get yourDataRights => 'Your Data Rights';
 
   @override
-  String get dataRightsExplanation => '你完全控制你的个人资料 您可以随时导出您的全部数据或永久删除您的账户 .';
+  String get dataRightsExplanation =>
+      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
 
   @override
-  String get exportYourData => '导出您的数据';
+  String get exportYourData => 'Export Your Data';
 
   @override
-  String get exportDataDescription => '下载您的账户数据';
+  String get exportDataDescription => 'Download all your account data';
 
   @override
-  String get exportData => '导出数据';
+  String get exportData => 'Export Data';
 
   @override
-  String get exportingData => '导出中...';
+  String get exportingData => 'Exporting...';
 
   @override
-  String get exportDataDetails => '包括:剖面图,哔声,评论,设备信息,以及首选项. 数据以JSON格式提供.';
+  String get exportDataDetails =>
+      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
 
   @override
-  String get dataExportedSuccessfully => '数据成功导出';
+  String get dataExportedSuccessfully => 'Data exported successfully';
 
   @override
-  String get dataExportFailed => '导出数据失败';
+  String get dataExportFailed => 'Failed to export data';
 
   @override
-  String get deleteAccount => '删除账户';
+  String get deleteAccount => 'Delete Account';
 
   @override
-  String get deleteAccountDescription => '永久删除您的账户和所有数据';
+  String get deleteAccountDescription =>
+      'Permanently remove your account and all data';
 
   @override
-  String get deleteAccountWarning => '这一行动不能取消。 您的所有哔声、 评论和账户数据将被永久删除 .';
+  String get deleteAccountWarning =>
+      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
 
   @override
-  String get deleteMyAccount => '删除我的账户';
+  String get deleteMyAccount => 'Delete My Account';
 
   @override
-  String get deletingAccount => '正在删除...';
+  String get deletingAccount => 'Deleting...';
 
   @override
-  String get deleteAccountConfirmTitle => '删除账户';
+  String get deleteAccountConfirmTitle => 'Delete Account';
 
   @override
-  String get deleteAccountConfirmMessage => '您确定要删除您的账户吗 ? 这一行动是永久性的,不能取消.';
+  String get deleteAccountConfirmMessage =>
+      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
 
   @override
-  String get dataWillBeDeleted => '以下数据将永久删除:';
+  String get dataWillBeDeleted =>
+      'The following data will be permanently deleted:';
 
   @override
   String get deletedDataList =>
-      '• 支助 您的配置和用户名\n• 支助 所有你的哔声和报告\n• 支助 所有你的评论\n• 设备登记数据\n• 地点和偏好数据';
+      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
 
   @override
-  String get deleteAccountPermanent => '永久删除';
+  String get deleteAccountPermanent => 'Delete Permanently';
 
   @override
-  String get accountDeletedSuccessfully => '账户已成功删除';
+  String get accountDeletedSuccessfully => 'Account deleted successfully';
 
   @override
-  String get accountDeletionFailed => '删除账户失败';
+  String get accountDeletionFailed => 'Failed to delete account';
 
   @override
-  String get onboardingWelcomeTitle => '欢迎来到UFOBEP';
+  String get onboardingWelcomeTitle => 'Welcome to UFOBeep';
 
   @override
-  String get onboardingWelcomeBody => '发现不明飞行物时立即发出警报 永远不要错过一次目击!';
+  String get onboardingWelcomeBody =>
+      'Get instant alerts when UFOs are spotted near your location. Never miss a sighting again!';
 
   @override
-  String get onboardingReportTitle => '看到什么了吗? 鸣吧!';
+  String get onboardingReportTitle => 'See something? Beep it!';
 
   @override
-  String get onboardingReportBody => '捕捉UFO目击的照片和视频. 立即与全球社会分享.';
+  String get onboardingReportBody =>
+      'Capture photos and videos of UFO sightings. Share with the global community instantly.';
 
   @override
-  String get onboardingCompassTitle => '看他们看哪里';
+  String get onboardingCompassTitle => 'See Where They Looked';
 
   @override
-  String get onboardingCompassBody => 'Compass告诉你目击证人看到UFO时正在寻找的确切方向. 指着手机看!';
+  String get onboardingCompassBody =>
+      'Compass shows you the exact direction the witness was looking when they saw the UFO. Point your phone and look!';
 
   @override
-  String get onboardingCommunityTitle => '连接监视天线';
+  String get onboardingCommunityTitle => 'Connect with Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      '读读早上咖啡上最新的UFO的目击记录 获取专业的MUFON数据,并与同行的天空观测员连接.';
+      'Read the latest UFO sightings over your morning coffee. Access professional MUFON data and connect with fellow skywatchers.';
 
   @override
-  String get skip => '跳过';
+  String get skip => 'Skip';
 
   @override
-  String get getStarted => '开始';
+  String get getStarted => 'Get Started';
 
   @override
-  String get viewOnboardingAgain => '再次查看登机';
+  String get viewOnboardingAgain => 'View Onboarding Again';
 
   @override
   String get customAlertRange => 'Custom Alert Range';
 
   @override
-  String get enterRangeKm => 'Enter range in km (1-500)';
+  String get enterRangeKm => 'Enter range in km (1-99999)';
 
   @override
   String get largeRangeWarning =>
       'Large ranges (>100km) may generate many alerts';
 
   @override
-  String get invalidRange => 'Please enter a number between 1 and 500';
+  String get globalRangeWarning =>
+      'Very large ranges (>1000km) will send you alerts from around the world';
+
+  @override
+  String get invalidRange => 'Please enter a number between 1 and 99999';
 }

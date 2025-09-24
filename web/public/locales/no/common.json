@@ -544,6 +544,10 @@
   "skip": "Skip",
   "getStarted": "Get Started",
   "viewOnboardingAgain": "View Onboarding Again",
+  "customAlertRange": "Custom Alert Range",
+  "enterRangeKm": "Enter range in km (1-99999)",
+  "largeRangeWarning": "Large ranges (>100km) may generate many alerts",
+  "globalRangeWarning": "Very large ranges (>1000km) will send you alerts from around the world",
   "errorGeneric": "Something went wrong.",
   "welcomeTitle": "Welcome to UFOBeep",
   "welcomeSubtitle": "Real-time UFO alerts near you",
@@ -639,5 +643,6 @@
   "ufobeepAndMufon": "UFOBeep + MUFON",
   "ufobeepOnlySource": "UFOBeep only",
   "alertRadius": "Alert Radius",
-  "signInSubtitle": "Real-time UFO sighting alerts and MUFON reports"
+  "signInSubtitle": "Real-time UFO sighting alerts and MUFON reports",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "Оповещения",
-  "tabBeep": "Бип",
-  "tabChat": "Чат",
-  "tabMap": "Карта",
-  "tabSettings": "Настройки",
-  "mufonDatabaseEntryDate": "Дата вхождения в MUFON База данных",
-  "databaseEntry": "Вход в базу данных",
-  "mufonDatabaseReport": "МУФОН Номер дела:"
+  "tabAlerts": "Alerts",
+  "tabBeep": "Beep",
+  "tabChat": "Chat",
+  "tabMap": "Map",
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry",
+  "mufonDatabaseReport": "MUFON Case Number:"
 }

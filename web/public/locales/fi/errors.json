@@ -1,11 +1,12 @@
 {
-  "errorGeneric": "Jokin meni pieleen.",
-  "errorNoLocation": "Sijaintia ei ole saatavilla. Yritä uudelleen ulkona selkeä taivas.",
-  "errorNoCamera": "Tällä laitteella ei ole kameraa.",
-  "errorUploadFailed": "Lähetys epäonnistui. Yritä uudestaan.",
-  "errorPermissionDenied": "Lupa evätty.",
-  "errorInvalidUsername": "Tämä käyttäjätunnus ei ole saatavilla.",
-  "errorNotFound": "Piip ei löytynyt",
-  "errorLoadError": "Piippauksen yksityiskohtia ei voitu ladata",
-  "failed": "Ei onnistunut"
+  "errorGeneric": "Something went wrong.",
+  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
+  "errorNoCamera": "Camera unavailable on this device.",
+  "errorUploadFailed": "Upload failed. Please try again.",
+  "errorPermissionDenied": "Permission denied.",
+  "errorInvalidUsername": "That username isn’t available.",
+  "errorNotFound": "Beep not found",
+  "errorLoadError": "Failed to load beep details",
+  "failed": "Failed",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

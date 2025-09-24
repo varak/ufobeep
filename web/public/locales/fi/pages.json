@@ -1,6 +1,6 @@
 {
-  "welcomeTitle": "Tervetuloa UFO- piippiin",
-  "settings": "Asetukset",
-  "settingsTitle": "Asetukset",
-  "pageOf": "Sivu __PASSIHOLDER_0__ of _PASSIHOLDER_1__ (__PASSIHOLDER_2_ total piips)"
+  "welcomeTitle": "Welcome to UFOBeep",
+  "settings": "Settings",
+  "settingsTitle": "Settings",
+  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)"
 }

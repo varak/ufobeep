@@ -1,6 +1,6 @@
 {
-  "welcomeTitle": "UFOBeep में आपका स्वागत है",
-  "settings": "सेटिंग",
-  "settingsTitle": "सेटिंग",
-  "pageOf": "पृष्ठ {currentPage}__{totalCount}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________"
+  "welcomeTitle": "Welcome to UFOBeep",
+  "settings": "Settings",
+  "settingsTitle": "Settings",
+  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)"
 }

@@ -3993,7 +3993,7 @@ abstract class AppLocalizations {
   /// No description provided for @enterRangeKm.
   ///
   /// In en, this message translates to:
-  /// **'Enter range in km (1-500)'**
+  /// **'Enter range in km (1-99999)'**
   String get enterRangeKm;
 
   /// No description provided for @largeRangeWarning.
@@ -4002,10 +4002,16 @@ abstract class AppLocalizations {
   /// **'Large ranges (>100km) may generate many alerts'**
   String get largeRangeWarning;
 
+  /// No description provided for @globalRangeWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Very large ranges (>1000km) will send you alerts from around the world'**
+  String get globalRangeWarning;
+
   /// No description provided for @invalidRange.
   ///
   /// In en, this message translates to:
-  /// **'Please enter a number between 1 and 500'**
+  /// **'Please enter a number between 1 and 99999'**
   String get invalidRange;
 }
 

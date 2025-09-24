@@ -1,11 +1,12 @@
 {
-  "errorGeneric": "Bir şey yanlış gitti.",
-  "errorNoLocation": "Konum mevcut değil. Açık gökyüzü görünümü ile tekrar dışarı deneyin.",
-  "errorNoCamera": "Kamera bu cihazda mevcut değil.",
-  "errorUploadFailed": "Yükleme başarısız oldu. Lütfen tekrar deneyin.",
-  "errorPermissionDenied": "İzin inkar etti.",
-  "errorInvalidUsername": "Bu kullanıcı mevcut değildir.",
-  "errorNotFound": "Arıp bulunamadı",
-  "errorLoadError": "Beep detaylarını yüklemek için başarısız oldu",
-  "failed": "Başarısızlık"
+  "errorGeneric": "Something went wrong.",
+  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
+  "errorNoCamera": "Camera unavailable on this device.",
+  "errorUploadFailed": "Upload failed. Please try again.",
+  "errorPermissionDenied": "Permission denied.",
+  "errorInvalidUsername": "That username isn’t available.",
+  "errorNotFound": "Beep not found",
+  "errorLoadError": "Failed to load beep details",
+  "failed": "Failed",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

@@ -7,5 +7,6 @@
   "errorInvalidUsername": "That username isn’t available.",
   "errorNotFound": "Beep not found",
   "errorLoadError": "Failed to load beep details",
-  "failed": "Failed"
+  "failed": "Failed",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

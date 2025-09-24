@@ -9,793 +9,787 @@ class AppLocalizationsCs extends AppLocalizations {
   AppLocalizationsCs([String locale = 'cs']) : super(locale);
 
   @override
-  String get appName => 'UFOBEep';
+  String get appName => 'UFOBeep';
 
   @override
-  String get ok => 'DOBŘE';
+  String get ok => 'OK';
 
   @override
-  String get cancel => 'Zrušit';
+  String get cancel => 'Cancel';
 
   @override
-  String get close => 'Zavřít';
+  String get close => 'Close';
 
   @override
-  String get save => 'Uložit';
+  String get save => 'Save';
 
   @override
-  String get delete => 'Smazat';
+  String get delete => 'Delete';
 
   @override
-  String get edit => 'Upravit';
+  String get edit => 'Edit';
 
   @override
-  String get retry => 'Znovu';
+  String get retry => 'Retry';
 
   @override
-  String get yes => 'Ano';
+  String get yes => 'Yes';
 
   @override
-  String get no => 'Ne';
+  String get no => 'No';
 
   @override
-  String get back => 'Zpět';
+  String get back => 'Back';
 
   @override
-  String get next => 'Další';
+  String get next => 'Next';
 
   @override
-  String get done => 'Hotovo';
+  String get done => 'Done';
 
   @override
-  String get loading => 'Nabíjím..';
+  String get loading => 'Loading…';
 
   @override
-  String get processing => 'Zpracování..';
+  String get processing => 'Processing…';
 
   @override
-  String get errorGeneric => 'Něco se pokazilo.';
+  String get errorGeneric => 'Something went wrong.';
 
   @override
-  String get networkError => 'Chyba sítě. Zkontrolujte spojení.';
+  String get networkError => 'Network error. Check your connection.';
 
   @override
-  String get permissionsRequired => 'Požadované oprávnění';
+  String get permissionsRequired => 'Permissions required';
 
   @override
-  String get learnMore => 'Přečtěte si více';
+  String get learnMore => 'Learn more';
 
   @override
-  String get welcomeTitle => 'Vítejte v UFOBeepu';
+  String get welcomeTitle => 'Welcome to UFOBeep';
 
   @override
-  String get welcomeSubtitle => 'Real-time UFO upozornění v blízkosti vás';
+  String get welcomeSubtitle => 'Real-time UFO alerts near you';
 
   @override
-  String get signIn => 'Přihlaste se';
+  String get signIn => 'Sign in';
 
   @override
-  String get signOut => 'Odhlásit se';
+  String get signOut => 'Sign out';
 
   @override
-  String get continueAsGuest => 'Pokračovat jako host';
+  String get continueAsGuest => 'Continue as guest';
 
   @override
-  String get enterUsername => 'Zadejte uživatelské jméno';
+  String get enterUsername => 'Enter a username';
 
   @override
-  String get username => 'Uživatelské jméno';
+  String get username => 'Username';
 
   @override
-  String get usernameUpdated => 'Uživatelské jméno aktualizováno';
+  String get usernameUpdated => 'Username updated';
 
   @override
-  String get profile => 'Profil';
+  String get profile => 'Profile';
 
   @override
-  String get settings => 'Nastavení';
+  String get settings => 'Settings';
 
   @override
-  String get tabAlerts => 'Upozornění';
+  String get tabAlerts => 'Alerts';
 
   @override
-  String get tabBeep => 'Píp';
+  String get tabBeep => 'Beep';
 
   @override
   String get tabChat => 'Chat';
 
   @override
-  String get tabMap => 'Mapa';
+  String get tabMap => 'Map';
 
   @override
-  String get tabSettings => 'Nastavení';
+  String get tabSettings => 'Settings';
 
   @override
-  String get alertsTitle => 'Blízké výstrahy';
+  String get alertsTitle => 'Nearby Alerts';
 
   @override
-  String get noAlerts => 'Zatím žádné varování.';
+  String get noAlerts => 'No alerts nearby yet.';
 
   @override
-  String get pullToRefresh => 'Zatáhněte za obnovení';
+  String get pullToRefresh => 'Pull to refresh';
 
   @override
   String alertDistance(String distance) {
-    return '_ _ PLACETETERER _ 0 _ _ away';
+    return '$distance away';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Ložisko _ _ PLACETETELER _ 0 _ _ °';
+    return 'Bearing $bearing°';
   }
 
   @override
-  String get viewAlert => 'Zobrazit upozornění';
+  String get viewAlert => 'View alert';
 
   @override
-  String get viewOnMap => 'Zobrazit na mapě';
+  String get viewOnMap => 'View on map';
 
   @override
-  String get iSeeItToo => 'Taky to vidím';
+  String get iSeeItToo => 'I see it too';
 
   @override
-  String get confirmWitnessed =>
-      'Potvrďte, že jste byl svědkem tohoto pozorování?';
+  String get confirmWitnessed => 'Confirm you witnessed this sighting?';
 
   @override
-  String get witnessConfirmed => 'Díky - vaše potvrzení bylo odesláno.';
+  String get witnessConfirmed => 'Thanks — your confirmation was posted.';
 
   @override
-  String get createBeepTitle => 'Poslat píp';
+  String get createBeepTitle => 'Send a Beep';
 
   @override
-  String get beepExplain =>
-      'Zachyťte to, co vidíte a upozorněte blízké pozorovatele.';
+  String get beepExplain => 'Capture what you see and alert nearby watchers.';
 
   @override
-  String get capturePhoto => 'Zachytit fotografii';
+  String get capturePhoto => 'Capture photo';
 
   @override
-  String get captureVideo => 'Zachytit video';
+  String get captureVideo => 'Capture video';
 
   @override
-  String get pickFromGallery => 'Vyberte si z galerie';
+  String get pickFromGallery => 'Choose from gallery';
 
   @override
-  String get descriptionHint => 'Popište, co vidíte na obloze..';
+  String get descriptionHint => 'Describe what you\'re seeing in the sky…';
 
   @override
-  String get submitBeep => 'Poslat Beep';
+  String get submitBeep => 'Send Beep';
 
   @override
-  String get beepSent => 'Píp odeslán';
+  String get beepSent => 'Beep sent';
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Píp odeslaný úspěšně';
+    return 'Beep sent successfully';
   }
 
   @override
-  String get uploadingMedia => 'Nahrávání médií..';
+  String get uploadingMedia => 'Uploading media…';
 
   @override
-  String get includeLocation => 'Zahrnout umístění';
+  String get includeLocation => 'Include location';
 
   @override
-  String get includeTimestamp => 'Zahrnout časové razítko';
+  String get includeTimestamp => 'Include timestamp';
 
   @override
-  String get beepFailed => 'Nepodařilo se mi poslat Beepa.';
+  String get beepFailed => 'Failed to send Beep.';
 
   @override
-  String get mediaProcessing => 'Zpracovávání médií..';
+  String get mediaProcessing => 'Processing media…';
 
   @override
-  String get cameraPermissionTitle => 'Potřebný přístup kamery';
+  String get cameraPermissionTitle => 'Camera access needed';
 
   @override
   String get cameraPermissionBody =>
-      'Grantová kamera přístup k zachycení UFO fotografie a videa.';
+      'Grant camera access to capture UFO photos and videos.';
 
   @override
-  String get locationPermissionTitle => 'Vyžadováno povolení k umístění';
+  String get locationPermissionTitle => 'Location Permission Required';
 
   @override
   String get locationPermissionBody =>
-      'Vaši polohu využíváme k odesílání a přijímání nedalekých upozornění.';
+      'We use your location to send and receive nearby alerts.';
 
   @override
-  String get microphonePermissionTitle => 'Potřebný mikrofon';
+  String get microphonePermissionTitle => 'Microphone access needed';
 
   @override
   String get microphonePermissionBody =>
-      'Grant mikrofon přístup pro záznam videa s audio.';
+      'Grant microphone access for video capture with audio.';
 
   @override
-  String get openSettings => 'Otevřít nastavení';
+  String get openSettings => 'Open settings';
 
   @override
-  String get alertDetailTitle => 'Detaily pozorování';
+  String get alertDetailTitle => 'Sighting Details';
 
   @override
   String reportedBy(String username) {
-    return 'Reported by _ _ PLACETIER _ 0 _ _';
+    return 'Reported by $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Hlášený _ _ PLACETETERER _ 0 _ _';
+    return 'Reported $timeAgo';
   }
 
   @override
   String distanceAway(String distance) {
-    return '_ _ PLACETETERER _ 0 _ _';
+    return '$distance';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Nošení objektu: _ _ PLACETETELER _ 0 _ _ °';
+    return 'Bearing to object: $bearing°';
   }
 
   @override
-  String get openCompass => 'Otevřený kompas';
+  String get openCompass => 'Open compass';
 
   @override
-  String get openAR => 'Otevřené překrytí AR';
+  String get openAR => 'Open AR overlay';
 
   @override
-  String get openChat => 'Otevřít chat';
+  String get openChat => 'Open chat';
 
   @override
-  String get commentsTitle => 'Poznámky';
+  String get commentsTitle => 'Comments';
 
   @override
-  String get addComment => 'Přidat komentář..';
+  String get addComment => 'Add a comment…';
 
   @override
-  String get send => 'Odeslat';
+  String get send => 'Send';
 
   @override
-  String get commentPosted => 'Comment';
+  String get commentPosted => 'Comment posted';
 
   @override
-  String get autoFollowEnabled => 'Nyní sledujete tento poplach.';
+  String get autoFollowEnabled => 'You’re now following this alert.';
 
   @override
-  String get noCommentsYet =>
-      'Zatím žádné komentáře. Buďte první, kdo to komentuje!';
+  String get noCommentsYet => 'No comments yet. Be the first to comment!';
 
   @override
-  String get newCommentNotification =>
-      'Nový komentář k pozorování, které sledujete.';
+  String get newCommentNotification => 'New comment on a sighting you follow.';
 
   @override
-  String get mapTitle => 'Živá mapa';
+  String get mapTitle => 'Live Map';
 
   @override
-  String get compassTitle => 'Kompas';
+  String get compassTitle => 'Compass';
 
   @override
-  String get compassSettings => 'Nastavení kompas';
+  String get compassSettings => 'Compass Settings';
 
   @override
-  String get compassMode => 'Režim Compassu';
+  String get compassMode => 'Compass Mode';
 
   @override
-  String get compassStandardMode => 'Standardní režim';
+  String get compassStandardMode => 'Standard Mode';
 
   @override
-  String get compassPilotMode => 'Režim pilota';
+  String get compassPilotMode => 'Pilot Mode';
 
   @override
-  String get compassStandardDescription => 'Základní název a navigace';
+  String get compassStandardDescription => 'Basic heading and navigation';
 
   @override
   String get compassPilotDescription =>
-      'Pokročilá navigace s ETA a vektorováním';
+      'Advanced navigation with ETA and vectoring';
 
   @override
   String pointingTo(String direction) {
-    return 'Ukazuje na _ _ PLACETETERER _ 0 _ _';
+    return 'Pointing to $direction';
   }
 
   @override
-  String get calibratingCompass => 'Kalibrační kompas..';
+  String get calibratingCompass => 'Calibrating compass…';
 
   @override
-  String get openAROverlay => 'Otevřené překrytí AR';
+  String get openAROverlay => 'Open AR overlay';
 
   @override
-  String get pushTitleAlertNearby => 'Pozor UFO blízko vás';
+  String get pushTitleAlertNearby => 'UFO alert near you';
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Bylo hlášeno nové pozorování _ _ PLACETETERER _ 0 _ _ away.';
+    return 'A new sighting was reported $distance away.';
   }
 
   @override
-  String get pushTitleComment => 'Nový komentář';
+  String get pushTitleComment => 'New comment';
 
   @override
-  String get pushBodyComment => 'Někdo komentoval pozorování, které sledujete.';
+  String get pushBodyComment => 'Someone commented on a sighting you follow.';
 
   @override
-  String get pushTitleWitness => 'Potvrzení svědka';
+  String get pushTitleWitness => 'Witness confirmation';
 
   @override
-  String get temperature => 'Teplota';
+  String get temperature => 'Temperature';
 
   @override
-  String get pushBodyWitness => 'Uživatel potvrdil, že vidí stejný objekt.';
+  String get pushBodyWitness => 'A user confirmed they see the same object.';
 
   @override
-  String get weather => 'Počasí';
+  String get weather => 'Weather';
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: _ _ PLACETETERER _ 0 _ _%';
+    return 'Cloud cover: $percent%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Vítr: _ _ PLACETETELER _ 0 _ _ _ _ PLACETETELER _ 1 _ _';
+    return 'Wind: $speed $unit';
   }
 
   @override
-  String get nearbyAircraft => 'Nedaleko letadla';
+  String get nearbyAircraft => 'Nearby aircraft';
 
   @override
-  String get noAircraft => 'Žádné letadlo poblíž';
+  String get noAircraft => 'No aircraft nearby';
 
   @override
-  String get loadingContext => 'Nahrávám kontext prostředí..';
+  String get loadingContext => 'Loading environmental context…';
 
   @override
-  String get settingsTitle => 'Nastavení';
+  String get settingsTitle => 'Settings';
 
   @override
-  String get notifications => 'Oznámení';
+  String get notifications => 'Notifications';
 
   @override
-  String get enablePushNotifications => 'Získat oznámení pro budoucí komentáře';
+  String get enablePushNotifications => 'Get notifications for future comments';
 
   @override
-  String get quietHours => 'Tiché hodiny';
+  String get quietHours => 'Quiet hours';
 
   @override
-  String get quietHoursDesc => 'Tichá upozornění mezi zvolenými hodinami.';
+  String get quietHoursDesc => 'Silence alerts between selected hours.';
 
   @override
-  String get quietHoursEnabled => 'Povolit tiché hodiny';
+  String get quietHoursEnabled => 'Enable quiet hours';
 
   @override
-  String get quietHoursFrom => 'Od';
+  String get quietHoursFrom => 'From';
 
   @override
-  String get quietHoursUntil => 'Dokud';
+  String get quietHoursUntil => 'Until';
 
   @override
-  String get quietHoursDefaultTime => 'Výchozí tiché hodiny';
+  String get quietHoursDefaultTime => 'Default quiet hours';
 
   @override
-  String get emergencyOverride => 'Nouzové ovládání';
+  String get emergencyOverride => 'Emergency override';
 
   @override
-  String get emergencyOverrideDesc =>
-      'Povolit urgentní upozornění během klidných hodin';
+  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
 
   @override
-  String get dndMode => 'Nerušit';
+  String get dndMode => 'Do Not Disturb';
 
   @override
-  String get dndUntil => 'Nepřerušujte, dokud';
+  String get dndUntil => 'Do not disturb until';
 
   @override
   String dndEnabled(Object time) {
-    return 'DND povoleno do _ _ PLACETETELER _ 0 _ _';
+    return 'DND enabled until $time';
   }
 
   @override
-  String get dndDisabled => 'DND vypnuto';
+  String get dndDisabled => 'DND disabled';
 
   @override
-  String get quietHoursActive => 'Tiché hodiny aktivní';
+  String get quietHoursActive => 'Quiet hours active';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Tiché hodiny: _ _ PLACETIER _ 0 _ _ - _ _ PLACETIER _ 1 _ _';
+    return 'Quiet hours: $start - $end';
   }
 
   @override
-  String get pushNotificationUfoAlert => 'UFO Varování';
+  String get pushNotificationUfoAlert => 'UFO Alert';
 
   @override
-  String get pushNotificationAnomalyAlert => 'Anomální poplach';
+  String get pushNotificationAnomalyAlert => 'Anomaly Alert';
 
   @override
-  String get pushNotificationNearby => 'Blízko';
+  String get pushNotificationNearby => 'Nearby';
 
   @override
-  String get pushNotificationInYourArea =>
-      've vaší oblasti. Klepněte na možnost Zobrazit detaily.';
+  String get pushNotificationInYourArea => 'in your area. Tap to view details.';
 
   @override
   String pushNotificationCommented(Object username) {
-    return '_ _ PLACETETERER _ 0 _ _ komentáře';
+    return '$username commented';
   }
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '_ _ PLACETIER _ 0 _ _ komentuje _ _ PLACETIER _ 1 _ _';
+    return '$username commented on $beepTitle';
   }
 
   @override
-  String get pushNotificationGeneric => 'UFOBEep';
+  String get pushNotificationGeneric => 'UFOBeep';
 
   @override
-  String get pushNotificationNewSighting => 'Nové pozorování v blízkosti';
+  String get pushNotificationNewSighting => 'New sighting nearby';
 
   @override
-  String get language => 'Jazyk';
+  String get language => 'Language';
 
   @override
-  String get chooseLanguage => 'Vyberte jazyk';
+  String get chooseLanguage => 'Choose language';
 
   @override
-  String get units => 'Jednotky';
+  String get units => 'Units';
 
   @override
-  String get unitsImperial => 'Císařský (mi, mph)';
+  String get unitsImperial => 'Imperial (mi, mph)';
 
   @override
-  String get unitsMetric => 'Metrické (km, km / h)';
+  String get unitsMetric => 'Metric (km, km/h)';
 
   @override
-  String get privacyPolicy => 'Ochrana osobních údajů';
+  String get privacyPolicy => 'Privacy Policy';
 
   @override
-  String get termsOfUse => 'Podmínky použití';
+  String get termsOfUse => 'Terms of Use';
 
   @override
   String get errorNoLocation =>
-      'Místo není k dispozici. Zkuste to znovu venku s jasným výhledem na oblohu.';
+      'Location unavailable. Try again outside with clear sky view.';
 
   @override
-  String get errorNoCamera => 'Kamera není na tomto zařízení k dispozici.';
+  String get errorNoCamera => 'Camera unavailable on this device.';
 
   @override
-  String get errorUploadFailed => 'Nahrávání selhalo. Prosím, zkuste to znovu.';
+  String get errorUploadFailed => 'Upload failed. Please try again.';
 
   @override
-  String get errorPermissionDenied => 'Povolení zamítnuto.';
+  String get errorPermissionDenied => 'Permission denied.';
 
   @override
-  String get errorInvalidUsername => 'To uživatelské jméno není k dispozici.';
+  String get errorInvalidUsername => 'That username isn’t available.';
 
   @override
-  String get nothingToShow => 'Zatím nic.';
+  String get nothingToShow => 'Nothing to show yet.';
 
   @override
   String get storeShortDesc =>
-      'Okamžité varování UFO. Zachycení, potvrzení a rozhovor v reálném čase.';
+      'Instant UFO alerts near you. Capture, confirm, and chat in real time.';
 
   @override
   String get storeLongDesc =>
-      'UFOBeep posílá upozornění v reálném čase, když někdo spatří poblíž UFO. Zachytit fotografie a videa, potvrdit pozorování s klepnutím, zobrazit směr a vzdálenost, a chatovat s kolegy skywatchers.';
+      'UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.';
 
   @override
   String get keywords =>
-      'UFO, UAP, OVNI, mimozemšťané, pozorování, Skywatch, upozornění, radar, kompas';
+      'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
 
   @override
-  String get noAlertsFound => 'Žádné odpovídající záznamy';
+  String get noAlertsFound => 'No matching alerts';
 
   @override
   String get alertsFilterHelp =>
-      'Zkuste nastavit filtry, abyste viděli další výsledky';
+      'Try adjusting your filters to see more results';
 
   @override
-  String get verified => 'Ověřeno';
+  String get verified => 'Verified';
 
   @override
-  String get beepOnly => 'Pouze píp';
+  String get beepOnly => 'Beep Only';
 
   @override
-  String get reportOnly => 'Pouze text';
+  String get reportOnly => 'Text Only';
 
   @override
-  String get videoOnly => 'Pouze video';
+  String get videoOnly => 'Video Only';
 
   @override
-  String get imageOnly => 'Pouze obrázek';
+  String get imageOnly => 'Image Only';
 
   @override
-  String get mediaOnly => 'Pouze média';
+  String get mediaOnly => 'Media Only';
 
   @override
-  String get timeJustNow => 'právě teď';
+  String get timeJustNow => 'just now';
 
   @override
   String timeDaysAgo(int count) {
-    return 'Před pár dny';
+    return '$count days ago';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'Před pár hodinami';
+    return '$count hours ago';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'Před pár minutami';
+    return '$count minutes ago';
   }
 
   @override
-  String get loadMoreAlerts => 'Načíst více upozornění';
+  String get loadMoreAlerts => 'Load More Alerts';
 
   @override
-  String get toggleMufonTooltip => 'Zapnout pozorování mufonu';
+  String get toggleMufonTooltip => 'Toggle MUFON sightings';
 
   @override
-  String get showMufonData => 'Zobrazit data MUFON';
+  String get showMufonData => 'Show MUFON data';
 
   @override
-  String get hideMufonData => 'Skrýt data MUFON';
+  String get hideMufonData => 'Hide MUFON data';
 
   @override
-  String get showingUfoBeepOnly => 'Zobrazení pouze zpráv UFOBeep';
+  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
 
   @override
-  String get showingAllReports => 'Zobrazení všech zpráv včetně databáze MUFON';
+  String get showingAllReports =>
+      'Showing all reports including MUFON database';
 
   @override
-  String get filteredSuffix => 'filtrované';
+  String get filteredSuffix => 'filtered';
 
   @override
-  String get detailsTitle => 'Podrobnosti';
+  String get detailsTitle => 'Details';
 
   @override
-  String get mufonCase => 'MUFON Případ';
+  String get mufonCase => 'MUFON Case';
 
   @override
-  String get mufonSighting => 'Zpráva o pozorování MUFON';
+  String get mufonSighting => 'MUFON Sighting Report';
 
   @override
-  String get mufonLightSighting => 'Zpráva o pozorování světla MUFON';
+  String get mufonLightSighting => 'MUFON Light Sighting Report';
 
   @override
-  String get mufonSphereSighting => 'Zpráva o pozorování mufonové koule';
+  String get mufonSphereSighting => 'MUFON Sphere Sighting Report';
 
   @override
-  String get mufonDiscSighting => 'MUFON Zpráva o pozorování disku';
+  String get mufonDiscSighting => 'MUFON Disc Sighting Report';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Zpráva o pozorování trojúhelníku';
+  String get mufonTriangleSighting => 'MUFON Triangle Sighting Report';
 
   @override
-  String get mufonCigarSighting => 'Zpráva MUFON Cigar Shighting';
+  String get mufonCigarSighting => 'MUFON Cigar Sighting Report';
 
   @override
-  String get mufonOvalSighting => 'Zpráva o pozorování Oválné pracovnice MUFON';
+  String get mufonOvalSighting => 'MUFON Oval Sighting Report';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Zpráva o pozorování obdélníku';
+  String get mufonRectangleSighting => 'MUFON Rectangle Sighting Report';
 
   @override
-  String get mufonCylinderSighting => 'Zpráva o pozorování válce MUFON';
+  String get mufonCylinderSighting => 'MUFON Cylinder Sighting Report';
 
   @override
-  String get mufonBoomerangSighting => 'Zpráva MUFON Boomerang o pozorování';
+  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting Report';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Fighting Report';
+  String get mufonStarlikeSighting => 'MUFON Starlike Sighting Report';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'Případ MUFON # _ _ PLACETETELER _ 0 _ _ Podrobnosti';
+    return 'MUFON Case #$caseNumber Details';
   }
 
   @override
-  String get sightingDate => 'Datum pozorování';
+  String get sightingDate => 'Sighting Date';
 
   @override
-  String get mufonDatabaseEntryDate => 'Datum zařazení do MUFON Databáze';
+  String get mufonDatabaseEntryDate => 'Date Entered into MUFON Database';
 
   @override
-  String get databaseEntry => 'Záznam databáze';
+  String get databaseEntry => 'Database Entry';
 
   @override
-  String get shareLink => 'Sdílet odkaz';
+  String get shareLink => 'Share Link';
 
   @override
-  String get linkCopied => 'Odkaz zkopírován do schránky';
+  String get linkCopied => 'Link copied to clipboard';
 
   @override
-  String get locationLabel => 'Umístění:';
+  String get locationLabel => 'Location:';
 
   @override
-  String get distanceLabel => 'Vzdálenost';
+  String get distanceLabel => 'Distance';
 
   @override
-  String get timeLabel => 'Čas:';
+  String get timeLabel => 'Time:';
 
   @override
   String get reportedByLabel => 'Reported by';
 
   @override
-  String get unknownLocation => 'Neznámé umístění';
+  String get unknownLocation => 'Unknown Location';
 
   @override
-  String get locationUnknown => 'Umístění není známo';
+  String get locationUnknown => 'Location Unknown';
 
   @override
-  String get witnessesLabel => 'Svědci';
+  String get witnessesLabel => 'Witnesses';
 
   @override
   String witnessesCountMessage(int count) {
-    return '_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování';
+    return '$count people confirmed this sighting';
   }
 
   @override
-  String get photoAnalysisTitle => 'Analýza fotografií';
+  String get photoAnalysisTitle => 'Photo Analysis';
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analýza: _ _ PLACETELER _ 0 _ _ media soubor (y) zpracován';
+    return 'Analysis: $count media file(s) processed';
   }
 
   @override
-  String get addMoreMedia => 'Přidat více';
+  String get addMoreMedia => 'Add More';
 
   @override
-  String get addMedia => 'Přidat média';
+  String get addMedia => 'Add Media';
 
   @override
-  String get retakePhoto => 'Fotografie znovu';
+  String get retakePhoto => 'Retake Photo';
 
   @override
-  String get retakeVideo => 'Retake video';
+  String get retakeVideo => 'Retake Video';
 
   @override
-  String get camera => 'Kamera';
+  String get camera => 'Camera';
 
   @override
-  String get gallery => 'Galerie';
+  String get gallery => 'Gallery';
 
   @override
-  String get basicSettings => 'Základní nastavení';
+  String get basicSettings => 'Basic Settings';
 
   @override
-  String get appSettings => 'Nastavení aplikace';
+  String get appSettings => 'App Settings';
 
   @override
-  String get timeFormat => 'Časový formát';
+  String get timeFormat => 'Time Format';
 
   @override
-  String get timeFormat24Hour => '24 hodin (14: 30)';
+  String get timeFormat24Hour => '24-hour (14:30)';
 
   @override
-  String get timeFormat12Hour => '12- hodina (14: 30)';
+  String get timeFormat12Hour => '12-hour (2:30 PM)';
 
   @override
-  String get timeFormatDesc =>
-      'Doba zobrazení ve formátu 24 hodin nebo 12 hodin';
+  String get timeFormatDesc => 'Display time in 24-hour or 12-hour format';
 
   @override
-  String get alertRange => 'Rozsah upozornění';
+  String get alertRange => 'Alert Range';
 
   @override
-  String get manageNotificationsDesc => 'Správa předplatného a nastavení';
+  String get manageNotificationsDesc => 'Manage subscriptions & settings';
 
   @override
-  String get permissionsTitle => 'Povolení';
+  String get permissionsTitle => 'Permissions';
 
   @override
-  String get permissionLocation => 'Umístění';
+  String get permissionLocation => 'Location';
 
   @override
-  String get permissionCamera => 'Kamera';
+  String get permissionCamera => 'Camera';
 
   @override
-  String get permissionNotifications => 'Oznámení';
+  String get permissionNotifications => 'Notifications';
 
   @override
-  String get permissionPhotos => 'Fotografie';
+  String get permissionPhotos => 'Photos';
 
   @override
-  String get permissionGranted => 'Povoleno';
+  String get permissionGranted => 'Granted';
 
   @override
-  String get permissionNotGranted => 'Nepřiznáno';
+  String get permissionNotGranted => 'Not granted';
 
   @override
   String get permissionGrant => 'Grant';
 
   @override
-  String get generateUsername => 'Vytvořit nové uživatelské jméno';
+  String get generateUsername => 'Generate new username';
 
   @override
-  String get adminTools => 'Admin nástroje';
+  String get adminTools => 'Admin Tools';
 
   @override
-  String get openAdminPanel => 'Otevřít admin panel';
+  String get openAdminPanel => 'Open Admin Panel';
 
   @override
-  String get webAdminInterface => 'Web Admin rozhraní';
+  String get webAdminInterface => 'Web Admin Interface';
 
   @override
   String get adminBetaNotice =>
-      'Beta jen staví. Administrátorské nástroje pro testování upozornění na blízkost, tlačení oznámení a systémové diagnostiky.';
+      'Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.';
 
   @override
-  String get whatDoYouSee => 'Co vidíš?';
+  String get whatDoYouSee => 'What do you see?';
 
   @override
   String get ufo => 'UFO';
 
   @override
-  String get sighting => 'Vidění';
+  String get sighting => 'Sighting';
 
   @override
-  String get ufoSighting => 'UFOBeep UFO Varování';
+  String get ufoSighting => 'UFOBeep UFO Alert';
 
   @override
-  String get envAnalysisTitle => 'Environmentální analýza';
+  String get envAnalysisTitle => 'Environmental Analysis';
 
   @override
-  String get envAnalysisPending => 'Probíhá analýza';
+  String get envAnalysisPending => 'Analysis Pending';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Údaje o životním prostředí budou k dispozici, jakmile začne zpracování.';
+      'Environmental data will be available once processing begins.';
 
   @override
-  String get unknownAircraft => 'Neznámé letadlo';
+  String get unknownAircraft => 'Unknown Aircraft';
 
   @override
-  String get moreAircraft => 'více letadel';
+  String get moreAircraft => 'more aircraft';
 
   @override
   String get premiumImageryTitle => 'Premium Satellite Imagery';
 
   @override
-  String get premiumImagerySubtitle => 'Obchodní obrázky s vysokým rozlišením';
+  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
 
   @override
-  String get sightingTypeLabel => 'Typ';
+  String get sightingTypeLabel => 'Type';
 
   @override
-  String get ufoTypeSphere => 'Koule';
+  String get ufoTypeSphere => 'Sphere';
 
   @override
-  String get ufoTypeTriangle => 'Trojúhelník';
+  String get ufoTypeTriangle => 'Triangle';
 
   @override
   String get ufoTypeDisk => 'Disk';
 
   @override
-  String get ufoTypeLight => 'Světlo';
+  String get ufoTypeLight => 'Light';
 
   @override
   String get ufoTypeFireball => 'Fireball';
 
   @override
-  String get ufoTypeCylinder => 'Válec';
+  String get ufoTypeCylinder => 'Cylinder';
 
   @override
-  String get ufoTypeCigar => 'Doutník';
+  String get ufoTypeCigar => 'Cigar';
 
   @override
-  String get ufoTypeRectangle => 'Obdélník';
+  String get ufoTypeRectangle => 'Rectangle';
 
   @override
-  String get ufoTypeFormation => 'Formace';
+  String get ufoTypeFormation => 'Formation';
 
   @override
-  String get ufoTypeUnknown => 'Neznámé';
+  String get ufoTypeUnknown => 'Unknown';
 
   @override
-  String get ufoTypeBoomerang => 'Bumerang';
+  String get ufoTypeBoomerang => 'Boomerang';
 
   @override
   String get ufoTypeDiamond => 'Diamond';
@@ -804,331 +798,329 @@ class AppLocalizationsCs extends AppLocalizations {
   String get ufoTypeOval => 'Oval';
 
   @override
-  String get ufoTypeCone => 'Kukuřice';
+  String get ufoTypeCone => 'Cone';
 
   @override
-  String get ufoTypeCross => 'Kříže';
+  String get ufoTypeCross => 'Cross';
 
   @override
   String get ufoTypeDumbbell => 'Dumbbell';
 
   @override
-  String get ufoTypeTeardrop => 'Slza';
+  String get ufoTypeTeardrop => 'Teardrop';
 
   @override
   String get ufoTypeTicTac => 'Tic Tac';
 
   @override
-  String get ufoTypeBullet => 'Kulka';
+  String get ufoTypeBullet => 'Bullet';
 
   @override
   String get ufoTypeSaturn => 'Saturn';
 
   @override
-  String get ufoTypeStarLike => 'Star- like';
+  String get ufoTypeStarLike => 'Star-like';
 
   @override
-  String get ufoTypeBlimp => 'Balón';
+  String get ufoTypeBlimp => 'Blimp';
 
   @override
-  String get shapeTriangle => 'trojúhelník';
+  String get shapeTriangle => 'triangle';
 
   @override
-  String get shapeDisc => 'disk';
+  String get shapeDisc => 'disc';
 
   @override
   String get shapeDisk => 'disk';
 
   @override
-  String get shapeSphere => 'koule';
+  String get shapeSphere => 'sphere';
 
   @override
-  String get shapeCigar => 'doutník';
+  String get shapeCigar => 'cigar';
 
   @override
-  String get shapeLight => 'světlo';
+  String get shapeLight => 'light';
 
   @override
-  String get shapeBoomerang => 'bumerang';
+  String get shapeBoomerang => 'boomerang';
 
   @override
-  String get shapeDiamond => 'diamant';
+  String get shapeDiamond => 'diamond';
 
   @override
-  String get shapeRectangle => 'obdélník';
+  String get shapeRectangle => 'rectangle';
 
   @override
-  String get shapeOval => 'ovál';
+  String get shapeOval => 'oval';
 
   @override
-  String get shapeCone => 'kužel';
+  String get shapeCone => 'cone';
 
   @override
-  String get shapeCross => 'kříž';
+  String get shapeCross => 'cross';
 
   @override
-  String get shapeCylinder => 'válec';
+  String get shapeCylinder => 'cylinder';
 
   @override
   String get shapeDumbbell => 'dumbbell';
 
   @override
-  String get shapeTeardrop => 'slzy';
+  String get shapeTeardrop => 'teardrop';
 
   @override
-  String get shapeTicTac => 'tick- tac';
+  String get shapeTicTac => 'tic-tac';
 
   @override
-  String get shapeBullet => 'kulka';
+  String get shapeBullet => 'bullet';
 
   @override
   String get shapeSaturn => 'saturn';
 
   @override
-  String get shapeStarlike => 'hvězdičky';
+  String get shapeStarlike => 'starlike';
 
   @override
-  String get shapeBlimp => 'vzducholoď';
+  String get shapeBlimp => 'blimp';
 
   @override
-  String get shapeFireball => 'ohnivá koule';
+  String get shapeFireball => 'fireball';
 
   @override
-  String get shapeFormation => 'tvorba';
+  String get shapeFormation => 'formation';
 
   @override
-  String get shapeUnknown => 'neznámý';
+  String get shapeUnknown => 'unknown';
 
   @override
-  String get actionsTitle => 'Akce';
+  String get actionsTitle => 'Actions';
 
   @override
-  String get addPhotosAndVideos => 'Přidat fotografie a videa';
+  String get addPhotosAndVideos => 'Add Photos & Videos';
 
   @override
-  String get howToReportToMufon => 'Jak podat zprávu MUFON';
+  String get howToReportToMufon => 'How to Report to MUFON';
 
   @override
-  String get reportToMufon => 'Zpráva pro MUFON';
+  String get reportToMufon => 'Report to MUFON';
 
   @override
-  String get whyReportToMufon => 'Proč se hlásit na MUFON?';
+  String get whyReportToMufon => 'Why Report to MUFON?';
 
   @override
-  String get openMufonReport => 'Open MUFON Zpráva';
+  String get openMufonReport => 'Open MUFON Report';
 
   @override
-  String get confirmedWitness => 'Potvrdil jste toto pozorování';
+  String get confirmedWitness => 'You confirmed this sighting';
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování';
+    return '$count people have confirmed this sighting';
   }
 
   @override
-  String get aircraftTrackingTitle => 'Sledování letadel';
+  String get aircraftTrackingTitle => 'Aircraft Tracking';
 
   @override
-  String get weatherConditionsTitle => 'Podmínky počasí';
+  String get weatherConditionsTitle => 'Weather Conditions';
 
   @override
-  String get noSatellitePasses =>
-      'Žádné viditelné satelitní propustky nalezeny';
+  String get noSatellitePasses => 'No visible satellite passes found';
 
   @override
-  String get contentAnalysisTitle => 'Analýza obsahu';
+  String get contentAnalysisTitle => 'Content Analysis';
 
   @override
-  String get contentSafe => 'Obsah je bezpečný';
+  String get contentSafe => 'Content is safe';
 
   @override
-  String get contentFlagged => 'Obsah označený k přezkoumání';
+  String get contentFlagged => 'Content flagged for review';
 
   @override
-  String get confidenceLabel => 'Důvěra';
+  String get confidenceLabel => 'Confidence';
 
   @override
-  String get methodLabel => 'Metoda';
+  String get methodLabel => 'Method';
 
   @override
   String get premiumImageryAccessOnly =>
-      'Premium satelitní snímky je k dispozici pouze pro:';
+      'Premium satellite imagery is only available to:';
 
   @override
-  String get premiumAccessCreators => 'Tvůrci výstrahy';
+  String get premiumAccessCreators => 'Alert creators';
 
   @override
-  String get premiumAccessWitnesses => 'Potvrzení svědci v dosahu viditelnosti';
+  String get premiumAccessWitnesses =>
+      'Confirmed witnesses within visibility range';
 
   @override
-  String get comingSoon => 'Už brzy';
+  String get comingSoon => 'Coming Soon';
 
   @override
-  String get directionDistanceTitle => 'Směr a vzdálenost';
+  String get directionDistanceTitle => 'Direction & Distance';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Případ # _ _ PLACETIER _ 0 _ _';
+    return 'MUFON Case #$caseNumber';
   }
 
   @override
-  String get satellitePassesTitle => 'Satelitní průkazy';
+  String get satellitePassesTitle => 'Satellite Passes';
 
   @override
   String get satellitePassExplanation =>
-      'Viditelné satelitní propustky během časového rámce pozorování. Mnoho hlášení UFO jsou ve skutečnosti satelity nebo vesmírné trosky.';
+      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
 
   @override
   String get followingAlert =>
-      'Po upozornění - obdržíte oznámení o komentářích';
+      'Following alert - you\'ll get comment notifications';
 
   @override
   String get unfollowedAlert =>
-      'Nesledovaná výstraha - žádné další oznámení komentářů';
+      'Unfollowed alert - no more comment notifications';
 
   @override
-  String get alertFollowError => 'Chyba při aktualizaci stavu sledování';
+  String get alertFollowError => 'Error updating follow status';
 
   @override
-  String get notificationChannelAlerts => 'UFOBEep upozornění';
+  String get notificationChannelAlerts => 'UFOBeep Alerts';
 
   @override
   String get notificationChannelAlertsDesc =>
-      'Oznámení o pípnutí UFO a upozornění na blízkost';
+      'Notifications for UFO beeps and proximity alerts';
 
   @override
-  String get notificationSightingTitle => 'UFOBeep UFO Varování';
+  String get notificationSightingTitle => 'UFOBeep UFO Alert';
 
   @override
-  String get notificationSightingUrgent => 'Name Varování';
+  String get notificationSightingUrgent => '⚠️ URGENT UFOBeep UFO Alert';
 
   @override
-  String get notificationSightingEmergency => 'UFO Varování';
+  String get notificationSightingEmergency => '🚨 EMERGENCY UFOBeep UFO Alert';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '_ _ PLACETIER _ 0 _ _ near _ _ PLACETIER _ 1 _ _';
+    return '$witnessText near $locationName';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return 'PLACETELER _ 0 _ _ komentáře';
+    return '💬 $username commented';
   }
 
   @override
-  String get notificationWitnessText => 'Nové pozorování';
+  String get notificationWitnessText => 'New sighting';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '_ _ PLACETETELER _ 0 _ _ svědci';
+    return '$count witnesses';
   }
 
   @override
   String get notificationActionSnooze => 'Snooze 1h';
 
   @override
-  String get notificationActionDismiss => 'Rozpustit';
+  String get notificationActionDismiss => 'Dismiss';
 
   @override
   String notificationDistance(String distance) {
-    return '_ _ PLACETETERER _ 0 _ _ away';
+    return '$distance away';
   }
 
   @override
-  String get unknown => 'neznámý';
+  String get unknown => 'unknown';
 
   @override
-  String get report => 'zpráva';
+  String get report => 'report';
 
   @override
   String get mufon => 'mufon';
 
   @override
-  String get recentUfoBeepsTitle => 'Nedávné UFO Brouci';
+  String get recentUfoBeepsTitle => 'Recent UFO Beeps';
 
   @override
   String get recentUfoBeepsSubtitle =>
-      'Živé zprávy o pozorování UFO z naší globální komunity';
+      'Live UFO sighting reports from our global community';
 
   @override
   String get recentUfoBeepsDescription =>
-      'Toto krmivo kombinuje aktuální UFOBeep \"pípání\" od našich uživatelů mobilních aplikací s historickými zprávami z databáze MUFON.';
+      'This feed combines real-time UFOBeep \"beeps\" from our mobile app users with historical reports from the MUFON database.';
 
   @override
-  String get loadingBeeps => 'Načítám poslední pípnutí...';
+  String get loadingBeeps => 'Loading recent beeps...';
 
   @override
-  String get noBeepsAvailable => 'Momentálně žádné pípání.';
+  String get noBeepsAvailable => 'No beeps available at the moment.';
 
   @override
-  String get anomalyReported => 'Anomálie hlášena';
+  String get anomalyReported => 'Anomaly reported';
 
   @override
-  String get copyShortLink => 'Kopírovat krátký odkaz';
+  String get copyShortLink => 'Copy short link';
 
   @override
-  String get shareAlert => 'Upozornění o sdílení';
+  String get shareAlert => 'Share alert';
 
   @override
-  String get ufoSightingAlert => 'UFO Upozornění na pozorování';
+  String get ufoSightingAlert => 'UFO Sighting Alert';
 
   @override
-  String get previousPage => 'Předchozí';
+  String get previousPage => 'Previous';
 
   @override
-  String get nextPage => 'Další';
+  String get nextPage => 'Next';
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Page _ _ PLACETIER _ 0 _ _ _ _ PLACETIER _ 1 _ _ (_ _ PLACETIER _ 2 _ _ celkem pípnutí)';
+    return 'Page $currentPage of $totalPages ($totalCount total beeps)';
   }
 
   @override
-  String get firstPage => 'První';
+  String get firstPage => 'First';
 
   @override
-  String get lastPage => 'Poslední';
+  String get lastPage => 'Last';
 
   @override
-  String get jumpToPage => 'Přejít na stránku';
+  String get jumpToPage => 'Jump to page';
 
   @override
-  String get heroTagline =>
-      'Získejte upozornění, kdy jít ven a podívat se nahoru';
+  String get heroTagline => 'Get alerts when to go outside and look up';
 
   @override
-  String get heroDescription =>
-      'Nikdy si nenechte ujít další pozorování UFO ve vaší oblasti';
+  String get heroDescription => 'Never miss another UFO sighting in your area';
 
   @override
-  String get downloadApp => 'Name';
+  String get downloadApp => '📱 Download App';
 
   @override
-  String get viewAllBeeps => 'Zobrazit všechny pípy';
+  String get viewAllBeeps => '📋 View All Beeps';
 
   @override
-  String get sightingsMap => 'Name';
+  String get sightingsMap => '🗺️ Sightings Map';
 
   @override
-  String get globalSightingNetwork => 'Globální síť pozorování';
+  String get globalSightingNetwork => 'Global Sighting Network';
 
   @override
-  String get howItWorks => 'Jak to funguje';
+  String get howItWorks => 'How It Works';
 
   @override
-  String get backToBeeps => 'Zpět na Beeps';
+  String get backToBeeps => 'Back to Beeps';
 
   @override
-  String get loadingDetails => 'Načítám detaily pípnutí...';
+  String get loadingDetails => 'Loading beep details...';
 
   @override
-  String get details => 'Podrobnosti';
+  String get details => 'Details';
 
   @override
-  String get location => 'Umístění';
+  String get location => 'Location';
 
   @override
-  String get timeAgo => 'před';
+  String get timeAgo => 'ago';
 
   @override
   String get timeMinutes => 'm';
@@ -1143,55 +1135,55 @@ class AppLocalizationsCs extends AppLocalizations {
   String get distanceKm => 'km';
 
   @override
-  String get distanceMiles => 'míle';
+  String get distanceMiles => 'miles';
 
   @override
-  String get distanceNearby => 'v blízkosti';
+  String get distanceNearby => 'nearby';
 
   @override
-  String get ufobeepWitnesses => 'Svědci';
+  String get ufobeepWitnesses => 'Witnesses';
 
   @override
-  String get ufobeepConfirmations => 'Potvrzení';
+  String get ufobeepConfirmations => 'Confirmations';
 
   @override
-  String get ufobeepAlertLevel => 'Úroveň upozornění';
+  String get ufobeepAlertLevel => 'Alert Level';
 
   @override
-  String get ufobeepReportType => 'Zpráva UFOBeep';
+  String get ufobeepReportType => 'UFOBeep Report';
 
   @override
-  String get mufonAttribution => 'MUFON Databázová zpráva';
+  String get mufonAttribution => 'MUFON Database Report';
 
   @override
-  String get mufonCaseNumber => 'Případ #';
+  String get mufonCaseNumber => 'Case #';
 
   @override
-  String get mufonGenericTitle => 'Zpráva o pozorování MUFON';
+  String get mufonGenericTitle => 'MUFON Sighting Report';
 
   @override
-  String get mufonSphere => 'Koule';
+  String get mufonSphere => 'Sphere';
 
   @override
-  String get mufonLight => 'Světlo';
+  String get mufonLight => 'Light';
 
   @override
   String get mufonDisk => 'Disk';
 
   @override
-  String get mufonTriangle => 'Trojúhelník';
+  String get mufonTriangle => 'Triangle';
 
   @override
-  String get mufonCigar => 'Doutník';
+  String get mufonCigar => 'Cigar';
 
   @override
   String get mufonOval => 'Oval';
 
   @override
-  String get mufonCylinder => 'Válec';
+  String get mufonCylinder => 'Cylinder';
 
   @override
-  String get mufonRectangle => 'Obdélník';
+  String get mufonRectangle => 'Rectangle';
 
   @override
   String get mufonDiamond => 'Diamond';
@@ -1203,911 +1195,918 @@ class AppLocalizationsCs extends AppLocalizations {
   String get mufonFlash => 'Flash';
 
   @override
-  String get mufonFormation => 'Formace';
+  String get mufonFormation => 'Formation';
 
   @override
-  String get mufonChanging => 'Změna';
+  String get mufonChanging => 'Changing';
 
   @override
   String get mufonChevron => 'Chevron';
 
   @override
-  String get mufonCone => 'Kukuřice';
+  String get mufonCone => 'Cone';
 
   @override
-  String get mufonCross => 'Kříže';
+  String get mufonCross => 'Cross';
 
   @override
-  String get mufonEgg => 'Vejce';
+  String get mufonEgg => 'Egg';
 
   @override
-  String get mufonOther => 'Předmět';
+  String get mufonOther => 'Object';
 
   @override
-  String get mufonUnknown => 'Neznámý objekt';
+  String get mufonUnknown => 'Unknown Object';
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON _ _ PLACETETELER _ 0 _ _ Zpráva';
+    return 'MUFON $classification Report';
   }
 
   @override
-  String get nuforcAttribution => 'NUFORC Databázová zpráva';
+  String get nuforcAttribution => 'NUFORC Database Report';
 
   @override
-  String get nuforcCaseNumber => 'Případ #';
+  String get nuforcCaseNumber => 'Case #';
 
   @override
-  String get nuforcGenericTitle => 'NUFORC Zpráva o pozorování';
+  String get nuforcGenericTitle => 'NUFORC Sighting Report';
 
   @override
-  String get mediaImageNotFound => 'Obrázek nenalezen';
+  String get mediaImageNotFound => 'Image not found';
 
   @override
-  String get mediaPlayVideo => 'Přehrát video';
+  String get mediaPlayVideo => 'Play Video';
 
   @override
-  String get mediaViewImage => 'Zobrazit obrázek';
+  String get mediaViewImage => 'View Image';
 
   @override
   String mediaCount(Object count) {
-    return '_ _ PLACETETELER _ 0 _ _ obrázky';
+    return '$count images';
   }
 
   @override
-  String get mediaCountSingle => '1 obrázek';
+  String get mediaCountSingle => '1 image';
 
   @override
   String mediaMoreImages(Object count) {
-    return '+ _ _ PLACETETELER _ 0 _ _ více';
+    return '+$count more';
   }
 
   @override
-  String get errorNotFound => 'Píp nenalezen';
+  String get errorNotFound => 'Beep not found';
 
   @override
-  String get errorLoadError => 'Nepodařilo se načíst detaily pípnutí';
+  String get errorLoadError => 'Failed to load beep details';
 
   @override
-  String get shareYourThoughts =>
-      'Podělte se o své myšlenky o tomto pozorování...';
+  String get shareYourThoughts => 'Share your thoughts about this sighting...';
 
   @override
-  String get postComment => 'Comment';
+  String get postComment => 'Post Comment';
 
   @override
-  String get loggedInAs => 'Přihlášen jako';
+  String get loggedInAs => 'Logged in as';
 
   @override
-  String get logout => 'Odhlášení';
+  String get logout => 'Logout';
 
   @override
-  String get notFollowing => 'Nesleduji';
+  String get notFollowing => 'Not following';
 
   @override
-  String get follow => 'Následujte';
+  String get follow => 'Follow';
 
   @override
-  String get navRecentBeeps => 'Nedávný Beeps';
+  String get navRecentBeeps => 'Recent Beeps';
 
   @override
-  String get navMap => 'Mapa';
+  String get navMap => 'Map';
 
   @override
-  String get navDownloadApp => 'Stáhnout aplikaci';
+  String get navDownloadApp => 'Download App';
 
   @override
-  String get alertLevel => 'Úroveň upozornění';
+  String get alertLevel => 'Alert Level';
 
   @override
-  String get witnesses => 'Svědci';
+  String get witnesses => 'Witnesses';
 
   @override
-  String get confirmations => 'Potvrzení';
+  String get confirmations => 'Confirmations';
 
   @override
-  String get reporterLabel => 'Oznámený uživatelem';
+  String get reporterLabel => 'Reported by user';
 
   @override
-  String get coordinatesLabel => 'Souřadnice';
+  String get coordinatesLabel => 'Coordinates';
 
   @override
-  String get eventTime => 'Doba události';
+  String get eventTime => 'Event time';
 
   @override
-  String get reportedTime => 'Vykazovaný čas';
+  String get reportedTime => 'Reported time';
 
   @override
-  String get addedToUfobeep => 'Přidáno do UFOBeep';
+  String get addedToUfobeep => 'Added to UFOBeep';
 
   @override
-  String get mufonDatabaseReport => 'MUFON Číslo případu:';
+  String get mufonDatabaseReport => 'MUFON Case Number:';
 
   @override
-  String get copyShortLinkTitle => 'Kopírovat odkaz do schránky';
+  String get copyShortLinkTitle => 'Copy link to clipboard';
 
   @override
-  String get imageNotFound => 'Obrázek nenalezen';
+  String get imageNotFound => 'Image not found';
 
   @override
-  String get ufoSightingAlt => 'UFO Poplach proti UFO';
+  String get ufoSightingAlt => 'UFOBeep UFO alert';
 
   @override
-  String get celestialDataTitle => 'Nebeské objekty';
+  String get celestialDataTitle => 'Celestial Objects';
 
   @override
-  String get visiblePlanets => 'Viditelné planety';
+  String get visiblePlanets => 'Visible Planets';
 
   @override
-  String get locationDataTitle => 'Informace o umístění';
+  String get locationDataTitle => 'Location Information';
 
   @override
-  String get timezone => 'Timezon';
+  String get timezone => 'Timezone';
 
   @override
-  String get coordinates => 'Souřadnice';
+  String get coordinates => 'Coordinates';
 
   @override
-  String get processingSummaryTitle => 'Shrnutí zpracování';
+  String get processingSummaryTitle => 'Processing Summary';
 
   @override
-  String get processingTime => 'Doba zpracování';
+  String get processingTime => 'Processing Time';
 
   @override
-  String get successful => 'Úspěšné';
+  String get successful => 'Successful';
 
   @override
-  String get failed => 'Selhalo';
+  String get failed => 'Failed';
 
   @override
-  String get locationEnrichmentTitle => 'Podrobnosti o umístění';
+  String get locationEnrichmentTitle => 'Location Details';
 
   @override
-  String get aircraftDataSource => 'Zdroj dat';
+  String get aircraftDataSource => 'Data Source';
 
   @override
-  String get noAircraftDetected => 'Žádné letadlo nebylo detekováno';
+  String get noAircraftDetected => 'No aircraft detected';
 
   @override
-  String get sightingReport => 'Zpráva o pozorování';
+  String get sightingReport => 'Sighting Report';
 
   @override
-  String get ufoAlert => 'UFO Varování';
+  String get ufoAlert => 'UFO Alert';
 
   @override
-  String get alert => 'Varování';
+  String get alert => 'Alert';
 
   @override
-  String get notificationTickerUfoAlert =>
-      'UFO poplach - nové pozorování v blízkosti';
+  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
 
   @override
-  String get notificationTickerComment => 'Nový komentář k UFO upozornění';
+  String get notificationTickerComment => 'New Comment on UFO Alert';
 
   @override
-  String get weatherConditions => 'Podmínky počasí';
+  String get weatherConditions => 'Weather Conditions';
 
   @override
-  String get visibility => 'Viditelnost';
+  String get visibility => 'Visibility';
 
   @override
-  String get humidity => 'Vlhkost';
+  String get humidity => 'Humidity';
 
   @override
-  String get pressure => 'Tlak';
+  String get pressure => 'Pressure';
 
   @override
-  String get locationDetails => 'Podrobnosti o umístění';
+  String get locationDetails => 'Location Details';
 
   @override
-  String get city => 'Město';
+  String get city => 'City';
 
   @override
-  String get state => 'Stát';
+  String get state => 'State';
 
   @override
-  String get country => 'Země';
+  String get country => 'Country';
 
   @override
-  String get satelliteActivity => 'Satelitní činnost';
+  String get satelliteActivity => 'Satellite Activity';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satelity viditelné nad hlavou při pozorování času a umístění';
+      'Satellites visible overhead at sighting time & location';
 
   @override
-  String get dataSource => 'Zdroj dat';
+  String get dataSource => 'Data Source';
 
   @override
   String get blackskyImagery => 'BlackSky Imagery';
 
   @override
-  String get resolution => 'Usnesení';
+  String get resolution => 'Resolution';
 
   @override
-  String get groundResolution => '35 cm zemského rozlišení';
+  String get groundResolution => '35cm ground resolution';
 
   @override
-  String get delivery => 'Dodávka';
+  String get delivery => 'Delivery';
 
   @override
-  String get averageDelivery => 'průměr 90 minut';
+  String get averageDelivery => '90-minute average';
 
   @override
-  String get cost => 'Náklady';
+  String get cost => 'Cost';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi satelit Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
 
   @override
-  String get region => 'Oblast';
+  String get region => 'Region';
 
   @override
-  String get remoteArea => 'Vzdálená oblast';
+  String get remoteArea => 'Remote Area';
 
   @override
-  String get startingPrice => 'Počáteční cena';
+  String get startingPrice => 'Starting Price';
 
   @override
-  String get coverage => 'Pokrytí';
+  String get coverage => 'Coverage';
 
   @override
-  String get confidenceCoverage => '95% jistota';
+  String get confidenceCoverage => '95% confidence';
 
   @override
-  String get status => 'Stav';
+  String get status => 'Status';
 
   @override
-  String get shareThoughts => 'Podělte se o své myšlenky o tomto pozorování...';
+  String get shareThoughts => 'Share your thoughts about this sighting...';
 
   @override
-  String get postCommand => 'Poštovní příkaz';
+  String get postCommand => 'Post Command';
 
   @override
-  String get clouds => 'Mraky';
+  String get clouds => 'Clouds';
 
   @override
-  String get windLabel => 'Vítr';
+  String get windLabel => 'Wind';
 
   @override
-  String get filterAlerts => 'Comment';
+  String get filterAlerts => 'Filter Alerts';
 
   @override
-  String get alertSource => 'Zdroj upozornění';
+  String get alertSource => 'Alert Source';
 
   @override
-  String get ufobeepOnly => 'Pouze UFOBeep';
+  String get ufobeepOnly => 'UFOBeep Only';
 
   @override
   String get ufobeepOnlyDescription =>
-      'Zobrazit pouze originální UFOBeep reporty (bez databáze MUFON)';
+      'Show only original UFOBeep reports (exclude MUFON database)';
 
   @override
-  String get alertDistanceRange => 'Varovné vzdálenosti';
+  String get alertDistanceRange => 'Alert Distance Range';
 
   @override
-  String get showAllAlerts => 'Zobrazit všechny záznamy';
+  String get showAllAlerts => 'Show All Alerts';
 
   @override
-  String get showAll => 'Zobrazit vše';
+  String get showAll => 'Show All';
 
   @override
   String get distanceSliderDescription =>
-      'Přetáhněte nastavit, jak daleko chcete vidět upozornění. Začněte od meteorologické dohlednosti až po zobrazení všech záznamů bez ohledu na vzdálenost.';
+      'Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.';
 
   @override
-  String get applyFilters => 'Aplikovat filtry';
+  String get applyFilters => 'Apply Filters';
 
   @override
-  String get notificationRange => 'Rozsah oznámení';
+  String get notificationRange => 'Notification Range';
 
   @override
   String get notificationRangeDescription =>
-      'Získejte upozornění pro pozorování v této vzdálenosti';
+      'Get push alerts for sightings within this distance';
 
   @override
-  String get viewingRange => 'Prohlížení rozsahu';
+  String get viewingRange => 'Viewing Range';
 
   @override
   String get viewingRangeDescription =>
-      'Zobrazit pozorování v této vzdálenosti při prohlížení';
+      'Show sightings within this distance when browsing';
 
   @override
-  String get weatherVisibility => 'Viditelnost počasí (~ 10 km)';
+  String get weatherVisibility => 'Weather Visibility (~10km)';
 
   @override
-  String get localArea => 'Místní oblast (25km)';
+  String get localArea => 'Local Area (25km)';
 
   @override
-  String get regional => 'Regionální';
+  String get regional => 'Regional';
 
   @override
-  String get pushNotifications => 'Stiskněte oznámení';
+  String get pushNotifications => 'Push Notifications';
 
   @override
-  String get alertBrowsing => 'Name';
+  String get alertBrowsing => 'Alert Browsing';
 
   @override
-  String get pushAlertsWithinDistance =>
-      'Získat oznámení v rámci tohoto rozsahu';
+  String get pushAlertsWithinDistance => 'Get notifications within this range';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filtrovat to, co vidíte v seznamu';
+  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
 
   @override
   String get heroMainTagline =>
-      'Zapípněte si na telefon, když je poblíž spatřeno UFO';
+      'Get a beep on your phone when UFOs are spotted nearby';
 
   @override
-  String get heroSecondaryTagline => 'Zjistěte, kdy a kde se dívat na oblohu';
+  String get heroSecondaryTagline =>
+      'Find out when and where to look at the sky';
 
   @override
-  String get sourceFilters => 'Zdroj';
+  String get sourceFilters => 'Source';
 
   @override
   String get sourceFiltersDescription =>
-      'Vyberte si, které zprávy se objeví ve vašem krmivu';
+      'Choose which reports appear in your feed';
 
   @override
-  String get ufobeepAndMufon => 'UFOBEep + MUFON';
+  String get ufobeepAndMufon => 'UFOBeep + MUFON';
 
   @override
-  String get ufobeepOnlySource => 'Pouze UFOBeep';
+  String get ufobeepOnlySource => 'UFOBeep only';
 
   @override
-  String get mufonOnlySource => 'Pouze mufon';
+  String get mufonOnlySource => 'MUFON only';
 
   @override
-  String get browseFilters => 'Procházet';
+  String get browseFilters => 'Browse';
 
   @override
-  String get browseFiltersDescription => 'Jak zobrazit a třídit záznamy';
+  String get browseFiltersDescription => 'How to view and sort alerts';
 
   @override
-  String get sortByNewest => 'Nejnovější';
+  String get sortByNewest => 'Newest';
 
   @override
-  String get sortByNearest => 'Nejbližší';
+  String get sortByNearest => 'Nearest';
 
   @override
-  String get sortBy => 'Řadit podle';
+  String get sortBy => 'Sort by';
 
   @override
-  String get pushAlertsTitle => 'Tlačit výstrahy';
+  String get pushAlertsTitle => 'Push Alerts';
 
   @override
-  String get pushAlertsDescription => 'What ping your phone';
+  String get pushAlertsDescription => 'What pings your phone';
 
   @override
-  String get alertRadius => 'Alarm radius';
+  String get alertRadius => 'Alert Radius';
 
   @override
   String get mufonNoPushInfo =>
-      'Zprávy MUFON jsou dováženy v noci a nespouštějí upozornění na tlačení';
+      'MUFON reports are imported nightly and do not trigger push alerts';
 
   @override
-  String get privacyData => 'Ochrana osobních údajů';
+  String get privacyData => 'Privacy & Data';
 
   @override
-  String get privacyPolicyDesc => 'Jak chránit a používat Vaše údaje';
+  String get privacyPolicyDesc => 'How we protect and use your data';
 
   @override
-  String get termsOfService => 'Podmínky služby';
+  String get termsOfService => 'Terms of Service';
 
   @override
-  String get termsOfServiceDesc => 'Právní podmínky';
+  String get termsOfServiceDesc => 'Legal terms and conditions';
 
   @override
-  String get locationTracking => 'Sledování polohy';
+  String get locationTracking => 'Location Tracking';
 
   @override
-  String get locationTrackingDesc => 'Umístění pozadí pro výstrahy v blízkosti';
+  String get locationTrackingDesc => 'Background location for proximity alerts';
 
   @override
-  String get locationTrackingTitle => 'Sledování polohy pozadí';
+  String get locationTrackingTitle => 'Background Location Tracking';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep sleduje vaši polohu v pozadí poslat vám blízkost upozornění, když pozorování UFO se stane v blízkosti vaší současné polohy, i když jste daleko od domova.';
+      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
 
   @override
   String get locationTrackingBattery =>
-      'Používá inteligentní geokompresi pro < 3% dopad baterie';
+      'Uses intelligent geofencing for <3% battery impact';
 
   @override
-  String get backgroundLocationTracking => 'Povolit pozadí Sledování';
+  String get backgroundLocationTracking => 'Enable Background Tracking';
 
   @override
-  String get locationTrackingActive => 'Místo sledování výstrah v blízkosti';
+  String get locationTrackingActive =>
+      'Monitoring location for proximity alerts';
 
   @override
-  String get locationTrackingInactive => 'Sledování polohy je zakázáno';
+  String get locationTrackingInactive => 'Location tracking is disabled';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'Když se přestěhujete na nová místa, nedostanete upozornění na blízkost';
+      'You won\'t receive proximity alerts when you move to new locations';
 
   @override
-  String get trackingStatus => 'Stav sledování';
+  String get trackingStatus => 'Tracking Status';
 
   @override
-  String get monitoringStatus => 'Sledování';
+  String get monitoringStatus => 'Monitoring';
 
   @override
-  String get active => 'Aktivní';
+  String get active => 'Active';
 
   @override
-  String get inactive => 'Neaktivní';
+  String get inactive => 'Inactive';
 
   @override
-  String get lastKnownLocation => 'Poslední známé místo';
+  String get lastKnownLocation => 'Last Known Location';
 
   @override
-  String get lastLocationUpdate => 'Poslední aktualizace';
+  String get lastLocationUpdate => 'Last Update';
 
   @override
-  String get movementThreshold => 'Prahová hodnota pohybu';
+  String get movementThreshold => 'Movement Threshold';
 
   @override
-  String get updateFrequency => 'Aktualizovat frekvenci';
+  String get updateFrequency => 'Update Frequency';
 
   @override
-  String get batteryImpact => 'Dopad baterie';
+  String get batteryImpact => 'Battery Impact';
 
   @override
-  String get dataPrivacy => 'Ochrana osobních údajů';
+  String get dataPrivacy => 'Data Privacy';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep potřebuje \'Vždy povolit\' povolení k monitorování vašeho pohybu a odeslat upozornění na blízkost, když jste na nových místech.';
+      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
 
   @override
-  String get benefitsTitle => 'Dávky';
+  String get benefitsTitle => 'Benefits';
 
   @override
   String get locationTrackingBenefits =>
-      '• Získejte UFO upozornění všude, kde cestujete\n• Automatické aktualizace polohy\n• Není nutné ruční nastavení';
+      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
 
   @override
-  String get allowLocationAccess => 'Povolit přístup k umístění';
+  String get allowLocationAccess => 'Allow Location Access';
 
   @override
   String get locationPermissionRequired =>
-      'Pro sledování pozadí je vyžadováno povolení k umístění';
+      'Location permission is required for background tracking';
 
   @override
-  String get locationTrackingEnabled => 'Sledování polohy pozadí povoleno';
+  String get locationTrackingEnabled => 'Background location tracking enabled';
 
   @override
-  String get locationTrackingDisabled => 'Sledování polohy pozadí zakázáno';
+  String get locationTrackingDisabled =>
+      'Background location tracking disabled';
 
   @override
-  String get justNow => 'Právě teď';
+  String get justNow => 'Just now';
 
   @override
   String minutesAgo(int minutes) {
-    return 'Před pár minutami';
+    return '$minutes minutes ago';
   }
 
   @override
   String hoursAgo(int hours) {
-    return 'Před pár hodinami';
+    return '$hours hours ago';
   }
 
   @override
   String daysAgo(int days) {
-    return 'Před pár dny';
+    return '$days days ago';
   }
 
   @override
-  String get dataManagement => 'Správa dat';
+  String get dataManagement => 'Data Management';
 
   @override
-  String get dataManagementDesc => 'Exportovat nebo smazat data vašeho účtu';
+  String get dataManagementDesc => 'Export or delete your account data';
 
   @override
-  String get splashTagline => 'Záznamy v reálném čase';
+  String get splashTagline => 'Real-time sighting alerts';
 
   @override
-  String get splashStartingUp => 'Začínám...';
+  String get splashStartingUp => 'Starting up...';
 
   @override
-  String get splashInitializationFailed => 'Inicializace selhala';
+  String get splashInitializationFailed => 'Initialization failed';
 
   @override
-  String get splashInitializationFailedTitle => 'Inicializace selhala';
+  String get splashInitializationFailedTitle => 'Initialization Failed';
 
   @override
   String get splashInitializationError =>
-      'Aplikace nebyla správně inicializována:';
+      'The app failed to initialize properly:';
 
   @override
-  String get splashRetry => 'Znovu';
+  String get splashRetry => 'Retry';
 
   @override
-  String get splashContinue => 'Pokračovat';
+  String get splashContinue => 'Continue';
 
   @override
-  String get splashInitializing => 'Inicializace...';
+  String get splashInitializing => 'Initializing...';
 
   @override
   String signInWelcome(String username) {
-    return 'Vítejte!';
+    return 'Welcome $username!';
   }
 
   @override
   String signInFailed(String error) {
-    return 'Sign- in selhalo: _ _ PLACETETERER _ 0 _ _';
+    return 'Sign-in failed: $error';
   }
 
   @override
-  String get signInPleaseEnterEmail => 'Zadejte prosím svou emailovou adresu';
+  String get signInPleaseEnterEmail => 'Please enter your email address';
 
   @override
   String get signInPleaseEnterValidEmail =>
-      'Zadejte prosím platnou e-mailovou adresu';
+      'Please enter a valid email address';
 
   @override
   String get signInMagicLinkSent =>
-      'Magické spojení odesláno! Zkontrolujte svůj e-mail a klepněte na odkaz se přihlásit.';
+      'Magic link sent! Check your email and click the link to sign in.';
 
   @override
   String get signInMagicLinkFailed =>
-      'Nepodařilo se odeslat magický odkaz. Prosím, zkuste to znovu.';
+      'Failed to send magic link. Please try again.';
 
   @override
-  String get signInAllDataCleared => 'Všechny údaje vymazány';
+  String get signInAllDataCleared => 'All data cleared';
 
   @override
   String get signInSubtitle =>
-      'Záznamy o pozorování UFO v reálném čase a zprávy MUFON';
+      'Real-time UFO sighting alerts and MUFON reports';
 
   @override
-  String get signInGoogleLoading => 'Přihlašuji...';
+  String get signInGoogleLoading => 'Signing in...';
 
   @override
-  String get signInContinueWithGoogle => 'Pokračovat s Google';
+  String get signInContinueWithGoogle => 'Continue with Google';
 
   @override
-  String get signInOr => 'nebo';
+  String get signInOr => 'or';
 
   @override
-  String get signInWithEmail => 'Přihlaste se e-mailem';
+  String get signInWithEmail => 'Sign in with Email';
 
   @override
-  String get signInEmailDescription => 'Pošleme vám zabezpečené spojení';
+  String get signInEmailDescription =>
+      'We\'ll send you a secure link to sign in';
 
   @override
-  String get signInEmailAddress => 'E-mailová adresa';
+  String get signInEmailAddress => 'Email address';
 
   @override
-  String get signInEmailPlaceholder => 'your @ email.com';
+  String get signInEmailPlaceholder => 'your@email.com';
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Zkuste to znovu v _ _ PLACETETELER _ 0 _ _ s';
+    return 'Try again in ${seconds}s';
   }
 
   @override
-  String get signInSending => 'Posílám...';
+  String get signInSending => 'Sending...';
 
   @override
-  String get signInSendMagicLink => 'Poslat magický odkaz';
+  String get signInSendMagicLink => 'Send Magic Link';
 
   @override
   String get signInCheckEmail =>
-      'Zkontrolujte si e-mail! Spojení vyprší za 15 minut.';
+      'Check your email! The link expires in 15 minutes.';
 
   @override
-  String get signInSecureAuth => 'Zajistit autentizaci';
+  String get signInSecureAuth => 'Secure Authentication';
 
   @override
   String get signInSecureAuthDescription =>
-      'Použijte Google Sign- In pro okamžitý přístup, nebo e-mailové magické odkazy, které vyprší za 15 minut.';
+      'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.';
 
   @override
-  String get signInClearAllDataDebug => 'Vyčistit všechna data (ladit)';
+  String get signInClearAllDataDebug => 'Clear All Data (Debug)';
 
   @override
-  String get emailAuthFailedToSend => 'Nepodařilo se odeslat email';
+  String get emailAuthFailedToSend => 'Failed to send email';
 
   @override
   String get emailAuthFailedToSendTryAgain =>
-      'Nepodařilo se mi poslat email. Prosím, zkuste to znovu.';
+      'Failed to send email. Please try again.';
 
   @override
   String get emailAuthInvalidEmail =>
-      'Neplatná e-mailová adresa. Zkontrolujte prosím formát.';
+      'Invalid email address. Please check the format.';
 
   @override
   String get emailAuthUserNotFound =>
-      'S touto e-mailovou adresou není nalezen žádný účet.';
+      'No account found with this email address.';
 
   @override
   String get emailAuthTooManyRequests =>
-      'Příliš mnoho pokusů. Prosím, zkuste to později.';
+      'Too many attempts. Please try again later.';
 
   @override
-  String get emailAuthOperationNotAllowed => 'Sign- in není povolen.';
+  String get emailAuthOperationNotAllowed =>
+      'Email link sign-in is not enabled.';
 
   @override
   String get emailAuthQuotaExceeded =>
-      'E-mailová kvóta překročena. Prosím, zkuste to zítra znovu.';
+      'Email quota exceeded. Please try again tomorrow.';
 
   @override
   String get emailAuthVerificationFailed =>
-      'Ověření e-mailu selhalo. Prosím, zkuste to znovu.';
+      'Email verification failed. Please try again.';
 
   @override
-  String get emailAuthTitle => 'Ověření e-mailu';
+  String get emailAuthTitle => 'Email Verification';
 
   @override
-  String get emailAuthVerifyYourEmail => 'Ověřte svůj e-mail';
+  String get emailAuthVerifyYourEmail => 'Verify Your Email';
 
   @override
   String get emailAuthDescription =>
-      'Přidejte svou e-mailovou adresu pro obnovu účtu a zabezpečení. Pošleme vám zabezpečený signál.';
+      'Add your email address for account recovery and security. We\'ll send you a secure sign-in link.';
 
   @override
-  String get emailAuthEmailAddress => 'E-mailová adresa';
+  String get emailAuthEmailAddress => 'Email Address';
 
   @override
-  String get emailAuthEmailPlaceholder => 'your.email @ example.com';
+  String get emailAuthEmailPlaceholder => 'your.email@example.com';
 
   @override
-  String get emailAuthPleaseEnterEmail =>
-      'Zadejte prosím svou emailovou adresu';
+  String get emailAuthPleaseEnterEmail => 'Please enter your email address';
 
   @override
   String get emailAuthPleaseEnterValidEmail =>
-      'Zadejte prosím platnou e-mailovou adresu';
+      'Please enter a valid email address';
 
   @override
   String get emailAuthCheckEmailToContinue =>
-      'Zkontrolujte svůj e-mail a klepněte na ověřovací odkaz pokračovat.';
+      'Check your email and tap the verification link to continue.';
 
   @override
   String get emailAuthResendEmail => 'Resend Email';
 
   @override
-  String get emailAuthSendVerificationEmail => 'Odeslat ověření E-mail';
+  String get emailAuthSendVerificationEmail => 'Send Verification Email';
 
   @override
-  String get emailAuthHowItWorks => 'Jak funguje e-mailové ověřování';
+  String get emailAuthHowItWorks => 'How Email Verification Works';
 
   @override
   String get emailAuthHowItWorksSteps =>
-      '1. Posíláme vám zabezpečený signál.\n2. Zkontrolujte svůj e-mail a klepněte na odkaz\n3. Váš e-mail se ověřuje automaticky\n4. Není potřeba hesla!';
+      '1. We send you a secure sign-in link\n2. Check your email and tap the link\n3. Your email gets verified automatically\n4. No passwords needed!';
 
   @override
   String get emailAuthSecurityNotice =>
-      'Ověření e-mailu pomáhá zabezpečit váš účet a umožňuje obnovení účtu, pokud ztratíte přístup ke svému zařízení.';
+      'Email verification helps secure your account and enables account recovery if you lose access to your device.';
 
   @override
   String get phoneAuthFailedToSendCode =>
-      'Nepodařilo se odeslat ověřovací kód. Prosím, zkuste to znovu.';
+      'Failed to send verification code. Please try again.';
 
   @override
   String get phoneAuthInvalidCodeTryAgain =>
-      'Neplatný ověřovací kód. Prosím, zkuste to znovu.';
+      'Invalid verification code. Please try again.';
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return 'Číslo telefonu ověřeno: _ _ PLACETETERER _ 0 _ _';
+    return 'Phone number verified: $phoneNumber';
   }
 
   @override
   String get phoneAuthVerificationFailed =>
-      'Ověření telefonu selhalo. Prosím, zkuste to znovu.';
+      'Phone verification failed. Please try again.';
 
   @override
-  String get phoneAuthCodeResent => 'Kód ověření je nepřípustný';
+  String get phoneAuthCodeResent => 'Verification code resent';
 
   @override
   String get phoneAuthFailedToResendCode =>
-      'Nepodařilo se mi obnovit kód. Prosím, zkuste to znovu.';
+      'Failed to resend code. Please try again.';
 
   @override
   String get phoneAuthInvalidPhoneNumber =>
-      'Neplatné telefonní číslo. Zkontrolujte prosím formát.';
+      'Invalid phone number. Please check the format.';
 
   @override
   String get phoneAuthTooManyRequests =>
-      'Příliš mnoho pokusů. Prosím, zkuste to později.';
+      'Too many attempts. Please try again later.';
 
   @override
   String get phoneAuthInvalidVerificationCode =>
-      'Neplatný ověřovací kód. Prosím zkontrolujte to a zkuste to znovu.';
+      'Invalid verification code. Please check and try again.';
 
   @override
   String get phoneAuthSessionExpired =>
-      'Ověření vypršelo. Vyžádejte si nový kód.';
+      'Verification session expired. Please request a new code.';
 
   @override
   String get phoneAuthSmsQuotaExceeded =>
-      'Překročená SMS kvóta. Prosím, zkuste to zítra znovu.';
+      'SMS quota exceeded. Please try again tomorrow.';
 
   @override
   String get phoneAuthCredentialAlreadyInUse =>
-      'Toto telefonní číslo je již připojeno k jinému účtu.';
+      'This phone number is already linked to another account.';
 
   @override
   String get phoneAuthVerificationFailedGeneric =>
-      'Ověření selhalo. Prosím, zkuste to znovu.';
+      'Verification failed. Please try again.';
 
   @override
-  String get phoneAuthTitle => 'Ověření telefonu';
+  String get phoneAuthTitle => 'Phone Verification';
 
   @override
-  String get phoneAuthVerifyYourPhone => 'Ověřte svůj telefon';
+  String get phoneAuthVerifyYourPhone => 'Verify Your Phone';
 
   @override
-  String get phoneAuthEnterVerificationCode => 'Zadejte ověření Kód';
+  String get phoneAuthEnterVerificationCode => 'Enter Verification Code';
 
   @override
   String get phoneAuthAddPhoneForSecurity =>
-      'Přidat své telefonní číslo pro obnovení účtu a zabezpečení';
+      'Add your phone number for account recovery and security';
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return 'Zadejte 6místný kód odeslaný na _ _ PLACETETIER _ 0 _ _';
+    return 'Enter the 6-digit code sent to $phoneNumber';
   }
 
   @override
-  String get phoneAuthPhoneNumber => 'Číslo telefonu';
+  String get phoneAuthPhoneNumber => 'Phone Number';
 
   @override
-  String get phoneAuthPhonePlaceholder => '+ 1 (55) 123- 4567';
+  String get phoneAuthPhonePlaceholder => '+1 (555) 123-4567';
 
   @override
-  String get phoneAuthPleaseEnterPhone => 'Zadejte prosím své telefonní číslo';
+  String get phoneAuthPleaseEnterPhone => 'Please enter your phone number';
 
   @override
   String get phoneAuthPleaseEnterValidPhone =>
-      'Zadejte prosím platné telefonní číslo';
+      'Please enter a valid phone number';
 
   @override
-  String get phoneAuthVerificationCode => 'Kód ověření';
+  String get phoneAuthVerificationCode => 'Verification Code';
 
   @override
-  String get phoneAuthPleaseEnterSixDigitCode => 'Zadejte prosím 6místný kód';
+  String get phoneAuthPleaseEnterSixDigitCode =>
+      'Please enter the 6-digit code';
 
   @override
-  String get phoneAuthResendCode => 'Kód záznamu';
+  String get phoneAuthResendCode => 'Resend Code';
 
   @override
-  String get phoneAuthSendVerificationCode => 'Odeslat ověření Kód';
+  String get phoneAuthSendVerificationCode => 'Send Verification Code';
 
   @override
-  String get phoneAuthVerifyCode => 'Ověřit kód';
+  String get phoneAuthVerifyCode => 'Verify Code';
 
   @override
-  String get phoneAuthChangePhoneNumber => 'Změnit telefonní číslo';
+  String get phoneAuthChangePhoneNumber => 'Change Phone Number';
 
   @override
   String get phoneAuthSmsNotice =>
-      'Pošleme vám ověřovací kód přes SMS. Mohou se použít standardní sazby zpráv.';
+      'We\'ll send you a verification code via SMS. Standard message rates may apply.';
 
   @override
   String get phoneAuthCodeExpires =>
-      'Kód vyprší za 60 sekund. Zkontrolujte si vzkazy.';
+      'Code expires in 60 seconds. Check your messages.';
 
   @override
-  String get yourDataRights => 'Vaše práva k údajům';
+  String get yourDataRights => 'Your Data Rights';
 
   @override
   String get dataRightsExplanation =>
-      'Máte plnou kontrolu nad vašimi osobními údaji. Všechny své údaje můžete kdykoli exportovat nebo trvale smazat.';
+      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
 
   @override
-  String get exportYourData => 'Exportovat Vaše data';
+  String get exportYourData => 'Export Your Data';
 
   @override
-  String get exportDataDescription => 'Stáhnout všechna data vašeho účtu';
+  String get exportDataDescription => 'Download all your account data';
 
   @override
-  String get exportData => 'Exportovat údaje';
+  String get exportData => 'Export Data';
 
   @override
-  String get exportingData => 'Vývoz...';
+  String get exportingData => 'Exporting...';
 
   @override
   String get exportDataDetails =>
-      'Zahrnuje: profil, pípnutí, komentáře, informace o zařízení a preference. Údaje jsou poskytovány ve formátu JSON.';
+      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
 
   @override
-  String get dataExportedSuccessfully => 'Úspěšně exportované údaje';
+  String get dataExportedSuccessfully => 'Data exported successfully';
 
   @override
-  String get dataExportFailed => 'Nepodařilo se exportovat data';
+  String get dataExportFailed => 'Failed to export data';
 
   @override
-  String get deleteAccount => 'Smazat účet';
+  String get deleteAccount => 'Delete Account';
 
   @override
   String get deleteAccountDescription =>
-      'Trvale odstranit váš účet a všechny údaje';
+      'Permanently remove your account and all data';
 
   @override
   String get deleteAccountWarning =>
-      'Tuto akci nelze odčinit. Všechny vaše pípnutí, komentáře a údaje o účtu budou trvale vymazány.';
+      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
 
   @override
-  String get deleteMyAccount => 'Smazat můj účet';
+  String get deleteMyAccount => 'Delete My Account';
 
   @override
-  String get deletingAccount => 'Mazání...';
+  String get deletingAccount => 'Deleting...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Smazat účet';
+  String get deleteAccountConfirmTitle => 'Delete Account';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Jste si naprosto jisti, že chcete smazat svůj účet? Tato akce je trvalá a nelze ji odčinit.';
+      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
 
   @override
-  String get dataWillBeDeleted => 'Následující údaje budou trvale vymazány:';
+  String get dataWillBeDeleted =>
+      'The following data will be permanently deleted:';
 
   @override
   String get deletedDataList =>
-      '• Váš profil a uživatelské jméno\n• Všechny vaše pípnutí a zprávy\n• Všechny vaše komentáře\n• Údaje o registraci zařízení\n• Umístění a preference dat';
+      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
 
   @override
-  String get deleteAccountPermanent => 'Smazat trvale';
+  String get deleteAccountPermanent => 'Delete Permanently';
 
   @override
-  String get accountDeletedSuccessfully => 'Účet úspěšně vymazán';
+  String get accountDeletedSuccessfully => 'Account deleted successfully';
 
   @override
-  String get accountDeletionFailed => 'Nepodařilo se odstranit účet';
+  String get accountDeletionFailed => 'Failed to delete account';
 
   @override
-  String get onboardingWelcomeTitle => 'Vítejte v UFOBeepu';
+  String get onboardingWelcomeTitle => 'Welcome to UFOBeep';
 
   @override
   String get onboardingWelcomeBody =>
-      'Získejte okamžité upozornění, až budou UFO spatřeny poblíž vaší pozice. Už nikdy nezmeškej pozorování!';
+      'Get instant alerts when UFOs are spotted near your location. Never miss a sighting again!';
 
   @override
-  String get onboardingReportTitle => 'Vidíš něco? Píp to!';
+  String get onboardingReportTitle => 'See something? Beep it!';
 
   @override
   String get onboardingReportBody =>
-      'Zachyťte fotografie a videa pozorování UFO. Okamžitě se podělte s globální komunitou.';
+      'Capture photos and videos of UFO sightings. Share with the global community instantly.';
 
   @override
-  String get onboardingCompassTitle => 'Uvidíme, kde budou hledat';
+  String get onboardingCompassTitle => 'See Where They Looked';
 
   @override
   String get onboardingCompassBody =>
-      'Kompas ukazuje přesný směr, kterým se svědek díval, když viděl UFO. Namiř telefon a podívej se!';
+      'Compass shows you the exact direction the witness was looking when they saw the UFO. Point your phone and look!';
 
   @override
-  String get onboardingCommunityTitle => 'Spojte se s Skywatchers';
+  String get onboardingCommunityTitle => 'Connect with Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Přečtěte si poslední pozorování UFO nad ranní kávu. Přístup k profesionálním údajům MUFON a spojit se s kolegy skywatchers.';
+      'Read the latest UFO sightings over your morning coffee. Access professional MUFON data and connect with fellow skywatchers.';
 
   @override
-  String get skip => 'Přeskočit';
+  String get skip => 'Skip';
 
   @override
-  String get getStarted => 'Začít';
+  String get getStarted => 'Get Started';
 
   @override
-  String get viewOnboardingAgain => 'Zobrazit Znovu na palubě';
+  String get viewOnboardingAgain => 'View Onboarding Again';
 
   @override
   String get customAlertRange => 'Custom Alert Range';
 
   @override
-  String get enterRangeKm => 'Enter range in km (1-500)';
+  String get enterRangeKm => 'Enter range in km (1-99999)';
 
   @override
   String get largeRangeWarning =>
       'Large ranges (>100km) may generate many alerts';
 
   @override
-  String get invalidRange => 'Please enter a number between 1 and 500';
+  String get globalRangeWarning =>
+      'Very large ranges (>1000km) will send you alerts from around the world';
+
+  @override
+  String get invalidRange => 'Please enter a number between 1 and 99999';
 }

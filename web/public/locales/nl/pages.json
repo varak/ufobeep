@@ -1,6 +1,6 @@
 {
-  "welcomeTitle": "Welkom bij UFObeep",
-  "settings": "Instellingen",
-  "settingsTitle": "Instellingen",
-  "pageOf": "Pagina __PLAATSHOLDER_0__ van __PLAATSHOLDER_1__ (__PLAATSHOLDER_2__ totale piepers)"
+  "welcomeTitle": "Welcome to UFOBeep",
+  "settings": "Settings",
+  "settingsTitle": "Settings",
+  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)"
 }

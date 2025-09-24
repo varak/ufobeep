@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "התראות",
+  "tabAlerts": "Alerts",
   "tabBeep": "Beep",
-  "tabChat": "צ'אט Chat",
-  "tabMap": "מפה",
-  "tabSettings": "הגדרות",
-  "mufonDatabaseEntryDate": "תאריך כניסה ל MUFON מסד נתונים",
-  "databaseEntry": "מסד נתונים כניסה",
-  "mufonDatabaseReport": "MUFON מקרה מספר:"
+  "tabChat": "Chat",
+  "tabMap": "Map",
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry",
+  "mufonDatabaseReport": "MUFON Case Number:"
 }

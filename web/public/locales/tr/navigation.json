@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "Uyarılar",
+  "tabAlerts": "Alerts",
   "tabBeep": "Beep",
   "tabChat": "Chat",
   "tabMap": "Map",
-  "tabSettings": "Ayarlar",
-  "mufonDatabaseEntryDate": "Tarih MUFON'a girdi Veritabanı Veritabanı",
-  "databaseEntry": "Veritabanı",
-  "mufonDatabaseReport": "MUFON Vaka Numarası:"
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry",
+  "mufonDatabaseReport": "MUFON Case Number:"
 }
