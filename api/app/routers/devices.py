@@ -238,6 +238,12 @@ async def register_device(
         current_time = datetime.utcnow()
         
         async with db_pool.acquire() as conn:
+            # First: Deactivate any other user sessions on this device (single active user per device)
+            await conn.execute(
+                "UPDATE devices SET is_active = false WHERE device_id = $1 AND user_id != $2",
+                request.device_id, user_id
+            )
+
             # Try to update existing device first - match by both device_id AND user_id
             result = await conn.execute(
                 """

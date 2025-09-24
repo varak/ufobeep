@@ -132,12 +132,11 @@ class ProximityAlertService:
                 else:
                     logger.info("Rate limiting disabled - sending proximity alerts regardless of frequency")
 
-                # SINGLE EFFICIENT QUERY: Get all devices within their custom ranges
+                # SINGLE EFFICIENT QUERY: Get all active devices within their custom ranges
                 query = """
-                    SELECT DISTINCT ON (device_id)
-                        device_id, push_token, platform, lat, lon,
-                        alert_range_km, preferences, snooze_until, dnd_until,
-                        ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 as distance_km
+                    SELECT device_id, push_token, platform, lat, lon,
+                           alert_range_km, preferences, snooze_until, dnd_until,
+                           ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 as distance_km
                     FROM devices
                     WHERE is_active = true
                       AND push_enabled = true
@@ -149,7 +148,7 @@ class ProximityAlertService:
                       AND (dnd_until IS NULL OR dnd_until <= NOW())
                       AND ST_DWithin(location, ST_Point($2, $1)::geography, 200000)
                       AND ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 <= COALESCE(alert_range_km, 30.0)
-                    ORDER BY device_id, (push_token IS NOT NULL) DESC, updated_at DESC, distance_km
+                    ORDER BY distance_km
                 """
                 rows = await conn.fetch(query, lat, lon, exclude_device_id)
 
