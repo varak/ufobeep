@@ -8,6 +8,7 @@ import '../../services/api_client.dart';
 import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
 import '../../l10n/app_localizations.dart';
+import 'package:geolocator/geolocator.dart';
 
 // Helper function to safely convert dynamic values to Map for bracket access
 
@@ -81,8 +82,8 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
           ),
           const SizedBox(height: 16),
           
-          // Witness confirmation button (primary action if not confirmed and not creator and within time window)
-          if (_hasConfirmed != true && !_isOriginalCreator() && _isWithinConfirmationWindow()) ...[
+          // Witness confirmation button (primary action if not confirmed and not creator and within time+proximity window)
+          if (_hasConfirmed != true && !_isOriginalCreator() && _isWithinConfirmationWindow() && _isWithinProximity()) ...[
             _buildWitnessButton(),
             const SizedBox(height: 12),
           ] else if (_hasConfirmed == true) ...[
@@ -477,6 +478,22 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
     final alertTime = widget.alert.createdAt;
     final timeDifference = now.difference(alertTime);
     return timeDifference.inMinutes <= 60;
+  }
+
+  /// Check if user is within proximity to witness the sighting (50km radius)
+  bool _isWithinProximity() {
+    final userLocation = permissionService.cachedLocation;
+    if (userLocation == null) return false;
+
+    final distanceInMeters = Geolocator.distanceBetween(
+      userLocation.latitude,
+      userLocation.longitude,
+      widget.alert.latitude,
+      widget.alert.longitude,
+    );
+
+    final distanceInKm = distanceInMeters / 1000;
+    return distanceInKm <= 50; // 50km radius for witness confirmation
   }
 
   /// Check if current user is the original creator of this alert
