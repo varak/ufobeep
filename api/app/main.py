@@ -858,7 +858,65 @@ async def admin_delete_user_data_only(user_id: str, request: Request):
     if admin_key != "ufobeep_admin_2025":
         raise HTTPException(status_code=403, detail="Admin access required")
 
-    return await admin_delete_user_account(user_id, request, data_only=True)
+    try:
+        async with database_service.pool.acquire() as conn:
+            async with conn.transaction():
+                # Get username first
+                user_record = await conn.fetchrow("SELECT username FROM users WHERE id = $1", user_id)
+                if not user_record:
+                    raise HTTPException(status_code=404, detail="User not found")
+
+                username = user_record['username']
+
+                # Delete ALL user data but KEEP the user account
+                # STEP 1: Delete all comments made by this user
+                comments_deleted = await conn.execute("DELETE FROM comments WHERE user_id = $1", user_id)
+                comments_count = int(comments_deleted.split()[-1]) if comments_deleted.split()[-1].isdigit() else 0
+
+                # STEP 2: Delete user's sightings and related data
+                sightings = await conn.fetch("SELECT id FROM sightings WHERE reporter_id = $1", user_id)
+                sightings_count = len(sightings)
+
+                media_files_deleted = 0
+                follows_deleted = 0
+                for sighting in sightings:
+                    sighting_id = sighting['id']
+                    media_deleted = await conn.execute("DELETE FROM media_files WHERE sighting_id = $1", sighting_id)
+                    media_files_deleted += int(media_deleted.split()[-1]) if media_deleted.split()[-1].isdigit() else 0
+
+                    follows_result = await conn.execute("DELETE FROM follows WHERE sighting_id = $1", sighting_id)
+                    follows_deleted += int(follows_result.split()[-1]) if follows_result.split()[-1].isdigit() else 0
+
+                sightings_deleted = await conn.execute("DELETE FROM sightings WHERE reporter_id = $1", user_id)
+                final_sightings_count = int(sightings_deleted.split()[-1]) if sightings_deleted.split()[-1].isdigit() else 0
+
+                # STEP 3: Delete devices (this will break app access but preserve username)
+                devices_deleted = await conn.execute("DELETE FROM devices WHERE user_id = $1", user_id)
+                devices_count = int(devices_deleted.split()[-1]) if devices_deleted.split()[-1].isdigit() else 0
+
+                # STEP 4: Delete user's follows
+                user_follows_deleted = await conn.execute("DELETE FROM follows WHERE user_id = $1", user_id)
+                user_follows_count = int(user_follows_deleted.split()[-1]) if user_follows_deleted.split()[-1].isdigit() else 0
+
+                # NOTE: User account and username are PRESERVED
+
+                return {
+                    "success": True,
+                    "message": f"Data cleared for user {username} - account preserved",
+                    "details": {
+                        "user_id": user_id,
+                        "username": username,
+                        "account_preserved": True,
+                        "sightings_deleted": final_sightings_count,
+                        "comments_deleted": comments_count,
+                        "devices_deleted": devices_count,
+                        "follows_deleted": follows_deleted + user_follows_count,
+                        "media_files_deleted": media_files_deleted,
+                    }
+                }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete user data: {str(e)}")
 
 # Clean unified alerts architecture using alerts.router
 
