@@ -81,8 +81,8 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
           ),
           const SizedBox(height: 16),
           
-          // Witness confirmation button (primary action if not confirmed and not creator)
-          if (_hasConfirmed != true && !_isOriginalCreator()) ...[
+          // Witness confirmation button (primary action if not confirmed and not creator and within time window)
+          if (_hasConfirmed != true && !_isOriginalCreator() && _isWithinConfirmationWindow()) ...[
             _buildWitnessButton(),
             const SizedBox(height: 12),
           ] else if (_hasConfirmed == true) ...[
@@ -361,13 +361,33 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
       }
 
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Failed to confirm witness: ${e.toString()}'),
-            backgroundColor: AppColors.semanticError,
-            duration: const Duration(seconds: 3),
-          ),
-        );
+        // Extract clean error message from ApiClientException
+        String displayMessage = 'Failed to confirm witness';
+        if (e.toString().contains('ApiClientException:')) {
+          // Extract the actual error message after "ApiClientException: "
+          final fullMessage = e.toString();
+          final colonIndex = fullMessage.indexOf('ApiClientException: ');
+          if (colonIndex != -1) {
+            displayMessage = fullMessage.substring(colonIndex + 'ApiClientException: '.length);
+          }
+        } else {
+          displayMessage = e.toString();
+        }
+
+        // Check if this is the 60-minute window error and show helpful dialog
+        if (displayMessage.toLowerCase().contains('confirmation window has closed') ||
+            displayMessage.toLowerCase().contains('60 minutes')) {
+          _showTimeExpiredDialog();
+        } else {
+          // For other errors, show snackbar
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(displayMessage),
+              backgroundColor: AppColors.semanticError,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
       }
     } finally {
       if (mounted) {
@@ -422,6 +442,41 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
         backgroundColor: AppColors.semanticWarning,
       ),
     );
+  }
+
+  void _showTimeExpiredDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: AppColors.darkSurface,
+        title: const Text(
+          '⏰ Too Late to Confirm',
+          style: TextStyle(color: AppColors.textPrimary),
+        ),
+        content: const Text(
+          'You can only confirm sightings within 60 minutes of when they occurred.\n\nIf you\'re seeing something similar right now, use the beep button to create a new sighting.',
+          style: TextStyle(color: AppColors.textSecondary),
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.brandPrimary,
+              foregroundColor: Colors.black,
+            ),
+            child: const Text('Got it'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Check if alert is within 60-minute confirmation window
+  bool _isWithinConfirmationWindow() {
+    final now = DateTime.now();
+    final alertTime = widget.alert.createdAt;
+    final timeDifference = now.difference(alertTime);
+    return timeDifference.inMinutes <= 60;
   }
 
   /// Check if current user is the original creator of this alert

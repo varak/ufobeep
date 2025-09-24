@@ -123,8 +123,23 @@ class ApiClient {
       Map<String, dynamic>? details;
 
       if (responseData is Map<String, dynamic>) {
-        message = responseData['message'] ?? responseData['detail']?['message'] ?? message;
-        details = responseData['detail'] ?? responseData;
+        // First try to get message directly from response
+        if (responseData.containsKey('message')) {
+          message = responseData['message']?.toString() ?? message;
+        }
+        // Then try to get message from detail if detail is a Map
+        else if (responseData.containsKey('detail')) {
+          final detail = responseData['detail'];
+          if (detail is Map<String, dynamic> && detail.containsKey('message')) {
+            message = detail['message']?.toString() ?? message;
+          } else if (detail is String) {
+            message = detail;
+          }
+        }
+
+        details = responseData['detail'] is Map<String, dynamic>
+            ? responseData['detail'] as Map<String, dynamic>
+            : responseData;
       }
 
       return ApiClientException(
