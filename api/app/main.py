@@ -719,7 +719,7 @@ async def admin_export_user_data(user_id: str, request: Request, format: str = "
         raise HTTPException(status_code=500, detail=f"Failed to export user data: {str(e)}")
 
 @app.delete("/api/admin/users/{user_id}")
-async def admin_delete_user_account(user_id: str, request: Request):
+async def admin_delete_user_account(user_id: str, request: Request, data_only: bool = False):
     """Admin endpoint: Comprehensive user account deletion for GDPR testing"""
     admin_key = request.headers.get("X-Admin-Key")
     if admin_key != "ufobeep_admin_2025":
@@ -794,16 +794,19 @@ async def admin_delete_user_account(user_id: str, request: Request):
                 user_media_deleted = await conn.execute("DELETE FROM media_files WHERE uploaded_by_user_id = $1", user_id)
                 user_media_count = int(user_media_deleted.split()[-1]) if user_media_deleted.split()[-1].isdigit() else 0
 
-                # STEP 11: Finally delete the user
-                user_deleted = await conn.execute("DELETE FROM users WHERE id = $1", user_id)
-                user_deletion_success = "DELETE 1" in user_deleted
+                # STEP 11: Delete user account (optional)
+                user_deletion_success = True
+                if not data_only:
+                    user_deleted = await conn.execute("DELETE FROM users WHERE id = $1", user_id)
+                    user_deletion_success = "DELETE 1" in user_deleted
 
-                if not user_deletion_success:
-                    raise HTTPException(status_code=500, detail="Failed to delete user record")
+                    if not user_deletion_success:
+                        raise HTTPException(status_code=500, detail="Failed to delete user record")
 
+                action = "data cleared" if data_only else "deleted"
                 return {
                     "success": True,
-                    "message": f"User {username} deleted successfully with comprehensive cleanup",
+                    "message": f"User {username} {action} successfully with comprehensive cleanup",
                     "details": {
                         "user_id": user_id,
                         "username": username,

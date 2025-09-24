@@ -90,6 +90,31 @@ export default function AdminUsersPage() {
     }
   }
 
+  const deleteUserData = async (userId: string, username: string) => {
+    if (!confirm(`⚠️ DELETE DATA WARNING ⚠️\n\nThis will permanently delete ALL data for user "${username}" but keep the username/account:\n\n✅ All uploaded beeps/sightings\n✅ All media files and photos\n✅ All comments made by user\n✅ All follows and notifications\n❌ User account (username preserved)\n\nThis action CANNOT be undone.\n\nClick OK to confirm data deletion.`)) {
+      return
+    }
+
+    try {
+      const response = await fetch(`/admin-api/users/${userId}?data_only=true`, {
+        method: 'DELETE',
+        headers: { 'X-Admin-Key': adminKey }
+      })
+
+      if (response.ok) {
+        const result = await response.json()
+        alert(`✅ Data cleared for ${username}!\n\nAccount preserved with username intact.\n\nCleaned up:\n• ${result.details?.sightings_deleted || 0} sightings\n• ${result.details?.comments_deleted || 0} comments\n• ${result.details?.files_deleted || 0} files`)
+        loadData() // Reload the list
+      } else {
+        const errorData = await response.json()
+        alert(`Failed to delete user data: ${errorData.details || errorData.error || 'Unknown error'}`)
+      }
+    } catch (error) {
+      console.error('Error deleting user data:', error)
+      alert(`Error deleting user data: ${error}`)
+    }
+  }
+
   const deleteUser = async (userId: string, username: string) => {
     if (!confirm(`⚠️ COMPREHENSIVE DELETE WARNING ⚠️\n\nThis will permanently delete user "${username}" and ALL associated data:\n\n✅ User profile and account\n✅ All uploaded beeps/sightings\n✅ All media files and photos\n✅ All comments made by user\n✅ All follows and notifications\n\nThis action CANNOT be undone and will free up storage space.\n\nClick OK to confirm deletion.`)) {
       return
@@ -303,15 +328,22 @@ export default function AdminUsersPage() {
                         <div className="flex gap-2">
                           <button
                             onClick={() => exportUserData(user.id, user.username, 'csv')}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm"
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm mr-2"
                             title="Export all user data (GDPR)"
                           >
                             📄 Export
                           </button>
                           <button
+                            onClick={() => deleteUserData(user.id, user.username)}
+                            className="bg-orange-600 hover:bg-orange-700 text-white px-3 py-1 rounded text-sm mr-2"
+                            title="Delete all user data but keep username/account"
+                          >
+                            🧹 Delete Data
+                          </button>
+                          <button
                             onClick={() => deleteUser(user.id, user.username)}
                             className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm"
-                            title="Comprehensive delete - removes ALL user data"
+                            title="Comprehensive delete - removes ALL user data AND account"
                           >
                             🗑️ Delete
                           </button>
