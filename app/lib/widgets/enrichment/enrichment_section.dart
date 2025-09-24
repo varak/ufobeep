@@ -60,10 +60,6 @@ class EnrichmentSection extends ConsumerWidget {
                 ),
               ],
             ),
-            if (enrichmentData != null) ...[
-              const SizedBox(height: 8),
-              _buildStatusChip(EnrichmentStatus.completed),
-            ],
           ],
         ),
         const SizedBox(height: 16),
@@ -305,7 +301,7 @@ class EnrichmentSection extends ConsumerWidget {
                   margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: AppColors.darkBackground,
+                    color: AppColors.darkSurface,
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: AppColors.darkBorder),
                   ),
@@ -432,7 +428,7 @@ class EnrichmentSection extends ConsumerWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: AppColors.darkBackground,
+                color: AppColors.darkSurface,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
               ),
@@ -493,7 +489,7 @@ class EnrichmentSection extends ConsumerWidget {
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppColors.darkBackground,
+                      color: AppColors.darkSurface,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
                     ),
@@ -526,7 +522,7 @@ class EnrichmentSection extends ConsumerWidget {
                   child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: AppColors.darkBackground,
+                      color: AppColors.darkSurface,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(color: AppColors.darkBorder.withOpacity(0.3)),
                     ),
@@ -819,7 +815,7 @@ class _CelestialObject extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColors.darkBackground,
+        color: AppColors.darkSurface,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           color: isVisible ? AppColors.brandPrimary : AppColors.darkBorder,
@@ -945,7 +941,7 @@ class SatelliteCardFromJson extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: AppColors.darkBackground,
+          color: AppColors.darkSurface,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
             color: pass['is_visible_pass'] == true ? AppColors.brandPrimary : AppColors.darkBorder,
@@ -1216,7 +1212,7 @@ class CelestialCardFromJson extends StatelessWidget {
       Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: AppColors.darkBackground,
+          color: AppColors.darkSurface,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
             color: isVisible ? AppColors.brandPrimary : AppColors.darkBorder,
