@@ -432,7 +432,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 
                 
                 // Direction and compass - hidden for MUFON alerts and for beep creators
-                if (alert.source != 'mufon' && alert.reporterId != _currentUserDeviceId) ...[
+                if (alert.source != 'mufon' && !(_currentUsername != null && alert.username != null && _currentUsername == alert.username)) ...[
                   AlertDirectionSection(
                     alert: alert,
                     units: (ref.read(userPreferencesProvider)?.units ?? 'metric'),
