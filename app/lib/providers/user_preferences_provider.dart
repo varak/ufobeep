@@ -36,10 +36,12 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
         final prefsMap = jsonDecode(prefsJson) as Map<String, dynamic>;
         final savedPrefs = UserPreferences.fromJson(prefsMap);
 
-        // Respect device language if it's different from saved preference
-        // This ensures app follows device language changes for app store compliance
+        // Only auto-update to device language if user hasn't explicitly chosen a different language
+        // Check if saved language was explicitly set vs auto-detected on first run
+        final isAutoDetectedLanguage = savedPrefs.language == AppEnvironment.defaultLocale;
         final shouldUseDeviceLanguage = deviceLanguageSupported &&
-                                       savedPrefs.language != deviceLang;
+                                       savedPrefs.language != deviceLang &&
+                                       isAutoDetectedLanguage; // Only override if using default, not explicit choice
 
         state = shouldUseDeviceLanguage
             ? savedPrefs.copyWith(language: deviceLang)
