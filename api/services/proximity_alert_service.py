@@ -147,7 +147,7 @@ class ProximityAlertService:
                       AND (snooze_until IS NULL OR snooze_until <= NOW())
                       AND (dnd_until IS NULL OR dnd_until <= NOW())
                       AND ST_DWithin(location, ST_Point($2, $1)::geography, 200000)
-                      AND ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 <= COALESCE(alert_range_km, 30.0)
+                      AND ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 <= COALESCE((preferences->>'alertRangeKm')::float, alert_range_km, 30.0)
                     ORDER BY distance_km
                 """
                 rows = await conn.fetch(query, lat, lon, exclude_device_id)
@@ -155,6 +155,10 @@ class ProximityAlertService:
                 # Convert to device list with all needed info
                 devices = []
                 for row in rows:
+                    # Get alert range from preferences JSON, fallback to alert_range_km column, then default
+                    preferences = row['preferences'] or {}
+                    user_alert_range = preferences.get('alertRangeKm', row['alert_range_km'] or 30.0)
+
                     devices.append({
                         'device_id': row['device_id'],
                         'push_token': row['push_token'],
@@ -162,8 +166,8 @@ class ProximityAlertService:
                         'distance_km': round(float(row['distance_km']), 2),
                         'device_lat': row['lat'],
                         'device_lon': row['lon'],
-                        'user_alert_range': row['alert_range_km'] or 30.0,
-                        'preferences': row['preferences']
+                        'user_alert_range': user_alert_range,
+                        'preferences': preferences
                     })
                     logger.debug(f"PROXIMITY: Device {row['device_id']} included (distance: {row['distance_km']:.2f}km, range: {row['alert_range_km']}km)")
 
