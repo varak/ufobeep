@@ -150,7 +150,9 @@ class ProximityAlertService:
                       AND ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 <= COALESCE((preferences->>'alertRangeKm')::float, alert_range_km)
                     ORDER BY distance_km
                 """
+                logger.info(f"PROXIMITY DEBUG: Executing query with lat={lat}, lon={lon}, exclude_user_id={exclude_device_id}")
                 rows = await conn.fetch(query, lat, lon, exclude_device_id)
+                logger.info(f"PROXIMITY DEBUG: Query returned {len(rows)} raw devices")
 
                 # Convert to device list with all needed info
                 devices = []
