@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/alerts_provider.dart';
+import '../../providers/user_preferences_provider.dart';
 import '../../theme/app_theme.dart';
 import '../glass_card.dart';
 import '../../services/permission_service.dart';
@@ -20,7 +22,7 @@ int? _safeInt(dynamic value) {
   return null;
 }
 
-class AlertActionsSection extends StatefulWidget {
+class AlertActionsSection extends ConsumerStatefulWidget {
   const AlertActionsSection({
     super.key,
     required this.alert,
@@ -41,10 +43,10 @@ class AlertActionsSection extends StatefulWidget {
   final String? currentUsername;
 
   @override
-  State<AlertActionsSection> createState() => _AlertActionsSectionState();
+  ConsumerState<AlertActionsSection> createState() => _AlertActionsSectionState();
 }
 
-class _AlertActionsSectionState extends State<AlertActionsSection> {
+class _AlertActionsSectionState extends ConsumerState<AlertActionsSection> {
   bool _isConfirming = false;
   bool? _hasConfirmed;
   int _witnessCount = 0;
@@ -480,7 +482,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
     return timeDifference.inMinutes <= 60;
   }
 
-  /// Check if user is within proximity to witness the sighting (50km radius)
+  /// Check if user is within proximity to witness the sighting (uses user's alert range setting)
   bool _isWithinProximity() {
     final userLocation = permissionService.cachedLocation;
     if (userLocation == null) return false;
@@ -493,7 +495,11 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
     );
 
     final distanceInKm = distanceInMeters / 1000;
-    return distanceInKm <= 50; // 50km radius for witness confirmation
+
+    // Use user's alert range preference for witness confirmation
+    final userAlertRange = ref.read(alertRangeProvider);
+
+    return distanceInKm <= userAlertRange;
   }
 
   /// Check if current user is the original creator of this alert

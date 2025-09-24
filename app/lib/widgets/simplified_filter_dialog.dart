@@ -21,8 +21,12 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
   // Simplified filter state
   SourceFilter _sourceFilter = SourceFilter.both;
   SortOption _sortOption = SortOption.newest;
-  double _pushRadiusKm = 25.0;  // Default to 25km (exists in dropdown)
+  double _pushRadiusKm = 100.0;  // Default to 100km
   bool _ufobeepAlertsEnabled = true;
+
+  // Text controller for custom range input
+  final TextEditingController _rangeController = TextEditingController();
+  String? _rangeError;
 
   @override
   void initState() {
@@ -45,10 +49,13 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
         ? SortOption.nearest
         : SortOption.newest;
 
-    // Read alert range from user preferences (not filter state)
-    final currentRadius = userPrefs?.alertRangeKm ?? 25.0;
-    final radiusOptions = [10.0, 25.0, 50.0, 100.0, 200.0];
-    _pushRadiusKm = radiusOptions.contains(currentRadius) ? currentRadius : 25.0;
+    // Read alert range from user preferences and populate text controller
+    if (userPrefs?.alertRangeKm == null) {
+      throw StateError('User preferences not loaded or alertRangeKm is null - this should not happen');
+    }
+    final currentRadius = userPrefs!.alertRangeKm;
+    _pushRadiusKm = currentRadius;
+    _rangeController.text = currentRadius.toInt().toString();
   }
 
   @override
@@ -212,32 +219,54 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
   }
 
   Widget _buildPushCard(AppLocalizations l10n) {
-    final radiusOptions = [10.0, 25.0, 50.0, 100.0, 200.0];
-
     return _buildCard(
       title: l10n.pushAlertsTitle,
       subtitle: l10n.pushAlertsDescription,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(l10n.alertRadius, style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
+          Text(l10n.customAlertRange, style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600)),
           const SizedBox(height: 8),
-          DropdownButtonFormField<double>(
-            value: _pushRadiusKm,
+          TextFormField(
+            controller: _rangeController,
+            keyboardType: TextInputType.number,
+            style: const TextStyle(color: AppColors.textPrimary),
             decoration: InputDecoration(
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              hintText: l10n.enterRangeKm,
+              hintStyle: const TextStyle(color: AppColors.textTertiary),
+              suffixText: 'km',
+              suffixStyle: const TextStyle(color: AppColors.textSecondary),
+              errorText: _rangeError,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: AppColors.textTertiary),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: AppColors.brandPrimary, width: 2),
+              ),
               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               fillColor: AppColors.nightSkyMiddle.withOpacity(0.3),
               filled: true,
             ),
-            dropdownColor: AppColors.darkSurface,
-            style: const TextStyle(color: AppColors.textPrimary),
-            items: radiusOptions.map((radius) => DropdownMenuItem(
-              value: radius,
-              child: Text('${radius.toInt()}km'),
-            )).toList(),
-            onChanged: (value) => setState(() => _pushRadiusKm = value!),
+            onChanged: _validateAndUpdateRange,
           ),
+          if (_pushRadiusKm > 100) ...[
+            const SizedBox(height: 8),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.warning_outlined, size: 16, color: AppColors.semanticWarning),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    l10n.largeRangeWarning,
+                    style: const TextStyle(color: AppColors.semanticWarning, fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: 12),
 
           // Removed confusing toggle - UFOBeep alerts should always be enabled
@@ -259,6 +288,35 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
         ],
       ),
     );
+  }
+
+  void _validateAndUpdateRange(String value) {
+    setState(() {
+      _rangeError = null;
+
+      // Sanitize input: trim whitespace, remove non-numeric characters except decimal point
+      final sanitizedValue = value.trim().replaceAll(RegExp(r'[^\d.]'), '');
+
+      if (sanitizedValue.isEmpty) {
+        _rangeError = AppLocalizations.of(context)!.invalidRange;
+        return;
+      }
+
+      final range = double.tryParse(sanitizedValue);
+      if (range == null || range < 1 || range > 500 || !range.isFinite) {
+        _rangeError = AppLocalizations.of(context)!.invalidRange;
+        return;
+      }
+
+      // Round to reasonable precision (no need for sub-kilometer precision)
+      _pushRadiusKm = double.parse(range.toStringAsFixed(1));
+    });
+  }
+
+  @override
+  void dispose() {
+    _rangeController.dispose();
+    super.dispose();
   }
 
   Widget _buildCard({required String title, required String subtitle, required Widget child}) {

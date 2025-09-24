@@ -56,7 +56,7 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
         // First run: detect device locale and use it if supported
         final initial = UserPreferences(
           language: deviceLanguageSupported ? deviceLang : AppEnvironment.defaultLocale,
-          alertRangeKm: 10.0,
+          alertRangeKm: 100.0,
         );
         state = initial;
         // Persist immediately so subsequent launches keep the choice
@@ -72,7 +72,7 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
       // Fallback to default preferences
       state = UserPreferences(
         language: AppEnvironment.defaultLocale,
-        alertRangeKm: 10.0,
+        alertRangeKm: 100.0,
       );
     }
   }
@@ -162,7 +162,7 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
     try {
       final current = state ?? UserPreferences(
         language: AppEnvironment.defaultLocale,
-        alertRangeKm: 10.0,
+        alertRangeKm: 100.0,
       );
       final updated = current.copyWith(language: language, lastUpdated: DateTime.now());
       state = updated; // Optimistic local state update
@@ -253,7 +253,7 @@ final userLanguageProvider = Provider<String>((ref) {
 
 final alertRangeProvider = Provider<double>((ref) {
   final prefs = ref.watch(userPreferencesProvider);
-  return prefs?.alertRangeKm ?? 10.0;
+  return prefs?.alertRangeKm ?? 100.0;
 });
 
 final unitsProvider = Provider<String>((ref) {

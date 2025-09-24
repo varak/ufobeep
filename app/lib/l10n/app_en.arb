@@ -887,5 +887,9 @@
   "onboardingCommunityBody": "Read the latest UFO sightings over your morning coffee. Access professional MUFON data and connect with fellow skywatchers.",
   "skip": "Skip",
   "getStarted": "Get Started",
-  "viewOnboardingAgain": "View Onboarding Again"
+  "viewOnboardingAgain": "View Onboarding Again",
+  "customAlertRange": "Custom Alert Range",
+  "enterRangeKm": "Enter range in km (1-500)",
+  "largeRangeWarning": "Large ranges (>100km) may generate many alerts",
+  "invalidRange": "Please enter a number between 1 and 500"
 }
