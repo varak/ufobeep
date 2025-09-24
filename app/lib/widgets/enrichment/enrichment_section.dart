@@ -251,15 +251,6 @@ class EnrichmentSection extends ConsumerWidget {
           ProcessingSummaryCardFromJson(summaryData: enrichmentData['processing_summary']),
           const SizedBox(height: 16),
         ],
-        if (hasBlackSkyData || hasSkyFiData) ...[
-          _canViewPremiumSatelliteImagery()
-            ? PremiumSatelliteCard(
-                blackskyData: enrichmentData['blacksky'],
-                skyfiData: enrichmentData['skyfi'],
-              )
-            : _buildPremiumUpgradePrompt(),
-          const SizedBox(height: 16),
-        ],
         if (hasContentData) ...[
           ContentAnalysisCardFromJson(contentData: enrichmentData['content_filter']),
           const SizedBox(height: 16),
