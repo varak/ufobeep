@@ -42,18 +42,29 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     
     <!-- Hardware features -->
+    <!-- Android TV compatibility: make touchscreen optional -->
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
+    <!-- Android TV compatibility: declare leanback support -->
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+
+    <!-- Make hardware features optional for TV compatibility -->
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="true" />
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.location.gps"
-        android:required="true" />
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
-        android:required="true" />
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.sensor.compass"
-        android:required="true" />
+        android:required="false" />
 
     <application
         android:label="UFOBeep"
@@ -97,6 +108,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+            <!-- Android TV leanback launcher support -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
             
             <!-- Share intent filters for Task 13: Share-to-Beep -->

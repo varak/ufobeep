@@ -75,11 +75,21 @@ class _SignInScreenState extends State<SignInScreen> {
             backgroundColor: AppColors.semanticSuccess,
           ),
         );
-        
+
         // Navigate to home screen after successful login
         if (mounted && context.mounted) {
           context.go('/');
         }
+      } else {
+        // Handle authentication failure
+        debugPrint('❌ Google Sign-In failed: ${result.error}');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sign-in failed: ${result.error ?? "Unknown error"}'),
+            backgroundColor: AppColors.semanticError,
+            duration: const Duration(seconds: 5),
+          ),
+        );
       }
     } catch (e) {
       debugPrint('❌ Google Sign-In failed: $e');

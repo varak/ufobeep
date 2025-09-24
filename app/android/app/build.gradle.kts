@@ -39,8 +39,8 @@ android {
         versionName = flutter.versionName
         multiDexEnabled = true
         
-        // Localization support
-        resourceConfigurations += listOf("en", "es", "de")
+        // Localization support - all 22 supported languages for maximum Google Play discovery
+        resourceConfigurations += listOf("ar", "cs", "da", "de", "el", "en", "es", "fi", "fr", "he", "hi", "it", "ja", "ko", "nl", "no", "pl", "pt", "ru", "sv", "tr", "zh")
     }
 
     signingConfigs {
