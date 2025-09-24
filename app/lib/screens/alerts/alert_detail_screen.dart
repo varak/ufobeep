@@ -431,8 +431,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 const SizedBox(height: 16),
                 
                 
-                // Direction and compass - hidden for MUFON alerts
-                if (alert.source != 'mufon') ...[
+                // Direction and compass - hidden for MUFON alerts and for beep creators
+                if (alert.source != 'mufon' && alert.reporterId != _currentUserDeviceId) ...[
                   AlertDirectionSection(
                     alert: alert,
                     units: (ref.read(userPreferencesProvider)?.units ?? 'metric'),
