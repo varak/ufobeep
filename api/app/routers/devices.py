@@ -260,13 +260,13 @@ async def register_device(
                 device_record_id = await conn.fetchval(
                     """
                     INSERT INTO devices (
-                        user_id, device_id, device_name, platform, app_version, os_version, 
-                        push_token, push_provider, push_enabled, 
+                        user_id, device_id, device_name, platform, app_version, os_version,
+                        push_token, push_provider, push_enabled,
                         alert_notifications, chat_notifications, system_notifications,
-                        lat, lon, is_active, last_seen, registered_at, token_updated_at, created_at, updated_at
+                        lat, lon, location, is_active, last_seen, registered_at, token_updated_at, created_at, updated_at
                     ) VALUES (
                         $1, $2, $3, $4, $5, $6, $7, $8, true, $9, $10, $11, $12, $13,
-                        true, $14, $14, $14, $14, $14
+                        ST_Point($13, $12), true, $14, $14, $14, $14, $14
                     ) RETURNING id
                     """,
                     user_id, request.device_id, request.device_name, request.platform.value,
@@ -376,9 +376,10 @@ async def register_anonymous_device(request: DeviceRegistrationRequest):
                         user_id, device_id, device_name, platform, app_version, os_version,
                         push_token, push_provider, push_enabled,
                         alert_notifications, chat_notifications, system_notifications,
-                        lat, lon, is_active, last_seen, registered_at, token_updated_at, created_at, updated_at
+                        lat, lon, location, is_active, last_seen, registered_at, token_updated_at, created_at, updated_at
                     ) VALUES (
-                        NULL, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19
+                        NULL, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13,
+                        ST_Point($13, $12), $14, $15, $16, $17, $18, $19
                     ) RETURNING id
                     """,
                     request.device_id, request.device_name or 'Anonymous Device',
