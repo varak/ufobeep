@@ -251,7 +251,22 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
             ),
             onChanged: _validateAndUpdateRange,
           ),
-          if (_pushRadiusKm > 100) ...[
+          if (_pushRadiusKm > 1000) ...[
+            const SizedBox(height: 8),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Icon(Icons.public, size: 16, color: AppColors.semanticError),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    l10n.globalRangeWarning,
+                    style: const TextStyle(color: AppColors.semanticError, fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+          ] else if (_pushRadiusKm > 100) ...[
             const SizedBox(height: 8),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -303,7 +318,7 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
       }
 
       final range = double.tryParse(sanitizedValue);
-      if (range == null || range < 1 || range > 500 || !range.isFinite) {
+      if (range == null || range < 1 || range > 99999 || !range.isFinite) {
         _rangeError = AppLocalizations.of(context)!.invalidRange;
         return;
       }
