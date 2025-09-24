@@ -761,8 +761,15 @@ async def admin_delete_user_account(user_id: str, request: Request):
                     follows_result = await conn.execute("DELETE FROM follows WHERE sighting_id = $1", sighting_id)
                     follows_deleted += int(follows_result.split()[-1]) if follows_result.split()[-1].isdigit() else 0
 
-                    alerts_result = await conn.execute("DELETE FROM alerts WHERE sighting_id = $1", sighting_id)
-                    alerts_deleted += int(alerts_result.split()[-1]) if alerts_result.split()[-1].isdigit() else 0
+                    # Delete alert-related records for this sighting
+                    alert_notifications_result = await conn.execute("DELETE FROM alert_notifications WHERE sighting_id = $1", sighting_id)
+                    alert_deliveries_result = await conn.execute("DELETE FROM alert_deliveries WHERE sighting_id = $1", sighting_id)
+                    alert_events_result = await conn.execute("DELETE FROM alert_events WHERE sighting_id = $1", sighting_id)
+                    # Count total alert-related deletions
+                    alert_notifications_count = int(alert_notifications_result.split()[-1]) if alert_notifications_result.split()[-1].isdigit() else 0
+                    alert_deliveries_count = int(alert_deliveries_result.split()[-1]) if alert_deliveries_result.split()[-1].isdigit() else 0
+                    alert_events_count = int(alert_events_result.split()[-1]) if alert_events_result.split()[-1].isdigit() else 0
+                    alerts_deleted += alert_notifications_count + alert_deliveries_count + alert_events_count
 
                 # STEP 5: Delete user's sightings
                 sightings_deleted = await conn.execute("DELETE FROM sightings WHERE reporter_id = $1", user_id)
