@@ -549,6 +549,7 @@ class AlertsList extends _$AlertsList {
     double? longitude,
     int? recentHours,
     bool verifiedOnly = false,
+    bool maintainPage = false,
   }) async {
     state = const AsyncLoading();
 
@@ -596,8 +597,14 @@ class AlertsList extends _$AlertsList {
 
     debugPrint('🔄 REFRESH DEBUG: sourceFilter=$sourceFilter, sortBy=$sortBy, userLat=$userLat, userLon=$userLon');
 
+    // Get current page to maintain position during refresh if requested
+    final currentData = state.value;
+    final refreshPage = maintainPage ? (currentData?.currentPage ?? 1) : 1;
+
+    debugPrint('🔄 REFRESH DEBUG: ${maintainPage ? "Maintaining" : "Resetting to"} page $refreshPage');
+
     final alertsData = await _fetchAlertsPage(
-      page: 1,
+      page: refreshPage,
       source: sourceFilter,
       category: category,
       minAlertLevel: minAlertLevel,

@@ -42,7 +42,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
         backgroundColor: Colors.transparent,
         appBar: _buildAppBar(context, ref, filter),
         body: RefreshIndicator(
-          onRefresh: () => ref.read(alertsListProvider.notifier).refresh(),
+          onRefresh: () => ref.read(alertsListProvider.notifier).refresh(maintainPage: true),
           backgroundColor: AppColors.darkSurface,
           color: AppColors.brandPrimary,
           child: _buildBody(context, ref, alertsAsync, filter, preferences),
