@@ -110,7 +110,7 @@ class AlertCard extends ConsumerWidget {
                   ),
                 ),
               ),
-              if (alert.distance != null && alert.distance! > 0 && showDistance) ...[
+              if (alert.distance != null && alert.distance! >= 0 && showDistance) ...[
                 const SizedBox(width: 8),
                 Text(
                   UnitConversion.formatDistance(alert.distance! * 1000, units),
