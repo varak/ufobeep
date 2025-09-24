@@ -767,7 +767,28 @@ async def admin_delete_user_account(user_id: str, request: Request, data_only: b
                 sightings_deleted = await conn.execute("DELETE FROM sightings WHERE reporter_id = $1", user_id)
                 final_sightings_count = int(sightings_deleted.split()[-1]) if sightings_deleted.split()[-1].isdigit() else 0
 
-                # STEP 6: Delete from both device tables
+                # STEP 6: Delete alert system data (prevent orphaned records)
+                alert_records_deleted = 0
+
+                # Get user's device IDs for alert system cleanup
+                user_device_ids = await conn.fetch("SELECT device_id FROM devices WHERE user_id = $1", user_id)
+                device_id_list = [d['device_id'] for d in user_device_ids]
+
+                if device_id_list:
+                    for device_id in device_id_list:
+                        # Delete alert notifications sent to this device
+                        notifications_result = await conn.execute("DELETE FROM alert_notifications WHERE recipient_device_id = $1", device_id)
+                        notifications_count = int(notifications_result.split()[-1]) if notifications_result.split()[-1].isdigit() else 0
+
+                        # Delete alert events created by this device
+                        events_result = await conn.execute("DELETE FROM alert_events WHERE reporter_device_id = $1", device_id)
+                        events_count = int(events_result.split()[-1]) if events_result.split()[-1].isdigit() else 0
+
+                        alert_records_deleted += notifications_count + events_count
+
+                logger.info(f"  ✅ Deleted {alert_records_deleted} alert system records")
+
+                # STEP 7: Delete from both device tables
                 # Delete from user_devices table
                 user_devices_deleted = await conn.execute("DELETE FROM user_devices WHERE user_id = $1", user_id)
                 user_devices_count = int(user_devices_deleted.split()[-1]) if user_devices_deleted.split()[-1].isdigit() else 0
@@ -819,7 +840,7 @@ async def admin_delete_user_account(user_id: str, request: Request, data_only: b
                             "comments": comments_count,
                             "devices": total_devices_count,
                             "follows": follows_deleted + user_follows_count,
-                            "alerts": alerts_deleted,
+                            "alert_records": alert_records_deleted,
                             "media_files": media_files_deleted + user_media_count,
                             "email_marketing": email_marketing_count,
                             "analytics_events": analytics_count
