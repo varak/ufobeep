@@ -851,6 +851,15 @@ async def admin_delete_user_account(user_id: str, request: Request, data_only: b
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to delete user account: {str(e)}")
 
+@app.delete("/api/admin/users/{user_id}/data")
+async def admin_delete_user_data_only(user_id: str, request: Request):
+    """Admin endpoint: Delete user data but preserve account/username"""
+    admin_key = request.headers.get("X-Admin-Key")
+    if admin_key != "ufobeep_admin_2025":
+        raise HTTPException(status_code=403, detail="Admin access required")
+
+    return await admin_delete_user_account(user_id, request, data_only=True)
+
 # Clean unified alerts architecture using alerts.router
 
 # Duplicate alert endpoints removed - now handled by alerts.router

@@ -96,7 +96,7 @@ export default function AdminUsersPage() {
     }
 
     try {
-      const response = await fetch(`/admin-api/users/${userId}?data_only=true`, {
+      const response = await fetch(`/admin-api/users/${userId}/data`, {
         method: 'DELETE',
         headers: { 'X-Admin-Key': adminKey }
       })
