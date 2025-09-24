@@ -3983,6 +3983,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'View Onboarding Again'**
   String get viewOnboardingAgain;
+
+  /// No description provided for @customAlertRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom Alert Range'**
+  String get customAlertRange;
+
+  /// No description provided for @enterRangeKm.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter range in km (1-500)'**
+  String get enterRangeKm;
+
+  /// No description provided for @largeRangeWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Large ranges (>100km) may generate many alerts'**
+  String get largeRangeWarning;
+
+  /// No description provided for @invalidRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter a number between 1 and 500'**
+  String get invalidRange;
 }
 
 class _AppLocalizationsDelegate

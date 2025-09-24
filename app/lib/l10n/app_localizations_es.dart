@@ -2116,4 +2116,17 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get viewOnboardingAgain => 'Ver A bordo de nuevo';
+
+  @override
+  String get customAlertRange => 'Custom Alert Range';
+
+  @override
+  String get enterRangeKm => 'Enter range in km (1-500)';
+
+  @override
+  String get largeRangeWarning =>
+      'Large ranges (>100km) may generate many alerts';
+
+  @override
+  String get invalidRange => 'Please enter a number between 1 and 500';
 }
