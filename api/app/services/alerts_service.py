@@ -864,7 +864,10 @@ class AlertsService:
             
             # Auto-follow the sighting for the witness so they get comment notifications
             await self._auto_follow_for_witness(conn, sighting_id, device_id)
-            
+
+            # IMMEDIATE WITNESS NOTIFICATION - Send instant push notification before slower comment system
+            await self._send_immediate_witness_notification(conn, sighting_id, device_id, new_count)
+
             # Add automatic "I saw it" comment to trigger comment notifications
             # This will automatically notify all followers (including the original reporter) via the existing comment system
             await self._add_confirmation_comment(conn, sighting_id, device_id)
@@ -1078,4 +1081,100 @@ class AlertsService:
         except Exception as e:
             print(f"❌ Failed to add confirmation comment: {e}")
             # Don't fail the confirmation if comment fails
-    
+
+    async def _send_immediate_witness_notification(self, conn, sighting_id: str, device_id: str, witness_count: int):
+        """Send immediate high-priority notification for witness confirmation - bypasses slower comment system"""
+        try:
+            # Get sighting location for proximity targeting
+            sighting_data = await conn.fetchrow("""
+                SELECT s.title, s.public_latitude, s.public_longitude, s.reporter_id,
+                       u.username as reporter_username, s.sensor_data
+                FROM sightings s
+                LEFT JOIN users u ON s.reporter_id = u.id
+                WHERE s.id = $1
+            """, uuid.UUID(sighting_id))
+
+            if not sighting_data:
+                print(f"⚠️ Could not find sighting {sighting_id} for witness notification")
+                return
+
+            # Get witness username
+            witness_info = await conn.fetchrow("""
+                SELECT d.user_id, u.username
+                FROM devices d
+                JOIN users u ON d.user_id = u.id
+                WHERE d.device_id = $1 AND d.is_active = true
+            """, device_id)
+
+            if not witness_info:
+                print(f"⚠️ Could not find witness user for device {device_id}")
+                return
+
+            # Use proximity alert service for immediate high-priority delivery
+            from services.proximity_alert_service import get_proximity_alert_service
+            proximity_service = get_proximity_alert_service(self.db_pool)
+
+            # Get sighting location
+            lat = sighting_data['public_latitude']
+            lon = sighting_data['public_longitude']
+
+            if not lat or not lon:
+                # Try sensor data location as fallback
+                sensor_data = self._parse_json(sighting_data['sensor_data'])
+                if sensor_data and 'location' in sensor_data:
+                    lat = sensor_data['location'].get('latitude')
+                    lon = sensor_data['location'].get('longitude')
+
+            if not lat or not lon:
+                print(f"⚠️ No location data for sighting {sighting_id}, skipping immediate witness notification")
+                return
+
+            # Get all followers (excluding the witness who just confirmed)
+            follower_rows = await conn.fetch("""
+                SELECT DISTINCT d.device_id, d.push_token, d.platform, d.lat, d.lon,
+                       d.alert_range_km, d.preferences
+                FROM follows f
+                JOIN devices d ON f.user_id = d.user_id
+                WHERE f.sighting_id = $1
+                  AND d.device_id != $2
+                  AND d.is_active = true
+                  AND d.push_enabled = true
+                  AND d.push_token IS NOT NULL
+            """, uuid.UUID(sighting_id), device_id)
+
+            if not follower_rows:
+                print(f"No followers with push tokens found for immediate witness notification")
+                return
+
+            # Format devices for proximity service
+            devices = []
+            for row in follower_rows:
+                devices.append({
+                    'device_id': row['device_id'],
+                    'push_token': row['push_token'],
+                    'platform': row['platform'],
+                    'distance_km': 0.0,  # Followers get immediate notification regardless of distance
+                    'priority': 'urgent',  # High priority for witness confirmations
+                    'device_lat': row['lat'],
+                    'device_lon': row['lon'],
+                    'user_alert_range': row['alert_range_km'],
+                    'preferences': row['preferences']
+                })
+
+            if devices:
+                # Send immediate witness notification using proximity alert infrastructure
+                witness_name = witness_info['username'] or 'Someone'
+                title = f"🔴 {witness_name} confirmed sighting"
+                body = f"Witness #{witness_count} confirmed your UFO report"
+
+                total_sent = await proximity_service._send_alert_batch(
+                    devices, sighting_id, "urgent", title, body, witness_count,
+                    lat, lon, "Witness Confirmation", device_id
+                )
+
+                print(f"✅ Immediate witness notification sent to {total_sent} followers")
+
+        except Exception as e:
+            print(f"❌ Failed to send immediate witness notification: {e}")
+            # Don't fail the confirmation if immediate notification fails
+
