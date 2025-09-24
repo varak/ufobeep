@@ -141,7 +141,7 @@ class ProximityAlertService:
                     WHERE is_active = true
                       AND push_enabled = true
                       AND push_token IS NOT NULL
-                      AND device_id != $3
+                      AND device_id NOT IN (SELECT device_id FROM devices WHERE user_id = $3 OR device_id = $3)
                       AND location IS NOT NULL
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                       AND (snooze_until IS NULL OR snooze_until <= NOW())
@@ -492,14 +492,17 @@ class ProximityAlertService:
         
         return title, body
     
-    async def _get_device_coordinates(self, device_id: str):
-        """Get device coordinates from the devices table"""
+    async def _get_device_coordinates(self, user_or_device_id: str):
+        """Get device coordinates from the devices table - search by user_id or device_id"""
         try:
             async with self.db_pool.acquire() as conn:
                 result = await conn.fetchrow("""
-                    SELECT lat, lon FROM devices 
-                    WHERE device_id = $1 AND lat IS NOT NULL AND lon IS NOT NULL
-                """, device_id)
+                    SELECT lat, lon FROM devices
+                    WHERE (user_id = $1 OR device_id = $1)
+                      AND is_active = true
+                      AND lat IS NOT NULL
+                      AND lon IS NOT NULL
+                """, user_or_device_id)
                 if result:
                     return {'lat': result['lat'], 'lon': result['lon']}
                 return None
