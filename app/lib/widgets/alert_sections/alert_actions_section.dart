@@ -30,6 +30,14 @@ Map<String, dynamic> _asJsonMap(dynamic v) {
   return {"_type": v.runtimeType.toString(), "value": v.toString()};
 }
 
+int? _safeInt(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is String) return int.tryParse(value);
+  if (value is double) return value.toInt();
+  return null;
+}
+
 class AlertActionsSection extends StatefulWidget {
   const AlertActionsSection({
     super.key,
@@ -304,7 +312,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
           throw StateError("Witness API returned a List in result; expected JSON object");
         }
         
-        final newWitnessCount = dataMap['witness_count'] as int? ?? _witnessCount + 1;
+        final newWitnessCount = _safeInt(dataMap['witness_count']) ?? _witnessCount + 1;
         setState(() {
           _hasConfirmed = true;
           _witnessCount = newWitnessCount;
@@ -328,7 +336,7 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
         // If escalation was triggered, play appropriate sound
         final escalationTriggered = dataMap['escalation_triggered'] as bool? ?? false;
         if (escalationTriggered == true) {
-          final witnessCount = dataMap['witness_count'] as int? ?? 0;
+          final witnessCount = _safeInt(dataMap['witness_count']) ?? 0;
           if (witnessCount >= 10) {
             await SoundService.I.play(AlertSound.emergency, haptic: true);
           } else if (witnessCount >= 3) {
