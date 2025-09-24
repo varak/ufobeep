@@ -551,18 +551,64 @@ class AlertsList extends _$AlertsList {
     bool verifiedOnly = false,
   }) async {
     state = const AsyncLoading();
-    
+
+    // Get filter state (same as build method)
+    final filter = ref.read(alertsFilterStateProvider);
+
+    // Handle source filter (same as build method)
+    String? sourceFilter;
+    if (filter.showUfoBeepOnly == true) {
+      sourceFilter = 'ufobeep';
+    } else if (filter.showUfoBeepOnly == false) {
+      sourceFilter = 'mufon';
+    } else {
+      sourceFilter = null;
+    }
+
+    // Get sort option (same as build method)
+    String? sortBy;
+    switch (filter.sortBy) {
+      case AlertSortBy.distance:
+        sortBy = 'distance';
+        break;
+      case AlertSortBy.newest:
+        sortBy = 'newest';
+        break;
+      case AlertSortBy.oldest:
+        sortBy = 'oldest';
+        break;
+      default:
+        sortBy = 'newest';
+    }
+
+    // Get user location for distance calculation (same as build method)
+    double? userLat, userLon;
+    if (latitude == null || longitude == null) {
+      final location = await permissionService.getCurrentLocation();
+      if (location != null) {
+        userLat = location.latitude;
+        userLon = location.longitude;
+      }
+    } else {
+      userLat = latitude;
+      userLon = longitude;
+    }
+
+    debugPrint('🔄 REFRESH DEBUG: sourceFilter=$sourceFilter, sortBy=$sortBy, userLat=$userLat, userLon=$userLon');
+
     final alertsData = await _fetchAlertsPage(
       page: 1,
+      source: sourceFilter,
       category: category,
       minAlertLevel: minAlertLevel,
       maxDistanceKm: maxDistanceKm,
-      latitude: latitude,
-      longitude: longitude,
+      latitude: userLat,
+      longitude: userLon,
       recentHours: recentHours,
       verifiedOnly: verifiedOnly,
+      sortBy: sortBy,
     );
-    
+
     state = AsyncData(alertsData);
   }
 
