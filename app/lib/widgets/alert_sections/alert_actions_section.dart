@@ -10,25 +10,6 @@ import '../../services/sound_service.dart';
 import '../../l10n/app_localizations.dart';
 
 // Helper function to safely convert dynamic values to Map for bracket access
-Map<String, dynamic> _asJsonMap(dynamic v) {
-  if (v == null) return {};
-  if (v is Map<String, dynamic>) return v;
-  if (v is Map) return v.map((k, val) => MapEntry(k.toString(), val));
-  if (v is List) {
-    // Turn list into a map with numeric keys, so any ['x'] access will visibly fail early.
-    return {
-      "_type": "List",
-      "length": v.length,
-      "0": v.isNotEmpty ? v[0] : null,
-    };
-  }
-  if (v is String && v.trim().startsWith('{')) {
-    try { 
-      return Map<String, dynamic>.from(jsonDecode(v)); 
-    } catch (_) {}
-  }
-  return {"_type": v.runtimeType.toString(), "value": v.toString()};
-}
 
 int? _safeInt(dynamic value) {
   if (value == null) return null;
@@ -292,6 +273,10 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
       final deviceId = await beepService.getOrCreateDeviceId();
 
       // Confirm witness
+      print('DEBUG: Calling confirmWitness API...');
+      print('DEBUG: sightingId=${widget.alert.id}, deviceId=$deviceId');
+      print('DEBUG: lat=${position.latitude}, lon=${position.longitude}');
+
       final result = await ApiClient.instance.confirmWitness(
         sightingId: widget.alert.id,
         deviceId: deviceId,
@@ -302,16 +287,24 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
         stillVisible: true,
       );
 
+      print('DEBUG: API returned result type: ${result.runtimeType}');
+      print('DEBUG: API result: $result');
+
       if (mounted) {
-        // SAFE ACCESS: Use defensive helper to prevent List-as-Map errors
-        final resultMap = _asJsonMap(result);
-        final dataMap = _asJsonMap(resultMap['data']);
-        
-        // Check if result was a List instead of expected Map
-        if (resultMap["_type"] == "List") {
-          throw StateError("Witness API returned a List in result; expected JSON object");
+        // Ensure result is a proper Map
+        if (result is! Map<String, dynamic>) {
+          throw StateError("Witness API returned unexpected data type: ${result.runtimeType}");
         }
-        
+
+        final resultMap = result as Map<String, dynamic>;
+
+        // Check if we have data field and it's a Map
+        final data = resultMap['data'];
+        if (data is! Map<String, dynamic>) {
+          throw StateError("Witness API data field is not a Map: ${data.runtimeType}");
+        }
+
+        final dataMap = data as Map<String, dynamic>;
         final newWitnessCount = _safeInt(dataMap['witness_count']) ?? _witnessCount + 1;
         setState(() {
           _hasConfirmed = true;
@@ -344,7 +337,29 @@ class _AlertActionsSectionState extends State<AlertActionsSection> {
           }
         }
       }
-    } catch (e) {
+    } catch (e, stackTrace) {
+      // Log FULL error details
+      print('==== WITNESS CONFIRMATION ERROR ====');
+      print('Error type: ${e.runtimeType}');
+      print('Error message: $e');
+      print('Stack trace:');
+      print(stackTrace);
+
+      // Try to extract more detail if it's a DioException
+      if (e.toString().contains('DioException')) {
+        print('DioException details available');
+      }
+
+      // Log the actual error details to help debugging
+      final errorMessage = e.toString();
+      print('Full error string: "$errorMessage"');
+
+      // Check for specific error patterns
+      if (errorMessage.contains('type \'String\' is not a subtype')) {
+        print('TYPE ERROR DETECTED - String/int mismatch');
+        print('This is likely happening in the API response parsing');
+      }
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

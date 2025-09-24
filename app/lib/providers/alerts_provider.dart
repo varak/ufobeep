@@ -6,6 +6,14 @@ import 'package:flutter/foundation.dart';
 
 part 'alerts_provider.g.dart';
 
+int? _safeInt(dynamic value) {
+  if (value == null) return null;
+  if (value is int) return value;
+  if (value is String) return int.tryParse(value);
+  if (value is double) return value.toInt();
+  return null;
+}
+
 // Alert Model
 class Alert {
   const Alert({
@@ -274,8 +282,8 @@ class Alert {
         category: json['category'] as String? ?? 'ufo',
         alertLevel: json['alert_level'] as String? ?? 'low',
         status: json['status'] as String? ?? 'pending',
-        witnessCount: json['witness_count'] as int? ?? 1,
-        viewCount: json['view_count'] as int? ?? 0,
+        witnessCount: _safeInt(json['witness_count']) ?? 1,
+        viewCount: _safeInt(json['view_count']) ?? 0,
         verificationScore: json['verification_score']?.toDouble() ?? 0.0,
         mediaFiles: parsedMediaFiles,
         tags: parsedTags,
@@ -289,9 +297,9 @@ class Alert {
         username: json['username'] as String?,
         enrichment: json['enrichment_data'] as Map<String, dynamic>?,
         photoAnalysis: parsedPhotoAnalysis,
-        totalConfirmations: json['total_confirmations'] as int? ?? 0,
+        totalConfirmations: _safeInt(json['total_confirmations']) ?? 0,
         canConfirmWitness: json['can_confirm_witness'] as bool? ?? true,
-        commentCount: json['comment_count'] as int? ?? 0,
+        commentCount: _safeInt(json['comment_count']) ?? 0,
         shortUrl: json['short_url'] as String?,
         occurredAt: json['occurred_at'] != null ? DateTime.parse(json['occurred_at'] as String) : null,
       );
@@ -483,7 +491,7 @@ class AlertsList extends _$AlertsList {
       if (response['success'] == true && response['data'] != null && response['data']['alerts'] != null) {
         final alertsData = response['data'] as Map<String, dynamic>;
         final alertsList = alertsData['alerts'] as List<dynamic>;
-        final total = alertsData['total'] as int? ?? alertsList.length;
+        final total = _safeInt(alertsData['total']) ?? alertsList.length;
         
         // Filter out invalid coordinates like the website does
         final validAlerts = alertsList.where((alert) {
@@ -508,7 +516,7 @@ class AlertsList extends _$AlertsList {
             total: total,
             currentPage: page,
             hasMore: hasMore,
-            totalPages: alertsData['totalPages'] as int? ?? 1,
+            totalPages: _safeInt(alertsData['totalPages']) ?? 1,
             hasPrevPage: alertsData['hasPrevPage'] as bool? ?? false,
             hasNextPage: alertsData['hasNextPage'] as bool? ?? false,
           );

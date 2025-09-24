@@ -5,6 +5,15 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'api_models.g.dart';
 
+// Helper function to safely convert dynamic to int for JSON parsing
+int _safeIntFromJson(dynamic value) {
+  if (value == null) return 0;
+  if (value is int) return value;
+  if (value is String) return int.tryParse(value) ?? 0;
+  if (value is double) return value.toInt();
+  return 0;
+}
+
 // Enums
 enum SightingCategory {
   @JsonValue('ufo')

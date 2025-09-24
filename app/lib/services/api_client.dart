@@ -682,13 +682,41 @@ class ApiClient {
         if (appVersion != null) 'app_version': appVersion,
       };
 
+      print('DEBUG confirmWitness: Sending POST to /beep/$sightingId/witnesses');
+      print('DEBUG confirmWitness: Request data: $request');
+
       final response = await ApiClient.dio.post(
         '/beep/$sightingId/witnesses',
         data: request,
       );
 
+      print('DEBUG confirmWitness: Response status: ${response.statusCode}');
+      print('DEBUG confirmWitness: Response data type: ${response.data.runtimeType}');
+      print('DEBUG confirmWitness: Response data: ${response.data}');
+
       if (response.statusCode != null && response.statusCode! >= 200 && response.statusCode! < 300) {
-        return response.data as Map<String, dynamic>;
+        // Parse response data - handle both Map and String JSON responses
+        Map<String, dynamic> returnData;
+        if (response.data is String) {
+          // If the API returns a JSON string, parse it
+          returnData = jsonDecode(response.data) as Map<String, dynamic>;
+        } else if (response.data is Map<String, dynamic>) {
+          returnData = response.data as Map<String, dynamic>;
+        } else {
+          throw ApiClientException(
+            'Unexpected response type: ${response.data.runtimeType}',
+          );
+        }
+
+        // Check if this is actually an error response
+        if (returnData.containsKey('detail') && !returnData.containsKey('data')) {
+          throw ApiClientException(
+            returnData['detail']?.toString() ?? 'Unknown error',
+          );
+        }
+
+        print('DEBUG confirmWitness: Returning data: $returnData');
+        return returnData;
       } else {
         throw ApiClientException(
           'HTTP ${response.statusCode}: ${response.statusMessage}',

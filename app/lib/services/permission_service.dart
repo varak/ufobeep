@@ -169,15 +169,47 @@ class PermissionService {
 
   /// Get current location (simplified - let BeepService handle this)
   Future<Position?> getCurrentLocation() async {
-    // BeepService now handles location directly with Geolocator
-    // This method kept for compatibility but delegates to Geolocator
+    // Use cached location if available and recent (within 5 minutes)
+    if (_cachedLocation != null && _locationCacheTime != null) {
+      final age = DateTime.now().difference(_locationCacheTime!);
+      if (age.inMinutes < 5) {
+        print('Using cached location (${age.inSeconds}s old)');
+        return _cachedLocation;
+      }
+    }
+
+    // Get fresh location if cache is stale or missing
     try {
-      return await Geolocator.getCurrentPosition(
+      final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.medium,
         timeLimit: const Duration(seconds: 10),
       );
+
+      // Update cache
+      _cachedLocation = position;
+      _locationCacheTime = DateTime.now();
+      return position;
     } catch (e) {
       print('Error getting current location: $e');
+
+      // Fall back to cached location even if stale
+      if (_cachedLocation != null) {
+        print('Using stale cached location as fallback');
+        return _cachedLocation;
+      }
+
+      // Last resort: try to get last known location
+      try {
+        final lastKnown = await Geolocator.getLastKnownPosition();
+        if (lastKnown != null) {
+          print('Using last known location as fallback');
+          _cachedLocation = lastKnown;
+          _locationCacheTime = DateTime.now();
+          return lastKnown;
+        }
+      } catch (e2) {
+        print('Error getting last known location: $e2');
+      }
       return null;
     }
   }
