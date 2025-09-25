@@ -239,10 +239,11 @@ class EnrichmentSection extends ConsumerWidget {
           SatelliteCardFromJson(satelliteData: enrichmentData['satellites']),
           const SizedBox(height: 16),
         ],
-        if (hasAircraftData) ...[
-          _buildAircraftTrackingCard(enrichmentData['aircraft_tracking']),
-          const SizedBox(height: 16),
-        ],
+        // Temporarily hide aircraft tracking until OAuth2 is fixed
+        // if (hasAircraftData) ...[
+        //   _buildAircraftTrackingCard(enrichmentData['aircraft_tracking']),
+        //   const SizedBox(height: 16),
+        // ],
         if (hasProcessingSummaryData) ...[
           ProcessingSummaryCardFromJson(summaryData: enrichmentData['processing_summary']),
           const SizedBox(height: 16),
