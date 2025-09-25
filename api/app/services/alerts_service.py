@@ -699,10 +699,14 @@ class AlertsService:
         try:
             
             from app.services.enrichment_service import enrichment_orchestrator, initialize_enrichment_processors, EnrichmentContext
-            
+
+            logger.info(f"[ALERTS_SERVICE] Checking enrichment processors: {len(enrichment_orchestrator.processors)} processors registered")
+
             # Initialize processors if not already done
             if not enrichment_orchestrator.processors:
+                logger.info("[ALERTS_SERVICE] No processors registered, initializing now...")
                 initialize_enrichment_processors()
+                logger.info(f"[ALERTS_SERVICE] After initialization: {len(enrichment_orchestrator.processors)} processors registered")
             
             # Create enrichment context
             context = EnrichmentContext(
