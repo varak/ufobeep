@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import '../../providers/alerts_provider.dart';
@@ -201,12 +202,25 @@ class _AlertDirectionSectionState extends State<AlertDirectionSection> {
             padding: const EdgeInsets.all(12),
             child: SizedBox(
               height: 300,
-              child: MapWidget(
-                alerts: [widget.alert],
-                center: LatLng(widget.alert.latitude, widget.alert.longitude),
-                zoom: 15.0,
-                height: 300,
-                showControls: true,
+              child: Consumer(
+                builder: (context, ref, _) {
+                  final alertsAsync = ref.watch(alertsListProvider);
+                  return alertsAsync.when(
+                    data: (alertsData) => MapWidget(
+                      alerts: alertsData.alerts,
+                      center: LatLng(widget.alert.latitude, widget.alert.longitude),
+                      zoom: 12.0,
+                      height: 300,
+                      showControls: true,
+                    ),
+                    loading: () => const Center(
+                      child: CircularProgressIndicator(color: AppColors.brandPrimary),
+                    ),
+                    error: (error, _) => Center(
+                      child: Text('Error loading map: $error'),
+                    ),
+                  );
+                },
               ),
             ),
           ),
