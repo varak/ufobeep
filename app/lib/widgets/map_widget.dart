@@ -206,15 +206,28 @@ class _MapWidgetState extends State<MapWidget> {
       final now = DateTime.now();
       final ageInHours = now.difference(alert.createdAt).inHours;
       
-      // Adjust marker size based on age (newer = larger)
-      double markerSize;
+      // Adjust marker size based on age and zoom level (newer = larger, zoomed out = larger for visibility)
+      double baseSize;
       if (ageInHours <= 1) {
-        markerSize = 28; // Large for very recent
+        baseSize = 28; // Large for very recent
       } else if (ageInHours <= 6) {
-        markerSize = 24; // Medium for recent
+        baseSize = 24; // Medium for recent
       } else {
-        markerSize = 20; // Small for older
+        baseSize = 20; // Small for older
       }
+
+      // Scale up markers when zoomed out for better visibility
+      double currentZoom = widget.zoom ?? 5.0;
+      try {
+        if (_mapController.camera != null) {
+          currentZoom = _mapController.camera.zoom;
+        }
+      } catch (e) {
+        currentZoom = widget.zoom ?? 5.0;
+      }
+
+      double zoomMultiplier = currentZoom < 6 ? 1.5 : 1.0; // Make markers bigger when zoomed out
+      double markerSize = baseSize * zoomMultiplier;
       
       // Get appropriate icon for UFO type
       final icon = _getUfoIcon(alert);
@@ -235,14 +248,19 @@ class _MapWidgetState extends State<MapWidget> {
               color: color,
               shape: BoxShape.circle,
               border: Border.all(
-                color: Colors.white.withOpacity((color.alpha / 255.0).clamp(0.0, 1.0)), 
-                width: 2
+                color: Colors.white.withOpacity(0.9), // High contrast white border
+                width: currentZoom < 6 ? 3 : 2 // Thicker border when zoomed out
               ),
               boxShadow: [
                 BoxShadow(
-                  color: color.withOpacity(0.4),
-                  blurRadius: ageInHours <= 1 ? 15 : 8,
-                  spreadRadius: ageInHours <= 1 ? 3 : 1,
+                  color: Colors.black.withOpacity(0.6), // Strong shadow for visibility
+                  blurRadius: currentZoom < 6 ? 12 : 8,
+                  spreadRadius: currentZoom < 6 ? 2 : 1,
+                ),
+                BoxShadow(
+                  color: color.withOpacity(0.8),
+                  blurRadius: ageInHours <= 1 ? 20 : 12,
+                  spreadRadius: ageInHours <= 1 ? 4 : 2,
                 ),
               ],
             ),
@@ -275,7 +293,7 @@ class _MapWidgetState extends State<MapWidget> {
               mapController: _mapController,
               options: MapOptions(
                 initialCenter: _defaultCenter,
-                initialZoom: widget.zoom ?? 10.0,
+                initialZoom: widget.zoom ?? 5.0,
                 minZoom: 2.0,
                 maxZoom: 18.0,
                 backgroundColor: AppColors.darkBackground,
@@ -357,7 +375,7 @@ class _MapWidgetState extends State<MapWidget> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '${_filterReportsByAge(widget.alerts).length} recent reports',
+                      'Zoom in to see details',
                       style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 10,
@@ -365,7 +383,7 @@ class _MapWidgetState extends State<MapWidget> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      '(${widget.alerts.length} total)',
+                      'Tap markers to view',
                       style: const TextStyle(
                         color: AppColors.textTertiary,
                         fontSize: 9,

@@ -65,6 +65,7 @@ class MapScreen extends ConsumerWidget {
               Expanded(
                 child: MapWidget(
                   alerts: alerts,
+                  zoom: 4.0, // Wide view to see geographic context
                   onAlertTap: (alert) {
                     // Navigate to alert detail when tapped
                     context.go('/alert/${alert.id}');
