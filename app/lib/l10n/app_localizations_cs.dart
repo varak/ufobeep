@@ -750,6 +750,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get moreAircraft => 'more aircraft';
 
   @override
+  String get showLess => 'Show less';
+
+  @override
   String get premiumImageryTitle => 'Premium Satellite Imagery';
 
   @override

@@ -1512,6 +1512,12 @@ abstract class AppLocalizations {
   /// **'more aircraft'**
   String get moreAircraft;
 
+  /// No description provided for @showLess.
+  ///
+  /// In en, this message translates to:
+  /// **'Show less'**
+  String get showLess;
+
   /// No description provided for @premiumImageryTitle.
   ///
   /// In en, this message translates to:

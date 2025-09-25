@@ -368,6 +368,7 @@
   "envAnalysisPendingDesc": "Environmental data will be available once processing begins.",
   "unknownAircraft": "Unknown Aircraft",
   "moreAircraft": "more aircraft",
+  "showLess": "Show less",
   "premiumImageryTitle": "Premium Satellite Imagery",
   "premiumImagerySubtitle": "High-resolution commercial imagery",
   "sightingTypeLabel": "Type",
