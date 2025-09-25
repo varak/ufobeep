@@ -120,7 +120,7 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                         const SizedBox(width: 4),
                         Text(
                           isExpanded
-                            ? AppLocalizations.of(context)!.showLess
+                            ? 'Show less'
                             : '+${aircraft.length - 4} ${AppLocalizations.of(context)!.moreAircraft}',
                           style: const TextStyle(
                             color: AppColors.brandPrimary,
