@@ -469,11 +469,13 @@ GoRouter appRouter(AppRouterRef ref) {
             path: '/mapscreen',
             name: 'mapscreen',
             builder: (context, state) {
-              // Extract target alert ID from query parameters
+              // Extract target alert ID and alert ID from query parameters
               final targetAlertId = state.uri.queryParameters['targetAlert'];
+              final alertId = state.uri.queryParameters['alertId'];
 
               return MapScreen(
                 targetAlertId: targetAlertId,
+                alertId: alertId,
               );
             },
           ),

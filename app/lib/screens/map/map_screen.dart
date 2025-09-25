@@ -11,9 +11,11 @@ class MapScreen extends ConsumerWidget {
   const MapScreen({
     super.key,
     this.targetAlertId,
+    this.alertId,
   });
 
   final String? targetAlertId;
+  final String? alertId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,11 +33,12 @@ class MapScreen extends ConsumerWidget {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: targetAlertId != null
+        leading: (alertId ?? targetAlertId) != null
             ? IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () {
-                  context.go('/alert/$targetAlertId?scrollTo=direction');
+                  final backAlertId = alertId ?? targetAlertId;
+                  context.go('/alert/$backAlertId?scrollTo=direction');
                 },
               )
             : null,
