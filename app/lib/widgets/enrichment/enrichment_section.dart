@@ -292,7 +292,7 @@ class EnrichmentSection extends ConsumerWidget {
             Text(summary, style: const TextStyle(color: AppColors.textSecondary, fontSize: 14)),
             if (aircraft.isNotEmpty) ...[
               const SizedBox(height: 12),
-              ...aircraft.take(4).map((a) {
+              ...aircraft.map((a) {
                 final callsign = a['callsign'] ?? '';
                 final distance = a['distance_km']?.toDouble() ?? 0.0;
                 final altitude = a['altitude_ft'];
