@@ -513,32 +513,6 @@ GoRouter appRouter(AppRouterRef ref) {
         ],
       ),
 
-      // Map (accessible from alert details, not in bottom nav)
-      GoRoute(
-        path: '/mapscreen',
-        name: 'map',
-        builder: (context, state) {
-          // Extract map parameters from query parameters
-          final userLat = state.uri.queryParameters['userLat'];
-          final userLon = state.uri.queryParameters['userLon'];
-          final alertLat = state.uri.queryParameters['alertLat'];
-          final alertLon = state.uri.queryParameters['alertLon'];
-          final alertId = state.uri.queryParameters['alertId'];
-          final alertName = state.uri.queryParameters['alertName'];
-          final calledFromAlert = state.uri.queryParameters['calledFromAlert'] == 'true';
-
-          return MapScreen(
-            userLat: userLat != null ? double.tryParse(userLat) : null,
-            userLon: userLon != null ? double.tryParse(userLon) : null,
-            alertLat: alertLat != null ? double.tryParse(alertLat) : null,
-            alertLon: alertLon != null ? double.tryParse(alertLon) : null,
-            alertId: alertId,
-            alertName: alertName,
-            calledFromAlert: calledFromAlert,
-          );
-        },
-      ),
-
       // Compass (accessible from alert details, not in bottom nav)
       GoRoute(
         path: '/compass',

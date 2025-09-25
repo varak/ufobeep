@@ -370,11 +370,6 @@ class _MapWidgetState extends State<MapWidget> {
                   options: MarkerClusterLayerOptions(
                     maxClusterRadius: 50,
                     size: const Size(40, 40),
-                    anchor: AnchorPos.align(AnchorAlign.center),
-                    fitBoundsOptions: const FitBoundsOptions(
-                      padding: EdgeInsets.all(50),
-                      maxZoom: 15,
-                    ),
                     markers: _buildClusteredMarkers(),
                     builder: (context, markers) {
                       return Container(
