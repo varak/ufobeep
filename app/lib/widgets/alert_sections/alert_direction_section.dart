@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/alerts_provider.dart';
@@ -162,7 +163,7 @@ class AlertDirectionSection extends StatelessWidget {
                     ),
                   ),
                 // Spacing between buttons
-                if (onNavigate != null)
+                if (onNavigate != null && onShowMap != null)
                   const SizedBox(height: 8),
                 // Map button - navigate to map tab
                 OutlinedButton.icon(
