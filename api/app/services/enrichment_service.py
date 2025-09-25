@@ -1150,8 +1150,16 @@ class GeocodeEnrichmentProcessor(EnrichmentProcessor):
 
 class AircraftTrackingProcessor(EnrichmentProcessor):
     """Aircraft tracking enrichment using OpenSky Network API"""
-    
+
     def __init__(self, client_id: Optional[str] = None, client_secret: Optional[str] = None):
+        logger.info(f"[AIRCRAFT_INIT] Initializing AircraftTrackingProcessor")
+        logger.info(f"[AIRCRAFT_INIT] client_id provided: {bool(client_id)}, value: {client_id[:10] if client_id else 'None'}...")
+        logger.info(f"[AIRCRAFT_INIT] client_secret provided: {bool(client_secret)}, length: {len(client_secret) if client_secret else 0}")
+
+        if not client_id or not client_secret:
+            logger.error("[AIRCRAFT_INIT] CRITICAL: OpenSky credentials missing! This will fail!")
+            raise ValueError("OpenSky credentials are required but not provided")
+
         self.client_id = client_id
         self.client_secret = client_secret
         self._cache = {}
@@ -1176,11 +1184,18 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
     
     async def process(self, context: EnrichmentContext) -> EnrichmentResult:
         """Fetch aircraft data for the sighting location and time"""
+        logger.info(f"[AIRCRAFT_PROCESS] Starting process for sighting {context.sighting_id}")
+        logger.info(f"[AIRCRAFT_PROCESS] Location: {context.latitude}, {context.longitude}")
+        logger.info(f"[AIRCRAFT_PROCESS] Timestamp: {context.timestamp}")
+
         try:
             start_time = datetime.utcnow()
+            logger.info("[AIRCRAFT_PROCESS] Calling _fetch_aircraft_data")
             aircraft_data = await self._fetch_aircraft_data(context)
             processing_time = int((datetime.utcnow() - start_time).total_seconds() * 1000)
-            
+
+            logger.info(f"[AIRCRAFT_PROCESS] Success! Got data: {len(aircraft_data.get('aircraft', []))} aircraft")
+
             return EnrichmentResult(
                 processor_name=self.name,
                 success=True,
@@ -1190,7 +1205,9 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                 metadata={"source": "opensky_network"}
             )
         except Exception as e:
-            logger.error(f"Aircraft tracking failed: {e}")
+            logger.error(f"[AIRCRAFT_PROCESS] FAILED with exception: {type(e).__name__}: {e}")
+            import traceback
+            logger.error(f"[AIRCRAFT_PROCESS] Full traceback:\n{traceback.format_exc()}")
             return EnrichmentResult(
                 processor_name=self.name,
                 success=False,
@@ -1245,12 +1262,14 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
 
     async def _fetch_aircraft_data(self, context: EnrichmentContext) -> Dict[str, Any]:
         """Fetch aircraft data from OpenSky API"""
+        logger.info("[AIRCRAFT_FETCH] Starting _fetch_aircraft_data")
         import aiohttp
         import math
 
         # 50km search radius
         radius_deg = 0.45
 
+        logger.info("[AIRCRAFT_FETCH] Getting OAuth2 token...")
         # Get OAuth2 token for authentication
         access_token = await self._get_oauth2_token()
         headers = {}
@@ -1894,10 +1913,14 @@ def initialize_enrichment_processors():
     opensky_client_secret = getattr(settings, 'opensky_client_secret', None)
     hf_api_token = getattr(settings, 'huggingface_api_token', None)
     hf_nsfw_model = getattr(settings, 'huggingface_model_nsfw', 'martin-ha/toxic-comment-model')
-    
+
+    logger.info(f"[ENRICHMENT_INIT] OpenSky credentials check:")
+    logger.info(f"[ENRICHMENT_INIT] opensky_client_id from settings: {opensky_client_id[:10] if opensky_client_id else 'None'}...")
+    logger.info(f"[ENRICHMENT_INIT] opensky_client_secret from settings: {'present' if opensky_client_secret else 'MISSING'}")
+
     # Aircraft tracking processor - highest priority for debunking
     aircraft_processor = AircraftTrackingProcessor(
-        client_id=opensky_client_id, 
+        client_id=opensky_client_id,
         client_secret=opensky_client_secret
     )
     enrichment_orchestrator.register_processor(aircraft_processor)
