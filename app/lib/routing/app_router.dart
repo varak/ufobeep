@@ -501,7 +501,7 @@ GoRouter appRouter(AppRouterRef ref) {
 
       // Map (accessible from alert details, not in bottom nav)
       GoRoute(
-        path: '/map',
+        path: '/mapscreen',
         name: 'map',
         builder: (context, state) {
           // Extract map parameters from query parameters
