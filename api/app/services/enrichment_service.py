@@ -1156,6 +1156,8 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
         self.client_secret = client_secret
         self._cache = {}
         self._cache_ttl_seconds = 300
+        self._token_cache = {}  # Store OAuth2 tokens
+        self._token_expiry = None
     
     @property
     def name(self) -> str:
@@ -1195,19 +1197,64 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                 error=str(e)
             )
     
+    async def _get_oauth2_token(self) -> Optional[str]:
+        """Get valid OAuth2 token, refreshing if needed"""
+        if not self.client_id or not self.client_secret:
+            return None
+
+        import aiohttp
+        from datetime import datetime, timedelta
+
+        # Check if we have a valid cached token
+        if (self._token_cache.get('access_token') and
+            self._token_expiry and
+            datetime.utcnow() < self._token_expiry):
+            return self._token_cache['access_token']
+
+        # Get new token
+        try:
+            async with aiohttp.ClientSession() as session:
+                token_url = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token"
+                data = {
+                    'grant_type': 'client_credentials',
+                    'client_id': self.client_id,
+                    'client_secret': self.client_secret
+                }
+
+                async with session.post(token_url, data=data, timeout=5) as response:
+                    if response.status == 200:
+                        token_data = await response.json()
+                        access_token = token_data.get('access_token')
+                        expires_in = token_data.get('expires_in', 1800)  # Default 30 min
+
+                        # Cache token with 5 minute buffer before expiry
+                        self._token_cache = token_data
+                        self._token_expiry = datetime.utcnow() + timedelta(seconds=expires_in - 300)
+
+                        logger.info("OpenSky OAuth2 token obtained successfully")
+                        return access_token
+                    else:
+                        logger.error(f"OpenSky token request failed: {response.status}")
+                        return None
+        except Exception as e:
+            logger.error(f"OpenSky token acquisition failed: {e}")
+            return None
+
     async def _fetch_aircraft_data(self, context: EnrichmentContext) -> Dict[str, Any]:
         """Fetch aircraft data from OpenSky API"""
         import aiohttp
         import math
-        
+
         # 50km search radius
         radius_deg = 0.45
-        
-        auth = None
-        if self.client_id and self.client_secret:
-            auth = aiohttp.BasicAuth(self.client_id, self.client_secret)
-        
-        async with aiohttp.ClientSession(auth=auth) as session:
+
+        # Get OAuth2 token for authentication
+        access_token = await self._get_oauth2_token()
+        headers = {}
+        if access_token:
+            headers['Authorization'] = f'Bearer {access_token}'
+
+        async with aiohttp.ClientSession() as session:
             params = {
                 'lamin': context.latitude - radius_deg,
                 'lamax': context.latitude + radius_deg,
@@ -1215,17 +1262,26 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                 'lomax': context.longitude + radius_deg
             }
             
-            async with session.get("https://opensky-network.org/api/states/all", params=params, timeout=3) as response:
+            async with session.get("https://opensky-network.org/api/states/all", params=params, headers=headers, timeout=5) as response:
                 if response.status != 200:
-                    # Check if it's a time-related issue (photos older than ~5 minutes)
-                    time_diff = (datetime.utcnow() - context.timestamp).total_seconds() / 60
-                    if time_diff > 5:
-                        return {
-                            "aircraft": [], 
-                            "total": 0, 
-                            "summary": f"Aircraft data unavailable (photo taken {time_diff:.0f} minutes ago)"
-                        }
-                    return {"aircraft": [], "total": 0, "summary": "Aircraft tracking service temporarily unavailable"}
+                    # More specific error messages based on status
+                    if response.status == 401:
+                        logger.error("OpenSky API authentication failed - check credentials")
+                        return {"aircraft": [], "total": 0, "summary": "Aircraft tracking authentication failed"}
+                    elif response.status == 429:
+                        logger.error("OpenSky API rate limited")
+                        return {"aircraft": [], "total": 0, "summary": "Aircraft tracking rate limited"}
+                    else:
+                        # Check if it's a time-related issue (photos older than ~5 minutes)
+                        time_diff = (datetime.utcnow() - context.timestamp).total_seconds() / 60
+                        if time_diff > 5:
+                            return {
+                                "aircraft": [],
+                                "total": 0,
+                                "summary": f"Aircraft data unavailable (photo taken {time_diff:.0f} minutes ago)"
+                            }
+                        logger.error(f"OpenSky API returned status {response.status}")
+                        return {"aircraft": [], "total": 0, "summary": f"Aircraft tracking service error ({response.status})"}
                 
                 data = await response.json()
                 if not data or not data.get('states'):
