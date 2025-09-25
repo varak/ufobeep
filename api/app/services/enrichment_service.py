@@ -1200,10 +1200,13 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
     async def _get_oauth2_token(self) -> Optional[str]:
         """Get valid OAuth2 token, refreshing if needed"""
         if not self.client_id or not self.client_secret:
+            logger.warning("OpenSky credentials not configured")
             return None
 
         import aiohttp
         from datetime import datetime, timedelta
+
+        logger.info(f"Getting OpenSky OAuth2 token (client_id: {self.client_id[:10]}...)")
 
         # Check if we have a valid cached token
         if (self._token_cache.get('access_token') and
@@ -1253,6 +1256,9 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
         headers = {}
         if access_token:
             headers['Authorization'] = f'Bearer {access_token}'
+            logger.info("Using OAuth2 token for OpenSky API request")
+        else:
+            logger.warning("No OAuth2 token available, making unauthenticated request")
 
         async with aiohttp.ClientSession() as session:
             params = {
