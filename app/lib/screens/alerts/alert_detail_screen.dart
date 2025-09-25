@@ -53,11 +53,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   final TextEditingController _commentController = TextEditingController();
   final FocusNode _commentFocusNode = FocusNode();
   final GlobalKey _commentInputKey = GlobalKey();
+  final GlobalKey _directionSectionKey = GlobalKey();
   bool _isPostingComment = false;
   final ScrollController _scrollController = ScrollController();
   final Map<String, GlobalKey> _commentKeys = {};
   bool _hasScrolledToComment = false;
   bool _hasFocusedComment = false;
+  bool _hasScrolledToDirection = false;
   List<Comment>? _comments;
   bool _loadingComments = true;
   String? _commentsError;
@@ -109,6 +111,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             );
           } else {
             _scrollToCommentIfNeeded();
+            _scrollToDirectionSectionIfNeeded();
           }
           _focusCommentIfNeeded();
         });
@@ -434,6 +437,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 // Direction and compass - hidden for MUFON alerts and for beep creators
                 if (alert.source != 'mufon' && !(_currentUsername != null && alert.username != null && _currentUsername == alert.username)) ...[
                   AlertDirectionSection(
+                    key: _directionSectionKey,
                     alert: alert,
                     units: (ref.read(userPreferencesProvider)?.units ?? 'metric'),
                     onNavigate: (bearing, distance) => _navigateToSighting(alert, bearing, distance),
@@ -1247,6 +1251,30 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             _hasScrolledToComment = true;
           } catch (e) {
             debugPrint('Error scrolling to comment: $e');
+          }
+        });
+      }
+    }
+  }
+
+  void _scrollToDirectionSectionIfNeeded() {
+    // Check if we should scroll to direction section (from query parameters)
+    final uri = GoRouterState.of(context).uri;
+    final shouldScrollToDirection = uri.queryParameters['scrollTo'] == 'direction';
+
+    if (shouldScrollToDirection && !_hasScrolledToDirection) {
+      if (_directionSectionKey.currentContext != null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          try {
+            Scrollable.ensureVisible(
+              _directionSectionKey.currentContext!,
+              duration: const Duration(milliseconds: 600),
+              curve: Curves.easeInOut,
+              alignment: 0.2, // Scroll to 20% from top for better visibility
+            );
+            _hasScrolledToDirection = true;
+          } catch (e) {
+            debugPrint('Error scrolling to direction section: $e');
           }
         });
       }

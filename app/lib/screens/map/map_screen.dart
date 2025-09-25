@@ -35,7 +35,7 @@ class MapScreen extends ConsumerWidget {
             ? IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () {
-                  context.go('/alert/$targetAlertId');
+                  context.go('/alert/$targetAlertId?scrollTo=direction');
                 },
               )
             : null,

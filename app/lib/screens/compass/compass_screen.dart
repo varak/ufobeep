@@ -208,9 +208,9 @@ class _CompassScreenState extends ConsumerState<CompassScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // If we have an alertId, navigate back to that specific alert
+            // If we have an alertId, navigate back to that specific alert with direction anchor
             if (widget.alertId != null) {
-              context.go('/alert/${widget.alertId}');
+              context.go('/alert/${widget.alertId}?scrollTo=direction');
             } else {
               context.pop();
             }
