@@ -164,8 +164,19 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   List<Alert> _filterAlertsByZoom(List<Alert> alerts) {
-    final currentZoom = _mapController.camera.zoom;
-    
+    // Default zoom level if map controller is not ready yet
+    double currentZoom = widget.zoom ?? 10.0;
+
+    // Try to get current zoom from map controller, but handle safely
+    try {
+      if (_mapController.camera != null) {
+        currentZoom = _mapController.camera.zoom;
+      }
+    } catch (e) {
+      // Map controller not ready yet, use default zoom
+      currentZoom = widget.zoom ?? 10.0;
+    }
+
     // Show more alerts when zoomed out, fewer when zoomed in
     int maxAlerts;
     if (currentZoom >= 12) {
@@ -375,27 +386,39 @@ class _MapWidgetState extends State<MapWidget> {
                     _buildControlButton(
                       icon: Icons.add,
                       onTap: () {
-                        _mapController.move(
-                          _mapController.camera.center,
-                          _mapController.camera.zoom + 1,
-                        );
+                        try {
+                          _mapController.move(
+                            _mapController.camera.center,
+                            _mapController.camera.zoom + 1,
+                          );
+                        } catch (e) {
+                          // Map controller not ready yet, ignore
+                        }
                       },
                     ),
                     const SizedBox(height: 8),
                     _buildControlButton(
                       icon: Icons.remove,
                       onTap: () {
-                        _mapController.move(
-                          _mapController.camera.center,
-                          _mapController.camera.zoom - 1,
-                        );
+                        try {
+                          _mapController.move(
+                            _mapController.camera.center,
+                            _mapController.camera.zoom - 1,
+                          );
+                        } catch (e) {
+                          // Map controller not ready yet, ignore
+                        }
                       },
                     ),
                     const SizedBox(height: 8),
                     _buildControlButton(
                       icon: Icons.my_location,
                       onTap: () {
-                        _mapController.move(_defaultCenter, widget.zoom ?? 10.0);
+                        try {
+                          _mapController.move(_defaultCenter, widget.zoom ?? 10.0);
+                        } catch (e) {
+                          // Map controller not ready yet, ignore
+                        }
                       },
                     ),
                   ],
