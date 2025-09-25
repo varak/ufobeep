@@ -54,52 +54,113 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
             Text(summary, style: const TextStyle(color: AppColors.textSecondary, fontSize: 14)),
             if (aircraft.isNotEmpty) ...[
               const SizedBox(height: 12),
-              ...aircraft.take(isExpanded ? aircraft.length : 4).map((a) {
-                final callsign = a['callsign'] ?? '';
-                final distance = a['distance_km']?.toDouble() ?? 0.0;
-                final altitude = a['altitude_ft'];
-
-                return Container(
-                  margin: const EdgeInsets.only(bottom: 6),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  decoration: BoxDecoration(
-                    color: AppColors.darkSurface,
-                    borderRadius: BorderRadius.circular(6),
-                    border: Border.all(color: AppColors.darkBorder),
+              // If expanded and have many aircraft, use a constrained scrollable container
+              if (isExpanded && aircraft.length > 5)
+                Container(
+                  constraints: BoxConstraints(
+                    maxHeight: 300, // Limit height to prevent UI overflow
                   ),
-                  child: Consumer(
-                    builder: (context, ref, child) {
-                      final userPrefs = ref.watch(userPreferencesProvider);
-                      final units = userPrefs?.units ?? 'metric';
-                      final aircraftName = callsign.isEmpty ? AppLocalizations.of(context)!.unknownAircraft : callsign;
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    itemCount: aircraft.length,
+                    itemBuilder: (context, index) {
+                      final a = aircraft[index];
+                      final callsign = a['callsign'] ?? '';
+                      final distance = a['distance_km']?.toDouble() ?? 0.0;
+                      final altitude = a['altitude_ft'];
 
-                      return Row(
-                        children: [
-                          Text(
-                            aircraftName,
-                            style: const TextStyle(
-                              color: AppColors.textPrimary,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                              '${UnitConversion.formatDistance(distance * 1000, units)} away${altitude != null ? ' • ${altitude}ft' : ''}',
-                              style: const TextStyle(
-                                color: AppColors.textTertiary,
-                                fontSize: 12
-                              ),
-                              textAlign: TextAlign.right,
-                            ),
-                          ),
-                        ],
+                      return Container(
+                        margin: const EdgeInsets.only(bottom: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: AppColors.darkSurface,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(color: AppColors.darkBorder),
+                        ),
+                        child: Consumer(
+                          builder: (context, ref, child) {
+                            final userPrefs = ref.watch(userPreferencesProvider);
+                            final units = userPrefs?.units ?? 'metric';
+                            final aircraftName = callsign.isEmpty ? AppLocalizations.of(context)!.unknownAircraft : callsign;
+
+                            return Row(
+                              children: [
+                                Text(
+                                  aircraftName,
+                                  style: const TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    '${UnitConversion.formatDistance(distance * 1000, units)} away${altitude != null ? ' • ${altitude}ft' : ''}',
+                                    style: const TextStyle(
+                                      color: AppColors.textTertiary,
+                                      fontSize: 12
+                                    ),
+                                    textAlign: TextAlign.right,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
                       );
                     },
                   ),
-                );
-              }),
+                )
+              else
+                // For collapsed view or small lists, use the original Column approach
+                ...aircraft.take(isExpanded ? aircraft.length : 4).map((a) {
+                  final callsign = a['callsign'] ?? '';
+                  final distance = a['distance_km']?.toDouble() ?? 0.0;
+                  final altitude = a['altitude_ft'];
+
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkSurface,
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: AppColors.darkBorder),
+                    ),
+                    child: Consumer(
+                      builder: (context, ref, child) {
+                        final userPrefs = ref.watch(userPreferencesProvider);
+                        final units = userPrefs?.units ?? 'metric';
+                        final aircraftName = callsign.isEmpty ? AppLocalizations.of(context)!.unknownAircraft : callsign;
+
+                        return Row(
+                          children: [
+                            Text(
+                              aircraftName,
+                              style: const TextStyle(
+                                color: AppColors.textPrimary,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500
+                              ),
+                            ),
+                            const SizedBox(width: 8),
+                            Expanded(
+                              child: Text(
+                                '${UnitConversion.formatDistance(distance * 1000, units)} away${altitude != null ? ' • ${altitude}ft' : ''}',
+                                style: const TextStyle(
+                                  color: AppColors.textTertiary,
+                                  fontSize: 12
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  );
+                }),
               if (aircraft.length > 4)
                 GestureDetector(
                   onTap: () {
