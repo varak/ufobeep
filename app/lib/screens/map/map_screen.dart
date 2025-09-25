@@ -68,38 +68,6 @@ class MapScreen extends ConsumerWidget {
                   },
                 ),
               ),
-              
-              // Bottom info bar
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: GlassCard(
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.location_on,
-                        color: AppColors.brandPrimary,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 8),
-                      Text(
-                        '${alerts.where((alert) => DateTime.now().difference(alert.createdAt).inDays <= 7).length} recent sightings',
-                        style: const TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14,
-                        ),
-                      ),
-                      const Spacer(),
-                      const Text(
-                        'Tap markers for details',
-                        style: TextStyle(
-                          color: Colors.white54,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ],
           );
         },
