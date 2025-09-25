@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../constants/app_colors.dart';
+import '../../theme/app_theme.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../../utils/unit_conversion.dart';
 import '../../l10n/app_localizations.dart';
