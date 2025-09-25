@@ -1938,6 +1938,7 @@ def initialize_enrichment_processors():
     
     logger.info(f"Initialized {len(enrichment_orchestrator.processors)} enrichment processors")
     logger.info(f"Aircraft tracking API available: {opensky_client_id is not None}")
+    logger.info(f"OpenSky credentials: client_id={'***' if opensky_client_id else 'None'}, secret={'***' if opensky_client_secret else 'None'}")
     logger.info(f"Weather API available: {weather_api_key is not None}")
     logger.info(f"HuggingFace API available: {hf_api_token is not None}")
 
