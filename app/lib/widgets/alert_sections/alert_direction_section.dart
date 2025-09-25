@@ -1,16 +1,15 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:go_router/go_router.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../services/permission_service.dart';
 import '../glass_card.dart';
-import '../map_widget.dart';
 import '../../l10n/app_localizations.dart';
 import '../../utils/unit_conversion.dart';
 
-class AlertDirectionSection extends StatefulWidget {
+class AlertDirectionSection extends StatelessWidget {
   const AlertDirectionSection({
     super.key,
     required this.alert,
@@ -25,21 +24,11 @@ class AlertDirectionSection extends StatefulWidget {
   final Function(Position userLocation, Alert alert)? onShowMap;
 
   @override
-  State<AlertDirectionSection> createState() => _AlertDirectionSectionState();
-}
-
-class _AlertDirectionSectionState extends State<AlertDirectionSection> {
-  bool _showMap = false;
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        GlassCard(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return GlassCard(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Row(
             children: [
@@ -175,11 +164,11 @@ class _AlertDirectionSectionState extends State<AlertDirectionSection> {
                 // Spacing between buttons
                 if (onNavigate != null)
                   const SizedBox(height: 8),
-                // Map toggle button
+                // Map button - navigate to map tab
                 OutlinedButton.icon(
-                  onPressed: () => setState(() => _showMap = !_showMap),
-                  icon: Icon(_showMap ? Icons.map_outlined : Icons.map, size: 16),
-                  label: Text(_showMap ? 'Hide Map' : AppLocalizations.of(context)!.viewOnMap),
+                  onPressed: () => context.go('/map'),
+                  icon: const Icon(Icons.map, size: 16),
+                  label: Text(AppLocalizations.of(context)!.viewOnMap),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: AppColors.brandPrimary,
                     side: const BorderSide(color: AppColors.brandPrimary),
@@ -191,39 +180,6 @@ class _AlertDirectionSectionState extends State<AlertDirectionSection> {
           ],
         );
       },
-    ),
-          ),
-        ),
-        // Inline map widget (toggleable)
-        if (_showMap) ...[
-          const SizedBox(height: 16),
-          GlassCard(
-            padding: const EdgeInsets.all(12),
-            child: SizedBox(
-              height: 300,
-              child: FutureBuilder<Position?>(
-                future: PermissionService().getCurrentLocation(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    final userLocation = snapshot.data!;
-                    return MapWidget(
-                      alerts: [widget.alert],
-                      center: LatLng(widget.alert.latitude, widget.alert.longitude),
-                      zoom: 15.0,
-                      height: 300,
-                      showControls: true,
-                    );
-                  } else {
-                    return const Center(
-                      child: CircularProgressIndicator(color: AppColors.brandPrimary),
-                    );
-                  }
-                },
-              ),
-            ),
-          ),
-        ],
-      ],
     );
   }
 
