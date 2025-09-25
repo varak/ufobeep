@@ -256,27 +256,9 @@ class EnrichmentSection extends ConsumerWidget {
   }
 
   Widget _buildAircraftTrackingCard(Map<String, dynamic> data) {
-    return _AircraftTrackingCardContent(data: data);
-  }
-}
-
-class _AircraftTrackingCardContent extends StatefulWidget {
-  final Map<String, dynamic> data;
-
-  const _AircraftTrackingCardContent({required this.data});
-
-  @override
-  State<_AircraftTrackingCardContent> createState() => _AircraftTrackingCardContentState();
-}
-
-class _AircraftTrackingCardContentState extends State<_AircraftTrackingCardContent> {
-  bool isExpanded = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final aircraft = widget.data['aircraft'] as List? ?? [];
-    final total = widget.data['total'] as int? ?? 0;
-    final summary = widget.data['summary'] as String? ?? 'No aircraft detected';
+    final aircraft = data['aircraft'] as List? ?? [];
+    final total = data['total'] as int? ?? 0;
+    final summary = data['summary'] as String? ?? 'No aircraft detected';
 
     return GlassCard(
       child: Padding(
@@ -310,7 +292,7 @@ class _AircraftTrackingCardContentState extends State<_AircraftTrackingCardConte
             Text(summary, style: const TextStyle(color: AppColors.textSecondary, fontSize: 14)),
             if (aircraft.isNotEmpty) ...[
               const SizedBox(height: 12),
-              ...aircraft.take(isExpanded ? aircraft.length : 5).map((a) {
+              ...aircraft.map((a) {
                 final callsign = a['callsign'] ?? '';
                 final distance = a['distance_km']?.toDouble() ?? 0.0;
                 final altitude = a['altitude_ft'];
@@ -356,36 +338,16 @@ class _AircraftTrackingCardContentState extends State<_AircraftTrackingCardConte
                   ),
                 );
               }),
-              if (total > (isExpanded ? aircraft.length : 5))
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isExpanded = !isExpanded;
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8, bottom: 4),
-                    child: Row(
-                      children: [
-                        Icon(
-                          isExpanded ? Icons.expand_less : Icons.expand_more,
-                          size: 16,
-                          color: AppColors.brandPrimary,
-                        ),
-                        const SizedBox(width: 4),
-                        Builder(
-                          builder: (context) => Text(
-                            isExpanded
-                              ? 'Show less'
-                              : '+${total - 5} ${AppLocalizations.of(context)!.moreAircraft}',
-                            style: const TextStyle(
-                              color: AppColors.brandPrimary,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ],
+              if (total > aircraft.length)
+                Padding(
+                  padding: const EdgeInsets.only(top: 8, bottom: 4),
+                  child: Builder(
+                    builder: (context) => Text(
+                      '+${total - aircraft.length} ${AppLocalizations.of(context)!.moreAircraft}',
+                      style: const TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ),
