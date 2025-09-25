@@ -384,7 +384,7 @@ class _MapWidgetState extends State<MapWidget> {
                         final currentZoom = _mapController.camera.zoom;
                         final newZoom = (currentZoom + 2).clamp(2.0, 18.0);
                         _mapController.move(
-                          LatLng(cluster.latitude, cluster.longitude),
+                          cluster.bounds.center,
                           newZoom,
                         );
                       } catch (e) {
