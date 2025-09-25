@@ -1356,7 +1356,7 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                     summary_note = " (current positions)"
                 
                 return {
-                    "aircraft": aircraft[:5],
+                    "aircraft": aircraft,
                     "total": len(aircraft),
                     "summary": f"{len(aircraft)} aircraft detected within 50km{summary_note}" if aircraft else f"No aircraft detected{summary_note}"
                 }
