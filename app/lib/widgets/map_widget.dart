@@ -163,13 +163,8 @@ class _MapWidgetState extends State<MapWidget> {
   }
   
   List<Alert> _filterReportsByAge(List<Alert> alerts) {
-    final now = DateTime.now();
-    const maxAgeInDays = 7; // Hide reports older than 7 days
-    
-    return alerts.where((alert) {
-      final ageInDays = now.difference(alert.createdAt).inDays;
-      return ageInDays <= maxAgeInDays;
-    }).toList();
+    // No age filtering - show all alerts like web version
+    return alerts;
   }
 
   List<Alert> _filterAlertsByZoom(List<Alert> alerts) {
@@ -186,17 +181,8 @@ class _MapWidgetState extends State<MapWidget> {
       currentZoom = widget.zoom ?? 5.5;
     }
 
-    // Match web map performance - show many more alerts
-    int maxAlerts;
-    if (currentZoom >= 12) {
-      maxAlerts = 10000; // Zoomed in - show ALL local alerts
-    } else if (currentZoom >= 8) {
-      maxAlerts = 500; // Medium zoom - show many regional alerts
-    } else if (currentZoom >= 5) {
-      maxAlerts = 200; // Zoomed out - show 200 alerts
-    } else {
-      maxAlerts = 100; // Very zoomed out - show 100 most recent alerts
-    }
+    // Show all alerts like web version - no artificial limits
+    int maxAlerts = alerts.length; // Show all available alerts
     
     // Sort by most recent and take only the limit
     final sortedAlerts = List<Alert>.from(alerts)
@@ -210,7 +196,12 @@ class _MapWidgetState extends State<MapWidget> {
     final ageFilteredAlerts = _filterReportsByAge(widget.alerts);
     final filteredAlerts = _filterAlertsByZoom(ageFilteredAlerts);
 
-    return filteredAlerts.map((alert) => _buildAlertMarker(alert)).toList();
+    // Exclude target alert from clustering - it will be shown separately
+    final alertsToCluster = widget.targetAlert != null
+        ? filteredAlerts.where((alert) => alert.id != widget.targetAlert!.id).toList()
+        : filteredAlerts;
+
+    return alertsToCluster.map((alert) => _buildAlertMarker(alert)).toList();
   }
 
   Marker _buildAlertMarker(Alert alert) {
@@ -392,66 +383,15 @@ class _MapWidgetState extends State<MapWidget> {
                     },
                   ),
                 ),
+
+                // Target alert marker (always visible, not clustered)
+                if (widget.targetAlert != null)
+                  MarkerLayer(
+                    markers: [_buildAlertMarker(widget.targetAlert!)],
+                  ),
               ],
             ),
 
-            // Map overlay with stats
-            Positioned(
-              top: 16,
-              left: 16,
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: AppColors.darkSurface.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.darkBorder),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: AppColors.brandPrimary,
-                            shape: BoxShape.circle,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'Live Sightings',
-                          style: TextStyle(
-                            color: AppColors.brandPrimary,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Zoom in to see details',
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 10,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      'Tap markers to view',
-                      style: const TextStyle(
-                        color: AppColors.textTertiary,
-                        fontSize: 9,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
 
             // Map controls
             if (widget.showControls)
@@ -601,52 +541,6 @@ class _MapWidgetState extends State<MapWidget> {
                 ),
               ),
 
-            // Legend
-            Positioned(
-              bottom: 16,
-              right: 16,
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.darkSurface.withOpacity(0.9),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.darkBorder),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Age',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    _buildAgeLegendItem('< 1h', 1.0, 28),
-                    _buildAgeLegendItem('< 6h', 0.8, 24),
-                    _buildAgeLegendItem('< 24h', 0.6, 24),
-                    _buildAgeLegendItem('< 3d', 0.4, 20),
-                    const SizedBox(height: 6),
-                    const Text(
-                      'Level',
-                      style: TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 9,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    _buildLegendItem('Critical', Colors.red),
-                    _buildLegendItem('High', Colors.orange),
-                    _buildLegendItem('Medium', Colors.yellow),
-                    _buildLegendItem('Low', Colors.green),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -676,61 +570,4 @@ class _MapWidgetState extends State<MapWidget> {
     );
   }
 
-  Widget _buildLegendItem(String label, Color color) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-            ),
-          ),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: const TextStyle(
-              color: AppColors.textTertiary,
-              fontSize: 10,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildAgeLegendItem(String label, double opacity, double size) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 1),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: size / 3,
-            height: size / 3,
-            decoration: BoxDecoration(
-              color: AppColors.brandPrimary.withOpacity(opacity),
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.white.withOpacity(opacity),
-                width: 1,
-              ),
-            ),
-          ),
-          const SizedBox(width: 6),
-          Text(
-            label,
-            style: const TextStyle(
-              color: AppColors.textTertiary,
-              fontSize: 9,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }
