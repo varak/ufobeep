@@ -33,12 +33,11 @@ class MapScreen extends ConsumerWidget {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: (alertId ?? targetAlertId) != null
+        leading: targetAlertId != null
             ? IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () {
-                  final backAlertId = alertId ?? targetAlertId;
-                  context.go('/alert/$backAlertId?scrollTo=direction');
+                  context.go('/alert/$targetAlertId?scrollTo=direction');
                 },
               )
             : null,
