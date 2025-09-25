@@ -292,46 +292,56 @@ class EnrichmentSection extends ConsumerWidget {
             Text(summary, style: const TextStyle(color: AppColors.textSecondary, fontSize: 14)),
             if (aircraft.isNotEmpty) ...[
               const SizedBox(height: 12),
-              ...aircraft.take(3).map((a) {
+              ...aircraft.take(6).map((a) {
                 final callsign = a['callsign'] ?? '';
                 final distance = a['distance_km']?.toDouble() ?? 0.0;
                 final altitude = a['altitude_ft'];
 
                 return Container(
-                  margin: const EdgeInsets.only(bottom: 8),
-                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   decoration: BoxDecoration(
                     color: AppColors.darkSurface,
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(6),
                     border: Border.all(color: AppColors.darkBorder),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Builder(
-                        builder: (context) => Text(
-                          callsign.isEmpty ? AppLocalizations.of(context)!.unknownAircraft : callsign,
-                          style: const TextStyle(color: AppColors.textPrimary, fontSize: 14, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      Consumer(
-                        builder: (context, ref, child) {
-                          final userPrefs = ref.watch(userPreferencesProvider);
-                          final units = userPrefs?.units ?? 'metric';
-                          return Text(
-                            '${UnitConversion.formatDistance(distance * 1000, units)} away${altitude != null ? ' • ${altitude}ft' : ''}',
-                            style: const TextStyle(color: AppColors.textTertiary, fontSize: 12),
-                          );
-                        },
-                      ),
-                    ],
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      final userPrefs = ref.watch(userPreferencesProvider);
+                      final units = userPrefs?.units ?? 'metric';
+                      final aircraftName = callsign.isEmpty ? AppLocalizations.of(context)!.unknownAircraft : callsign;
+
+                      return Row(
+                        children: [
+                          Text(
+                            aircraftName,
+                            style: const TextStyle(
+                              color: AppColors.textPrimary,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              '${UnitConversion.formatDistance(distance * 1000, units)} away${altitude != null ? ' • ${altitude}ft' : ''}',
+                              style: const TextStyle(
+                                color: AppColors.textTertiary,
+                                fontSize: 12
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      );
+                    },
                   ),
                 );
               }),
-              if (total > 3)
+              if (total > 6)
                 Builder(
                   builder: (context) => Text(
-                    '+${total - 3} ${AppLocalizations.of(context)!.moreAircraft}',
+                    '+${total - 6} ${AppLocalizations.of(context)!.moreAircraft}',
                     style: const TextStyle(color: AppColors.textTertiary, fontSize: 12),
                   ),
                 ),
