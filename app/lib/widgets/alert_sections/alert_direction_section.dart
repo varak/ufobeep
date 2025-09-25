@@ -166,7 +166,7 @@ class AlertDirectionSection extends StatelessWidget {
                   const SizedBox(height: 8),
                 // Map button - navigate to map tab
                 OutlinedButton.icon(
-                  onPressed: () => context.go('/mapscreen'),
+                  onPressed: () => context.go('/mapscreen?targetAlert=${alert.id}'),
                   icon: const Icon(Icons.map, size: 16),
                   label: Text(AppLocalizations.of(context)!.viewOnMap),
                   style: OutlinedButton.styleFrom(

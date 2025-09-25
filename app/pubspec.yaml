@@ -92,6 +92,7 @@ dependencies:
   # Maps
   flutter_map: ^7.0.2
   latlong2: ^0.9.1
+  flutter_map_marker_cluster: ^1.3.6
   
   # Share Intent (for Android share-to-app functionality)
   receive_sharing_intent: ^1.8.1

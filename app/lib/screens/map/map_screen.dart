@@ -10,22 +10,10 @@ import '../../widgets/glass_card.dart';
 class MapScreen extends ConsumerWidget {
   const MapScreen({
     super.key,
-    this.userLat,
-    this.userLon,
-    this.alertLat,
-    this.alertLon,
-    this.alertId,
-    this.alertName,
-    this.calledFromAlert = false,
+    this.targetAlertId,
   });
 
-  final double? userLat;
-  final double? userLon;
-  final double? alertLat;
-  final double? alertLon;
-  final String? alertId;
-  final String? alertName;
-  final bool calledFromAlert;
+  final String? targetAlertId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,22 +24,18 @@ class MapScreen extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       appBar: AppBar(
         title: Text(
-          calledFromAlert && alertName != null 
-              ? 'Map - ${Uri.decodeComponent(alertName!)}' 
+          targetAlertId != null
+              ? 'Sighting Location'
               : 'Live Sightings Map',
           style: const TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: calledFromAlert 
+        leading: targetAlertId != null
             ? IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () {
-                  if (alertId != null) {
-                    context.go('/alert/$alertId');
-                  } else {
-                    context.go('/alerts');
-                  }
+                  context.go('/alert/$targetAlertId');
                 },
               )
             : null,
@@ -59,13 +43,25 @@ class MapScreen extends ConsumerWidget {
       body: alertsAsync.when(
         data: (alertsData) {
           final alerts = alertsData.alerts;
+
+          // Find the target alert if specified
+          Alert? targetAlert;
+          if (targetAlertId != null) {
+            try {
+              targetAlert = alerts.firstWhere((alert) => alert.id == targetAlertId);
+            } catch (e) {
+              // Target alert not found in current data
+            }
+          }
+
           return Column(
             children: [
               // Map takes full screen
               Expanded(
                 child: MapWidget(
                   alerts: alerts,
-                  zoom: 4.0, // Wide view to see geographic context
+                  targetAlert: targetAlert,
+                  zoom: 5.5, // Match web zoom for better context
                   onAlertTap: (alert) {
                     // Navigate to alert detail when tapped
                     context.go('/alert/${alert.id}');

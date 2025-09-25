@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong2/latlong.dart';
 
 import '../providers/alerts_provider.dart';
@@ -7,6 +8,7 @@ import '../theme/app_theme.dart';
 
 class MapWidget extends StatefulWidget {
   final List<Alert> alerts;
+  final Alert? targetAlert;
   final double? height;
   final LatLng? center;
   final double? zoom;
@@ -16,9 +18,10 @@ class MapWidget extends StatefulWidget {
   const MapWidget({
     super.key,
     required this.alerts,
+    this.targetAlert,
     this.height,
     this.center,
-    this.zoom = 10.0,
+    this.zoom = 5.5,
     this.onAlertTap,
     this.showControls = true,
   });
@@ -44,24 +47,30 @@ class _MapWidgetState extends State<MapWidget> {
   }
 
   LatLng get _defaultCenter {
+    // If there's a target alert, center on it
+    if (widget.targetAlert != null) {
+      return LatLng(widget.targetAlert!.latitude, widget.targetAlert!.longitude);
+    }
+
+    // Use provided center
     if (widget.center != null) return widget.center!;
-    
+
     // If we have alerts, center on them
     if (widget.alerts.isNotEmpty) {
       double totalLat = 0;
       double totalLng = 0;
-      
+
       for (final alert in widget.alerts) {
         totalLat += alert.latitude;
         totalLng += alert.longitude;
       }
-      
+
       return LatLng(
         totalLat / widget.alerts.length,
         totalLng / widget.alerts.length,
       );
     }
-    
+
     // Default to center of US
     return const LatLng(39.8283, -98.5795);
   }
@@ -165,7 +174,7 @@ class _MapWidgetState extends State<MapWidget> {
 
   List<Alert> _filterAlertsByZoom(List<Alert> alerts) {
     // Default zoom level if map controller is not ready yet
-    double currentZoom = widget.zoom ?? 10.0;
+    double currentZoom = widget.zoom ?? 5.5;
 
     // Try to get current zoom from map controller, but handle safely
     try {
@@ -174,19 +183,19 @@ class _MapWidgetState extends State<MapWidget> {
       }
     } catch (e) {
       // Map controller not ready yet, use default zoom
-      currentZoom = widget.zoom ?? 10.0;
+      currentZoom = widget.zoom ?? 5.5;
     }
 
-    // Show more alerts when zoomed out, fewer when zoomed in
+    // Match web map performance - show many more alerts
     int maxAlerts;
     if (currentZoom >= 12) {
-      maxAlerts = 50; // Zoomed in - show many local alerts
+      maxAlerts = 10000; // Zoomed in - show ALL local alerts
     } else if (currentZoom >= 8) {
-      maxAlerts = 25; // Medium zoom - show moderate number
+      maxAlerts = 500; // Medium zoom - show many regional alerts
     } else if (currentZoom >= 5) {
-      maxAlerts = 15; // Zoomed out - show fewer but important alerts
+      maxAlerts = 200; // Zoomed out - show 200 alerts
     } else {
-      maxAlerts = 10; // Very zoomed out - show only the most recent/important
+      maxAlerts = 100; // Very zoomed out - show 100 most recent alerts
     }
     
     // Sort by most recent and take only the limit
@@ -196,85 +205,110 @@ class _MapWidgetState extends State<MapWidget> {
     return sortedAlerts.take(maxAlerts).toList();
   }
 
-  List<Marker> _buildMarkers() {
+  List<Marker> _buildClusteredMarkers() {
     // Filter alerts by age first, then by zoom level
     final ageFilteredAlerts = _filterReportsByAge(widget.alerts);
     final filteredAlerts = _filterAlertsByZoom(ageFilteredAlerts);
-    
-    return filteredAlerts.map((alert) {
-      final color = _getAlertColor(alert);
-      final now = DateTime.now();
-      final ageInHours = now.difference(alert.createdAt).inHours;
-      
-      // Adjust marker size based on age and zoom level (newer = larger, zoomed out = larger for visibility)
-      double baseSize;
-      if (ageInHours <= 1) {
-        baseSize = 28; // Large for very recent
-      } else if (ageInHours <= 6) {
-        baseSize = 24; // Medium for recent
-      } else {
-        baseSize = 20; // Small for older
-      }
 
-      // Scale up markers when zoomed out for better visibility
-      double currentZoom = widget.zoom ?? 5.0;
-      try {
-        if (_mapController.camera != null) {
-          currentZoom = _mapController.camera.zoom;
-        }
-      } catch (e) {
-        currentZoom = widget.zoom ?? 5.0;
-      }
+    return filteredAlerts.map((alert) => _buildAlertMarker(alert)).toList();
+  }
 
-      double zoomMultiplier = currentZoom < 6 ? 1.5 : 1.0; // Make markers bigger when zoomed out
-      double markerSize = baseSize * zoomMultiplier;
-      
-      // Get appropriate icon for UFO type
-      final icon = _getUfoIcon(alert);
-      
-      return Marker(
-        point: LatLng(alert.latitude, alert.longitude),
-        child: GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedAlert = alert;
-            });
-            if (widget.onAlertTap != null) {
-              widget.onAlertTap!(alert);
-            }
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.white.withOpacity(0.9), // High contrast white border
-                width: currentZoom < 6 ? 3 : 2 // Thicker border when zoomed out
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.6), // Strong shadow for visibility
-                  blurRadius: currentZoom < 6 ? 12 : 8,
-                  spreadRadius: currentZoom < 6 ? 2 : 1,
-                ),
-                BoxShadow(
-                  color: color.withOpacity(0.8),
-                  blurRadius: ageInHours <= 1 ? 20 : 12,
-                  spreadRadius: ageInHours <= 1 ? 4 : 2,
-                ),
-              ],
+  Marker _buildAlertMarker(Alert alert) {
+    final isTargetAlert = widget.targetAlert?.id == alert.id;
+    final isUfoBeep = _isUfoBeepAlert(alert);
+
+    // Determine marker style based on alert type and target status
+    Widget markerChild;
+    if (isTargetAlert) {
+      // Target alert: bright red circle (highly visible)
+      markerChild = Container(
+        width: 30,
+        height: 30,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white, width: 3),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.red.withOpacity(0.6),
+              blurRadius: 15,
+              spreadRadius: 3,
             ),
-            child: Icon(
-              icon,
-              color: Colors.white.withOpacity(((color.alpha / 255.0) + 0.2).clamp(0.0, 1.0)),
-              size: markerSize * 0.6,
+          ],
+        ),
+        child: const Icon(
+          Icons.location_on,
+          color: Colors.white,
+          size: 18,
+        ),
+      );
+    } else if (isUfoBeep) {
+      // UFOBeep alerts: bright cyan circle with UFO emoji
+      markerChild = Container(
+        width: 26,
+        height: 26,
+        decoration: BoxDecoration(
+          color: const Color(0xFF00E5FF), // Bright cyan
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.4),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
             ),
+          ],
+        ),
+        child: const Center(
+          child: Text(
+            '🛸',
+            style: TextStyle(fontSize: 14),
           ),
         ),
-        width: markerSize,
-        height: markerSize,
       );
-    }).toList();
+    } else {
+      // MUFON/Other alerts: green circles with white border
+      markerChild = Container(
+        width: 20,
+        height: 20,
+        decoration: BoxDecoration(
+          color: const Color(0xFF39FF14), // Bright green
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.white, width: 2),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.4),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Marker(
+      point: LatLng(alert.latitude, alert.longitude),
+      child: GestureDetector(
+        onTap: () {
+          setState(() {
+            _selectedAlert = alert;
+          });
+          if (widget.onAlertTap != null) {
+            widget.onAlertTap!(alert);
+          }
+        },
+        child: markerChild,
+      ),
+      width: isTargetAlert ? 30 : (isUfoBeep ? 26 : 20),
+      height: isTargetAlert ? 30 : (isUfoBeep ? 26 : 20),
+    );
+  }
+
+  bool _isUfoBeepAlert(Alert alert) {
+    // Check if this is a UFOBeep alert (not MUFON or other databases)
+    return alert.source != 'mufon' &&
+           alert.username != 'MUFON_Database' &&
+           alert.source != 'nuforc';
   }
 
   @override
@@ -293,7 +327,7 @@ class _MapWidgetState extends State<MapWidget> {
               mapController: _mapController,
               options: MapOptions(
                 initialCenter: _defaultCenter,
-                initialZoom: widget.zoom ?? 5.0,
+                initialZoom: widget.zoom ?? 5.5,
                 minZoom: 2.0,
                 maxZoom: 18.0,
                 backgroundColor: AppColors.darkBackground,
@@ -322,7 +356,7 @@ class _MapWidgetState extends State<MapWidget> {
                     return ColorFiltered(
                       colorFilter: const ColorFilter.matrix([
                         0.2, 0, 0, 0, 20,
-                        0, 0.2, 0, 0, 20, 
+                        0, 0.2, 0, 0, 20,
                         0, 0, 0.2, 0, 20,
                         0, 0, 0, 1, 0,
                       ]),
@@ -330,9 +364,39 @@ class _MapWidgetState extends State<MapWidget> {
                     );
                   },
                 ),
-                
-                // Alert markers
-                MarkerLayer(markers: _buildMarkers()),
+
+                // Clustered alert markers
+                MarkerClusterLayerWidget(
+                  options: MarkerClusterLayerOptions(
+                    maxClusterRadius: 50,
+                    size: const Size(40, 40),
+                    anchor: AnchorPos.align(AnchorAlign.center),
+                    fitBoundsOptions: const FitBoundsOptions(
+                      padding: EdgeInsets.all(50),
+                      maxZoom: 15,
+                    ),
+                    markers: _buildClusteredMarkers(),
+                    builder: (context, markers) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: AppColors.brandPrimary.withOpacity(0.8),
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                        child: Center(
+                          child: Text(
+                            markers.length.toString(),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
 
