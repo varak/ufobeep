@@ -88,7 +88,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.enrichment?['report_date'] != null)
               _buildDetailRow(
                 Icons.storage,
-                AppLocalizations.of(context)!.reportedTime,
+                _isMufonAlert(alert) ? 'MUFON Reporting Date' : AppLocalizations.of(context)!.reportedTime,
                 _parseAndFormatDateISO(alert.enrichment!['report_date']) ?? alert.enrichment!['report_date'],
               ),
 
@@ -96,7 +96,7 @@ class AlertDetailsSection extends StatelessWidget {
             _buildDetailRow(
               Icons.schedule,
               AppLocalizations.of(context)!.addedToUfobeep,
-              _formatDateISO(alert.createdAt),
+              _formatDateOnly(alert.createdAt), // Date only, no time
             ),
 
             // Always show location for MUFON reports
@@ -392,6 +392,19 @@ class AlertDetailsSection extends StatelessWidget {
       // Show just the ISO date for older sightings
       return isoDate;
     }
+  }
+
+  String _formatDateOnly(DateTime dateTime) {
+    final date = dateTime.toLocal();
+    // Always return just the date, never include time
+    final year = date.year.toString();
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    return '$year-$month-$day';
+  }
+
+  bool _isMufonAlert(Alert alert) {
+    return alert.source == 'mufon' || alert.username == 'MUFON_Database';
   }
 
   String? _parseAndFormatDateISO(String? dateString) {
