@@ -208,6 +208,22 @@ class _MapWidgetState extends State<MapWidget> {
     final isTargetAlert = widget.targetAlert?.id == alert.id;
     final isUfoBeep = _isUfoBeepAlert(alert);
 
+    // Add jitter for red target and UFO markers to avoid exact overlap
+    LatLng markerPosition = LatLng(alert.latitude, alert.longitude);
+
+    if (isTargetAlert || isUfoBeep) {
+      // Add small random offset to important markers so they stand out
+      final jitterAmount = 0.001; // Small offset in degrees
+      final hash = alert.id.hashCode;
+      final offsetLat = ((hash % 1000) / 1000.0 - 0.5) * jitterAmount;
+      final offsetLng = (((hash ~/ 1000) % 1000) / 1000.0 - 0.5) * jitterAmount;
+
+      markerPosition = LatLng(
+        alert.latitude + offsetLat,
+        alert.longitude + offsetLng,
+      );
+    }
+
     // Determine marker style based on alert type and target status
     Widget markerChild;
     if (isTargetAlert) {
@@ -278,7 +294,7 @@ class _MapWidgetState extends State<MapWidget> {
     }
 
     return Marker(
-      point: LatLng(alert.latitude, alert.longitude),
+      point: markerPosition,
       child: GestureDetector(
         onTap: () {
           setState(() {
@@ -359,9 +375,22 @@ class _MapWidgetState extends State<MapWidget> {
                 // Clustered alert markers
                 MarkerClusterLayerWidget(
                   options: MarkerClusterLayerOptions(
-                    maxClusterRadius: 50,
+                    maxClusterRadius: 25, // Much smaller radius for earlier breakup
                     size: const Size(40, 40),
                     markers: _buildClusteredMarkers(),
+                    onClusterTap: (cluster) {
+                      // Auto-zoom on cluster tap to reveal individual markers
+                      try {
+                        final currentZoom = _mapController.camera.zoom;
+                        final newZoom = (currentZoom + 2).clamp(2.0, 18.0);
+                        _mapController.move(
+                          LatLng(cluster.latitude, cluster.longitude),
+                          newZoom,
+                        );
+                      } catch (e) {
+                        // Map controller not ready, ignore
+                      }
+                    },
                     builder: (context, markers) {
                       return Container(
                         decoration: BoxDecoration(
