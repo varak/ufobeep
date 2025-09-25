@@ -213,18 +213,15 @@ class PlaneMatchService:
         # Check if we need to refresh token (with 5 minute buffer)
         if self._auth_header is None or current_time >= (self._auth_expires - 300):
             try:
-                # Prepare credentials
-                credentials = f"{settings.opensky_client_id}:{settings.opensky_client_secret}"
-                encoded_credentials = b64encode(credentials.encode()).decode()
-                
-                # Request OAuth2 token
-                token_url = "https://opensky-network.org/api/auth/token"
+                # Request OAuth2 token (updated endpoint as of March 2025)
+                token_url = "https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token"
                 headers = {
-                    'Authorization': f'Basic {encoded_credentials}',
                     'Content-Type': 'application/x-www-form-urlencoded'
                 }
                 data = {
-                    'grant_type': 'client_credentials'
+                    'grant_type': 'client_credentials',
+                    'client_id': settings.opensky_client_id,
+                    'client_secret': settings.opensky_client_secret
                 }
                 
                 response = await self.client.post(token_url, headers=headers, data=data)
