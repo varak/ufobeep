@@ -94,7 +94,8 @@ class WeatherEnrichmentProcessor(EnrichmentProcessor):
     
     @property
     def timeout_seconds(self) -> int:
-        return 3
+        # Skyfield load + computation can exceed 3s on cold start
+        return 8
     
     async def is_available(self) -> bool:
         return self.api_key is not None
@@ -311,13 +312,30 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
     
     async def process(self, context: EnrichmentContext) -> EnrichmentResult:
         """Calculate celestial object positions and visibility"""
+        # If Skyfield isn't available, use simplified fallback so UI shows something
         if not await self.is_available():
-            return EnrichmentResult(
-                processor_name=self.name,
-                success=False,
-                error="Skyfield library not available"
-            )
-        
+            try:
+                start_time = datetime.utcnow()
+                data = await self._calculate_celestial_data_simplified(context)
+                processing_time = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+                return EnrichmentResult(
+                    processor_name=self.name,
+                    success=True,
+                    data=data,
+                    processing_time_ms=processing_time,
+                    confidence_score=0.6,
+                    metadata={
+                        "source": "simplified",
+                        "calculation_method": "approximate"
+                    }
+                )
+            except Exception as e:
+                return EnrichmentResult(
+                    processor_name=self.name,
+                    success=False,
+                    error=str(e)
+                )
+
         try:
             start_time = datetime.utcnow()
             
@@ -339,12 +357,29 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             )
             
         except Exception as e:
-            logger.error(f"Celestial enrichment failed: {e}")
-            return EnrichmentResult(
-                processor_name=self.name,
-                success=False,
-                error=str(e)
-            )
+            logger.error(f"Celestial enrichment failed (falling back to simplified): {e}")
+            try:
+                start_time = datetime.utcnow()
+                data = await self._calculate_celestial_data_simplified(context)
+                processing_time = int((datetime.utcnow() - start_time).total_seconds() * 1000)
+                return EnrichmentResult(
+                    processor_name=self.name,
+                    success=True,
+                    data=data,
+                    processing_time_ms=processing_time,
+                    confidence_score=0.6,
+                    metadata={
+                        "source": "simplified",
+                        "calculation_method": "approximate",
+                        "fallback_error": str(e)
+                    }
+                )
+            except Exception as e2:
+                return EnrichmentResult(
+                    processor_name=self.name,
+                    success=False,
+                    error=f"fallback_failed: {e2}"
+                )
     
     async def _calculate_celestial_data(self, context: EnrichmentContext) -> Dict[str, Any]:
         """Calculate celestial object positions using skyfield"""
