@@ -359,8 +359,10 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             ts = load.timescale()
             planets = load('de421.bsp')  # JPL ephemeris
             
-            # Convert timestamp to skyfield time
-            t = ts.from_datetime(context.timestamp)
+            # Convert timestamp to skyfield time (ensure UTC timezone)
+            from skyfield.api import utc
+            timestamp_utc = context.timestamp.replace(tzinfo=utc) if context.timestamp.tzinfo is None else context.timestamp
+            t = ts.from_datetime(timestamp_utc)
             
             # Observer location
             observer = Topos(latitude_degrees=context.latitude, longitude_degrees=context.longitude)
