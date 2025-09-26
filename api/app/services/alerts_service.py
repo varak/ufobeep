@@ -432,33 +432,45 @@ class AlertsService:
         # If row_data is just the old enrichment_data column, return it (backward compatibility)
         if not isinstance(row_data, dict):
             enrichment = self._parse_json(row_data) if row_data else {}
+            logger.info(f"🔄 ENRICHMENT DEBUG: Using old enrichment_data format")
             return enrichment if enrichment else {}
 
         # Build enrichment from separate columns
         enrichment = {}
+        sources_used = []
 
         # Add each enrichment type if available
         if row_data.get('weather_data'):
             enrichment['weather'] = self._parse_json(row_data['weather_data'])
+            sources_used.append('weather_data')
 
         if row_data.get('celestial_data'):
             enrichment['celestial'] = self._parse_json(row_data['celestial_data'])
+            sources_used.append('celestial_data')
 
         if row_data.get('aircraft_data'):
             enrichment['aircraft_tracking'] = self._parse_json(row_data['aircraft_data'])
+            sources_used.append('aircraft_data')
 
         if row_data.get('satellite_data'):
             enrichment['satellites'] = self._parse_json(row_data['satellite_data'])
+            sources_used.append('satellite_data')
 
         if row_data.get('geocoding_data'):
             enrichment['geocoding'] = self._parse_json(row_data['geocoding_data'])
+            sources_used.append('geocoding_data')
 
         if row_data.get('content_analysis_data'):
             enrichment['content_filter'] = self._parse_json(row_data['content_analysis_data'])
+            sources_used.append('content_analysis_data')
 
         # Fallback to old enrichment_data if separate columns are empty
         if not enrichment and row_data.get('enrichment_data'):
             enrichment = self._parse_json(row_data['enrichment_data']) or {}
+            sources_used.append('enrichment_data_fallback')
+
+        logger.info(f"🔄 ENRICHMENT DEBUG: Built enrichment from sources: {sources_used}")
+        logger.info(f"🔄 ENRICHMENT DEBUG: Final enrichment keys: {list(enrichment.keys())}")
 
         return enrichment
     
