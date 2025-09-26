@@ -408,40 +408,6 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             planets_data = {}
             visible_planets = []
 
-            planet_objects = [
-                ('Venus', venus, -3.9),
-                ('Mars', mars, 0.7),
-                ('Jupiter', jupiter, -2.2),
-                ('Saturn', saturn, 0.7)
-            ]
-
-            for name, planet_obj, base_magnitude in planet_objects:
-                try:
-                    apparent = observer_pos.at(t).observe(planet_obj).apparent()
-                    alt, az, distance = apparent.altaz()
-                    alt_deg = alt.degrees
-                    az_deg = az.degrees
-                    is_visible = alt_deg > 5  # Visible threshold
-
-                    if is_visible:
-                        visible_planets.append(name)
-
-                    planets_data[name] = {
-                        "altitude": alt_deg,
-                        "azimuth": az_deg,
-                        "is_visible": is_visible,
-                        "distance_au": distance.au,
-                        "magnitude": base_magnitude,
-                    }
-                except Exception as e:
-                    logger.warning(f"Failed to calculate {name} position: {e}")
-                    planets_data[name] = {
-                        "altitude": None,
-                        "azimuth": None,
-                        "is_visible": False,
-                        "distance_au": None,
-                        "magnitude": None,
-                    }
             
             # Calculate bright star positions using Skyfield
             bright_stars = []

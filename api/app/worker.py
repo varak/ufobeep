@@ -89,6 +89,7 @@ async def enrich_sighting(sighting_id: str) -> bool:
             sensor_data = sighting['sensor_data'] or {}
 
             # Create enrichment context
+            context_start = datetime.utcnow()
             context = EnrichmentContext(
                 sighting_id=sighting_id,
                 latitude=sensor_data.get('latitude', 0),

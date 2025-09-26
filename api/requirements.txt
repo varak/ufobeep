@@ -38,6 +38,8 @@ passlib[bcrypt]==1.7.4             # Password hashing for admin auth
 numpy==1.26.4                 # Numerical computing for triangulation
 geopy==2.4.1                  # Geocoding and distance calculations  
 pygeohash==1.2.0              # Geohash encoding for location privacy
+skyfield==1.49                # Precise celestial mechanics (sun, moon, planets)
+sgp4==2.23                    # SGP4 orbital propagation for satellites (Skyfield dependency)
 
 # ============================================================================
 # 📱 PUSH NOTIFICATION & SMS SERVICES

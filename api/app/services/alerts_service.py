@@ -136,7 +136,9 @@ class AlertsService:
 
             query = f"""
                 SELECT s.id::text, s.title, s.description, s.category, s.alert_level,
-                       s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
+                       s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info,
+                       s.weather_data, s.celestial_data, s.aircraft_data, s.satellite_data, s.geocoding_data, s.content_analysis_data,
+                       s.enrichment_data,
                        u.username as reporter_username, s.source,
                        COALESCE(s.occurred_at, s.created_at) as occurred_at, s.external_url,
                        COALESCE(c.comment_count, 0) as comment_count, s.short_url
@@ -448,8 +450,83 @@ class AlertsService:
             sources_used.append('weather_data')
 
         if row_data.get('celestial_data'):
-            enrichment['celestial'] = self._parse_json(row_data['celestial_data'])
-            sources_used.append('celestial_data')
+            celestial_raw = self._parse_json(row_data['celestial_data'])
+            # Map to a UI-friendly shape expected by the web CelestialCard
+            try:
+                celestial_ui = {}
+                if isinstance(celestial_raw, dict):
+                    moon = celestial_raw.get('moon') or {}
+                    sun = celestial_raw.get('sun') or {}
+                    summary = celestial_raw.get('summary') or {}
+
+                    # Phase name
+                    phase_name = moon.get('phase_name') or summary.get('moon_phase_name')
+                    if phase_name:
+                        celestial_ui['moon_phase_name'] = phase_name
+
+                    # Illumination: normalize to percent if fraction provided
+                    illum = moon.get('illumination_pct')
+                    if illum is None:
+                        illum = summary.get('moon_illumination')
+                    if illum is not None:
+                        try:
+                            illum_val = float(illum)
+                            if illum_val <= 1.0:
+                                illum_val *= 100.0
+                            celestial_ui['moon_illumination'] = round(illum_val, 1)
+                        except Exception:
+                            pass
+
+                    # Sun elevation (altitude)
+                    sun_elev = sun.get('altitude')
+                    if sun_elev is None:
+                        sun_elev = summary.get('sun_altitude_deg')
+                    if sun_elev is not None:
+                        try:
+                            celestial_ui['sun_elevation'] = float(sun_elev)
+                        except Exception:
+                            pass
+
+                    # Twilight state
+                    twilight_type = summary.get('twilight_type')
+                    if twilight_type is not None:
+                        celestial_ui['is_twilight'] = twilight_type not in ['day', 'night']
+                    elif 'sun_elevation' in celestial_ui:
+                        se = celestial_ui['sun_elevation']
+                        celestial_ui['is_twilight'] = (-18.0 <= se < 0.0)
+
+                    # Visible planets (names)
+                    planets_visible = celestial_raw.get('planets_visible') or []
+                    if isinstance(planets_visible, list):
+                        names = []
+                        for p in planets_visible:
+                            if isinstance(p, dict):
+                                name = p.get('name')
+                                alt = p.get('altitude') or p.get('altitude_deg') or 0
+                                is_up = p.get('is_up')
+                                if name and (is_up or (is_up is None and (float(alt) if alt is not None else 0) >= 5)):
+                                    names.append(name)
+                        if names:
+                            celestial_ui['visible_planets'] = names
+
+                    # Brightest stars (names)
+                    bright_stars = celestial_raw.get('bright_stars_visible') or celestial_raw.get('bright_stars') or []
+                    if isinstance(bright_stars, list):
+                        star_names = [s.get('name') for s in bright_stars if isinstance(s, dict) and s.get('name')]
+                        if star_names:
+                            celestial_ui['brightest_stars'] = star_names
+
+                enrichment['celestial'] = celestial_ui
+                # Preserve raw for future use/debugging
+                enrichment['celestial_raw'] = celestial_raw
+                sources_used.append('celestial_data')
+            except Exception as e:
+                logger.error(f"🔄 ENRICHMENT DEBUG: Failed mapping celestial data: {e}")
+                enrichment['celestial'] = celestial_raw or {}
+                sources_used.append('celestial_data')
+        else:
+            # Ensure celestial key exists so the UI can render a placeholder card
+            enrichment.setdefault('celestial', {})
 
         if row_data.get('aircraft_data'):
             enrichment['aircraft_tracking'] = self._parse_json(row_data['aircraft_data'])
@@ -1227,4 +1304,3 @@ class AlertsService:
         except Exception as e:
             print(f"❌ Failed to send immediate witness notification: {e}")
             # Don't fail the confirmation if immediate notification fails
-

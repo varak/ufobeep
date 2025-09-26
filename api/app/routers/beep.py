@@ -426,114 +426,28 @@ async def get_alert_by_id(
     latitude: Optional[float] = None,
     longitude: Optional[float] = None
 ):
-    """Get specific alert by ID"""
+    """Get specific alert by ID (UUID or short URL) using AlertsService for consistent enrichment."""
     try:
         db_pool = await get_db()
         alerts_service = AlertsService(db_pool)
 
-        # Query alert by ID or short_url
-        async with db_pool.acquire() as connection:
-            # Try both UUID and short_url in a single query
-            row = None
-            try:
-                import uuid as uuid_lib
-                # Check if it's a valid UUID format
-                alert_uuid = uuid_lib.UUID(alert_id)
-                query = """
-                    SELECT s.*, u.username as reporter_username
-                    FROM sightings s
-                    LEFT JOIN users u ON s.reporter_id = u.id::text
-                    WHERE s.id = $1 OR s.short_url = $2
-                """
-                row = await connection.fetchrow(query, alert_uuid, alert_id)
-            except:
-                # Not a UUID, only check short_url
-                query = """
-                    SELECT s.*, u.username as reporter_username
-                    FROM sightings s
-                    LEFT JOIN users u ON s.reporter_id = u.id::text
-                    WHERE s.short_url = $1
-                """
-                row = await connection.fetchrow(query, alert_id)
+        # Try to get by UUID first, then fallback to short URL
+        import uuid as uuid_lib
+        alert = None
+        try:
+            uuid_lib.UUID(alert_id)
+            alert = await alerts_service.get_alert_by_id(alert_id)
+        except Exception:
+            alert = await alerts_service.get_alert_by_short_url(alert_id)
 
-            if not row:
-                raise HTTPException(status_code=404, detail="Alert not found")
+        if not alert:
+            raise HTTPException(status_code=404, detail="Alert not found")
 
-            # Format the response - use correct column names
-            # Parse enrichment_data if it's a string
-            enrichment = row["enrichment_data"]
-            if isinstance(enrichment, str):
-                try:
-                    enrichment = json.loads(enrichment)
-                except:
-                    enrichment = {}
-
-            location_name = "Unknown Location"
-            if enrichment and isinstance(enrichment, dict):
-                location_name = enrichment.get("geocoding", {}).get("location_name") or \
-                               enrichment.get("location_name") or \
-                               "Unknown Location"
-
-            # Generate title if missing (especially for MUFON)
-            title = row["title"]
-            if not title and row["source"] == "mufon" and enrichment:
-                shape = enrichment.get("shape", "Unknown")
-                title = f"{shape} reported"
-
-            # Get short_url from row or generate it from ID using the canonical algorithm
-            short_url = row.get("short_url")
-            if not short_url:
-                # Implement getShortHash from shared/get_short_hash.js
-                SAFE_CHARS = '23456789abcdefghjkmnpqrstuvwxyz'
-                input_str = str(row["id"])
-
-                # Generate hash using the exact algorithm from get_short_hash.js
-                hash_val = 0
-                for char in input_str:
-                    hash_val = ((hash_val << 5) - hash_val) + ord(char)
-                    hash_val = hash_val & 0xFFFFFFFF  # Convert to 32-bit integer
-
-                # Convert hash to base-29 using safe characters
-                short_url = ''
-                num = abs(hash_val)
-                for _ in range(5):  # 5 characters
-                    short_url = SAFE_CHARS[num % len(SAFE_CHARS)] + short_url
-                    num = num // len(SAFE_CHARS)
-
-            alert = {
-                "id": str(row["id"]),
-                "short_url": short_url,
-                "title": title or "UFO Sighting",
-                "description": row["description"] or "",
-                "location": {
-                    "latitude": float(row["public_latitude"]) if row["public_latitude"] else 0,
-                    "longitude": float(row["public_longitude"]) if row["public_longitude"] else 0,
-                    "name": location_name
-                },
-                "created_at": row["created_at"].isoformat() if row["created_at"] else "",
-                "source": row["source"] or "",
-                "username": "MUFON" if row["source"] == "mufon" else row.get("reporter_username", ""),
-                "media_files": json.loads(row["media_info"]).get("files", []) if row.get("media_info") else [],
-                "enrichment_data": enrichment,
-                "alert_level": "medium"
-            }
-
-            # Calculate distance if user location provided
-            if latitude and longitude and alert["location"]["latitude"] and alert["location"]["longitude"]:
-                from math import radians, sin, cos, sqrt, atan2
-                R = 6371  # Earth's radius in km
-                lat1, lon1 = radians(latitude), radians(longitude)
-                lat2, lon2 = radians(alert["location"]["latitude"]), radians(alert["location"]["longitude"])
-                dlat = lat2 - lat1
-                dlon = lon2 - lon1
-                a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
-                c = 2 * atan2(sqrt(a), sqrt(1-a))
-                alert["distance_km"] = round(R * c, 1)
-
-            return {
-                "success": True,
-                "data": alert
-            }
+        return {
+            "success": True,
+            "data": format_alert_response(alert, latitude, longitude),
+            "message": "Alert found"
+        }
 
     except HTTPException:
         raise
