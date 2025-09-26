@@ -906,13 +906,9 @@ class CelestialCardFromJson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final analysisSummary = celestialData['analysis_summary'] as String? ?? '';
-    final planetsExplanation = celestialData['planets_explanation'] as String? ?? '';
-    final starsExplanation = celestialData['stars_explanation'] as String? ?? '';
     final sunData = celestialData['sun'] as Map<String, dynamic>?;
     final moonData = celestialData['moon'] as Map<String, dynamic>?;
     final visiblePlanets = celestialData['planets_visible'] as List<dynamic>? ?? [];
-    final brightStars = celestialData['bright_stars_visible'] as List<dynamic>? ?? [];
 
     return GlassCard(
       child: Padding(
@@ -936,80 +932,46 @@ class CelestialCardFromJson extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // Analysis summary at top
-            if (analysisSummary.isNotEmpty) ...[
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: AppColors.darkSurface,
-                  borderRadius: BorderRadius.circular(6),
-                  border: Border.all(color: AppColors.warning),
-                ),
-                child: Text(
-                  analysisSummary,
-                  style: const TextStyle(
-                    color: AppColors.warning,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 12),
-            ],
-
-            // Sun explanation
+            // Sun - show meaningful info
             if (sunData != null) ...[
-              _buildCelestialExplanation(
+              ..._buildCelestialObject(
                 context,
                 'Sun',
                 Icons.wb_sunny,
-                sunData['explanation'] as String? ?? 'Sun position calculated',
-                sunData['is_visible'] as bool? ?? false,
+                sunData,
               ),
               const SizedBox(height: 8),
             ],
 
-            // Moon explanation
+            // Moon - show meaningful info
             if (moonData != null) ...[
-              _buildCelestialExplanation(
+              ..._buildCelestialObject(
                 context,
                 'Moon',
                 Icons.nights_stay,
-                moonData['explanation'] as String? ?? 'Moon position calculated',
-                moonData['is_visible'] as bool? ?? false,
+                moonData,
               ),
               const SizedBox(height: 8),
             ],
 
-            // Planets explanation
-            if (planetsExplanation.isNotEmpty) ...[
-              _buildCelestialExplanation(
-                context,
-                'Planets',
-                Icons.blur_circular,
-                planetsExplanation,
-                visiblePlanets.isNotEmpty,
-              ),
-              const SizedBox(height: 8),
-            ],
-
-            // Stars explanation
-            if (starsExplanation.isNotEmpty) ...[
-              _buildCelestialExplanation(
-                context,
-                'Stars',
-                Icons.star,
-                starsExplanation,
-                brightStars.isNotEmpty,
-              ),
-            ],
-
-            // Fallback if no explanations available
-            if (analysisSummary.isEmpty && planetsExplanation.isEmpty &&
-                starsExplanation.isEmpty && sunData?['explanation'] == null &&
-                moonData?['explanation'] == null) ...[
+            // Visible planets with meaningful descriptions
+            if (visiblePlanets.isNotEmpty) ...[
               Text(
-                'Celestial data calculated but explanations not available.',
+                'Visible Planets',
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(height: 4),
+              ...visiblePlanets.map((planet) => _buildPlanetInfo(planet)),
+            ],
+
+            // Fallback
+            if (sunData == null && moonData == null && visiblePlanets.isEmpty) ...[
+              Text(
+                'No celestial data available.',
                 style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 12,
@@ -1130,6 +1092,7 @@ class CelestialCardFromJson extends StatelessWidget {
                     ],
                   ),
                   Text(
+                    objectData['explanation'] as String? ??
                     '${altitude.toStringAsFixed(1)}° alt • ${azimuth.toStringAsFixed(1)}° az',
                     style: const TextStyle(
                       color: AppColors.textSecondary,
@@ -1149,6 +1112,47 @@ class CelestialCardFromJson extends StatelessWidget {
         ),
       ),
     ];
+  }
+
+  Widget _buildPlanetInfo(Map<String, dynamic> planet) {
+    final name = planet['name'] as String? ?? 'Unknown Planet';
+    final altitude = planet['altitude'] as double? ?? 0.0;
+    final isVisible = planet['is_up'] as bool? ?? false;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: AppColors.darkSurface,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+            color: isVisible ? AppColors.brandPrimary : AppColors.darkBorder,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              Icons.blur_circular,
+              size: 12,
+              color: isVisible ? AppColors.brandPrimary : AppColors.textSecondary,
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                isVisible
+                  ? '$name visible at ${altitude.toStringAsFixed(0)}° - could be mistaken for aircraft'
+                  : '$name below horizon',
+                style: TextStyle(
+                  color: isVisible ? AppColors.textPrimary : AppColors.textSecondary,
+                  fontSize: 11,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
