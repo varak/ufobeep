@@ -179,6 +179,7 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
             username=username,
             title=request.get('title'),
             source=request.get('source'),
+            sensor_data=request.get('sensor_data'),
             enrichment_data=request.get('enrichment_data'),
             occurred_at=request.get('occurred_at'),
             external_id=request.get('external_id')

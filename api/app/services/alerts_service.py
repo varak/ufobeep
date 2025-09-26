@@ -897,11 +897,34 @@ class AlertsService:
                 # Merge: existing data takes precedence, new data fills in missing keys
                 merged_enrichment = {**new_enrichment_data, **existing_enrichment}
                 
+                # Persist merged enrichment blob
                 await conn.execute("""
                     UPDATE sightings 
                     SET enrichment_data = $1
                     WHERE id = $2
                 """, json.dumps(merged_enrichment), uuid.UUID(alert_id))
+
+                # Also persist to dedicated columns so downstream readers (web/mobile) always see data
+                if 'celestial' in new_enrichment_data:
+                    await conn.execute(
+                        "UPDATE sightings SET celestial_data = $2::jsonb WHERE id = $1",
+                        uuid.UUID(alert_id), new_enrichment_data['celestial']
+                    )
+                if 'weather' in new_enrichment_data:
+                    await conn.execute(
+                        "UPDATE sightings SET weather_data = $2::jsonb WHERE id = $1",
+                        uuid.UUID(alert_id), new_enrichment_data['weather']
+                    )
+                if 'satellites' in new_enrichment_data:
+                    await conn.execute(
+                        "UPDATE sightings SET satellite_data = $2::jsonb WHERE id = $1",
+                        uuid.UUID(alert_id), new_enrichment_data['satellites']
+                    )
+                if 'geocoding' in new_enrichment_data:
+                    await conn.execute(
+                        "UPDATE sightings SET geocoding_data = $2::jsonb WHERE id = $1",
+                        uuid.UUID(alert_id), new_enrichment_data['geocoding']
+                    )
             
             print(f"Enrichment completed for alert {alert_id}: {list(merged_enrichment.keys())}")
             

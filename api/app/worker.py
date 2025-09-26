@@ -75,7 +75,9 @@ async def enrich_sighting(sighting_id: str) -> bool:
         async with pool.acquire() as conn:
             # Get sighting data
             sighting = await conn.fetchrow("""
-                SELECT id, title, description, category, sensor_data, created_at, enrichment_data
+                SELECT id, title, description, category, sensor_data,
+                       public_latitude, public_longitude, exact_latitude, exact_longitude,
+                       created_at, enrichment_data
                 FROM sightings WHERE id = $1
             """, UUID(sighting_id))
 
@@ -87,13 +89,18 @@ async def enrich_sighting(sighting_id: str) -> bool:
 
             # Extract coordinates from sensor_data
             sensor_data = sighting['sensor_data'] or {}
+            # Fallback to stored coordinates if sensor_data missing
+            lat = sensor_data.get('latitude') or sensor_data.get('lat') or \
+                  sighting.get('exact_latitude') or sighting.get('public_latitude') or 0
+            lon = sensor_data.get('longitude') or sensor_data.get('lng') or \
+                  sighting.get('exact_longitude') or sighting.get('public_longitude') or 0
 
             # Create enrichment context
             context_start = datetime.utcnow()
             context = EnrichmentContext(
                 sighting_id=sighting_id,
-                latitude=sensor_data.get('latitude', 0),
-                longitude=sensor_data.get('longitude', 0),
+                latitude=float(lat) if lat is not None else 0,
+                longitude=float(lon) if lon is not None else 0,
                 altitude=sensor_data.get('altitude', 0),
                 timestamp=sighting['created_at'],
                 azimuth_deg=sensor_data.get('azimuth', 0),
