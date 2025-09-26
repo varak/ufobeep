@@ -237,7 +237,7 @@ class EnrichmentSection extends ConsumerWidget {
           const SizedBox(height: 16),
         ],
         if (hasSatelliteData) ...[
-          SatelliteCardFromJson(satelliteData: enrichmentData['satellites']),
+          SatelliteExpandableCard(data: enrichmentData['satellites']),
           const SizedBox(height: 16),
         ],
         if (hasAircraftData) ...[
@@ -1098,8 +1098,9 @@ class CelestialCardFromJson extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    objectData['explanation'] as String? ??
-                    '${altitude.toStringAsFixed(1)}° alt • ${azimuth.toStringAsFixed(1)}° az',
+                    (objectData['explanation'] != null && objectData['explanation'].toString().isNotEmpty)
+                      ? objectData['explanation'].toString()
+                      : '${altitude.toStringAsFixed(1)}° alt • ${azimuth.toStringAsFixed(1)}° az',
                     style: const TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 10,
@@ -1426,6 +1427,162 @@ class ProcessingSummaryCardFromJson extends StatelessWidget {
             ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+
+class SatelliteExpandableCard extends StatefulWidget {
+  final Map<String, dynamic> data;
+
+  const SatelliteExpandableCard({super.key, required this.data});
+
+  @override
+  State<SatelliteExpandableCard> createState() => _SatelliteExpandableCardState();
+}
+
+class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
+  bool isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final satellitesOverhead = widget.data['satellites_overhead_preview'] as List<dynamic>? ?? [];
+    final allSatellites = widget.data['satellites_overhead'] as List<dynamic>? ?? [];
+    final summary = widget.data['summary'] as Map<String, dynamic>? ?? {};
+    final totalNow = summary['total_visible_now'] as int? ?? 0;
+    final explanation = summary['explanation'] as String? ?? '';
+    final couldExplain = summary['could_explain_sighting'] as bool? ?? false;
+
+    return GlassCard(
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.satellite, color: AppColors.brandPrimary, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  'Satellites',
+                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+                const Spacer(),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: AppColors.brandPrimary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.brandPrimary),
+                  ),
+                  child: Text('$totalNow', style: TextStyle(color: AppColors.brandPrimary, fontSize: 12, fontWeight: FontWeight.bold)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Text(
+              explanation.isNotEmpty ? explanation : 'No satellites visible at sighting time',
+              style: TextStyle(
+                color: couldExplain ? AppColors.warning : AppColors.textSecondary,
+                fontSize: 14,
+                fontWeight: couldExplain ? FontWeight.w500 : FontWeight.normal,
+              ),
+            ),
+            if (satellitesOverhead.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              // Show preview (first 4)
+              ...satellitesOverhead.map((sat) => _buildSatelliteItem(sat)),
+
+              // Show expand/collapse if there are more
+              if (allSatellites.length > 4) ...[
+                const SizedBox(height: 8),
+                InkWell(
+                  onTap: () => setState(() => isExpanded = !isExpanded),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkSurface,
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: AppColors.brandPrimary),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          isExpanded ? 'Show less' : 'See all $totalNow satellites',
+                          style: const TextStyle(
+                            color: AppColors.brandPrimary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          isExpanded ? Icons.expand_less : Icons.expand_more,
+                          color: AppColors.brandPrimary,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+
+              // Show all satellites when expanded
+              if (isExpanded && allSatellites.length > 4) ...[
+                const SizedBox(height: 8),
+                ...allSatellites.skip(4).map((sat) => _buildSatelliteItem(sat)),
+              ],
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSatelliteItem(Map<String, dynamic> sat) {
+    final name = sat['name'] ?? 'Unknown Satellite';
+    final brightness = sat['brightness_magnitude'] as double?;
+    final altitude = sat['altitude'] as double? ?? 0.0;
+    final isBright = sat['is_bright'] as bool? ?? false;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: isBright ? AppColors.warning : AppColors.darkBorder,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            isBright ? Icons.brightness_high : Icons.brightness_low,
+            size: 12,
+            color: isBright ? AppColors.warning : AppColors.textSecondary,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              name,
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Text(
+            '${altitude.toStringAsFixed(1)}° alt${brightness != null ? " • ${brightness.toStringAsFixed(1)} mag" : ""}',
+            style: TextStyle(
+              color: isBright ? AppColors.warning : AppColors.textSecondary,
+              fontSize: 10,
+            ),
+          ),
+        ],
       ),
     );
   }
