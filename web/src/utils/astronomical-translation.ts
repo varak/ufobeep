@@ -92,8 +92,8 @@ export class AstronomicalTranslations {
   static translateStarDescription(
     starName: string,
     altitude: number,
-    magnitude?: number,
-    t: TranslationFunction
+    t: TranslationFunction,
+    magnitude?: number
   ): string {
     const translatedName = this.translateStarName(starName, t)
     const altitudeStr = altitude.toFixed(0)
