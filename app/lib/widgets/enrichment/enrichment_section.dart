@@ -1494,7 +1494,12 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
               // Show preview (first 4)
               ...satellitesOverhead.map((sat) => _buildSatelliteItem(sat)),
 
-              // Show expand/collapse if there are more
+              // Show additional satellites when expanded
+              if (isExpanded && allSatellites.length > 4) ...[
+                ...allSatellites.skip(4).map((sat) => _buildSatelliteItem(sat)),
+              ],
+
+              // Show expand/collapse button
               if (allSatellites.length > 4) ...[
                 const SizedBox(height: 8),
                 InkWell(
@@ -1527,12 +1532,6 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
                     ),
                   ),
                 ),
-              ],
-
-              // Show all satellites when expanded
-              if (isExpanded && allSatellites.length > 4) ...[
-                const SizedBox(height: 8),
-                ...allSatellites.skip(4).map((sat) => _buildSatelliteItem(sat)),
               ],
             ],
           ],
