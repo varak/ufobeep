@@ -1095,9 +1095,11 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
     
     def _estimate_satellite_brightness(self, sat_name: str, distance_km: float, elevation_deg: float) -> Optional[float]:
         """Rough satellite brightness estimation"""
+        import math
+
         if distance_km <= 0:
             return None
-        
+
         # Base magnitudes for common satellites (very approximate)
         base_magnitudes = {
             'ISS': -1.5,
@@ -1106,19 +1108,19 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
             'TERRA': 2.0,
             'AQUA': 2.5,
         }
-        
+
         base_mag = 4.0  # Default for unknown satellites
         for keyword, mag in base_magnitudes.items():
             if keyword in sat_name.upper():
                 base_mag = mag
                 break
-        
+
         # Rough distance correction (inverse square law approximation)
         distance_factor = 2.5 * math.log10(distance_km / 400)  # 400km reference altitude
-        
+
         # Elevation correction (atmospheric extinction)
         elevation_factor = -0.1 * math.log10(math.sin(math.radians(max(elevation_deg, 1))))
-        
+
         estimated_mag = base_mag + distance_factor + elevation_factor
         return round(estimated_mag, 1)
     
