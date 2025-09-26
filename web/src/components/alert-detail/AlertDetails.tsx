@@ -185,7 +185,9 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         <div className="flex-1">
           <div className="flex items-center gap-2">
             <span className="text-text-tertiary text-sm font-medium">Reported by:</span>
-            <span className="text-text-primary text-sm">{alert.username}</span>
+            <span className="text-text-primary text-sm">
+              {alert.username || alert.reporter_username}
+            </span>
           </div>
         </div>
       </div>
