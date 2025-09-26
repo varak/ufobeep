@@ -529,11 +529,7 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                 except Exception as e:
                     logger.debug(f"Failed to calculate star {star_data['name']}: {e}")
 
-            # Generate user-friendly interpretations
-            sun_explanation = self._explain_sun_position(sun_alt_deg, sun_visible)
-            moon_explanation = self._explain_moon_context(moon_alt_deg, moon_visible, phase_name, phase_fraction)
-            planets_explanation = self._explain_planets(planets_visible)
-            stars_explanation = self._explain_stars(bright_stars_visible)
+            # Send structured data for client-side translation instead of English explanations
 
             # Return complete working format with explanations
             return {
@@ -541,7 +537,7 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                     "altitude": sun_alt_deg,
                     "azimuth": sun_az_deg,
                     "is_visible": sun_visible,
-                    "explanation": sun_explanation
+                    "visibility_category": "daylight" if sun_alt_deg > 0 else ("twilight" if sun_alt_deg > -18 else "dark")
                 },
                 "moon": {
                     "altitude": moon_alt_deg,
@@ -549,14 +545,31 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                     "is_visible": moon_visible,
                     "phase_name": phase_name,
                     "phase_fraction": phase_fraction,
-                    "illumination_pct": phase_fraction * 100,
-                    "explanation": moon_explanation
+                    "illumination": phase_fraction * 100,
+                    "brightness_category": "bright" if phase_fraction > 0.6 else ("moderate" if phase_fraction > 0.2 else "thin")
                 },
-                "planets_visible": planets_visible,
-                "planets_explanation": planets_explanation,
-                "bright_stars_visible": bright_stars_visible,
-                "stars_explanation": stars_explanation,
-                "analysis_summary": self._generate_celestial_summary(sun_visible, moon_visible, planets_visible, bright_stars_visible)
+                "visible_planets": [{
+                    "name": p["name"],
+                    "altitude": p["altitude"],
+                    "azimuth": p["azimuth"],
+                    "magnitude": p.get("magnitude"),
+                    "is_prominent": p["altitude"] > 45,
+                    "visibility_category": "high" if p["altitude"] > 45 else ("medium" if p["altitude"] > 20 else "low")
+                } for p in planets_visible],
+                "bright_stars_visible": [{
+                    "name": s["name"],
+                    "altitude": s["altitude"],
+                    "azimuth": s["azimuth"],
+                    "magnitude": s.get("magnitude"),
+                    "brightness_category": "very_bright" if (s.get("magnitude") or 3) < 1.0 else "prominent"
+                } for s in bright_stars_visible],
+                "sky_conditions": {
+                    "is_daylight": sun_visible,
+                    "has_moon_illumination": moon_visible,
+                    "total_bright_objects": len(planets_visible) + len(bright_stars_visible),
+                    "could_confuse_with_ufos": len(planets_visible) + len(bright_stars_visible) >= 3,
+                    "visibility_rating": "poor" if sun_visible else ("fair" if moon_visible else "excellent")
+                }
             }
             
         except ImportError:
