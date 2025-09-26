@@ -4019,6 +4019,138 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please enter a number between 1 and 99999'**
   String get invalidRange;
+
+  /// No description provided for @celestialSunDaylight.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun is up - daylight conditions may affect sighting visibility'**
+  String get celestialSunDaylight;
+
+  /// No description provided for @celestialSunTwilight.
+  ///
+  /// In en, this message translates to:
+  /// **'Twilight conditions - some visibility but darker than daylight'**
+  String get celestialSunTwilight;
+
+  /// No description provided for @celestialSunDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark conditions - optimal for observing objects in sky'**
+  String get celestialSunDark;
+
+  /// No description provided for @celestialMoonBright.
+  ///
+  /// In en, this message translates to:
+  /// **'Bright {phase} moon visible - may illuminate or obscure other objects'**
+  String celestialMoonBright(Object phase);
+
+  /// No description provided for @celestialMoonModerate.
+  ///
+  /// In en, this message translates to:
+  /// **'{phase} moon visible - moderate lighting conditions'**
+  String celestialMoonModerate(Object phase);
+
+  /// No description provided for @celestialMoonThin.
+  ///
+  /// In en, this message translates to:
+  /// **'Thin {phase} moon visible - minimal lighting'**
+  String celestialMoonThin(Object phase);
+
+  /// No description provided for @celestialMoonHidden.
+  ///
+  /// In en, this message translates to:
+  /// **'{phase} moon below horizon - no lunar illumination'**
+  String celestialMoonHidden(Object phase);
+
+  /// No description provided for @celestialNoPlanets.
+  ///
+  /// In en, this message translates to:
+  /// **'No bright planets visible that could be mistaken for UFOs'**
+  String get celestialNoPlanets;
+
+  /// No description provided for @celestialPlanetHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'{planet} high overhead ({altitude}°) - very prominent'**
+  String celestialPlanetHigh(Object altitude, Object planet);
+
+  /// No description provided for @celestialPlanetMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'{planet} visible at {altitude}° - could be mistaken for aircraft'**
+  String celestialPlanetMedium(Object altitude, Object planet);
+
+  /// No description provided for @celestialPlanetLow.
+  ///
+  /// In en, this message translates to:
+  /// **'{planet} low on horizon ({altitude}°)'**
+  String celestialPlanetLow(Object altitude, Object planet);
+
+  /// No description provided for @celestialNoStars.
+  ///
+  /// In en, this message translates to:
+  /// **'No unusually bright stars visible'**
+  String get celestialNoStars;
+
+  /// No description provided for @celestialStarSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'{star} prominent at {altitude}° altitude'**
+  String celestialStarSingle(Object altitude, Object star);
+
+  /// No description provided for @celestialStarsMultiple.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} bright stars visible - {names}'**
+  String celestialStarsMultiple(Object count, Object names);
+
+  /// No description provided for @celestialSummaryDaylight.
+  ///
+  /// In en, this message translates to:
+  /// **'Daylight conditions'**
+  String get celestialSummaryDaylight;
+
+  /// No description provided for @celestialSummaryDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark sky conditions'**
+  String get celestialSummaryDark;
+
+  /// No description provided for @celestialSummaryMoonUp.
+  ///
+  /// In en, this message translates to:
+  /// **'moon illumination present'**
+  String get celestialSummaryMoonUp;
+
+  /// No description provided for @celestialSummaryMoonDown.
+  ///
+  /// In en, this message translates to:
+  /// **'no moon illumination'**
+  String get celestialSummaryMoonDown;
+
+  /// No description provided for @celestialSummaryManyObjects.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} bright objects that could be confused with UFOs'**
+  String celestialSummaryManyObjects(Object count);
+
+  /// No description provided for @celestialSummarySomeObjects.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} bright object(s) visible'**
+  String celestialSummarySomeObjects(Object count);
+
+  /// No description provided for @celestialSummaryFewObjects.
+  ///
+  /// In en, this message translates to:
+  /// **'minimal bright objects in sky'**
+  String get celestialSummaryFewObjects;
+
+  /// No description provided for @celestialSkySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Sky conditions: {conditions}'**
+  String celestialSkySummary(Object conditions);
 }
 
 class _AppLocalizationsDelegate

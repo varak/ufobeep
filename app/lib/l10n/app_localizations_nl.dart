@@ -2112,4 +2112,98 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get invalidRange => 'Please enter a number between 1 and 99999';
+
+  @override
+  String get celestialSunDaylight =>
+      'Sun is up - daylight conditions may affect sighting visibility';
+
+  @override
+  String get celestialSunTwilight =>
+      'Twilight conditions - some visibility but darker than daylight';
+
+  @override
+  String get celestialSunDark =>
+      'Dark conditions - optimal for observing objects in sky';
+
+  @override
+  String celestialMoonBright(Object phase) {
+    return 'Bright $phase moon visible - may illuminate or obscure other objects';
+  }
+
+  @override
+  String celestialMoonModerate(Object phase) {
+    return '$phase moon visible - moderate lighting conditions';
+  }
+
+  @override
+  String celestialMoonThin(Object phase) {
+    return 'Thin $phase moon visible - minimal lighting';
+  }
+
+  @override
+  String celestialMoonHidden(Object phase) {
+    return '$phase moon below horizon - no lunar illumination';
+  }
+
+  @override
+  String get celestialNoPlanets =>
+      'No bright planets visible that could be mistaken for UFOs';
+
+  @override
+  String celestialPlanetHigh(Object altitude, Object planet) {
+    return '$planet high overhead ($altitude°) - very prominent';
+  }
+
+  @override
+  String celestialPlanetMedium(Object altitude, Object planet) {
+    return '$planet visible at $altitude° - could be mistaken for aircraft';
+  }
+
+  @override
+  String celestialPlanetLow(Object altitude, Object planet) {
+    return '$planet low on horizon ($altitude°)';
+  }
+
+  @override
+  String get celestialNoStars => 'No unusually bright stars visible';
+
+  @override
+  String celestialStarSingle(Object altitude, Object star) {
+    return '$star prominent at $altitude° altitude';
+  }
+
+  @override
+  String celestialStarsMultiple(Object count, Object names) {
+    return '$count bright stars visible - $names';
+  }
+
+  @override
+  String get celestialSummaryDaylight => 'Daylight conditions';
+
+  @override
+  String get celestialSummaryDark => 'Dark sky conditions';
+
+  @override
+  String get celestialSummaryMoonUp => 'moon illumination present';
+
+  @override
+  String get celestialSummaryMoonDown => 'no moon illumination';
+
+  @override
+  String celestialSummaryManyObjects(Object count) {
+    return '$count bright objects that could be confused with UFOs';
+  }
+
+  @override
+  String celestialSummarySomeObjects(Object count) {
+    return '$count bright object(s) visible';
+  }
+
+  @override
+  String get celestialSummaryFewObjects => 'minimal bright objects in sky';
+
+  @override
+  String celestialSkySummary(Object conditions) {
+    return 'Sky conditions: $conditions';
+  }
 }
