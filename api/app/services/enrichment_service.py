@@ -904,16 +904,19 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
         
         # Fetch TLE data
         tle_data = await self._fetch_tle_data()
-        
+        logger.info(f"🛰️  Satellite TLE data: ISS={len(tle_data.get('iss', []))}, Starlink={len(tle_data.get('starlink', []))}, Visual={len(tle_data.get('visual', []))}")
+
         all_passes = []
-        
+
         # Process ISS
         iss_passes = []
         if tle_data.get('iss'):
             for sat_info in tle_data['iss'][:1]:  # Just ISS
                 try:
+                    logger.info(f"🛰️  Calculating ISS passes for {sat_info['name']} from {start_time} to {end_time}")
                     satellite = EarthSatellite(sat_info['line1'], sat_info['line2'], sat_info['name'], ts)
                     passes = await self._find_passes_skyfield(satellite, observer, t_start, t_end, ts)
+                    logger.info(f"🛰️  ISS calculation result: {len(passes)} passes found")
                     iss_passes.extend(passes)
                 except Exception as e:
                     logger.warning(f"Failed to calculate ISS passes: {e}")
@@ -977,17 +980,24 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
     async def _find_passes_skyfield(self, satellite, observer, t_start, t_end, ts):
         """Find visible passes for a satellite using skyfield"""
         passes = []
-        
+
         try:
             # Sample points every 30 seconds in the time window
             times = ts.linspace(t_start, t_end, int((t_end.tt - t_start.tt) * 24 * 60 * 2))  # Every 30 seconds
-            
+            logger.info(f"🛰️  {satellite.name}: Checking {len(times)} time points over {(t_end.tt - t_start.tt) * 24:.1f} hours")
+
             # Calculate satellite positions
             topocentric = (satellite - observer).at(times)
             alt, az, distance = topocentric.altaz()
-            
+
             # Find passes (when satellite goes above horizon)
             above_horizon = alt.degrees > 0
+            max_alt_in_window = max(alt.degrees)
+            logger.info(f"🛰️  {satellite.name}: Max altitude in window: {max_alt_in_window:.1f}°, Points above horizon: {sum(above_horizon)}")
+
+            # Debug specific times if satellite should be visible
+            if max_alt_in_window > 10:
+                logger.info(f"🛰️  {satellite.name}: Should be visible (max alt {max_alt_in_window:.1f}°)!")
             
             pass_start = None
             max_elevation = -90
