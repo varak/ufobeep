@@ -823,6 +823,11 @@ class CelestialCardFromJson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hasSun = celestialData['sun'] != null;
+    final hasMoon = celestialData['moon'] != null;
+    final hasPlanets = celestialData['visible_planets'] != null &&
+        (celestialData['visible_planets'] as List).isNotEmpty;
+
     return GlassCard(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -845,8 +850,18 @@ class CelestialCardFromJson extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
+            if (!hasSun && !hasMoon && !hasPlanets) ...[
+              Text(
+                'No celestial data available for this sighting.',
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+
             // Sun data
-            if (celestialData['sun'] != null) ...
+            if (hasSun) ...
               _buildCelestialObject(
                 context,
                 'Sun',
@@ -855,7 +870,7 @@ class CelestialCardFromJson extends StatelessWidget {
               ),
 
             // Moon data
-            if (celestialData['moon'] != null) ...
+            if (hasMoon) ...
               _buildCelestialObject(
                 context,
                 'Moon',
@@ -864,8 +879,7 @@ class CelestialCardFromJson extends StatelessWidget {
               ),
 
             // Visible planets
-            if (celestialData['visible_planets'] != null &&
-                (celestialData['visible_planets'] as List).isNotEmpty) ...[
+            if (hasPlanets) ...[
               const SizedBox(height: 8),
               Text(
                 AppLocalizations.of(context)!.visiblePlanets,
