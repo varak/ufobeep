@@ -76,7 +76,7 @@ async def enrich_sighting(sighting_id: str) -> bool:
             # Get sighting data
             sighting = await conn.fetchrow("""
                 SELECT id, title, description, category, sensor_data,
-                       public_latitude, public_longitude, exact_latitude, exact_longitude,
+                       public_latitude, public_longitude, public_latitude as exact_latitude, public_longitude as exact_longitude,
                        created_at, enrichment_data
                 FROM sightings WHERE id = $1
             """, UUID(sighting_id))
@@ -206,8 +206,8 @@ async def get_db_session():
                     # Query sighting from database
                     row = await self.conn.fetchrow(
                         """
-                        SELECT id, title, description, category, exact_latitude, exact_longitude, 
-                               exact_altitude, sensor_timestamp, azimuth_deg, pitch_deg, roll_deg,
+                        SELECT id, title, description, category, public_latitude, public_longitude,
+                               null as exact_altitude, created_at as sensor_timestamp, null as azimuth_deg, null as pitch_deg, null as roll_deg,
                                weather_data, celestial_data, satellite_data, enrichment_metadata, 
                                processed_at, created_at, updated_at, alert_level
                         FROM sightings WHERE id = $1
@@ -223,8 +223,8 @@ async def get_db_session():
                     sighting.id = row['id']
                     sighting.title = row['title']
                     sighting.description = row['description']
-                    sighting.exact_latitude = row['exact_latitude']
-                    sighting.exact_longitude = row['exact_longitude']
+                    sighting.exact_latitude = row['public_latitude']
+                    sighting.exact_longitude = row['public_longitude']
                     sighting.exact_altitude = row['exact_altitude']
                     sighting.sensor_timestamp = row['sensor_timestamp']
                     sighting.azimuth_deg = row['azimuth_deg']
