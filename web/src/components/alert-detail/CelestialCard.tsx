@@ -20,8 +20,7 @@ interface CelestialCardProps {
 export default function CelestialCard({ celestial, locale = 'en' }: CelestialCardProps) {
   const { t } = useClientTranslations('common', locale)
 
-  const hasPlanets = (Array.isArray(celestial.visible_planets_names) && celestial.visible_planets_names.length > 0)
-    || (Array.isArray(celestial.visible_planets) && celestial.visible_planets.length > 0)
+  const hasPlanets = Array.isArray(celestial.visible_planets) && celestial.visible_planets.length > 0
   const hasStars = Array.isArray(celestial.brightest_stars) && celestial.brightest_stars.length > 0
   const hasMoon = celestial.moon_phase_name !== undefined || celestial.moon_illumination !== undefined
   const hasSun = celestial.sun_elevation !== undefined || celestial.is_twilight !== undefined
@@ -69,15 +68,11 @@ export default function CelestialCard({ celestial, locale = 'en' }: CelestialCar
           </div>
         )}
 
-        {(Array.isArray(celestial.visible_planets_names) && celestial.visible_planets_names.length > 0) ||
-         (Array.isArray(celestial.visible_planets) && celestial.visible_planets.length > 0) ? (
+        {Array.isArray(celestial.visible_planets) && celestial.visible_planets.length > 0 ? (
           <div className="col-span-2">
             <div className="text-text-tertiary text-xs">{t('visiblePlanets', 'Visible Planets')}</div>
             <div className="text-text-primary text-sm">
               {(() => {
-                if (Array.isArray(celestial.visible_planets_names)) {
-                  return celestial.visible_planets_names.join(', ')
-                }
                 if (Array.isArray(celestial.visible_planets)) {
                   // Accept either string[] or {name:string}[]
                   const names = celestial.visible_planets.map((p: any) => typeof p === 'string' ? p : (p?.name || '')).filter(Boolean)
