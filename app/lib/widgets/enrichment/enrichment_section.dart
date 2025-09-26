@@ -8,6 +8,7 @@ import '../../utils/unit_conversion.dart';
 import '../../providers/user_preferences_provider.dart';
 import 'premium_satellite_card.dart';
 import 'aircraft_expandable_card.dart';
+import '../../services/astronomical_translation_service.dart';
 
 class EnrichmentSection extends ConsumerWidget {
   const EnrichmentSection({
@@ -481,7 +482,12 @@ class CelestialCard extends StatelessWidget {
                       Icon(Icons.circle, size: 8, color: AppColors.brandPrimary),
                       const SizedBox(width: 8),
                       Text(
-                        '${planet.name}: ${planet.altitudeFormatted} alt, ${planet.azimuthFormatted} az',
+                        AstronomicalTranslationService.translatePlanetDescription(
+                          planet.name,
+                          planet.altitude ?? 0.0,
+                          planet.isProminent ?? false,
+                          AppLocalizations.of(context)!,
+                        ),
                         style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 12,
@@ -609,7 +615,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        explanation.isNotEmpty ? explanation : 'No satellites visible at sighting time',
+                        explanation.isNotEmpty ? explanation : AstronomicalTranslationService.translateSatelliteSummary(totalNow, satellitesOverhead.length, couldExplain, AppLocalizations.of(context)!),
                         style: TextStyle(
                           color: couldExplain ? AppColors.warning : AppColors.textTertiary,
                           fontSize: 12,
@@ -1626,7 +1632,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
             ),
           ),
           Text(
-            '${altitude.toStringAsFixed(1)}° alt${brightness != null ? " • ${brightness.toStringAsFixed(1)} mag" : ""}',
+            '${altitude.toStringAsFixed(1)}° ${AppLocalizations.of(context)!.altitudeShort}${brightness != null ? " • ${brightness.toStringAsFixed(1)} ${AppLocalizations.of(context)!.magnitudeShort}" : ""}',
             style: TextStyle(
               color: isBright ? AppColors.warning : AppColors.textSecondary,
               fontSize: 12,

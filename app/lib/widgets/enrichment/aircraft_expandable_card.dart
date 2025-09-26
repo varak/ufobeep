@@ -5,6 +5,7 @@ import '../../providers/user_preferences_provider.dart';
 import '../../utils/unit_conversion.dart';
 import '../../l10n/app_localizations.dart';
 import '../glass_card.dart';
+import '../../services/astronomical_translation_service.dart';
 
 class AircraftExpandableCard extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -22,7 +23,12 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
   Widget build(BuildContext context) {
     final aircraft = widget.data['aircraft'] as List? ?? [];
     final total = widget.data['total'] as int? ?? 0;
-    final summary = widget.data['summary'] as String? ?? 'No aircraft detected';
+    final summary = widget.data['summary'] as String? ??
+        AstronomicalTranslationService.translateAircraftSummary(
+          total,
+          widget.data['detection_radius_km']?.toDouble(),
+          AppLocalizations.of(context)!
+        );
 
     return GlassCard(
       child: Padding(
