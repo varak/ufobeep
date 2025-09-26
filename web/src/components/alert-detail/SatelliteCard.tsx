@@ -4,11 +4,13 @@ import { useState } from 'react'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface SatellitePass {
-  satellite_name: string
-  direction: string
-  max_elevation_deg: number
+  name: string
   brightness_magnitude: number
-  max_elevation_time_utc: string
+  altitude: number
+  is_bright: boolean
+  direction?: string
+  max_elevation_deg?: number
+  max_elevation_time_utc?: string
 }
 
 interface SatelliteData {
@@ -25,9 +27,14 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
   const { t } = useClientTranslations('common', locale)
   const [isExpanded, setIsExpanded] = useState(false)
 
-  // Sort satellites by brightness (lower magnitude = brighter)
+  // Sort satellites by brightness (bright satellites first, then by magnitude)
   const sortByBrightness = (sats: SatellitePass[]) => {
     return [...sats].sort((a, b) => {
+      // Bright satellites first
+      if (a.is_bright && !b.is_bright) return -1
+      if (!a.is_bright && b.is_bright) return 1
+
+      // Then by magnitude (lower = brighter)
       const magA = a.brightness_magnitude ?? 999
       const magB = b.brightness_magnitude ?? 999
       return magA - magB
@@ -52,47 +59,57 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
 
       <div className="space-y-2">
         {displaySatellites.map((satellite, index) => {
-          // Handle missing or invalid data gracefully
-          const hasElevation = satellite.max_elevation_deg != null && !isNaN(satellite.max_elevation_deg)
-          const hasMagnitude = satellite.brightness_magnitude != null && !isNaN(satellite.brightness_magnitude)
-          const timeString = satellite.max_elevation_time_utc
-          let formattedTime = ''
+          const name = satellite.name || 'Satellite'
+          const magnitude = satellite.brightness_magnitude
+          const altitude = satellite.altitude
+          const isBright = satellite.is_bright
+          const direction = satellite.direction
 
-          if (timeString) {
-            try {
-              const date = new Date(timeString)
-              if (!isNaN(date.getTime())) {
-                formattedTime = date.toLocaleTimeString([], {
-                  hour: '2-digit',
-                  minute: '2-digit',
-                  hour12: false
-                })
-              }
-            } catch (e) {
-              console.warn('Invalid satellite time:', timeString)
-            }
+          // Skip satellites with no useful data
+          if (!name || name === 'Unknown Satellite') {
+            return null
           }
 
           return (
-            <div key={index} className="text-sm text-text-secondary mb-2">
-              <div className="flex items-center justify-between">
-                <span className="font-medium text-text-primary">
-                  {satellite.satellite_name || 'Unknown Satellite'}
-                </span>
-                <span className="text-xs text-text-tertiary">
-                  {satellite.direction || ''}
-                </span>
+            <div
+              key={index}
+              className={`p-3 rounded-lg border mb-2 ${
+                isBright
+                  ? 'bg-yellow-500/5 border-yellow-500/30'
+                  : 'bg-dark-background border-dark-border'
+              }`}
+            >
+              <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center gap-2">
+                  <span className={`text-xs ${
+                    isBright ? 'text-yellow-400' : 'text-text-tertiary'
+                  }`}>
+                    {isBright ? '☀️' : '🛰️'}
+                  </span>
+                  <span className="font-medium text-text-primary text-sm">
+                    {name}
+                  </span>
+                </div>
+                {direction && (
+                  <span className="text-xs text-text-tertiary bg-dark-surface px-2 py-1 rounded">
+                    {direction}
+                  </span>
+                )}
               </div>
-              <div className="text-xs text-text-tertiary">
-                {hasElevation && `Max elevation: ${satellite.max_elevation_deg}°`}
-                {hasElevation && hasMagnitude && ' | '}
-                {hasMagnitude && `Magnitude: ${satellite.brightness_magnitude}`}
-                {(hasElevation || hasMagnitude) && formattedTime && ' | '}
-                {formattedTime}
+              <div className="text-xs text-text-secondary flex items-center gap-3">
+                {magnitude != null && (
+                  <span>Magnitude: {magnitude}</span>
+                )}
+                {altitude != null && (
+                  <span>Altitude: {altitude.toFixed(0)}km</span>
+                )}
+                {isBright && (
+                  <span className="text-yellow-400 font-medium">Bright</span>
+                )}
               </div>
             </div>
           )
-        })}
+        }).filter(Boolean)}
 
         {/* Expand/collapse button */}
         {showExpandButton && (
