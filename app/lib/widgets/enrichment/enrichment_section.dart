@@ -906,10 +906,13 @@ class CelestialCardFromJson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hasSun = celestialData['sun'] != null;
-    final hasMoon = celestialData['moon'] != null;
-    final hasPlanets = celestialData['visible_planets'] != null &&
-        (celestialData['visible_planets'] as List).isNotEmpty;
+    final analysisSummary = celestialData['analysis_summary'] as String? ?? '';
+    final planetsExplanation = celestialData['planets_explanation'] as String? ?? '';
+    final starsExplanation = celestialData['stars_explanation'] as String? ?? '';
+    final sunData = celestialData['sun'] as Map<String, dynamic>?;
+    final moonData = celestialData['moon'] as Map<String, dynamic>?;
+    final visiblePlanets = celestialData['planets_visible'] as List<dynamic>? ?? [];
+    final brightStars = celestialData['bright_stars_visible'] as List<dynamic>? ?? [];
 
     return GlassCard(
       child: Padding(
@@ -933,67 +936,140 @@ class CelestialCardFromJson extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            if (!hasSun && !hasMoon && !hasPlanets) ...[
+            // Analysis summary at top
+            if (analysisSummary.isNotEmpty) ...[
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.darkSurface,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: AppColors.warning),
+                ),
+                child: Text(
+                  analysisSummary,
+                  style: const TextStyle(
+                    color: AppColors.warning,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+            ],
+
+            // Sun explanation
+            if (sunData != null) ...[
+              _buildCelestialExplanation(
+                context,
+                'Sun',
+                Icons.wb_sunny,
+                sunData['explanation'] as String? ?? 'Sun position calculated',
+                sunData['is_visible'] as bool? ?? false,
+              ),
+              const SizedBox(height: 8),
+            ],
+
+            // Moon explanation
+            if (moonData != null) ...[
+              _buildCelestialExplanation(
+                context,
+                'Moon',
+                Icons.nights_stay,
+                moonData['explanation'] as String? ?? 'Moon position calculated',
+                moonData['is_visible'] as bool? ?? false,
+              ),
+              const SizedBox(height: 8),
+            ],
+
+            // Planets explanation
+            if (planetsExplanation.isNotEmpty) ...[
+              _buildCelestialExplanation(
+                context,
+                'Planets',
+                Icons.blur_circular,
+                planetsExplanation,
+                visiblePlanets.isNotEmpty,
+              ),
+              const SizedBox(height: 8),
+            ],
+
+            // Stars explanation
+            if (starsExplanation.isNotEmpty) ...[
+              _buildCelestialExplanation(
+                context,
+                'Stars',
+                Icons.star,
+                starsExplanation,
+                brightStars.isNotEmpty,
+              ),
+            ],
+
+            // Fallback if no explanations available
+            if (analysisSummary.isEmpty && planetsExplanation.isEmpty &&
+                starsExplanation.isEmpty && sunData?['explanation'] == null &&
+                moonData?['explanation'] == null) ...[
               Text(
-                'No celestial data available for this sighting.',
+                'Celestial data calculated but explanations not available.',
                 style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 12,
                 ),
               ),
             ],
-
-            // Sun data
-            if (hasSun) ...
-              _buildCelestialObject(
-                context,
-                'Sun',
-                Icons.wb_sunny,
-                celestialData['sun'],
-              ),
-
-            // Moon data
-            if (hasMoon) ...
-              _buildCelestialObject(
-                context,
-                'Moon',
-                Icons.nights_stay,
-                celestialData['moon'],
-              ),
-
-            // Visible planets
-            if (hasPlanets) ...[
-              const SizedBox(height: 8),
-              Text(
-                AppLocalizations.of(context)!.visiblePlanets,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 4),
-              ...(celestialData['visible_planets'] as List).take(3).map((planet) =>
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.circle, size: 6, color: AppColors.brandPrimary),
-                      const SizedBox(width: 8),
-                      Text(
-                        '${planet['name'] ?? 'Unknown'}: ${planet['altitude']?.toStringAsFixed(1) ?? '0'}° alt',
-                        style: const TextStyle(
-                          color: AppColors.textSecondary,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCelestialExplanation(
+    BuildContext context,
+    String objectType,
+    IconData icon,
+    String explanation,
+    bool isVisible,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(6),
+        border: Border.all(
+          color: isVisible ? AppColors.brandPrimary : AppColors.darkBorder,
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 16,
+            color: isVisible ? AppColors.brandPrimary : AppColors.textSecondary,
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  objectType,
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  explanation,
+                  style: TextStyle(
+                    color: isVisible ? AppColors.textPrimary : AppColors.textSecondary,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
