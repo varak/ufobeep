@@ -924,7 +924,7 @@ class CelestialCardFromJson extends StatelessWidget {
                   AppLocalizations.of(context)!.celestialDataTitle,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 16,
+                    fontSize: 17,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -1042,7 +1042,7 @@ class CelestialCardFromJson extends StatelessWidget {
                     text: '$objectType: ',
                     style: const TextStyle(
                       color: AppColors.textPrimary,
-                      fontSize: 12,
+                      fontSize: 15,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -1050,7 +1050,7 @@ class CelestialCardFromJson extends StatelessWidget {
                     text: explanation,
                     style: const TextStyle(
                       color: AppColors.textSecondary,
-                      fontSize: 12,
+                      fontSize: 13,
                     ),
                   ),
                 ],
@@ -1486,7 +1486,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
                 const SizedBox(width: 8),
                 Text(
                   'Satellites',
-                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w600),
+                  style: const TextStyle(color: AppColors.textPrimary, fontSize: 17, fontWeight: FontWeight.w600),
                 ),
                 const Spacer(),
                 Container(
@@ -1505,7 +1505,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
               explanation.isNotEmpty ? explanation : 'No satellites visible at sighting time',
               style: TextStyle(
                 color: couldExplain ? AppColors.warning : AppColors.textSecondary,
-                fontSize: 14,
+                fontSize: 15,
                 fontWeight: couldExplain ? FontWeight.w500 : FontWeight.normal,
               ),
             ),
@@ -1533,7 +1533,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
                           'See all $totalNow satellites',
                           style: const TextStyle(
                             color: AppColors.brandPrimary,
-                            fontSize: 12,
+                            fontSize: 13,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -1569,7 +1569,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
                           'Show less',
                           style: const TextStyle(
                             color: AppColors.brandPrimary,
-                            fontSize: 12,
+                            fontSize: 13,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
@@ -1620,7 +1620,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
               name,
               style: const TextStyle(
                 color: AppColors.textPrimary,
-                fontSize: 13,
+                fontSize: 15,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -1629,7 +1629,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
             '${altitude.toStringAsFixed(1)}° alt${brightness != null ? " • ${brightness.toStringAsFixed(1)} mag" : ""}',
             style: TextStyle(
               color: isBright ? AppColors.warning : AppColors.textSecondary,
-              fontSize: 10,
+              fontSize: 12,
             ),
           ),
         ],
