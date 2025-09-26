@@ -53,10 +53,10 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
       <div className="space-y-2">
         {displaySatellites.map((satellite, index) => {
           // Handle missing or invalid data gracefully
-          const elevation = satellite.max_elevation_deg ?? 'N/A'
-          const magnitude = satellite.brightness_magnitude ?? 'N/A'
+          const hasElevation = satellite.max_elevation_deg != null && !isNaN(satellite.max_elevation_deg)
+          const hasMagnitude = satellite.brightness_magnitude != null && !isNaN(satellite.brightness_magnitude)
           const timeString = satellite.max_elevation_time_utc
-          let formattedTime = 'N/A'
+          let formattedTime = ''
 
           if (timeString) {
             try {
@@ -80,15 +80,15 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
                   {satellite.satellite_name || 'Unknown Satellite'}
                 </span>
                 <span className="text-xs text-text-tertiary">
-                  {satellite.direction || 'N/A'}
+                  {satellite.direction || ''}
                 </span>
               </div>
               <div className="text-xs text-text-tertiary">
-                {elevation !== 'N/A' && `Max elevation: ${elevation}°`}
-                {elevation !== 'N/A' && magnitude !== 'N/A' && ' | '}
-                {magnitude !== 'N/A' && `Magnitude: ${magnitude}`}
-                {(elevation !== 'N/A' || magnitude !== 'N/A') && formattedTime !== 'N/A' && ' | '}
-                {formattedTime !== 'N/A' && formattedTime}
+                {hasElevation && `Max elevation: ${satellite.max_elevation_deg}°`}
+                {hasElevation && hasMagnitude && ' | '}
+                {hasMagnitude && `Magnitude: ${satellite.brightness_magnitude}`}
+                {(hasElevation || hasMagnitude) && formattedTime && ' | '}
+                {formattedTime}
               </div>
             </div>
           )
