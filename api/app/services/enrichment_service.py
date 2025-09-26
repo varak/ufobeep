@@ -357,29 +357,12 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             )
             
         except Exception as e:
-            logger.error(f"Celestial enrichment failed (falling back to simplified): {e}")
-            try:
-                start_time = datetime.utcnow()
-                data = await self._calculate_celestial_data_simplified(context)
-                processing_time = int((datetime.utcnow() - start_time).total_seconds() * 1000)
-                return EnrichmentResult(
-                    processor_name=self.name,
-                    success=True,
-                    data=data,
-                    processing_time_ms=processing_time,
-                    confidence_score=0.6,
-                    metadata={
-                        "source": "simplified",
-                        "calculation_method": "approximate",
-                        "fallback_error": str(e)
-                    }
-                )
-            except Exception as e2:
-                return EnrichmentResult(
-                    processor_name=self.name,
-                    success=False,
-                    error=f"fallback_failed: {e2}"
-                )
+            logger.error(f"Celestial enrichment failed: {e}")
+            return EnrichmentResult(
+                processor_name=self.name,
+                success=False,
+                error=str(e)
+            )
     
     async def _calculate_celestial_data(self, context: EnrichmentContext) -> Dict[str, Any]:
         """Calculate celestial object positions using skyfield"""
