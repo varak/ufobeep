@@ -958,22 +958,22 @@ class AlertsService:
                 if 'celestial' in new_enrichment_data:
                     await conn.execute(
                         "UPDATE sightings SET celestial_data = $2::jsonb WHERE id = $1",
-                        uuid.UUID(alert_id), new_enrichment_data['celestial']
+                        uuid.UUID(alert_id), json.dumps(new_enrichment_data['celestial'])
                     )
                 if 'weather' in new_enrichment_data:
                     await conn.execute(
                         "UPDATE sightings SET weather_data = $2::jsonb WHERE id = $1",
-                        uuid.UUID(alert_id), new_enrichment_data['weather']
+                        uuid.UUID(alert_id), json.dumps(new_enrichment_data['weather'])
                     )
                 if 'satellites' in new_enrichment_data:
                     await conn.execute(
                         "UPDATE sightings SET satellite_data = $2::jsonb WHERE id = $1",
-                        uuid.UUID(alert_id), new_enrichment_data['satellites']
+                        uuid.UUID(alert_id), json.dumps(new_enrichment_data['satellites'])
                     )
                 if 'geocoding' in new_enrichment_data:
                     await conn.execute(
                         "UPDATE sightings SET geocoding_data = $2::jsonb WHERE id = $1",
-                        uuid.UUID(alert_id), new_enrichment_data['geocoding']
+                        uuid.UUID(alert_id), json.dumps(new_enrichment_data['geocoding'])
                     )
             
             print(f"Enrichment completed for alert {alert_id}: {list(merged_enrichment.keys())}")
