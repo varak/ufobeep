@@ -176,7 +176,7 @@ class AlertsService:
                         reporter_id=row["reporter_id"],
                         reporter_username=row["reporter_username"],
                         media_files=self._process_media(row["media_info"], row["id"]),
-                        enrichment=self._process_enrichment(row["enrichment_data"]),
+                        enrichment=self._process_enrichment(row),
                         comment_count=row["comment_count"],
                         source=row["source"],
                         occurred_at=row["occurred_at"],
@@ -191,7 +191,9 @@ class AlertsService:
         async with self.db_pool.acquire() as conn:
             row = await conn.fetchrow("""
                 SELECT s.id::text, s.title, s.description, s.category, s.alert_level,
-                       s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
+                       s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info,
+                       s.weather_data, s.celestial_data, s.aircraft_data, s.satellite_data, s.geocoding_data, s.content_analysis_data,
+                       s.enrichment_data,
                        u.username as reporter_username, s.source, s.occurred_at, s.external_url,
                        COALESCE(c.comment_count, 0) as comment_count, s.short_url
                 FROM sightings s
@@ -227,7 +229,7 @@ class AlertsService:
                 reporter_id=row["reporter_id"],
                 reporter_username=row["reporter_username"],
                 media_files=self._process_media(row["media_info"], row["id"]),
-                enrichment=self._process_enrichment(row["enrichment_data"]),
+                enrichment=self._process_enrichment(row),
                 comment_count=row["comment_count"],
                 source=row["source"],
                 occurred_at=row["occurred_at"],
@@ -240,7 +242,9 @@ class AlertsService:
         async with self.db_pool.acquire() as conn:
             row = await conn.fetchrow("""
                 SELECT s.id::text, s.title, s.description, s.category, s.alert_level,
-                       s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info, s.enrichment_data,
+                       s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info,
+                       s.weather_data, s.celestial_data, s.aircraft_data, s.satellite_data, s.geocoding_data, s.content_analysis_data,
+                       s.enrichment_data,
                        u.username as reporter_username, s.source, s.occurred_at, s.external_url,
                        COALESCE(c.comment_count, 0) as comment_count, s.short_url
                 FROM sightings s
@@ -276,7 +280,7 @@ class AlertsService:
                 reporter_id=row["reporter_id"],
                 reporter_username=row["reporter_username"],
                 media_files=self._process_media(row["media_info"], row["id"]),
-                enrichment=self._process_enrichment(row["enrichment_data"]),
+                enrichment=self._process_enrichment(row),
                 comment_count=row["comment_count"],
                 source=row["source"],
                 occurred_at=row["occurred_at"],
@@ -423,13 +427,40 @@ class AlertsService:
                     media_files.append(media_entry)
         return media_files
     
-    def _process_enrichment(self, enrichment_data) -> Dict:
-        """Process enrichment data into clean format"""
-        if not enrichment_data:
-            return {}
-        
-        enrichment = self._parse_json(enrichment_data)
-        return enrichment if enrichment else {}
+    def _process_enrichment(self, row_data) -> Dict:
+        """Build enrichment data from separate columns"""
+        # If row_data is just the old enrichment_data column, return it (backward compatibility)
+        if not isinstance(row_data, dict):
+            enrichment = self._parse_json(row_data) if row_data else {}
+            return enrichment if enrichment else {}
+
+        # Build enrichment from separate columns
+        enrichment = {}
+
+        # Add each enrichment type if available
+        if row_data.get('weather_data'):
+            enrichment['weather'] = self._parse_json(row_data['weather_data'])
+
+        if row_data.get('celestial_data'):
+            enrichment['celestial'] = self._parse_json(row_data['celestial_data'])
+
+        if row_data.get('aircraft_data'):
+            enrichment['aircraft_tracking'] = self._parse_json(row_data['aircraft_data'])
+
+        if row_data.get('satellite_data'):
+            enrichment['satellites'] = self._parse_json(row_data['satellite_data'])
+
+        if row_data.get('geocoding_data'):
+            enrichment['geocoding'] = self._parse_json(row_data['geocoding_data'])
+
+        if row_data.get('content_analysis_data'):
+            enrichment['content_filter'] = self._parse_json(row_data['content_analysis_data'])
+
+        # Fallback to old enrichment_data if separate columns are empty
+        if not enrichment and row_data.get('enrichment_data'):
+            enrichment = self._parse_json(row_data['enrichment_data']) or {}
+
+        return enrichment
     
     async def get_user_id_by_username(self, conn, username: str) -> str:
         """
