@@ -70,36 +70,38 @@ async def enrich_sighting(sighting_id: str) -> bool:
         else:
             logger.info(f"🔧 WORKER ENRICHMENT: Using {len(enrichment_orchestrator.processors)} existing processors")
         
-        # Get sighting from database
-        db_start = datetime.utcnow()
-        logger.info(f"📊 WORKER ENRICHMENT: Fetching sighting {sighting_id} from database...")
-        
-        async with get_db_session() as db:
-            sighting = await db.get(Sighting, UUID(sighting_id))
-            db_time = int((datetime.utcnow() - db_start).total_seconds() * 1000)
-            
+        # Get sighting from database using working asyncpg approach
+        from app.services.database_service import get_database_pool
+        pool = await get_database_pool()
+
+        async with pool.acquire() as conn:
+            # Get sighting data
+            sighting = await conn.fetchrow("""
+                SELECT id, title, description, category, sensor_data, created_at, enrichment_data
+                FROM sightings WHERE id = $1
+            """, UUID(sighting_id))
+
             if not sighting:
-                logger.error(f"❌ WORKER ENRICHMENT: Sighting {sighting_id} not found in database ({db_time}ms)")
+                logger.error(f"❌ Sighting {sighting_id} not found in database")
                 return False
-            
-            logger.info(f"✅ WORKER ENRICHMENT: Sighting {sighting_id} loaded from database ({db_time}ms)")
-            
+
+            logger.info(f"✅ Sighting {sighting_id} loaded from database")
+
+            # Extract coordinates from sensor_data
+            sensor_data = sighting['sensor_data'] or {}
+
             # Create enrichment context
-            context_start = datetime.utcnow()
-            logger.info(f"🎯 WORKER ENRICHMENT: Creating enrichment context for sighting {sighting_id}")
-            
             context = EnrichmentContext(
                 sighting_id=sighting_id,
-                latitude=sighting.exact_latitude,
-                longitude=sighting.exact_longitude,
-                altitude=sighting.exact_altitude,
-                timestamp=sighting.sensor_timestamp,
-                azimuth_deg=sighting.azimuth_deg,
-                pitch_deg=sighting.pitch_deg,
-                roll_deg=sighting.roll_deg,
-                category=sighting.category.value if sighting.category else "unknown",
-                title=sighting.title or "",
-                description=sighting.description or ""
+                latitude=sensor_data.get('latitude', 0),
+                longitude=sensor_data.get('longitude', 0),
+                altitude=sensor_data.get('altitude', 0),
+                timestamp=sighting['created_at'],
+                azimuth_deg=sensor_data.get('azimuth', 0),
+                pitch_deg=sensor_data.get('pitch', 0),
+                category=sighting['category'] or "unknown",
+                title=sighting['title'] or "",
+                description=sighting['description'] or ""
             )
             
             context_time = int((datetime.utcnow() - context_start).total_seconds() * 1000)
@@ -125,36 +127,29 @@ async def enrich_sighting(sighting_id: str) -> bool:
                 "processing_errors": []
             }
             
-            # Store enrichment results in sighting
+            # Build enrichment data for database storage
+            enrichment_data = {}
+
             for processor_name, result in enrichment_results.items():
-                if result.success:
+                if result.success and result.data:
+                    enrichment_data[processor_name] = result.data
                     success_count += 1
-                    
-                    # Store data in appropriate fields
-                    if processor_name == "weather" and result.data:
-                        sighting.weather_data = result.data
-                    elif processor_name == "celestial" and result.data:
-                        sighting.celestial_data = result.data
-                    elif processor_name == "satellites" and result.data:
-                        sighting.satellite_data = result.data
-                    elif processor_name == "content_filter" and result.data:
-                        enrichment_metadata["content_analysis"] = result.data
+                    logger.info(f"✅ {processor_name} enrichment successful")
                 else:
-                    enrichment_metadata["processing_errors"].append({
-                        "processor": processor_name,
-                        "error": result.error,
-                        "timestamp": datetime.utcnow().isoformat()
-                    })
-                
-                # Store processing metadata
-                enrichment_metadata[f"{processor_name}_processing_time_ms"] = result.processing_time_ms
-                enrichment_metadata[f"{processor_name}_confidence"] = result.confidence_score
-            
-            enrichment_metadata["processors_succeeded"] = success_count
-            sighting.enrichment_metadata = enrichment_metadata
-            sighting.processed_at = datetime.utcnow()
-            
-            await db.commit()
+                    logger.error(f"❌ {processor_name} enrichment failed: {result.error if result else 'No result'}")
+
+            # Save all enrichment data to database
+            if enrichment_data:
+                await conn.execute("""
+                    UPDATE sightings
+                    SET enrichment_data = $2::jsonb,
+                        updated_at = NOW()
+                    WHERE id = $1
+                """, UUID(sighting_id), enrichment_data)
+
+                logger.info(f"💾 Saved enrichment data with keys: {list(enrichment_data.keys())}")
+            else:
+                logger.warning(f"⚠️ No enrichment data to save for sighting {sighting_id}")
             
             total_worker_time = int((datetime.utcnow() - worker_start_time).total_seconds() * 1000)
             logger.info(f"🎉 WORKER ENRICHMENT FINISHED: Sighting {sighting_id} - {success_count}/{total_count} processors succeeded - Total worker time: {total_worker_time}ms")
