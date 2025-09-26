@@ -393,14 +393,26 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             moon_az_deg = moon_az.degrees
             moon_visible = moon_alt_deg > 0
             
-            # Moon phase calculation
-            sun_moon = observer_pos.at(t).observe(moon - sun).apparent()
-            moon_phase = almanac.moon_phase(planets, t)
-            phase_names = ['new', 'waxing_crescent', 'first_quarter', 'waxing_gibbous', 
-                          'full', 'waning_gibbous', 'last_quarter', 'waning_crescent']
-            phase_index = int((moon_phase.degrees + 22.5) / 45) % 8
-            phase_name = phase_names[phase_index]
-            moon_illumination = (1 - math.cos(math.radians(moon_phase.degrees))) / 2
+            # Moon phase calculation using Skyfield's built-in function
+            phase_fraction = almanac.fraction_illuminated(planets, 'moon', t)
+
+            # Map phase fraction to name
+            if phase_fraction < 0.06:
+                phase_name = "New Moon"
+            elif phase_fraction < 0.25:
+                phase_name = "Waxing Crescent"
+            elif abs(phase_fraction - 0.25) < 0.02:
+                phase_name = "First Quarter"
+            elif phase_fraction < 0.50:
+                phase_name = "Waxing Gibbous"
+            elif abs(phase_fraction - 0.50) < 0.02:
+                phase_name = "Full Moon"
+            elif phase_fraction < 0.75:
+                phase_name = "Waning Gibbous"
+            elif abs(phase_fraction - 0.75) < 0.02:
+                phase_name = "Last Quarter"
+            else:
+                phase_name = "Waning Crescent"
             
             # Calculate planet positions
             planets_data = {}
@@ -494,10 +506,10 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                     "altitude": moon_alt_deg,
                     "azimuth": moon_az_deg,
                     "is_visible": moon_visible,
-                    "phase": moon_phase.degrees / 360.0,  # 0-1 scale
+                    "phase": phase_fraction,  # 0-1 scale
                     "phase_name": phase_name,
-                    "phase_angle_deg": moon_phase.degrees,
-                    "illumination": moon_illumination,
+                    "phase_angle_deg": phase_fraction * 360,
+                    "illumination": phase_fraction,
                     "distance_km": moon_distance.km,
                 },
                 "planets": planets_data,
