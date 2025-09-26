@@ -477,12 +477,13 @@ class AlertsService:
                         except Exception:
                             pass
 
-                    # Include nested sun/moon objects for mobile app
+                    # Include nested sun/moon objects for mobile app with explanations
                     if sun:
                         celestial_ui['sun'] = {
                             'altitude': sun.get('altitude'),
                             'azimuth': sun.get('azimuth'),
                             'is_visible': sun.get('is_visible'),
+                            'explanation': sun.get('explanation'),
                         }
                     if moon:
                         celestial_ui['moon'] = {
@@ -490,6 +491,7 @@ class AlertsService:
                             'azimuth': moon.get('azimuth'),
                             'is_visible': moon.get('is_visible'),
                             'phase_name': moon.get('phase_name') or summary.get('moon_phase_name'),
+                            'explanation': moon.get('explanation'),
                         }
 
                     # Sun elevation (altitude)
@@ -534,12 +536,22 @@ class AlertsService:
                             # Names for web UI convenience
                             celestial_ui['visible_planets_names'] = planet_names
 
-                    # Brightest stars (names)
+                    # Brightest stars (names and full data)
                     bright_stars = celestial_raw.get('bright_stars_visible') or celestial_raw.get('bright_stars') or []
                     if isinstance(bright_stars, list):
                         star_names = [s.get('name') for s in bright_stars if isinstance(s, dict) and s.get('name')]
                         if star_names:
                             celestial_ui['brightest_stars'] = star_names
+                        # Include full star data for app
+                        celestial_ui['bright_stars_visible'] = bright_stars
+
+                    # Add explanation fields that mobile app needs
+                    if 'analysis_summary' in celestial_raw:
+                        celestial_ui['analysis_summary'] = celestial_raw['analysis_summary']
+                    if 'planets_explanation' in celestial_raw:
+                        celestial_ui['planets_explanation'] = celestial_raw['planets_explanation']
+                    if 'stars_explanation' in celestial_raw:
+                        celestial_ui['stars_explanation'] = celestial_raw['stars_explanation']
 
                 enrichment['celestial'] = celestial_ui
                 # Preserve raw for future use/debugging
