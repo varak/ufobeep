@@ -512,12 +512,11 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             }
             
         except ImportError:
-            # Fallback if skyfield is not available
-            logger.warning("Skyfield not available, using simplified calculations")
-            return await self._calculate_celestial_data_simplified(context)
+            logger.error("Skyfield not available for celestial calculations")
+            raise Exception("Skyfield library required for celestial calculations")
         except Exception as e:
             logger.error(f"Skyfield calculation failed: {e}")
-            return await self._calculate_celestial_data_simplified(context)
+            raise e
     
     async def _calculate_celestial_data_simplified(self, context: EnrichmentContext) -> Dict[str, Any]:
         """Simplified celestial calculations without skyfield"""
@@ -554,12 +553,12 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                 "distance_au": 1.0,
             },
             "moon": {
-                "altitude": -15.0,  # Placeholder
-                "azimuth": 75.0,   # Placeholder
+                "altitude": None,  # No fake data
+                "azimuth": None,   # No fake data
                 "is_visible": False,
-                "phase": 0.5,
-                "phase_name": "unknown",
-                "distance_km": 384400,
+                "phase": None,
+                "phase_name": "unavailable",
+                "distance_km": None,
             },
             "planets": {
                 "venus": {"altitude_deg": None, "azimuth_deg": None, "is_visible": False, "magnitude": -3.9},
