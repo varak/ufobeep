@@ -477,6 +477,21 @@ class AlertsService:
                         except Exception:
                             pass
 
+                    # Include nested sun/moon objects for mobile app
+                    if sun:
+                        celestial_ui['sun'] = {
+                            'altitude': sun.get('altitude'),
+                            'azimuth': sun.get('azimuth'),
+                            'is_visible': sun.get('is_visible'),
+                        }
+                    if moon:
+                        celestial_ui['moon'] = {
+                            'altitude': moon.get('altitude'),
+                            'azimuth': moon.get('azimuth'),
+                            'is_visible': moon.get('is_visible'),
+                            'phase_name': moon.get('phase_name') or summary.get('moon_phase_name'),
+                        }
+
                     # Sun elevation (altitude)
                     sun_elev = sun.get('altitude')
                     if sun_elev is None:
@@ -498,16 +513,26 @@ class AlertsService:
                     # Visible planets (names)
                     planets_visible = celestial_raw.get('planets_visible') or []
                     if isinstance(planets_visible, list):
-                        names = []
+                        planet_objs = []
+                        planet_names = []
                         for p in planets_visible:
                             if isinstance(p, dict):
                                 name = p.get('name')
                                 alt = p.get('altitude') or p.get('altitude_deg') or 0
                                 is_up = p.get('is_up')
-                                if name and (is_up or (is_up is None and (float(alt) if alt is not None else 0) >= 5)):
-                                    names.append(name)
-                        if names:
-                            celestial_ui['visible_planets'] = names
+                                try:
+                                    alt_val = float(alt) if alt is not None else 0.0
+                                except Exception:
+                                    alt_val = 0.0
+                                if name and (is_up or (is_up is None and alt_val >= 5)):
+                                    planet_objs.append({'name': name, 'altitude': alt_val})
+                                    planet_names.append(name)
+                        if planet_objs:
+                            # Detailed objects for mobile app
+                            celestial_ui['visible_planets'] = planet_objs
+                        if planet_names:
+                            # Names for web UI convenience
+                            celestial_ui['visible_planets_names'] = planet_names
 
                     # Brightest stars (names)
                     bright_stars = celestial_raw.get('bright_stars_visible') or celestial_raw.get('bright_stars') or []
