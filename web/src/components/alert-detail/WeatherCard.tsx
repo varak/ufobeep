@@ -23,13 +23,13 @@ export default function WeatherCard({ weather, locale = 'en' }: WeatherCardProps
   const units = 'imperial';
 
   return (
-    <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+    <div className="bg-dark-surface/50 border border-dark-border/50 rounded-xl p-5 shadow-sm hover:bg-dark-surface/70 transition-colors">
       <div className="flex items-center gap-2 mb-4">
         <span className="text-brand-primary">🌤️</span>
         <h2 className="text-lg font-semibold text-brand-primary">{t('weatherConditionsTitle')}</h2>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <div>
           <div className="text-text-tertiary text-xs">{t('temperature')}</div>
           <div className="text-text-primary text-sm">{UnitConversion.formatTemperature(weather.temperature_c, units)}</div>

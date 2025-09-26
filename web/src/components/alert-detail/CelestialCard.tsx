@@ -29,7 +29,7 @@ export default function CelestialCard({ celestial, locale = 'en' }: CelestialCar
   const hasAnyData = hasPlanets || hasStars || hasMoon || hasSun
 
   return (
-    <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+    <div className="bg-dark-surface/50 border border-dark-border/50 rounded-xl p-5 shadow-sm hover:bg-dark-surface/70 transition-colors">
       <div className="flex items-center gap-2 mb-4">
         <span className="text-brand-primary">🌙</span>
         <h2 className="text-lg font-semibold text-brand-primary">{t('celestialDataTitle')}</h2>
@@ -41,7 +41,7 @@ export default function CelestialCard({ celestial, locale = 'en' }: CelestialCar
         </div>
       )}
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {celestial.moon_phase_name && (
           <div>
             <div className="text-text-tertiary text-xs">{t('moonPhase', 'Moon Phase')}</div>

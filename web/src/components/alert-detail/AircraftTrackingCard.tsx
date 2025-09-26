@@ -31,7 +31,7 @@ export default function AircraftTrackingCard({ aircraftData, locale = 'en' }: Ai
 
   if (!aircraftData || aircraftData.total === 0) {
     return (
-      <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+      <div className="bg-dark-surface/50 border border-dark-border/50 rounded-xl p-5 shadow-sm hover:bg-dark-surface/70 transition-colors">
         <div className="flex items-center gap-3 mb-4">
           <div className="bg-blue-500/10 p-2 rounded-lg">
             <span className="text-xl">✈️</span>
@@ -50,7 +50,7 @@ export default function AircraftTrackingCard({ aircraftData, locale = 'en' }: Ai
   }
 
   return (
-    <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+    <div className="bg-dark-surface/50 border border-dark-border/50 rounded-xl p-5 shadow-sm hover:bg-dark-surface/70 transition-colors">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="bg-blue-500/10 p-2 rounded-lg">

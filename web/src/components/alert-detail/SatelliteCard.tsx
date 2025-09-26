@@ -51,7 +51,7 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
   const displaySatellites = isExpanded ? allSatellites : previewSatellites
 
   return (
-    <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+    <div className="bg-dark-surface/50 border border-dark-border/50 rounded-xl p-5 shadow-sm hover:bg-dark-surface/70 transition-colors">
       <div className="flex items-center gap-2 mb-4">
         <span className="text-brand-primary">🛰️</span>
         <h2 className="text-lg font-semibold text-brand-primary">{t('satelliteActivity')}</h2>

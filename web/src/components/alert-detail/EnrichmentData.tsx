@@ -28,13 +28,42 @@ export default function EnrichmentData({ enrichment, alert, locale = 'en' }: Enr
   const { weather, satellites, aircraft_tracking, celestial, location, processing_summary, geocoding, blacksky, skyfi } = enrichment
 
   return (
-    <div className="space-y-6">
-      {weather && <WeatherCard weather={weather} locale={locale} />}
-      {celestial && <CelestialCard celestial={celestial} locale={locale} />}
-      {geocoding && <LocationCard location={geocoding} locale={locale} />}
-      {satellites && <SatelliteCard satellites={satellites} locale={locale} />}
-      {aircraft_tracking && <AircraftTrackingCard aircraftData={aircraft_tracking} locale={locale} />}
-      {processing_summary && <ProcessingSummaryCard summary={processing_summary} locale={locale} />}
+    <div className="space-y-8">
+      {/* Priority Environmental Data - Always visible first */}
+      <div className="grid md:grid-cols-2 gap-6">
+        {weather && <WeatherCard weather={weather} locale={locale} />}
+        {geocoding && <LocationCard location={geocoding} locale={locale} />}
+      </div>
+
+      {/* Sky Activity Data - Most relevant for UFO context */}
+      {(celestial || aircraft_tracking || satellites) && (
+        <div className="space-y-6">
+          <div className="border-t border-dark-border pt-6">
+            <h2 className="text-xl font-bold text-brand-primary mb-6 flex items-center gap-2">
+              <span>🌌</span>
+              <span>Sky Activity</span>
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {celestial && <CelestialCard celestial={celestial} locale={locale} />}
+            {aircraft_tracking && <AircraftTrackingCard aircraftData={aircraft_tracking} locale={locale} />}
+          </div>
+
+          {satellites && (
+            <div className="md:col-span-2">
+              <SatelliteCard satellites={satellites} locale={locale} />
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Technical Analysis - Less priority */}
+      {processing_summary && (
+        <div className="border-t border-dark-border pt-6">
+          <ProcessingSummaryCard summary={processing_summary} locale={locale} />
+        </div>
+      )}
       {blacksky && (
         <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
           <div className="flex items-center gap-2 mb-4">
