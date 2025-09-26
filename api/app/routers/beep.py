@@ -208,6 +208,14 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
         
         # Don't close the pool - it's shared across the service
         
+        # Trigger enrichment for the new beep
+        try:
+            from app.worker import trigger_enrichment
+            await trigger_enrichment(alert_id)
+            logger.info(f"Triggered enrichment for beep {alert_id}")
+        except Exception as e:
+            logger.error(f"Failed to trigger enrichment for beep {alert_id}: {e}")
+
         # Get the created alert to include short_url in response
         alert = await alerts_service.get_alert_by_id(alert_id)
         
