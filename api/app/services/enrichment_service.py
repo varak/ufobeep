@@ -546,12 +546,19 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                 except Exception as e:
                     logger.debug(f"Failed to calculate star {star_data['name']}: {e}")
 
-            # Return complete working format
+            # Generate user-friendly interpretations
+            sun_explanation = self._explain_sun_position(sun_alt_deg, sun_visible)
+            moon_explanation = self._explain_moon_context(moon_alt_deg, moon_visible, phase_name, phase_fraction)
+            planets_explanation = self._explain_planets(planets_visible)
+            stars_explanation = self._explain_stars(bright_stars_visible)
+
+            # Return complete working format with explanations
             return {
                 "sun": {
                     "altitude": sun_alt_deg,
                     "azimuth": sun_az_deg,
-                    "is_visible": sun_visible
+                    "is_visible": sun_visible,
+                    "explanation": sun_explanation
                 },
                 "moon": {
                     "altitude": moon_alt_deg,
@@ -559,10 +566,14 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                     "is_visible": moon_visible,
                     "phase_name": phase_name,
                     "phase_fraction": phase_fraction,
-                    "illumination_pct": phase_fraction * 100
+                    "illumination_pct": phase_fraction * 100,
+                    "explanation": moon_explanation
                 },
                 "planets_visible": planets_visible,
-                "bright_stars_visible": bright_stars_visible
+                "planets_explanation": planets_explanation,
+                "bright_stars_visible": bright_stars_visible,
+                "stars_explanation": stars_explanation,
+                "analysis_summary": self._generate_celestial_summary(sun_visible, moon_visible, planets_visible, bright_stars_visible)
             }
             
         except ImportError:
@@ -571,7 +582,81 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
         except Exception as e:
             logger.error(f"Skyfield calculation failed: {e}")
             raise e
-    
+
+    def _explain_sun_position(self, altitude, is_visible):
+        """Explain sun position in UFO analysis context"""
+        if is_visible:
+            return "Sun is up - daylight conditions may affect sighting visibility"
+        elif altitude > -18:
+            return "Twilight conditions - some visibility but darker than daylight"
+        else:
+            return "Dark conditions - optimal for observing objects in sky"
+
+    def _explain_moon_context(self, altitude, is_visible, phase_name, phase_fraction):
+        """Explain moon context for UFO analysis"""
+        brightness_pct = phase_fraction * 100
+
+        if is_visible:
+            if brightness_pct > 75:
+                return f"Bright {phase_name} moon visible - may illuminate or obscure other objects"
+            elif brightness_pct > 25:
+                return f"{phase_name} moon visible - moderate lighting conditions"
+            else:
+                return f"Thin {phase_name} moon visible - minimal lighting"
+        else:
+            return f"{phase_name} moon below horizon - no lunar illumination"
+
+    def _explain_planets(self, planets_visible):
+        """Explain visible planets in UFO context"""
+        if not planets_visible:
+            return "No bright planets visible that could be mistaken for UFOs"
+
+        explanations = []
+        for planet in planets_visible:
+            if planet['altitude'] > 45:
+                explanations.append(f"{planet['name']} high overhead ({planet['altitude']:.0f}°) - very prominent")
+            elif planet['altitude'] > 20:
+                explanations.append(f"{planet['name']} visible at {planet['altitude']:.0f}° - could be mistaken for aircraft")
+            else:
+                explanations.append(f"{planet['name']} low on horizon ({planet['altitude']:.0f}°)")
+
+        return "; ".join(explanations)
+
+    def _explain_stars(self, stars_visible):
+        """Explain visible bright stars in UFO context"""
+        if not stars_visible:
+            return "No unusually bright stars visible"
+
+        if len(stars_visible) == 1:
+            star = stars_visible[0]
+            return f"{star['name']} prominent at {star['altitude']:.0f}° altitude"
+        else:
+            return f"{len(stars_visible)} bright stars visible - {', '.join([s['name'] for s in stars_visible])}"
+
+    def _generate_celestial_summary(self, sun_visible, moon_visible, planets_visible, stars_visible):
+        """Generate overall celestial analysis summary for UFO context"""
+        conditions = []
+
+        if sun_visible:
+            conditions.append("Daylight conditions")
+        else:
+            conditions.append("Dark sky conditions")
+
+        if moon_visible:
+            conditions.append("moon illumination present")
+        else:
+            conditions.append("no moon illumination")
+
+        bright_objects = len(planets_visible) + len(stars_visible)
+        if bright_objects > 2:
+            conditions.append(f"{bright_objects} bright objects that could be confused with UFOs")
+        elif bright_objects > 0:
+            conditions.append(f"{bright_objects} bright object(s) visible")
+        else:
+            conditions.append("minimal bright objects in sky")
+
+        return f"Sky conditions: {', '.join(conditions)}"
+
     async def _calculate_celestial_data_simplified(self, context: EnrichmentContext) -> Dict[str, Any]:
         """Simplified celestial calculations without skyfield"""
         import math
