@@ -908,7 +908,7 @@ class CelestialCardFromJson extends StatelessWidget {
   Widget build(BuildContext context) {
     final sunData = celestialData['sun'] as Map<String, dynamic>?;
     final moonData = celestialData['moon'] as Map<String, dynamic>?;
-    final visiblePlanets = celestialData['planets_visible'] as List<dynamic>? ?? [];
+    final visiblePlanets = celestialData['visible_planets'] as List<dynamic>? ?? [];
 
     return GlassCard(
       child: Padding(
