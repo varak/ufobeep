@@ -483,14 +483,14 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             
             return {
                 "sun": {
-                    "altitude_deg": sun_alt_deg,
-                    "azimuth_deg": sun_az_deg,
+                    "altitude": sun_alt_deg,
+                    "azimuth": sun_az_deg,
                     "is_visible": sun_visible,
                     "distance_au": 1.0,  # Approximately constant
                 },
                 "moon": {
-                    "altitude_deg": moon_alt_deg,
-                    "azimuth_deg": moon_az_deg,
+                    "altitude": moon_alt_deg,
+                    "azimuth": moon_az_deg,
                     "is_visible": moon_visible,
                     "phase": moon_phase.degrees / 360.0,  # 0-1 scale
                     "phase_name": phase_name,
@@ -548,14 +548,14 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
         
         return {
             "sun": {
-                "altitude_deg": sun_alt_deg,
-                "azimuth_deg": sun_az_deg,
+                "altitude": sun_alt_deg,
+                "azimuth": sun_az_deg,
                 "is_visible": sun_alt_deg > -6,
                 "distance_au": 1.0,
             },
             "moon": {
-                "altitude_deg": -15.0,  # Placeholder
-                "azimuth_deg": 75.0,   # Placeholder
+                "altitude": -15.0,  # Placeholder
+                "azimuth": 75.0,   # Placeholder
                 "is_visible": False,
                 "phase": 0.5,
                 "phase_name": "unknown",
