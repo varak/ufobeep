@@ -9,6 +9,7 @@ import '../../providers/user_preferences_provider.dart';
 import 'premium_satellite_card.dart';
 import 'aircraft_expandable_card.dart';
 import '../../services/astronomical_translation_service.dart';
+import 'celestial_description_helpers.dart';
 
 class EnrichmentSection extends ConsumerWidget {
   const EnrichmentSection({
@@ -944,7 +945,7 @@ class CelestialCardFromJson extends StatelessWidget {
                 context,
                 'Sun',
                 Icons.wb_sunny,
-                sunData['explanation'] as String? ?? 'Sun below horizon',
+                CelestialDescriptionHelpers.generateSunDescription(sunData, context),
                 sunData['is_visible'] as bool? ?? false,
               ),
               const SizedBox(height: 6),
@@ -956,7 +957,7 @@ class CelestialCardFromJson extends StatelessWidget {
                 context,
                 'Moon',
                 Icons.nights_stay,
-                moonData['explanation'] as String? ?? 'Moon position calculated',
+                CelestialDescriptionHelpers.generateMoonDescription(moonData, context),
                 moonData['is_visible'] as bool? ?? false,
               ),
               const SizedBox(height: 6),
@@ -968,7 +969,7 @@ class CelestialCardFromJson extends StatelessWidget {
                 context,
                 'Planets',
                 Icons.blur_circular,
-                celestialData['planets_explanation'] as String? ?? '${visiblePlanets.length} planets visible',
+                CelestialDescriptionHelpers.generatePlanetsDescription(visiblePlanets, context),
                 true,
               ),
               const SizedBox(height: 6),
@@ -980,7 +981,7 @@ class CelestialCardFromJson extends StatelessWidget {
                 context,
                 'Stars',
                 Icons.star,
-                celestialData['stars_explanation'] as String? ?? 'Bright stars visible',
+                CelestialDescriptionHelpers.generateStarsDescription(celestialData['bright_stars_visible'] as List<dynamic>? ?? [], context),
                 true,
               ),
               const SizedBox(height: 6),

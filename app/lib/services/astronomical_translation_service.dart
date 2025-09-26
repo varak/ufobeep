@@ -119,7 +119,7 @@ class AstronomicalTranslationService {
     double altitude,
     AppLocalizations l10n
   ) {
-    final translatedPhase = _translateMoonPhase(phaseName, l10n);
+    final translatedPhase = translateMoonPhase(phaseName, l10n);
 
     if (altitude < 0) {
       return '$translatedPhase below horizon';
@@ -129,7 +129,7 @@ class AstronomicalTranslationService {
   }
 
   /// Translate moon phase names
-  static String _translateMoonPhase(String phase, AppLocalizations l10n) {
+  static String translateMoonPhase(String phase, AppLocalizations l10n) {
     switch (phase.toLowerCase()) {
       case 'new moon':
         return l10n.moonPhaseNew;
