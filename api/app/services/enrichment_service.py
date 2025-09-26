@@ -463,7 +463,7 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                     star_obj = Star(ra_hours=star_data["ra_hours"], dec_degrees=star_data["dec_deg"])
 
                     # Calculate position
-                    star_apparent = observer_pos.at(t).observe(star_obj).apparent()
+                    star_apparent = observer.at(t).observe(star_obj).apparent()
                     star_alt, star_az, _ = star_apparent.altaz()
 
                     star_alt_deg = star_alt.degrees
