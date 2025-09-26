@@ -9,1121 +9,1105 @@ class AppLocalizationsKo extends AppLocalizations {
   AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
-  String get appName => 'UFOBeep';
+  String get appName => 'UFO버프';
 
   @override
-  String get ok => 'OK';
+  String get ok => '이름 *';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => '이름 *';
 
   @override
-  String get close => 'Close';
+  String get close => '이름 *';
 
   @override
-  String get save => 'Save';
+  String get save => '제품 정보';
 
   @override
-  String get delete => 'Delete';
+  String get delete => '이름 *';
 
   @override
-  String get edit => 'Edit';
+  String get edit => '제품정보';
 
   @override
-  String get retry => 'Retry';
+  String get retry => '이름 *';
 
   @override
-  String get yes => 'Yes';
+  String get yes => '이름 *';
 
   @override
-  String get no => 'No';
+  String get no => '이름 *';
 
   @override
-  String get back => 'Back';
+  String get back => '이름 *';
 
   @override
-  String get next => 'Next';
+  String get next => '이름 *';
 
   @override
-  String get done => 'Done';
+  String get done => '이름 *';
 
   @override
-  String get loading => 'Loading…';
+  String get loading => '로드 중 ..';
 
   @override
-  String get processing => 'Processing…';
+  String get processing => '기타..';
 
   @override
-  String get errorGeneric => 'Something went wrong.';
+  String get errorGeneric => '뭔가 잘못되었습니다.';
 
   @override
-  String get networkError => 'Network error. Check your connection.';
+  String get networkError => '네트워크 오류. 연결 확인.';
 
   @override
-  String get permissionsRequired => 'Permissions required';
+  String get permissionsRequired => '제출';
 
   @override
-  String get learnMore => 'Learn more';
+  String get learnMore => '더 알아보기';
 
   @override
-  String get welcomeTitle => 'Welcome to UFOBeep';
+  String get welcomeTitle => 'UFOBeep에 오신 것을 환영합니다';
 
   @override
-  String get welcomeSubtitle => 'Real-time UFO alerts near you';
+  String get welcomeSubtitle => '실시간 UFO 알림';
 
   @override
-  String get signIn => 'Sign in';
+  String get signIn => '이름 *';
 
   @override
-  String get signOut => 'Sign out';
+  String get signOut => '이름 *';
 
   @override
-  String get continueAsGuest => 'Continue as guest';
+  String get continueAsGuest => '이용 안내';
 
   @override
-  String get enterUsername => 'Enter a username';
+  String get enterUsername => '사용자 이름';
 
   @override
-  String get username => 'Username';
+  String get username => '사용자 이름';
 
   @override
-  String get usernameUpdated => 'Username updated';
+  String get usernameUpdated => '사용자 이름 업데이트';
 
   @override
-  String get profile => 'Profile';
+  String get profile => '제품정보';
 
   @override
-  String get settings => 'Settings';
+  String get settings => '지원하다';
 
   @override
-  String get tabAlerts => 'Alerts';
+  String get tabAlerts => '지원하다';
 
   @override
-  String get tabBeep => 'Beep';
+  String get tabBeep => '뚱 베어';
 
   @override
-  String get tabChat => 'Chat';
+  String get tabChat => '이름 *';
 
   @override
-  String get tabMap => 'Map';
+  String get tabMap => '지도보기';
 
   @override
-  String get tabSettings => 'Settings';
+  String get tabSettings => '지원하다';
 
   @override
-  String get alertsTitle => 'Nearby Alerts';
+  String get alertsTitle => '근처 Alerts';
 
   @override
-  String get noAlerts => 'No alerts nearby yet.';
+  String get noAlerts => '아직 경고가 없습니다.';
 
   @override
-  String get pullToRefresh => 'Pull to refresh';
+  String get pullToRefresh => '새로 고침';
 
   @override
   String alertDistance(String distance) {
-    return '$distance away';
+    return '$distance 멀리';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Bearing $bearing°';
+    return '베어링 $bearing°';
   }
 
   @override
-  String get viewAlert => 'View alert';
+  String get viewAlert => '공지사항';
 
   @override
-  String get viewOnMap => 'View on map';
+  String get viewOnMap => '지도 보기';
 
   @override
-  String get iSeeItToo => 'I see it too';
+  String get iSeeItToo => '나는 그것을 본다';
 
   @override
-  String get confirmWitnessed => 'Confirm you witnessed this sighting?';
+  String get confirmWitnessed => '당신은이 광경을 목격?';
 
   @override
-  String get witnessConfirmed => 'Thanks — your confirmation was posted.';
+  String get witnessConfirmed => '감사합니다 - 확인이 게시되었습니다.';
 
   @override
-  String get createBeepTitle => 'Send a Beep';
+  String get createBeepTitle => 'Beep을 보내기';
 
   @override
-  String get beepExplain => 'Capture what you see and alert nearby watchers.';
+  String get beepExplain => '당신이 볼 수있는 캡처 및 가까운 watchers에 경고.';
 
   @override
-  String get capturePhoto => 'Capture photo';
+  String get capturePhoto => '캡처 사진';
 
   @override
-  String get captureVideo => 'Capture video';
+  String get captureVideo => '캡처 동영상';
 
   @override
-  String get pickFromGallery => 'Choose from gallery';
+  String get pickFromGallery => '갤러리에서 선택';
 
   @override
-  String get descriptionHint => 'Describe what you\'re seeing in the sky…';
+  String get descriptionHint => '당신이 하늘에서 본 것을 설명 ..';
 
   @override
-  String get submitBeep => 'Send Beep';
+  String get submitBeep => '공지사항';
 
   @override
-  String get beepSent => 'Beep sent';
+  String get beepSent => 'Beep 전송';
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'Beep는 성공적으로 보냈습니다';
   }
 
   @override
-  String get uploadingMedia => 'Uploading media…';
+  String get uploadingMedia => '미디어 업로드 ..';
 
   @override
-  String get includeLocation => 'Include location';
+  String get includeLocation => '위치 포함';
 
   @override
-  String get includeTimestamp => 'Include timestamp';
+  String get includeTimestamp => '타임스탬프 포함';
 
   @override
-  String get beepFailed => 'Failed to send Beep.';
+  String get beepFailed => 'Beep을 보낼 실패.';
 
   @override
-  String get mediaProcessing => 'Processing media…';
+  String get mediaProcessing => '처리 미디어 ..';
 
   @override
-  String get cameraPermissionTitle => 'Camera access needed';
+  String get cameraPermissionTitle => '관련 동영상';
 
   @override
-  String get cameraPermissionBody =>
-      'Grant camera access to capture UFO photos and videos.';
+  String get cameraPermissionBody => 'UFO 사진 및 비디오를 캡처 할 수있는 Grant 카메라 액세스.';
 
   @override
-  String get locationPermissionTitle => 'Location Permission Required';
+  String get locationPermissionTitle => '오시는 길';
 
   @override
-  String get locationPermissionBody =>
-      'We use your location to send and receive nearby alerts.';
+  String get locationPermissionBody => '자주 묻는 질문.';
 
   @override
-  String get microphonePermissionTitle => 'Microphone access needed';
+  String get microphonePermissionTitle => '마이크 액세스 필요';
 
   @override
-  String get microphonePermissionBody =>
-      'Grant microphone access for video capture with audio.';
+  String get microphonePermissionBody => '비디오 캡처에 대한 Grant 마이크 액세스.';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => '설정 열기';
 
   @override
-  String get alertDetailTitle => 'Sighting Details';
+  String get alertDetailTitle => '연락처';
 
   @override
   String reportedBy(String username) {
-    return 'Reported by $username';
+    return '$username에 의해 신고';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Reported $timeAgo';
+    return '$timeAgo에 대하여';
   }
 
   @override
   String distanceAway(String distance) {
-    return '$distance';
+    return '₢ 킹';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Bearing to object: $bearing°';
+    return '객체에 베어링 : $bearing°';
   }
 
   @override
-  String get openCompass => 'Open compass';
+  String get openCompass => '열린 compass';
 
   @override
-  String get openAR => 'Open AR overlay';
+  String get openAR => 'AR 오버레이를 엽니다';
 
   @override
-  String get openChat => 'Open chat';
+  String get openChat => '채팅 열기';
 
   @override
-  String get commentsTitle => 'Comments';
+  String get commentsTitle => '이름 *';
 
   @override
-  String get addComment => 'Add a comment…';
+  String get addComment => '자주 묻는 질문';
 
   @override
-  String get send => 'Send';
+  String get send => '지원하다';
 
   @override
-  String get commentPosted => 'Comment posted';
+  String get commentPosted => '댓글 게시';
 
   @override
-  String get autoFollowEnabled => 'You’re now following this alert.';
+  String get autoFollowEnabled => '이 경고를 따르십시오.';
 
   @override
-  String get noCommentsYet => 'No comments yet. Be the first to comment!';
+  String get noCommentsYet => '아직 댓글이 없습니다. 댓글을 첫번째로!';
 
   @override
-  String get newCommentNotification => 'New comment on a sighting you follow.';
+  String get newCommentNotification => '당신을 따르는 광경에 새로운 의견.';
 
   @override
-  String get mapTitle => 'Live Map';
+  String get mapTitle => '본문 바로가기';
 
   @override
-  String get compassTitle => 'Compass';
+  String get compassTitle => '한국어';
 
   @override
-  String get compassSettings => 'Compass Settings';
+  String get compassSettings => 'Compass 설정';
 
   @override
-  String get compassMode => 'Compass Mode';
+  String get compassMode => 'Compass 형태';
 
   @override
-  String get compassStandardMode => 'Standard Mode';
+  String get compassStandardMode => '표준 형태';
 
   @override
-  String get compassPilotMode => 'Pilot Mode';
+  String get compassPilotMode => '파일 형식';
 
   @override
-  String get compassStandardDescription => 'Basic heading and navigation';
+  String get compassStandardDescription => '기본 제목 및 탐색';
 
   @override
-  String get compassPilotDescription =>
-      'Advanced navigation with ETA and vectoring';
+  String get compassPilotDescription => 'ETA 및 벡터로 고급 항법';
 
   @override
   String pointingTo(String direction) {
-    return 'Pointing to $direction';
+    return '$direction에 대한 포스팅';
   }
 
   @override
-  String get calibratingCompass => 'Calibrating compass…';
+  String get calibratingCompass => '캘리브레이션';
 
   @override
-  String get openAROverlay => 'Open AR overlay';
+  String get openAROverlay => 'AR 오버레이를 엽니다';
 
   @override
-  String get pushTitleAlertNearby => 'UFO alert near you';
+  String get pushTitleAlertNearby => '당신 가까이에 UFO 경고';
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'A new sighting was reported $distance away.';
+    return '새로운 광경은 $distance를 나타냈습니다.';
   }
 
   @override
-  String get pushTitleComment => 'New comment';
+  String get pushTitleComment => '새로운 의견';
 
   @override
-  String get pushBodyComment => 'Someone commented on a sighting you follow.';
+  String get pushBodyComment => '누군가가 당신을 따르는 광경에 언급했다.';
 
   @override
-  String get pushTitleWitness => 'Witness confirmation';
+  String get pushTitleWitness => 'Witness 확인';
 
   @override
-  String get temperature => 'Temperature';
+  String get temperature => '제품 정보';
 
   @override
-  String get pushBodyWitness => 'A user confirmed they see the same object.';
+  String get pushBodyWitness => '사용자가 동일한 객체를 확인합니다.';
 
   @override
-  String get weather => 'Weather';
+  String get weather => '날씨 예보';
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: $percent%';
+    return '구름 덮개: $percent%의 경우';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wind: $speed $unit';
+    return '바람: $speed $unit';
   }
 
   @override
-  String get nearbyAircraft => 'Nearby aircraft';
+  String get nearbyAircraft => '인근 항공기';
 
   @override
-  String get noAircraft => 'No aircraft nearby';
+  String get noAircraft => '인근 항공기 없음';
 
   @override
-  String get loadingContext => 'Loading environmental context…';
+  String get loadingContext => '환경 컨텍스트를로드 ..';
 
   @override
-  String get settingsTitle => 'Settings';
+  String get settingsTitle => '지원하다';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => '공지사항';
 
   @override
-  String get enablePushNotifications => 'Get notifications for future comments';
+  String get enablePushNotifications => '미래에 대한 알림 받기';
 
   @override
-  String get quietHours => 'Quiet hours';
+  String get quietHours => '영업시간';
 
   @override
-  String get quietHoursDesc => 'Silence alerts between selected hours.';
+  String get quietHoursDesc => '선택된 시간 사이에 침묵 경고.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => '조용한 시간';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => '이름 *';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => '까지';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => '기본 조용한 시간';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => '비상 override';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc => '조용한 시간 동안 긴급 경고를 허용';
 
   @override
-  String get dndMode => 'Do Not Disturb';
+  String get dndMode => '뚱 베어';
 
   @override
-  String get dndUntil => 'Do not disturb until';
+  String get dndUntil => '할 수 없습니다';
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return '$time까지 DND 활성화';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND 사용';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => '활동 시간';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return '영업시간: $start - $start';
   }
 
   @override
-  String get pushNotificationUfoAlert => 'UFO Alert';
+  String get pushNotificationUfoAlert => '사이트맵 지원하다';
 
   @override
-  String get pushNotificationAnomalyAlert => 'Anomaly Alert';
+  String get pushNotificationAnomalyAlert => 'Anomaly 경고';
 
   @override
-  String get pushNotificationNearby => 'Nearby';
+  String get pushNotificationNearby => '이름 *';
 
   @override
-  String get pushNotificationInYourArea => 'in your area. Tap to view details.';
+  String get pushNotificationInYourArea => '당신의 지역. 상세보기를 탭합니다.';
 
   @override
   String pushNotificationCommented(Object username) {
-    return '$username commented';
+    return '$username 댓글';
   }
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$username commented on $beepTitle';
+    return '$username에 대한 의견 $username';
   }
 
   @override
-  String get pushNotificationGeneric => 'UFOBeep';
+  String get pushNotificationGeneric => 'UFO버프';
 
   @override
-  String get pushNotificationNewSighting => 'New sighting nearby';
+  String get pushNotificationNewSighting => '주변 관광';
 
   @override
-  String get language => 'Language';
+  String get language => '* 이름';
 
   @override
-  String get chooseLanguage => 'Choose language';
+  String get chooseLanguage => '한국어';
 
   @override
-  String get units => 'Units';
+  String get units => '제품정보';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => '제국 (미, mph)';
 
   @override
-  String get unitsMetric => 'Metric (km, km/h)';
+  String get unitsMetric => '미터 (km, km/h)';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => '회사 소개';
 
   @override
-  String get termsOfUse => 'Terms of Use';
+  String get termsOfUse => '이용 약관';
 
   @override
-  String get errorNoLocation =>
-      'Location unavailable. Try again outside with clear sky view.';
+  String get errorNoLocation => '자주 묻는 질문 맑은 하늘 전망과 함께 다시 시도하십시오.';
 
   @override
-  String get errorNoCamera => 'Camera unavailable on this device.';
+  String get errorNoCamera => '이 장치에서 사용할 수없는 카메라.';
 
   @override
-  String get errorUploadFailed => 'Upload failed. Please try again.';
+  String get errorUploadFailed => '업로드 실패. 다시 시도하십시오.';
 
   @override
-  String get errorPermissionDenied => 'Permission denied.';
+  String get errorPermissionDenied => '권한이 없습니다.';
 
   @override
-  String get errorInvalidUsername => 'That username isn’t available.';
+  String get errorInvalidUsername => '그 사용자 이름은 사용할 수 없습니다.';
 
   @override
-  String get nothingToShow => 'Nothing to show yet.';
+  String get nothingToShow => '아직 표시되지 않았습니다.';
 
   @override
-  String get storeShortDesc =>
-      'Instant UFO alerts near you. Capture, confirm, and chat in real time.';
+  String get storeShortDesc => '즉시 UFO 알림. 캡처, 확인 및 실시간 채팅.';
 
   @override
   String get storeLongDesc =>
-      'UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.';
+      'UFOBeep은 누군가가 UFO를 가까이 두고 있을 때 실시간 알림을 보냅니다. 캡처 사진 및 동영상, 탭으로 시력 확인, 방향 및 거리보기, 동료 skywatchers와 채팅.';
 
   @override
   String get keywords =>
-      'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
+      'UFO, UAP, OVNI의 aliens의 sightings,skywatch, 경보, 레이더, 우회';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => '일치하는 경고 없음';
 
   @override
-  String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+  String get alertsFilterHelp => '필터를 조정하여 더 많은 결과를 볼 수 있습니다';
 
   @override
-  String get verified => 'Verified';
+  String get verified => '인증 및 인증';
 
   @override
-  String get beepOnly => 'Beep Only';
+  String get beepOnly => '계정 만들기';
 
   @override
-  String get reportOnly => 'Text Only';
+  String get reportOnly => '텍스트 만';
 
   @override
-  String get videoOnly => 'Video Only';
+  String get videoOnly => '비디오 만';
 
   @override
-  String get imageOnly => 'Image Only';
+  String get imageOnly => '이미지 만';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => '미디어 전용';
 
   @override
-  String get timeJustNow => 'just now';
+  String get timeJustNow => '지금 시작';
 
   @override
   String timeDaysAgo(int count) {
-    return '$count days ago';
+    return '$count 일 전';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '$count hours ago';
+    return '$count시간 전';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '$count minutes ago';
+    return '$count 분 전';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => '더 많은 경고';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => '사이트 맵';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'MUFON 자료 보기';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'MUFON 데이터 숨기기';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'UFOBeep 보고';
 
   @override
-  String get showingAllReports =>
-      'Showing all reports including MUFON database';
+  String get showingAllReports => 'MUFON 데이터베이스를 포함한 모든 보고서보기';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => '필터링';
 
   @override
-  String get detailsTitle => 'Details';
+  String get detailsTitle => '제품 정보';
 
   @override
-  String get mufonCase => 'MUFON Case';
+  String get mufonCase => '사이트맵 제품정보';
 
   @override
-  String get mufonSighting => 'MUFON Sighting Report';
+  String get mufonSighting => 'MUFON Sighting 보고서';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting Report';
+  String get mufonLightSighting => 'MUFON 빛 Sighting 보고서';
 
   @override
-  String get mufonSphereSighting => 'MUFON Sphere Sighting Report';
+  String get mufonSphereSighting => 'MUFON Sphere 전투 보고서';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting Report';
+  String get mufonDiscSighting => '사이트맵 디스크 Sighting 보고서';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting Report';
+  String get mufonTriangleSighting => '사이트맵 Triangle Sighting 보고서';
 
   @override
-  String get mufonCigarSighting => 'MUFON Cigar Sighting Report';
+  String get mufonCigarSighting => 'MUFON 시가 Sighting 보고서';
 
   @override
-  String get mufonOvalSighting => 'MUFON Oval Sighting Report';
+  String get mufonOvalSighting => 'MUFON Oval Sighting 보고서';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting Report';
+  String get mufonRectangleSighting => '사이트맵 Rectangle Sighting 보고서';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting Report';
+  String get mufonCylinderSighting => 'MUFON 실린더 Sighting 보고';
 
   @override
-  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting Report';
+  String get mufonBoomerangSighting => 'MUFON Boomerang Sighting 보고서';
 
   @override
-  String get mufonStarlikeSighting => 'MUFON Starlike Sighting Report';
+  String get mufonStarlikeSighting => '사이트맵 Starlike Sighting 보고서';
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber Details';
+    return 'MUFON 케이스 #$caseNumber 세부 정보';
   }
 
   @override
-  String get sightingDate => 'Sighting Date';
+  String get sightingDate => '관련 기사';
 
   @override
-  String get mufonDatabaseEntryDate => 'Date Entered into MUFON Database';
+  String get mufonDatabaseEntryDate => '날짜 입력 MUFON 관련 기사';
 
   @override
-  String get databaseEntry => 'Database Entry';
+  String get databaseEntry => '데이터베이스';
 
   @override
-  String get shareLink => 'Share Link';
+  String get shareLink => '공유 링크';
 
   @override
-  String get linkCopied => 'Link copied to clipboard';
+  String get linkCopied => '클립보드에 복사 링크';
 
   @override
-  String get locationLabel => 'Location:';
+  String get locationLabel => '위치:';
 
   @override
-  String get distanceLabel => 'Distance';
+  String get distanceLabel => '주요 특징';
 
   @override
-  String get timeLabel => 'Time:';
+  String get timeLabel => '시간:';
 
   @override
-  String get reportedByLabel => 'Reported by';
+  String get reportedByLabel => '관련 기사';
 
   @override
-  String get unknownLocation => 'Unknown Location';
+  String get unknownLocation => '자주 묻는 질문';
 
   @override
-  String get locationUnknown => 'Location Unknown';
+  String get locationUnknown => '위치 Unknown';
 
   @override
-  String get witnessesLabel => 'Witnesses';
+  String get witnessesLabel => '뚱 베어';
 
   @override
   String witnessesCountMessage(int count) {
-    return '$count people confirmed this sighting';
+    return '$count 사람들은 이 광경을 확인';
   }
 
   @override
-  String get photoAnalysisTitle => 'Photo Analysis';
+  String get photoAnalysisTitle => '사진 분석';
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analysis: $count media file(s) processed';
+    return '분석: $count 미디어 파일(s) 처리';
   }
 
   @override
-  String get addMoreMedia => 'Add More';
+  String get addMoreMedia => '더 보기';
 
   @override
-  String get addMedia => 'Add Media';
+  String get addMedia => '미디어 추가';
 
   @override
-  String get retakePhoto => 'Retake Photo';
+  String get retakePhoto => 'Retake 사진';
 
   @override
-  String get retakeVideo => 'Retake Video';
+  String get retakeVideo => 'Retake 비디오';
 
   @override
-  String get camera => 'Camera';
+  String get camera => '관련 기사';
 
   @override
-  String get gallery => 'Gallery';
+  String get gallery => '회사연혁';
 
   @override
-  String get basicSettings => 'Basic Settings';
+  String get basicSettings => '기본 설정';
 
   @override
-  String get appSettings => 'App Settings';
+  String get appSettings => '앱 설정';
 
   @override
-  String get timeFormat => 'Time Format';
+  String get timeFormat => '시간 체재';
 
   @override
-  String get timeFormat24Hour => '24-hour (14:30)';
+  String get timeFormat24Hour => '24 시간 (14:30)';
 
   @override
-  String get timeFormat12Hour => '12-hour (2:30 PM)';
+  String get timeFormat12Hour => '12시간 (2:30 PM)';
 
   @override
-  String get timeFormatDesc => 'Display time in 24-hour or 12-hour format';
+  String get timeFormatDesc => '24 시간 12 시간 체재에 있는 전시 시간';
 
   @override
-  String get alertRange => 'Alert Range';
+  String get alertRange => 'Alert 범위';
 
   @override
-  String get manageNotificationsDesc => 'Manage subscriptions & settings';
+  String get manageNotificationsDesc => '구독 및 설정 관리';
 
   @override
-  String get permissionsTitle => 'Permissions';
+  String get permissionsTitle => '제출';
 
   @override
-  String get permissionLocation => 'Location';
+  String get permissionLocation => '- 연혁';
 
   @override
-  String get permissionCamera => 'Camera';
+  String get permissionCamera => '관련 기사';
 
   @override
-  String get permissionNotifications => 'Notifications';
+  String get permissionNotifications => '공지사항';
 
   @override
-  String get permissionPhotos => 'Photos';
+  String get permissionPhotos => '사진 갤러리';
 
   @override
-  String get permissionGranted => 'Granted';
+  String get permissionGranted => '지원하다';
 
   @override
-  String get permissionNotGranted => 'Not granted';
+  String get permissionNotGranted => '이름 *';
 
   @override
-  String get permissionGrant => 'Grant';
+  String get permissionGrant => '지원하다';
 
   @override
-  String get generateUsername => 'Generate new username';
+  String get generateUsername => '새로운 사용자 정의';
 
   @override
-  String get adminTools => 'Admin Tools';
+  String get adminTools => '관리자 도구';
 
   @override
-  String get openAdminPanel => 'Open Admin Panel';
+  String get openAdminPanel => 'Open Admin 패널';
 
   @override
-  String get webAdminInterface => 'Web Admin Interface';
+  String get webAdminInterface => '웹 관리자 인터페이스';
 
   @override
-  String get adminBetaNotice =>
-      'Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.';
+  String get adminBetaNotice => '베타 빌드 만. 테스트 근접 경고, 푸시 알림 및 시스템 진단을위한 관리자 도구.';
 
   @override
-  String get whatDoYouSee => 'What do you see?';
+  String get whatDoYouSee => '무엇을 볼까요?';
 
   @override
-  String get ufo => 'UFO';
+  String get ufo => '사이트맵';
 
   @override
-  String get sighting => 'Sighting';
+  String get sighting => '뚱 베어';
 
   @override
-  String get ufoSighting => 'UFOBeep UFO Alert';
+  String get ufoSighting => 'UFOBeep의 UFO 지원하다';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => '환경분석';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => '분석 Pending';
 
   @override
-  String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+  String get envAnalysisPendingDesc => '환경 데이터는 한 번 처리가 시작됩니다.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => '알 수없는 항공기';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => '더 많은 항공기';
 
   @override
-  String get showLess => 'Show less';
+  String get showLess => '더보기';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => '프리미엄 위성 이미지';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => '고해상도 상업 이미지';
 
   @override
-  String get sightingTypeLabel => 'Type';
+  String get sightingTypeLabel => '제품정보';
 
   @override
-  String get ufoTypeSphere => 'Sphere';
+  String get ufoTypeSphere => '사이트 맵';
 
   @override
-  String get ufoTypeTriangle => 'Triangle';
+  String get ufoTypeTriangle => '연락처';
 
   @override
-  String get ufoTypeDisk => 'Disk';
+  String get ufoTypeDisk => '제품정보';
 
   @override
-  String get ufoTypeLight => 'Light';
+  String get ufoTypeLight => '제품 정보';
 
   @override
-  String get ufoTypeFireball => 'Fireball';
+  String get ufoTypeFireball => '불꽃놀이';
 
   @override
-  String get ufoTypeCylinder => 'Cylinder';
+  String get ufoTypeCylinder => '자료실';
 
   @override
-  String get ufoTypeCigar => 'Cigar';
+  String get ufoTypeCigar => '시가';
 
   @override
-  String get ufoTypeRectangle => 'Rectangle';
+  String get ufoTypeRectangle => '관련 상품';
 
   @override
-  String get ufoTypeFormation => 'Formation';
+  String get ufoTypeFormation => '이름 *';
 
   @override
-  String get ufoTypeUnknown => 'Unknown';
+  String get ufoTypeUnknown => '이름 *';
 
   @override
-  String get ufoTypeBoomerang => 'Boomerang';
+  String get ufoTypeBoomerang => '프로모션';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => '담당자: Ms';
 
   @override
-  String get ufoTypeOval => 'Oval';
+  String get ufoTypeOval => '오벌';
 
   @override
-  String get ufoTypeCone => 'Cone';
+  String get ufoTypeCone => '한국어';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => '기타';
 
   @override
-  String get ufoTypeDumbbell => 'Dumbbell';
+  String get ufoTypeDumbbell => '카테고리';
 
   @override
-  String get ufoTypeTeardrop => 'Teardrop';
+  String get ufoTypeTeardrop => '옵션 정보';
 
   @override
-  String get ufoTypeTicTac => 'Tic Tac';
+  String get ufoTypeTicTac => '카테고리';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => '주요연혁';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => '인기 카테고리';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => '이름 *';
 
   @override
-  String get ufoTypeBlimp => 'Blimp';
+  String get ufoTypeBlimp => '뚱 베어';
 
   @override
-  String get shapeTriangle => 'triangle';
+  String get shapeTriangle => '팟캐스트';
 
   @override
-  String get shapeDisc => 'disc';
+  String get shapeDisc => '·';
 
   @override
-  String get shapeDisk => 'disk';
+  String get shapeDisk => '기본 정보';
 
   @override
-  String get shapeSphere => 'sphere';
+  String get shapeSphere => '강좌';
 
   @override
-  String get shapeCigar => 'cigar';
+  String get shapeCigar => '시가';
 
   @override
-  String get shapeLight => 'light';
+  String get shapeLight => '제품 정보';
 
   @override
-  String get shapeBoomerang => 'boomerang';
+  String get shapeBoomerang => '채용정보';
 
   @override
-  String get shapeDiamond => 'diamond';
+  String get shapeDiamond => '다이아몬드';
 
   @override
-  String get shapeRectangle => 'rectangle';
+  String get shapeRectangle => '연락처';
 
   @override
-  String get shapeOval => 'oval';
+  String get shapeOval => '이름 *';
 
   @override
-  String get shapeCone => 'cone';
+  String get shapeCone => '제품 정보';
 
   @override
-  String get shapeCross => 'cross';
+  String get shapeCross => '기타';
 
   @override
-  String get shapeCylinder => 'cylinder';
+  String get shapeCylinder => '자료실';
 
   @override
-  String get shapeDumbbell => 'dumbbell';
+  String get shapeDumbbell => '뚱 베어';
 
   @override
-  String get shapeTeardrop => 'teardrop';
+  String get shapeTeardrop => '눈물방울';
 
   @override
-  String get shapeTicTac => 'tic-tac';
+  String get shapeTicTac => '사이트맵';
 
   @override
-  String get shapeBullet => 'bullet';
+  String get shapeBullet => '주요특징';
 
   @override
-  String get shapeSaturn => 'saturn';
+  String get shapeSaturn => '인기있는';
 
   @override
-  String get shapeStarlike => 'starlike';
+  String get shapeStarlike => '이름 *';
 
   @override
-  String get shapeBlimp => 'blimp';
+  String get shapeBlimp => '뚱 베어';
 
   @override
-  String get shapeFireball => 'fireball';
+  String get shapeFireball => '풋볼';
 
   @override
-  String get shapeFormation => 'formation';
+  String get shapeFormation => '주요연혁';
 
   @override
-  String get shapeUnknown => 'unknown';
+  String get shapeUnknown => '이름 *';
 
   @override
-  String get actionsTitle => 'Actions';
+  String get actionsTitle => '팟캐스트';
 
   @override
-  String get addPhotosAndVideos => 'Add Photos & Videos';
+  String get addPhotosAndVideos => '사진 및 동영상 추가';
 
   @override
-  String get howToReportToMufon => 'How to Report to MUFON';
+  String get howToReportToMufon => 'MUFON에 보고하는 방법';
 
   @override
-  String get reportToMufon => 'Report to MUFON';
+  String get reportToMufon => 'MUFON 소개';
 
   @override
-  String get whyReportToMufon => 'Why Report to MUFON?';
+  String get whyReportToMufon => '왜 MUFON에 보고?';
 
   @override
-  String get openMufonReport => 'Open MUFON Report';
+  String get openMufonReport => 'MUFON 오픈 제품정보';
 
   @override
-  String get confirmedWitness => 'You confirmed this sighting';
+  String get confirmedWitness => '이 광경을 확인';
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '$count people have confirmed this sighting';
+    return '$count 사람들은 이 광경을 확인했습니다';
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => '항공기 추적';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => '기상 조건';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => '눈에 보이는 위성 패스 발견';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => '콘텐츠 분석';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => '내용은 안전합니다';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'Content flagged 에 대한 리뷰';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => '지원하다';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => '제품 설명';
 
   @override
-  String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+  String get premiumImageryAccessOnly => '프리미엄 위성 이미지는 오직 사용할 수 있습니다:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'Alert 제작자';
 
   @override
-  String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+  String get premiumAccessWitnesses => '가시 범위 내에서 확인된 증언';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => '현재 위치';
 
   @override
-  String get directionDistanceTitle => 'Direction & Distance';
+  String get directionDistanceTitle => '방향 & 거리';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber';
+    return '사이트맵 케이스 #$caseNumber';
   }
 
   @override
-  String get satellitePassesTitle => 'Satellite Passes';
+  String get satellitePassesTitle => '위성 패스';
 
   @override
   String get satellitePassExplanation =>
-      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
+      '눈에 띄는 위성은 광경 시간대에 통과합니다. 많은 UFO 보고서는 실제로 위성 또는 공간 파편입니다.';
 
   @override
-  String get followingAlert =>
-      'Following alert - you\'ll get comment notifications';
+  String get followingAlert => '경고 후 - 당신은 코멘트 알림을 얻을 것이다';
 
   @override
-  String get unfollowedAlert =>
-      'Unfollowed alert - no more comment notifications';
+  String get unfollowedAlert => '경고 없음 - 더 많은 의견 알림';
 
   @override
-  String get alertFollowError => 'Error updating follow status';
+  String get alertFollowError => '에러 updating 따라 상태';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'UFOBeep 경고';
 
   @override
-  String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+  String get notificationChannelAlertsDesc => 'UFO beeps 및 근접 경고에 대한 알림';
 
   @override
-  String get notificationSightingTitle => 'UFOBeep UFO Alert';
+  String get notificationSightingTitle => 'UFOBeep의 UFO 지원하다';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFOBeep UFO Alert';
+  String get notificationSightingUrgent => '⚠️ 긴급 UFOBeep UFO 지원하다';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFOBeep UFO Alert';
+  String get notificationSightingEmergency => '∙ 에너지 UFOBeep UFO 지원하다';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return '$witnessText 가까운 $locationName';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return '$username 댓글';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => '새로운 광경';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return '$count 증인';
   }
 
   @override
-  String get notificationActionSnooze => 'Snooze 1h';
+  String get notificationActionSnooze => '스누즈 1시간';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => '뚱 베어';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return '$distance 멀리';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => '이름 *';
 
   @override
-  String get report => 'report';
+  String get report => '이름 *';
 
   @override
-  String get mufon => 'mufon';
+  String get mufon => '사이트맵';
 
   @override
-  String get recentUfoBeepsTitle => 'Recent UFO Beeps';
+  String get recentUfoBeepsTitle => '최근 UFO 뚱 베어';
 
   @override
-  String get recentUfoBeepsSubtitle =>
-      'Live UFO sighting reports from our global community';
+  String get recentUfoBeepsSubtitle => '글로벌 커뮤니티의 라이브 UFO 시야 보고서';
 
   @override
   String get recentUfoBeepsDescription =>
-      'This feed combines real-time UFOBeep \"beeps\" from our mobile app users with historical reports from the MUFON database.';
+      '이 피드는 실시간 UFOBeep \"beeps\"를 결합하여 모바일 앱 사용자는 MUFON 데이터베이스의 과거 보고서를 보여줍니다.';
 
   @override
-  String get loadingBeeps => 'Loading recent beeps...';
+  String get loadingBeeps => '최근 beeps을로드 ...';
 
   @override
-  String get noBeepsAvailable => 'No beeps available at the moment.';
+  String get noBeepsAvailable => '순간에 사용할 수 없습니다.';
 
   @override
-  String get anomalyReported => 'Anomaly reported';
+  String get anomalyReported => 'Anomaly 보고';
 
   @override
-  String get copyShortLink => 'Copy short link';
+  String get copyShortLink => '짧은 링크 복사';
 
   @override
-  String get shareAlert => 'Share alert';
+  String get shareAlert => '비밀번호';
 
   @override
-  String get ufoSightingAlert => 'UFO Sighting Alert';
+  String get ufoSightingAlert => '사이트맵 연락처';
 
   @override
-  String get previousPage => 'Previous';
+  String get previousPage => '이름 *';
 
   @override
-  String get nextPage => 'Next';
+  String get nextPage => '이름 *';
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Page $currentPage of $totalPages ($totalCount total beeps)';
+    return '페이지 $currentPage $totalPages ($totalCount 총 금액)';
   }
 
   @override
-  String get firstPage => 'First';
+  String get firstPage => '한국어';
 
   @override
-  String get lastPage => 'Last';
+  String get lastPage => '이름 *';
 
   @override
-  String get jumpToPage => 'Jump to page';
+  String get jumpToPage => '공지사항';
 
   @override
-  String get heroTagline => 'Get alerts when to go outside and look up';
+  String get heroTagline => '외부로 이동할 때 경고를 얻고 봐';
 
   @override
-  String get heroDescription => 'Never miss another UFO sighting in your area';
+  String get heroDescription => '당신의 지역에 다른 UFO 보행을 놓치지 마십시오';
 
   @override
-  String get downloadApp => '📱 Download App';
+  String get downloadApp => '앱 다운로드';
 
   @override
-  String get viewAllBeeps => '📋 View All Beeps';
+  String get viewAllBeeps => 'All 모두 Beeps';
 
   @override
-  String get sightingsMap => '🗺️ Sightings Map';
+  String get sightingsMap => 'Sightings 지도';
 
   @override
-  String get globalSightingNetwork => 'Global Sighting Network';
+  String get globalSightingNetwork => '글로벌 Sighting Network';
 
   @override
-  String get howItWorks => 'How It Works';
+  String get howItWorks => '어떻게 작동합니까';
 
   @override
-  String get backToBeeps => 'Back to Beeps';
+  String get backToBeeps => 'Beeps로 돌아가기';
 
   @override
-  String get loadingDetails => 'Loading beep details...';
+  String get loadingDetails => '로딩...';
 
   @override
-  String get details => 'Details';
+  String get details => '제품 정보';
 
   @override
-  String get location => 'Location';
+  String get location => '- 연혁';
 
   @override
-  String get timeAgo => 'ago';
+  String get timeAgo => '...에서';
 
   @override
   String get timeMinutes => 'm';
@@ -1135,1075 +1119,1023 @@ class AppLocalizationsKo extends AppLocalizations {
   String get timeDays => 'd';
 
   @override
-  String get distanceKm => 'km';
+  String get distanceKm => '24시간';
 
   @override
-  String get distanceMiles => 'miles';
+  String get distanceMiles => '여행 정보';
 
   @override
-  String get distanceNearby => 'nearby';
+  String get distanceNearby => '이름 *';
 
   @override
-  String get ufobeepWitnesses => 'Witnesses';
+  String get ufobeepWitnesses => '뚱 베어';
 
   @override
-  String get ufobeepConfirmations => 'Confirmations';
+  String get ufobeepConfirmations => '이름 *';
 
   @override
-  String get ufobeepAlertLevel => 'Alert Level';
+  String get ufobeepAlertLevel => '출력 레벨';
 
   @override
-  String get ufobeepReportType => 'UFOBeep Report';
+  String get ufobeepReportType => 'UFOBeep 보고서';
 
   @override
-  String get mufonAttribution => 'MUFON Database Report';
+  String get mufonAttribution => '사이트맵 Database 보고';
 
   @override
-  String get mufonCaseNumber => 'Case #';
+  String get mufonCaseNumber => '사례 #';
 
   @override
-  String get mufonGenericTitle => 'MUFON Sighting Report';
+  String get mufonGenericTitle => 'MUFON Sighting 보고서';
 
   @override
-  String get mufonSphere => 'Sphere';
+  String get mufonSphere => '사이트 맵';
 
   @override
-  String get mufonLight => 'Light';
+  String get mufonLight => '제품 정보';
 
   @override
-  String get mufonDisk => 'Disk';
+  String get mufonDisk => '제품정보';
 
   @override
-  String get mufonTriangle => 'Triangle';
+  String get mufonTriangle => '연락처';
 
   @override
-  String get mufonCigar => 'Cigar';
+  String get mufonCigar => '시가';
 
   @override
-  String get mufonOval => 'Oval';
+  String get mufonOval => '오벌';
 
   @override
-  String get mufonCylinder => 'Cylinder';
+  String get mufonCylinder => '자료실';
 
   @override
-  String get mufonRectangle => 'Rectangle';
+  String get mufonRectangle => '관련 상품';
 
   @override
-  String get mufonDiamond => 'Diamond';
+  String get mufonDiamond => '담당자: Ms';
 
   @override
-  String get mufonFireball => 'Fireball';
+  String get mufonFireball => '불꽃놀이';
 
   @override
-  String get mufonFlash => 'Flash';
+  String get mufonFlash => '이름 *';
 
   @override
-  String get mufonFormation => 'Formation';
+  String get mufonFormation => '이름 *';
 
   @override
-  String get mufonChanging => 'Changing';
+  String get mufonChanging => '관련 기사';
 
   @override
-  String get mufonChevron => 'Chevron';
+  String get mufonChevron => '체브론';
 
   @override
-  String get mufonCone => 'Cone';
+  String get mufonCone => '한국어';
 
   @override
-  String get mufonCross => 'Cross';
+  String get mufonCross => '기타';
 
   @override
-  String get mufonEgg => 'Egg';
+  String get mufonEgg => '계란';
 
   @override
-  String get mufonOther => 'Object';
+  String get mufonOther => '기타';
 
   @override
-  String get mufonUnknown => 'Unknown Object';
+  String get mufonUnknown => 'Unknown 개체';
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON $classification Report';
+    return 'MUFON $classification 보고서';
   }
 
   @override
-  String get nuforcAttribution => 'NUFORC Database Report';
+  String get nuforcAttribution => '사이트맵 Database 보고';
 
   @override
-  String get nuforcCaseNumber => 'Case #';
+  String get nuforcCaseNumber => '사례 #';
 
   @override
-  String get nuforcGenericTitle => 'NUFORC Sighting Report';
+  String get nuforcGenericTitle => '사이트맵 연락처';
 
   @override
-  String get mediaImageNotFound => 'Image not found';
+  String get mediaImageNotFound => '찾을 수 없음';
 
   @override
-  String get mediaPlayVideo => 'Play Video';
+  String get mediaPlayVideo => '재생 동영상';
 
   @override
-  String get mediaViewImage => 'View Image';
+  String get mediaViewImage => '이미지 보기';
 
   @override
   String mediaCount(Object count) {
-    return '$count images';
+    return '$count 이미지';
   }
 
   @override
-  String get mediaCountSingle => '1 image';
+  String get mediaCountSingle => '1 이미지';
 
   @override
   String mediaMoreImages(Object count) {
-    return '+$count more';
+    return '+$count 더';
   }
 
   @override
-  String get errorNotFound => 'Beep not found';
+  String get errorNotFound => '찾을 수 없음';
 
   @override
-  String get errorLoadError => 'Failed to load beep details';
+  String get errorLoadError => 'Beep 세부사항을 적재하는 실패';
 
   @override
-  String get shareYourThoughts => 'Share your thoughts about this sighting...';
+  String get shareYourThoughts => '이 광경에 대한 생각을 공유 ...';
 
   @override
-  String get postComment => 'Post Comment';
+  String get postComment => '게시물 댓글';
 
   @override
-  String get loggedInAs => 'Logged in as';
+  String get loggedInAs => '로그인';
 
   @override
-  String get logout => 'Logout';
+  String get logout => '로그아웃';
 
   @override
-  String get notFollowing => 'Not following';
+  String get notFollowing => '이름 *';
 
   @override
-  String get follow => 'Follow';
+  String get follow => '이름 *';
 
   @override
-  String get navRecentBeeps => 'Recent Beeps';
+  String get navRecentBeeps => '최근 Beeps';
 
   @override
-  String get navMap => 'Map';
+  String get navMap => '지도보기';
 
   @override
-  String get navDownloadApp => 'Download App';
+  String get navDownloadApp => '앱 다운로드';
 
   @override
-  String get alertLevel => 'Alert Level';
+  String get alertLevel => '출력 레벨';
 
   @override
-  String get witnesses => 'Witnesses';
+  String get witnesses => '뚱 베어';
 
   @override
-  String get confirmations => 'Confirmations';
+  String get confirmations => '이름 *';
 
   @override
-  String get reporterLabel => 'Reported by user';
+  String get reporterLabel => '로그인';
 
   @override
-  String get coordinatesLabel => 'Coordinates';
+  String get coordinatesLabel => '관련 기사';
 
   @override
-  String get eventTime => 'Event time';
+  String get eventTime => '이벤트 시간';
 
   @override
-  String get reportedTime => 'Reported time';
+  String get reportedTime => '접수시간';
 
   @override
-  String get addedToUfobeep => 'Added to UFOBeep';
+  String get addedToUfobeep => 'UFOBeep에 추가';
 
   @override
-  String get mufonDatabaseReport => 'MUFON Case Number:';
+  String get mufonDatabaseReport => '사이트맵 케이스 번호:';
 
   @override
-  String get copyShortLinkTitle => 'Copy link to clipboard';
+  String get copyShortLinkTitle => '클립보드에 링크 복사';
 
   @override
-  String get imageNotFound => 'Image not found';
+  String get imageNotFound => '찾을 수 없음';
 
   @override
-  String get ufoSightingAlt => 'UFOBeep UFO alert';
+  String get ufoSightingAlt => '사이트맵 Beep UFO 경고';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Celestial 개체';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => '눈에 보이는 행성';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => '오시는 길';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => '시간 영역';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => '관련 기사';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => '회사연혁';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => '처리 시간';
 
   @override
-  String get successful => 'Successful';
+  String get successful => '감사합니다';
 
   @override
-  String get failed => 'Failed';
+  String get failed => '실패한';
 
   @override
-  String get locationEnrichmentTitle => 'Location Details';
+  String get locationEnrichmentTitle => '회사연혁';
 
   @override
-  String get aircraftDataSource => 'Data Source';
+  String get aircraftDataSource => '데이터 소스';
 
   @override
-  String get noAircraftDetected => 'No aircraft detected';
+  String get noAircraftDetected => '항공기 감지 없음';
 
   @override
-  String get sightingReport => 'Sighting Report';
+  String get sightingReport => '연락처';
 
   @override
-  String get ufoAlert => 'UFO Alert';
+  String get ufoAlert => '사이트맵 지원하다';
 
   @override
-  String get alert => 'Alert';
+  String get alert => '지원하다';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert => 'UFO 경고 - 새로운 Sighting Nearby';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'UFO Alert의 새로운 의견';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => '기상 조건';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => '제품정보';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => '제품 정보';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => '압력';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => '회사연혁';
 
   @override
-  String get city => 'City';
+  String get city => '(주)';
 
   @override
-  String get state => 'State';
+  String get state => '주요 특징';
 
   @override
-  String get country => 'Country';
+  String get country => '이름 *';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => '위성 활동';
 
   @override
-  String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+  String get satellitesVisibleOverhead => '광경 시간 및 위치에 눈에 보이는 오버 헤드';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => '데이터 소스';
 
   @override
-  String get blackskyImagery => 'BlackSky Imagery';
+  String get blackskyImagery => 'BlackSky 이미지';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => '제품 설명';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cm 지상 해결책';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => '제품 정보';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => '평균 90분';
 
   @override
-  String get cost => 'Cost';
+  String get cost => '제품정보';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi 위성 이미지';
 
   @override
-  String get region => 'Region';
+  String get region => '이름 *';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => '먼 지역';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => '시작 가격';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => '회사 소개';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% 신뢰';
 
   @override
-  String get status => 'Status';
+  String get status => '주요연혁';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => '이 광경에 대한 생각을 공유 ...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => '포스트 명령';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => '클라우드';
 
   @override
-  String get windLabel => 'Wind';
+  String get windLabel => 'Ღ♥ღ';
 
   @override
-  String get filterAlerts => 'Filter Alerts';
+  String get filterAlerts => '필터 경고';
 
   @override
-  String get alertSource => 'Alert Source';
+  String get alertSource => 'Alert 소스';
 
   @override
-  String get ufobeepOnly => 'UFOBeep Only';
+  String get ufobeepOnly => 'UFOBeep 만';
 
   @override
-  String get ufobeepOnlyDescription =>
-      'Show only original UFOBeep reports (exclude MUFON database)';
+  String get ufobeepOnlyDescription => '원래 UFOBeep 보고서 만 표시 (MUFON 데이터베이스 제외)';
 
   @override
-  String get alertDistanceRange => 'Alert Distance Range';
+  String get alertDistanceRange => '출력 거리 범위';
 
   @override
-  String get showAllAlerts => 'Show All Alerts';
+  String get showAllAlerts => '모든 경고 표시';
 
   @override
-  String get showAll => 'Show All';
+  String get showAll => '모두보기';
 
   @override
   String get distanceSliderDescription =>
-      'Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.';
+      '경고를보고 싶은 방법을 조정합니다. 거리에 상관없이 모든 경고를 표시하기 위해 날씨 가시 거리에서 시작.';
 
   @override
-  String get applyFilters => 'Apply Filters';
+  String get applyFilters => '필터 적용';
 
   @override
-  String get notificationRange => 'Notification Range';
+  String get notificationRange => '공지사항';
 
   @override
-  String get notificationRangeDescription =>
-      'Get push alerts for sightings within this distance';
+  String get notificationRangeDescription => '이 거리 내에서 광경을 위한 푸시 알림 받기';
 
   @override
-  String get viewingRange => 'Viewing Range';
+  String get viewingRange => '보기 범위';
 
   @override
-  String get viewingRangeDescription =>
-      'Show sightings within this distance when browsing';
+  String get viewingRangeDescription => '이 거리 내에서 시력 표시';
 
   @override
-  String get weatherVisibility => 'Weather Visibility (~10km)';
+  String get weatherVisibility => '날씨 가시성 (10km)';
 
   @override
-  String get localArea => 'Local Area (25km)';
+  String get localArea => '지역 (25km)';
 
   @override
-  String get regional => 'Regional';
+  String get regional => '주요사업';
 
   @override
-  String get pushNotifications => 'Push Notifications';
+  String get pushNotifications => '푸시 알림';
 
   @override
-  String get alertBrowsing => 'Alert Browsing';
+  String get alertBrowsing => '비밀번호';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance => '이 범위 내에서 알림 받기';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => '목록에서 볼 수있는 필터';
 
   @override
-  String get heroMainTagline =>
-      'Get a beep on your phone when UFOs are spotted nearby';
+  String get heroMainTagline => 'UFO가 근처에 자리 잡을 때 휴대폰에 벳을 끄십시오';
 
   @override
-  String get heroSecondaryTagline =>
-      'Find out when and where to look at the sky';
+  String get heroSecondaryTagline => '하늘을 바라보는 곳';
 
   @override
-  String get sourceFilters => 'Source';
+  String get sourceFilters => '이름 *';
 
   @override
-  String get sourceFiltersDescription =>
-      'Choose which reports appear in your feed';
+  String get sourceFiltersDescription => '어떤 보고서가 피드에 나타낸다';
 
   @override
-  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+  String get ufobeepAndMufon => 'UFOBeep + 멀티';
 
   @override
-  String get ufobeepOnlySource => 'UFOBeep only';
+  String get ufobeepOnlySource => 'UFOBeep 만';
 
   @override
-  String get mufonOnlySource => 'MUFON only';
+  String get mufonOnlySource => 'MUFON만';
 
   @override
-  String get browseFilters => 'Browse';
+  String get browseFilters => '계정 만들기';
 
   @override
-  String get browseFiltersDescription => 'How to view and sort alerts';
+  String get browseFiltersDescription => '표시 및 정렬 경고';
 
   @override
-  String get sortByNewest => 'Newest';
+  String get sortByNewest => '더 알아보기';
 
   @override
-  String get sortByNearest => 'Nearest';
+  String get sortByNearest => '이름 *';
 
   @override
-  String get sortBy => 'Sort by';
+  String get sortBy => '정렬 기준';
 
   @override
-  String get pushAlertsTitle => 'Push Alerts';
+  String get pushAlertsTitle => '푸시 알림';
 
   @override
-  String get pushAlertsDescription => 'What pings your phone';
+  String get pushAlertsDescription => '휴대폰 번호';
 
   @override
-  String get alertRadius => 'Alert Radius';
+  String get alertRadius => 'Alert 반경';
 
   @override
-  String get mufonNoPushInfo =>
-      'MUFON reports are imported nightly and do not trigger push alerts';
+  String get mufonNoPushInfo => 'MUFON 보고서는 밤에 수입되고 경고를 유발하지 않습니다';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => '개인정보 및 자료';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc => '데이터 보호 및 사용 방법';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => '이용 약관';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => '법률 용어 및 조건';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => '위치 추적';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc => '근접 경고를 위한 배경 위치';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => '배경 위치 추적';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFOBeep은 현재 위치 근처에있을 때 UFO 시야가 발생할 때 배경의 위치를 모니터링합니다.';
 
   @override
-  String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+  String get locationTrackingBattery => '<3> 배터리 충격을 위한 지적인 geofencing 사용';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => '사용 방법 제품정보';
 
   @override
-  String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+  String get locationTrackingActive => '근접 경고를 위한 감시 위치';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => '위치 추적은 비활성화';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+      '당신은 새로운 위치로 이동할 때 근접 경고를받지 않습니다';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => '추적 상태';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => '관련 기사';
 
   @override
-  String get active => 'Active';
+  String get active => '지원하다';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => '제품정보';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => '마지막 Known 위치';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => '마지막 업데이트';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => '운동 위협';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => '업데이트 빈도';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => '배터리 충격';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => '데이터 보호';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFOBeep은 \'Always Allow\' 위치 권한을 필요로하여 이동을 모니터링하고 새로운 위치에있을 때 근접 경고를 보냅니다.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => '이름 *';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '· 여행중인 UFO 알림 받기\n• 자동 위치 업데이트\n· 수동 설정 없음';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => '오시는 길';
 
   @override
-  String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+  String get locationPermissionRequired => '위치 권한은 배경 추적에 필수';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled => '배경 위치 추적 가능';
 
   @override
-  String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+  String get locationTrackingDisabled => '배경 위치 추적 해제';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => '지금 시작';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '$minutes 분 전';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '$hours시간 전';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return '$days 일 전';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => '데이터 관리';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc => '계정 데이터를 내보내거나 삭제';
 
   @override
-  String get splashTagline => 'Real-time sighting alerts';
+  String get splashTagline => '실시간 시력 경고';
 
   @override
-  String get splashStartingUp => 'Starting up...';
+  String get splashStartingUp => '시작 ...';
 
   @override
-  String get splashInitializationFailed => 'Initialization failed';
+  String get splashInitializationFailed => '초기화 실패';
 
   @override
-  String get splashInitializationFailedTitle => 'Initialization Failed';
+  String get splashInitializationFailedTitle => '초기화 실패';
 
   @override
-  String get splashInitializationError =>
-      'The app failed to initialize properly:';
+  String get splashInitializationError => '앱은 제대로 초기화하지 못했습니다';
 
   @override
-  String get splashRetry => 'Retry';
+  String get splashRetry => '이름 *';
 
   @override
-  String get splashContinue => 'Continue';
+  String get splashContinue => '계속하기';
 
   @override
-  String get splashInitializing => 'Initializing...';
+  String get splashInitializing => '초기화 ...';
 
   @override
   String signInWelcome(String username) {
-    return 'Welcome $username!';
+    return '환영합니다 $username!';
   }
 
   @override
   String signInFailed(String error) {
-    return 'Sign-in failed: $error';
+    return '로그인 실패: ₢ 킹';
   }
 
   @override
-  String get signInPleaseEnterEmail => 'Please enter your email address';
+  String get signInPleaseEnterEmail => '자주 묻는 질문';
 
   @override
-  String get signInPleaseEnterValidEmail =>
-      'Please enter a valid email address';
+  String get signInPleaseEnterValidEmail => '자주 묻는 질문';
 
   @override
-  String get signInMagicLinkSent =>
-      'Magic link sent! Check your email and click the link to sign in.';
+  String get signInMagicLinkSent => '매직 링크 전송! 자주 묻는 질문.';
 
   @override
-  String get signInMagicLinkFailed =>
-      'Failed to send magic link. Please try again.';
+  String get signInMagicLinkFailed => '마술 연결을 보낼 실패. 다시 시도하십시오.';
 
   @override
-  String get signInAllDataCleared => 'All data cleared';
+  String get signInAllDataCleared => '모든 데이터 정리';
 
   @override
-  String get signInSubtitle =>
-      'Real-time UFO sighting alerts and MUFON reports';
+  String get signInSubtitle => '실시간 UFO 시력 경고 및 MUFON 보고서';
 
   @override
-  String get signInGoogleLoading => 'Signing in...';
+  String get signInGoogleLoading => '로그인 ...';
 
   @override
-  String get signInContinueWithGoogle => 'Continue with Google';
+  String get signInContinueWithGoogle => '계속 Google';
 
   @override
-  String get signInOr => 'or';
+  String get signInOr => '또는';
 
   @override
-  String get signInWithEmail => 'Sign in with Email';
+  String get signInWithEmail => '로그인';
 
   @override
-  String get signInEmailDescription =>
-      'We\'ll send you a secure link to sign in';
+  String get signInEmailDescription => '로그인할 수 있는 안전한 링크를 보낼 수 있습니다';
 
   @override
-  String get signInEmailAddress => 'Email address';
+  String get signInEmailAddress => '이메일 주소';
 
   @override
-  String get signInEmailPlaceholder => 'your@email.com';
+  String get signInEmailPlaceholder => '이메일: support@email.com';
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Try again in ${seconds}s';
+    return '${seconds}s에서 다시 시도하십시오';
   }
 
   @override
-  String get signInSending => 'Sending...';
+  String get signInSending => '이름 *.';
 
   @override
-  String get signInSendMagicLink => 'Send Magic Link';
+  String get signInSendMagicLink => 'Magic Link에 대해';
 
   @override
-  String get signInCheckEmail =>
-      'Check your email! The link expires in 15 minutes.';
+  String get signInCheckEmail => '자주 묻는 질문 링크는 15 분에 만료됩니다.';
 
   @override
-  String get signInSecureAuth => 'Secure Authentication';
+  String get signInSecureAuth => '보안 인증';
 
   @override
   String get signInSecureAuthDescription =>
-      'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.';
+      'Google Sign-In을 사용하여 즉시 액세스하거나 15 분 이내에 만료 된 마법 링크를 사용하십시오.';
 
   @override
-  String get signInClearAllDataDebug => 'Clear All Data (Debug)';
+  String get signInClearAllDataDebug => '모든 데이터 삭제 (Debug)';
 
   @override
-  String get emailAuthFailedToSend => 'Failed to send email';
+  String get emailAuthFailedToSend => '이메일 보내기';
 
   @override
-  String get emailAuthFailedToSendTryAgain =>
-      'Failed to send email. Please try again.';
+  String get emailAuthFailedToSendTryAgain => '이메일 보내기 다시 시도하십시오.';
 
   @override
-  String get emailAuthInvalidEmail =>
-      'Invalid email address. Please check the format.';
+  String get emailAuthInvalidEmail => '잘못된 이메일 주소. 형식을 확인하십시오.';
 
   @override
-  String get emailAuthUserNotFound =>
-      'No account found with this email address.';
+  String get emailAuthUserNotFound => '이 이메일 주소로 계정이 없습니다.';
 
   @override
-  String get emailAuthTooManyRequests =>
-      'Too many attempts. Please try again later.';
+  String get emailAuthTooManyRequests => '너무 많은 시도. 나중에 다시 시도하십시오.';
 
   @override
-  String get emailAuthOperationNotAllowed =>
-      'Email link sign-in is not enabled.';
+  String get emailAuthOperationNotAllowed => '이메일 링크 로그인이 활성화되지 않습니다.';
 
   @override
-  String get emailAuthQuotaExceeded =>
-      'Email quota exceeded. Please try again tomorrow.';
+  String get emailAuthQuotaExceeded => '이메일 할당량 초과. 자주 묻는 질문.';
 
   @override
-  String get emailAuthVerificationFailed =>
-      'Email verification failed. Please try again.';
+  String get emailAuthVerificationFailed => '이메일 검증 실패. 다시 시도하십시오.';
 
   @override
-  String get emailAuthTitle => 'Email Verification';
+  String get emailAuthTitle => '이메일 Verification';
 
   @override
-  String get emailAuthVerifyYourEmail => 'Verify Your Email';
+  String get emailAuthVerifyYourEmail => '자주 묻는 질문';
 
   @override
   String get emailAuthDescription =>
-      'Add your email address for account recovery and security. We\'ll send you a secure sign-in link.';
+      '계정 복구 및 보안에 대한 이메일 주소를 추가하십시오. 보안 로그인 링크를 보내드립니다.';
 
   @override
-  String get emailAuthEmailAddress => 'Email Address';
+  String get emailAuthEmailAddress => '이메일 주소';
 
   @override
-  String get emailAuthEmailPlaceholder => 'your.email@example.com';
+  String get emailAuthEmailPlaceholder => '이메일: sales@example.com';
 
   @override
-  String get emailAuthPleaseEnterEmail => 'Please enter your email address';
+  String get emailAuthPleaseEnterEmail => '자주 묻는 질문';
 
   @override
-  String get emailAuthPleaseEnterValidEmail =>
-      'Please enter a valid email address';
+  String get emailAuthPleaseEnterValidEmail => '자주 묻는 질문';
 
   @override
-  String get emailAuthCheckEmailToContinue =>
-      'Check your email and tap the verification link to continue.';
+  String get emailAuthCheckEmailToContinue => '이메일 확인 및 인증 링크를 계속 탭합니다.';
 
   @override
-  String get emailAuthResendEmail => 'Resend Email';
+  String get emailAuthResendEmail => '이메일 보내기';
 
   @override
-  String get emailAuthSendVerificationEmail => 'Send Verification Email';
+  String get emailAuthSendVerificationEmail => '인증 받기 이름 *';
 
   @override
-  String get emailAuthHowItWorks => 'How Email Verification Works';
+  String get emailAuthHowItWorks => '이메일 검증 작업';
 
   @override
   String get emailAuthHowItWorksSteps =>
-      '1. We send you a secure sign-in link\n2. Check your email and tap the link\n3. Your email gets verified automatically\n4. No passwords needed!';
+      '1. 명세 보안 로그인 링크를 보내주십시오.\n2. 명세 자주 묻는 질문\n3. 명세 귀하의 이메일은 자동으로 확인됩니다.\n4. 명세 암호가 필요 없습니다!';
 
   @override
   String get emailAuthSecurityNotice =>
-      'Email verification helps secure your account and enables account recovery if you lose access to your device.';
+      '이메일 확인은 계정 보안을 돕고 기기에 액세스하는 경우 계정 복구를 활성화합니다.';
 
   @override
-  String get phoneAuthFailedToSendCode =>
-      'Failed to send verification code. Please try again.';
+  String get phoneAuthFailedToSendCode => '인증 코드를 보낼 실패. 다시 시도하십시오.';
 
   @override
-  String get phoneAuthInvalidCodeTryAgain =>
-      'Invalid verification code. Please try again.';
+  String get phoneAuthInvalidCodeTryAgain => '잘못된 인증 코드. 다시 시도하십시오.';
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return 'Phone number verified: $phoneNumber';
+    return '전화 번호 확인: ₢ 킹';
   }
 
   @override
-  String get phoneAuthVerificationFailed =>
-      'Phone verification failed. Please try again.';
+  String get phoneAuthVerificationFailed => '전화 검증 실패. 다시 시도하십시오.';
 
   @override
-  String get phoneAuthCodeResent => 'Verification code resent';
+  String get phoneAuthCodeResent => '검증 코드 resent';
 
   @override
-  String get phoneAuthFailedToResendCode =>
-      'Failed to resend code. Please try again.';
+  String get phoneAuthFailedToResendCode => '코드를 다시 보낼 실패. 다시 시도하십시오.';
 
   @override
-  String get phoneAuthInvalidPhoneNumber =>
-      'Invalid phone number. Please check the format.';
+  String get phoneAuthInvalidPhoneNumber => '잘못된 전화 번호. 형식을 확인하십시오.';
 
   @override
-  String get phoneAuthTooManyRequests =>
-      'Too many attempts. Please try again later.';
+  String get phoneAuthTooManyRequests => '너무 많은 시도. 나중에 다시 시도하십시오.';
 
   @override
-  String get phoneAuthInvalidVerificationCode =>
-      'Invalid verification code. Please check and try again.';
+  String get phoneAuthInvalidVerificationCode => '잘못된 인증 코드. 자주 묻는 질문.';
 
   @override
-  String get phoneAuthSessionExpired =>
-      'Verification session expired. Please request a new code.';
+  String get phoneAuthSessionExpired => '검증 세션이 만료되었습니다. 새 코드를 요청하십시오.';
 
   @override
-  String get phoneAuthSmsQuotaExceeded =>
-      'SMS quota exceeded. Please try again tomorrow.';
+  String get phoneAuthSmsQuotaExceeded => 'SMS 할당량 초과. 자주 묻는 질문.';
 
   @override
-  String get phoneAuthCredentialAlreadyInUse =>
-      'This phone number is already linked to another account.';
+  String get phoneAuthCredentialAlreadyInUse => '이 전화 번호는 이미 다른 계정에 연결됩니다.';
 
   @override
-  String get phoneAuthVerificationFailedGeneric =>
-      'Verification failed. Please try again.';
+  String get phoneAuthVerificationFailedGeneric => '검증 실패. 다시 시도하십시오.';
 
   @override
-  String get phoneAuthTitle => 'Phone Verification';
+  String get phoneAuthTitle => '전화 검증';
 
   @override
-  String get phoneAuthVerifyYourPhone => 'Verify Your Phone';
+  String get phoneAuthVerifyYourPhone => '휴대폰 인증';
 
   @override
-  String get phoneAuthEnterVerificationCode => 'Enter Verification Code';
+  String get phoneAuthEnterVerificationCode => '자주 묻는 질문 이름 *';
 
   @override
-  String get phoneAuthAddPhoneForSecurity =>
-      'Add your phone number for account recovery and security';
+  String get phoneAuthAddPhoneForSecurity => '계정 복구 및 보안에 대한 휴대폰 번호를 추가';
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return 'Enter the 6-digit code sent to $phoneNumber';
+    return '$phoneNumber로 보내진 6자리 코드를 입력하십시오';
   }
 
   @override
-  String get phoneAuthPhoneNumber => 'Phone Number';
+  String get phoneAuthPhoneNumber => '전화번호';
 
   @override
-  String get phoneAuthPhonePlaceholder => '+1 (555) 123-4567';
+  String get phoneAuthPhonePlaceholder => 'EAN 코드: 4260327154';
 
   @override
-  String get phoneAuthPleaseEnterPhone => 'Please enter your phone number';
+  String get phoneAuthPleaseEnterPhone => '휴대폰 번호를 입력';
 
   @override
-  String get phoneAuthPleaseEnterValidPhone =>
-      'Please enter a valid phone number';
+  String get phoneAuthPleaseEnterValidPhone => '휴대폰 번호를 입력하세요';
 
   @override
-  String get phoneAuthVerificationCode => 'Verification Code';
+  String get phoneAuthVerificationCode => '인증 코드';
 
   @override
-  String get phoneAuthPleaseEnterSixDigitCode =>
-      'Please enter the 6-digit code';
+  String get phoneAuthPleaseEnterSixDigitCode => '6자리 코드를 입력하세요';
 
   @override
-  String get phoneAuthResendCode => 'Resend Code';
+  String get phoneAuthResendCode => '비밀번호';
 
   @override
-  String get phoneAuthSendVerificationCode => 'Send Verification Code';
+  String get phoneAuthSendVerificationCode => '인증 받기 이름 *';
 
   @override
-  String get phoneAuthVerifyCode => 'Verify Code';
+  String get phoneAuthVerifyCode => 'Verify 코드';
 
   @override
-  String get phoneAuthChangePhoneNumber => 'Change Phone Number';
+  String get phoneAuthChangePhoneNumber => '휴대폰 번호';
 
   @override
   String get phoneAuthSmsNotice =>
-      'We\'ll send you a verification code via SMS. Standard message rates may apply.';
+      'SMS를 통해 인증 코드를 보내드립니다. 표준 메시지 요금은 적용할 수 있습니다.';
 
   @override
-  String get phoneAuthCodeExpires =>
-      'Code expires in 60 seconds. Check your messages.';
+  String get phoneAuthCodeExpires => '코드는 60 초에 만료됩니다. 메시지 확인.';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get yourDataRights => '귀하의 데이터 권리';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      '개인 데이터에 대한 전체 제어가 있습니다. 모든 데이터를 내보내거나 영구적으로 계정을 삭제할 수 있습니다.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => '데이터 내보내기';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription => '모든 계정 데이터를 다운로드';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => '수출 자료';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => '수출 ...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      '포함 : 프로필, 양, 의견, 장치 정보 및 선호 사항. JSON 형식으로 데이터가 제공됩니다.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => '성공적으로 수출되는 자료';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => '수출 자료에 실패';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => '계정 삭제';
 
   @override
-  String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+  String get deleteAccountDescription => '영구적으로 계정과 모든 데이터를 제거';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      '이 동작은 undone일 수 없습니다. 모든 양, 의견 및 계정 데이터는 영구적으로 삭제됩니다.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => '내 계정 삭제';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get deletingAccount => '관련 기사.';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => '계정 삭제';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      '계정을 삭제하시겠습니까? 이 작업은 영구적이며 undone이 될 수 없습니다.';
 
   @override
-  String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+  String get dataWillBeDeleted => '다음 데이터는 영구적으로 삭제됩니다';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '· 사용자 이름\n· 당신의 양 및 보고\n· 모든 의견\n• 장치 등록 자료\n• 위치 및 선호 데이터';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => '영구적으로 삭제';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => '계정 삭제';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => '계정 삭제';
 
   @override
-  String get onboardingWelcomeTitle => 'Welcome to UFOBeep';
+  String get onboardingWelcomeTitle => 'UFOBeep에 오신 것을 환영합니다';
 
   @override
   String get onboardingWelcomeBody =>
-      'Get instant alerts when UFOs are spotted near your location. Never miss a sighting again!';
+      'UFO가 위치 근처에 자리 잡을 때 즉시 알림을 받으십시오. 다시 시야를 놓치지 마세요!';
 
   @override
-  String get onboardingReportTitle => 'See something? Beep it!';
+  String get onboardingReportTitle => '뭔가요? 뚱 베어!';
 
   @override
-  String get onboardingReportBody =>
-      'Capture photos and videos of UFO sightings. Share with the global community instantly.';
+  String get onboardingReportBody => 'UFO 광경 사진 및 동영상 캡처. 글로벌 커뮤니티를 즉시 공유합니다.';
 
   @override
-  String get onboardingCompassTitle => 'See Where They Looked';
+  String get onboardingCompassTitle => '그들이 보는 곳';
 
   @override
   String get onboardingCompassBody =>
-      'Compass shows you the exact direction the witness was looking when they saw the UFO. Point your phone and look!';
+      'Compass는 그들이 UFO를 보았을 때 정확한 방향을 보여줍니다. 휴대 전화와 봐!';
 
   @override
-  String get onboardingCommunityTitle => 'Connect with Skywatchers';
+  String get onboardingCommunityTitle => 'Skywatchers와 연결';
 
   @override
   String get onboardingCommunityBody =>
-      'Read the latest UFO sightings over your morning coffee. Access professional MUFON data and connect with fellow skywatchers.';
+      '당신의 아침 커피 위에 최신 UFO 광경을 읽으십시오. 전문 MUFON 데이터를 액세스하고 동료 skywatchers와 연결하십시오.';
 
   @override
-  String get skip => 'Skip';
+  String get skip => '팟캐스트';
 
   @override
-  String get getStarted => 'Get Started';
+  String get getStarted => '시작하기';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => '다시보기';
 
   @override
-  String get customAlertRange => 'Custom Alert Range';
+  String get customAlertRange => '주문 Alert 범위';
 
   @override
-  String get enterRangeKm => 'Enter range in km (1-99999)';
+  String get enterRangeKm => 'Km 범위 입력 (1-99999)';
 
   @override
-  String get largeRangeWarning =>
-      'Large ranges (>100km) may generate many alerts';
+  String get largeRangeWarning => '큰 범위 (>100km)는 많은 경고를 생성할지도 모릅니다';
 
   @override
-  String get globalRangeWarning =>
-      'Very large ranges (>1000km) will send you alerts from around the world';
+  String get globalRangeWarning => '매우 큰 범위 (> 1000km)는 전 세계의 경고를 보낼 것입니다';
 
   @override
-  String get invalidRange => 'Please enter a number between 1 and 99999';
+  String get invalidRange => '1과 99999 사이의 번호를 입력하십시오';
 
   @override
-  String get celestialSunDaylight =>
-      'Sun is up - daylight conditions may affect sighting visibility';
+  String get celestialSunDaylight => '태양은 - 일광 조건은 시야에 영향을 미칠 수 있습니다';
 
   @override
-  String get celestialSunTwilight =>
-      'Twilight conditions - some visibility but darker than daylight';
+  String get celestialSunTwilight => 'Twilight 조건 - 일부 가시성이지만 어둠이 낮보다';
 
   @override
-  String get celestialSunDark =>
-      'Dark conditions - optimal for observing objects in sky';
+  String get celestialSunDark => 'Dark conditions - 하늘에서 개체 관찰에 최적';
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Bright $phase moon visible - may illuminate or obscure other objects';
+    return '밝은 $phase 달 가시 - 다른 개체를 조명하거나 손상시킬 수 있습니다';
   }
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '$phase moon visible - moderate lighting conditions';
+    return '$phase 달 가시 - 온건한 조명 조건';
   }
 
   @override
   String celestialMoonThin(Object phase) {
-    return 'Thin $phase moon visible - minimal lighting';
+    return '얇은 $phase 달 - 최소 조명';
   }
 
   @override
   String celestialMoonHidden(Object phase) {
-    return '$phase moon below horizon - no lunar illumination';
+    return '$phase 수평선 아래 달 - 달빛 없음';
   }
 
   @override
-  String get celestialNoPlanets =>
-      'No bright planets visible that could be mistaken for UFOs';
+  String get celestialNoPlanets => 'UFO에 대한 실수가 될 수있는 밝은 행성 없음';
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '$planet 높은 오버헤드 ($planet°) - 매우 눈에 띄는';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '$planet visible at $altitude° - could be mistaken for aircraft';
+    return '$planet는 $planet°에서 볼 수 있습니다';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$planet low on horizon ($altitude°)';
+    return '$planet 수평선 ($planet°)';
   }
 
   @override
-  String get celestialNoStars => 'No unusually bright stars visible';
+  String get celestialNoStars => '눈에 띄는 밝은 별 없음';
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '$star $star° 고도로 눈에 띄는';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$count bright stars visible - $names';
+    return '$count 밝은 별 - $count';
   }
 
   @override
-  String get celestialSummaryDaylight => 'Daylight conditions';
+  String get celestialSummaryDaylight => '일광 조건';
 
   @override
-  String get celestialSummaryDark => 'Dark sky conditions';
+  String get celestialSummaryDark => '어두운 하늘 조건';
 
   @override
-  String get celestialSummaryMoonUp => 'moon illumination present';
+  String get celestialSummaryMoonUp => '달 조명 현재';
 
   @override
-  String get celestialSummaryMoonDown => 'no moon illumination';
+  String get celestialSummaryMoonDown => '달 조명 없음';
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return '$count bright objects that could be confused with UFOs';
+    return '$count UFO와 혼동 될 수있는 밝은 개체';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return '$count bright object(s) visible';
+    return '$count 밝은 객체(s) 가';
   }
 
   @override
-  String get celestialSummaryFewObjects => 'minimal bright objects in sky';
+  String get celestialSummaryFewObjects => '하늘의 최소 밝은 물체';
 
   @override
   String celestialSkySummary(Object conditions) {
-    return 'Sky conditions: $conditions';
+    return '하늘 조건: ₢ 킹';
   }
 }

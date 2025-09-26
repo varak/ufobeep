@@ -9,563 +9,572 @@ class AppLocalizationsNl extends AppLocalizations {
   AppLocalizationsNl([String locale = 'nl']) : super(locale);
 
   @override
-  String get appName => 'UFOBeep';
+  String get appName => 'UFOBEEP';
 
   @override
   String get ok => 'OK';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Annuleren';
 
   @override
-  String get close => 'Close';
+  String get close => 'Sluiten';
 
   @override
-  String get save => 'Save';
+  String get save => 'Opslaan';
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Verwijderen';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Bewerken';
 
   @override
-  String get retry => 'Retry';
+  String get retry => 'Opnieuw proberen';
 
   @override
-  String get yes => 'Yes';
+  String get yes => 'Ja';
 
   @override
-  String get no => 'No';
+  String get no => 'Nee';
 
   @override
-  String get back => 'Back';
+  String get back => 'Terug';
 
   @override
-  String get next => 'Next';
+  String get next => 'Volgende';
 
   @override
-  String get done => 'Done';
+  String get done => 'Klaar';
 
   @override
-  String get loading => 'Loading…';
+  String get loading => 'Laden..';
 
   @override
-  String get processing => 'Processing…';
+  String get processing => 'Verwerken..';
 
   @override
-  String get errorGeneric => 'Something went wrong.';
+  String get errorGeneric => 'Er ging iets mis.';
 
   @override
-  String get networkError => 'Network error. Check your connection.';
+  String get networkError => 'Netwerkfout. Controleer je verbinding.';
 
   @override
-  String get permissionsRequired => 'Permissions required';
+  String get permissionsRequired => 'Toestemmingen vereist';
 
   @override
-  String get learnMore => 'Learn more';
+  String get learnMore => 'Meer informatie';
 
   @override
-  String get welcomeTitle => 'Welcome to UFOBeep';
+  String get welcomeTitle => 'Welkom bij UFObeep';
 
   @override
-  String get welcomeSubtitle => 'Real-time UFO alerts near you';
+  String get welcomeSubtitle => 'Real-time UFO waarschuwingen in uw buurt';
 
   @override
-  String get signIn => 'Sign in';
+  String get signIn => 'Aanmelden';
 
   @override
-  String get signOut => 'Sign out';
+  String get signOut => 'Afmelden';
 
   @override
-  String get continueAsGuest => 'Continue as guest';
+  String get continueAsGuest => 'Doorgaan als gast';
 
   @override
-  String get enterUsername => 'Enter a username';
+  String get enterUsername => 'Gebruikersnaam invoeren';
 
   @override
-  String get username => 'Username';
+  String get username => 'Gebruikersnaam';
 
   @override
-  String get usernameUpdated => 'Username updated';
+  String get usernameUpdated => 'Gebruikersnaam bijgewerkt';
 
   @override
-  String get profile => 'Profile';
+  String get profile => 'Profiel';
 
   @override
-  String get settings => 'Settings';
+  String get settings => 'Instellingen';
 
   @override
-  String get tabAlerts => 'Alerts';
+  String get tabAlerts => 'Waarschuwingen';
 
   @override
-  String get tabBeep => 'Beep';
+  String get tabBeep => 'Piep';
 
   @override
-  String get tabChat => 'Chat';
+  String get tabChat => 'Gesprek';
 
   @override
-  String get tabMap => 'Map';
+  String get tabMap => 'Kaart';
 
   @override
-  String get tabSettings => 'Settings';
+  String get tabSettings => 'Instellingen';
 
   @override
-  String get alertsTitle => 'Nearby Alerts';
+  String get alertsTitle => 'Waarschuwingen nabijgelegen';
 
   @override
-  String get noAlerts => 'No alerts nearby yet.';
+  String get noAlerts => 'Nog geen waarschuwingen in de buurt.';
 
   @override
-  String get pullToRefresh => 'Pull to refresh';
+  String get pullToRefresh => 'Trek om te vernieuwen';
 
   @override
   String alertDistance(String distance) {
-    return '$distance away';
+    return '${distance}_ weg';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Bearing $bearing°';
+    return '__PLAATSHOLDER_0__°';
   }
 
   @override
-  String get viewAlert => 'View alert';
+  String get viewAlert => 'Alert weergeven';
 
   @override
-  String get viewOnMap => 'View on map';
+  String get viewOnMap => 'Bekijk op kaart';
 
   @override
-  String get iSeeItToo => 'I see it too';
+  String get iSeeItToo => 'Ik zie het ook';
 
   @override
-  String get confirmWitnessed => 'Confirm you witnessed this sighting?';
+  String get confirmWitnessed =>
+      'Bevestigd dat je getuige was van deze waarneming?';
 
   @override
-  String get witnessConfirmed => 'Thanks — your confirmation was posted.';
+  String get witnessConfirmed => 'Bedankt, uw bevestiging is geplaatst.';
 
   @override
-  String get createBeepTitle => 'Send a Beep';
+  String get createBeepTitle => 'Stuur een pieper';
 
   @override
-  String get beepExplain => 'Capture what you see and alert nearby watchers.';
+  String get beepExplain =>
+      'Neem wat je ziet en waarschuw de bewakers in de buurt.';
 
   @override
-  String get capturePhoto => 'Capture photo';
+  String get capturePhoto => 'Foto vastleggen';
 
   @override
-  String get captureVideo => 'Capture video';
+  String get captureVideo => 'Video vastleggen';
 
   @override
-  String get pickFromGallery => 'Choose from gallery';
+  String get pickFromGallery => 'Kies uit galerij';
 
   @override
-  String get descriptionHint => 'Describe what you\'re seeing in the sky…';
+  String get descriptionHint => 'Beschrijf wat je ziet in de lucht..';
 
   @override
-  String get submitBeep => 'Send Beep';
+  String get submitBeep => 'Beep sturen';
 
   @override
-  String get beepSent => 'Beep sent';
+  String get beepSent => 'Piep verzonden';
 
   @override
   String beepSentWithUrl(String shortUrl) {
-    return 'Beep sent successfully';
+    return 'Beep succesvol verzonden';
   }
 
   @override
-  String get uploadingMedia => 'Uploading media…';
+  String get uploadingMedia => 'Media uploaden..';
 
   @override
-  String get includeLocation => 'Include location';
+  String get includeLocation => 'Plaats';
 
   @override
-  String get includeTimestamp => 'Include timestamp';
+  String get includeTimestamp => 'Tijdstempel invoegen';
 
   @override
-  String get beepFailed => 'Failed to send Beep.';
+  String get beepFailed => 'Kon Beep niet sturen.';
 
   @override
-  String get mediaProcessing => 'Processing media…';
+  String get mediaProcessing => 'Media verwerken..';
 
   @override
-  String get cameraPermissionTitle => 'Camera access needed';
+  String get cameraPermissionTitle => 'Cameratoegang nodig';
 
   @override
   String get cameraPermissionBody =>
-      'Grant camera access to capture UFO photos and videos.';
+      'Grant camera toegang tot UFO foto\'s en video\'s vastleggen.';
 
   @override
-  String get locationPermissionTitle => 'Location Permission Required';
+  String get locationPermissionTitle => 'Locatie Toestemming vereist';
 
   @override
   String get locationPermissionBody =>
-      'We use your location to send and receive nearby alerts.';
+      'Wij gebruiken uw locatie om waarschuwingen in de buurt te versturen en te ontvangen.';
 
   @override
-  String get microphonePermissionTitle => 'Microphone access needed';
+  String get microphonePermissionTitle => 'Microfoontoegang nodig';
 
   @override
   String get microphonePermissionBody =>
-      'Grant microphone access for video capture with audio.';
+      'Geef microfoon toegang voor video-opname met audio.';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => 'Instellingen openen';
 
   @override
-  String get alertDetailTitle => 'Sighting Details';
+  String get alertDetailTitle => 'Waarnemingsdetails';
 
   @override
   String reportedBy(String username) {
-    return 'Reported by $username';
+    return 'Gerapporteerd door $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Reported $timeAgo';
+    return 'Gerapporteerd __PLAATSHOLDER_0__';
   }
 
   @override
   String distanceAway(String distance) {
-    return '$distance';
+    return '__PLAATSHOLDER_0___';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Bearing to object: $bearing°';
+    return 'Richting naar object: __PLAATSHOLDER_0__°';
   }
 
   @override
-  String get openCompass => 'Open compass';
+  String get openCompass => 'Open kompas';
 
   @override
-  String get openAR => 'Open AR overlay';
+  String get openAR => 'Open AR-overlay';
 
   @override
-  String get openChat => 'Open chat';
+  String get openChat => 'Gesprek openen';
 
   @override
-  String get commentsTitle => 'Comments';
+  String get commentsTitle => 'Opmerkingen';
 
   @override
-  String get addComment => 'Add a comment…';
+  String get addComment => 'Een commentaar toevoegen..';
 
   @override
-  String get send => 'Send';
+  String get send => 'Verzenden';
 
   @override
-  String get commentPosted => 'Comment posted';
+  String get commentPosted => 'Commentaar geplaatst';
 
   @override
-  String get autoFollowEnabled => 'You’re now following this alert.';
+  String get autoFollowEnabled => 'Je volgt nu dit alarm.';
 
   @override
-  String get noCommentsYet => 'No comments yet. Be the first to comment!';
+  String get noCommentsYet =>
+      'Nog geen commentaar. Wees de eerste om te reageren!';
 
   @override
-  String get newCommentNotification => 'New comment on a sighting you follow.';
+  String get newCommentNotification =>
+      'Nieuw commentaar op een waarneming die je volgt.';
 
   @override
-  String get mapTitle => 'Live Map';
+  String get mapTitle => 'Live map';
 
   @override
-  String get compassTitle => 'Compass';
+  String get compassTitle => 'Kompas';
 
   @override
-  String get compassSettings => 'Compass Settings';
+  String get compassSettings => 'Compass-instellingen';
 
   @override
-  String get compassMode => 'Compass Mode';
+  String get compassMode => 'Kompasmodus';
 
   @override
-  String get compassStandardMode => 'Standard Mode';
+  String get compassStandardMode => 'Standaardmodus';
 
   @override
-  String get compassPilotMode => 'Pilot Mode';
+  String get compassPilotMode => 'Pilootmodus';
 
   @override
-  String get compassStandardDescription => 'Basic heading and navigation';
+  String get compassStandardDescription => 'Basisrichting en navigatie';
 
   @override
   String get compassPilotDescription =>
-      'Advanced navigation with ETA and vectoring';
+      'Geavanceerde navigatie met ETA en vectoring';
 
   @override
   String pointingTo(String direction) {
-    return 'Pointing to $direction';
+    return '$direction';
   }
 
   @override
-  String get calibratingCompass => 'Calibrating compass…';
+  String get calibratingCompass => 'Kalibreren kompas..';
 
   @override
-  String get openAROverlay => 'Open AR overlay';
+  String get openAROverlay => 'Open AR-overlay';
 
   @override
-  String get pushTitleAlertNearby => 'UFO alert near you';
+  String get pushTitleAlertNearby => 'UFO-alarm nabij u';
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'A new sighting was reported $distance away.';
+    return 'Er werd een nieuwe waarneming gemeld.';
   }
 
   @override
-  String get pushTitleComment => 'New comment';
+  String get pushTitleComment => 'Nieuwe opmerking';
 
   @override
-  String get pushBodyComment => 'Someone commented on a sighting you follow.';
+  String get pushBodyComment =>
+      'Iemand zei iets over een waarneming die je volgt.';
 
   @override
-  String get pushTitleWitness => 'Witness confirmation';
+  String get pushTitleWitness => 'Getuigenbevestiging';
 
   @override
-  String get temperature => 'Temperature';
+  String get temperature => 'Temperatuur';
 
   @override
-  String get pushBodyWitness => 'A user confirmed they see the same object.';
+  String get pushBodyWitness =>
+      'Een gebruiker bevestigde dat ze hetzelfde object zien.';
 
   @override
-  String get weather => 'Weather';
+  String get weather => 'Weer';
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: $percent%';
+    return 'Cloud cover: __PLAATSHOLDER_0___%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wind: $speed $unit';
+    return 'Wind: __PLAATSHOLDER_0__ __PLAATSHOLDER_1__';
   }
 
   @override
-  String get nearbyAircraft => 'Nearby aircraft';
+  String get nearbyAircraft => 'Luchtvaartuigen in de buurt';
 
   @override
-  String get noAircraft => 'No aircraft nearby';
+  String get noAircraft => 'Geen vliegtuig in de buurt';
 
   @override
-  String get loadingContext => 'Loading environmental context…';
+  String get loadingContext => 'Milieucontext wordt geladen..';
 
   @override
-  String get settingsTitle => 'Settings';
+  String get settingsTitle => 'Instellingen';
 
   @override
-  String get notifications => 'Notifications';
+  String get notifications => 'Kennisgevingen';
 
   @override
-  String get enablePushNotifications => 'Get notifications for future comments';
+  String get enablePushNotifications =>
+      'Notificaties opvragen voor toekomstige reacties';
 
   @override
-  String get quietHours => 'Quiet hours';
+  String get quietHours => 'Rustige uren';
 
   @override
-  String get quietHoursDesc => 'Silence alerts between selected hours.';
+  String get quietHoursDesc => 'Stiltemeldingen tussen geselecteerde uren.';
 
   @override
-  String get quietHoursEnabled => 'Enable quiet hours';
+  String get quietHoursEnabled => 'Rustige uren inschakelen';
 
   @override
-  String get quietHoursFrom => 'From';
+  String get quietHoursFrom => 'Van';
 
   @override
-  String get quietHoursUntil => 'Until';
+  String get quietHoursUntil => 'Tot';
 
   @override
-  String get quietHoursDefaultTime => 'Default quiet hours';
+  String get quietHoursDefaultTime => 'Standaard rustige uren';
 
   @override
-  String get emergencyOverride => 'Emergency override';
+  String get emergencyOverride => 'Noodoverschrijving';
 
   @override
-  String get emergencyOverrideDesc => 'Allow urgent alerts during quiet hours';
+  String get emergencyOverrideDesc =>
+      'Noodoproepen tijdens stille uren toestaan';
 
   @override
-  String get dndMode => 'Do Not Disturb';
+  String get dndMode => 'Niet storen';
 
   @override
-  String get dndUntil => 'Do not disturb until';
+  String get dndUntil => 'Niet storen tot';
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until $time';
+    return 'DND ingeschakeld tot $time';
   }
 
   @override
-  String get dndDisabled => 'DND disabled';
+  String get dndDisabled => 'DND uitgeschakeld';
 
   @override
-  String get quietHoursActive => 'Quiet hours active';
+  String get quietHoursActive => 'Rustige uren actief';
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Quiet hours: $start - $end';
+    return 'Rustige uren: __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__';
   }
 
   @override
-  String get pushNotificationUfoAlert => 'UFO Alert';
+  String get pushNotificationUfoAlert => 'UFO Waarschuwing';
 
   @override
   String get pushNotificationAnomalyAlert => 'Anomaly Alert';
 
   @override
-  String get pushNotificationNearby => 'Nearby';
+  String get pushNotificationNearby => 'In de buurt';
 
   @override
-  String get pushNotificationInYourArea => 'in your area. Tap to view details.';
+  String get pushNotificationInYourArea =>
+      'in uw gebied. Tik op details weergeven.';
 
   @override
   String pushNotificationCommented(Object username) {
-    return '$username commented';
+    return '${username}commentaar';
   }
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$username commented on $beepTitle';
+    return '__PLAATSHOLDER_0__ commentaar op __PLAATSHOLDER_1__';
   }
 
   @override
-  String get pushNotificationGeneric => 'UFOBeep';
+  String get pushNotificationGeneric => 'UFOBEEP';
 
   @override
-  String get pushNotificationNewSighting => 'New sighting nearby';
+  String get pushNotificationNewSighting => 'Nieuwe waarnemingen in de buurt';
 
   @override
-  String get language => 'Language';
+  String get language => 'Taal';
 
   @override
-  String get chooseLanguage => 'Choose language';
+  String get chooseLanguage => 'Taal kiezen';
 
   @override
-  String get units => 'Units';
+  String get units => 'Eenheden';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => 'Keizerlijk (mi, mph)';
 
   @override
-  String get unitsMetric => 'Metric (km, km/h)';
+  String get unitsMetric => 'Metrisch (km, km/h)';
 
   @override
-  String get privacyPolicy => 'Privacy Policy';
+  String get privacyPolicy => 'Privacybeleid';
 
   @override
-  String get termsOfUse => 'Terms of Use';
+  String get termsOfUse => 'Gebruiksvoorwaarden';
 
   @override
   String get errorNoLocation =>
-      'Location unavailable. Try again outside with clear sky view.';
+      'Locatie is niet beschikbaar. Probeer het nog eens buiten met helder uitzicht op de hemel.';
 
   @override
-  String get errorNoCamera => 'Camera unavailable on this device.';
+  String get errorNoCamera => 'Camera niet beschikbaar op dit apparaat.';
 
   @override
-  String get errorUploadFailed => 'Upload failed. Please try again.';
+  String get errorUploadFailed => 'Uploaden mislukt. Probeer het nog eens.';
 
   @override
-  String get errorPermissionDenied => 'Permission denied.';
+  String get errorPermissionDenied => 'Toestemming geweigerd.';
 
   @override
-  String get errorInvalidUsername => 'That username isn’t available.';
+  String get errorInvalidUsername => 'Die gebruikersnaam is niet beschikbaar.';
 
   @override
-  String get nothingToShow => 'Nothing to show yet.';
+  String get nothingToShow => 'Nog niets te zien.';
 
   @override
   String get storeShortDesc =>
-      'Instant UFO alerts near you. Capture, confirm, and chat in real time.';
+      'Instant UFO waarschuwingen in uw buurt. Vangen, bevestigen en praten in real time.';
 
   @override
   String get storeLongDesc =>
-      'UFOBeep sends real-time alerts when someone spots a UFO nearby. Capture photos and videos, confirm sightings with a tap, view direction & distance, and chat with fellow skywatchers.';
+      'UFObeep stuurt real-time waarschuwingen als iemand een UFO in de buurt ziet. Foto\'s en video\'s vastleggen, waarnemingen bevestigen met een tik, richting en afstand bekijken en chatten met collega-skywatchers.';
 
   @override
   String get keywords =>
       'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Geen overeenkomstige waarschuwingen';
 
   @override
   String get alertsFilterHelp =>
-      'Try adjusting your filters to see more results';
+      'Probeer uw filters aan te passen om meer resultaten te zien';
 
   @override
-  String get verified => 'Verified';
+  String get verified => 'Geverifieerd';
 
   @override
-  String get beepOnly => 'Beep Only';
+  String get beepOnly => 'Alleen piepen';
 
   @override
-  String get reportOnly => 'Text Only';
+  String get reportOnly => 'Alleen tekst';
 
   @override
-  String get videoOnly => 'Video Only';
+  String get videoOnly => 'Alleen video';
 
   @override
-  String get imageOnly => 'Image Only';
+  String get imageOnly => 'Alleen afbeelding';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Alleen media';
 
   @override
-  String get timeJustNow => 'just now';
+  String get timeJustNow => 'net';
 
   @override
   String timeDaysAgo(int count) {
-    return '$count days ago';
+    return '__PLAATSHOLDER_0__ dagen geleden';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '$count hours ago';
+    return '__PLAATSHOLDER_0___ uren geleden';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '$count minutes ago';
+    return '__PLAATSHOLDER_0___ minuten geleden';
   }
 
   @override
-  String get loadMoreAlerts => 'Load More Alerts';
+  String get loadMoreAlerts => 'Meer waarschuwingen laden';
 
   @override
-  String get toggleMufonTooltip => 'Toggle MUFON sightings';
+  String get toggleMufonTooltip => 'MUFON waarnemingen aan/uit';
 
   @override
-  String get showMufonData => 'Show MUFON data';
+  String get showMufonData => 'MUFON-gegevens tonen';
 
   @override
-  String get hideMufonData => 'Hide MUFON data';
+  String get hideMufonData => 'MUFON-gegevens verbergen';
 
   @override
-  String get showingUfoBeepOnly => 'Showing only UFOBeep reports';
+  String get showingUfoBeepOnly => 'Alleen UFObeep-rapporten tonen';
 
   @override
   String get showingAllReports =>
-      'Showing all reports including MUFON database';
+      'Alle rapporten inclusief MUFON-database tonen';
 
   @override
-  String get filteredSuffix => 'filtered';
+  String get filteredSuffix => 'gefilterd';
 
   @override
-  String get detailsTitle => 'Details';
+  String get detailsTitle => 'Gegevens';
 
   @override
-  String get mufonCase => 'MUFON Case';
+  String get mufonCase => 'MUFON Zaak';
 
   @override
-  String get mufonSighting => 'MUFON Sighting Report';
+  String get mufonSighting => 'MUFON-waarnemingsrapport';
 
   @override
-  String get mufonLightSighting => 'MUFON Light Sighting Report';
+  String get mufonLightSighting => 'MUFON Lichtzichtrapport';
 
   @override
   String get mufonSphereSighting => 'MUFON Sphere Sighting Report';
 
   @override
-  String get mufonDiscSighting => 'MUFON Disc Sighting Report';
+  String get mufonDiscSighting => 'MUFON Schijfzichtrapport';
 
   @override
-  String get mufonTriangleSighting => 'MUFON Triangle Sighting Report';
+  String get mufonTriangleSighting => 'MUFON Driehoekverslag';
 
   @override
   String get mufonCigarSighting => 'MUFON Cigar Sighting Report';
@@ -574,10 +583,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mufonOvalSighting => 'MUFON Oval Sighting Report';
 
   @override
-  String get mufonRectangleSighting => 'MUFON Rectangle Sighting Report';
+  String get mufonRectangleSighting => 'MUFON Rechthoekig overzichtsrapport';
 
   @override
-  String get mufonCylinderSighting => 'MUFON Cylinder Sighting Report';
+  String get mufonCylinderSighting => 'MUFON-cilinderzichtrapport';
 
   @override
   String get mufonBoomerangSighting => 'MUFON Boomerang Sighting Report';
@@ -587,215 +596,215 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber Details';
+    return 'MUFON-geval #__PLAATSHOLDER_0_ Details';
   }
 
   @override
-  String get sightingDate => 'Sighting Date';
+  String get sightingDate => 'Datum van waarneming';
 
   @override
-  String get mufonDatabaseEntryDate => 'Date Entered into MUFON Database';
+  String get mufonDatabaseEntryDate => 'Datum ingevoerd in MUFON Database';
 
   @override
-  String get databaseEntry => 'Database Entry';
+  String get databaseEntry => 'Databaseinvoer';
 
   @override
-  String get shareLink => 'Share Link';
+  String get shareLink => 'Link delen';
 
   @override
-  String get linkCopied => 'Link copied to clipboard';
+  String get linkCopied => 'Koppeling naar klembord';
 
   @override
-  String get locationLabel => 'Location:';
+  String get locationLabel => 'Locatie:';
 
   @override
-  String get distanceLabel => 'Distance';
+  String get distanceLabel => 'Afstand';
 
   @override
-  String get timeLabel => 'Time:';
+  String get timeLabel => 'Tijd:';
 
   @override
-  String get reportedByLabel => 'Reported by';
+  String get reportedByLabel => 'Gerapporteerd door';
 
   @override
-  String get unknownLocation => 'Unknown Location';
+  String get unknownLocation => 'Onbekende locatie';
 
   @override
-  String get locationUnknown => 'Location Unknown';
+  String get locationUnknown => 'Locatie onbekend';
 
   @override
-  String get witnessesLabel => 'Witnesses';
+  String get witnessesLabel => 'Getuigen';
 
   @override
   String witnessesCountMessage(int count) {
-    return '$count people confirmed this sighting';
+    return 'De mensen hebben deze waarneming bevestigd';
   }
 
   @override
-  String get photoAnalysisTitle => 'Photo Analysis';
+  String get photoAnalysisTitle => 'Fotoanalyse';
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analysis: $count media file(s) processed';
+    return 'Analyse: __PLAATSHOLDER_0__ mediabestand(s) verwerkt';
   }
 
   @override
-  String get addMoreMedia => 'Add More';
+  String get addMoreMedia => 'Meer toevoegen';
 
   @override
-  String get addMedia => 'Add Media';
+  String get addMedia => 'Media toevoegen';
 
   @override
-  String get retakePhoto => 'Retake Photo';
+  String get retakePhoto => 'Foto hernemen';
 
   @override
-  String get retakeVideo => 'Retake Video';
+  String get retakeVideo => 'Video opnieuw opnemen';
 
   @override
   String get camera => 'Camera';
 
   @override
-  String get gallery => 'Gallery';
+  String get gallery => 'Galerij';
 
   @override
-  String get basicSettings => 'Basic Settings';
+  String get basicSettings => 'Basisinstellingen';
 
   @override
-  String get appSettings => 'App Settings';
+  String get appSettings => 'Appinstellingen';
 
   @override
-  String get timeFormat => 'Time Format';
+  String get timeFormat => 'Tijdformaat';
 
   @override
-  String get timeFormat24Hour => '24-hour (14:30)';
+  String get timeFormat24Hour => '24 uur (14:30)';
 
   @override
-  String get timeFormat12Hour => '12-hour (2:30 PM)';
+  String get timeFormat12Hour => '12 uur (2.30 uur)';
 
   @override
-  String get timeFormatDesc => 'Display time in 24-hour or 12-hour format';
+  String get timeFormatDesc => 'Weergavetijd in 24-uurs- of 12-uursformaat';
 
   @override
-  String get alertRange => 'Alert Range';
+  String get alertRange => 'Waarschuwingsbereik';
 
   @override
-  String get manageNotificationsDesc => 'Manage subscriptions & settings';
+  String get manageNotificationsDesc => 'Abonnementeninstellingen beheren';
 
   @override
-  String get permissionsTitle => 'Permissions';
+  String get permissionsTitle => 'Rechten';
 
   @override
-  String get permissionLocation => 'Location';
+  String get permissionLocation => 'Locatie';
 
   @override
   String get permissionCamera => 'Camera';
 
   @override
-  String get permissionNotifications => 'Notifications';
+  String get permissionNotifications => 'Kennisgevingen';
 
   @override
-  String get permissionPhotos => 'Photos';
+  String get permissionPhotos => 'Foto\'s';
 
   @override
-  String get permissionGranted => 'Granted';
+  String get permissionGranted => 'Toegestaan';
 
   @override
-  String get permissionNotGranted => 'Not granted';
+  String get permissionNotGranted => 'Niet toegekend';
 
   @override
-  String get permissionGrant => 'Grant';
+  String get permissionGrant => 'Subsidie';
 
   @override
-  String get generateUsername => 'Generate new username';
+  String get generateUsername => 'Nieuwe gebruikersnaam aanmaken';
 
   @override
-  String get adminTools => 'Admin Tools';
+  String get adminTools => 'Beheergereedschappen';
 
   @override
-  String get openAdminPanel => 'Open Admin Panel';
+  String get openAdminPanel => 'Beheerpaneel openen';
 
   @override
-  String get webAdminInterface => 'Web Admin Interface';
+  String get webAdminInterface => 'Webbeheerderinterface';
 
   @override
   String get adminBetaNotice =>
-      'Beta builds only. Admin tools for testing proximity alerts, push notifications, and system diagnostics.';
+      'Beta bouwt alleen. Admin tools voor het testen van nabijheid waarschuwingen, push meldingen, en systeemdiagnostiek.';
 
   @override
-  String get whatDoYouSee => 'What do you see?';
+  String get whatDoYouSee => 'Wat zie je?';
 
   @override
   String get ufo => 'UFO';
 
   @override
-  String get sighting => 'Sighting';
+  String get sighting => 'Waarneming';
 
   @override
-  String get ufoSighting => 'UFOBeep UFO Alert';
+  String get ufoSighting => 'UFOPEEP UFO Waarschuwing';
 
   @override
-  String get envAnalysisTitle => 'Environmental Analysis';
+  String get envAnalysisTitle => 'Milieuanalyse';
 
   @override
-  String get envAnalysisPending => 'Analysis Pending';
+  String get envAnalysisPending => 'Analyse in afwachting';
 
   @override
   String get envAnalysisPendingDesc =>
-      'Environmental data will be available once processing begins.';
+      'Milieugegevens zullen beschikbaar zijn zodra de verwerking begint.';
 
   @override
-  String get unknownAircraft => 'Unknown Aircraft';
+  String get unknownAircraft => 'Onbekend vliegtuig';
 
   @override
-  String get moreAircraft => 'more aircraft';
+  String get moreAircraft => 'meer vliegtuigen';
 
   @override
-  String get showLess => 'Show less';
+  String get showLess => 'Minder tonen';
 
   @override
-  String get premiumImageryTitle => 'Premium Satellite Imagery';
+  String get premiumImageryTitle => 'Premium satelliet Afbeelding';
 
   @override
-  String get premiumImagerySubtitle => 'High-resolution commercial imagery';
+  String get premiumImagerySubtitle => 'Handelsbeelden met hoge resolutie';
 
   @override
   String get sightingTypeLabel => 'Type';
 
   @override
-  String get ufoTypeSphere => 'Sphere';
+  String get ufoTypeSphere => 'Bol';
 
   @override
-  String get ufoTypeTriangle => 'Triangle';
+  String get ufoTypeTriangle => 'Driehoek';
 
   @override
-  String get ufoTypeDisk => 'Disk';
+  String get ufoTypeDisk => 'Schijf';
 
   @override
-  String get ufoTypeLight => 'Light';
+  String get ufoTypeLight => 'Licht';
 
   @override
-  String get ufoTypeFireball => 'Fireball';
+  String get ufoTypeFireball => 'Vuurbal';
 
   @override
-  String get ufoTypeCylinder => 'Cylinder';
+  String get ufoTypeCylinder => 'Cilinder';
 
   @override
-  String get ufoTypeCigar => 'Cigar';
+  String get ufoTypeCigar => 'Sigaren';
 
   @override
-  String get ufoTypeRectangle => 'Rectangle';
+  String get ufoTypeRectangle => 'Rechthoek';
 
   @override
-  String get ufoTypeFormation => 'Formation';
+  String get ufoTypeFormation => 'Vorming';
 
   @override
-  String get ufoTypeUnknown => 'Unknown';
+  String get ufoTypeUnknown => 'Onbekend';
 
   @override
   String get ufoTypeBoomerang => 'Boomerang';
 
   @override
-  String get ufoTypeDiamond => 'Diamond';
+  String get ufoTypeDiamond => 'Diamant';
 
   @override
   String get ufoTypeOval => 'Oval';
@@ -804,7 +813,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get ufoTypeCone => 'Cone';
 
   @override
-  String get ufoTypeCross => 'Cross';
+  String get ufoTypeCross => 'Kruis';
 
   @override
   String get ufoTypeDumbbell => 'Dumbbell';
@@ -816,314 +825,315 @@ class AppLocalizationsNl extends AppLocalizations {
   String get ufoTypeTicTac => 'Tic Tac';
 
   @override
-  String get ufoTypeBullet => 'Bullet';
+  String get ufoTypeBullet => 'Kogel';
 
   @override
-  String get ufoTypeSaturn => 'Saturn';
+  String get ufoTypeSaturn => 'Saturnus';
 
   @override
-  String get ufoTypeStarLike => 'Star-like';
+  String get ufoTypeStarLike => 'Sterrenachtig';
 
   @override
   String get ufoTypeBlimp => 'Blimp';
 
   @override
-  String get shapeTriangle => 'triangle';
+  String get shapeTriangle => 'driehoek';
 
   @override
-  String get shapeDisc => 'disc';
+  String get shapeDisc => 'schijf';
 
   @override
-  String get shapeDisk => 'disk';
+  String get shapeDisk => 'schijf';
 
   @override
-  String get shapeSphere => 'sphere';
+  String get shapeSphere => 'bol';
 
   @override
-  String get shapeCigar => 'cigar';
+  String get shapeCigar => 'sigaren';
 
   @override
-  String get shapeLight => 'light';
+  String get shapeLight => 'licht';
 
   @override
-  String get shapeBoomerang => 'boomerang';
+  String get shapeBoomerang => 'boemerang';
 
   @override
-  String get shapeDiamond => 'diamond';
+  String get shapeDiamond => 'diamant';
 
   @override
-  String get shapeRectangle => 'rectangle';
+  String get shapeRectangle => 'rechthoek';
 
   @override
-  String get shapeOval => 'oval';
+  String get shapeOval => 'ovaal';
 
   @override
-  String get shapeCone => 'cone';
+  String get shapeCone => 'kegel';
 
   @override
-  String get shapeCross => 'cross';
+  String get shapeCross => 'kruis';
 
   @override
-  String get shapeCylinder => 'cylinder';
+  String get shapeCylinder => 'cilinder';
 
   @override
-  String get shapeDumbbell => 'dumbbell';
+  String get shapeDumbbell => 'halter';
 
   @override
-  String get shapeTeardrop => 'teardrop';
+  String get shapeTeardrop => 'traanwortel';
 
   @override
   String get shapeTicTac => 'tic-tac';
 
   @override
-  String get shapeBullet => 'bullet';
+  String get shapeBullet => 'kogel';
 
   @override
-  String get shapeSaturn => 'saturn';
+  String get shapeSaturn => 'saturnus';
 
   @override
-  String get shapeStarlike => 'starlike';
+  String get shapeStarlike => 'sterachtig';
 
   @override
-  String get shapeBlimp => 'blimp';
+  String get shapeBlimp => 'zeppelin';
 
   @override
-  String get shapeFireball => 'fireball';
+  String get shapeFireball => 'vuurbal';
 
   @override
-  String get shapeFormation => 'formation';
+  String get shapeFormation => 'vorming';
 
   @override
-  String get shapeUnknown => 'unknown';
+  String get shapeUnknown => 'onbekend';
 
   @override
-  String get actionsTitle => 'Actions';
+  String get actionsTitle => 'Acties';
 
   @override
-  String get addPhotosAndVideos => 'Add Photos & Videos';
+  String get addPhotosAndVideos => 'Foto\'s en video\'s toevoegen';
 
   @override
-  String get howToReportToMufon => 'How to Report to MUFON';
+  String get howToReportToMufon => 'Hoe rapporteren aan MUFON';
 
   @override
-  String get reportToMufon => 'Report to MUFON';
+  String get reportToMufon => 'Verslag aan MUFON';
 
   @override
-  String get whyReportToMufon => 'Why Report to MUFON?';
+  String get whyReportToMufon => 'Waarom verslag uitbrengen aan MUFON?';
 
   @override
-  String get openMufonReport => 'Open MUFON Report';
+  String get openMufonReport => 'MUFON openen Verslag';
 
   @override
-  String get confirmedWitness => 'You confirmed this sighting';
+  String get confirmedWitness => 'Je hebt deze waarneming bevestigd';
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '$count people have confirmed this sighting';
+    return 'Mensen hebben deze waarneming bevestigd';
   }
 
   @override
-  String get aircraftTrackingTitle => 'Aircraft Tracking';
+  String get aircraftTrackingTitle => 'Tracking van luchtvaartuigen';
 
   @override
-  String get weatherConditionsTitle => 'Weather Conditions';
+  String get weatherConditionsTitle => 'Weersomstandigheden';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => 'Geen zichtbare satellietpassen gevonden';
 
   @override
-  String get contentAnalysisTitle => 'Content Analysis';
+  String get contentAnalysisTitle => 'Inhoudsanalyse';
 
   @override
-  String get contentSafe => 'Content is safe';
+  String get contentSafe => 'Inhoud is veilig';
 
   @override
-  String get contentFlagged => 'Content flagged for review';
+  String get contentFlagged => 'Inhoud gemarkeerd voor beoordeling';
 
   @override
-  String get confidenceLabel => 'Confidence';
+  String get confidenceLabel => 'Vertrouwen';
 
   @override
-  String get methodLabel => 'Method';
+  String get methodLabel => 'Methode';
 
   @override
   String get premiumImageryAccessOnly =>
-      'Premium satellite imagery is only available to:';
+      'Premium satellietbeelden zijn alleen beschikbaar voor:';
 
   @override
-  String get premiumAccessCreators => 'Alert creators';
+  String get premiumAccessCreators => 'Waarschuwingsmakers';
 
   @override
-  String get premiumAccessWitnesses =>
-      'Confirmed witnesses within visibility range';
+  String get premiumAccessWitnesses => 'Bevestigde getuigen binnen zichtbereik';
 
   @override
-  String get comingSoon => 'Coming Soon';
+  String get comingSoon => 'Binnenkort';
 
   @override
-  String get directionDistanceTitle => 'Direction & Distance';
+  String get directionDistanceTitle => 'Richting en afstand';
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Case #$caseNumber';
+    return 'MUFON Zaak #__PLAATSHOLDER_0__';
   }
 
   @override
-  String get satellitePassesTitle => 'Satellite Passes';
+  String get satellitePassesTitle => 'Satellietpassen';
 
   @override
   String get satellitePassExplanation =>
-      'Visible satellite passes during the sighting timeframe. Many UFO reports are actually satellites or space debris.';
+      'Zichtbare satelliet passeert tijdens de waarneming. Veel UFO rapporten zijn eigenlijk satellieten of ruimte puin.';
 
   @override
   String get followingAlert =>
-      'Following alert - you\'ll get comment notifications';
+      'Na waarschuwing - je krijgt commentaar meldingen';
 
   @override
   String get unfollowedAlert =>
-      'Unfollowed alert - no more comment notifications';
+      'Ongevolgd alarm - geen commentaarmeldingen meer';
 
   @override
-  String get alertFollowError => 'Error updating follow status';
+  String get alertFollowError => 'Fout bij bijwerken van volgstatus';
 
   @override
-  String get notificationChannelAlerts => 'UFOBeep Alerts';
+  String get notificationChannelAlerts => 'UFOBEEP-waarschuwingen';
 
   @override
   String get notificationChannelAlertsDesc =>
-      'Notifications for UFO beeps and proximity alerts';
+      'Kennisgevingen voor UFO-pieps en nabijheidswaarschuwingen';
 
   @override
-  String get notificationSightingTitle => 'UFOBeep UFO Alert';
+  String get notificationSightingTitle => 'UFOPEEP UFO Waarschuwing';
 
   @override
-  String get notificationSightingUrgent => '⚠️ URGENT UFOBeep UFO Alert';
+  String get notificationSightingUrgent => 'UFO UFO UFO Waarschuwing';
 
   @override
-  String get notificationSightingEmergency => '🚨 EMERGENCY UFOBeep UFO Alert';
+  String get notificationSightingEmergency => 'Ufobeep UFO Waarschuwing';
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText near $locationName';
+    return '__PLAATSHOLDER_0__ in de buurt __PLAATSHOLDER_1__';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 $username commented';
+    return '${username}commentaar';
   }
 
   @override
-  String get notificationWitnessText => 'New sighting';
+  String get notificationWitnessText => 'Nieuwe waarneming';
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count witnesses';
+    return 'Getuigen';
   }
 
   @override
   String get notificationActionSnooze => 'Snooze 1h';
 
   @override
-  String get notificationActionDismiss => 'Dismiss';
+  String get notificationActionDismiss => 'Ingetrokken';
 
   @override
   String notificationDistance(String distance) {
-    return '$distance away';
+    return '${distance}_ weg';
   }
 
   @override
-  String get unknown => 'unknown';
+  String get unknown => 'onbekend';
 
   @override
-  String get report => 'report';
+  String get report => 'rapport';
 
   @override
   String get mufon => 'mufon';
 
   @override
-  String get recentUfoBeepsTitle => 'Recent UFO Beeps';
+  String get recentUfoBeepsTitle => 'Recente UFO Pieps';
 
   @override
   String get recentUfoBeepsSubtitle =>
-      'Live UFO sighting reports from our global community';
+      'Live UFO waarnemingen van onze wereldwijde gemeenschap';
 
   @override
   String get recentUfoBeepsDescription =>
-      'This feed combines real-time UFOBeep \"beeps\" from our mobile app users with historical reports from the MUFON database.';
+      'Deze feed combineert real-time UFObeep \"pieps\" van onze mobiele app gebruikers met historische rapporten uit de MUFON database.';
 
   @override
-  String get loadingBeeps => 'Loading recent beeps...';
+  String get loadingBeeps => 'Laden van recente piepers...';
 
   @override
-  String get noBeepsAvailable => 'No beeps available at the moment.';
+  String get noBeepsAvailable => 'Er zijn momenteel geen piepers beschikbaar.';
 
   @override
-  String get anomalyReported => 'Anomaly reported';
+  String get anomalyReported => 'Anomalie gemeld';
 
   @override
-  String get copyShortLink => 'Copy short link';
+  String get copyShortLink => 'Korte verwijzing kopiëren';
 
   @override
-  String get shareAlert => 'Share alert';
+  String get shareAlert => 'Alert delen';
 
   @override
-  String get ufoSightingAlert => 'UFO Sighting Alert';
+  String get ufoSightingAlert => 'UFO Waarnemingsalarm';
 
   @override
-  String get previousPage => 'Previous';
+  String get previousPage => 'Vorige';
 
   @override
-  String get nextPage => 'Next';
+  String get nextPage => 'Volgende';
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Page $currentPage of $totalPages ($totalCount total beeps)';
+    return 'Pagina __PLAATSHOLDER_0__ van __PLAATSHOLDER_1__ (__PLAATSHOLDER_2__ totale piepers)';
   }
 
   @override
-  String get firstPage => 'First';
+  String get firstPage => 'Eerste';
 
   @override
-  String get lastPage => 'Last';
+  String get lastPage => 'Laatste';
 
   @override
-  String get jumpToPage => 'Jump to page';
+  String get jumpToPage => 'Naar pagina springen';
 
   @override
-  String get heroTagline => 'Get alerts when to go outside and look up';
+  String get heroTagline =>
+      'Ontvang waarschuwingen wanneer naar buiten te gaan en op te zoeken';
 
   @override
-  String get heroDescription => 'Never miss another UFO sighting in your area';
+  String get heroDescription =>
+      'Mis nooit een andere UFO waarneming in uw gebied';
 
   @override
-  String get downloadApp => '📱 Download App';
+  String get downloadApp => 'Download App';
 
   @override
-  String get viewAllBeeps => '📋 View All Beeps';
+  String get viewAllBeeps => 'Bekijk alle piepers';
 
   @override
-  String get sightingsMap => '🗺️ Sightings Map';
+  String get sightingsMap => 'Kaart van de waarneming';
 
   @override
-  String get globalSightingNetwork => 'Global Sighting Network';
+  String get globalSightingNetwork => 'Wereldwijd waarnemingsnetwerk';
 
   @override
-  String get howItWorks => 'How It Works';
+  String get howItWorks => 'Hoe het werkt';
 
   @override
-  String get backToBeeps => 'Back to Beeps';
+  String get backToBeeps => 'Terug naar Beeps';
 
   @override
-  String get loadingDetails => 'Loading beep details...';
+  String get loadingDetails => 'Bezig met laden van piepgegevens...';
 
   @override
-  String get details => 'Details';
+  String get details => 'Gegevens';
 
   @override
-  String get location => 'Location';
+  String get location => 'Locatie';
 
   @override
-  String get timeAgo => 'ago';
+  String get timeAgo => 'geleden';
 
   @override
   String get timeMinutes => 'm';
@@ -1138,70 +1148,70 @@ class AppLocalizationsNl extends AppLocalizations {
   String get distanceKm => 'km';
 
   @override
-  String get distanceMiles => 'miles';
+  String get distanceMiles => 'mijl';
 
   @override
-  String get distanceNearby => 'nearby';
+  String get distanceNearby => 'dichtbij';
 
   @override
-  String get ufobeepWitnesses => 'Witnesses';
+  String get ufobeepWitnesses => 'Getuigen';
 
   @override
-  String get ufobeepConfirmations => 'Confirmations';
+  String get ufobeepConfirmations => 'Bevestigingen';
 
   @override
-  String get ufobeepAlertLevel => 'Alert Level';
+  String get ufobeepAlertLevel => 'Waarschuwingsniveau';
 
   @override
-  String get ufobeepReportType => 'UFOBeep Report';
+  String get ufobeepReportType => 'UFObeep-rapport';
 
   @override
-  String get mufonAttribution => 'MUFON Database Report';
+  String get mufonAttribution => 'MUFON Databaserapport';
 
   @override
-  String get mufonCaseNumber => 'Case #';
+  String get mufonCaseNumber => 'Zaak #';
 
   @override
-  String get mufonGenericTitle => 'MUFON Sighting Report';
+  String get mufonGenericTitle => 'MUFON-waarnemingsrapport';
 
   @override
-  String get mufonSphere => 'Sphere';
+  String get mufonSphere => 'Bol';
 
   @override
-  String get mufonLight => 'Light';
+  String get mufonLight => 'Licht';
 
   @override
-  String get mufonDisk => 'Disk';
+  String get mufonDisk => 'Schijf';
 
   @override
-  String get mufonTriangle => 'Triangle';
+  String get mufonTriangle => 'Driehoek';
 
   @override
-  String get mufonCigar => 'Cigar';
+  String get mufonCigar => 'Sigaren';
 
   @override
   String get mufonOval => 'Oval';
 
   @override
-  String get mufonCylinder => 'Cylinder';
+  String get mufonCylinder => 'Cilinder';
 
   @override
-  String get mufonRectangle => 'Rectangle';
+  String get mufonRectangle => 'Rechthoek';
 
   @override
-  String get mufonDiamond => 'Diamond';
+  String get mufonDiamond => 'Diamant';
 
   @override
-  String get mufonFireball => 'Fireball';
+  String get mufonFireball => 'Vuurbal';
 
   @override
-  String get mufonFlash => 'Flash';
+  String get mufonFlash => 'Flits';
 
   @override
-  String get mufonFormation => 'Formation';
+  String get mufonFormation => 'Vorming';
 
   @override
-  String get mufonChanging => 'Changing';
+  String get mufonChanging => 'Veranderen';
 
   @override
   String get mufonChevron => 'Chevron';
@@ -1210,1000 +1220,1002 @@ class AppLocalizationsNl extends AppLocalizations {
   String get mufonCone => 'Cone';
 
   @override
-  String get mufonCross => 'Cross';
+  String get mufonCross => 'Kruis';
 
   @override
-  String get mufonEgg => 'Egg';
+  String get mufonEgg => 'Eieren';
 
   @override
   String get mufonOther => 'Object';
 
   @override
-  String get mufonUnknown => 'Unknown Object';
+  String get mufonUnknown => 'Onbekend object';
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON $classification Report';
+    return 'MUFON __PLAATSHOLDER_0__ Verslag';
   }
 
   @override
-  String get nuforcAttribution => 'NUFORC Database Report';
+  String get nuforcAttribution => 'NUFORC Databaserapport';
 
   @override
-  String get nuforcCaseNumber => 'Case #';
+  String get nuforcCaseNumber => 'Zaak #';
 
   @override
-  String get nuforcGenericTitle => 'NUFORC Sighting Report';
+  String get nuforcGenericTitle => 'NUFORC Waarnemingsrapport';
 
   @override
-  String get mediaImageNotFound => 'Image not found';
+  String get mediaImageNotFound => 'Afbeelding niet gevonden';
 
   @override
-  String get mediaPlayVideo => 'Play Video';
+  String get mediaPlayVideo => 'Video afspelen';
 
   @override
-  String get mediaViewImage => 'View Image';
+  String get mediaViewImage => 'Afbeelding bekijken';
 
   @override
   String mediaCount(Object count) {
-    return '$count images';
+    return '$count afbeeldingen';
   }
 
   @override
-  String get mediaCountSingle => '1 image';
+  String get mediaCountSingle => '1 afbeelding';
 
   @override
   String mediaMoreImages(Object count) {
-    return '+$count more';
+    return 'Meer';
   }
 
   @override
-  String get errorNotFound => 'Beep not found';
+  String get errorNotFound => 'Piep niet gevonden';
 
   @override
-  String get errorLoadError => 'Failed to load beep details';
+  String get errorLoadError => 'Kon piepgegevens niet laden';
 
   @override
-  String get shareYourThoughts => 'Share your thoughts about this sighting...';
+  String get shareYourThoughts => 'Deel je gedachten over deze waarneming...';
 
   @override
-  String get postComment => 'Post Comment';
+  String get postComment => 'Postcommentaar';
 
   @override
-  String get loggedInAs => 'Logged in as';
+  String get loggedInAs => 'Aangemeld als';
 
   @override
-  String get logout => 'Logout';
+  String get logout => 'Afmelden';
 
   @override
-  String get notFollowing => 'Not following';
+  String get notFollowing => 'Niet volgen';
 
   @override
-  String get follow => 'Follow';
+  String get follow => 'Volgen';
 
   @override
-  String get navRecentBeeps => 'Recent Beeps';
+  String get navRecentBeeps => 'Recente piepers';
 
   @override
-  String get navMap => 'Map';
+  String get navMap => 'Kaart';
 
   @override
-  String get navDownloadApp => 'Download App';
+  String get navDownloadApp => 'App downloaden';
 
   @override
-  String get alertLevel => 'Alert Level';
+  String get alertLevel => 'Waarschuwingsniveau';
 
   @override
-  String get witnesses => 'Witnesses';
+  String get witnesses => 'Getuigen';
 
   @override
-  String get confirmations => 'Confirmations';
+  String get confirmations => 'Bevestigingen';
 
   @override
-  String get reporterLabel => 'Reported by user';
+  String get reporterLabel => 'Gerapporteerd door gebruiker';
 
   @override
-  String get coordinatesLabel => 'Coordinates';
+  String get coordinatesLabel => 'Coördinaten';
 
   @override
-  String get eventTime => 'Event time';
+  String get eventTime => 'Gebeurtenistijd';
 
   @override
-  String get reportedTime => 'Reported time';
+  String get reportedTime => 'Gerapporteerde tijd';
 
   @override
-  String get addedToUfobeep => 'Added to UFOBeep';
+  String get addedToUfobeep => 'Toegevoegd aan UFObeep';
 
   @override
-  String get mufonDatabaseReport => 'MUFON Case Number:';
+  String get mufonDatabaseReport => 'MUFON Zaaknummer:';
 
   @override
-  String get copyShortLinkTitle => 'Copy link to clipboard';
+  String get copyShortLinkTitle => 'Verwijzing naar klembord kopiëren';
 
   @override
-  String get imageNotFound => 'Image not found';
+  String get imageNotFound => 'Afbeelding niet gevonden';
 
   @override
-  String get ufoSightingAlt => 'UFOBeep UFO alert';
+  String get ufoSightingAlt => 'UFO Beep UFO alarm';
 
   @override
-  String get celestialDataTitle => 'Celestial Objects';
+  String get celestialDataTitle => 'Hemelse objecten';
 
   @override
-  String get visiblePlanets => 'Visible Planets';
+  String get visiblePlanets => 'Zichtbare planeten';
 
   @override
-  String get locationDataTitle => 'Location Information';
+  String get locationDataTitle => 'Informatie over de locatie';
 
   @override
-  String get timezone => 'Timezone';
+  String get timezone => 'Tijdzone';
 
   @override
-  String get coordinates => 'Coordinates';
+  String get coordinates => 'Coördinaten';
 
   @override
-  String get processingSummaryTitle => 'Processing Summary';
+  String get processingSummaryTitle => 'Samenvatting van de verwerking';
 
   @override
-  String get processingTime => 'Processing Time';
+  String get processingTime => 'Verwerkingstijd';
 
   @override
-  String get successful => 'Successful';
+  String get successful => 'Succesvol';
 
   @override
-  String get failed => 'Failed';
+  String get failed => 'Mislukt';
 
   @override
-  String get locationEnrichmentTitle => 'Location Details';
+  String get locationEnrichmentTitle => 'Locatiedetails';
 
   @override
-  String get aircraftDataSource => 'Data Source';
+  String get aircraftDataSource => 'Gegevensbron';
 
   @override
-  String get noAircraftDetected => 'No aircraft detected';
+  String get noAircraftDetected => 'Geen vliegtuig gedetecteerd';
 
   @override
-  String get sightingReport => 'Sighting Report';
+  String get sightingReport => 'Waarnemingsrapport';
 
   @override
-  String get ufoAlert => 'UFO Alert';
+  String get ufoAlert => 'UFO Waarschuwing';
 
   @override
-  String get alert => 'Alert';
+  String get alert => 'Waarschuwing';
 
   @override
-  String get notificationTickerUfoAlert => 'UFO Alert - New Sighting Nearby';
+  String get notificationTickerUfoAlert =>
+      'UFO Alert - Nieuwe Waarneming nabij';
 
   @override
-  String get notificationTickerComment => 'New Comment on UFO Alert';
+  String get notificationTickerComment => 'Nieuwe reactie op UFO-alarm';
 
   @override
-  String get weatherConditions => 'Weather Conditions';
+  String get weatherConditions => 'Weersomstandigheden';
 
   @override
-  String get visibility => 'Visibility';
+  String get visibility => 'Zichtbaarheid';
 
   @override
-  String get humidity => 'Humidity';
+  String get humidity => 'Vochtigheid';
 
   @override
-  String get pressure => 'Pressure';
+  String get pressure => 'Druk';
 
   @override
-  String get locationDetails => 'Location Details';
+  String get locationDetails => 'Locatiedetails';
 
   @override
-  String get city => 'City';
+  String get city => 'Stad';
 
   @override
-  String get state => 'State';
+  String get state => 'Staat';
 
   @override
-  String get country => 'Country';
+  String get country => 'Land';
 
   @override
-  String get satelliteActivity => 'Satellite Activity';
+  String get satelliteActivity => 'Satellietactiviteit';
 
   @override
   String get satellitesVisibleOverhead =>
-      'Satellites visible overhead at sighting time & location';
+      'Satellieten zichtbaar overhead op waarnemingstijd en locatie';
 
   @override
-  String get dataSource => 'Data Source';
+  String get dataSource => 'Gegevensbron';
 
   @override
   String get blackskyImagery => 'BlackSky Imagery';
 
   @override
-  String get resolution => 'Resolution';
+  String get resolution => 'Resolutie';
 
   @override
-  String get groundResolution => '35cm ground resolution';
+  String get groundResolution => '35cm grondresolutie';
 
   @override
-  String get delivery => 'Delivery';
+  String get delivery => 'Levering';
 
   @override
-  String get averageDelivery => '90-minute average';
+  String get averageDelivery => 'gemiddeld 90 minuten';
 
   @override
-  String get cost => 'Cost';
+  String get cost => 'Kosten';
 
   @override
-  String get skyfiSatelliteImagery => 'SkyFi Satellite Imagery';
+  String get skyfiSatelliteImagery => 'SkyFi Satellite Afbeelding';
 
   @override
-  String get region => 'Region';
+  String get region => 'Gebieden';
 
   @override
-  String get remoteArea => 'Remote Area';
+  String get remoteArea => 'Gebied op afstand';
 
   @override
-  String get startingPrice => 'Starting Price';
+  String get startingPrice => 'Startprijs';
 
   @override
-  String get coverage => 'Coverage';
+  String get coverage => 'Dekking';
 
   @override
-  String get confidenceCoverage => '95% confidence';
+  String get confidenceCoverage => '95% betrouwbaarheid';
 
   @override
   String get status => 'Status';
 
   @override
-  String get shareThoughts => 'Share your thoughts about this sighting...';
+  String get shareThoughts => 'Deel je gedachten over deze waarneming...';
 
   @override
-  String get postCommand => 'Post Command';
+  String get postCommand => 'Postopdracht';
 
   @override
-  String get clouds => 'Clouds';
+  String get clouds => 'Wolken';
 
   @override
   String get windLabel => 'Wind';
 
   @override
-  String get filterAlerts => 'Filter Alerts';
+  String get filterAlerts => 'Filterwaarschuwingen';
 
   @override
-  String get alertSource => 'Alert Source';
+  String get alertSource => 'Waarschuwingsbron';
 
   @override
-  String get ufobeepOnly => 'UFOBeep Only';
+  String get ufobeepOnly => 'UFObeep alleen';
 
   @override
   String get ufobeepOnlyDescription =>
-      'Show only original UFOBeep reports (exclude MUFON database)';
+      'Alleen originele UFObeep-rapporten tonen (exclusief MUFON-database)';
 
   @override
-  String get alertDistanceRange => 'Alert Distance Range';
+  String get alertDistanceRange => 'Waarschuwingsafstand';
 
   @override
-  String get showAllAlerts => 'Show All Alerts';
+  String get showAllAlerts => 'Alle waarschuwingen tonen';
 
   @override
-  String get showAll => 'Show All';
+  String get showAll => 'Alles tonen';
 
   @override
   String get distanceSliderDescription =>
-      'Drag to adjust how far you want to see alerts. Start from weather visibility distance up to showing all alerts regardless of distance.';
+      'Sleep om aan te passen hoe ver u alerts wilt zien. Begin vanaf de zichtafstand tot alle waarschuwingen, ongeacht de afstand.';
 
   @override
-  String get applyFilters => 'Apply Filters';
+  String get applyFilters => 'Filters toepassen';
 
   @override
-  String get notificationRange => 'Notification Range';
+  String get notificationRange => 'Notificatiebereik';
 
   @override
   String get notificationRangeDescription =>
-      'Get push alerts for sightings within this distance';
+      'Krijg push waarschuwingen voor waarnemingen binnen deze afstand';
 
   @override
-  String get viewingRange => 'Viewing Range';
+  String get viewingRange => 'Beeldbereik';
 
   @override
   String get viewingRangeDescription =>
-      'Show sightings within this distance when browsing';
+      'Toon waarnemingen binnen deze afstand bij het surfen';
 
   @override
-  String get weatherVisibility => 'Weather Visibility (~10km)';
+  String get weatherVisibility => 'Weerzicht (~10km)';
 
   @override
-  String get localArea => 'Local Area (25km)';
+  String get localArea => 'Plaatselijk gebied (25 km)';
 
   @override
-  String get regional => 'Regional';
+  String get regional => 'Regionaal';
 
   @override
-  String get pushNotifications => 'Push Notifications';
+  String get pushNotifications => 'Aanmeldingen pushen';
 
   @override
-  String get alertBrowsing => 'Alert Browsing';
+  String get alertBrowsing => 'Alert bladeren';
 
   @override
-  String get pushAlertsWithinDistance => 'Get notifications within this range';
+  String get pushAlertsWithinDistance =>
+      'Notificatieberichten binnen dit bereik ophalen';
 
   @override
-  String get showAlertsWhenBrowsing => 'Filter what you see in the list';
+  String get showAlertsWhenBrowsing => 'Filter wat je ziet in de lijst';
 
   @override
   String get heroMainTagline =>
-      'Get a beep on your phone when UFOs are spotted nearby';
+      'Haal een piep op je telefoon als UFO\'s in de buurt worden gezien';
 
   @override
   String get heroSecondaryTagline =>
-      'Find out when and where to look at the sky';
+      'Zoek uit wanneer en waar naar de hemel te kijken';
 
   @override
-  String get sourceFilters => 'Source';
+  String get sourceFilters => 'Bron';
 
   @override
   String get sourceFiltersDescription =>
-      'Choose which reports appear in your feed';
+      'Kies welke rapporten in uw feed verschijnen';
 
   @override
-  String get ufobeepAndMufon => 'UFOBeep + MUFON';
+  String get ufobeepAndMufon => 'UFOBEEP + MUFON';
 
   @override
-  String get ufobeepOnlySource => 'UFOBeep only';
+  String get ufobeepOnlySource => 'UFObeep alleen';
 
   @override
-  String get mufonOnlySource => 'MUFON only';
+  String get mufonOnlySource => 'Uitsluitend MUFON';
 
   @override
-  String get browseFilters => 'Browse';
+  String get browseFilters => 'Bladeren';
 
   @override
-  String get browseFiltersDescription => 'How to view and sort alerts';
+  String get browseFiltersDescription =>
+      'Hoe waarschuwingen te bekijken en te sorteren';
 
   @override
-  String get sortByNewest => 'Newest';
+  String get sortByNewest => 'Nieuwste';
 
   @override
-  String get sortByNearest => 'Nearest';
+  String get sortByNearest => 'Dichtstbijzijnde';
 
   @override
-  String get sortBy => 'Sort by';
+  String get sortBy => 'Sorteren op';
 
   @override
-  String get pushAlertsTitle => 'Push Alerts';
+  String get pushAlertsTitle => 'Waarschuwingen indrukken';
 
   @override
-  String get pushAlertsDescription => 'What pings your phone';
+  String get pushAlertsDescription => 'Wat pings je telefoon';
 
   @override
-  String get alertRadius => 'Alert Radius';
+  String get alertRadius => 'Waarschuw Straal';
 
   @override
   String get mufonNoPushInfo =>
-      'MUFON reports are imported nightly and do not trigger push alerts';
+      'MUFON rapporten worden \'s nachts geïmporteerd en niet push waarschuwingen veroorzaken';
 
   @override
-  String get privacyData => 'Privacy & Data';
+  String get privacyData => 'Privacy & gegevens';
 
   @override
-  String get privacyPolicyDesc => 'How we protect and use your data';
+  String get privacyPolicyDesc => 'Hoe wij uw gegevens beschermen en gebruiken';
 
   @override
-  String get termsOfService => 'Terms of Service';
+  String get termsOfService => 'Servicevoorwaarden';
 
   @override
-  String get termsOfServiceDesc => 'Legal terms and conditions';
+  String get termsOfServiceDesc => 'Juridische voorwaarden';
 
   @override
-  String get locationTracking => 'Location Tracking';
+  String get locationTracking => 'Locatie volgen';
 
   @override
-  String get locationTrackingDesc => 'Background location for proximity alerts';
+  String get locationTrackingDesc =>
+      'Achtergrondlocatie voor nabijheidswaarschuwingen';
 
   @override
-  String get locationTrackingTitle => 'Background Location Tracking';
+  String get locationTrackingTitle => 'Achtergrondlocatie volgen';
 
   @override
   String get locationTrackingExplanation =>
-      'UFOBeep monitors your location in the background to send you proximity alerts when UFO sightings happen near your current location, even when you\'re away from home.';
+      'UFObeep bewaakt uw locatie op de achtergrond om u nabijheid waarschuwingen te sturen wanneer UFO waarnemingen gebeuren in de buurt van uw huidige locatie, zelfs als je weg van huis.';
 
   @override
   String get locationTrackingBattery =>
-      'Uses intelligent geofencing for <3% battery impact';
+      'Gebruikt intelligente geofencing voor <3% batterij impact';
 
   @override
-  String get backgroundLocationTracking => 'Enable Background Tracking';
+  String get backgroundLocationTracking => 'Achtergrond inschakelen Tracking';
 
   @override
   String get locationTrackingActive =>
-      'Monitoring location for proximity alerts';
+      'Waarnemingslocatie voor nabijheidswaarschuwingen';
 
   @override
-  String get locationTrackingInactive => 'Location tracking is disabled';
+  String get locationTrackingInactive => 'Locatie volgen is uitgeschakeld';
 
   @override
   String get locationTrackingDisabledWarning =>
-      'You won\'t receive proximity alerts when you move to new locations';
+      'U ontvangt geen nabijheidswaarschuwingen wanneer u naar nieuwe locaties verhuist';
 
   @override
-  String get trackingStatus => 'Tracking Status';
+  String get trackingStatus => 'Trackingstatus';
 
   @override
-  String get monitoringStatus => 'Monitoring';
+  String get monitoringStatus => 'Toezicht';
 
   @override
-  String get active => 'Active';
+  String get active => 'Actief';
 
   @override
-  String get inactive => 'Inactive';
+  String get inactive => 'Inactief';
 
   @override
-  String get lastKnownLocation => 'Last Known Location';
+  String get lastKnownLocation => 'Laatste bekende locatie';
 
   @override
-  String get lastLocationUpdate => 'Last Update';
+  String get lastLocationUpdate => 'Laatste update';
 
   @override
-  String get movementThreshold => 'Movement Threshold';
+  String get movementThreshold => 'Bewegingsdrempel';
 
   @override
-  String get updateFrequency => 'Update Frequency';
+  String get updateFrequency => 'Frequentie bijwerken';
 
   @override
-  String get batteryImpact => 'Battery Impact';
+  String get batteryImpact => 'Inslag van de batterij';
 
   @override
-  String get dataPrivacy => 'Data Privacy';
+  String get dataPrivacy => 'Gegevensbescherming';
 
   @override
   String get locationPermissionExplanation =>
-      'UFOBeep needs \'Always Allow\' location permission to monitor your movement and send proximity alerts when you\'re in new locations.';
+      'UFObeep heeft \'Always Allow\' location permissie nodig om uw beweging te monitoren en nabijheidswaarschuwingen te verzenden wanneer u op nieuwe locaties bent.';
 
   @override
-  String get benefitsTitle => 'Benefits';
+  String get benefitsTitle => 'Voordelen';
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '• Ontvang UFO waarschuwingen overal waar u reist\n• Automatische locatie updates\n• Geen handmatige installatie vereist';
 
   @override
-  String get allowLocationAccess => 'Allow Location Access';
+  String get allowLocationAccess => 'Locatietoegang toestaan';
 
   @override
   String get locationPermissionRequired =>
-      'Location permission is required for background tracking';
+      'Locatie toestemming is vereist voor achtergrond tracking';
 
   @override
-  String get locationTrackingEnabled => 'Background location tracking enabled';
+  String get locationTrackingEnabled =>
+      'Achtergrondlocatie traceren ingeschakeld';
 
   @override
   String get locationTrackingDisabled =>
-      'Background location tracking disabled';
+      'Achtergrondlocatie volgen uitgeschakeld';
 
   @override
-  String get justNow => 'Just now';
+  String get justNow => 'Net';
 
   @override
   String minutesAgo(int minutes) {
-    return '$minutes minutes ago';
+    return '__PLAATSHOLDER_0___ minuten geleden';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '$hours hours ago';
+    return '__PLAATSHOLDER_0___ uren geleden';
   }
 
   @override
   String daysAgo(int days) {
-    return '$days days ago';
+    return '__PLAATSHOLDER_0__ dagen geleden';
   }
 
   @override
-  String get dataManagement => 'Data Management';
+  String get dataManagement => 'Gegevensbeheer';
 
   @override
-  String get dataManagementDesc => 'Export or delete your account data';
+  String get dataManagementDesc =>
+      'Uw accountgegevens exporteren of verwijderen';
 
   @override
-  String get splashTagline => 'Real-time sighting alerts';
+  String get splashTagline => 'Signaleringen in realtime';
 
   @override
-  String get splashStartingUp => 'Starting up...';
+  String get splashStartingUp => 'Starten...';
 
   @override
-  String get splashInitializationFailed => 'Initialization failed';
+  String get splashInitializationFailed => 'Initialisatie mislukt';
 
   @override
-  String get splashInitializationFailedTitle => 'Initialization Failed';
+  String get splashInitializationFailedTitle => 'Initialisatie mislukt';
 
   @override
-  String get splashInitializationError =>
-      'The app failed to initialize properly:';
+  String get splashInitializationError => 'De app kon niet goed initialiseren:';
 
   @override
-  String get splashRetry => 'Retry';
+  String get splashRetry => 'Opnieuw proberen';
 
   @override
-  String get splashContinue => 'Continue';
+  String get splashContinue => 'Doorgaan';
 
   @override
-  String get splashInitializing => 'Initializing...';
+  String get splashInitializing => 'Initialiseren...';
 
   @override
   String signInWelcome(String username) {
-    return 'Welcome $username!';
+    return 'Welkom!';
   }
 
   @override
   String signInFailed(String error) {
-    return 'Sign-in failed: $error';
+    return 'Aanmelden mislukt: __PLAATSHOLDER_0___';
   }
 
   @override
-  String get signInPleaseEnterEmail => 'Please enter your email address';
+  String get signInPleaseEnterEmail => 'Vul uw e-mailadres in';
 
   @override
-  String get signInPleaseEnterValidEmail =>
-      'Please enter a valid email address';
+  String get signInPleaseEnterValidEmail => 'Vul een geldig e-mailadres in';
 
   @override
   String get signInMagicLinkSent =>
-      'Magic link sent! Check your email and click the link to sign in.';
+      'Magische link verzonden! Controleer uw e-mail en klik op de link om u aan te melden.';
 
   @override
   String get signInMagicLinkFailed =>
-      'Failed to send magic link. Please try again.';
+      'Kon magische verwijzing niet versturen. Probeer het nog eens.';
 
   @override
-  String get signInAllDataCleared => 'All data cleared';
+  String get signInAllDataCleared => 'Alle gegevens zijn gewist';
 
   @override
-  String get signInSubtitle =>
-      'Real-time UFO sighting alerts and MUFON reports';
+  String get signInSubtitle => 'Real-time UFO waarnemingen en MUFON rapporten';
 
   @override
-  String get signInGoogleLoading => 'Signing in...';
+  String get signInGoogleLoading => 'Aanmelden...';
 
   @override
-  String get signInContinueWithGoogle => 'Continue with Google';
+  String get signInContinueWithGoogle => 'Doorgaan met Google';
 
   @override
-  String get signInOr => 'or';
+  String get signInOr => 'of';
 
   @override
-  String get signInWithEmail => 'Sign in with Email';
+  String get signInWithEmail => 'Aanmelden met e-mail';
 
   @override
   String get signInEmailDescription =>
-      'We\'ll send you a secure link to sign in';
+      'We sturen je een beveiligde link om je aan te melden';
 
   @override
-  String get signInEmailAddress => 'Email address';
+  String get signInEmailAddress => 'E-mailadres';
 
   @override
   String get signInEmailPlaceholder => 'your@email.com';
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Try again in ${seconds}s';
+    return 'Probeer opnieuw in __PLACEHOLDER_0_s';
   }
 
   @override
-  String get signInSending => 'Sending...';
+  String get signInSending => 'Verzenden...';
 
   @override
-  String get signInSendMagicLink => 'Send Magic Link';
+  String get signInSendMagicLink => 'Magische koppeling versturen';
 
   @override
   String get signInCheckEmail =>
-      'Check your email! The link expires in 15 minutes.';
+      'Check je e-mail! De verbinding verloopt over 15 minuten.';
 
   @override
-  String get signInSecureAuth => 'Secure Authentication';
+  String get signInSecureAuth => 'Veilige authenticatie';
 
   @override
   String get signInSecureAuthDescription =>
-      'Use Google Sign-In for instant access, or email magic links that expire in 15 minutes.';
+      'Gebruik Google Sign-In voor directe toegang, of e-mail magische links die vervallen in 15 minuten.';
 
   @override
-  String get signInClearAllDataDebug => 'Clear All Data (Debug)';
+  String get signInClearAllDataDebug => 'Alle gegevens wissen (debug)';
 
   @override
-  String get emailAuthFailedToSend => 'Failed to send email';
+  String get emailAuthFailedToSend => 'Versturen van e-mail is mislukt';
 
   @override
   String get emailAuthFailedToSendTryAgain =>
-      'Failed to send email. Please try again.';
+      'Versturen van e-mail is mislukt. Probeer het nog eens.';
 
   @override
   String get emailAuthInvalidEmail =>
-      'Invalid email address. Please check the format.';
+      'Ongeldig e-mailadres. Controleer het formaat.';
 
   @override
   String get emailAuthUserNotFound =>
-      'No account found with this email address.';
+      'Geen account gevonden met dit e-mailadres.';
 
   @override
   String get emailAuthTooManyRequests =>
-      'Too many attempts. Please try again later.';
+      'Te veel pogingen. Probeer het later nog eens.';
 
   @override
   String get emailAuthOperationNotAllowed =>
-      'Email link sign-in is not enabled.';
+      'Aanmelden van e-maillink is niet ingeschakeld.';
 
   @override
   String get emailAuthQuotaExceeded =>
-      'Email quota exceeded. Please try again tomorrow.';
+      'E-mailquota overschreden. Probeer het morgen opnieuw.';
 
   @override
   String get emailAuthVerificationFailed =>
-      'Email verification failed. Please try again.';
+      'E-mailverificatie mislukt. Probeer het nog eens.';
 
   @override
-  String get emailAuthTitle => 'Email Verification';
+  String get emailAuthTitle => 'E-mailverificatie';
 
   @override
-  String get emailAuthVerifyYourEmail => 'Verify Your Email';
+  String get emailAuthVerifyYourEmail => 'Uw e-mail verifiëren';
 
   @override
   String get emailAuthDescription =>
-      'Add your email address for account recovery and security. We\'ll send you a secure sign-in link.';
+      'Voeg uw e-mailadres toe voor accountherstel en beveiliging. We sturen je een beveiligde link.';
 
   @override
-  String get emailAuthEmailAddress => 'Email Address';
+  String get emailAuthEmailAddress => 'E-mailadres';
 
   @override
   String get emailAuthEmailPlaceholder => 'your.email@example.com';
 
   @override
-  String get emailAuthPleaseEnterEmail => 'Please enter your email address';
+  String get emailAuthPleaseEnterEmail => 'Vul uw e-mailadres in';
 
   @override
-  String get emailAuthPleaseEnterValidEmail =>
-      'Please enter a valid email address';
+  String get emailAuthPleaseEnterValidEmail => 'Vul een geldig e-mailadres in';
 
   @override
   String get emailAuthCheckEmailToContinue =>
-      'Check your email and tap the verification link to continue.';
+      'Controleer uw e-mail en tik op de verificatie-link om verder te gaan.';
 
   @override
-  String get emailAuthResendEmail => 'Resend Email';
+  String get emailAuthResendEmail => 'E-mail opnieuw verzenden';
 
   @override
-  String get emailAuthSendVerificationEmail => 'Send Verification Email';
+  String get emailAuthSendVerificationEmail => 'Verificatie verzenden E-mail';
 
   @override
-  String get emailAuthHowItWorks => 'How Email Verification Works';
+  String get emailAuthHowItWorks => 'Hoe e-mailverificatie werkt';
 
   @override
   String get emailAuthHowItWorksSteps =>
-      '1. We send you a secure sign-in link\n2. Check your email and tap the link\n3. Your email gets verified automatically\n4. No passwords needed!';
+      '1. Wij sturen u een veilige inlog link\n2. Controleer uw e-mail en tik op de link\n3. Uw e-mail wordt automatisch geverifieerd\n4. Geen wachtwoorden nodig!';
 
   @override
   String get emailAuthSecurityNotice =>
-      'Email verification helps secure your account and enables account recovery if you lose access to your device.';
+      'E-mailverificatie helpt uw account veilig te stellen en maakt accountherstel mogelijk als u de toegang tot uw apparaat verliest.';
 
   @override
   String get phoneAuthFailedToSendCode =>
-      'Failed to send verification code. Please try again.';
+      'Kon verificatiecode niet versturen. Probeer het nog eens.';
 
   @override
   String get phoneAuthInvalidCodeTryAgain =>
-      'Invalid verification code. Please try again.';
+      'Ongeldige verificatiecode. Probeer het nog eens.';
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return 'Phone number verified: $phoneNumber';
+    return 'Telefoonnummer geverifieerd: __PLAATSHOLDER_0___';
   }
 
   @override
   String get phoneAuthVerificationFailed =>
-      'Phone verification failed. Please try again.';
+      'Telefoonverificatie mislukt. Probeer het nog eens.';
 
   @override
-  String get phoneAuthCodeResent => 'Verification code resent';
+  String get phoneAuthCodeResent => 'Verificatiecode';
 
   @override
   String get phoneAuthFailedToResendCode =>
-      'Failed to resend code. Please try again.';
+      'Hersturen van code is mislukt. Probeer het nog eens.';
 
   @override
   String get phoneAuthInvalidPhoneNumber =>
-      'Invalid phone number. Please check the format.';
+      'Ongeldig telefoonnummer. Controleer het formaat.';
 
   @override
   String get phoneAuthTooManyRequests =>
-      'Too many attempts. Please try again later.';
+      'Te veel pogingen. Probeer het later nog eens.';
 
   @override
   String get phoneAuthInvalidVerificationCode =>
-      'Invalid verification code. Please check and try again.';
+      'Ongeldige verificatiecode. Controleer en probeer het opnieuw.';
 
   @override
   String get phoneAuthSessionExpired =>
-      'Verification session expired. Please request a new code.';
+      'De verificatiesessie is verlopen. Vraag een nieuwe code aan.';
 
   @override
   String get phoneAuthSmsQuotaExceeded =>
-      'SMS quota exceeded. Please try again tomorrow.';
+      'SMS-quotum overschreden. Probeer het morgen opnieuw.';
 
   @override
   String get phoneAuthCredentialAlreadyInUse =>
-      'This phone number is already linked to another account.';
+      'Dit telefoonnummer is al gekoppeld aan een ander account.';
 
   @override
   String get phoneAuthVerificationFailedGeneric =>
-      'Verification failed. Please try again.';
+      'Verificatie mislukt. Probeer het nog eens.';
 
   @override
-  String get phoneAuthTitle => 'Phone Verification';
+  String get phoneAuthTitle => 'Telefooncontrole';
 
   @override
-  String get phoneAuthVerifyYourPhone => 'Verify Your Phone';
+  String get phoneAuthVerifyYourPhone => 'Uw telefoon controleren';
 
   @override
-  String get phoneAuthEnterVerificationCode => 'Enter Verification Code';
+  String get phoneAuthEnterVerificationCode => 'Verificatie invoeren Rubriek';
 
   @override
   String get phoneAuthAddPhoneForSecurity =>
-      'Add your phone number for account recovery and security';
+      'Voeg uw telefoonnummer voor account herstel en beveiliging';
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return 'Enter the 6-digit code sent to $phoneNumber';
+    return 'Voer de 6-cijferige code in die naar $phoneNumber is verzonden';
   }
 
   @override
-  String get phoneAuthPhoneNumber => 'Phone Number';
+  String get phoneAuthPhoneNumber => 'Telefoonnummer';
 
   @override
   String get phoneAuthPhonePlaceholder => '+1 (555) 123-4567';
 
   @override
-  String get phoneAuthPleaseEnterPhone => 'Please enter your phone number';
+  String get phoneAuthPleaseEnterPhone => 'Voer uw telefoonnummer in';
 
   @override
   String get phoneAuthPleaseEnterValidPhone =>
-      'Please enter a valid phone number';
+      'Voer een geldig telefoonnummer in';
 
   @override
-  String get phoneAuthVerificationCode => 'Verification Code';
+  String get phoneAuthVerificationCode => 'Verificatiecode';
 
   @override
-  String get phoneAuthPleaseEnterSixDigitCode =>
-      'Please enter the 6-digit code';
+  String get phoneAuthPleaseEnterSixDigitCode => 'Voer de 6-cijferige code in';
 
   @override
-  String get phoneAuthResendCode => 'Resend Code';
+  String get phoneAuthResendCode => 'Code opnieuw verzenden';
 
   @override
-  String get phoneAuthSendVerificationCode => 'Send Verification Code';
+  String get phoneAuthSendVerificationCode => 'Verificatie verzenden Rubriek';
 
   @override
-  String get phoneAuthVerifyCode => 'Verify Code';
+  String get phoneAuthVerifyCode => 'Code verifiëren';
 
   @override
-  String get phoneAuthChangePhoneNumber => 'Change Phone Number';
+  String get phoneAuthChangePhoneNumber => 'Telefoonnummer wijzigen';
 
   @override
   String get phoneAuthSmsNotice =>
-      'We\'ll send you a verification code via SMS. Standard message rates may apply.';
+      'We sturen je een verificatiecode via SMS. Standaard berichtentarieven kunnen van toepassing zijn.';
 
   @override
   String get phoneAuthCodeExpires =>
-      'Code expires in 60 seconds. Check your messages.';
+      'Code verloopt over 60 seconden. Controleer je berichten.';
 
   @override
-  String get yourDataRights => 'Your Data Rights';
+  String get yourDataRights => 'Uw gegevensrechten';
 
   @override
   String get dataRightsExplanation =>
-      'You have full control over your personal data. You can export all your data or permanently delete your account at any time.';
+      'U heeft volledige controle over uw persoonlijke gegevens. U kunt al uw gegevens exporteren of permanent uw account te allen tijde verwijderen.';
 
   @override
-  String get exportYourData => 'Export Your Data';
+  String get exportYourData => 'Uw gegevens exporteren';
 
   @override
-  String get exportDataDescription => 'Download all your account data';
+  String get exportDataDescription => 'Download al uw accountgegevens';
 
   @override
-  String get exportData => 'Export Data';
+  String get exportData => 'Gegevens exporteren';
 
   @override
-  String get exportingData => 'Exporting...';
+  String get exportingData => 'Exporteren...';
 
   @override
   String get exportDataDetails =>
-      'Includes: profile, beeps, comments, device info, and preferences. Data is provided in JSON format.';
+      'Omvat: profiel, piepers, opmerkingen, apparaatinformatie en voorkeuren. Gegevens worden verstrekt in JSON formaat.';
 
   @override
-  String get dataExportedSuccessfully => 'Data exported successfully';
+  String get dataExportedSuccessfully => 'Gegevens met succes geëxporteerd';
 
   @override
-  String get dataExportFailed => 'Failed to export data';
+  String get dataExportFailed => 'Exporteren van gegevens is mislukt';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => 'Account verwijderen';
 
   @override
   String get deleteAccountDescription =>
-      'Permanently remove your account and all data';
+      'Uw account en alle gegevens definitief verwijderen';
 
   @override
   String get deleteAccountWarning =>
-      'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
+      'Deze actie kan niet ongedaan worden gemaakt. Al uw piepers, opmerkingen en accountgegevens worden permanent verwijderd.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => 'Mijn account verwijderen';
 
   @override
-  String get deletingAccount => 'Deleting...';
+  String get deletingAccount => 'Verwijderen...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => 'Account verwijderen';
 
   @override
   String get deleteAccountConfirmMessage =>
-      'Are you absolutely sure you want to delete your account? This action is permanent and cannot be undone.';
+      'Weet u absoluut zeker dat u uw account wilt verwijderen? Deze actie is permanent en kan niet ongedaan worden gemaakt.';
 
   @override
   String get dataWillBeDeleted =>
-      'The following data will be permanently deleted:';
+      'De volgende gegevens worden definitief verwijderd:';
 
   @override
   String get deletedDataList =>
-      '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
+      '• Uw profiel en gebruikersnaam\n• Al je piepjes en rapporten\n• Al uw opmerkingen\n• Device registratie gegevens\n• Locatie en voorkeursgegevens';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => 'Permanent verwijderen';
 
   @override
-  String get accountDeletedSuccessfully => 'Account deleted successfully';
+  String get accountDeletedSuccessfully => 'Account succesvol verwijderd';
 
   @override
-  String get accountDeletionFailed => 'Failed to delete account';
+  String get accountDeletionFailed => 'Verwijderen van account mislukt';
 
   @override
-  String get onboardingWelcomeTitle => 'Welcome to UFOBeep';
+  String get onboardingWelcomeTitle => 'Welkom bij UFObeep';
 
   @override
   String get onboardingWelcomeBody =>
-      'Get instant alerts when UFOs are spotted near your location. Never miss a sighting again!';
+      'Ontvang onmiddellijke waarschuwingen wanneer UFO\'s worden gezien in de buurt van uw locatie. Mis nooit meer een waarneming!';
 
   @override
-  String get onboardingReportTitle => 'See something? Beep it!';
+  String get onboardingReportTitle => 'Zie je iets? Piep het!';
 
   @override
   String get onboardingReportBody =>
-      'Capture photos and videos of UFO sightings. Share with the global community instantly.';
+      'Foto\'s en video\'s van UFO waarnemingen. Deel direct met de wereldwijde gemeenschap.';
 
   @override
-  String get onboardingCompassTitle => 'See Where They Looked';
+  String get onboardingCompassTitle => 'Kijk waar ze keken';
 
   @override
   String get onboardingCompassBody =>
-      'Compass shows you the exact direction the witness was looking when they saw the UFO. Point your phone and look!';
+      'Kompas toont je de exacte richting die de getuige keek toen ze de UFO zagen. Richt je telefoon en kijk!';
 
   @override
-  String get onboardingCommunityTitle => 'Connect with Skywatchers';
+  String get onboardingCommunityTitle => 'Verbinden met Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Read the latest UFO sightings over your morning coffee. Access professional MUFON data and connect with fellow skywatchers.';
+      'Lees de laatste UFO waarnemingen over uw ochtend koffie. Toegang tot professionele MUFON gegevens en verbinding met collega-skywatchers.';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'Overslaan';
 
   @override
-  String get getStarted => 'Get Started';
+  String get getStarted => 'Starten';
 
   @override
-  String get viewOnboardingAgain => 'View Onboarding Again';
+  String get viewOnboardingAgain => 'Weer aan boord bekijken';
 
   @override
-  String get customAlertRange => 'Custom Alert Range';
+  String get customAlertRange => 'Aangepast waarschuwingsbereik';
 
   @override
-  String get enterRangeKm => 'Enter range in km (1-99999)';
+  String get enterRangeKm => 'Bereik invoeren in km (1-99999)';
 
   @override
   String get largeRangeWarning =>
-      'Large ranges (>100km) may generate many alerts';
+      'Grote reeksen (>100 km) kunnen veel waarschuwingen genereren';
 
   @override
   String get globalRangeWarning =>
-      'Very large ranges (>1000km) will send you alerts from around the world';
+      'Zeer grote bereik (>1000km) zal u waarschuwingen van over de hele wereld sturen';
 
   @override
-  String get invalidRange => 'Please enter a number between 1 and 99999';
+  String get invalidRange => 'Vul een nummer in tussen 1 en 99999';
 
   @override
   String get celestialSunDaylight =>
-      'Sun is up - daylight conditions may affect sighting visibility';
+      'Zon is op - daglicht omstandigheden kunnen het zicht van de waarneming beïnvloeden';
 
   @override
   String get celestialSunTwilight =>
-      'Twilight conditions - some visibility but darker than daylight';
+      'Twilight omstandigheden - sommige zichtbaarheid maar donkerder dan daglicht';
 
   @override
   String get celestialSunDark =>
-      'Dark conditions - optimal for observing objects in sky';
+      'Donkere omstandigheden - optimaal voor het observeren van objecten in de lucht';
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Bright $phase moon visible - may illuminate or obscure other objects';
+    return 'Helder __PLAATSHOLDER_0__ maan zichtbaar - kan verlichten of obscure andere objecten';
   }
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '$phase moon visible - moderate lighting conditions';
+    return '__PLAATSHOLDER_0___ maan zichtbaar - matige lichtomstandigheden';
   }
 
   @override
   String celestialMoonThin(Object phase) {
-    return 'Thin $phase moon visible - minimal lighting';
+    return 'Dun __PLAATSHOLDER_0__ maan zichtbaar - minimale verlichting';
   }
 
   @override
   String celestialMoonHidden(Object phase) {
-    return '$phase moon below horizon - no lunar illumination';
+    return '__PLAATSHOLDER_0___ maan onder de horizon - geen maanverlichting';
   }
 
   @override
   String get celestialNoPlanets =>
-      'No bright planets visible that could be mistaken for UFOs';
+      'Geen heldere planeten zichtbaar die kunnen worden verward met UFO\'s';
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '__PLAATSHOLDER_0___ hoge overhead (__PLAATSHOLDER_1__°) - zeer prominent';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '$planet visible at $altitude° - could be mistaken for aircraft';
+    return '__PLAATSHOLDER_0___ zichtbaar op __PLAATSHOLDER_1___° - kan worden verward met vliegtuigen';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$planet low on horizon ($altitude°)';
+    return '__PLAATSHOLDER_0___ laag aan de horizon (__PLAATSHOLDER_1__°)';
   }
 
   @override
-  String get celestialNoStars => 'No unusually bright stars visible';
+  String get celestialNoStars => 'Geen ongewoon heldere sterren zichtbaar';
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '__PLAATSHOLDER_0___ prominent op __PLAATSHOLDER_1__° hoogte';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$count bright stars visible - $names';
+    return '__PLAATSHOLDER_0___ heldere sterren zichtbaar - __PLAATSHOLDER_1__';
   }
 
   @override
-  String get celestialSummaryDaylight => 'Daylight conditions';
+  String get celestialSummaryDaylight => 'Daglichtomstandigheden';
 
   @override
-  String get celestialSummaryDark => 'Dark sky conditions';
+  String get celestialSummaryDark => 'Donkere hemelomstandigheden';
 
   @override
-  String get celestialSummaryMoonUp => 'moon illumination present';
+  String get celestialSummaryMoonUp => 'maanverlichting aanwezig';
 
   @override
-  String get celestialSummaryMoonDown => 'no moon illumination';
+  String get celestialSummaryMoonDown => 'geen maanverlichting';
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return '$count bright objects that could be confused with UFOs';
+    return '__PLAATSHOLDER_0___ heldere objecten die kunnen worden verward met UFO\'s';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return '$count bright object(s) visible';
+    return '__PLAATSHOLDER_0___ helder object(s) zichtbaar';
   }
 
   @override
-  String get celestialSummaryFewObjects => 'minimal bright objects in sky';
+  String get celestialSummaryFewObjects =>
+      'minimale heldere objecten in de lucht';
 
   @override
   String celestialSkySummary(Object conditions) {
-    return 'Sky conditions: $conditions';
+    return 'Luchtomstandigheden: __PLAATSHOLDER_0___';
   }
 }

@@ -1,6 +1,6 @@
 {
-  "welcomeTitle": "Welcome to UFOBeep",
+  "welcomeTitle": "Καλώς ήρθατε στο UFOBeep",
   "settings": "Settings",
   "settingsTitle": "Settings",
-  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)"
+  "pageOf": "Σελίδα _{currentPage}__PLACEHOLDER_1_ (__PLACEHOLDER_2_ σύνολο μπιπ)"
 }

@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "Alerts",
-  "tabBeep": "Beep",
+  "tabAlerts": "Alertes",
+  "tabBeep": "Bip",
   "tabChat": "Chat",
-  "tabMap": "Map",
-  "tabSettings": "Settings",
-  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
-  "databaseEntry": "Database Entry",
-  "mufonDatabaseReport": "MUFON Case Number:"
+  "tabMap": "Carte",
+  "tabSettings": "Paramètres",
+  "mufonDatabaseEntryDate": "Date d'entrée dans le MUFON Base de données",
+  "databaseEntry": "Entrée de la base de données",
+  "mufonDatabaseReport": "MUFON Numéro de cas:"
 }

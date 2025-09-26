@@ -1,12 +1,12 @@
 {
-  "errorGeneric": "Something went wrong.",
-  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
-  "errorNoCamera": "Camera unavailable on this device.",
-  "errorUploadFailed": "Upload failed. Please try again.",
-  "errorPermissionDenied": "Permission denied.",
-  "errorInvalidUsername": "That username isn’t available.",
-  "errorNotFound": "Beep not found",
-  "errorLoadError": "Failed to load beep details",
-  "failed": "Failed",
-  "invalidRange": "Please enter a number between 1 and 99999"
+  "errorGeneric": "Noget gik galt.",
+  "errorNoLocation": "Placering utilgængelig. Prøv igen udenfor med klar himmel udsigt.",
+  "errorNoCamera": "Kameraet er ikke tilgængeligt på denne enhed.",
+  "errorUploadFailed": "Upload mislykkedes. Prøv igen.",
+  "errorPermissionDenied": "Tilladelse nægtet.",
+  "errorInvalidUsername": "Det brugernavn er ikke tilgængeligt.",
+  "errorNotFound": "Bip ikke fundet",
+  "errorLoadError": "Kunne ikke indlæse bip detaljer",
+  "failed": "Mislykkedes",
+  "invalidRange": "Indtast et tal mellem 1 og 99999"
 }

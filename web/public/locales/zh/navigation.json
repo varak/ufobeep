@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "Alerts",
-  "tabBeep": "Beep",
-  "tabChat": "Chat",
-  "tabMap": "Map",
-  "tabSettings": "Settings",
-  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
-  "databaseEntry": "Database Entry",
-  "mufonDatabaseReport": "MUFON Case Number:"
+  "tabAlerts": "警报",
+  "tabBeep": "哔",
+  "tabChat": "聊天",
+  "tabMap": "地图",
+  "tabSettings": "设置",
+  "mufonDatabaseEntryDate": "输入 MUFON 的日期 数据库",
+  "databaseEntry": "数据库条目",
+  "mufonDatabaseReport": "毛里求斯 案件编号 :"
 }
