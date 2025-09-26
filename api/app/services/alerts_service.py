@@ -464,10 +464,7 @@ class AlertsService:
             enrichment['content_filter'] = self._parse_json(row_data['content_analysis_data'])
             sources_used.append('content_analysis_data')
 
-        # Fallback to old enrichment_data if separate columns are empty
-        if not enrichment and row_data.get('enrichment_data'):
-            enrichment = self._parse_json(row_data['enrichment_data']) or {}
-            sources_used.append('enrichment_data_fallback')
+        # No fallback - force use of new separate fields system
 
         logger.info(f"🔄 ENRICHMENT DEBUG: Built enrichment from sources: {sources_used}")
         logger.info(f"🔄 ENRICHMENT DEBUG: Final enrichment keys: {list(enrichment.keys())}")
