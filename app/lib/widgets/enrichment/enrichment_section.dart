@@ -611,7 +611,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                       Text(
                         explanation.isNotEmpty ? explanation : 'No satellites visible at sighting time',
                         style: TextStyle(
-                          color: couldExplain ? AppColors.brandSecondary : AppColors.textTertiary,
+                          color: couldExplain ? AppColors.warning : AppColors.textTertiary,
                           fontSize: 12,
                           fontWeight: couldExplain ? FontWeight.w500 : FontWeight.normal,
                         ),
@@ -712,7 +712,7 @@ class SatelliteCardFromJson extends StatelessWidget {
           color: AppColors.darkSurface,
           borderRadius: BorderRadius.circular(6),
           border: Border.all(
-            color: isBright ? AppColors.brandSecondary : AppColors.darkBorder,
+            color: isBright ? AppColors.warning : AppColors.darkBorder,
           ),
         ),
         child: Column(
@@ -724,7 +724,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                 Icon(
                   isBright ? Icons.brightness_high : Icons.brightness_low,
                   size: 12,
-                  color: isBright ? AppColors.brandSecondary : AppColors.textSecondary,
+                  color: isBright ? AppColors.warning : AppColors.textSecondary,
                 ),
                 const SizedBox(width: 6),
                 Expanded(
@@ -741,7 +741,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                   Text(
                     '${brightness.toStringAsFixed(1)} mag',
                     style: TextStyle(
-                      color: isBright ? AppColors.brandSecondary : AppColors.textSecondary,
+                      color: isBright ? AppColors.warning : AppColors.textSecondary,
                       fontSize: 10,
                       fontWeight: isBright ? FontWeight.w600 : FontWeight.normal,
                     ),
