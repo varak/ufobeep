@@ -770,12 +770,12 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
             )
     
     async def _calculate_satellite_passes(self, context: EnrichmentContext) -> Dict[str, Any]:
-        """Calculate satellite passes using TLE data from CelesTrak"""
+        """Calculate satellites visible at exact sighting moment"""
         try:
             import aiohttp
             from datetime import timezone, timedelta
             import math
-            
+
             # Check for skyfield availability for orbital calculations
             try:
                 from skyfield.api import load, Topos, EarthSatellite
@@ -784,10 +784,12 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
             except ImportError:
                 logger.warning("Skyfield not available for satellite calculations, using simplified approach")
                 skyfield_available = False
-            
-            # Time window for passes (look 2 hours before/after sighting)
-            start_time = context.timestamp - timedelta(hours=2)
-            end_time = context.timestamp + timedelta(hours=2)
+
+            # Focus on exact moment with small window for motion detection
+            # Only ±5 minutes to catch satellites that were actually visible
+            exact_time = context.timestamp
+            start_time = context.timestamp - timedelta(minutes=5)
+            end_time = context.timestamp + timedelta(minutes=5)
             
             satellite_data = {
                 "iss_passes": [],
@@ -889,100 +891,169 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
         return tle_data
     
     async def _calculate_with_skyfield(self, context: EnrichmentContext, start_time: datetime, end_time: datetime) -> Dict[str, Any]:
-        """Calculate satellite passes using skyfield for precise orbital mechanics"""
+        """Calculate satellites visible at exact sighting moment"""
         from skyfield.api import load, Topos, EarthSatellite
         from datetime import timezone
         import math
-        
+
         # Load timescale and observer location
         ts = load.timescale()
         observer = Topos(latitude_degrees=context.latitude, longitude_degrees=context.longitude)
-        
-        # Convert times to skyfield format
+
+        # Get exact sighting time
+        t_exact = ts.from_datetime(context.timestamp.replace(tzinfo=timezone.utc))
         t_start = ts.from_datetime(start_time.replace(tzinfo=timezone.utc))
         t_end = ts.from_datetime(end_time.replace(tzinfo=timezone.utc))
-        
+
         # Fetch TLE data
         tle_data = await self._fetch_tle_data()
-        logger.info(f"🛰️  Satellite TLE data: ISS={len(tle_data.get('iss', []))}, Starlink={len(tle_data.get('starlink', []))}, Visual={len(tle_data.get('visual', []))}")
+        logger.info(f"🛰️  Checking satellites at exact moment: {context.timestamp}")
 
-        all_passes = []
+        # First, find all satellites visible at the exact moment
+        satellites_overhead = []
 
-        # Process ISS
-        iss_passes = []
+        # Check ISS
         if tle_data.get('iss'):
             for sat_info in tle_data['iss'][:1]:  # Just ISS
                 try:
-                    logger.info(f"🛰️  Calculating ISS passes for {sat_info['name']} from {start_time} to {end_time}")
                     satellite = EarthSatellite(sat_info['line1'], sat_info['line2'], sat_info['name'], ts)
-                    passes = await self._find_passes_skyfield(satellite, observer, t_start, t_end, ts)
-                    logger.info(f"🛰️  ISS calculation result: {len(passes)} passes found")
-                    iss_passes.extend(passes)
+                    sat_overhead = await self._check_satellite_at_moment(
+                        satellite, observer, t_exact, t_start, t_end, ts
+                    )
+                    if sat_overhead:
+                        satellites_overhead.append(sat_overhead)
                 except Exception as e:
-                    logger.warning(f"Failed to calculate ISS passes: {e}")
+                    logger.warning(f"Failed to check ISS: {e}")
         
-        # Process Starlink (limit to brightest/most recent)
-        starlink_passes = []
+        # Check Starlink satellites
         if tle_data.get('starlink'):
-            starlink_sats = tle_data['starlink'][:50]  # Check more satellites to find visible ones
-            logger.info(f"🛰️  Processing {len(starlink_sats)} Starlink satellites")
-            starlink_checked = 0
+            starlink_sats = tle_data['starlink'][:100]  # Check more to find visible ones
             for sat_info in starlink_sats:
                 try:
-                    # All satellites from starlink endpoint are Starlink, no need to check name
                     satellite = EarthSatellite(sat_info['line1'], sat_info['line2'], sat_info['name'], ts)
-                    passes = await self._find_passes_skyfield(satellite, observer, t_start, t_end, ts)
-                    if passes:
-                        starlink_passes.extend(passes)
-                        logger.debug(f"Found {len(passes)} passes for {sat_info['name']}")
-                    starlink_checked += 1
+                    sat_overhead = await self._check_satellite_at_moment(
+                        satellite, observer, t_exact, t_start, t_end, ts
+                    )
+                    if sat_overhead:
+                        satellites_overhead.append(sat_overhead)
                 except Exception as e:
-                    logger.debug(f"Failed to calculate passes for {sat_info['name']}: {e}")
-            logger.info(f"🛰️  Checked {starlink_checked} Starlink satellites, found {len(starlink_passes)} passes")
+                    logger.debug(f"Failed to check {sat_info['name']}: {e}")
         
-        # Process other bright satellites
-        other_passes = []
+        # Check other bright satellites
         if tle_data.get('visual'):
-            visual_sats = tle_data['visual'][:10]  # Limit to 10 brightest
+            visual_sats = tle_data['visual'][:20]  # Check brightest visual satellites
             for sat_info in visual_sats:
                 try:
-                    if not any(keyword in sat_info['name'].upper() 
+                    if not any(keyword in sat_info['name'].upper()
                              for keyword in ['ISS', 'STARLINK']):
                         satellite = EarthSatellite(sat_info['line1'], sat_info['line2'], sat_info['name'], ts)
-                        passes = await self._find_passes_skyfield(satellite, observer, t_start, t_end, ts)
-                        other_passes.extend(passes)
+                        sat_overhead = await self._check_satellite_at_moment(
+                            satellite, observer, t_exact, t_start, t_end, ts
+                        )
+                        if sat_overhead:
+                            satellites_overhead.append(sat_overhead)
                 except Exception as e:
-                    logger.debug(f"Failed to calculate passes for {sat_info['name']}: {e}")
-        
-        # Sort all passes by time and find brightest
-        all_passes = iss_passes + starlink_passes + other_passes
-        all_passes.sort(key=lambda x: x['pass_start_utc'])
-        
-        brightest_mag = None
-        next_bright_pass = None
-        
-        for pass_info in all_passes:
-            if pass_info['is_visible_pass']:
-                mag = pass_info['brightness_magnitude']
-                if mag is not None and (brightest_mag is None or mag < brightest_mag):
-                    brightest_mag = mag
-                if next_bright_pass is None and pass_info['pass_start_utc'] > context.timestamp.isoformat():
-                    next_bright_pass = pass_info['pass_start_utc']
-        
+                    logger.debug(f"Failed to check {sat_info['name']}: {e}")
+
+        # Sort satellites by brightness (brightest first)
+        satellites_overhead.sort(key=lambda x: x.get('brightness_magnitude', 10))
+
+        # Create preview (top 4 brightest)
+        satellites_overhead_preview = satellites_overhead[:4]
+
+        # Determine if satellites could explain the sighting
+        brightest_mag = satellites_overhead[0]['brightness_magnitude'] if satellites_overhead else None
+        could_explain = False
+        explanation = ""
+
+        if not satellites_overhead:
+            explanation = "No satellites visible at sighting time"
+        elif brightest_mag is not None and brightest_mag < 3.0:
+            could_explain = True
+            sat_name = satellites_overhead[0]['name']
+            if 'ISS' in sat_name:
+                explanation = f"ISS was overhead and very bright ({brightest_mag:.1f} mag) - could explain sighting"
+            else:
+                explanation = f"{sat_name} was bright ({brightest_mag:.1f} mag) - could be mistaken for unknown object"
+        else:
+            explanation = f"{len(satellites_overhead)} dim satellites visible - unlikely to explain sighting"
+
+        logger.info(f"🛰️  Found {len(satellites_overhead)} satellites overhead at exact moment")
+
         return {
-            "iss_passes": iss_passes,
-            "starlink_passes": starlink_passes,
-            "other_satellites": other_passes,
+            "satellites_overhead": satellites_overhead,
+            "satellites_overhead_preview": satellites_overhead_preview,
             "summary": {
-                "total_visible_passes": len([p for p in all_passes if p['is_visible_pass']]),
+                "total_visible_now": len(satellites_overhead),
+                "brightest_satellite": satellites_overhead[0]['name'] if satellites_overhead else None,
                 "brightest_magnitude": brightest_mag,
-                "next_bright_pass": next_bright_pass,
-                "search_window_hours": 4,
+                "could_explain_sighting": could_explain,
+                "explanation": explanation,
                 "calculation_method": "skyfield",
-                "tle_sources": ["celestrak_iss", "celestrak_starlink", "celestrak_visual"]
+                "observation_time": context.timestamp.isoformat()
             }
         }
     
+    async def _check_satellite_at_moment(self, satellite, observer, t_exact, t_start, t_end, ts):
+        """Check if satellite is visible at exact moment and get its data"""
+        from datetime import timedelta, timezone
+
+        try:
+            # Calculate position at exact moment
+            topocentric = (satellite - observer).at(t_exact)
+            alt, az, distance = topocentric.altaz()
+
+            # Only include if above horizon
+            if alt.degrees <= 0:
+                return None
+
+            # Calculate brightness
+            brightness_mag = self._estimate_satellite_brightness(
+                satellite.name, distance.km, alt.degrees
+            )
+
+            # Get motion direction by checking position 30 seconds before/after
+            dt = 30  # seconds
+            t_before = ts.from_datetime(
+                (t_exact.utc_datetime() - timedelta(seconds=dt)).replace(tzinfo=timezone.utc)
+            )
+            t_after = ts.from_datetime(
+                (t_exact.utc_datetime() + timedelta(seconds=dt)).replace(tzinfo=timezone.utc)
+            )
+
+            topo_before = (satellite - observer).at(t_before)
+            topo_after = (satellite - observer).at(t_after)
+            _, az_before, _ = topo_before.altaz()
+            _, az_after, _ = topo_after.altaz()
+
+            direction = self._calculate_direction(az_before.degrees, az_after.degrees)
+
+            # Determine speed based on angular motion
+            angular_motion = abs(az_after.degrees - az_before.degrees) / (2 * dt)  # deg/sec
+            if angular_motion > 1.0:
+                speed = "Fast"
+            elif angular_motion > 0.3:
+                speed = "Moderate"
+            else:
+                speed = "Slow"
+
+            return {
+                "name": satellite.name,
+                "altitude": round(alt.degrees, 1),
+                "azimuth": round(az.degrees, 1),
+                "distance_km": round(distance.km, 0),
+                "brightness_magnitude": brightness_mag,
+                "direction": direction,
+                "speed": speed,
+                "is_bright": brightness_mag is not None and brightness_mag < 3.0,
+                "could_be_mistaken": brightness_mag is not None and brightness_mag < 4.0,
+                "norad_id": self._extract_norad_id(satellite)
+            }
+
+        except Exception as e:
+            logger.debug(f"Error checking satellite {satellite.name} at moment: {e}")
+            return None
+
     async def _find_passes_skyfield(self, satellite, observer, t_start, t_end, ts):
         """Find visible passes for a satellite using skyfield"""
         passes = []
