@@ -2236,22 +2236,22 @@ class AppLocalizationsEs extends AppLocalizations {
   String get planetVenus => 'Venus';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => 'Júpiter';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => 'Saturno';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => 'Marte';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'Mercurio';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => 'Urano';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => 'Neptuno';
 
   @override
   String get starSirius => 'Sirius';
@@ -2278,62 +2278,62 @@ class AppLocalizationsEs extends AppLocalizations {
   String get starBetelgeuse => 'Betelgeuse';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'Luna nueva';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'Crescente encerado';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'Primer trimestre';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => 'Depilando a Gibbous';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'Luna Llena';
 
   @override
   String get moonPhaseWaningGibbous => 'Waning Gibbous';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'Tercer trimestre';
 
   @override
   String get moonPhaseWaningCrescent => 'Waning Crescent';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '${planet}_ debajo del horizonte';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '${planet}_ alta overhead (${planet}_ °) - muy prominente';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '${planet}_ ${planet}_° - prominente';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '${planet}_ ${planet}_°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '$star muy brillante en ${star}_ °';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '${star}_ prominente en ${star}_nivel';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '${star}_ ${star}_°';
   }
 
   @override
@@ -2344,19 +2344,19 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '${count}_ satélites visibles - podría explicar el avistamiento';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '${count}_ satélites visibles - poco probable que explique el avistamiento';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'No hay satélites visibles';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '${count}__ __PLACEHOLDER_1_km';
   }
 }

@@ -2177,25 +2177,25 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
-  String get planetVenus => 'Venus';
+  String get planetVenus => 'ונוס';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => 'צדק';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => 'שבתאי';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => 'מאדים';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'מרקורי';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => 'אורנוס';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => 'נפטון';
 
   @override
   String get starSirius => 'Sirius';
@@ -2207,13 +2207,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get starArcturus => 'Arcturus';
 
   @override
-  String get starVega => 'Vega';
+  String get starVega => 'וגה';
 
   @override
   String get starCapella => 'Capella';
 
   @override
-  String get starRigel => 'Rigel';
+  String get starRigel => 'ריגל';
 
   @override
   String get starProcyon => 'Procyon';
@@ -2222,85 +2222,85 @@ class AppLocalizationsHe extends AppLocalizations {
   String get starBetelgeuse => 'Betelgeuse';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'הירח החדש';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'המונחים: Crescent';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'הרובע הראשון';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => 'תגית: Gibbous';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'ירח מלא';
 
   @override
-  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+  String get moonPhaseWaningGibbous => 'וואן גיבס';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'הרובע השלישי';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => 'סאהר';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '<PLACEHOLDER_0__ מתחת לאופק';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '_PLACEHOLDER_0__High Overhead (_$planet °)';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '_PLACEHOLDER_0_____PLACEHOLDER_1_ ° - בולט';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return 'שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '<PLACEHOLDER_0____ בהיר מאוד ב-__PLACEHOLDER_1_ °_';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '_PLACEHOLDER_0__ בולטת ב-__PLACEHOLDER_1_גבהים';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return 'שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_';
   }
 
   @override
-  String get altitudeShort => 'Alt';
+  String get altitudeShort => 'אליט';
 
   @override
-  String get magnitudeShort => 'Mag';
+  String get magnitudeShort => 'מגדל';
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return 'PLACEHOLDER_0_לוויינים גלויים - עשויים להסביר את הראייה';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return 'PLACEHOLDER_0_לוויינים גלויים - לא סביר להסביר את הראייה';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'אין לוויינים גלויים';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '* PLACEHOLDER_0__ מטוסים שזוהו בתוך _PLACEHOLDER_1_ ק\"מ';
   }
 }

@@ -2193,16 +2193,16 @@ class AppLocalizationsAr extends AppLocalizations {
   String get planetVenus => 'Venus';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => 'المشتري';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => 'زحل';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => 'المريخ';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'الزئبق';
 
   @override
   String get planetUranus => 'Uranus';
@@ -2217,7 +2217,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get starCanopus => 'Canopus';
 
   @override
-  String get starArcturus => 'Arcturus';
+  String get starArcturus => 'المحاضرات';
 
   @override
   String get starVega => 'Vega';
@@ -2226,7 +2226,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get starCapella => 'Capella';
 
   @override
-  String get starRigel => 'Rigel';
+  String get starRigel => 'ريغل';
 
   @override
   String get starProcyon => 'Procyon';
@@ -2235,62 +2235,62 @@ class AppLocalizationsAr extends AppLocalizations {
   String get starBetelgeuse => 'Betelgeuse';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'القمر الجديد';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'واكس الهلال';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'الربع الأول';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => 'واكس جيبوس';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'القمر الكامل';
 
   @override
   String get moonPhaseWaningGibbous => 'Waning Gibbous';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'الربع الثالث';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => 'Waning Industries';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '_BAR_';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '${planet}__ مرتفعات ($planet°) -';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '_';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '_';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '_BAR_ _BAR_';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '_BAR_';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '_';
   }
 
   @override
@@ -2301,19 +2301,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return 'قد يفسر الرؤية';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '__PLACEHOLDER_0_ سواتل مرئية - من غير المحتمل أن تفسر الرؤية';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'لا توجد سواتل مرئية';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '_BAR_ _BAR_';
   }
 }

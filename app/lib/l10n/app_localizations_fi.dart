@@ -2217,13 +2217,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get planetJupiter => 'Jupiter';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => 'Saturnus';
 
   @override
   String get planetMars => 'Mars';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'Elohopea';
 
   @override
   String get planetUranus => 'Uranus';
@@ -2235,7 +2235,8 @@ class AppLocalizationsFi extends AppLocalizations {
   String get starSirius => 'Sirius';
 
   @override
-  String get starCanopus => 'Canopus';
+  String get starCanopus =>
+      'CanopusCity name (optional, probably does not need a translation)';
 
   @override
   String get starArcturus => 'Arcturus';
@@ -2244,7 +2245,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get starVega => 'Vega';
 
   @override
-  String get starCapella => 'Capella';
+  String get starCapella => 'Kapella';
 
   @override
   String get starRigel => 'Rigel';
@@ -2256,62 +2257,62 @@ class AppLocalizationsFi extends AppLocalizations {
   String get starBetelgeuse => 'Betelgeuse';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'Uusikuu';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'Vahaava puolikuu';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'Ensimmäinen vuosineljännes';
 
   @override
   String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'Täysikuu';
 
   @override
   String get moonPhaseWaningGibbous => 'Waning Gibbous';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'Kolmas neljännes';
 
   @override
   String get moonPhaseWaningCrescent => 'Waning Crescent';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '__PAIKKAHOLDER_0__ horisontin alapuolella';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '__PASSIHOLDER_0__ korkea yläpuolella (__PASSIHOLDER_1_°) - erittäin näkyvä';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '__PASSIHOLDER_0__ at __PASSIHOLDER_1_° - näkyvä';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '__PASSIHOLDER_0__ at _PlaceHOLDER_1_°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '__PASSIHOLDER_0__ erittäin kirkas __PASSIHOLDER_1_°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '__PASSIHOLDER_0__ näkyvä __PASSIHOLDER_1__° korkeus';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '__PASSIHOLDER_0__ at _PlaceHOLDER_1_°';
   }
 
   @override
@@ -2322,19 +2323,19 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '_Placeholder_0_ satelliitit näkyvät - saattaa selittää havaintoja';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '_Placeholder_0__ satelliitit näkyvissä - tuskin selittää havaintoja';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'Ei satelliitteja näkyvissä';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '__PASSIHOLDER_0___-ilma-alus havaittu __PASSIHOLDER_1_km';
   }
 }

@@ -2227,25 +2227,25 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get planetVenus => 'Venus';
+  String get planetVenus => 'Vênus';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => 'Júpiter';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => 'Saturno';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => 'Marte';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'Mercúrio';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => 'Urano';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => 'Netuno';
 
   @override
   String get starSirius => 'Sirius';
@@ -2272,62 +2272,62 @@ class AppLocalizationsPt extends AppLocalizations {
   String get starBetelgeuse => 'Betelgeuse';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'Lua Nova';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'Crescente de Cera';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'Primeiro trimestre';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => 'Gibbous de cera';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'Lua cheia';
 
   @override
-  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+  String get moonPhaseWaningGibbous => 'Gibbous';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'Terceiro trimestre';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => 'Crescente em declínio';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '__PACEHOLDER_0__ abaixo do horizonte';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '(_________________) - muito proeminente';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '${planet}________________________________________________________________________________';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return 'LONDRES DE LOCALIZAÇÃO';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '__PACEHOLDER_0___ muito brilhante em __PACEHOLDER_1___';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '__PACEHOLDER_0____ proeminente a altitude __PACEHOLDER_1___°';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return 'LONDRES DE LOCALIZAÇÃO';
   }
 
   @override
@@ -2338,19 +2338,19 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '${count}_ satélites visíveis - pode explicar o avistamento';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '${count}_ satélites visíveis - improvável explicar o avistamento';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'Nenhum satélite visível';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return 'Aeronaves detetadas dentro de 1 km';
   }
 }

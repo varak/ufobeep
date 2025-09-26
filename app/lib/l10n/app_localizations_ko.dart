@@ -2140,130 +2140,130 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get planetVenus => 'Venus';
+  String get planetVenus => '주 메뉴';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => '모리셔스';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => '인기 카테고리';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => '인기 카테고리';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => '주요 특징';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => '한국어';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => '이름 *';
 
   @override
-  String get starSirius => 'Sirius';
+  String get starSirius => '시리우스';
 
   @override
-  String get starCanopus => 'Canopus';
+  String get starCanopus => '한국어';
 
   @override
-  String get starArcturus => 'Arcturus';
+  String get starArcturus => '채용 정보';
 
   @override
-  String get starVega => 'Vega';
+  String get starVega => '베가';
 
   @override
-  String get starCapella => 'Capella';
+  String get starCapella => '스낵 바';
 
   @override
-  String get starRigel => 'Rigel';
+  String get starRigel => '프로젝트';
 
   @override
-  String get starProcyon => 'Procyon';
+  String get starProcyon => '프로시온';
 
   @override
-  String get starBetelgeuse => 'Betelgeuse';
+  String get starBetelgeuse => '뚱 베어';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => '새 달';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => '왁싱 Crescent';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => '1분기';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => '왁싱 Gibbous';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => '전체 달';
 
   @override
-  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+  String get moonPhaseWaningGibbous => '켄징턴';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => '3분기';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => 'Waning 초승달';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '$planet 아래 수평선';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '$planet 높은 오버헤드 ($planet°) - 매우 눈에 띄는';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '$planet at $planet° - 저명한';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '$planet 에 $planet°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '$star 매우 밝기 $star°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '$star $star° 고도로 눈에 띄는';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '$star 에 $star°';
   }
 
   @override
-  String get altitudeShort => 'Alt';
+  String get altitudeShort => '사이트맵';
 
   @override
-  String get magnitudeShort => 'Mag';
+  String get magnitudeShort => '사이트맵';
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '$count 인공위성 - 광경을 설명 할 수 있습니다';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '$count 인공위성 - 보자마자 설명하기';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => '볼 수있는 위성';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '$count 항공기는 ${count}km 내에서 감지';
   }
 }

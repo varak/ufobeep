@@ -2140,130 +2140,130 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get planetVenus => 'Venus';
+  String get planetVenus => 'ヴィーナス';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => 'ジュピター';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => 'サターン';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => 'マース';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'マーキュリー';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => 'ウランサス';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => 'ネプチューン';
 
   @override
-  String get starSirius => 'Sirius';
+  String get starSirius => 'シリウス';
 
   @override
-  String get starCanopus => 'Canopus';
+  String get starCanopus => 'カンポス';
 
   @override
-  String get starArcturus => 'Arcturus';
+  String get starArcturus => 'アークルス';
 
   @override
-  String get starVega => 'Vega';
+  String get starVega => 'ベガ';
 
   @override
-  String get starCapella => 'Capella';
+  String get starCapella => 'カペラ';
 
   @override
-  String get starRigel => 'Rigel';
+  String get starRigel => 'リグエル';
 
   @override
-  String get starProcyon => 'Procyon';
+  String get starProcyon => 'プロシヨン';
 
   @override
-  String get starBetelgeuse => 'Betelgeuse';
+  String get starBetelgeuse => 'ビーテルゲウス';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'ニュームーン';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'ワックス・クレセント';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => '第1四半期';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => 'ワックスギブス';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'フルムーン';
 
   @override
-  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+  String get moonPhaseWaningGibbous => 'Waning ギブス';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => '第3四半期';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => '開花クレセント';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '$planet下地平線';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '$planet 高オーバーヘッド($planet°) - 非常に著名';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '${planet}_ で $planet° - 目立つ';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '${planet}______________ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '${star}_ 非常に明るい $star°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '${star}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '${star}______________ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _';
   }
 
   @override
-  String get altitudeShort => 'Alt';
+  String get altitudeShort => 'ツイート';
 
   @override
-  String get magnitudeShort => 'Mag';
+  String get magnitudeShort => 'ツイート';
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '$count 可視衛星 - 視線を説明するかもしれない';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '$count 見える衛星 - 視線を説明するのとは異なり';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => '衛星表示なし';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '${count}__ 航空機は_PLACEHOLDER_1___km以内に検出';
   }
 }

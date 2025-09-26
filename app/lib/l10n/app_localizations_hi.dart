@@ -2209,130 +2209,130 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get planetVenus => 'Venus';
+  String get planetVenus => 'शुक्र';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => 'गुरु';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => 'शनि';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => 'मार्च';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'बुध';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => 'यूरेनस';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => 'नेप्च्यून';
 
   @override
-  String get starSirius => 'Sirius';
+  String get starSirius => 'सरियस';
 
   @override
-  String get starCanopus => 'Canopus';
+  String get starCanopus => 'कैनोपस';
 
   @override
   String get starArcturus => 'Arcturus';
 
   @override
-  String get starVega => 'Vega';
+  String get starVega => 'वेगा';
 
   @override
-  String get starCapella => 'Capella';
+  String get starCapella => 'कैपेला';
 
   @override
-  String get starRigel => 'Rigel';
+  String get starRigel => 'रिगेल';
 
   @override
   String get starProcyon => 'Procyon';
 
   @override
-  String get starBetelgeuse => 'Betelgeuse';
+  String get starBetelgeuse => 'बेल्जूस';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'न्यू चाँद';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'वैक्सिंग क्रिसेंट';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'पहला क्वार्टर';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => 'वैक्सिंग गिबस';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'पूर्णिमा';
 
   @override
   String get moonPhaseWaningGibbous => 'Waning Gibbous';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'तीसरा तिमाही';
 
   @override
   String get moonPhaseWaningCrescent => 'Waning Crescent';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '${planet}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '${planet}_ उच्च ओवरहेड (_PLACEHOLDER_1_°) - बहुत प्रमुख';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '${planet}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '${planet}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '${star}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '${star}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '${star}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
   String get altitudeShort => 'Alt';
 
   @override
-  String get magnitudeShort => 'Mag';
+  String get magnitudeShort => 'मग';
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '${count}0__ उपग्रह दृश्यमान - दृष्टि की व्याख्या कर सकते हैं';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '${count}0__ उपग्रह दृश्य - देखने की व्याख्या करने की संभावना नहीं';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'कोई उपग्रह दिखाई नहीं देता';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '__PLACEHOLDER_0_0__ विमान का पता __PLACEHOLDER_1_Km के भीतर हुआ।';
   }
 }

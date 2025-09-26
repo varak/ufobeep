@@ -2244,130 +2244,130 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get planetVenus => 'Venus';
+  String get planetVenus => 'Αφροδίτη';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => 'Δίας';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => 'Κρόνος';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => 'Άρης';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'Υδράργυρος';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => 'Ουρανός';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => 'Ποσειδώνας';
 
   @override
-  String get starSirius => 'Sirius';
+  String get starSirius => 'Σείριος';
 
   @override
-  String get starCanopus => 'Canopus';
+  String get starCanopus => 'Κανόπους';
 
   @override
-  String get starArcturus => 'Arcturus';
+  String get starArcturus => 'Αρκτούρος';
 
   @override
-  String get starVega => 'Vega';
+  String get starVega => 'Βέγκα';
 
   @override
-  String get starCapella => 'Capella';
+  String get starCapella => 'Καπέλα';
 
   @override
-  String get starRigel => 'Rigel';
+  String get starRigel => 'Ρίγκελ';
 
   @override
-  String get starProcyon => 'Procyon';
+  String get starProcyon => 'Προκυόνιο';
 
   @override
-  String get starBetelgeuse => 'Betelgeuse';
+  String get starBetelgeuse => 'Μπετελγκέζε';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'Νέα Σελήνη';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'Ημισέληνος';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'Πρώτο τρίμηνο';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => 'Γυαλιά με κερί';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'Πανσέληνος';
 
   @override
-  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+  String get moonPhaseWaningGibbous => 'Κεραυνοί Γκίμπους';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'Τρίτο τρίμηνο';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => 'Κερδίζοντας ημισέληνος';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '__PLACEHOLDER_0_ κάτω από τον ορίζοντα';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '__PLACEHOLDER_0_ υψηλά γενικά έξοδα (__PLACEHOLDER_1_°) - πολύ επιφανής';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '${planet}__PLACEHOLDER_1_° - επιφανής';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '__PLACHOLDER_0___PLACHOLDER_1_°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '__PLACEHOLDER_0_ πολύ φωτεινό στο $star°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '__PLACEHOLDER_0_εξέχουσα σε __PLACEHOLDER_1_° υψόμετρο';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '__PLACHOLDER_0___PLACHOLDER_1_°';
   }
 
   @override
-  String get altitudeShort => 'Alt';
+  String get altitudeShort => 'Άλτ';
 
   @override
-  String get magnitudeShort => 'Mag';
+  String get magnitudeShort => 'Μαγ';
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '__PLACEHOLDER_0_ ορατοί δορυφόροι - μπορεί να εξηγήσει την όραση';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '__PLACEHOLDER_0_ δορυφόροι ορατοί - απίθανο να εξηγήσει την όραση';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'Δεν φαίνονται δορυφόροι';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '__PLACEHOLDER_0_ αεροσκάφος ανιχνεύεται εντός __PLACEHOLDER_1_km';
   }
 }

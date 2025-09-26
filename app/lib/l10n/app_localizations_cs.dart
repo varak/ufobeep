@@ -2225,13 +2225,13 @@ class AppLocalizationsCs extends AppLocalizations {
   String get planetMars => 'Mars';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'Rtuť';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => 'Uran';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => 'Neptun';
 
   @override
   String get starSirius => 'Sirius';
@@ -2246,10 +2246,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get starVega => 'Vega';
 
   @override
-  String get starCapella => 'Capella';
+  String get starCapella => 'Kapella';
 
   @override
-  String get starRigel => 'Rigel';
+  String get starRigel => 'Pevnost';
 
   @override
   String get starProcyon => 'Procyon';
@@ -2258,62 +2258,62 @@ class AppLocalizationsCs extends AppLocalizations {
   String get starBetelgeuse => 'Betelgeuse';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'Nový měsíc';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'Voskovací půlměsíc';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'První čtvrtletí';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => 'Voskování Gibbouse';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'Celý měsíc';
 
   @override
-  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+  String get moonPhaseWaningGibbous => 'Zatracení Gibbous';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'Třetí čtvrtletí';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => 'Zapadající půlměsíc';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '_ _ PLACETETERER _ 0 _ _ pod horizontem';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '_ _ PLACETETIER _ 0 _ _ vysoký režijní náklady (_ _ PLACETIER _ 1 _ _ °) - velmi prominentní';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '_ _ PLACETIER _ 0 _ _ at _ _ PLACETIER _ 1 _ _ ° - prominentní';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '_ _ PLACETIER _ 0 _ _ at _ _ PLACETIER _ 1 _ _ °';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '_ _ PLACETIER _ 0 _ _ velmi jasný na _ _ PLACETIER _ 1 _ _ °';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '_ _ PLACETIER _ 0 _ _ prominentní v _ _ PLACETIER _ 1 _ _ ° nadmořská výška';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '_ _ PLACETIER _ 0 _ _ at _ _ PLACETIER _ 1 _ _ °';
   }
 
   @override
@@ -2324,19 +2324,19 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '_ _ PLACETETERER _ 0 _ _ satelity viditelné - může vysvětlit pozorování';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '_ _ PLACETETERER _ 0 _ _ satelity viditelné - pravděpodobně nevysvětluje pozorování';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'Žádné viditelné družice';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '_ _ PLACETETELER _ 0 _ _ zjištěná letadla _ _ PLACETETELER _ 1 _ _ km';
   }
 }

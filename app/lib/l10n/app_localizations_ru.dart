@@ -2240,130 +2240,130 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get planetVenus => 'Venus';
+  String get planetVenus => 'Венера';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => 'Юпитер';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => 'Сатурн';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => 'Марс';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'Меркурий';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => 'Уран';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => 'Нептун';
 
   @override
-  String get starSirius => 'Sirius';
+  String get starSirius => 'Сириус';
 
   @override
-  String get starCanopus => 'Canopus';
+  String get starCanopus => 'Канопа';
 
   @override
-  String get starArcturus => 'Arcturus';
+  String get starArcturus => 'Арктур';
 
   @override
-  String get starVega => 'Vega';
+  String get starVega => 'Вега';
 
   @override
-  String get starCapella => 'Capella';
+  String get starCapella => 'Капелла';
 
   @override
-  String get starRigel => 'Rigel';
+  String get starRigel => 'Ригель';
 
   @override
-  String get starProcyon => 'Procyon';
+  String get starProcyon => 'Процион';
 
   @override
-  String get starBetelgeuse => 'Betelgeuse';
+  String get starBetelgeuse => 'Бетельгейзе';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'Новолуние';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'Восковой полумесяц';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'Первый квартал';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => 'Восковой Гиббоус';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'Полная луна';
 
   @override
-  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+  String get moonPhaseWaningGibbous => 'Убывающий Gibbous';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'Третий квартал';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => 'Убывающий полумесяц';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '$planet ниже горизонта';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '$planet высокие накладные расходы ($planet°)';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '$planet на $planet° - видный';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '$planet в $planet°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '$star очень яркий на $star°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '$star видно на высоте $star°';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '$star в $star°';
   }
 
   @override
-  String get altitudeShort => 'Alt';
+  String get altitudeShort => 'Альт';
 
   @override
-  String get magnitudeShort => 'Mag';
+  String get magnitudeShort => 'Магия';
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '$count видимые спутники - может объяснить наблюдение';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '$count видимые спутники - вряд ли можно объяснить наблюдение';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'Спутников не видно';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '$count самолет обнаружен в ${count}km';
   }
 }

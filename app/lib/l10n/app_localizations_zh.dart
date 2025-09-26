@@ -2128,130 +2128,130 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get planetVenus => 'Venus';
+  String get planetVenus => '金星';
 
   @override
-  String get planetJupiter => 'Jupiter';
+  String get planetJupiter => '木星( 木星)';
 
   @override
-  String get planetSaturn => 'Saturn';
+  String get planetSaturn => '土星号';
 
   @override
-  String get planetMars => 'Mars';
+  String get planetMars => '火星';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => '汞';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => '天王星';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => '海王星号';
 
   @override
-  String get starSirius => 'Sirius';
+  String get starSirius => '天狼星号';
 
   @override
-  String get starCanopus => 'Canopus';
+  String get starCanopus => '卡诺普斯';
 
   @override
-  String get starArcturus => 'Arcturus';
+  String get starArcturus => '阿克图鲁斯';
 
   @override
-  String get starVega => 'Vega';
+  String get starVega => '维嘉';
 
   @override
-  String get starCapella => 'Capella';
+  String get starCapella => '卡贝拉';
 
   @override
-  String get starRigel => 'Rigel';
+  String get starRigel => '刚性';
 
   @override
-  String get starProcyon => 'Procyon';
+  String get starProcyon => '亲子';
 
   @override
-  String get starBetelgeuse => 'Betelgeuse';
+  String get starBetelgeuse => '贝特尔吉斯';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => '新月亮';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => '蜡新月';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => '第一季度';
 
   @override
-  String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
+  String get moonPhaseWaxingGibbous => '蜡光吉布斯';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => '满月';
 
   @override
-  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+  String get moonPhaseWaningGibbous => '瓦宁・吉布斯';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => '第三季度';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => '万灵新月';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '地平线以下的 PLACEHOLDER_ 0__';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '- PLACEHOLDER_0__ 高管理(__PLACEHOLDER_1+) - 非常突出';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '- PLACEHOLDER_0_ at ^ PLACEHOLDER_ 1_ - 显著位置';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '地点:';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '时非常亮';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '位置: 高度: 高度: 高度: 高度: 高度:';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '地点:';
   }
 
   @override
-  String get altitudeShort => 'Alt';
+  String get altitudeShort => '备选案文';
 
   @override
-  String get magnitudeShort => 'Mag';
+  String get magnitudeShort => '马格';
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '——PLACEHOLDER_0_ 可见的卫星 - 可以解释目击';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '* PLACEHOLDER_0_ 卫星可见- 不太可能解释目击';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => '没有可见的卫星';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '在_PLACEHOLDER_0_公里范围内探测到的飞机';
   }
 }

@@ -2229,13 +2229,13 @@ class AppLocalizationsDa extends AppLocalizations {
   String get planetMars => 'Mars';
 
   @override
-  String get planetMercury => 'Mercury';
+  String get planetMercury => 'Kviksølv';
 
   @override
-  String get planetUranus => 'Uranus';
+  String get planetUranus => 'Uranus Formand';
 
   @override
-  String get planetNeptune => 'Neptune';
+  String get planetNeptune => 'Neptun';
 
   @override
   String get starSirius => 'Sirius';
@@ -2250,7 +2250,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get starVega => 'Vega';
 
   @override
-  String get starCapella => 'Capella';
+  String get starCapella => 'Capella Formand';
 
   @override
   String get starRigel => 'Rigel';
@@ -2262,62 +2262,62 @@ class AppLocalizationsDa extends AppLocalizations {
   String get starBetelgeuse => 'Betelgeuse';
 
   @override
-  String get moonPhaseNew => 'New Moon';
+  String get moonPhaseNew => 'Ny måne';
 
   @override
-  String get moonPhaseWaxingCrescent => 'Waxing Crescent';
+  String get moonPhaseWaxingCrescent => 'Voksende halvmåne';
 
   @override
-  String get moonPhaseFirstQuarter => 'First Quarter';
+  String get moonPhaseFirstQuarter => 'Første kvartal';
 
   @override
   String get moonPhaseWaxingGibbous => 'Waxing Gibbous';
 
   @override
-  String get moonPhaseFull => 'Full Moon';
+  String get moonPhaseFull => 'Fuldmåne';
 
   @override
-  String get moonPhaseWaningGibbous => 'Waning Gibbous';
+  String get moonPhaseWaningGibbous => 'Wening Gibbous';
 
   @override
-  String get moonPhaseThirdQuarter => 'Third Quarter';
+  String get moonPhaseThirdQuarter => 'Tredje kvartal';
 
   @override
-  String get moonPhaseWaningCrescent => 'Waning Crescent';
+  String get moonPhaseWaningCrescent => 'Wening Crescent';
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet below horizon';
+    return '_ _ PLACEREPORT _ 0 _ _ under horisont';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet high overhead ($altitude°) - very prominent';
+    return '_ _ PLACEREPORT _ 0 _ _ high overhead (_ _ PLACEREPORT _ 1 _ _ °) - meget fremtrædende';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $altitude° - prominent';
+    return '_ _ PLACEREPORT _ 0 _ _ at _ _ PLACEREPORT _ 1 _ _ ° - fremtrædende';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet at $altitude°';
+    return '_ _ PLACEREPORT _ 0 _ _ at _ _ PLACEREPORT _ 1 _ _ °';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star very bright at $altitude°';
+    return '_ _ PLACEREPORT _ 0 _ _ meget lys på _ _ PLACEREPORT _ 1 _ _ °';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star prominent at $altitude° altitude';
+    return '_ _ PLACEREPORT _ 0 _ _ fremtrædende på _ _ PLACEREPORT _ 1 _ _ _ ° højde';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star at $altitude°';
+    return '_ _ PLACEREPORT _ 0 _ _ at _ _ PLACEREPORT _ 1 _ _ °';
   }
 
   @override
@@ -2328,19 +2328,19 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '$count satellites visible - might explain sighting';
+    return '_ _ PLACEREPER _ 0 _ _ satellitter synlige - kan forklare observation';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '$count satellites visible - unlikely to explain sighting';
+    return '_ _ PLACEREPORT _ 0 _ _ satellitter synlige - usandsynligt at forklare observation';
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'Ingen satellitter synlige';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aircraft detected within ${radius}km';
+    return '_ _ PLACEREPORT _ 0 _ _ luftfartøjer opdaget inden _ _ PLACEREPORT _ 1 _ _ km';
   }
 }
