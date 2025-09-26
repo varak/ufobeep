@@ -518,7 +518,7 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                     "twilight_type": twilight_type,
                     "sun_altitude_deg": sun_alt_deg,
                     "moon_phase_name": phase_name,
-                    "moon_illumination": moon_illumination,
+                    "moon_illumination": phase_fraction,
                     "visible_planets": visible_planets,
                     "visible_bright_stars": visible_bright_stars_count,
                     "observation_quality": "excellent" if twilight_type == "night" else "poor" if twilight_type == "day" else "good",
