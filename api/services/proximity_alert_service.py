@@ -39,15 +39,10 @@ class ProximityAlertService:
         try:
             start_time = datetime.utcnow()
             
-            # Get device coordinates for consistent proximity calculations
-            # This fixes the 12.1km coordinate mismatch issue
-            device_coords = await self._get_device_coordinates(beep_device_id)
-            if not device_coords:
-                logger.warning(f"No device coordinates found for {beep_device_id}, using sensor_data coordinates")
-                device_lat, device_lon = lat, lon
-            else:
-                device_lat, device_lon = device_coords['lat'], device_coords['lon']
-                logger.info(f"Using device coordinates ({device_lat:.6f}, {device_lon:.6f}) instead of sensor_data coordinates ({lat:.6f}, {lon:.6f})")
+            # Use sensor_data coordinates for proximity calculations (most accurate)
+            # sensor_data contains the exact location where the beep was created
+            device_lat, device_lon = lat, lon
+            logger.info(f"Using sensor_data coordinates ({device_lat:.6f}, {device_lon:.6f}) for proximity calculations")
             
             # Start with 1 witness (the original reporter who just submitted this sighting)
             # Then add any additional witness confirmations from the area
@@ -150,7 +145,7 @@ class ProximityAlertService:
                       AND ST_Distance(location, ST_Point($2, $1)::geography) / 1000.0 <= COALESCE((preferences->>'alertRangeKm')::float, alert_range_km)
                     ORDER BY device_id, updated_at DESC, distance_km
                 """
-                logger.info(f"PROXIMITY DEBUG: Executing query with lat={lat}, lon={lon}, exclude_user_id={exclude_device_id}")
+                logger.info(f"PROXIMITY DEBUG: Executing query with lat={lat}, lon={lon}, exclude_device_id={exclude_device_id}")
                 rows = await conn.fetch(query, lat, lon, exclude_device_id)
                 logger.info(f"PROXIMITY DEBUG: Query returned {len(rows)} raw devices")
 
