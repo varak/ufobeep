@@ -130,8 +130,8 @@ export class AstronomicalTranslations {
    */
   static translateAircraftSummary(
     aircraftCount: number,
-    radiusKm?: number,
-    t: TranslationFunction
+    t: TranslationFunction,
+    radiusKm?: number
   ): string {
     if (aircraftCount === 0) {
       return t('noAircraftDetected')
