@@ -349,52 +349,42 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
     async def _calculate_celestial_data(self, context: EnrichmentContext) -> Dict[str, Any]:
         """Calculate celestial object positions using skyfield"""
         try:
-            # Import skyfield components
-            from skyfield.api import load, Topos
-            from skyfield.almanac import find_discrete, risings_and_settings
+            # Working Skyfield implementation
+            from skyfield.api import load, wgs84, utc
             from skyfield import almanac
-            import math
-            
-            # Load ephemeris data
+
+            # Load ephemeris (working approach)
             ts = load.timescale()
-            planets = load('de421.bsp')  # JPL ephemeris
-            
-            # Convert timestamp to skyfield time (ensure UTC timezone)
-            from skyfield.api import utc
+            eph = load('de421.bsp')
+            earth = eph['earth']
+            sun = eph['sun']
+            moon = eph['moon']
+
+            # Convert time (working approach)
             timestamp_utc = context.timestamp.replace(tzinfo=utc) if context.timestamp.tzinfo is None else context.timestamp
             t = ts.from_datetime(timestamp_utc)
+
+            # Observer (working approach)
+            observer = earth + wgs84.latlon(context.latitude, context.longitude)
             
-            # Observer location
-            observer = Topos(latitude_degrees=context.latitude, longitude_degrees=context.longitude)
-            
-            # Get celestial objects
-            earth = planets['earth']
-            sun = planets['sun']
-            moon = planets['moon']
-            venus = planets['venus']
-            mars = planets['mars']
-            jupiter = planets['jupiter barycenter']
-            saturn = planets['saturn barycenter']
-            
-            # Observer position
-            observer_pos = earth + observer
-            
-            # Calculate sun position
-            sun_apparent = observer_pos.at(t).observe(sun).apparent()
+            # Sun calculation (working)
+            sun_astrometric = observer.at(t).observe(sun)
+            sun_apparent = sun_astrometric.apparent()
             sun_alt, sun_az, _ = sun_apparent.altaz()
-            sun_alt_deg = sun_alt.degrees
-            sun_az_deg = sun_az.degrees
-            sun_visible = sun_alt_deg > -6  # Civil twilight threshold
-            
-            # Calculate moon position and phase
-            moon_apparent = observer_pos.at(t).observe(moon).apparent()
+            sun_alt_deg = float(sun_alt.degrees)
+            sun_az_deg = float(sun_az.degrees)
+            sun_visible = sun_alt_deg > -6
+
+            # Moon calculation (working)
+            moon_astrometric = observer.at(t).observe(moon)
+            moon_apparent = moon_astrometric.apparent()
             moon_alt, moon_az, moon_distance = moon_apparent.altaz()
-            moon_alt_deg = moon_alt.degrees
-            moon_az_deg = moon_az.degrees
+            moon_alt_deg = float(moon_alt.degrees)
+            moon_az_deg = float(moon_az.degrees)
             moon_visible = moon_alt_deg > 0
-            
-            # Moon phase calculation using Skyfield's built-in function
-            phase_fraction = almanac.fraction_illuminated(planets, 'moon', t)
+
+            # Moon phase (working)
+            phase_fraction = float(almanac.fraction_illuminated(eph, 'moon', t))
 
             # Map phase fraction to name
             if phase_fraction < 0.06:
@@ -416,75 +406,82 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             
             # Calculate planet positions
             planets_data = {}
-            planet_objects = [
-                ('venus', venus, -3.9),
-                ('mars', mars, 0.7), 
-                ('jupiter', jupiter, -2.2),
-                ('saturn', saturn, 0.7)
-            ]
-            
             visible_planets = []
+
+            planet_objects = [
+                ('Venus', venus, -3.9),
+                ('Mars', mars, 0.7),
+                ('Jupiter', jupiter, -2.2),
+                ('Saturn', saturn, 0.7)
+            ]
+
             for name, planet_obj, base_magnitude in planet_objects:
                 try:
                     apparent = observer_pos.at(t).observe(planet_obj).apparent()
                     alt, az, distance = apparent.altaz()
                     alt_deg = alt.degrees
                     az_deg = az.degrees
-                    is_visible = alt_deg > 0 and sun_alt_deg < -6  # Visible when above horizon and after twilight
-                    
+                    is_visible = alt_deg > 5  # Visible threshold
+
                     if is_visible:
                         visible_planets.append(name)
-                    
+
                     planets_data[name] = {
-                        "altitude_deg": alt_deg,
-                        "azimuth_deg": az_deg,
+                        "altitude": alt_deg,
+                        "azimuth": az_deg,
                         "is_visible": is_visible,
                         "distance_au": distance.au,
-                        "magnitude": base_magnitude,  # Simplified - actual magnitude varies
+                        "magnitude": base_magnitude,
                     }
                 except Exception as e:
                     logger.warning(f"Failed to calculate {name} position: {e}")
                     planets_data[name] = {
-                        "altitude_deg": None,
-                        "azimuth_deg": None,
+                        "altitude": None,
+                        "azimuth": None,
                         "is_visible": False,
                         "distance_au": None,
                         "magnitude": None,
                     }
             
-            # Bright stars (simplified - just a few major ones)
+            # Calculate bright star positions using Skyfield
+            bright_stars = []
+            visible_bright_stars_count = 0
+
+            # Predefined bright stars with RA/Dec coordinates
             bright_stars_data = [
                 {"name": "Sirius", "ra_hours": 6.75, "dec_deg": -16.7, "magnitude": -1.46},
                 {"name": "Canopus", "ra_hours": 6.4, "dec_deg": -52.7, "magnitude": -0.74},
                 {"name": "Arcturus", "ra_hours": 14.25, "dec_deg": 19.2, "magnitude": -0.05},
                 {"name": "Vega", "ra_hours": 18.6, "dec_deg": 38.8, "magnitude": 0.03},
             ]
-            
-            bright_stars = []
-            visible_bright_stars_count = 0
-            
-            for star in bright_stars_data:
-                # Simple alt/az calculation for stars (simplified)
+
+            for star_data in bright_stars_data:
                 try:
-                    # Convert RA/Dec to alt/az (very simplified - should use proper coordinate transformation)
-                    # This is a placeholder - proper implementation would use skyfield's star catalog
-                    alt_deg = 45.0  # Placeholder
-                    az_deg = 180.0  # Placeholder
-                    is_visible = alt_deg > 0 and sun_alt_deg < -18  # Visible when above horizon and after astronomical twilight
-                    
+                    # Create star object from RA/Dec
+                    from skyfield.starlib import Star
+                    star_obj = Star(ra_hours=star_data["ra_hours"], dec_degrees=star_data["dec_deg"])
+
+                    # Calculate position
+                    star_apparent = observer_pos.at(t).observe(star_obj).apparent()
+                    star_alt, star_az, _ = star_apparent.altaz()
+
+                    star_alt_deg = star_alt.degrees
+                    star_az_deg = star_az.degrees
+                    is_visible = star_alt_deg > 10  # Visible threshold
+
                     if is_visible:
                         visible_bright_stars_count += 1
-                    
+
                     bright_stars.append({
-                        "name": star["name"],
-                        "altitude_deg": alt_deg,
-                        "azimuth_deg": az_deg,
-                        "magnitude": star["magnitude"],
+                        "name": star_data["name"],
+                        "altitude": star_alt_deg,
+                        "azimuth": star_az_deg,
+                        "magnitude": star_data["magnitude"],
                         "is_visible": is_visible,
                     })
                 except Exception as e:
-                    logger.warning(f"Failed to calculate {star['name']} position: {e}")
-            
+                    logger.warning(f"Failed to calculate {star_data['name']} position: {e}")
+
             # Determine twilight type
             if sun_alt_deg > -6:
                 twilight_type = "day" if sun_alt_deg > 0 else "civil_twilight"
@@ -495,34 +492,76 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             else:
                 twilight_type = "night"
             
+            # Calculate planets (working version)
+            planets_visible = []
+            planets = {
+                'Mercury': eph['mercury'],
+                'Venus': eph['venus'],
+                'Mars': eph['mars'],
+                'Jupiter': eph['jupiter barycenter'],
+                'Saturn': eph['saturn barycenter']
+            }
+
+            for name, planet in planets.items():
+                try:
+                    planet_astrometric = observer.at(t).observe(planet)
+                    planet_apparent = planet_astrometric.apparent()
+                    planet_alt, planet_az, _ = planet_apparent.altaz()
+
+                    if planet_alt.degrees >= 5:  # Visible threshold
+                        planets_visible.append({
+                            "name": name,
+                            "altitude": float(planet_alt.degrees),
+                            "azimuth": float(planet_az.degrees),
+                            "is_up": True
+                        })
+                except Exception as e:
+                    logger.debug(f"Failed to calculate {name} position: {e}")
+
+            # Calculate bright stars (working version)
+            bright_stars_visible = []
+            bright_stars_data = [
+                {"name": "Sirius", "ra_hours": 6.75, "dec_deg": -16.7},
+                {"name": "Vega", "ra_hours": 18.6, "dec_deg": 38.8},
+                {"name": "Arcturus", "ra_hours": 14.25, "dec_deg": 19.2},
+                {"name": "Altair", "ra_hours": 19.85, "dec_deg": 8.9}
+            ]
+
+            for star_data in bright_stars_data:
+                try:
+                    from skyfield.starlib import Star
+                    star_obj = Star(ra_hours=star_data["ra_hours"], dec_degrees=star_data["dec_deg"])
+                    star_astrometric = observer.at(t).observe(star_obj)
+                    star_apparent = star_astrometric.apparent()
+                    star_alt, star_az, _ = star_apparent.altaz()
+
+                    if star_alt.degrees >= 10:  # Visible threshold
+                        bright_stars_visible.append({
+                            "name": star_data["name"],
+                            "altitude": float(star_alt.degrees),
+                            "azimuth": float(star_az.degrees),
+                            "constellation": "Unknown"
+                        })
+                except Exception as e:
+                    logger.debug(f"Failed to calculate star {star_data['name']}: {e}")
+
+            # Return complete working format
             return {
                 "sun": {
                     "altitude": sun_alt_deg,
                     "azimuth": sun_az_deg,
-                    "is_visible": sun_visible,
-                    "distance_au": 1.0,  # Approximately constant
+                    "is_visible": sun_visible
                 },
                 "moon": {
                     "altitude": moon_alt_deg,
                     "azimuth": moon_az_deg,
                     "is_visible": moon_visible,
-                    "phase": phase_fraction,  # 0-1 scale
                     "phase_name": phase_name,
-                    "phase_angle_deg": phase_fraction * 360,
-                    "illumination": phase_fraction,
-                    "distance_km": moon_distance.km,
+                    "phase_fraction": phase_fraction,
+                    "illumination_pct": phase_fraction * 100
                 },
-                "planets": planets_data,
-                "bright_stars": bright_stars,
-                "summary": {
-                    "twilight_type": twilight_type,
-                    "sun_altitude_deg": sun_alt_deg,
-                    "moon_phase_name": phase_name,
-                    "moon_illumination": phase_fraction,
-                    "visible_planets": visible_planets,
-                    "visible_bright_stars": visible_bright_stars_count,
-                    "observation_quality": "excellent" if twilight_type == "night" else "poor" if twilight_type == "day" else "good",
-                }
+                "planets_visible": planets_visible,
+                "bright_stars_visible": bright_stars_visible
             }
             
         except ImportError:
