@@ -127,29 +127,37 @@ async def enrich_sighting(sighting_id: str) -> bool:
                 "processing_errors": []
             }
             
-            # Build enrichment data for database storage
-            enrichment_data = {}
-
+            # Save enrichment results to separate database columns
             for processor_name, result in enrichment_results.items():
                 if result.success and result.data:
-                    enrichment_data[processor_name] = result.data
                     success_count += 1
+
+                    # Save to appropriate column
+                    if processor_name == "weather":
+                        await conn.execute("UPDATE sightings SET weather_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        logger.info(f"✅ Saved weather data")
+                    elif processor_name == "celestial":
+                        await conn.execute("UPDATE sightings SET celestial_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        logger.info(f"✅ Saved celestial data")
+                    elif processor_name == "aircraft_tracking":
+                        await conn.execute("UPDATE sightings SET aircraft_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        logger.info(f"✅ Saved aircraft data")
+                    elif processor_name == "satellites":
+                        await conn.execute("UPDATE sightings SET satellite_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        logger.info(f"✅ Saved satellite data")
+                    elif processor_name == "geocoding":
+                        await conn.execute("UPDATE sightings SET geocoding_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        logger.info(f"✅ Saved geocoding data")
+                    elif processor_name == "content_filter":
+                        await conn.execute("UPDATE sightings SET content_analysis_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        logger.info(f"✅ Saved content analysis data")
+
                     logger.info(f"✅ {processor_name} enrichment successful")
                 else:
                     logger.error(f"❌ {processor_name} enrichment failed: {result.error if result else 'No result'}")
 
-            # Save all enrichment data to database
-            if enrichment_data:
-                await conn.execute("""
-                    UPDATE sightings
-                    SET enrichment_data = $2::jsonb,
-                        updated_at = NOW()
-                    WHERE id = $1
-                """, UUID(sighting_id), enrichment_data)
-
-                logger.info(f"💾 Saved enrichment data with keys: {list(enrichment_data.keys())}")
-            else:
-                logger.warning(f"⚠️ No enrichment data to save for sighting {sighting_id}")
+            if success_count == 0:
+                logger.warning(f"⚠️ No enrichment data saved for sighting {sighting_id}")
             
             total_worker_time = int((datetime.utcnow() - worker_start_time).total_seconds() * 1000)
             logger.info(f"🎉 WORKER ENRICHMENT FINISHED: Sighting {sighting_id} - {success_count}/{total_count} processors succeeded - Total worker time: {total_worker_time}ms")
