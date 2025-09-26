@@ -975,6 +975,11 @@ class AlertsService:
                         "UPDATE sightings SET geocoding_data = $2::jsonb WHERE id = $1",
                         uuid.UUID(alert_id), json.dumps(new_enrichment_data['geocoding'])
                     )
+                if 'aircraft_tracking' in new_enrichment_data:
+                    await conn.execute(
+                        "UPDATE sightings SET aircraft_data = $2::jsonb WHERE id = $1",
+                        uuid.UUID(alert_id), json.dumps(new_enrichment_data['aircraft_tracking'])
+                    )
             
             print(f"Enrichment completed for alert {alert_id}: {list(merged_enrichment.keys())}")
             
