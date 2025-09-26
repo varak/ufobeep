@@ -1494,16 +1494,11 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
               // Show preview (first 4)
               ...satellitesOverhead.map((sat) => _buildSatelliteItem(sat)),
 
-              // Show additional satellites when expanded
-              if (isExpanded && allSatellites.length > 4) ...[
-                ...allSatellites.skip(4).map((sat) => _buildSatelliteItem(sat)),
-              ],
-
-              // Show expand/collapse button
-              if (allSatellites.length > 4) ...[
+              // Show "See all" button if not expanded and there are more
+              if (!isExpanded && allSatellites.length > 4) ...[
                 const SizedBox(height: 8),
                 InkWell(
-                  onTap: () => setState(() => isExpanded = !isExpanded),
+                  onTap: () => setState(() => isExpanded = true),
                   child: Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -1515,7 +1510,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          isExpanded ? 'Show less' : 'See all $totalNow satellites',
+                          'See all $totalNow satellites',
                           style: const TextStyle(
                             color: AppColors.brandPrimary,
                             fontSize: 12,
@@ -1524,7 +1519,43 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
                         ),
                         const SizedBox(width: 4),
                         Icon(
-                          isExpanded ? Icons.expand_less : Icons.expand_more,
+                          Icons.expand_more,
+                          color: AppColors.brandPrimary,
+                          size: 16,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+
+              // Show additional satellites when expanded
+              if (isExpanded && allSatellites.length > 4) ...[
+                ...allSatellites.skip(4).map((sat) => _buildSatelliteItem(sat)),
+                const SizedBox(height: 8),
+                InkWell(
+                  onTap: () => setState(() => isExpanded = false),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.darkSurface,
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: AppColors.brandPrimary),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Show less',
+                          style: const TextStyle(
+                            color: AppColors.brandPrimary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          Icons.expand_less,
                           color: AppColors.brandPrimary,
                           size: 16,
                         ),
