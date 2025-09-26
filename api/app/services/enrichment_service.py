@@ -992,45 +992,48 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
 
             # Find passes (when satellite goes above horizon)
             above_horizon = alt.degrees > 0
-            max_alt_in_window = max(alt.degrees)
+            max_alt_in_window = max(alt.degrees) if len(alt.degrees) > 0 else -90
             logger.info(f"🛰️  {satellite.name}: Max altitude in window: {max_alt_in_window:.1f}°, Points above horizon: {sum(above_horizon)}")
 
             # Debug specific times if satellite should be visible
             if max_alt_in_window > 10:
                 logger.info(f"🛰️  {satellite.name}: Should be visible (max alt {max_alt_in_window:.1f}°)!")
-            
+
             pass_start = None
             max_elevation = -90
             max_elevation_time = None
-            
+            max_elevation_idx = None
+
             for i in range(len(times)):
                 if above_horizon[i] and pass_start is None:
-                    # Pass starts
+                    # Pass starts (or already in progress at window start)
                     pass_start = times[i]
                     max_elevation = alt.degrees[i]
                     max_elevation_time = times[i]
+                    max_elevation_idx = i
                 elif above_horizon[i] and pass_start is not None:
                     # Continue pass - check for max elevation
                     if alt.degrees[i] > max_elevation:
                         max_elevation = alt.degrees[i]
                         max_elevation_time = times[i]
+                        max_elevation_idx = i
                 elif not above_horizon[i] and pass_start is not None:
                     # Pass ends
                     pass_end = times[i]
-                    
+
                     # Only include passes with reasonable elevation
                     if max_elevation > 10:  # At least 10 degrees elevation
                         # Estimate brightness (very rough approximation)
-                        distance_km = distance.km[i]
+                        distance_km = distance.km[max_elevation_idx]
                         brightness_mag = self._estimate_satellite_brightness(
                             satellite.name, distance_km, max_elevation
                         )
-                        
+
                         # Determine general direction
                         start_az = az.degrees[max(0, i-10)]
                         end_az = az.degrees[min(len(az.degrees)-1, i)]
                         direction = self._calculate_direction(start_az, end_az)
-                        
+
                         passes.append({
                             "satellite_name": satellite.name,
                             "norad_id": self._extract_norad_id(satellite),
@@ -1042,11 +1045,39 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
                             "direction": direction,
                             "is_visible_pass": max_elevation > 10 and brightness_mag is not None and brightness_mag < 6,
                         })
-                    
+
                     # Reset for next pass
                     pass_start = None
                     max_elevation = -90
                     max_elevation_time = None
+                    max_elevation_idx = None
+
+            # Handle partial pass at end of window
+            if pass_start is not None and max_elevation > 10:
+                # Satellite still above horizon at end of window
+                pass_end = times[-1]
+                distance_km = distance.km[max_elevation_idx] if max_elevation_idx is not None else distance.km[-1]
+                brightness_mag = self._estimate_satellite_brightness(
+                    satellite.name, distance_km, max_elevation
+                )
+
+                # Determine direction from available data
+                start_idx = max(0, max_elevation_idx - 10) if max_elevation_idx else 0
+                end_idx = min(len(az.degrees) - 1, max_elevation_idx + 10) if max_elevation_idx else len(az.degrees) - 1
+                direction = self._calculate_direction(az.degrees[start_idx], az.degrees[end_idx])
+
+                passes.append({
+                    "satellite_name": satellite.name,
+                    "norad_id": self._extract_norad_id(satellite),
+                    "pass_start_utc": pass_start.utc_iso(),
+                    "pass_end_utc": pass_end.utc_iso(),
+                    "max_elevation_deg": round(max_elevation, 1),
+                    "max_elevation_time_utc": max_elevation_time.utc_iso() if max_elevation_time else pass_start.utc_iso(),
+                    "brightness_magnitude": brightness_mag,
+                    "direction": direction,
+                    "is_visible_pass": max_elevation > 10 and brightness_mag is not None and brightness_mag < 6,
+                    "partial_pass": True  # Indicate this is a partial pass
+                })
                     
         except Exception as e:
             logger.error(f"Error finding passes for {satellite.name}: {e}")
