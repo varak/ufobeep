@@ -7,7 +7,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 # Load environment variables from .env file if it exists
-load_dotenv()
+# Use absolute path since systemd service may not run from project root
+import pathlib
+env_file = pathlib.Path(__file__).parent.parent.parent / ".env"
+load_dotenv(dotenv_path=env_file)
 from app.middleware.request_middleware import RequestTimeoutMiddleware, ErrorHandlingMiddleware
 from app.config.environment import settings
 from app.routers import plane_match, media_serve, devices, emails, photo_analysis, mufon, users, firebase_users, auth_magic, comments, share_cards, media_uploads
