@@ -924,15 +924,21 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
         # Process Starlink (limit to brightest/most recent)
         starlink_passes = []
         if tle_data.get('starlink'):
-            starlink_sats = tle_data['starlink'][:20]  # Limit to 20 for performance
+            starlink_sats = tle_data['starlink'][:50]  # Check more satellites to find visible ones
+            logger.info(f"🛰️  Processing {len(starlink_sats)} Starlink satellites")
+            starlink_checked = 0
             for sat_info in starlink_sats:
                 try:
-                    if 'STARLINK' in sat_info['name'].upper():
-                        satellite = EarthSatellite(sat_info['line1'], sat_info['line2'], sat_info['name'], ts)
-                        passes = await self._find_passes_skyfield(satellite, observer, t_start, t_end, ts)
+                    # All satellites from starlink endpoint are Starlink, no need to check name
+                    satellite = EarthSatellite(sat_info['line1'], sat_info['line2'], sat_info['name'], ts)
+                    passes = await self._find_passes_skyfield(satellite, observer, t_start, t_end, ts)
+                    if passes:
                         starlink_passes.extend(passes)
+                        logger.debug(f"Found {len(passes)} passes for {sat_info['name']}")
+                    starlink_checked += 1
                 except Exception as e:
                     logger.debug(f"Failed to calculate passes for {sat_info['name']}: {e}")
+            logger.info(f"🛰️  Checked {starlink_checked} Starlink satellites, found {len(starlink_passes)} passes")
         
         # Process other bright satellites
         other_passes = []
@@ -1081,7 +1087,10 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
                     
         except Exception as e:
             logger.error(f"Error finding passes for {satellite.name}: {e}")
-        
+
+        if passes:
+            logger.debug(f"🛰️  Found {len(passes)} passes for {satellite.name}")
+
         return passes
     
     def _estimate_satellite_brightness(self, sat_name: str, distance_km: float, elevation_deg: float) -> Optional[float]:
