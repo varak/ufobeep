@@ -883,6 +883,54 @@ class AlertsService:
             for processor_name, result in results.items():
                 if result.success and result.data:
                     new_enrichment_data[processor_name] = result.data
+
+            # Ensure UI sections have sensible placeholders when processors are unavailable
+            if 'weather' not in new_enrichment_data:
+                new_enrichment_data['weather'] = {
+                    'weather_main': 'Unknown',
+                    'weather_description': 'Weather unavailable',
+                    'temperature_c': None,
+                    'wind_speed_ms': None,
+                    'visibility_km': None,
+                    'humidity_percent': None,
+                    'cloud_cover_percent': None,
+                    'uvi': None,
+                    'sunrise': 0,
+                    'sunset': 0,
+                }
+            if 'aircraft_tracking' not in new_enrichment_data:
+                new_enrichment_data['aircraft_tracking'] = {
+                    'aircraft': [],
+                    'total': 0,
+                    'summary': 'Aircraft tracking unavailable'
+                }
+            if 'satellites' not in new_enrichment_data:
+                new_enrichment_data['satellites'] = {
+                    'iss_passes': [],
+                    'starlink_passes': [],
+                    'other_satellites': [],
+                    'summary': {
+                        'total_visible_passes': 0,
+                        'calculation_method': 'unavailable'
+                    }
+                }
+            if 'geocoding' not in new_enrichment_data and latitude and longitude:
+                new_enrichment_data['geocoding'] = {
+                    'latitude': latitude,
+                    'longitude': longitude,
+                    'location': '',
+                    'display_name': ''
+                }
+
+            # Simple processing summary placeholder
+            total = len(results)
+            successes = sum(1 for r in results.values() if r.success)
+            new_enrichment_data.setdefault('processing_summary', {
+                'total_processors': total,
+                'successful_processors': successes,
+                'failed_processors': total - successes,
+                'processor_results': {name: {'success': r.success, 'error': r.error} for name, r in results.items()}
+            })
             
             # Update sighting with enrichment data - merge instead of replace
             async with self.db_pool.acquire() as conn:
