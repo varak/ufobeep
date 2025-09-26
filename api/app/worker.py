@@ -56,8 +56,6 @@ async def enrich_sighting(sighting_id: str) -> bool:
     try:
         from app.services.enrichment_service import enrichment_orchestrator, initialize_enrichment_processors
         from app.services.enrichment_service import EnrichmentContext
-        from app.models.sighting import Sighting
-        from app.database import get_db_session
         
         worker_start_time = datetime.utcnow()
         logger.info(f"🚀 WORKER ENRICHMENT START: Processing sighting {sighting_id}")
