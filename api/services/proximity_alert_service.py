@@ -141,7 +141,7 @@ class ProximityAlertService:
                     FROM devices
                     WHERE push_enabled = true
                       AND push_token IS NOT NULL
-                      AND user_id != $3
+                      AND device_id != $3
                       AND location IS NOT NULL
                       AND (last_seen IS NULL OR last_seen > NOW() - INTERVAL '24 hours')
                       AND (snooze_until IS NULL OR snooze_until <= NOW())
