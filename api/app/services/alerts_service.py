@@ -735,15 +735,16 @@ class AlertsService:
             
             return str(alert_id)
     
-    async def create_beep(self, device_id: str, location: Dict = None, 
+    async def create_beep(self, device_id: str, location: Dict = None,
                          description: str = None, username: str = None,
-                         title: str = None, source: str = None, 
-                         enrichment_data: Dict = None, occurred_at: str = None,
-                         external_id: str = None) -> Tuple[str, Dict]:
+                         title: str = None, source: str = None,
+                         sensor_data: Dict = None, enrichment_data: Dict = None,
+                         occurred_at: str = None, external_id: str = None) -> Tuple[str, Dict]:
         """Create beep with location privacy - single create_alert call"""
         
         # Handle location and jittering
-        sensor_data = {}
+        if sensor_data is None:
+            sensor_data = {}
         lat = lng = jittered_lat = jittered_lng = 0.0
         
         if location:
@@ -765,8 +766,8 @@ class AlertsService:
                 jittered_lat = lat
                 jittered_lng = lng
             
-            # Build sensor data with location info
-            sensor_data = {
+            # Merge location info into sensor data
+            location_data = {
                 'location': {
                     'latitude': jittered_lat,
                     'longitude': jittered_lng,
@@ -777,6 +778,7 @@ class AlertsService:
                 'device_id': device_id,
                 'timestamp': datetime.utcnow().isoformat()
             }
+            sensor_data.update(location_data)
         elif source != "mufon":
             raise ValueError("Location required for non-MUFON alerts")
         
