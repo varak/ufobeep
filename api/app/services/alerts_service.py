@@ -429,11 +429,14 @@ class AlertsService:
     
     def _process_enrichment(self, row_data) -> Dict:
         """Build enrichment data from separate columns"""
-        # If row_data is just the old enrichment_data column, return it (backward compatibility)
-        if not isinstance(row_data, dict):
-            enrichment = self._parse_json(row_data) if row_data else {}
-            logger.info(f"🔄 ENRICHMENT DEBUG: Using old enrichment_data format")
-            return enrichment if enrichment else {}
+        # Debug: log what type of data we received
+        logger.info(f"🔄 ENRICHMENT DEBUG: Received row_data type: {type(row_data)}")
+        logger.info(f"🔄 ENRICHMENT DEBUG: Row data keys: {list(row_data.keys()) if hasattr(row_data, 'keys') else 'No keys method'}")
+
+        # Always use separate columns approach (row_data should be the database row)
+        if not hasattr(row_data, 'get'):
+            logger.error(f"🔄 ENRICHMENT DEBUG: row_data doesn't have .get() method, cannot process")
+            return {}
 
         # Build enrichment from separate columns
         enrichment = {}
