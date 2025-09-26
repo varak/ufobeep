@@ -435,7 +435,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 
                 
                 // Direction and compass - hidden only for beep creators (show for all alerts including MUFON)
-                if (!(_currentUsername != null && alert.username != null && _currentUsername == alert.username)) ...[
+                if (!_isOriginalCreator()) ...[
                   AlertDirectionSection(
                     key: _directionSectionKey,
                     alert: alert,
@@ -1392,5 +1392,23 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     }
   }
 
+  /// Check if the current user is the original creator of this alert
+  bool _isOriginalCreator() {
+    // Primary method: Compare usernames (most reliable)
+    if (_currentUsername != null && widget.alert.username != null) {
+      final isCreatorByUsername = _currentUsername == widget.alert.username;
+      debugPrint('DEBUG: Username comparison - current: "$_currentUsername", alert: "${widget.alert.username}", isCreator: $isCreatorByUsername');
+      return isCreatorByUsername;
+    }
 
+    // Fallback method: Compare device/reporter IDs for legacy support
+    if (_currentUserDeviceId == null || widget.alert.reporterId == null || widget.alert.reporterId!.isEmpty) {
+      debugPrint('DEBUG: Missing device/reporter ID data for fallback comparison');
+      return false;
+    }
+
+    final isCreatorByDeviceId = _currentUserDeviceId == widget.alert.reporterId;
+    debugPrint('DEBUG: Device ID comparison - current: "$_currentUserDeviceId", alert: "${widget.alert.reporterId}", isCreator: $isCreatorByDeviceId');
+    return isCreatorByDeviceId;
+  }
 }

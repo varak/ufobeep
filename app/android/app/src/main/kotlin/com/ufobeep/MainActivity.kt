@@ -147,7 +147,7 @@ object UiSfx {
             .setMaxStreams(2)
             .setAudioAttributes(attrs)
             .build()
-        soundId = pool!!.load(ctx, R.raw.ui_click, 1)
+        soundId = pool!!.load(ctx, R.raw.normal_beep, 1)
         pool!!.setOnLoadCompleteListener { _, sampleId, status ->
             loaded = (status == 0 && sampleId == soundId)
         }
