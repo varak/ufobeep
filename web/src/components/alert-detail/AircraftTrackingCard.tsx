@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface Aircraft {
@@ -26,6 +27,7 @@ interface AircraftTrackingCardProps {
 
 export default function AircraftTrackingCard({ aircraftData, locale = 'en' }: AircraftTrackingCardProps) {
   const { t } = useClientTranslations('common', locale)
+  const [isExpanded, setIsExpanded] = useState(false)
 
   if (!aircraftData || aircraftData.total === 0) {
     return (
@@ -74,7 +76,7 @@ export default function AircraftTrackingCard({ aircraftData, locale = 'en' }: Ai
         <div className="space-y-3">
           <h4 className="text-sm font-medium text-brand-primary">{t('nearbyAircraft')}</h4>
           <div className="space-y-2">
-            {aircraftData.aircraft.map((aircraft, index) => (
+            {(isExpanded ? aircraftData.aircraft : aircraftData.aircraft.slice(0, 4)).map((aircraft, index) => (
               <div key={index} className="bg-dark-surface border border-dark-border rounded-lg p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
@@ -109,7 +111,37 @@ export default function AircraftTrackingCard({ aircraftData, locale = 'en' }: Ai
               </div>
             ))}
           </div>
-          
+
+          {/* Show expand button if more than 4 aircraft */}
+          {aircraftData.aircraft.length > 4 && (
+            <div className="pt-2">
+              <button
+                onClick={() => setIsExpanded(!isExpanded)}
+                className="flex items-center gap-2 w-full justify-center py-2 px-4 bg-dark-background border border-brand-primary rounded-lg text-brand-primary hover:bg-brand-primary/5 transition-colors text-sm"
+              >
+                <span>
+                  {isExpanded ? 'Show less' : `See all ${aircraftData.aircraft.length} aircraft`}
+                </span>
+                <svg
+                  className={`w-4 h-4 transition-transform ${
+                    isExpanded ? 'rotate-180' : ''
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
+            </div>
+          )}
+
+          {/* Show additional summary if there are more in total from API */}
           {aircraftData.total > aircraftData.aircraft.length && (
             <div className="text-center text-xs text-text-tertiary pt-2">
               +{aircraftData.total - aircraftData.aircraft.length} {t('moreAircraftInArea')}
