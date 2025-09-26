@@ -932,46 +932,72 @@ class CelestialCardFromJson extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // Sun - show meaningful info
-            if (sunData != null) ...[
-              ..._buildCelestialObject(
+            // Only show sun if it's relevant (visible or twilight)
+            if (sunData != null && (sunData['is_visible'] == true || (sunData['altitude'] as double? ?? -90) > -18)) ...[
+              _buildCelestialExplanation(
                 context,
                 'Sun',
                 Icons.wb_sunny,
-                sunData,
+                sunData['explanation'] as String? ?? 'Sun below horizon',
+                sunData['is_visible'] as bool? ?? false,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
             ],
 
-            // Moon - show meaningful info
+            // Moon info
             if (moonData != null) ...[
-              ..._buildCelestialObject(
+              _buildCelestialExplanation(
                 context,
                 'Moon',
                 Icons.nights_stay,
-                moonData,
+                moonData['explanation'] as String? ?? 'Moon position calculated',
+                moonData['is_visible'] as bool? ?? false,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
             ],
 
-            // Visible planets with meaningful descriptions
+            // Visible planets - compact format
             if (visiblePlanets.isNotEmpty) ...[
-              Text(
-                'Visible Planets',
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
+              _buildCelestialExplanation(
+                context,
+                'Planets',
+                Icons.blur_circular,
+                celestialData['planets_explanation'] as String? ?? '${visiblePlanets.length} planets visible',
+                true,
+              ),
+              const SizedBox(height: 6),
+            ],
+
+            // Bright stars - compact format
+            if (celestialData['bright_stars_visible'] != null && (celestialData['bright_stars_visible'] as List).isNotEmpty) ...[
+              _buildCelestialExplanation(
+                context,
+                'Stars',
+                Icons.star,
+                celestialData['stars_explanation'] as String? ?? 'Bright stars visible',
+                true,
+              ),
+              const SizedBox(height: 6),
+            ],
+
+            // Analysis summary at bottom
+            if (celestialData['analysis_summary'] != null) ...[
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: AppColors.darkSurface,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: AppColors.warning),
+                ),
+                child: Text(
+                  celestialData['analysis_summary'] as String,
+                  style: const TextStyle(
+                    color: AppColors.warning,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-              const SizedBox(height: 4),
-              ...visiblePlanets.map((planet) => _buildPlanetInfo(planet)),
-              const SizedBox(height: 8),
-            ],
-
-            // Bright stars
-            if (celestialData['bright_stars_visible'] != null) ...[
-              _buildStarsSection(celestialData['bright_stars_visible'] as List<dynamic>),
             ],
 
             // Fallback
