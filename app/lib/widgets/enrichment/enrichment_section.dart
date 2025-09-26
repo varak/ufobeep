@@ -580,10 +580,13 @@ class SatelliteCardFromJson extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final issPasses = satelliteData['iss_passes'] as List<dynamic>? ?? [];
-    final starlinkPasses = satelliteData['starlink_passes'] as List<dynamic>? ?? [];
-    final allPasses = [...issPasses, ...starlinkPasses];
-    
+    // Only use new exact-moment satellite data
+    final satellitesOverhead = satelliteData['satellites_overhead_preview'] as List<dynamic>? ?? [];
+    final summary = satelliteData['summary'] as Map<String, dynamic>? ?? {};
+    final totalNow = summary['total_visible_now'] as int? ?? 0;
+    final explanation = summary['explanation'] as String? ?? '';
+    final couldExplain = summary['could_explain_sighting'] as bool? ?? false;
+
     return GlassCard(
       child: Padding(
         padding: const EdgeInsets.all(4),
@@ -599,17 +602,18 @@ class SatelliteCardFromJson extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '${AppLocalizations.of(context)!.satellitePassesTitle} (${allPasses.length})',
+                        'Satellites ($totalNow visible now)',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
-                        'Satellites visible overhead at sighting time & location',
+                        explanation.isNotEmpty ? explanation : 'No satellites visible at sighting time',
                         style: TextStyle(
-                          color: AppColors.textTertiary,
+                          color: couldExplain ? AppColors.brandSecondary : AppColors.textTertiary,
                           fontSize: 12,
+                          fontWeight: couldExplain ? FontWeight.w500 : FontWeight.normal,
                         ),
                       ),
                     ],
@@ -618,20 +622,20 @@ class SatelliteCardFromJson extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 16),
-            
-            ...issPasses.map((pass) => _buildSatellitePass(pass)),
-            ...starlinkPasses.map((pass) => _buildSatellitePass(pass)),
-            
-            if (allPasses.isEmpty)
-              Builder(
-                builder: (context) => Text(
-                  AppLocalizations.of(context)!.noSatellitePasses,
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 14,
-                  ),
+
+            // Show satellites visible at exact moment
+            if (satellitesOverhead.isNotEmpty) ...[
+              ...satellitesOverhead.map((sat) => _buildOverheadSatellite(sat)),
+            ] else ...[
+              Text(
+                'No satellites were visible at the exact time of your sighting.',
+                style: TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 14,
+                  fontStyle: FontStyle.italic,
                 ),
               ),
+            ],
           ],
         ),
       ),
@@ -695,7 +699,86 @@ class SatelliteCardFromJson extends StatelessWidget {
       ),
     );
   }
-  
+
+  Widget _buildOverheadSatellite(Map<String, dynamic> sat) {
+    final brightness = sat['brightness_magnitude'] as double?;
+    final isBright = sat['is_bright'] as bool? ?? false;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6),
+      child: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.darkSurface,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: isBright ? AppColors.brandSecondary : AppColors.darkBorder,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Satellite name and brightness
+            Row(
+              children: [
+                Icon(
+                  isBright ? Icons.brightness_high : Icons.brightness_low,
+                  size: 12,
+                  color: isBright ? AppColors.brandSecondary : AppColors.textSecondary,
+                ),
+                const SizedBox(width: 6),
+                Expanded(
+                  child: Text(
+                    sat['name'] ?? 'Unknown Satellite',
+                    style: TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                if (brightness != null)
+                  Text(
+                    '${brightness.toStringAsFixed(1)} mag',
+                    style: TextStyle(
+                      color: isBright ? AppColors.brandSecondary : AppColors.textSecondary,
+                      fontSize: 10,
+                      fontWeight: isBright ? FontWeight.w600 : FontWeight.normal,
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            // Position details
+            Text(
+              _formatOverheadSatelliteDetails(sat),
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 10,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _formatOverheadSatelliteDetails(Map<String, dynamic> sat) {
+    final List<String> details = [];
+
+    // Altitude
+    if (sat['altitude'] != null) {
+      details.add('${sat['altitude']}° altitude');
+    }
+
+    // Azimuth
+    if (sat['azimuth'] != null) {
+      details.add('${sat['azimuth']}° azimuth');
+    }
+
+    return details.join(' • ');
+  }
+
   String _formatSatelliteDetails(Map<String, dynamic> pass) {
     final List<String> details = [];
     
