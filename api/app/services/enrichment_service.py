@@ -806,6 +806,7 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
     async def _calculate_with_skyfield(self, context: EnrichmentContext, start_time: datetime, end_time: datetime) -> Dict[str, Any]:
         """Calculate satellite passes using skyfield for precise orbital mechanics"""
         from skyfield.api import load, Topos, EarthSatellite
+        from datetime import timezone
         import math
         
         # Load timescale and observer location
@@ -1017,38 +1018,19 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
     
     async def _calculate_simplified(self, context: EnrichmentContext, start_time: datetime, end_time: datetime) -> Dict[str, Any]:
         """Simplified satellite calculation without skyfield"""
-        # Return mock data with indication that precise calculation wasn't available
+        # Return empty data with error indication instead of mock data
         return {
-            "iss_passes": [{
-                "satellite_name": "ISS (ZARYA)",
-                "norad_id": 25544,
-                "pass_start_utc": (context.timestamp + timedelta(hours=1)).isoformat() + "Z",
-                "pass_end_utc": (context.timestamp + timedelta(hours=1, minutes=6)).isoformat() + "Z",
-                "max_elevation_deg": 45.0,
-                "max_elevation_time_utc": (context.timestamp + timedelta(hours=1, minutes=3)).isoformat() + "Z",
-                "brightness_magnitude": -2.5,
-                "direction": "SW to NE",
-                "is_visible_pass": True,
-            }],
-            "starlink_passes": [{
-                "satellite_name": "STARLINK-XXXX",
-                "norad_id": None,
-                "pass_start_utc": (context.timestamp + timedelta(hours=2)).isoformat() + "Z",
-                "pass_end_utc": (context.timestamp + timedelta(hours=2, minutes=4)).isoformat() + "Z",
-                "max_elevation_deg": 30.0,
-                "max_elevation_time_utc": (context.timestamp + timedelta(hours=2, minutes=2)).isoformat() + "Z",
-                "brightness_magnitude": 3.5,
-                "direction": "W to E",
-                "is_visible_pass": True,
-            }],
+            "iss_passes": [],
+            "starlink_passes": [],
             "other_satellites": [],
             "summary": {
-                "total_visible_passes": 2,
-                "brightest_magnitude": -2.5,
-                "next_bright_pass": (context.timestamp + timedelta(hours=1)).isoformat() + "Z",
+                "total_visible_passes": 0,
+                "brightest_magnitude": None,
+                "next_bright_pass": None,
                 "search_window_hours": 4,
-                "calculation_method": "simplified_mock",
-                "note": "Skyfield library required for precise satellite tracking"
+                "calculation_method": "unavailable",
+                "error": "Skyfield library required for satellite tracking",
+                "status": "disabled"
             }
         }
 
