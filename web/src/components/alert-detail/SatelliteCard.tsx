@@ -25,8 +25,17 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
   const { t } = useClientTranslations('common', locale)
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const previewSatellites = satellites.satellites_overhead_preview || []
-  const allSatellites = satellites.satellites_overhead || []
+  // Sort satellites by brightness (lower magnitude = brighter)
+  const sortByBrightness = (sats: SatellitePass[]) => {
+    return [...sats].sort((a, b) => {
+      const magA = a.brightness_magnitude ?? 999
+      const magB = b.brightness_magnitude ?? 999
+      return magA - magB
+    })
+  }
+
+  const previewSatellites = sortByBrightness(satellites.satellites_overhead_preview || [])
+  const allSatellites = sortByBrightness(satellites.satellites_overhead || [])
   const hasData = previewSatellites.length > 0
 
   if (!hasData) return null
@@ -42,19 +51,48 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
       </div>
 
       <div className="space-y-2">
-        {displaySatellites.map((satellite, index) => (
-          <div key={index} className="text-sm text-text-secondary mb-2">
-            <div className="flex items-center justify-between">
-              <span className="font-medium text-text-primary">{satellite.satellite_name}</span>
-              <span className="text-xs text-text-tertiary">{satellite.direction}</span>
+        {displaySatellites.map((satellite, index) => {
+          // Handle missing or invalid data gracefully
+          const elevation = satellite.max_elevation_deg ?? 'N/A'
+          const magnitude = satellite.brightness_magnitude ?? 'N/A'
+          const timeString = satellite.max_elevation_time_utc
+          let formattedTime = 'N/A'
+
+          if (timeString) {
+            try {
+              const date = new Date(timeString)
+              if (!isNaN(date.getTime())) {
+                formattedTime = date.toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false
+                })
+              }
+            } catch (e) {
+              console.warn('Invalid satellite time:', timeString)
+            }
+          }
+
+          return (
+            <div key={index} className="text-sm text-text-secondary mb-2">
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-text-primary">
+                  {satellite.satellite_name || 'Unknown Satellite'}
+                </span>
+                <span className="text-xs text-text-tertiary">
+                  {satellite.direction || 'N/A'}
+                </span>
+              </div>
+              <div className="text-xs text-text-tertiary">
+                {elevation !== 'N/A' && `Max elevation: ${elevation}°`}
+                {elevation !== 'N/A' && magnitude !== 'N/A' && ' | '}
+                {magnitude !== 'N/A' && `Magnitude: ${magnitude}`}
+                {(elevation !== 'N/A' || magnitude !== 'N/A') && formattedTime !== 'N/A' && ' | '}
+                {formattedTime !== 'N/A' && formattedTime}
+              </div>
             </div>
-            <div className="text-xs text-text-tertiary">
-              Max elevation: {satellite.max_elevation_deg}° |
-              Magnitude: {satellite.brightness_magnitude} |
-              {new Date(satellite.max_elevation_time_utc).toLocaleTimeString()}
-            </div>
-          </div>
-        ))}
+          )
+        })}
 
         {/* Expand/collapse button */}
         {showExpandButton && (
