@@ -83,7 +83,7 @@ class AlertDirectionSection extends StatelessWidget {
           alert.latitude,
           alert.longitude,
         );
-        final distance = alert.distance ?? _calculateDistance(
+        final distance = _calculateDistance(
           userLocation.latitude,
           userLocation.longitude,
           alert.latitude,
