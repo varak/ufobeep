@@ -966,6 +966,12 @@ class CelestialCardFromJson extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               ...visiblePlanets.map((planet) => _buildPlanetInfo(planet)),
+              const SizedBox(height: 8),
+            ],
+
+            // Bright stars
+            if (celestialData['bright_stars_visible'] != null) ...[
+              _buildStarsSection(celestialData['bright_stars_visible'] as List<dynamic>),
             ],
 
             // Fallback
@@ -1145,6 +1151,62 @@ class CelestialCardFromJson extends StatelessWidget {
                   : '$name below horizon',
                 style: TextStyle(
                   color: isVisible ? AppColors.textPrimary : AppColors.textSecondary,
+                  fontSize: 11,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStarsSection(List<dynamic> stars) {
+    if (stars.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Bright Stars',
+          style: const TextStyle(
+            color: AppColors.textPrimary,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 4),
+        ...stars.map((star) => _buildStarInfo(star)),
+      ],
+    );
+  }
+
+  Widget _buildStarInfo(Map<String, dynamic> star) {
+    final name = star['name'] as String? ?? 'Unknown Star';
+    final altitude = star['altitude'] as double? ?? 0.0;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 4),
+      child: Container(
+        padding: const EdgeInsets.all(6),
+        decoration: BoxDecoration(
+          color: AppColors.darkSurface,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: AppColors.brandPrimary),
+        ),
+        child: Row(
+          children: [
+            const Icon(
+              Icons.star,
+              size: 12,
+              color: AppColors.brandPrimary,
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                '$name prominent at ${altitude.toStringAsFixed(0)}° altitude',
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
                   fontSize: 11,
                 ),
               ),
