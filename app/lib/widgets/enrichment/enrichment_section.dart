@@ -1023,44 +1023,38 @@ class CelestialCardFromJson extends StatelessWidget {
     String explanation,
     bool isVisible,
   ) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-          color: isVisible ? AppColors.brandPrimary : AppColors.darkBorder,
-        ),
-      ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(
             icon,
-            size: 16,
-            color: isVisible ? AppColors.brandPrimary : AppColors.textSecondary,
+            size: 14,
+            color: AppColors.textSecondary,
           ),
           const SizedBox(width: 8),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  objectType,
-                  style: TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
+            child: RichText(
+              text: TextSpan(
+                children: [
+                  TextSpan(
+                    text: '$objectType: ',
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  explanation,
-                  style: TextStyle(
-                    color: isVisible ? AppColors.textPrimary : AppColors.textSecondary,
-                    fontSize: 11,
+                  TextSpan(
+                    text: explanation,
+                    style: const TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
