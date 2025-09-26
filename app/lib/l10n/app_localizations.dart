@@ -4151,6 +4151,222 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sky conditions: {conditions}'**
   String celestialSkySummary(Object conditions);
+
+  /// No description provided for @planetVenus.
+  ///
+  /// In en, this message translates to:
+  /// **'Venus'**
+  String get planetVenus;
+
+  /// No description provided for @planetJupiter.
+  ///
+  /// In en, this message translates to:
+  /// **'Jupiter'**
+  String get planetJupiter;
+
+  /// No description provided for @planetSaturn.
+  ///
+  /// In en, this message translates to:
+  /// **'Saturn'**
+  String get planetSaturn;
+
+  /// No description provided for @planetMars.
+  ///
+  /// In en, this message translates to:
+  /// **'Mars'**
+  String get planetMars;
+
+  /// No description provided for @planetMercury.
+  ///
+  /// In en, this message translates to:
+  /// **'Mercury'**
+  String get planetMercury;
+
+  /// No description provided for @planetUranus.
+  ///
+  /// In en, this message translates to:
+  /// **'Uranus'**
+  String get planetUranus;
+
+  /// No description provided for @planetNeptune.
+  ///
+  /// In en, this message translates to:
+  /// **'Neptune'**
+  String get planetNeptune;
+
+  /// No description provided for @starSirius.
+  ///
+  /// In en, this message translates to:
+  /// **'Sirius'**
+  String get starSirius;
+
+  /// No description provided for @starCanopus.
+  ///
+  /// In en, this message translates to:
+  /// **'Canopus'**
+  String get starCanopus;
+
+  /// No description provided for @starArcturus.
+  ///
+  /// In en, this message translates to:
+  /// **'Arcturus'**
+  String get starArcturus;
+
+  /// No description provided for @starVega.
+  ///
+  /// In en, this message translates to:
+  /// **'Vega'**
+  String get starVega;
+
+  /// No description provided for @starCapella.
+  ///
+  /// In en, this message translates to:
+  /// **'Capella'**
+  String get starCapella;
+
+  /// No description provided for @starRigel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rigel'**
+  String get starRigel;
+
+  /// No description provided for @starProcyon.
+  ///
+  /// In en, this message translates to:
+  /// **'Procyon'**
+  String get starProcyon;
+
+  /// No description provided for @starBetelgeuse.
+  ///
+  /// In en, this message translates to:
+  /// **'Betelgeuse'**
+  String get starBetelgeuse;
+
+  /// No description provided for @moonPhaseNew.
+  ///
+  /// In en, this message translates to:
+  /// **'New Moon'**
+  String get moonPhaseNew;
+
+  /// No description provided for @moonPhaseWaxingCrescent.
+  ///
+  /// In en, this message translates to:
+  /// **'Waxing Crescent'**
+  String get moonPhaseWaxingCrescent;
+
+  /// No description provided for @moonPhaseFirstQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'First Quarter'**
+  String get moonPhaseFirstQuarter;
+
+  /// No description provided for @moonPhaseWaxingGibbous.
+  ///
+  /// In en, this message translates to:
+  /// **'Waxing Gibbous'**
+  String get moonPhaseWaxingGibbous;
+
+  /// No description provided for @moonPhaseFull.
+  ///
+  /// In en, this message translates to:
+  /// **'Full Moon'**
+  String get moonPhaseFull;
+
+  /// No description provided for @moonPhaseWaningGibbous.
+  ///
+  /// In en, this message translates to:
+  /// **'Waning Gibbous'**
+  String get moonPhaseWaningGibbous;
+
+  /// No description provided for @moonPhaseThirdQuarter.
+  ///
+  /// In en, this message translates to:
+  /// **'Third Quarter'**
+  String get moonPhaseThirdQuarter;
+
+  /// No description provided for @moonPhaseWaningCrescent.
+  ///
+  /// In en, this message translates to:
+  /// **'Waning Crescent'**
+  String get moonPhaseWaningCrescent;
+
+  /// No description provided for @planetBelowHorizon.
+  ///
+  /// In en, this message translates to:
+  /// **'{planet} below horizon'**
+  String planetBelowHorizon(Object planet);
+
+  /// No description provided for @planetHighOverheadProminent.
+  ///
+  /// In en, this message translates to:
+  /// **'{planet} high overhead ({altitude}°) - very prominent'**
+  String planetHighOverheadProminent(Object altitude, Object planet);
+
+  /// No description provided for @planetMidSkyProminent.
+  ///
+  /// In en, this message translates to:
+  /// **'{planet} at {altitude}° - prominent'**
+  String planetMidSkyProminent(Object altitude, Object planet);
+
+  /// No description provided for @planetMidSky.
+  ///
+  /// In en, this message translates to:
+  /// **'{planet} at {altitude}°'**
+  String planetMidSky(Object altitude, Object planet);
+
+  /// No description provided for @starVeryBright.
+  ///
+  /// In en, this message translates to:
+  /// **'{star} very bright at {altitude}°'**
+  String starVeryBright(Object altitude, Object star);
+
+  /// No description provided for @starProminent.
+  ///
+  /// In en, this message translates to:
+  /// **'{star} prominent at {altitude}° altitude'**
+  String starProminent(Object altitude, Object star);
+
+  /// No description provided for @starVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'{star} at {altitude}°'**
+  String starVisible(Object altitude, Object star);
+
+  /// No description provided for @altitudeShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Alt'**
+  String get altitudeShort;
+
+  /// No description provided for @magnitudeShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Mag'**
+  String get magnitudeShort;
+
+  /// No description provided for @satellitesVisibleMightExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} satellites visible - might explain sighting'**
+  String satellitesVisibleMightExplain(Object count);
+
+  /// No description provided for @satellitesVisibleUnlikelyExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} satellites visible - unlikely to explain sighting'**
+  String satellitesVisibleUnlikelyExplain(Object count);
+
+  /// No description provided for @noSatellitesVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'No satellites visible'**
+  String get noSatellitesVisible;
+
+  /// No description provided for @aircraftDetectedInRadius.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} aircraft detected within {radius}km'**
+  String aircraftDetectedInRadius(Object count, Object radius);
 }
 
 class _AppLocalizationsDelegate

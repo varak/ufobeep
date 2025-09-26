@@ -485,7 +485,7 @@ class CelestialCard extends StatelessWidget {
                         AstronomicalTranslationService.translatePlanetDescription(
                           planet.name,
                           planet.altitude ?? 0.0,
-                          planet.isProminent ?? false,
+                          planet.magnitude != null && planet.magnitude! < 2.0, // Determine prominence from magnitude
                           AppLocalizations.of(context)!,
                         ),
                         style: TextStyle(

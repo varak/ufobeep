@@ -61,18 +61,12 @@ class AstronomicalTranslationService {
   ) {
     final translatedName = translatePlanetName(planetName, l10n);
 
-    if (altitude < 0) {
-      return l10n.planetBelowHorizon(translatedName);
-    } else if (altitude < 15) {
-      return l10n.planetLowHorizon(translatedName, altitude.toStringAsFixed(0));
-    } else if (altitude > 45 && isProminent) {
-      return l10n.planetHighOverheadProminent(translatedName, altitude.toStringAsFixed(0));
+    if (altitude < 15) {
+      return l10n.celestialPlanetLow(translatedName, altitude.toStringAsFixed(0));
     } else if (altitude > 45) {
-      return l10n.planetHighOverhead(translatedName, altitude.toStringAsFixed(0));
-    } else if (isProminent) {
-      return l10n.planetMidSkyProminent(translatedName, altitude.toStringAsFixed(0));
+      return l10n.celestialPlanetHigh(translatedName, altitude.toStringAsFixed(0));
     } else {
-      return l10n.planetMidSky(translatedName, altitude.toStringAsFixed(0));
+      return l10n.celestialPlanetMedium(translatedName, altitude.toStringAsFixed(0));
     }
   }
 
@@ -86,13 +80,7 @@ class AstronomicalTranslationService {
     final translatedName = translateStarName(starName, l10n);
     final altitudeStr = altitude.toStringAsFixed(0);
 
-    if (magnitude != null && magnitude < 1.0) {
-      return l10n.starVeryBright(translatedName, altitudeStr);
-    } else if (altitude > 30) {
-      return l10n.starProminent(translatedName, altitudeStr);
-    } else {
-      return l10n.starVisible(translatedName, altitudeStr);
-    }
+    return l10n.celestialStarSingle(translatedName, altitudeStr);
   }
 
   /// Generate satellite summary based on count and visibility
@@ -102,12 +90,11 @@ class AstronomicalTranslationService {
     bool couldExplainSighting,
     AppLocalizations l10n
   ) {
+    // Use simple fallback until new ARB keys are translated
     if (visibleCount == 0) {
-      return l10n.noSatellitesVisible;
-    } else if (couldExplainSighting) {
-      return l10n.satellitesVisibleMightExplain(visibleCount);
+      return 'No satellites visible at sighting time';
     } else {
-      return l10n.satellitesVisibleUnlikelyExplain(visibleCount);
+      return '$visibleCount satellites visible';
     }
   }
 
@@ -118,10 +105,10 @@ class AstronomicalTranslationService {
     AppLocalizations l10n
   ) {
     if (aircraftCount == 0) {
-      return l10n.noAircraftDetected;
+      return l10n.noAircraftDetected ?? 'No aircraft detected';
     } else {
       final radius = radiusKm?.toStringAsFixed(0) ?? '50';
-      return l10n.aircraftDetectedInRadius(aircraftCount, radius);
+      return '$aircraftCount aircraft detected within ${radius}km';
     }
   }
 
@@ -135,9 +122,9 @@ class AstronomicalTranslationService {
     final translatedPhase = _translateMoonPhase(phaseName, l10n);
 
     if (altitude < 0) {
-      return l10n.moonBelowHorizon(translatedPhase);
+      return '$translatedPhase below horizon';
     } else {
-      return l10n.moonVisible(translatedPhase, illumination.toStringAsFixed(1));
+      return '$translatedPhase visible - ${illumination.toStringAsFixed(1)}% illuminated';
     }
   }
 
