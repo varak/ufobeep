@@ -33,9 +33,10 @@ def parse_args() -> argparse.Namespace:
 
 
 def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
-    print(f"CELESTIAL DEBUG: Called with timestamp: {when}")
-    print(f"CELESTIAL DEBUG: Location: {lat}, {lon}")
-    print(f"CELESTIAL DEBUG: Current UTC: {datetime.utcnow()}")
+    import sys
+    print(f"CELESTIAL DEBUG: Called with timestamp: {when}", file=sys.stderr)
+    print(f"CELESTIAL DEBUG: Location: {lat}, {lon}", file=sys.stderr)
+    print(f"CELESTIAL DEBUG: Current UTC: {datetime.utcnow()}", file=sys.stderr)
 
     from skyfield.api import load, wgs84
     from skyfield import almanac
