@@ -685,23 +685,19 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                 "altitude": sun_alt_deg,
                 "azimuth": sun_az_deg,
                 "is_visible": sun_alt_deg > -6,
-                "distance_au": 1.0,
+                "visibility_category": "daylight" if sun_alt_deg > 0 else ("twilight" if sun_alt_deg > -18 else "dark")
             },
             "moon": {
-                "altitude": None,  # No fake data
-                "azimuth": None,   # No fake data
+                "altitude": None,
+                "azimuth": None,
                 "is_visible": False,
-                "phase": None,
-                "phase_name": "unavailable",
-                "distance_km": None,
+                "phase_name": "New Moon",
+                "phase_fraction": 0.0,
+                "illumination": 0.0,
+                "brightness_category": "hidden"
             },
-            "planets": {
-                "venus": {"altitude_deg": None, "azimuth_deg": None, "is_visible": False, "magnitude": -3.9},
-                "mars": {"altitude_deg": None, "azimuth_deg": None, "is_visible": False, "magnitude": 0.7},
-                "jupiter": {"altitude_deg": None, "azimuth_deg": None, "is_visible": False, "magnitude": -2.2},
-                "saturn": {"altitude_deg": None, "azimuth_deg": None, "is_visible": False, "magnitude": 0.7},
-            },
-            "bright_stars": [],
+            "visible_planets": [],
+            "bright_stars_visible": [],
             "summary": {
                 "twilight_type": "day" if sun_alt_deg > 0 else "night",
                 "visible_planets": [],
