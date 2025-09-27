@@ -24,10 +24,17 @@ class UnifiedCelestialCard extends StatelessWidget {
     // Single source of truth - use celestial data directly
     final celestial = celestialData['celestial'] as Map<String, dynamic>? ?? {};
     debugPrint('UNIFIED CELESTIAL DEBUG: Celestial data empty: ${celestial.isEmpty}');
+    debugPrint('UNIFIED CELESTIAL DEBUG: Processing flag: ${celestial['processing']}');
 
     if (celestial.isEmpty) {
       debugPrint('UNIFIED CELESTIAL DEBUG: Returning empty - no data');
       return const SizedBox.shrink();
+    }
+
+    // Check if this is a processing placeholder
+    if (celestial['processing'] == true) {
+      debugPrint('UNIFIED CELESTIAL DEBUG: Showing processing state');
+      return _buildProcessingState(context);
     }
 
     return GlassCard(
@@ -64,6 +71,55 @@ class UnifiedCelestialCard extends StatelessWidget {
           // Stars
           if (_hasStarData()) _buildStarsSection(context),
         ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProcessingState(BuildContext context) {
+    return GlassCard(
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text('🌙', style: TextStyle(fontSize: 20)),
+                const SizedBox(width: 8),
+                Text(
+                  AppLocalizations.of(context)!.celestialDataTitle,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Row(
+              children: [
+                SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: AppColors.brandPrimary,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    'Calculating celestial data...',
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

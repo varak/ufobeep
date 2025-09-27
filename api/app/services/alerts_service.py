@@ -595,9 +595,12 @@ class AlertsService:
                 enrichment['celestial'] = {}
                 sources_used.append('celestial_data')
         else:
-            # No celestial_data in database - DO NOT add empty celestial key
-            # The enrichment processor will handle celestial data generation
-            logger.info("🔄 ENRICHMENT DEBUG: No celestial_data found, skipping celestial key creation")
+            # No celestial_data in database - provide placeholder until background processing completes
+            logger.info("🔄 ENRICHMENT DEBUG: No celestial_data found, adding placeholder for background processing")
+            enrichment['celestial'] = {
+                'processing': True,
+                'message': 'Celestial data is being calculated in the background'
+            }
 
         if row_data.get('aircraft_data'):
             enrichment['aircraft_tracking'] = self._parse_json(row_data['aircraft_data'])
