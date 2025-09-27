@@ -69,6 +69,11 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   void initState() {
     super.initState();
     _loadUserData();
+
+    // Check for incomplete enrichment after frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAndShowEnrichmentLoading();
+    });
     _loadComments();
     // Listen for refresh notifications from push notifications
     debugPrint('💬 AlertDetailScreen: registering listener for alertId=${widget.alertId}');
@@ -449,23 +454,14 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
                 // Environmental context (if available) - hidden for MUFON alerts
                 if (alert.enrichment != null && alert.enrichment!.isNotEmpty && alert.source != 'mufon') ...[
-                  // Show loading screen for creator's recent beeps with incomplete enrichment
-                  _shouldShowEnrichmentLoading(alert)
-                    ? EnrichmentLoadingScreen(
-                        beepId: alert.id,
-                        onComplete: () {
-                          // Refresh the alert data when enrichment completes
-                          ref.invalidate(alertByIdProvider(widget.alertId));
-                        },
-                      )
-                    : EnrichmentSection(
-                        enrichmentData: alert.enrichment,
-                        alertCreatorDeviceId: alert.reporterId,
-                        currentUserDeviceId: _currentUserDeviceId,
-                        isWitnessConfirmed: _isWitnessConfirmed,
-                        alertSource: alert.source,
-                        reporterUsername: alert.username,
-                      ),
+                  EnrichmentSection(
+                    enrichmentData: alert.enrichment,
+                    alertCreatorDeviceId: alert.reporterId,
+                    currentUserDeviceId: _currentUserDeviceId,
+                    isWitnessConfirmed: _isWitnessConfirmed,
+                    alertSource: alert.source,
+                    reporterUsername: alert.username,
+                  ),
                   const SizedBox(height: 24),
                 ],
 
@@ -1425,18 +1421,26 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   /// Check if we should show enrichment loading screen instead of incomplete data
   bool _shouldShowEnrichmentLoading(Alert alert) {
     // Only show loading for user's own beeps
-    if (!_isOriginalCreator(alert)) return false;
+    final isCreator = _isOriginalCreator(alert);
+    debugPrint('DEBUG LOADING: Is creator: $isCreator');
+    if (!isCreator) return false;
 
-    // Check if beep is recent (within last 2 minutes)
+    // Check if beep is very recent (within last 10 seconds)
     final now = DateTime.now();
-    final alertTime = DateTime.parse(alert.createdAt);
-    final ageMinutes = now.difference(alertTime).inMinutes;
+    final ageSeconds = now.difference(alert.createdAt).inSeconds;
+    debugPrint('DEBUG LOADING: Age: $ageSeconds seconds');
 
-    if (ageMinutes > 2) return false; // Too old, enrichment should be done
+    if (ageSeconds > 10) return false; // Too old, enrichment should be done
 
     // Check if enrichment is incomplete (missing key sections)
     final enrichment = alert.enrichment;
-    if (enrichment == null || enrichment.isEmpty) return true;
+    debugPrint('DEBUG LOADING: Enrichment null: ${enrichment == null}');
+    debugPrint('DEBUG LOADING: Enrichment empty: ${enrichment?.isEmpty ?? true}');
+
+    if (enrichment == null || enrichment.isEmpty) {
+      debugPrint('DEBUG LOADING: No enrichment data - SHOULD SHOW LOADING');
+      return true;
+    }
 
     // Check for missing core enrichment data
     final hasWeather = enrichment['weather'] != null;
@@ -1444,10 +1448,37 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     final hasSatellites = enrichment['satellites'] != null;
     final hasAircraft = enrichment['aircraft_tracking'] != null;
 
+    debugPrint('DEBUG LOADING: Has weather: $hasWeather, celestial: $hasCelestial, satellites: $hasSatellites, aircraft: $hasAircraft');
+
     // If missing 2+ core sections, probably still processing
     final missingSections = [hasWeather, hasCelestial, hasSatellites, hasAircraft]
         .where((hasData) => !hasData).length;
 
+    debugPrint('DEBUG LOADING: Missing sections: $missingSections - ${missingSections >= 2 ? "SHOULD SHOW LOADING" : "enrichment complete"}');
+
     return missingSections >= 2;
+  }
+
+  void _checkAndShowEnrichmentLoading() {
+    final alertAsync = ref.read(alertByIdProvider(widget.alertId));
+    alertAsync.whenData((alert) {
+      if (alert != null && _shouldShowEnrichmentLoading(alert)) {
+        // Show modal loading screen
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => Dialog.fullscreen(
+            child: EnrichmentLoadingScreen(
+              beepId: alert.id,
+              onComplete: () {
+                Navigator.of(context).pop(); // Close modal
+                // Refresh alert data
+                ref.invalidate(alertByIdProvider(widget.alertId));
+              },
+            ),
+          ),
+        );
+      }
+    });
   }
 }
