@@ -1,0 +1,16 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.ufobeep",
+      "sha256_cert_fingerprints": [
+        "15:00:5E:B2:D1:6D:6E:AD:F5:46:0C:4F:77:34:EE:8D:65:A7:09:87:60:2A:AC:97:68:D1:1C:2D:FF:1B:F0:61",
+        "6C:82:9B:F6:03:75:0E:DA:3B:5B:D7:5E:E6:FA:D9:F3:6B:51:18:7F:34:1A:AC:40:60:DB:C4:05:D5:51:44:FC"
+      ]
+    }
+  }
+]
