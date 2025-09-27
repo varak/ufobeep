@@ -3,7 +3,7 @@ import asyncio
 import time
 import logging
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Dict, Any, Optional
 from uuid import UUID
 
@@ -14,6 +14,38 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger(__name__)
+
+
+def get_local_time(latitude: float, longitude: float) -> datetime:
+    """Get accurate local time for coordinates using timezone lookup"""
+    try:
+        from timezonefinder import TimezoneFinder
+        import pytz
+
+        # Find timezone for coordinates
+        tf = TimezoneFinder()
+        timezone_str = tf.timezone_at(lat=latitude, lng=longitude)
+        utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
+
+        print(f"WORKER DEBUG: Lat/Lon: {latitude}, {longitude}")
+        print(f"WORKER DEBUG: Timezone found: {timezone_str}")
+        print(f"WORKER DEBUG: UTC time: {utc_now}")
+
+        if timezone_str:
+            # Get current time in that timezone
+            tz = pytz.timezone(timezone_str)
+            local_time = utc_now.astimezone(tz)
+            local_naive = local_time.replace(tzinfo=None)
+            print(f"WORKER DEBUG: Local time: {local_time}")
+            print(f"WORKER DEBUG: Local naive: {local_naive}")
+            return local_naive
+        else:
+            print("WORKER DEBUG: No timezone found, using UTC")
+            return datetime.utcnow()
+
+    except Exception as e:
+        print(f"WORKER DEBUG: Timezone error: {e}")
+        return datetime.utcnow()
 
 
 class EnrichmentQueue:
@@ -102,7 +134,7 @@ async def enrich_sighting(sighting_id: str) -> bool:
                 latitude=float(lat) if lat is not None else 0,
                 longitude=float(lon) if lon is not None else 0,
                 altitude=sensor_data.get('altitude', 0),
-                timestamp=sighting['created_at'],
+                timestamp=get_local_time(float(lat) if lat is not None else 0, float(lon) if lon is not None else 0),
                 azimuth_deg=sensor_data.get('azimuth', 0),
                 pitch_deg=sensor_data.get('pitch', 0),
                 category=sighting['category'] or "unknown",
