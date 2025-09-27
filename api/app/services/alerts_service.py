@@ -595,31 +595,9 @@ class AlertsService:
                 enrichment['celestial'] = {}
                 sources_used.append('celestial_data')
         else:
-            # No celestial_data in database - generate fresh celestial data
-            logger.info("🔄 ENRICHMENT DEBUG: No celestial_data found, generating fresh calculations")
-            try:
-                from .enrichment_service import EnrichmentService
-                enrichment_service = EnrichmentService()
-
-                # Generate fresh celestial data using timestamp and location
-                celestial_processor_result = await enrichment_service._process_celestial_data(
-                    sighting_id=row_data['id'],
-                    latitude=latitude,
-                    longitude=longitude,
-                    timestamp=created_at,
-                    timeout=8.0
-                )
-
-                if celestial_processor_result and 'data' in celestial_processor_result:
-                    enrichment['celestial'] = celestial_processor_result['data']
-                    logger.info("✅ Generated fresh celestial data with keys: {list(enrichment['celestial'].keys())}")
-                else:
-                    enrichment['celestial'] = {}
-                    logger.warning("❌ Fresh celestial generation failed")
-
-            except Exception as e:
-                logger.error(f"🔄 ENRICHMENT DEBUG: Failed to generate fresh celestial: {e}")
-                enrichment['celestial'] = {}
+            # No celestial_data in database - DO NOT add empty celestial key
+            # The enrichment processor will handle celestial data generation
+            logger.info("🔄 ENRICHMENT DEBUG: No celestial_data found, skipping celestial key creation")
 
         if row_data.get('aircraft_data'):
             enrichment['aircraft_tracking'] = self._parse_json(row_data['aircraft_data'])
