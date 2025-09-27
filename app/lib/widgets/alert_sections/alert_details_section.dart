@@ -126,12 +126,12 @@ class AlertDetailsSection extends StatelessWidget {
               secondaryInfo: _formatDateTime(context, alert.createdAt),
             ),
 
-            // Reporter info - same condition as alerts list
-            if (alert.username != null && alert.username!.isNotEmpty && alert.source != 'mufon')
+            // Reporter info - use reporterUsername field which has the data
+            if (alert.reporterUsername != null && alert.reporterUsername!.isNotEmpty && alert.source != 'mufon')
               _buildCompactDetailRow(
                 '👤',
                 AppLocalizations.of(context)!.reportedByLabel,
-                alert.username!,
+                alert.reporterUsername!,
               ),
             
             // Witness count (if more than 1)
