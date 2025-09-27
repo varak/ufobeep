@@ -43,11 +43,28 @@ class Alert:
 class AlertsService:
 
     def _get_local_time(self, latitude: float, longitude: float) -> datetime:
-        """Calculate approximate local time based on longitude"""
-        # Simple timezone approximation: UTC offset = longitude / 15
-        # This gives approximate local solar time
-        utc_offset_hours = longitude / 15.0
-        return datetime.utcnow() + timedelta(hours=utc_offset_hours)
+        """Get accurate local time for coordinates using timezone lookup"""
+        try:
+            from timezonefinder import TimezoneFinder
+            import pytz
+
+            # Find timezone for coordinates
+            tf = TimezoneFinder()
+            timezone_str = tf.timezone_at(lat=latitude, lng=longitude)
+
+            if timezone_str:
+                # Get current time in that timezone
+                tz = pytz.timezone(timezone_str)
+                utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
+                local_time = utc_now.astimezone(tz)
+                return local_time.replace(tzinfo=None)  # Remove timezone info for skyfield
+            else:
+                # Fallback to UTC if timezone lookup fails
+                return datetime.utcnow()
+
+        except Exception as e:
+            # Fallback to UTC if any errors
+            return datetime.utcnow()
     def __init__(self, db_pool):
         self.db_pool = db_pool
     

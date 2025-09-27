@@ -40,6 +40,8 @@ geopy==2.4.1                  # Geocoding and distance calculations
 pygeohash==1.2.0              # Geohash encoding for location privacy
 skyfield==1.49                # Precise celestial mechanics (sun, moon, planets)
 sgp4==2.23                    # SGP4 orbital propagation for satellites (Skyfield dependency)
+pytz==2024.1                  # Timezone handling for accurate celestial calculations
+timezonefinder==6.4.1         # Timezone lookup from coordinates
 
 # ============================================================================
 # 📱 PUSH NOTIFICATION & SMS SERVICES
