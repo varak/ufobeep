@@ -148,7 +148,7 @@ class AlertDetailsSection extends StatelessWidget {
               _buildDetailRow(
                 Icons.location_on,
                 AppLocalizations.of(context)!.locationLabel,
-                '${alert.locationName ?? AppLocalizations.of(context)!.unknownLocation}',
+                '${_getLocationDisplayName(alert, context)}',
                 subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
               ),
               // Always show dynamic distance calculation if we have coordinates
@@ -609,5 +609,39 @@ class AlertDetailsSection extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getLocationDisplayName(Alert alert, BuildContext context) {
+    // First check geocoding enrichment data
+    if (alert.enrichment != null) {
+      final geocoding = alert.enrichment!['geocoding'];
+      if (geocoding != null) {
+        // Try formatted_address field
+        final formattedAddress = geocoding['formatted_address'];
+        if (formattedAddress != null && formattedAddress.toString().isNotEmpty) {
+          return formattedAddress.toString();
+        }
+
+        // Try location_name field
+        final locationName = geocoding['location_name'];
+        if (locationName != null && locationName.toString().isNotEmpty) {
+          return locationName.toString();
+        }
+
+        // Try display_name field
+        final displayName = geocoding['display_name'];
+        if (displayName != null && displayName.toString().isNotEmpty) {
+          return displayName.toString();
+        }
+      }
+    }
+
+    // Fall back to basic locationName field
+    if (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location') {
+      return alert.locationName!;
+    }
+
+    // Last resort
+    return AppLocalizations.of(context)!.unknownLocation;
   }
 }

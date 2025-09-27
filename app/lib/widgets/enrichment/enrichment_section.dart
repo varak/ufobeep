@@ -1606,10 +1606,9 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
       ),
       child: Row(
         children: [
-          Icon(
-            isBright ? Icons.brightness_high : Icons.brightness_low,
-            size: 12,
-            color: isBright ? AppColors.warning : AppColors.textSecondary,
+          Text(
+            isBright ? '🛰️' : '🛰️',
+            style: TextStyle(fontSize: 12),
           ),
           const SizedBox(width: 8),
           Expanded(
