@@ -99,11 +99,24 @@ def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
         with load.open(hipparcos.URL) as f:
             df = hipparcos.load_dataframe(f)
 
-        # Filter to brightest stars visible to naked eye
-        bright_catalog = df[df['magnitude'] < 2.5]
+        # Map of brightest stars with proper names
+        bright_stars_map = {
+            11767: "Polaris", 32349: "Sirius", 30438: "Canopus", 69673: "Arcturus",
+            71683: "Vega", 24436: "Capella", 37279: "Rigel", 37826: "Procyon",
+            21421: "Aldebaran", 25336: "Betelgeuse", 113368: "Antares", 102098: "Deneb",
+            91262: "Altair", 80763: "Spica", 87833: "Shaula", 85927: "Pollux",
+            62956: "Regulus", 46390: "Castor", 68702: "Dubhe", 95947: "Nunki"
+        }
+
+        # Filter to only very bright stars (magnitude < 1.5) that people can actually see
+        bright_catalog = df[df['magnitude'] < 1.5]
 
         for hip_id, star_data in bright_catalog.iterrows():
             try:
+                # Skip stars without proper names
+                if hip_id not in bright_stars_map:
+                    continue
+
                 # Create star object from catalog data
                 star = Star(
                     ra_hours=star_data['ra_hours'],
@@ -115,10 +128,10 @@ def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
                 apparent = astrometric.apparent()
                 alt, az, distance = apparent.altaz()
 
-                # Only include stars above horizon
-                if alt.degrees > 10:
+                # Only include stars well above horizon that are actually visible
+                if alt.degrees > 15:
                     bright_stars.append({
-                        "name": f"HIP {hip_id}",  # Use Hipparcos ID for now
+                        "name": bright_stars_map[hip_id],
                         "altitude": float(alt.degrees),
                         "azimuth": float(az.degrees),
                         "magnitude": float(star_data['magnitude'])
