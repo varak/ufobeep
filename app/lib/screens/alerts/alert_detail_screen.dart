@@ -21,6 +21,7 @@ import '../../models/view_media.dart';
 import '../../widgets/alert_sections/alert_actions_section.dart';
 import '../../widgets/better_player_widget.dart';
 import '../../widgets/enrichment/enrichment_section.dart';
+import '../beep/enrichment_loading_screen.dart';
 import '../../services/beep_service.dart';
 import '../../services/user_service.dart';
 import '../../services/api_client.dart';
@@ -448,14 +449,23 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
                 // Environmental context (if available) - hidden for MUFON alerts
                 if (alert.enrichment != null && alert.enrichment!.isNotEmpty && alert.source != 'mufon') ...[
-                  EnrichmentSection(
-                    enrichmentData: alert.enrichment,
-                    alertCreatorDeviceId: alert.reporterId,
-                    currentUserDeviceId: _currentUserDeviceId,
-                    isWitnessConfirmed: _isWitnessConfirmed,
-                    alertSource: alert.source,
-                    reporterUsername: alert.username,
-                  ),
+                  // Show loading screen for creator's recent beeps with incomplete enrichment
+                  _shouldShowEnrichmentLoading(alert)
+                    ? EnrichmentLoadingScreen(
+                        beepId: alert.id,
+                        onComplete: () {
+                          // Refresh the alert data when enrichment completes
+                          ref.invalidate(alertByIdProvider(widget.alertId));
+                        },
+                      )
+                    : EnrichmentSection(
+                        enrichmentData: alert.enrichment,
+                        alertCreatorDeviceId: alert.reporterId,
+                        currentUserDeviceId: _currentUserDeviceId,
+                        isWitnessConfirmed: _isWitnessConfirmed,
+                        alertSource: alert.source,
+                        reporterUsername: alert.username,
+                      ),
                   const SizedBox(height: 24),
                 ],
 
@@ -1410,5 +1420,34 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     final isCreatorByDeviceId = _currentUserDeviceId == alert.reporterId;
     debugPrint('DEBUG: Device ID comparison - current: "$_currentUserDeviceId", alert: "${alert.reporterId}", isCreator: $isCreatorByDeviceId');
     return isCreatorByDeviceId;
+  }
+
+  /// Check if we should show enrichment loading screen instead of incomplete data
+  bool _shouldShowEnrichmentLoading(Alert alert) {
+    // Only show loading for user's own beeps
+    if (!_isOriginalCreator(alert)) return false;
+
+    // Check if beep is recent (within last 2 minutes)
+    final now = DateTime.now();
+    final alertTime = DateTime.parse(alert.createdAt);
+    final ageMinutes = now.difference(alertTime).inMinutes;
+
+    if (ageMinutes > 2) return false; // Too old, enrichment should be done
+
+    // Check if enrichment is incomplete (missing key sections)
+    final enrichment = alert.enrichment;
+    if (enrichment == null || enrichment.isEmpty) return true;
+
+    // Check for missing core enrichment data
+    final hasWeather = enrichment['weather'] != null;
+    final hasCelestial = enrichment['celestial'] != null;
+    final hasSatellites = enrichment['satellites'] != null;
+    final hasAircraft = enrichment['aircraft_tracking'] != null;
+
+    // If missing 2+ core sections, probably still processing
+    final missingSections = [hasWeather, hasCelestial, hasSatellites, hasAircraft]
+        .where((hasData) => !hasData).length;
+
+    return missingSections >= 2;
   }
 }
