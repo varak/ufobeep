@@ -153,8 +153,8 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
 
         sun_data = celestial_data.get('sun', {})
         moon_data = celestial_data.get('moon', {})
-        planets_data = celestial_data.get('planets', {})
-        stars_data = celestial_data.get('bright_stars', [])
+        planets_data = celestial_data.get('visible_planets', [])
+        stars_data = celestial_data.get('bright_stars_visible', [])
 
         # Process sun data
         sun_alt = sun_data.get('altitude', -90)
@@ -170,14 +170,14 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
 
         logger.info(f"🌌 SUN: Altitude {sun_alt:.1f}° → {visibility_category}")
 
-        # Process planets
+        # Process planets - planets_data is now a list from script output
         visible_planets = []
-        for planet_name, planet_data in planets_data.items():
+        for planet_data in planets_data:
             if isinstance(planet_data, dict):
                 altitude = planet_data.get('altitude', 0)
                 if altitude > 5:  # Only include planets above 5° horizon
                     visible_planets.append({
-                        "name": planet_name.title(),
+                        "name": planet_data.get('name', 'Unknown').title(),
                         "altitude": altitude,
                         "azimuth": planet_data.get('azimuth', 0),
                         "magnitude": planet_data.get('magnitude'),

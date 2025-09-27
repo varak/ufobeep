@@ -46,7 +46,7 @@ class UnifiedCelestialCard extends StatelessWidget {
           // Header with emoji icon
           Row(
             children: [
-              Text('🌙', style: TextStyle(fontSize: 20)),
+              Text('🌌', style: TextStyle(fontSize: 20)),
               const SizedBox(width: 8),
               Text(
                 AppLocalizations.of(context)!.celestialDataTitle,
@@ -85,7 +85,7 @@ class UnifiedCelestialCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Text('🌙', style: TextStyle(fontSize: 20)),
+                Text('🌌', style: TextStyle(fontSize: 20)),
                 const SizedBox(width: 8),
                 Text(
                   AppLocalizations.of(context)!.celestialDataTitle,
