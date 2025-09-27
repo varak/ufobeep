@@ -16,9 +16,17 @@ class UnifiedCelestialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('UNIFIED CELESTIAL DEBUG: Full input data keys: ${celestialData.keys.toList()}');
+    debugPrint('UNIFIED CELESTIAL DEBUG: Celestial sub-data: ${celestialData['celestial']}');
+
     // Single source of truth - use celestial data directly
     final celestial = celestialData['celestial'] as Map<String, dynamic>? ?? {};
-    if (celestial.isEmpty) return const SizedBox.shrink();
+    debugPrint('UNIFIED CELESTIAL DEBUG: Celestial data empty: ${celestial.isEmpty}');
+
+    if (celestial.isEmpty) {
+      debugPrint('UNIFIED CELESTIAL DEBUG: Returning empty - no data');
+      return const SizedBox.shrink();
+    }
 
     return GlassCard(
       child: Padding(
