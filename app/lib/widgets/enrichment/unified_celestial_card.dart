@@ -16,9 +16,9 @@ class UnifiedCelestialCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Consolidate all possible celestial data sources into one standard format
-    final consolidatedData = _consolidateCelestialData();
-    if (consolidatedData.isEmpty) return const SizedBox.shrink();
+    // Single source of truth - use celestial data directly
+    final celestial = celestialData['celestial'] as Map<String, dynamic>? ?? {};
+    if (celestial.isEmpty) return const SizedBox.shrink();
 
     return GlassCard(
       child: Padding(
@@ -60,30 +60,30 @@ class UnifiedCelestialCard extends StatelessWidget {
   }
 
   bool _hasSunData() {
-    final consolidated = _consolidateCelestialData();
-    return consolidated['sun'] != null;
+    final celestial = celestialData['celestial'] as Map<String, dynamic>? ?? {};
+    return celestial['sun'] != null;
   }
 
   bool _hasMoonData() {
-    final consolidated = _consolidateCelestialData();
-    return consolidated['moon'] != null;
+    final celestial = celestialData['celestial'] as Map<String, dynamic>? ?? {};
+    return celestial['moon'] != null;
   }
 
   bool _hasPlanetData() {
-    final consolidated = _consolidateCelestialData();
-    final planets = consolidated['visible_planets'] ?? [];
+    final celestial = celestialData['celestial'] as Map<String, dynamic>? ?? {};
+    final planets = celestial['visible_planets'] ?? [];
     return planets is List && planets.isNotEmpty;
   }
 
   bool _hasStarData() {
-    final consolidated = _consolidateCelestialData();
-    final stars = consolidated['bright_stars_visible'] ?? [];
+    final celestial = celestialData['celestial'] as Map<String, dynamic>? ?? {};
+    final stars = celestial['bright_stars_visible'] ?? [];
     return stars is List && stars.isNotEmpty;
   }
 
   Widget _buildSunSection(BuildContext context) {
-    final consolidated = _consolidateCelestialData();
-    final sunData = consolidated['sun'] as Map<String, dynamic>;
+    final celestial = celestialData['celestial'] as Map<String, dynamic>;
+    final sunData = celestial['sun'] as Map<String, dynamic>;
     final description = _getSunDescription(sunData, context);
 
     return Padding(
@@ -107,8 +107,8 @@ class UnifiedCelestialCard extends StatelessWidget {
   }
 
   Widget _buildMoonSection(BuildContext context) {
-    final consolidated = _consolidateCelestialData();
-    final moonData = consolidated['moon'] as Map<String, dynamic>;
+    final celestial = celestialData['celestial'] as Map<String, dynamic>;
+    final moonData = celestial['moon'] as Map<String, dynamic>;
     final description = _getMoonDescription(moonData, context);
 
     return Padding(
@@ -132,8 +132,8 @@ class UnifiedCelestialCard extends StatelessWidget {
   }
 
   Widget _buildPlanetsSection(BuildContext context) {
-    final consolidated = _consolidateCelestialData();
-    final planets = consolidated['visible_planets'] as List;
+    final celestial = celestialData['celestial'] as Map<String, dynamic>;
+    final planets = celestial['visible_planets'] as List;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -162,8 +162,8 @@ class UnifiedCelestialCard extends StatelessWidget {
   }
 
   Widget _buildStarsSection(BuildContext context) {
-    final consolidated = _consolidateCelestialData();
-    final stars = consolidated['bright_stars_visible'] as List;
+    final celestial = celestialData['celestial'] as Map<String, dynamic>;
+    final stars = celestial['bright_stars_visible'] as List;
     final starNames = stars.map((s) => s['name']).join(', ');
 
     return Padding(

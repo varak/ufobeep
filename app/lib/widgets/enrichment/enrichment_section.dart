@@ -232,7 +232,7 @@ class EnrichmentSection extends ConsumerWidget {
           const SizedBox(height: 16),
         ],
         if (hasCelestialData) ...[
-          UnifiedCelestialCard(celestialData: enrichmentData['celestial'] ?? {}),
+          UnifiedCelestialCard(celestialData: enrichmentData),
           const SizedBox(height: 16),
         ],
         if (hasLocationData) ...[
