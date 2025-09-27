@@ -91,14 +91,24 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
         import json
 
         # Use the dedicated celestial calculation script
+        import os
+
+        # Determine correct working directory
+        if os.path.exists('/home/ufobeep/ufobeep'):
+            cwd = '/home/ufobeep/ufobeep'
+            script_path = '/home/ufobeep/ufobeep/api/scripts/calc_celestial.py'
+        else:
+            cwd = '/home/mike/D/ufobeep'
+            script_path = '/home/mike/D/ufobeep/api/scripts/calc_celestial.py'
+
         cmd = [
-            'python', 'api/scripts/calc_celestial.py',
+            'python3', script_path,
             '--lat', str(context.latitude),
             '--lon', str(context.longitude),
             '--time', context.timestamp.isoformat() + 'Z'
         ]
 
-        logger.info(f"🌌 SKYFIELD: Running command: {' '.join(cmd)}")
+        logger.info(f"🌌 SKYFIELD: Running command: {' '.join(cmd)} in {cwd}")
 
         try:
             result = subprocess.run(
@@ -106,12 +116,20 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                 capture_output=True,
                 text=True,
                 timeout=30,
-                cwd='/home/ufobeep/ufobeep' if '/home/ufobeep' in str(__file__) else '/home/mike/D/ufobeep'
+                cwd=cwd
             )
+
+            logger.info(f"🌌 SKYFIELD: Return code: {result.returncode}")
+            logger.info(f"🌌 SKYFIELD: Stdout: {result.stdout[:200]}...")
+            logger.info(f"🌌 SKYFIELD: Stderr: {result.stderr}")
 
             if result.returncode != 0:
                 logger.error(f"🌌 SKYFIELD: Calculation failed - {result.stderr}")
                 raise Exception(f"Celestial calculation failed: {result.stderr}")
+
+            if not result.stdout.strip():
+                logger.error(f"🌌 SKYFIELD: Empty output received")
+                raise Exception("Celestial calculation returned empty output")
 
             # Parse JSON result
             celestial_data = json.loads(result.stdout)
