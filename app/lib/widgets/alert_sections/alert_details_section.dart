@@ -441,6 +441,18 @@ class AlertDetailsSection extends StatelessWidget {
         return displayName.toString();
       }
 
+      // Try formatted_address field
+      final formattedAddress = alert.enrichment!['geocoding']?['formatted_address'];
+      if (formattedAddress != null && formattedAddress.toString().isNotEmpty) {
+        return formattedAddress.toString();
+      }
+
+      // Try location_name field
+      final locationName = alert.enrichment!['geocoding']?['location_name'];
+      if (locationName != null && locationName.toString().isNotEmpty) {
+        return locationName.toString();
+      }
+
       // Try geocoding location field - shorter format like "Manteca, CA"
       final geocodingLocation = alert.enrichment!['geocoding']?['location'];
       if (geocodingLocation != null && geocodingLocation.toString().isNotEmpty) {
