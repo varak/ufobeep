@@ -79,7 +79,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   children: [
                     _buildSlide1(),
                     _buildSlide2(),
-                    _buildSlide3(),
+                    _buildCameraFeaturesSlide(),
                     _buildSlide4(),
                   ],
                 ),

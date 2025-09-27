@@ -1261,12 +1261,18 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                 const SizedBox(height: 24),
 
                 // Send Beep button
-                GlassCard(
+                GestureDetector(
                   onTap: _isBeeping ? null : () async {
                     debugPrint('🔴 BUTTON TAP: _isBeeping=$_isBeeping, _capturedMedia=${_capturedMedia.length}');
                     await UiFeedback.click();
                     _sendQuickBeep();
                   },
+                  onLongPress: _isBeeping ? null : () async {
+                    debugPrint('🔴 LONG PRESS: Opening camera directly');
+                    await UiFeedback.click();
+                    context.push('/beep/camera');
+                  },
+                  child: GlassCard(
                   child: Container(
                     height: 56,
                     alignment: Alignment.center,

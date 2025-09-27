@@ -637,10 +637,10 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
       // Close the modal
       Navigator.of(context).pop();
 
-      // Navigate to multi-file upload screen
-      context.push('/beep/multi-upload', extra: {
-        'files': result.files,
-        'alertId': alertId,
+      // Navigate to beep composition screen with selected files for attachment
+      context.push('/beep/composition', extra: {
+        'mediaFiles': result.files,
+        'attachToSightingId': alertId,
       });
 
     } catch (e) {

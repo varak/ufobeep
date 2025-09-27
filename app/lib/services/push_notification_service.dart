@@ -128,10 +128,16 @@ class PushNotificationService {
         
         // Listen for token refresh
         _messaging.onTokenRefresh.listen((newToken) async {
-          print('FCM token refreshed: $newToken');
+          print('🔔 FCM TOKEN REFRESH: New token received');
+          print('🔔 FCM TOKEN REFRESH: Token length: ${newToken.length}');
+          print('🔔 FCM TOKEN REFRESH: Token preview: ${newToken.substring(0, 20)}...');
+
           await _cacheToken(newToken);
+          print('🔔 FCM TOKEN REFRESH: Token cached locally');
+
           // Notify DeviceRegistrationManager of the new token
           DeviceRegistrationManager().onFcmTokenAvailable(newToken);
+          print('🔔 FCM TOKEN REFRESH: DeviceRegistrationManager notified');
         });
       }
       

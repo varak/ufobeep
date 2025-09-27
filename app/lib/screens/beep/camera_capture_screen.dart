@@ -49,6 +49,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
   bool _isCapturing = false;
   bool _isRecording = false;
   bool _isVideoMode = false; // Toggle between photo and video mode
+  int _selectedCameraIndex = 0; // 0 = back camera, 1 = front camera
   String? _errorMessage;
 
   @override
@@ -96,7 +97,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       }
 
       _controller = CameraController(
-        _cameras!.first,
+        _cameras![_selectedCameraIndex],
         ResolutionPreset.max,
         enableAudio: _isVideoMode // Enable audio only for video mode
       );
@@ -614,6 +615,27 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
                         ],
                       ),
                       const Spacer(),
+                      // Camera switch button
+                      if (_cameras != null && _cameras!.length > 1)
+                        IconButton(
+                          onPressed: _isInitialized && !_isCapturing && !_isRecording ? _switchCamera : null,
+                          icon: Icon(
+                            Icons.flip_camera_ios,
+                            color: _isInitialized && !_isCapturing && !_isRecording ? Colors.white : Colors.grey,
+                            size: 28,
+                          ),
+                        ),
+                      // Photo/Video mode toggle
+                      // Camera switch button (if multiple cameras available)
+                      if (_cameras != null && _cameras!.length > 1)
+                        IconButton(
+                          onPressed: _isInitialized && !_isCapturing && !_isRecording ? _switchCamera : null,
+                          icon: Icon(
+                            Icons.cameraswitch,
+                            color: _isInitialized && !_isCapturing && !_isRecording ? Colors.white : Colors.grey,
+                            size: 28,
+                          ),
+                        ),
                       IconButton(
                         onPressed: _isInitialized && !_isCapturing && !_isRecording ? _toggleMode : null,
                         icon: Icon(
@@ -708,6 +730,39 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
         ],
       ),
     );
+  }
+
+  Future<void> _switchCamera() async {
+    if (_cameras == null || _cameras!.length < 2) return;
+
+    // Dispose current controller
+    await _controller?.dispose();
+
+    // Switch to next camera
+    _selectedCameraIndex = (_selectedCameraIndex + 1) % _cameras!.length;
+
+    // Reinitialize with new camera
+    _controller = CameraController(
+      _cameras![_selectedCameraIndex],
+      ResolutionPreset.max,
+      enableAudio: _isVideoMode
+    );
+
+    try {
+      await _controller!.initialize();
+      if (mounted) {
+        setState(() {
+          _isInitialized = true;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error switching camera: $e');
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Failed to switch camera';
+        });
+      }
+    }
   }
 
   @override

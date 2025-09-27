@@ -5,13 +5,15 @@ import '../services/ui_feedback.dart';
 
 class BeepButton extends StatefulWidget {
   final VoidCallback onPressed;
+  final VoidCallback? onLongPress;
   final bool isLoading;
   final double size;
   final String text;
-  
+
   const BeepButton({
     super.key,
     required this.onPressed,
+    this.onLongPress,
     this.isLoading = false,
     this.size = 200,
     this.text = 'BEEP',
@@ -73,6 +75,7 @@ class _BeepButtonState extends State<BeepButton>
       onTapDown: widget.isLoading ? null : _handleTapDown,
       onTapUp: widget.isLoading ? null : _handleTapUp,
       onTapCancel: _handleTapCancel,
+      onLongPress: widget.isLoading ? null : widget.onLongPress,
       child: AnimatedBuilder(
         animation: _scaleAnimation,
         builder: (context, child) {

@@ -32,7 +32,8 @@ class DeviceRegistrationManager {
     // Listen for FCM token changes
     _fcmSub?.cancel();
     _fcmSub = FirebaseMessaging.instance.onTokenRefresh.listen((token) {
-      print('🔔 DeviceRegistrationManager: FCM token refreshed');
+      print('🔔 DeviceRegistrationManager: FCM token refreshed - triggering re-registration');
+      print('🔔 DeviceRegistrationManager: New token preview: ${token.substring(0, 20)}...');
       _trigger();
     });
     
@@ -132,6 +133,7 @@ class DeviceRegistrationManager {
       }
 
       if (deviceResponse != null) {
+        final wasTokenUpdate = _lastRegisteredFcm != null && _lastRegisteredFcm != fcmToken;
         _lastRegisteredFcm = fcmToken;
         _lastRegisteredUser = userKey;
 
@@ -140,6 +142,7 @@ class DeviceRegistrationManager {
         print('📱 DeviceRegistrationManager: ├── Platform: ${deviceResponse.platform.value}');
         print('📱 DeviceRegistrationManager: ├── Push enabled: ${deviceResponse.pushEnabled}');
         print('📱 DeviceRegistrationManager: ├── Mode: ${isAuthenticated ? "authenticated" : "anonymous"}');
+        print('📱 DeviceRegistrationManager: ├── FCM token updated: ${wasTokenUpdate ? "YES (new token sent to server)" : "NO (same token)"}');
         print('📱 DeviceRegistrationManager: └── Location: ${position!.latitude}, ${position.longitude}');
       } else {
         print('❌ DeviceRegistrationManager: FAILED - Registration returned null');
