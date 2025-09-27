@@ -54,6 +54,7 @@ class UnifiedCelestialCard extends StatelessWidget {
           // Stars
           if (_hasStarData()) _buildStarsSection(context),
         ],
+        ),
       ),
     );
   }
