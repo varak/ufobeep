@@ -51,19 +51,26 @@ class AlertsService:
             # Find timezone for coordinates
             tf = TimezoneFinder()
             timezone_str = tf.timezone_at(lat=latitude, lng=longitude)
+            utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
+
+            print(f"DEBUG: Lat/Lon: {latitude}, {longitude}")
+            print(f"DEBUG: Timezone found: {timezone_str}")
+            print(f"DEBUG: UTC time: {utc_now}")
 
             if timezone_str:
                 # Get current time in that timezone
                 tz = pytz.timezone(timezone_str)
-                utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
                 local_time = utc_now.astimezone(tz)
-                return local_time.replace(tzinfo=None)  # Remove timezone info for skyfield
+                local_naive = local_time.replace(tzinfo=None)
+                print(f"DEBUG: Local time: {local_time}")
+                print(f"DEBUG: Local naive: {local_naive}")
+                return local_naive
             else:
-                # Fallback to UTC if timezone lookup fails
+                print("DEBUG: No timezone found, using UTC")
                 return datetime.utcnow()
 
         except Exception as e:
-            # Fallback to UTC if any errors
+            print(f"DEBUG: Timezone error: {e}")
             return datetime.utcnow()
     def __init__(self, db_pool):
         self.db_pool = db_pool
