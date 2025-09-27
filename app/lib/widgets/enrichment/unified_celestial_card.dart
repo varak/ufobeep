@@ -18,6 +18,7 @@ class UnifiedCelestialCard extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('UNIFIED CELESTIAL DEBUG: Full input data keys: ${celestialData.keys.toList()}');
     debugPrint('UNIFIED CELESTIAL DEBUG: Celestial sub-data: ${celestialData['celestial']}');
+    debugPrint('UNIFIED CELESTIAL DEBUG: Celestial type: ${celestialData['celestial'].runtimeType}');
 
     // Single source of truth - use celestial data directly
     final celestial = celestialData['celestial'] as Map<String, dynamic>? ?? {};
