@@ -93,7 +93,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
         // Check if all processors completed
         final allComplete = _processorStatus.values.every((status) => status);
         if (allComplete) {
-          await SoundService.play(AlertSound.success);
+          await SoundService.play(AlertSound.normal);
           widget.onComplete();
           return;
         }
@@ -113,7 +113,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
       _currentProcessor = _getNextProcessor();
     });
 
-    SoundService.play(AlertSound.click);
+    SoundService.play(AlertSound.tap);
   }
 
   String _getNextProcessor() {
@@ -128,7 +128,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.darkBackground,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -182,7 +182,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
                 width: double.infinity,
                 height: 8,
                 decoration: BoxDecoration(
-                  backgroundColor: AppColors.darkSurface,
+                  color: AppColors.darkSurface,
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: FractionallySizedBox(
@@ -190,7 +190,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
                   widthFactor: _overallProgress,
                   child: Container(
                     decoration: BoxDecoration(
-                      backgroundColor: AppColors.brandPrimary,
+                      color: AppColors.brandPrimary,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
