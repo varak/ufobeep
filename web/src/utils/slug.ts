@@ -79,12 +79,29 @@ export interface SluggableAlertLike {
   source?: string | null
   external_url?: string | null
   short_url?: string
+  enrichment?: {
+    geocoding?: {
+      formatted_address?: string
+      display_name?: string
+      location_name?: string
+      location?: string
+    }
+    location_raw?: string
+  }
 }
 
 export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', translations?: any, shortId?: string) {
   // Browser-compatible slug generation (matches shared/generate_slug.js behavior)
   const title = alert.title || ''
-  const location = alert.location?.name || 'unknown-location'
+
+  // Use comprehensive location logic like the display logic
+  const location = (alert as any).enrichment?.geocoding?.formatted_address ||
+                   (alert as any).enrichment?.geocoding?.display_name ||
+                   (alert as any).enrichment?.geocoding?.location_name ||
+                   (alert as any).enrichment?.geocoding?.location ||
+                   (alert as any).enrichment?.location_raw ||
+                   alert.location?.name ||
+                   'unknown-location'
   const date = alert.created_at
   const id = shortId || alert.short_url || alert.id
   const source = alert.source || ''
