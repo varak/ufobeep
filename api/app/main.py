@@ -898,9 +898,9 @@ async def admin_delete_user_data_only(user_id: str, request: Request):
                 sightings_deleted = await conn.execute("DELETE FROM sightings WHERE reporter_id = $1", user_id)
                 final_sightings_count = int(sightings_deleted.split()[-1]) if sightings_deleted.split()[-1].isdigit() else 0
 
-                # STEP 3: Delete devices (this will break app access but preserve username)
-                devices_deleted = await conn.execute("DELETE FROM devices WHERE user_id = $1", user_id)
-                devices_count = int(devices_deleted.split()[-1]) if devices_deleted.split()[-1].isdigit() else 0
+                # STEP 3: Preserve devices so user can continue accessing their account
+                # (Devices are only deleted in full account deletion, not data-only deletion)
+                devices_count = 0
 
                 # STEP 4: Delete user's follows
                 user_follows_deleted = await conn.execute("DELETE FROM follows WHERE user_id = $1", user_id)
@@ -910,14 +910,14 @@ async def admin_delete_user_data_only(user_id: str, request: Request):
 
                 return {
                     "success": True,
-                    "message": f"Data cleared for user {username} - account preserved",
+                    "message": f"Data cleared for user {username} - account and access preserved",
                     "details": {
                         "user_id": user_id,
                         "username": username,
                         "account_preserved": True,
+                        "devices_preserved": True,
                         "sightings_deleted": final_sightings_count,
                         "comments_deleted": comments_count,
-                        "devices_deleted": devices_count,
                         "follows_deleted": follows_deleted + user_follows_count,
                         "media_files_deleted": media_files_deleted,
                     }
