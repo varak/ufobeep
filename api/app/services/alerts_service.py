@@ -6,7 +6,7 @@ import json
 import uuid
 import math
 import logging
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import List, Dict, Optional, Tuple
 from dataclasses import dataclass
 from ..utils.short_url_utils import generate_short_url
@@ -41,6 +41,13 @@ class Alert:
     short_url: Optional[str] = None
 
 class AlertsService:
+
+    def _get_local_time(self, latitude: float, longitude: float) -> datetime:
+        """Calculate approximate local time based on longitude"""
+        # Simple timezone approximation: UTC offset = longitude / 15
+        # This gives approximate local solar time
+        utc_offset_hours = longitude / 15.0
+        return datetime.utcnow() + timedelta(hours=utc_offset_hours)
     def __init__(self, db_pool):
         self.db_pool = db_pool
     
@@ -876,7 +883,7 @@ class AlertsService:
                 latitude=latitude,
                 longitude=longitude,
                 altitude=None,
-                timestamp=datetime.utcnow(),
+                timestamp=self._get_local_time(latitude, longitude),
                 azimuth_deg=0.0,
                 pitch_deg=0.0,
                 category="ufo",
@@ -1264,7 +1271,7 @@ class AlertsService:
 
     async def _add_confirmation_comment(self, conn, sighting_id: str, device_id: str):
         """Add automatic 'I saw it' comment directly in database with proper notifications"""
-        from datetime import datetime, timezone
+        from datetime import datetime, timezone, timedelta
         from app.services.notify import notify_users
         import uuid
         
