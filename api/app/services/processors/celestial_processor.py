@@ -33,6 +33,10 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
     def timeout_seconds(self) -> int:
         return 8  # Skyfield can be slow on first load
 
+    @property
+    def priority(self) -> int:
+        return 3  # Medium priority - after weather but before satellites
+
     async def is_available(self) -> bool:
         return self._skyfield_available
 

@@ -13,67 +13,9 @@ from typing import Dict, Any, Optional, List, Tuple
 from dataclasses import dataclass
 import json
 
+from .enrichment_base import EnrichmentContext, EnrichmentResult, EnrichmentProcessor
+
 logger = logging.getLogger(__name__)
-
-
-@dataclass
-class EnrichmentContext:
-    """Context data for enrichment processing"""
-    sighting_id: str
-    latitude: float
-    longitude: float
-    altitude: Optional[float]
-    timestamp: datetime
-    azimuth_deg: float
-    pitch_deg: float
-    roll_deg: Optional[float] = None
-    category: str = "unknown"
-    title: str = ""
-    description: str = ""
-
-
-@dataclass
-class EnrichmentResult:
-    """Result from an enrichment processor"""
-    processor_name: str
-    success: bool
-    data: Optional[Dict[str, Any]] = None
-    error: Optional[str] = None
-    processing_time_ms: Optional[int] = None
-    confidence_score: Optional[float] = None  # 0.0 to 1.0
-    metadata: Optional[Dict[str, Any]] = None
-
-
-class EnrichmentProcessor(ABC):
-    """Abstract base class for enrichment processors"""
-    
-    @property
-    @abstractmethod
-    def name(self) -> str:
-        """Processor name for identification"""
-        pass
-    
-    @property
-    @abstractmethod
-    def priority(self) -> int:
-        """Processing priority (lower numbers = higher priority)"""
-        pass
-    
-    @property
-    @abstractmethod
-    def timeout_seconds(self) -> int:
-        """Maximum processing time before timeout"""
-        pass
-    
-    @abstractmethod
-    async def process(self, context: EnrichmentContext) -> EnrichmentResult:
-        """Process enrichment for the given context"""
-        pass
-    
-    @abstractmethod
-    async def is_available(self) -> bool:
-        """Check if processor is available (API keys, services, etc.)"""
-        pass
 
 
 class WeatherEnrichmentProcessor(EnrichmentProcessor):

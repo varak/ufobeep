@@ -50,6 +50,12 @@ class EnrichmentProcessor(ABC):
         """Timeout for processing in seconds"""
         pass
 
+    @property
+    @abstractmethod
+    def priority(self) -> int:
+        """Processing priority (lower numbers = higher priority)"""
+        pass
+
     @abstractmethod
     async def is_available(self) -> bool:
         """Check if processor is available (API keys, services, etc.)"""
