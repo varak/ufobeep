@@ -1,0 +1,250 @@
+import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
+import '../../theme/app_theme.dart';
+import '../../services/astronomical_translation_service.dart';
+
+/// Unified celestial display - replaces all 7 scattered celestial implementations
+/// One clean component for sun, moon, planets, and stars
+class UnifiedCelestialCard extends StatelessWidget {
+  final Map<String, dynamic> celestialData;
+
+  const UnifiedCelestialCard({
+    Key? key,
+    required this.celestialData,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    // Consolidate all possible celestial data sources into one standard format
+    final consolidatedData = _consolidateCelestialData();
+    if (consolidatedData.isEmpty) return const SizedBox.shrink();
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.darkSurface,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColors.darkBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Header with emoji icon
+          Row(
+            children: [
+              Text('🌙', style: TextStyle(fontSize: 20)),
+              const SizedBox(width: 8),
+              Text(
+                AppLocalizations.of(context)!.celestialDataTitle,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+
+          // Sun data
+          if (_hasSunData()) _buildSunSection(context),
+
+          // Moon data
+          if (_hasMoonData()) _buildMoonSection(context),
+
+          // Planets
+          if (_hasPlanetData()) _buildPlanetsSection(context),
+
+          // Stars
+          if (_hasStarData()) _buildStarsSection(context),
+        ],
+      ),
+    );
+  }
+
+  bool _hasSunData() {
+    return celestialData['sun'] != null;
+  }
+
+  bool _hasMoonData() {
+    return celestialData['moon'] != null;
+  }
+
+  bool _hasPlanetData() {
+    final planets = celestialData['visible_planets'] ?? [];
+    return planets is List && planets.isNotEmpty;
+  }
+
+  bool _hasStarData() {
+    final stars = celestialData['bright_stars_visible'] ?? [];
+    return stars is List && stars.isNotEmpty;
+  }
+
+  Widget _buildSunSection(BuildContext context) {
+    final sunData = celestialData['sun'] as Map<String, dynamic>;
+    final description = _getSunDescription(sunData, context);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Text('☀️', style: TextStyle(fontSize: 16)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Sun: $description',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMoonSection(BuildContext context) {
+    final moonData = celestialData['moon'] as Map<String, dynamic>;
+    final description = _getMoonDescription(moonData, context);
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Text('🌙', style: TextStyle(fontSize: 16)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Moon: $description',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlanetsSection(BuildContext context) {
+    final planets = celestialData['visible_planets'] as List;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text('🪐', style: TextStyle(fontSize: 16)),
+              const SizedBox(width: 8),
+              Text(
+                'Planets: ${planets.length} visible',
+                style: TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          ...planets.map((planet) => _buildPlanetItem(planet, context)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStarsSection(BuildContext context) {
+    final stars = celestialData['bright_stars_visible'] as List;
+    final starNames = stars.map((s) => s['name']).join(', ');
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Text('⭐', style: TextStyle(fontSize: 16)),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(
+              'Stars: $starNames',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPlanetItem(Map<String, dynamic> planet, BuildContext context) {
+    final name = planet['name'] ?? 'Unknown';
+    final altitude = planet['altitude']?.toStringAsFixed(0) ?? '0';
+
+    return Padding(
+      padding: const EdgeInsets.only(left: 24, bottom: 2),
+      child: Text(
+        '$name at ${altitude}°',
+        style: TextStyle(
+          color: AppColors.textTertiary,
+          fontSize: 12,
+        ),
+      ),
+    );
+  }
+
+  String _getSunDescription(Map<String, dynamic> sunData, BuildContext context) {
+    final category = sunData['visibility_category'] ?? 'dark';
+    switch (category) {
+      case 'daylight':
+        return AppLocalizations.of(context)!.celestialSunDaylight;
+      case 'twilight':
+        return AppLocalizations.of(context)!.celestialSunTwilight;
+      default:
+        return AppLocalizations.of(context)!.celestialSunDark;
+    }
+  }
+
+  String _getMoonDescription(Map<String, dynamic> moonData, BuildContext context) {
+    final phaseName = moonData['phase_name'] ?? 'New Moon';
+    final illumination = moonData['illumination'] ?? 0.0;
+    final translatedPhase = AstronomicalTranslationService.translateMoonPhase(
+      phaseName,
+      AppLocalizations.of(context)!
+    );
+
+    return '$translatedPhase ${illumination.toStringAsFixed(0)}% illuminated';
+  }
+
+  /// Consolidate all possible celestial data formats into one standard structure
+  Map<String, dynamic> _consolidateCelestialData() {
+    // Try different data sources in order of preference
+
+    // 1. Try new structured format (celestial_v2)
+    if (celestialData['celestial_v2'] != null) {
+      return celestialData['celestial_v2'] as Map<String, dynamic>;
+    }
+
+    // 2. Try raw celestial data
+    if (celestialData['celestial_raw'] != null) {
+      return celestialData['celestial_raw'] as Map<String, dynamic>;
+    }
+
+    // 3. Try standard celestial data
+    if (celestialData['celestial'] != null) {
+      return celestialData['celestial'] as Map<String, dynamic>;
+    }
+
+    // 4. Try direct celestial data (if passed directly)
+    if (celestialData['sun'] != null || celestialData['moon'] != null ||
+        celestialData['visible_planets'] != null || celestialData['bright_stars_visible'] != null) {
+      return celestialData;
+    }
+
+    return {};
+  }
+}

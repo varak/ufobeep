@@ -10,6 +10,7 @@ import 'premium_satellite_card.dart';
 import 'aircraft_expandable_card.dart';
 import '../../services/astronomical_translation_service.dart';
 import 'celestial_description_helpers.dart';
+import 'unified_celestial_card.dart';
 
 class EnrichmentSection extends ConsumerWidget {
   const EnrichmentSection({
@@ -231,7 +232,7 @@ class EnrichmentSection extends ConsumerWidget {
           const SizedBox(height: 16),
         ],
         if (hasCelestialData) ...[
-          CelestialCardFromJson(celestialData: enrichmentData['celestial']),
+          UnifiedCelestialCard(celestialData: enrichmentData['celestial'] ?? {}),
           const SizedBox(height: 16),
         ],
         if (hasLocationData) ...[
