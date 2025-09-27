@@ -131,11 +131,13 @@ def main():
         data = compute_sun_simplified(args.lat, args.lon, when)
         method = "simplified"
 
-    from pprint import pprint
-    print(f"\nMethod: {method}")
-    print("Input:", {"lat": args.lat, "lon": args.lon, "time": when.isoformat()})
-    print("Result:")
-    pprint(data)
+    import json
+    print(f"\nMethod: {method}", file=sys.stderr)
+    print("Input:", {"lat": args.lat, "lon": args.lon, "time": when.isoformat()}, file=sys.stderr)
+    print("Result:", file=sys.stderr)
+
+    # Output clean JSON to stdout for subprocess consumption
+    print(json.dumps(data))
 
 
 if __name__ == "__main__":
