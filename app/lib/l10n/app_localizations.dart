@@ -4367,6 +4367,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} aircraft detected within {radius}km'**
   String aircraftDetectedInRadius(Object count, Object radius);
+
+  /// No description provided for @processingAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Processing Your UFO Alert...'**
+  String get processingAlert;
+
+  /// No description provided for @analyzingEnvironment.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing environmental conditions'**
+  String get analyzingEnvironment;
+
+  /// No description provided for @weatherAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Weather Analysis'**
+  String get weatherAnalysis;
+
+  /// No description provided for @locationAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Analysis'**
+  String get locationAnalysis;
+
+  /// No description provided for @aircraftTracking.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft Tracking'**
+  String get aircraftTracking;
+
+  /// No description provided for @satelliteAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellite Analysis'**
+  String get satelliteAnalysis;
+
+  /// No description provided for @celestialAnalysis.
+  ///
+  /// In en, this message translates to:
+  /// **'Celestial Analysis'**
+  String get celestialAnalysis;
+
+  /// No description provided for @analyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing {processor}...'**
+  String analyzing(Object processor);
+
+  /// No description provided for @processorWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'weather conditions'**
+  String get processorWeather;
+
+  /// No description provided for @processorLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'location details'**
+  String get processorLocation;
+
+  /// No description provided for @processorAircraft.
+  ///
+  /// In en, this message translates to:
+  /// **'nearby aircraft'**
+  String get processorAircraft;
+
+  /// No description provided for @processorSatellites.
+  ///
+  /// In en, this message translates to:
+  /// **'satellite positions'**
+  String get processorSatellites;
+
+  /// No description provided for @processorCelestial.
+  ///
+  /// In en, this message translates to:
+  /// **'celestial objects'**
+  String get processorCelestial;
 }
 
 class _AppLocalizationsDelegate

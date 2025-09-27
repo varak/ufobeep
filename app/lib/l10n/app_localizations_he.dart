@@ -2303,4 +2303,45 @@ class AppLocalizationsHe extends AppLocalizations {
   String aircraftDetectedInRadius(Object count, Object radius) {
     return '* PLACEHOLDER_0__ מטוסים שזוהו בתוך _PLACEHOLDER_1_ ק\"מ';
   }
+
+  @override
+  String get processingAlert => 'Processing Your UFO Alert...';
+
+  @override
+  String get analyzingEnvironment => 'Analyzing environmental conditions';
+
+  @override
+  String get weatherAnalysis => 'Weather Analysis';
+
+  @override
+  String get locationAnalysis => 'Location Analysis';
+
+  @override
+  String get aircraftTracking => 'Aircraft Tracking';
+
+  @override
+  String get satelliteAnalysis => 'Satellite Analysis';
+
+  @override
+  String get celestialAnalysis => 'Celestial Analysis';
+
+  @override
+  String analyzing(Object processor) {
+    return 'Analyzing $processor...';
+  }
+
+  @override
+  String get processorWeather => 'weather conditions';
+
+  @override
+  String get processorLocation => 'location details';
+
+  @override
+  String get processorAircraft => 'nearby aircraft';
+
+  @override
+  String get processorSatellites => 'satellite positions';
+
+  @override
+  String get processorCelestial => 'celestial objects';
 }

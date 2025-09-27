@@ -15,6 +15,7 @@ import '../../services/sensor_service.dart';
 import '../../services/photo_metadata_service.dart';
 import '../../services/beep_service.dart';
 import '../../services/sound_service.dart';
+import 'enrichment_loading_screen.dart';
 import '../../services/permission_service.dart';
 import '../../services/api_client.dart';
 import '../../services/comments_service.dart';
@@ -798,10 +799,20 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
           ),
         );
         
-        // Navigate to sighting detail after brief delay
+        // Navigate to enrichment loading screen
         Future.delayed(const Duration(milliseconds: 500), () {
           if (mounted) {
-            context.go('/alert/$sightingId');
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => EnrichmentLoadingScreen(
+                  beepId: sightingId,
+                  onComplete: () {
+                    Navigator.of(context).pop(); // Close loading screen
+                    context.go('/alert/$sightingId'); // Go to final alert page
+                  },
+                ),
+              ),
+            );
           }
         });
       }
