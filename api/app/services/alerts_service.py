@@ -585,13 +585,8 @@ class AlertsService:
                     if 'stars_explanation' in celestial_raw:
                         celestial_ui['stars_explanation'] = celestial_raw['stars_explanation']
 
-                # Expose both formats:
-                # - celestial: legacy UI shape for web (backward compatible)
-                # - celestial_v2: raw structured DB shape for mobile and new clients
-                enrichment['celestial'] = celestial_ui
-                enrichment['celestial_v2'] = celestial_raw
-                # Preserve raw for debugging/transition
-                enrichment['celestial_raw'] = celestial_raw
+                # Single source of truth - use raw structured data directly
+                enrichment['celestial'] = celestial_raw
                 sources_used.append('celestial_data')
             except Exception as e:
                 logger.error(f"🔄 ENRICHMENT DEBUG: Failed mapping celestial data: {e}")
