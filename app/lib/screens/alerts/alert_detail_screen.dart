@@ -70,10 +70,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     super.initState();
     _loadUserData();
 
-    // Check for incomplete enrichment after frame is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _checkAndShowEnrichmentLoading();
-    });
+    // Check for incomplete enrichment moved to build method where alert data is available
     _loadComments();
     // Listen for refresh notifications from push notifications
     debugPrint('💬 AlertDetailScreen: registering listener for alertId=${widget.alertId}');
@@ -389,6 +386,18 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
         debugPrint('DEBUG: Building alert detail for alert.reporterId: "${alert.reporterId}"');
         debugPrint('DEBUG: Current _currentUserDeviceId: "$_currentUserDeviceId"');
+
+        // Check if we should show enrichment loading for this alert
+        if (_shouldShowEnrichmentLoading(alert)) {
+          // Show loading screen immediately instead of incomplete alert page
+          return EnrichmentLoadingScreen(
+            beepId: alert.id,
+            onComplete: () {
+              // Refresh alert data when enrichment completes
+              ref.invalidate(alertByIdProvider(widget.alertId));
+            },
+          );
+        }
         
         return NightSkyBackground(
           child: Scaffold(
@@ -1420,10 +1429,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
   /// Check if we should show enrichment loading screen instead of incomplete data
   bool _shouldShowEnrichmentLoading(Alert alert) {
-    // Only show loading for user's own beeps
-    final isCreator = _isOriginalCreator(alert);
-    debugPrint('DEBUG LOADING: Is creator: $isCreator');
-    if (!isCreator) return false;
+    // Show loading for ANY user viewing recent beeps with incomplete enrichment
+    // (not just creator - all recipients need to wait for enrichment)
 
     // Check if beep is very recent (within last 10 seconds)
     final now = DateTime.now();
@@ -1459,26 +1466,4 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     return missingSections >= 2;
   }
 
-  void _checkAndShowEnrichmentLoading() {
-    final alertAsync = ref.read(alertByIdProvider(widget.alertId));
-    alertAsync.whenData((alert) {
-      if (alert != null && _shouldShowEnrichmentLoading(alert)) {
-        // Show modal loading screen
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (context) => Dialog.fullscreen(
-            child: EnrichmentLoadingScreen(
-              beepId: alert.id,
-              onComplete: () {
-                Navigator.of(context).pop(); // Close modal
-                // Refresh alert data
-                ref.invalidate(alertByIdProvider(widget.alertId));
-              },
-            ),
-          ),
-        );
-      }
-    });
-  }
 }
