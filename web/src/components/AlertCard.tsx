@@ -418,7 +418,7 @@ export default function AlertCard({ alert, compact = false, locale = 'en' }: Ale
   return (
     <div id={`alert-${alert.id}`} className="bg-dark-surface border border-dark-border rounded-xl hover:border-brand-primary transition-all duration-300 hover:shadow-lg group relative">
       <Link
-        href={`/beep/${locale}/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.reporter_username, description: alert.description, source: alert.source, external_url: alert.external_url, short_url: alert.short_url }, locale, { slugs: t('slugs', { returnObjects: true }) }, alert.short_url)}`}
+        href={`/beep/${locale}/${getAlertSlug({ id: alert.id, title: alert.title, created_at: alert.created_at, location: alert.location, reporter_username: alert.reporter_username, description: alert.description, source: alert.source, external_url: alert.external_url, short_url: alert.short_url, enrichment_data: alert.enrichment_data }, locale, { slugs: t('slugs', { returnObjects: true }) }, alert.short_url)}`}
         className="block"
         onClick={() => {
           // Save scroll position before navigating - use sessionStorage to not interfere with history
