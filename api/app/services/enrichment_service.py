@@ -579,14 +579,6 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             logger.error(f"Skyfield calculation failed: {e}")
             raise e
 
-    def _explain_sun_position(self, altitude, is_visible):
-        """Explain sun position in UFO analysis context"""
-        if is_visible:
-            return "Sun is up - daylight conditions may affect sighting visibility"
-        elif altitude > -18:
-            return "Twilight conditions - some visibility but darker than daylight"
-        else:
-            return "Dark conditions - optimal for observing objects in sky"
 
     def _explain_moon_context(self, altitude, is_visible, phase_name, phase_fraction):
         """Explain moon context for UFO analysis"""
