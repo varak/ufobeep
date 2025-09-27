@@ -540,7 +540,17 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
         
         Future.delayed(const Duration(milliseconds: 500), () {
           if (mounted) {
-            context.go('/alert/${beepResult['sighting_id']}');
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => EnrichmentLoadingScreen(
+                  beepId: beepResult['sighting_id'],
+                  onComplete: () {
+                    Navigator.of(context).pop(); // Close loading screen
+                    context.go('/alert/${beepResult['sighting_id']}'); // Go to final alert page
+                  },
+                ),
+              ),
+            );
           }
         });
       }
