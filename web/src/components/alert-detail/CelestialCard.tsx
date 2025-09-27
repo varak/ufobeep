@@ -4,13 +4,33 @@ import { useState } from 'react'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface CelestialData {
-  moon_phase?: number
-  moon_phase_name?: string
-  moon_illumination?: number
-  sun_elevation?: number
-  is_twilight?: boolean
-  visible_planets?: string[]
-  brightest_stars?: string[]
+  sun?: {
+    altitude: number
+    azimuth: number
+    is_visible: boolean
+  }
+  moon?: {
+    altitude: number
+    azimuth: number
+    is_visible: boolean
+    illumination_pct?: number
+    phase_name?: string
+  }
+  visible_planets?: Array<{
+    name: string
+    altitude: number
+    azimuth: number
+    magnitude?: number
+  }>
+  bright_stars_visible?: Array<{
+    name: string
+    altitude: number
+    azimuth: number
+    magnitude: number
+  }>
+  summary?: {
+    twilight: string
+  }
 }
 
 interface CelestialCardProps {
@@ -23,15 +43,15 @@ export default function CelestialCard({ celestial, locale = 'en' }: CelestialCar
   const [isExpanded, setIsExpanded] = useState(false)
 
   const hasPlanets = Array.isArray(celestial.visible_planets) && celestial.visible_planets.length > 0
-  const hasStars = Array.isArray(celestial.brightest_stars) && celestial.brightest_stars.length > 0
-  const hasMoon = celestial.moon_phase_name !== undefined || celestial.moon_illumination !== undefined
-  const hasSun = celestial.sun_elevation !== undefined || celestial.is_twilight !== undefined
+  const hasStars = Array.isArray(celestial.bright_stars_visible) && celestial.bright_stars_visible.length > 0
+  const hasMoon = celestial.moon !== undefined
+  const hasSun = celestial.sun !== undefined
   const hasAnyData = hasPlanets || hasStars || hasMoon || hasSun
 
   return (
     <div className="bg-dark-surface/50 border border-dark-border/50 rounded-xl p-5 shadow-sm hover:bg-dark-surface/70 transition-colors">
       <div className="flex items-center gap-2 mb-4">
-        <span className="text-brand-primary">🌙</span>
+        <span className="text-brand-primary">🌌</span>
         <h2 className="text-lg font-semibold text-brand-primary">{t('celestialDataTitle')}</h2>
       </div>
 
@@ -41,82 +61,88 @@ export default function CelestialCard({ celestial, locale = 'en' }: CelestialCar
         </div>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
-        {celestial.moon_phase_name && (
-          <div>
-            <div className="text-text-tertiary text-xs">{t('moonPhase', 'Moon Phase')}</div>
-            <div className="text-text-primary text-sm">{celestial.moon_phase_name}</div>
-          </div>
-        )}
-
-        {celestial.moon_illumination !== undefined && (
-          <div>
-            <div className="text-text-tertiary text-xs">{t('moonIllumination', 'Moon Illumination')}</div>
-            <div className="text-text-primary text-sm">{celestial.moon_illumination}%</div>
-          </div>
-        )}
-
-        {celestial.sun_elevation !== undefined && (
-          <div>
-            <div className="text-text-tertiary text-xs">{t('sunElevation', 'Sun Elevation')}</div>
-            <div className="text-text-primary text-sm">{celestial.sun_elevation.toFixed(1)}°</div>
-          </div>
-        )}
-
-        {celestial.is_twilight !== undefined && (
-          <div>
-            <div className="text-text-tertiary text-xs">{t('isTwilight', 'Twilight')}</div>
-            <div className="text-text-primary text-sm">{celestial.is_twilight ? t('yes') : t('no')}</div>
-          </div>
-        )}
-
-        {Array.isArray(celestial.visible_planets) && celestial.visible_planets.length > 0 ? (
-          <div className="col-span-2">
-            <div className="text-text-tertiary text-xs">{t('visiblePlanets', 'Visible Planets')}</div>
-            <div className="text-text-primary text-sm">
-              {(() => {
-                if (Array.isArray(celestial.visible_planets)) {
-                  // Accept either string[] or {name:string}[]
-                  const allNames = celestial.visible_planets.map((p: any) => typeof p === 'string' ? p : (p?.name || '')).filter(Boolean)
-                  const displayNames = isExpanded ? allNames : allNames.slice(0, 4)
-                  const result = displayNames.join(', ')
-
-                  // Add expand indicator if there are more planets
-                  if (!isExpanded && allNames.length > 4) {
-                    return result + ` (+${allNames.length - 4} more)`
-                  }
-                  return result
-                }
-                return ''
-              })()}
+      <div className="space-y-4">
+        {/* Sun */}
+        {celestial.sun && (
+          <div className="flex items-center gap-3">
+            <span className="text-xl">☀️</span>
+            <div>
+              <div className="text-text-primary text-sm font-medium">
+                Sun {celestial.sun.is_visible ? 'visible' : 'below horizon'}
+              </div>
+              <div className="text-text-tertiary text-xs">
+                {celestial.sun.altitude.toFixed(1)}° altitude • {celestial.sun.azimuth.toFixed(1)}° azimuth
+              </div>
             </div>
           </div>
-        ) : null}
+        )}
 
-        {celestial.brightest_stars && celestial.brightest_stars.length > 0 && (
-          <div className="col-span-2">
-            <div className="text-text-tertiary text-xs">{t('brightestStars', 'Brightest Stars')}</div>
-            <div className="text-text-primary text-sm">
-              {(() => {
-                const allStars = celestial.brightest_stars
-                const displayStars = isExpanded ? allStars : allStars.slice(0, 4)
-                const result = displayStars.join(', ')
+        {/* Moon */}
+        {celestial.moon && (
+          <div className="flex items-center gap-3">
+            <span className="text-xl">🌙</span>
+            <div>
+              <div className="text-text-primary text-sm font-medium">
+                Moon {celestial.moon.phase_name ? `(${celestial.moon.phase_name})` : ''}
+                {celestial.moon.illumination_pct !== undefined && ` ${celestial.moon.illumination_pct.toFixed(0)}% lit`}
+              </div>
+              <div className="text-text-tertiary text-xs">
+                {celestial.moon.altitude.toFixed(1)}° altitude • {celestial.moon.azimuth.toFixed(1)}° azimuth
+              </div>
+            </div>
+          </div>
+        )}
 
-                // Add expand indicator if there are more stars
-                if (!isExpanded && allStars.length > 4) {
-                  return result + ` (+${allStars.length - 4} more)`
-                }
-                return result
-              })()
-              }
+        {/* Planets */}
+        {hasPlanets && (
+          <div className="flex items-start gap-3">
+            <span className="text-xl">🪐</span>
+            <div>
+              <div className="text-text-primary text-sm font-medium">
+                Planets ({celestial.visible_planets!.length} visible)
+              </div>
+              <div className="text-text-tertiary text-xs">
+                {(() => {
+                  const displayPlanets = isExpanded ? celestial.visible_planets! : celestial.visible_planets!.slice(0, 3)
+                  const planetText = displayPlanets.map(p => `${p.name} at ${p.altitude.toFixed(0)}°`).join(', ')
+
+                  if (!isExpanded && celestial.visible_planets!.length > 3) {
+                    return planetText + ` (+${celestial.visible_planets!.length - 3} more)`
+                  }
+                  return planetText
+                })()}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Stars */}
+        {hasStars && (
+          <div className="flex items-start gap-3">
+            <span className="text-xl">⭐</span>
+            <div>
+              <div className="text-text-primary text-sm font-medium">
+                Bright Stars ({celestial.bright_stars_visible!.length} visible)
+              </div>
+              <div className="text-text-tertiary text-xs">
+                {(() => {
+                  const displayStars = isExpanded ? celestial.bright_stars_visible! : celestial.bright_stars_visible!.slice(0, 3)
+                  const starText = displayStars.map(s => `${s.name} (${s.magnitude.toFixed(1)} mag)`).join(', ')
+
+                  if (!isExpanded && celestial.bright_stars_visible!.length > 3) {
+                    return starText + ` (+${celestial.bright_stars_visible!.length - 3} more)`
+                  }
+                  return starText
+                })()}
+              </div>
             </div>
           </div>
         )}
       </div>
 
-      {/* Show expand button if there are more than 4 planets or stars total */}
-      {((Array.isArray(celestial.visible_planets) && celestial.visible_planets.length > 4) ||
-        (Array.isArray(celestial.brightest_stars) && celestial.brightest_stars.length > 4)) && (
+      {/* Show expand button if there are more than 3 planets or stars total */}
+      {((Array.isArray(celestial.visible_planets) && celestial.visible_planets.length > 3) ||
+        (Array.isArray(celestial.bright_stars_visible) && celestial.bright_stars_visible.length > 3)) && (
         <div className="pt-4">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
