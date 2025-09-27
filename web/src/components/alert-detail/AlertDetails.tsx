@@ -285,6 +285,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
                                  alert.enrichment?.geocoding?.location_name ||
                                  alert.enrichment?.geocoding?.location ||
                                  alert.enrichment?.location_raw ||
+                                 alert.enrichment?.weather?.city ||
                                  alert.location?.name ||
                                  'Unknown Location'
 
