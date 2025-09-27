@@ -2178,8 +2178,9 @@ def initialize_enrichment_processors():
     weather_processor = WeatherEnrichmentProcessor(api_key=weather_api_key)
     enrichment_orchestrator.register_processor(weather_processor)
     
-    # Celestial processor - no API key needed
-    celestial_processor = CelestialEnrichmentProcessor()
+    # Celestial processor - clean implementation with no fallbacks
+    from .processors.celestial_processor import CelestialEnrichmentProcessor as CleanCelestialProcessor
+    celestial_processor = CleanCelestialProcessor()
     enrichment_orchestrator.register_processor(celestial_processor)
     
     # Satellite processor - no API key needed
