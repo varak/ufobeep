@@ -92,13 +92,19 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
 
                             return Row(
                               children: [
-                                Text(
-                                  aircraftName,
-                                  style: const TextStyle(
-                                    color: AppColors.textPrimary,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500
-                                  ),
+                                Row(
+                                  children: [
+                                    Text('✈️', style: TextStyle(fontSize: 12)),
+                                    SizedBox(width: 4),
+                                    Text(
+                                      aircraftName,
+                                      style: const TextStyle(
+                                        color: AppColors.textPrimary,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500
+                                      ),
+                                    ),
+                                  ],
                                 ),
                                 const SizedBox(width: 8),
                                 Expanded(
@@ -142,13 +148,19 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
 
                         return Row(
                           children: [
-                            Text(
-                              aircraftName,
-                              style: const TextStyle(
-                                color: AppColors.textPrimary,
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500
-                              ),
+                            Row(
+                              children: [
+                                Text('✈️', style: TextStyle(fontSize: 12)),
+                                SizedBox(width: 4),
+                                Text(
+                                  aircraftName,
+                                  style: const TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(width: 8),
                             Expanded(
