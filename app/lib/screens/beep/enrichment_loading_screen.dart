@@ -128,7 +128,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.darkBackground,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24),
@@ -202,11 +202,11 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
               // Processor status list
               Column(
                 children: [
-                  _buildProcessorItem('weather', '🌤️ ${l10n.weatherAnalysis}', _processorStatus['weather']!, Icons.wb_sunny, AppColors.warning),
-                  _buildProcessorItem('geocoding', '📍 ${l10n.locationAnalysis}', _processorStatus['geocoding']!, Icons.location_on, AppColors.brandPrimary),
-                  _buildProcessorItem('aircraft_tracking', '✈️ ${l10n.aircraftTracking}', _processorStatus['aircraft_tracking']!, Icons.airplanemode_active, Colors.blue),
-                  _buildProcessorItem('satellites', '🛰️ ${l10n.satelliteAnalysis}', _processorStatus['satellites']!, Icons.satellite_alt, Colors.orange),
-                  _buildProcessorItem('celestial', '🌙 ${l10n.celestialAnalysis}', _processorStatus['celestial']!, Icons.nights_stay, Colors.purple),
+                  _buildProcessorItem('weather', '🌤️ ${l10n.weatherAnalysis}', _processorStatus['weather']!),
+                  _buildProcessorItem('geocoding', '📍 ${l10n.locationAnalysis}', _processorStatus['geocoding']!),
+                  _buildProcessorItem('aircraft_tracking', '✈️ ${l10n.aircraftTracking}', _processorStatus['aircraft_tracking']!),
+                  _buildProcessorItem('satellites', '🛰️ ${l10n.satelliteAnalysis}', _processorStatus['satellites']!),
+                  _buildProcessorItem('celestial', '🌙 ${l10n.celestialAnalysis}', _processorStatus['celestial']!),
                 ],
               ),
 
@@ -229,47 +229,38 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
     );
   }
 
-  Widget _buildProcessorItem(String processorName, String displayName, bool isComplete, IconData processorIcon, Color processorColor) {
+  Widget _buildProcessorItem(String processorName, String displayName, bool isComplete) {
     final isActive = _currentProcessor == processorName && !isComplete;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          // Processor-specific colored icon
-          Container(
-            width: 32,
-            height: 32,
-            decoration: BoxDecoration(
-              color: isComplete ? AppColors.success : (isActive ? processorColor : AppColors.textTertiary),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: isComplete
-                  ? const Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 18,
-                      key: ValueKey('complete'),
-                    )
-                  : isActive
-                      ? SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                          ),
-                          key: ValueKey('loading'),
-                        )
-                      : Icon(
-                          processorIcon,
-                          color: Colors.white,
-                          size: 18,
-                          key: ValueKey('waiting'),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: isComplete
+                ? const Icon(
+                    Icons.check_circle,
+                    color: AppColors.success,
+                    size: 20,
+                    key: ValueKey('complete'),
+                  )
+                : isActive
+                    ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
                         ),
-            ),
+                        key: ValueKey('loading'),
+                      )
+                    : Icon(
+                        Icons.radio_button_unchecked,
+                        color: AppColors.textTertiary,
+                        size: 20,
+                        key: ValueKey('waiting'),
+                      ),
           ),
           const SizedBox(width: 12),
           Expanded(

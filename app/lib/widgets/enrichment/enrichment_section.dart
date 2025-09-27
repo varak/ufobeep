@@ -282,7 +282,7 @@ class WeatherCardFromJson extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.wb_sunny, color: AppColors.brandPrimary, size: 20),
+                Text('🌤️', style: TextStyle(fontSize: 20)),
                 const SizedBox(width: 8),
                 Text(
                   AppLocalizations.of(context)!.weatherConditionsTitle,
@@ -426,7 +426,7 @@ class CelestialCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.nights_stay, color: AppColors.brandPrimary, size: 20),
+                Text('🌙', style: TextStyle(fontSize: 20)),
                 const SizedBox(width: 8),
                 Text(
                   AppLocalizations.of(context)!.celestialDataTitle,
@@ -602,7 +602,7 @@ class SatelliteCardFromJson extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.satellite, color: AppColors.brandPrimary, size: 20),
+                Text('🛰️', style: TextStyle(fontSize: 20)),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Column(
@@ -1489,7 +1489,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
           children: [
             Row(
               children: [
-                Icon(Icons.satellite, color: AppColors.brandPrimary, size: 20),
+                Text('🛰️', style: TextStyle(fontSize: 20)),
                 const SizedBox(width: 8),
                 Text(
                   'Satellites',
