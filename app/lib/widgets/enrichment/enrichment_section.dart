@@ -49,11 +49,7 @@ class EnrichmentSection extends ConsumerWidget {
           children: [
             Row(
               children: [
-                Icon(
-                  Icons.science,
-                  color: AppColors.brandPrimary,
-                  size: 20,
-                ),
+                Text('🔬', style: TextStyle(fontSize: 20)),
                 const SizedBox(width: 8),
                 Text(
                   AppLocalizations.of(context)!.envAnalysisTitle,

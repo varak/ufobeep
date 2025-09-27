@@ -2356,7 +2356,7 @@ class AppLocalizationsIt extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing Your UFO Alert...';
+  String get processingAlert => 'Processing UFO Alert...';
 
   @override
   String get analyzingEnvironment => 'Analyzing environmental conditions';

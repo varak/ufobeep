@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import '../../services/sound_service.dart';
+import '../../widgets/glass_card.dart';
 
 class EnrichmentLoadingScreen extends ConsumerStatefulWidget {
   final String beepId;
@@ -127,10 +128,11 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: AppColors.darkBackground,
-      body: SafeArea(
-        child: Padding(
+    return NightSkyBackground(
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -158,7 +160,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.textPrimary,
+                  color: Colors.white,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -170,7 +172,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
                 l10n.analyzingEnvironment,
                 style: const TextStyle(
                   fontSize: 16,
-                  color: AppColors.textSecondary,
+                  color: Colors.white70,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -226,6 +228,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
           ),
         ),
       ),
+    ),
     );
   }
 

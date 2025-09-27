@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
 import '../../services/location_tracking_service.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/glass_card.dart';
@@ -25,8 +25,14 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
 
   Future<void> _loadTrackingStatus() async {
     try {
+      // Force refresh permission status to ensure accuracy
+      final currentPermission = await Geolocator.checkPermission();
+      print('LocationTracking UI: Current permission status: $currentPermission');
+
       final enabled = await locationTrackingService.isTrackingEnabled();
       final status = locationTrackingService.getTrackingStatus();
+
+      print('LocationTracking UI: Service reports enabled: $enabled');
 
       setState(() {
         _isTrackingEnabled = enabled;
@@ -394,39 +400,67 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
   Future<void> _toggleLocationTracking(bool enabled) async {
     try {
       if (enabled) {
-        // Check permission before enabling
-        final permission = await Permission.locationAlways.status;
+        // Check current permission status using geolocator consistently
+        final currentPermission = await Geolocator.checkPermission();
+        print('LocationTracking UI: Current permission: $currentPermission');
 
-        if (permission != PermissionStatus.granted) {
-          final result = await _showPermissionDialog();
-          if (!result) {
-            // User declined permission dialog
-            await _loadTrackingStatus(); // Refresh to ensure UI matches service state
-            return;
-          }
+        // Always show explanation dialog for background tracking
+        final userConsent = await _showPermissionDialog();
+        if (!userConsent) {
+          await _loadTrackingStatus();
+          return;
+        }
 
-          final newPermission = await Permission.locationAlways.request();
-          if (newPermission != PermissionStatus.granted) {
+        // Request background location permission if needed
+        if (currentPermission != LocationPermission.always) {
+          print('LocationTracking UI: Requesting background permission...');
+          final newPermission = await Geolocator.requestPermission();
+          print('LocationTracking UI: Permission result: $newPermission');
+
+          if (newPermission != LocationPermission.always) {
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(AppLocalizations.of(context)!.locationPermissionRequired),
+                  content: Text(
+                    newPermission == LocationPermission.whileInUse
+                        ? 'Background location access is required. Please grant "Allow all the time" in settings.'
+                        : AppLocalizations.of(context)!.locationPermissionRequired,
+                  ),
                   backgroundColor: AppColors.semanticError,
+                  action: SnackBarAction(
+                    label: 'Settings',
+                    onPressed: () => Geolocator.openAppSettings(),
+                    textColor: Colors.white,
+                  ),
                 ),
               );
             }
-            // Refresh status to ensure UI is accurate
             await _loadTrackingStatus();
             return;
           }
         }
       }
 
-      // Update tracking enabled state
+      // Clear any cached states and update tracking
+      print('LocationTracking UI: Setting tracking to: $enabled');
       await locationTrackingService.setTrackingEnabled(enabled);
 
-      // Always refresh status after any change to ensure UI is accurate
+      // Give service time to initialize if enabling
+      if (enabled) {
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+
+      // Force refresh status from service
       await _loadTrackingStatus();
+
+      // Verify the state change took effect
+      final actualEnabled = await locationTrackingService.isTrackingEnabled();
+      print('LocationTracking UI: Final verification - enabled: $actualEnabled');
+
+      if (actualEnabled != enabled) {
+        print('LocationTracking UI: WARNING - State mismatch detected!');
+        await _loadTrackingStatus(); // Refresh again
+      }
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -436,18 +470,17 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
                   ? AppLocalizations.of(context)!.locationTrackingEnabled
                   : AppLocalizations.of(context)!.locationTrackingDisabled,
             ),
-            backgroundColor: AppColors.brandPrimary,
+            backgroundColor: AppColors.info,
           ),
         );
       }
     } catch (e) {
       print('Error toggling location tracking: $e');
-      // Ensure UI reflects actual state if toggle fails
       await _loadTrackingStatus();
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Location tracking toggle failed. Please try again.'),
+            content: Text('Location tracking toggle failed: ${e.toString()}'),
             backgroundColor: AppColors.semanticError,
           ),
         );
@@ -461,7 +494,7 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.darkSurface,
         title: Text(
-          AppLocalizations.of(context)!.locationPermissionTitle,
+          'Background Location Permission Required',
           style: const TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
         ),
         content: Column(
@@ -469,11 +502,36 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppLocalizations.of(context)!.locationPermissionExplanation,
+              'To enable background tracking, you must grant "Allow all the time" location permission.',
               style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,
                 height: 1.4,
+              ),
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.warning.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.warning.withOpacity(0.3)),
+              ),
+              child: Row(
+                children: [
+                  const Icon(Icons.info_outline, color: AppColors.warning, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'When Android asks for location permission, select "Allow all the time" not "While using app".',
+                      style: const TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -531,7 +589,7 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
               backgroundColor: AppColors.brandPrimary,
               foregroundColor: AppColors.darkBackground,
             ),
-            child: Text(AppLocalizations.of(context)!.allowLocationAccess),
+            child: Text('Request "Allow All The Time"'),
           ),
         ],
       ),

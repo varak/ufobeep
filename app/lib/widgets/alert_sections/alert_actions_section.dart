@@ -65,22 +65,18 @@ class _AlertActionsSectionState extends ConsumerState<AlertActionsSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: const [
-              Icon(
-                Icons.touch_app,
-                color: AppColors.brandPrimary,
-                size: 20,
+            children: [
+              Text('⚡', style: TextStyle(fontSize: 20)),
+              const SizedBox(width: 8),
+              Text(
+                AppLocalizations.of(context)!.actionsTitle,
+                style: const TextStyle(
+                  color: AppColors.brandPrimary,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              SizedBox(width: 8),
             ],
-          ),
-          Text(
-            AppLocalizations.of(context)!.actionsTitle,
-            style: const TextStyle(
-              color: AppColors.brandPrimary,
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
           ),
           const SizedBox(height: 16),
           

@@ -966,7 +966,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
         children: [
           Row(
             children: [
-              const Icon(Icons.chat_bubble_outline, color: AppColors.brandPrimary, size: 20),
+              Text('💬', style: TextStyle(fontSize: 20)),
               const SizedBox(width: 8),
               Text(
                 AppLocalizations.of(context)!.commentsTitle,

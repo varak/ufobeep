@@ -4371,7 +4371,7 @@ abstract class AppLocalizations {
   /// No description provided for @processingAlert.
   ///
   /// In en, this message translates to:
-  /// **'Processing Your UFO Alert...'**
+  /// **'Processing UFO Alert...'**
   String get processingAlert;
 
   /// No description provided for @analyzingEnvironment.

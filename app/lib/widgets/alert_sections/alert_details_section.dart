@@ -38,11 +38,7 @@ class AlertDetailsSection extends StatelessWidget {
           // Section header
           Row(
             children: [
-              const Icon(
-                Icons.info_outline,
-                color: AppColors.brandPrimary,
-                size: 20,
-              ),
+              Text('ℹ️', style: TextStyle(fontSize: 20)),
               const SizedBox(width: 8),
               Text(
                 alert.source == 'mufon' && alert.enrichment?['mufon_case_number'] != null
@@ -122,21 +118,20 @@ class AlertDetailsSection extends StatelessWidget {
           
           // UFOBeep-specific metadata (non-MUFON)
           if (alert.source != 'mufon') ...[
-            // Time info
-            _buildDetailRow(
-              Icons.access_time,
+            // Time info - compact format
+            _buildCompactDetailRow(
+              '🕐',
               AppLocalizations.of(context)!.timeLabel,
               _formatFullDateTime(alert.createdAt, use24Hour: use24HourTime),
-              subtitle: _formatDateTime(context, alert.createdAt),
+              secondaryInfo: _formatDateTime(context, alert.createdAt),
             ),
 
             // Reporter info - same condition as alerts list
             if (alert.username != null && alert.username!.isNotEmpty && alert.source != 'mufon')
-              _buildDetailRow(
-                Icons.person,
+              _buildCompactDetailRow(
+                '👤',
                 AppLocalizations.of(context)!.reportedByLabel,
                 alert.username!,
-                subtitle: null,
               ),
             
             // Witness count (if more than 1)
@@ -145,11 +140,11 @@ class AlertDetailsSection extends StatelessWidget {
             
             // Location info (if enabled) - only for non-MUFON reports
             if (showLocation) ...[
-              _buildDetailRow(
-                Icons.location_on,
+              _buildCompactDetailRow(
+                '📍',
                 AppLocalizations.of(context)!.locationLabel,
-                '${_getLocationDisplayName(alert, context)}',
-                subtitle: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
+                _getLocationDisplayName(alert, context),
+                secondaryInfo: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
               ),
               // Always show dynamic distance calculation if we have coordinates
               if (alert.latitude != 0.0 && alert.longitude != 0.0)
@@ -184,8 +179,8 @@ class AlertDetailsSection extends StatelessWidget {
           alert.longitude,
         );
 
-        return _buildDetailRow(
-          Icons.straighten,
+        return _buildCompactDetailRow(
+          '📏',
           AppLocalizations.of(context)!.distanceLabel,
           UnitConversion.formatDistance(distance * 1000, units),
         );
@@ -265,6 +260,60 @@ class AlertDetailsSection extends StatelessWidget {
                     fontSize: 12,
                   ),
                 ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCompactDetailRow(String emoji, String label, String value, {String? secondaryInfo}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(emoji, style: TextStyle(fontSize: 20)),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: label.endsWith(':') ? '$label ' : '$label: ',
+                        style: const TextStyle(
+                          color: AppColors.textPrimary,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      TextSpan(
+                        text: value,
+                        style: const TextStyle(
+                          color: AppColors.textSecondary,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (secondaryInfo != null) ...[
+                  const SizedBox(height: 4),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8),
+                    child: Text(
+                      secondaryInfo,
+                      style: const TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -553,30 +602,33 @@ class AlertDetailsSection extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.link, size: 20, color: AppColors.brandPrimary),
+          Text('🔗', style: TextStyle(fontSize: 20)),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.shareLink,
+                  AppLocalizations.of(context)!.shareLink.endsWith(':') ? '${AppLocalizations.of(context)!.shareLink} ' : '${AppLocalizations.of(context)!.shareLink}: ',
                   style: const TextStyle(
-                    color: AppColors.textTertiary,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 Row(
                   children: [
                     Expanded(
-                      child: Text(
-                        shareLink,
-                        style: const TextStyle(
-                          color: AppColors.brandPrimary,
-                          fontSize: 14,
-                          fontFamily: 'monospace',
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8),
+                        child: Text(
+                          shareLink,
+                          style: const TextStyle(
+                            color: AppColors.textSecondary,
+                            fontSize: 16,
+                            fontFamily: 'monospace',
+                          ),
                         ),
                       ),
                     ),

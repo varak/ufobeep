@@ -80,22 +80,28 @@ class _CommentComposerState extends State<CommentComposer> {
               textInputAction: TextInputAction.send,
               onSubmitted: (_) => _sendComment(),
               style: const TextStyle(
-                color: AppColors.textPrimary,
+                color: Colors.white,
                 fontSize: 15,
               ),
               decoration: InputDecoration(
+                filled: true,
+                fillColor: AppColors.info,
                 hintText: widget.placeholder,
                 hintStyle: const TextStyle(
-                  color: AppColors.textTertiary,
+                  color: Colors.white70,
                   fontSize: 14,
                 ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: const BorderSide(color: AppColors.darkBorder),
+                  borderSide: const BorderSide(color: AppColors.info),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20),
-                  borderSide: const BorderSide(color: AppColors.brandPrimary),
+                  borderSide: const BorderSide(color: Colors.white, width: 2),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20),
+                  borderSide: const BorderSide(color: AppColors.info),
                 ),
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -118,8 +124,8 @@ class _CommentComposerState extends State<CommentComposer> {
               height: 40,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: (_hasText && !_isSending) 
-                    ? AppColors.brandPrimary 
+                color: (_hasText && !_isSending)
+                    ? AppColors.info
                     : AppColors.darkBorder,
               ),
               child: _isSending
@@ -128,7 +134,7 @@ class _CommentComposerState extends State<CommentComposer> {
                       height: 20,
                       child: CircularProgressIndicator(
                         strokeWidth: 2,
-                        color: Colors.black,
+                        color: Colors.white,
                       ),
                     )
                   : IconButton(
@@ -136,8 +142,8 @@ class _CommentComposerState extends State<CommentComposer> {
                       icon: Icon(
                         Icons.send_rounded,
                         size: 20,
-                        color: (_hasText && !_isSending) 
-                            ? Colors.black 
+                        color: (_hasText && !_isSending)
+                            ? Colors.white
                             : AppColors.textTertiary,
                       ),
                     ),

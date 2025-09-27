@@ -953,7 +953,7 @@
   "noSatellitesVisible": "No satellites visible",
   "aircraftDetectedInRadius": "{count} aircraft detected within {radius}km",
 
-  "processingAlert": "Processing Your UFO Alert...",
+  "processingAlert": "Processing UFO Alert...",
   "analyzingEnvironment": "Analyzing environmental conditions",
   "weatherAnalysis": "Weather Analysis",
   "locationAnalysis": "Location Analysis",
