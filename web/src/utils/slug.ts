@@ -87,11 +87,17 @@ export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', t
   const title = alert.title || ''
 
   // Use geocoding data for proper location names in slugs
+  console.log('SLUG DEBUG: alert.location?.name =', alert.location?.name)
+  console.log('SLUG DEBUG: enrichment_data =', (alert as any).enrichment_data)
+  console.log('SLUG DEBUG: geocoding =', (alert as any).enrichment_data?.geocoding)
+
   const location = (alert as any).enrichment_data?.geocoding?.location_name ||
                    (alert as any).enrichment_data?.geocoding?.formatted_address ||
                    (alert as any).enrichment_data?.geocoding?.display_name ||
                    alert.location?.name ||
                    'unknown-location'
+
+  console.log('SLUG DEBUG: final location =', location)
   const date = alert.created_at
   const id = shortId || alert.short_url || alert.id
   const source = alert.source || ''
