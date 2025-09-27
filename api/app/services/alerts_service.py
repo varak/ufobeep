@@ -482,7 +482,7 @@ class AlertsService:
 
         if row_data.get('celestial_data'):
             celestial_raw = self._parse_json(row_data['celestial_data'])
-            # Map to a UI-friendly shape expected by the web CelestialCard
+            # Build a UI-friendly shape for web, but also expose the raw structured data
             try:
                 celestial_ui = {}
                 if isinstance(celestial_raw, dict):
@@ -508,12 +508,13 @@ class AlertsService:
                         except Exception:
                             pass
 
-                    # Include nested sun/moon objects for mobile app with explanations
+                    # Include nested sun/moon objects for clients that still expect simplified fields
                     if sun:
                         celestial_ui['sun'] = {
                             'altitude': sun.get('altitude'),
                             'azimuth': sun.get('azimuth'),
                             'is_visible': sun.get('is_visible'),
+                            'visibility_category': sun.get('visibility_category'),
                             'explanation': sun.get('explanation'),
                         }
                     if moon:
@@ -561,7 +562,7 @@ class AlertsService:
                                     planet_objs.append({'name': name, 'altitude': alt_val})
                                     planet_names.append(name)
                         if planet_objs:
-                            # Detailed objects for mobile app
+                            # Detailed objects for mobile/web convenience
                             celestial_ui['visible_planets'] = planet_objs
                         if planet_names:
                             # Names for web UI convenience
@@ -576,7 +577,7 @@ class AlertsService:
                         # Include full star data for app
                         celestial_ui['bright_stars_visible'] = bright_stars
 
-                    # Add explanation fields that mobile app needs
+                    # Add explanation fields if present
                     if 'analysis_summary' in celestial_raw:
                         celestial_ui['analysis_summary'] = celestial_raw['analysis_summary']
                     if 'planets_explanation' in celestial_raw:
@@ -584,13 +585,19 @@ class AlertsService:
                     if 'stars_explanation' in celestial_raw:
                         celestial_ui['stars_explanation'] = celestial_raw['stars_explanation']
 
+                # Expose both formats:
+                # - celestial: legacy UI shape for web (backward compatible)
+                # - celestial_v2: raw structured DB shape for mobile and new clients
                 enrichment['celestial'] = celestial_ui
-                # Preserve raw for future use/debugging
+                enrichment['celestial_v2'] = celestial_raw
+                # Preserve raw for debugging/transition
                 enrichment['celestial_raw'] = celestial_raw
                 sources_used.append('celestial_data')
             except Exception as e:
                 logger.error(f"🔄 ENRICHMENT DEBUG: Failed mapping celestial data: {e}")
-                enrichment['celestial'] = celestial_raw or {}
+                # On error, at least pass through raw data under v2 key
+                enrichment['celestial_v2'] = celestial_raw or {}
+                enrichment['celestial'] = {}
                 sources_used.append('celestial_data')
         else:
             # Ensure celestial key exists so the UI can render a placeholder card
