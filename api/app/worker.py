@@ -127,14 +127,18 @@ async def enrich_sighting(sighting_id: str) -> bool:
             lon = sensor_data.get('longitude') or sensor_data.get('lng') or \
                   sighting.get('exact_longitude') or sighting.get('public_longitude') or 0
 
+            # Validate coordinates
+            if lat is None or lon is None:
+                raise ValueError(f"No coordinates available for sighting {sighting_id} - cannot calculate accurate celestial data")
+
             # Create enrichment context
             context_start = datetime.utcnow()
             context = EnrichmentContext(
                 sighting_id=sighting_id,
-                latitude=float(lat) if lat is not None else 0,
-                longitude=float(lon) if lon is not None else 0,
+                latitude=float(lat),
+                longitude=float(lon),
                 altitude=sensor_data.get('altitude', 0),
-                timestamp=get_local_time(float(lat), float(lon)) if (lat is not None and lon is not None) else datetime.utcnow(),
+                timestamp=get_local_time(float(lat), float(lon)),
                 azimuth_deg=sensor_data.get('azimuth', 0),
                 pitch_deg=sensor_data.get('pitch', 0),
                 category=sighting['category'] or "unknown",
