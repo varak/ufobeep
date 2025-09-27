@@ -63,18 +63,36 @@ export default function DownloadPage() {
           </ul>
         </div>
 
-        {/* Download Button */}
-        <div className="text-center mb-8">
-          <a
-            href="/downloads/ufobeep-alpha.apk"
-            className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-all transform hover:scale-105"
-            download
-          >
-            📥 Download UFOBeep APK
-          </a>
-          <p className="text-sm text-gray-400 mt-2">
-            Direct download • No app store required
-          </p>
+        {/* Download Options */}
+        <div className="text-center mb-8 space-y-4">
+          {/* Google Play Testing */}
+          <div>
+            <a
+              href="https://play.google.com/apps/testing/com.ufobeep"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-all transform hover:scale-105"
+            >
+              🏪 Join Google Play Testing
+            </a>
+            <p className="text-sm text-gray-400 mt-2">
+              Latest version • Automatic updates • Preferred method
+            </p>
+          </div>
+
+          {/* Direct APK Download */}
+          <div>
+            <a
+              href="/downloads/ufobeep-alpha.apk"
+              className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-all transform hover:scale-105"
+              download
+            >
+              📥 Download APK Directly
+            </a>
+            <p className="text-sm text-gray-400 mt-2">
+              Direct download • Manual updates • Backup option
+            </p>
+          </div>
         </div>
 
         {/* Installation Instructions */}
