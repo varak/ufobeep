@@ -1265,61 +1265,66 @@ class GeocodeEnrichmentProcessor(EnrichmentProcessor):
             )
     
     async def _fetch_location_name(self, latitude: float, longitude: float) -> Dict[str, Any]:
-        """Fetch location name using OpenWeather Geocoding API reverse geocoding"""
-        import aiohttp
-        
-        # OpenWeather reverse geocoding endpoint
-        base_url = "http://api.openweathermap.org/geo/1.0/reverse"
-        
-        async with aiohttp.ClientSession() as session:
-            params = {
-                'lat': latitude,
-                'lon': longitude,
-                'limit': 1,  # We only need one result
-                'appid': self.api_key
-            }
-            
-            async with session.get(base_url, params=params) as response:
-                if response.status != 200:
-                    raise Exception(f"OpenWeather Geocoding API error: {response.status} - {await response.text()}")
-                
-                data = await response.json()
-                
-                if not data or len(data) == 0:
-                    raise Exception("No location data found for coordinates")
-                
-                location_info = data[0]  # Take the first (most relevant) result
-                
-                # Format location name based on country
-                city = location_info.get('name', '')
-                state = location_info.get('state', '')
-                country = location_info.get('country', '')
-                
-                # Create formatted location name
-                if country == 'US' and state:
-                    # For US locations, use "City, State" format
-                    location_name = f"{city}, {state}" if city else state
-                elif city and country:
-                    # For international locations, use "City, Country" format
-                    location_name = f"{city}, {country}"
-                elif country:
-                    # Fallback to just country
-                    location_name = country
-                else:
-                    # Ultimate fallback
-                    location_name = "Unknown Location"
-                
-                return {
-                    "location_name": location_name,
-                    "city": city,
-                    "state": state,
-                    "country": country,
-                    "country_code": location_info.get('country', ''),
-                    "latitude": location_info.get('lat', latitude),
-                    "longitude": location_info.get('lon', longitude),
-                    "raw_data": location_info,
-                    "formatted_address": self._format_full_address(location_info),
-                }
+        """Fetch location name using geocoding script (similar to celestial processor)"""
+        import subprocess
+        import json
+        import os
+
+        logger.info(f"🌍 GEOCODING: Starting reverse geocoding for {latitude}, {longitude}")
+
+        # Determine correct working directory and script path
+        if os.path.exists('/home/ufobeep/ufobeep'):
+            cwd = '/home/ufobeep/ufobeep'
+            script_path = '/home/ufobeep/ufobeep/api/scripts/geocode_location.py'
+        else:
+            cwd = '/home/mike/D/ufobeep'
+            script_path = '/home/mike/D/ufobeep/api/scripts/geocode_location.py'
+
+        cmd = [
+            'python3', script_path,
+            '--lat', str(latitude),
+            '--lon', str(longitude)
+        ]
+
+        logger.info(f"🌍 GEOCODING: Running command: {' '.join(cmd)} in {cwd}")
+
+        try:
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=10,
+                cwd=cwd,
+                env={**os.environ, 'OPENWEATHER_API_KEY': self.api_key}
+            )
+
+            logger.info(f"🌍 GEOCODING: Return code: {result.returncode}")
+            logger.info(f"🌍 GEOCODING: Stdout: {result.stdout[:200]}...")
+            logger.info(f"🌍 GEOCODING: Stderr: {result.stderr}")
+
+            if result.returncode != 0:
+                logger.error(f"🌍 GEOCODING: Script failed - {result.stderr}")
+                raise Exception(f"Geocoding script failed: {result.stderr}")
+
+            if not result.stdout.strip():
+                logger.error(f"🌍 GEOCODING: Empty output received")
+                raise Exception("Geocoding script returned empty output")
+
+            # Parse JSON result
+            geocoding_data = json.loads(result.stdout)
+            logger.info(f"🌍 GEOCODING: Successfully geocoded to: {geocoding_data.get('location_name')}")
+
+            return geocoding_data
+
+        except subprocess.TimeoutExpired:
+            logger.error(f"🌍 GEOCODING: Script timed out after 10 seconds")
+            raise Exception("Geocoding script timed out")
+        except json.JSONDecodeError as e:
+            logger.error(f"🌍 GEOCODING: Invalid JSON response: {e}")
+            raise Exception(f"Invalid geocoding response: {e}")
+        except Exception as e:
+            logger.error(f"🌍 GEOCODING: Unexpected error: {e}")
+            raise
     
     def _format_full_address(self, location_info: Dict[str, Any]) -> str:
         """Format a full address from location components"""
