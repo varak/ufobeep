@@ -45,6 +45,13 @@ def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
     ts = load.timescale()
     eph = load("de421.bsp")
     earth, sun, moon = eph["earth"], eph["sun"], eph["moon"]
+
+    # Load planets
+    mercury, venus, mars, jupiter, saturn, uranus, neptune = (
+        eph["mercury"], eph["venus"], eph["mars"], eph["jupiter"],
+        eph["saturn"], eph["uranus"], eph["neptune"]
+    )
+
     t = ts.from_datetime(when)
     observer = earth + wgs84.latlon(lat, lon)
 
@@ -54,6 +61,75 @@ def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
     sun_alt, sun_az, _ = sun_app.altaz()
     moon_alt, moon_az, _ = moon_app.altaz()
     k = float(almanac.fraction_illuminated(eph, "moon", t))
+
+    # Calculate planets
+    planets = []
+    planet_objects = [
+        ("Mercury", mercury),
+        ("Venus", venus),
+        ("Mars", mars),
+        ("Jupiter", jupiter),
+        ("Saturn", saturn),
+        ("Uranus", uranus),
+        ("Neptune", neptune)
+    ]
+
+    for planet_name, planet_obj in planet_objects:
+        try:
+            planet_app = observer.at(t).observe(planet_obj).apparent()
+            planet_alt, planet_az, _ = planet_app.altaz()
+
+            if planet_alt.degrees > 5:  # Above 5° horizon
+                planets.append({
+                    "name": planet_name,
+                    "altitude": float(planet_alt.degrees),
+                    "azimuth": float(planet_az.degrees),
+                    "magnitude": None  # Would need additional calculation
+                })
+        except Exception as e:
+            print(f"Error calculating {planet_name}: {e}", file=sys.stderr)
+
+    # Calculate bright stars using skyfield's star catalog
+    bright_stars = []
+    try:
+        from skyfield.data import hipparcos
+        from skyfield.api import Star
+
+        # Load Hipparcos star catalog
+        with load.open(hipparcos.URL) as f:
+            df = hipparcos.load_dataframe(f)
+
+        # Filter to brightest stars visible to naked eye
+        bright_catalog = df[df['magnitude'] < 2.5]
+
+        for hip_id, star_data in bright_catalog.iterrows():
+            try:
+                # Create star object from catalog data
+                star = Star(
+                    ra_hours=star_data['ra_hours'],
+                    dec_degrees=star_data['dec_degrees']
+                )
+
+                # Calculate position for observer
+                astrometric = observer.at(t).observe(star)
+                apparent = astrometric.apparent()
+                alt, az, distance = apparent.altaz()
+
+                # Only include stars above horizon
+                if alt.degrees > 10:
+                    bright_stars.append({
+                        "name": f"HIP {hip_id}",  # Use Hipparcos ID for now
+                        "altitude": float(alt.degrees),
+                        "azimuth": float(az.degrees),
+                        "magnitude": float(star_data['magnitude'])
+                    })
+
+            except Exception as e:
+                print(f"Error calculating star HIP {hip_id}: {e}", file=sys.stderr)
+                continue
+
+    except Exception as e:
+        print(f"Star catalog loading failed: {e}", file=sys.stderr)
 
     # Simple twilight classification
     sun_alt_deg = float(sun_alt.degrees)
@@ -80,6 +156,8 @@ def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
             "is_visible": float(moon_alt.degrees) > 0,
             "illumination_pct": k * 100.0,
         },
+        "visible_planets": planets,
+        "bright_stars_visible": bright_stars,
         "summary": {"twilight": twilight},
     }
 
