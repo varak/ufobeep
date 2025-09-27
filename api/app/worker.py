@@ -189,24 +189,27 @@ async def enrich_sighting(sighting_id: str) -> bool:
                 if result.success and result.data:
                     success_count += 1
 
-                    # Save to appropriate column
+                    # Save to appropriate column - JSON serialize dict data
+                    import json
+                    serialized_data = json.dumps(result.data) if isinstance(result.data, dict) else result.data
+
                     if processor_name == "weather":
-                        await conn.execute("UPDATE sightings SET weather_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        await conn.execute("UPDATE sightings SET weather_data = $2::jsonb WHERE id = $1", UUID(sighting_id), serialized_data)
                         logger.info(f"✅ Saved weather data")
                     elif processor_name == "celestial":
-                        await conn.execute("UPDATE sightings SET celestial_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        await conn.execute("UPDATE sightings SET celestial_data = $2::jsonb WHERE id = $1", UUID(sighting_id), serialized_data)
                         logger.info(f"✅ Saved celestial data")
                     elif processor_name == "aircraft_tracking":
-                        await conn.execute("UPDATE sightings SET aircraft_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        await conn.execute("UPDATE sightings SET aircraft_data = $2::jsonb WHERE id = $1", UUID(sighting_id), serialized_data)
                         logger.info(f"✅ Saved aircraft data")
                     elif processor_name == "satellites":
-                        await conn.execute("UPDATE sightings SET satellite_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        await conn.execute("UPDATE sightings SET satellite_data = $2::jsonb WHERE id = $1", UUID(sighting_id), serialized_data)
                         logger.info(f"✅ Saved satellite data")
                     elif processor_name == "geocoding":
-                        await conn.execute("UPDATE sightings SET geocoding_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        await conn.execute("UPDATE sightings SET geocoding_data = $2::jsonb WHERE id = $1", UUID(sighting_id), serialized_data)
                         logger.info(f"✅ Saved geocoding data")
                     elif processor_name == "content_filter":
-                        await conn.execute("UPDATE sightings SET content_analysis_data = $2::jsonb WHERE id = $1", UUID(sighting_id), result.data)
+                        await conn.execute("UPDATE sightings SET content_analysis_data = $2::jsonb WHERE id = $1", UUID(sighting_id), serialized_data)
                         logger.info(f"✅ Saved content analysis data")
 
                     logger.info(f"✅ {processor_name} enrichment successful")
