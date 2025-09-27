@@ -134,7 +134,7 @@ async def enrich_sighting(sighting_id: str) -> bool:
                 latitude=float(lat) if lat is not None else 0,
                 longitude=float(lon) if lon is not None else 0,
                 altitude=sensor_data.get('altitude', 0),
-                timestamp=get_local_time(float(lat) if lat is not None else 0, float(lon) if lon is not None else 0),
+                timestamp=get_local_time(float(lat), float(lon)) if (lat is not None and lon is not None) else datetime.utcnow(),
                 azimuth_deg=sensor_data.get('azimuth', 0),
                 pitch_deg=sensor_data.get('pitch', 0),
                 category=sighting['category'] or "unknown",

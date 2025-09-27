@@ -7,8 +7,17 @@ import '../../services/astronomical_translation_service.dart';
 class CelestialDescriptionHelpers {
 
   static String generateSunDescription(Map<String, dynamic>? sunData, BuildContext context) {
-    if (sunData == null) return AppLocalizations.of(context)!.celestialSunDark;
+    if (sunData == null) {
+      print('DEBUG: sunData is null');
+      return AppLocalizations.of(context)!.celestialSunDark;
+    }
+
+    print('DEBUG: sunData keys: ${sunData.keys.toList()}');
+    print('DEBUG: sunData: $sunData');
+
     final category = sunData['visibility_category'] as String? ?? 'dark';
+    print('DEBUG: visibility_category: $category');
+
     switch (category) {
       case 'daylight': return AppLocalizations.of(context)!.celestialSunDaylight;
       case 'twilight': return AppLocalizations.of(context)!.celestialSunTwilight;
