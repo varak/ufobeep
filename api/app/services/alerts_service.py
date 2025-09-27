@@ -876,7 +876,7 @@ class AlertsService:
                 latitude=latitude,
                 longitude=longitude,
                 altitude=None,
-                timestamp=datetime.utcnow(),
+                timestamp=alert_dict.get('created_at') if isinstance(alert_dict.get('created_at'), datetime) else datetime.utcnow(),
                 azimuth_deg=0.0,
                 pitch_deg=0.0,
                 category="ufo",
