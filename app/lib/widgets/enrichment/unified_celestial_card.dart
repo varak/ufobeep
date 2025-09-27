@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import '../../services/astronomical_translation_service.dart';
+import '../glass_card.dart';
 
 /// Unified celestial display - replaces all 7 scattered celestial implementations
 /// One clean component for sun, moon, planets, and stars
@@ -19,17 +20,12 @@ class UnifiedCelestialCard extends StatelessWidget {
     final consolidatedData = _consolidateCelestialData();
     if (consolidatedData.isEmpty) return const SizedBox.shrink();
 
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.darkBorder),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+    return GlassCard(
+      child: Padding(
+        padding: const EdgeInsets.all(4),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
           // Header with emoji icon
           Row(
             children: [
@@ -222,29 +218,36 @@ class UnifiedCelestialCard extends StatelessWidget {
 
   /// Consolidate all possible celestial data formats into one standard structure
   Map<String, dynamic> _consolidateCelestialData() {
+    debugPrint('UNIFIED CELESTIAL DEBUG: Input keys: ${celestialData.keys.toList()}');
+
     // Try different data sources in order of preference
 
     // 1. Try new structured format (celestial_v2)
     if (celestialData['celestial_v2'] != null) {
+      debugPrint('UNIFIED CELESTIAL DEBUG: Using celestial_v2 data');
       return celestialData['celestial_v2'] as Map<String, dynamic>;
     }
 
     // 2. Try raw celestial data
     if (celestialData['celestial_raw'] != null) {
+      debugPrint('UNIFIED CELESTIAL DEBUG: Using celestial_raw data');
       return celestialData['celestial_raw'] as Map<String, dynamic>;
     }
 
     // 3. Try standard celestial data
     if (celestialData['celestial'] != null) {
+      debugPrint('UNIFIED CELESTIAL DEBUG: Using standard celestial data');
       return celestialData['celestial'] as Map<String, dynamic>;
     }
 
     // 4. Try direct celestial data (if passed directly)
     if (celestialData['sun'] != null || celestialData['moon'] != null ||
         celestialData['visible_planets'] != null || celestialData['bright_stars_visible'] != null) {
+      debugPrint('UNIFIED CELESTIAL DEBUG: Using direct celestial data');
       return celestialData;
     }
 
+    debugPrint('UNIFIED CELESTIAL DEBUG: No usable celestial data found');
     return {};
   }
 }
