@@ -93,7 +93,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
         // Check if all processors completed
         final allComplete = _processorStatus.values.every((status) => status);
         if (allComplete) {
-          await SoundService.play(AlertSound.normal);
+          await SoundService.I.play(AlertSound.normal);
           widget.onComplete();
           return;
         }
@@ -113,7 +113,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
       _currentProcessor = _getNextProcessor();
     });
 
-    SoundService.play(AlertSound.tap);
+    SoundService.I.play(AlertSound.tap);
   }
 
   String _getNextProcessor() {
