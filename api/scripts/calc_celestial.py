@@ -48,8 +48,8 @@ def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
 
     # Load planets
     mercury, venus, mars, jupiter, saturn, uranus, neptune = (
-        eph["mercury"], eph["venus"], eph["mars"], eph["jupiter"],
-        eph["saturn"], eph["uranus"], eph["neptune"]
+        eph["mercury"], eph["venus"], eph["mars"], eph["jupiter barycenter"],
+        eph["saturn barycenter"], eph["uranus barycenter"], eph["neptune barycenter"]
     )
 
     t = ts.from_datetime(when)
