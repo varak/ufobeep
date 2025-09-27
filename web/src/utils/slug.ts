@@ -79,15 +79,7 @@ export interface SluggableAlertLike {
   source?: string | null
   external_url?: string | null
   short_url?: string
-  enrichment_data?: {
-    geocoding?: {
-      formatted_address?: string
-      display_name?: string
-      location_name?: string
-      location?: string
-    }
-    location_raw?: string
-  }
+  enrichment_data?: any
 }
 
 export function getAlertSlug(alert: SluggableAlertLike, locale: string = 'en', translations?: any, shortId?: string) {
