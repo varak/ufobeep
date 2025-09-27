@@ -121,6 +121,21 @@ async def enrich_sighting(sighting_id: str) -> bool:
 
             # Extract coordinates from sensor_data
             sensor_data = sighting['sensor_data'] or {}
+
+            # Debug data types
+            print(f"WORKER DEBUG: sensor_data type: {type(sensor_data)}")
+            print(f"WORKER DEBUG: sensor_data: {sensor_data}")
+
+            # Parse sensor_data if it's a JSON string
+            if isinstance(sensor_data, str):
+                try:
+                    import json
+                    sensor_data = json.loads(sensor_data)
+                    print(f"WORKER DEBUG: Parsed sensor_data: {sensor_data}")
+                except Exception as e:
+                    print(f"WORKER DEBUG: Failed to parse sensor_data: {e}")
+                    sensor_data = {}
+
             # Fallback to stored coordinates if sensor_data missing
             lat = sensor_data.get('latitude') or sensor_data.get('lat') or \
                   sighting.get('exact_latitude') or sighting.get('public_latitude') or 0
