@@ -1524,31 +1524,26 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
               // Show "See all" button if not expanded and there are more
               if (!isExpanded && allSatellites.length > 4) ...[
                 const SizedBox(height: 8),
-                InkWell(
+                GestureDetector(
                   onTap: () => setState(() => isExpanded = true),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.darkSurface,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: AppColors.brandPrimary),
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'See all $totalNow satellites',
-                          style: const TextStyle(
-                            color: AppColors.brandPrimary,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
                         Icon(
                           Icons.expand_more,
                           color: AppColors.brandPrimary,
                           size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'See all $totalNow satellites',
+                          style: const TextStyle(
+                            color: AppColors.brandPrimary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
@@ -1560,31 +1555,26 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
               if (isExpanded && allSatellites.length > 4) ...[
                 ...allSatellites.skip(4).map((sat) => _buildSatelliteItem(sat)),
                 const SizedBox(height: 8),
-                InkWell(
+                GestureDetector(
                   onTap: () => setState(() => isExpanded = false),
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.darkSurface,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: AppColors.brandPrimary),
-                    ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 8, bottom: 4),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'Show less',
-                          style: const TextStyle(
-                            color: AppColors.brandPrimary,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
                         Icon(
                           Icons.expand_less,
                           color: AppColors.brandPrimary,
                           size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Show less',
+                          style: const TextStyle(
+                            color: AppColors.brandPrimary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),

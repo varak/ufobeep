@@ -96,7 +96,7 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                                   aircraftName,
                                   style: const TextStyle(
                                     color: AppColors.textPrimary,
-                                    fontSize: 13,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w500
                                   ),
                                 ),
