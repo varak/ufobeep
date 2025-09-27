@@ -279,13 +279,14 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             <span className="text-text-tertiary text-sm font-medium">{t('locationLabel')}</span>
             <span className="text-text-primary text-sm">
               {(() => {
-                // Clean up location name to avoid duplication
-                let locationName = alert.username === 'MUFON'
-                  ? (alert.enrichment?.geocoding?.display_name ||
-                     alert.enrichment?.geocoding?.location ||
-                     alert.enrichment?.location_raw ||
-                     alert.location?.name || 'Unknown Location')
-                  : (alert.location?.name || 'Unknown Location')
+                // Clean up location name using comprehensive enrichment data
+                let locationName = alert.enrichment?.geocoding?.formatted_address ||
+                                 alert.enrichment?.geocoding?.display_name ||
+                                 alert.enrichment?.geocoding?.location_name ||
+                                 alert.enrichment?.geocoding?.location ||
+                                 alert.enrichment?.location_raw ||
+                                 alert.location?.name ||
+                                 'Unknown Location'
 
                 // For MUFON reports, also check enrichment fallback
                 if (locationName === 'Unknown Location' || locationName.includes('°')) {
