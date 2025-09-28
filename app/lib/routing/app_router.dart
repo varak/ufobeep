@@ -12,7 +12,7 @@ import '../screens/alerts/alert_detail_screen.dart';
 import '../screens/comments/comments_screen.dart';
 import '../screens/beep/beep_screen.dart';
 import '../screens/beep/beep_composition_screen.dart';
-import '../screens/beep/camera_capture_screen.dart';
+import '../screens/beep/awesome_camera_screen.dart';
 import '../screens/beep/multi_file_upload_screen.dart';
 import '../screens/beep/attach_media_screen.dart';
 import '../screens/compass/compass_screen.dart';
@@ -168,13 +168,12 @@ GoRouter appRouter(AppRouterRef ref) {
         name: 'beep-camera',
         parentNavigatorKey: _rootNavigatorKey,
         pageBuilder: (context, state) {
-          debugPrint('🚦 ROUTER: /beep/camera pageBuilder called - creating PRODUCTION CameraCaptureScreen');
+          debugPrint('🚦 ROUTER: /beep/camera pageBuilder called - creating AwesomeCameraScreen');
           final extra = state.extra as Map<String, dynamic>?;
-          return _NoTransitionPage(CameraCaptureScreen(
+          return _NoTransitionPage(AwesomeCameraScreen(
             description: extra?['description'],
             attachToSightingId: extra?['attachToSightingId'],
             returnToComposition: extra?['returnToComposition'] ?? false,
-            preFetchedGPS: extra?['preFetchedGPS'],
           ));
         },
       ),

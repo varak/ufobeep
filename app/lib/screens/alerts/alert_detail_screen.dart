@@ -631,6 +631,15 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   void _refreshAlert() {
     // Refresh the alert data after media upload
     ref.refresh(alertByIdProvider(widget.alertId));
+
+    // Scroll to top to show newly attached media
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0.0,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOutCubic,
+      );
+    }
   }
 
 

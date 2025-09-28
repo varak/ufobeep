@@ -1,13 +1,9 @@
 import 'dart:io';
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:camera/camera.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:path/path.dart' as path;
-import 'package:gal/gal.dart';
 
 import '../../theme/app_theme.dart';
 import '../../services/sensor_service.dart';
@@ -40,29 +36,115 @@ class CameraCaptureScreen extends StatefulWidget {
 }
 
 class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
-  CameraController? _controller;
-  List<CameraDescription>? _cameras;
+  final ImagePicker _picker = ImagePicker();
   final SensorService _sensorService = SensorService();
-  final PermissionService _permissionService = PermissionService();
-  
-  bool _isInitialized = false;
+
   bool _isCapturing = false;
-  bool _isRecording = false;
-  bool _isVideoMode = false; // Toggle between photo and video mode
-  int _selectedCameraIndex = 0; // 0 = back camera, 1 = front camera
+  bool _isVideoMode = false;
   String? _errorMessage;
 
   @override
   void initState() {
     super.initState();
-    // Use post-frame callback for reliable initialization after route transition
+    // Auto-launch native camera after route transition
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (mounted) {
-        // Small delay to ensure route transition is complete
-        await Future<void>.delayed(const Duration(milliseconds: 50));
-        _initializeCamera();
+        await Future<void>.delayed(const Duration(milliseconds: 100));
+        _launchNativeCamera();
       }
     });
+  }
+
+  Future<void> _launchNativeCamera() async {
+    try {
+      setState(() {
+        _isCapturing = true;
+        _errorMessage = null;
+      });
+
+      XFile? capturedFile;
+
+      if (_isVideoMode) {
+        // Launch native camera for video
+        capturedFile = await _picker.pickVideo(
+          source: ImageSource.camera,
+          maxDuration: const Duration(seconds: 30),
+        );
+      } else {
+        // Launch native camera for photo
+        capturedFile = await _picker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 85,
+        );
+      }
+
+      if (capturedFile != null && mounted) {
+        // Process the captured media and return result
+        await _processCapturedMedia(capturedFile);
+      } else if (mounted) {
+        // User cancelled - go back
+        context.pop();
+      }
+
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Camera failed: $e';
+          _isCapturing = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _processCapturedMedia(XFile mediaFile) async {
+    try {
+      // Get sensor data
+      SensorData? sensorData;
+      try {
+        sensorData = await _sensorService.captureSensorData();
+      } catch (e) {
+        debugPrint('Warning: Sensor data collection failed: $e');
+      }
+
+      // Create result for the calling screen
+      final result = CameraCaptureResult(
+        path: mediaFile.path,
+        isVideo: _isVideoMode,
+        sensorData: sensorData != null ? {
+          'latitude': sensorData.latitude,
+          'longitude': sensorData.longitude,
+          'accuracy': sensorData.accuracy,
+          'altitude': sensorData.altitude,
+          'azimuth': sensorData.azimuthDeg,
+          'pitch': sensorData.pitchDeg,
+          'roll': sensorData.rollDeg,
+          'hfov': sensorData.hfovDeg,
+          'timestamp': sensorData.utc.toIso8601String(),
+        } : null,
+        photoMetadata: _isVideoMode ? {} : await PhotoMetadataService.extractComprehensiveMetadata(File(mediaFile.path)),
+      );
+
+      if (mounted) {
+        if (widget.returnToComposition && widget.attachToSightingId != null) {
+          // Navigate to beep screen with captured media for attachment
+          context.pushReplacement('/beepscreen', extra: {
+            'initialMediaFiles': [File(mediaFile.path)],
+            'attachToSightingId': widget.attachToSightingId,
+          });
+        } else {
+          // Return result to calling screen
+          context.pop(result);
+        }
+      }
+
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _errorMessage = 'Failed to process media: $e';
+          _isCapturing = false;
+        });
+      }
+    }
   }
 
   Future<void> _initializeCamera() async {
@@ -98,7 +180,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
 
       _controller = CameraController(
         _cameras![_selectedCameraIndex],
-        ResolutionPreset.max,
+        ResolutionPreset.low,
         enableAudio: _isVideoMode // Enable audio only for video mode
       );
       await _controller!.initialize();
@@ -139,7 +221,13 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       
       // Take the picture at maximum quality
       final XFile image = await _controller!.takePicture();
-      
+
+      // Check if this is front camera and needs mirroring
+      final isFrontCamera = _cameras![_selectedCameraIndex].lensDirection == CameraLensDirection.front;
+
+      // Use the original image file (no mirroring needed)
+      final finalImageFile = File(image.path);
+
       // Stop camera preview immediately after capture
       await _controller?.dispose();
       setState(() {
@@ -568,9 +656,9 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // Camera preview
+          // WYSIWYG camera preview using ChatGPT's solution
           Positioned.fill(
-            child: CameraPreview(_controller!),
+            child: CameraPreviewBox(service: CameraService.instance),
           ),
 
           // Top overlay with back button
@@ -756,7 +844,7 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
     // Reinitialize with new camera
     _controller = CameraController(
       _cameras![_selectedCameraIndex],
-      ResolutionPreset.max,
+      ResolutionPreset.low,
       enableAudio: _isVideoMode
     );
 

@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../providers/alerts_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:go_router/go_router.dart';
 
@@ -204,6 +206,9 @@ class _AttachMediaScreenState extends ConsumerState<AttachMediaScreen> {
             backgroundColor: AppColors.semanticSuccess,
           ),
         );
+
+        // Invalidate the specific alert cache so it shows new media
+        ref.invalidate(alertByIdProvider(widget.sightingId));
 
         // Return to alert detail screen
         context.pop();
