@@ -892,6 +892,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addPhotosAndVideos => '添加照片和视频( V)';
 
   @override
+  String get attachMedia => '附加媒体';
+
+  @override
+  String get addCommentOptional => '添加注释( 可选)';
+
+  @override
+  String get describeNewMedia => '描述新媒体...';
+
+  @override
+  String get filesSelected => '选中文件';
+
+  @override
+  String get selectMediaToAttach => '请选择要附加的照片或视频';
+
+  @override
+  String get newMediaUploaded => '新媒体上传';
+
+  @override
+  String get mediaFilesUploaded => '上传的新媒体文件';
+
+  @override
+  String get filesAttachedSuccessfully => '成功附加文件';
+
+  @override
   String get howToReportToMufon => '如何向毛里求斯财政部报告';
 
   @override
@@ -1992,13 +2016,32 @@ class AppLocalizationsZh extends AppLocalizations {
   String get onboardingWelcomeTitle => '欢迎来到UFOBEP';
 
   @override
-  String get onboardingWelcomeBody => '发现不明飞行物时立即发出警报 永远不要错过一次目击!';
+  String get onboardingWelcomeBody => '当不明飞行物在附近被发现时,获得实时警报. 永远不要错过一次目击.';
+
+  @override
+  String get onboardingAlertsTitle => '保持知情';
+
+  @override
+  String get onboardingAlertsBody => '设定视线应该有多远才能触发警报.';
 
   @override
   String get onboardingReportTitle => '看到什么了吗? 鸣吧!';
 
   @override
-  String get onboardingReportBody => '捕捉UFO目击的照片和视频. 立即与全球社会分享.';
+  String get onboardingReportBody => '立即与附近的观察者分享照片或录像.';
+
+  @override
+  String get onboardingPermissionsTitle => '您的相机位置( L)';
+
+  @override
+  String get onboardingPermissionsBody =>
+      '启用相机、 位置和通知, 您可以:\n- 快速报告目击情况\n- 说吧 通知你身边的不明飞行物';
+
+  @override
+  String get onboardingCameraTitle => '抓取证据';
+
+  @override
+  String get onboardingCameraBody => '分享你刚从画廊里拍到的照片和视频 或长压UFOBEP图标 以即时相机模式开始.';
 
   @override
   String get onboardingCompassTitle => '看他们看哪里';
@@ -2007,11 +2050,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get onboardingCompassBody => 'Compass告诉你目击证人看到UFO时正在寻找的确切方向. 指着手机看!';
 
   @override
-  String get onboardingCommunityTitle => '连接监视天线';
+  String get onboardingCommunityTitle => '加入监视天空的人';
 
   @override
-  String get onboardingCommunityBody =>
-      '读读早上咖啡上最新的UFO的目击记录 获取专业的MUFON数据,并与同行的天空观测员连接.';
+  String get onboardingCommunityBody => '浏览目击,访问MUFON报告,并与同行的天空观察者连接.';
 
   @override
   String get skip => '跳过';
@@ -2256,43 +2298,43 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing UFO Alert...';
+  String get processingAlert => '正在处理 UFO 提醒...';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => '分析环境状况';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => '天气分析';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => '地点分析';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => '飞机跟踪';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => '卫星分析';
 
   @override
-  String get celestialAnalysis => 'Celestial Analysis';
+  String get celestialAnalysis => '天体分析';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return '分析_PLACEHOLDER_0_......';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => '天气状况';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => '地点细节';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => '附近飞机';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => '卫星位置';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => '天体';
 }

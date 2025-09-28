@@ -908,6 +908,31 @@ class AppLocalizationsHi extends AppLocalizations {
   String get addPhotosAndVideos => 'फ़ोटो और वीडियो जोड़ें';
 
   @override
+  String get attachMedia => 'मीडिया संलग्न करें';
+
+  @override
+  String get addCommentOptional => 'एक टिप्पणी जोड़ें (वैकल्पिक)';
+
+  @override
+  String get describeNewMedia => 'नए मीडिया का वर्णन करें ...';
+
+  @override
+  String get filesSelected => 'चयनित फ़ाइलों';
+
+  @override
+  String get selectMediaToAttach =>
+      'कृपया फ़ोटो या वीडियो को संलग्न करने के लिए चुनें';
+
+  @override
+  String get newMediaUploaded => 'नई मीडिया अपलोड';
+
+  @override
+  String get mediaFilesUploaded => 'नई मीडिया फ़ाइलें अपलोड';
+
+  @override
+  String get filesAttachedSuccessfully => 'सफलतापूर्वक संलग्न';
+
+  @override
   String get howToReportToMufon => 'कैसे रिपोर्ट करने के लिए MUFON';
 
   @override
@@ -2065,14 +2090,35 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'तत्काल अलर्ट प्राप्त करें जब यूएफओ आपके स्थान के पास स्पॉट हो जाता है। फिर कभी नहीं याद आती!';
+      'जब UFOs पास में देखा जाता है तो वास्तविक समय अलर्ट प्राप्त करें। कभी-कभी फिर से देखने को नहीं चूकें।.';
 
   @override
-  String get onboardingReportTitle => 'कुछ देखें? इसे बीप करें!';
+  String get onboardingAlertsTitle => 'सूचित रहें';
+
+  @override
+  String get onboardingAlertsBody =>
+      'कैसे दूर दूर दूर दृष्टि को चेतावनी ट्रिगर करने के लिए होना चाहिए सेट करें।.';
+
+  @override
+  String get onboardingReportTitle => 'कुछ देखें? Beep it!';
 
   @override
   String get onboardingReportBody =>
-      'यूएफओ दर्शनों की तस्वीरें और वीडियो कैप्चर करें। तत्काल वैश्विक समुदाय के साथ साझा करें।.';
+      'एक तस्वीर या वीडियो स्नैप करें और तुरंत पास के दर्शकों के साथ साझा करें।.';
+
+  @override
+  String get onboardingPermissionsTitle => 'आपका कैमरा और स्थान';
+
+  @override
+  String get onboardingPermissionsBody =>
+      'कैमरा, स्थान और सूचनाएं सक्षम करें ताकि आप कर सकें:\n- रिपोर्टिंग दर्शन तेज\n– आपके पास UFOs के लिए अलर्ट प्राप्त करें';
+
+  @override
+  String get onboardingCameraTitle => 'Evidence';
+
+  @override
+  String get onboardingCameraBody =>
+      'उन फ़ोटो और वीडियो को साझा करें जिन्हें आप सिर्फ अपनी गैलरी से पकड़े गए हैं या तत्काल कैमरा मोड में शुरू करने के लिए UFOBeep आइकन को लंबे समय तक दबाए रखते हैं।.';
 
   @override
   String get onboardingCompassTitle => 'वे कहाँ दिखते हैं';
@@ -2086,7 +2132,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get onboardingCommunityBody =>
-      'अपनी सुबह की कॉफी पर नवीनतम यूएफओ दृश्यों को पढ़ें। पेशेवर MUFON डेटा तक पहुंचें और साथी स्काईवॉशर से जुड़ें।.';
+      'दर्शनों को ब्राउज़ करें, एमयूएफएन रिपोर्टों तक पहुंचें, और साथी स्काईवॉकर्स से जुड़ें।.';
 
   @override
   String get skip => 'लॉग इन';
@@ -2337,43 +2383,43 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing UFO Alert...';
+  String get processingAlert => 'यूएफओ चेतावनी प्रसंस्करण ...';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => 'पर्यावरणीय परिस्थितियों का विश्लेषण';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => 'मौसम विश्लेषण';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => 'स्थान विश्लेषण';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => 'विमान ट्रैकिंग';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => 'उपग्रह विश्लेषण';
 
   @override
-  String get celestialAnalysis => 'Celestial Analysis';
+  String get celestialAnalysis => 'Celestial विश्लेषण';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return 'A-A-A-A-A-A-A-A-A-A-E-A-A-E-A-E-A-E-A-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-E-.';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => 'मौसम की स्थिति';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => 'स्थान विवरण';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => 'निकट विमान';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => 'उपग्रह स्थिति';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => 'आकाशीय वस्तुएं';
 }

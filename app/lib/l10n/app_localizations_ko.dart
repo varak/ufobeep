@@ -893,6 +893,30 @@ class AppLocalizationsKo extends AppLocalizations {
   String get addPhotosAndVideos => '사진 및 동영상 추가';
 
   @override
+  String get attachMedia => '첨부파일';
+
+  @override
+  String get addCommentOptional => '댓글 추가 (선택 사항)';
+
+  @override
+  String get describeNewMedia => '새로운 미디어 설명 ...';
+
+  @override
+  String get filesSelected => '선택된 파일';
+
+  @override
+  String get selectMediaToAttach => '사진 또는 비디오를 첨부';
+
+  @override
+  String get newMediaUploaded => '새 미디어 업로드';
+
+  @override
+  String get mediaFilesUploaded => '새 미디어 파일 업로드';
+
+  @override
+  String get filesAttachedSuccessfully => '첨부 파일';
+
+  @override
   String get howToReportToMufon => 'MUFON에 보고하는 방법';
 
   @override
@@ -2003,13 +2027,33 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'UFO가 위치 근처에 자리 잡을 때 즉시 알림을 받으십시오. 다시 시야를 놓치지 마세요!';
+      'UFO가 인근에 자리 잡을 때 실시간 알림을 받으세요. 다시 시야를 놓치지 마세요.';
+
+  @override
+  String get onboardingAlertsTitle => '자주 묻는 질문';
+
+  @override
+  String get onboardingAlertsBody => '얼마나 멀리 광경을 설정하면 경고를 트리거해야합니다.';
 
   @override
   String get onboardingReportTitle => '뭔가요? 뚱 베어!';
 
   @override
-  String get onboardingReportBody => 'UFO 광경 사진 및 동영상 캡처. 글로벌 커뮤니티를 즉시 공유합니다.';
+  String get onboardingReportBody => '사진 또는 비디오를 스냅하고 가까운 시계로 즉시 공유합니다.';
+
+  @override
+  String get onboardingPermissionsTitle => '카메라 및 위치';
+
+  @override
+  String get onboardingPermissionsBody =>
+      '카메라, 위치 및 알림을 사용할 수 있습니다.\n– 빠른 보고\n- - - 가까운 UFO에 대한 경고를 얻으십시오';
+
+  @override
+  String get onboardingCameraTitle => '캡처 Evidence';
+
+  @override
+  String get onboardingCameraBody =>
+      '사진 및 비디오를 공유하면 갤러리에서 캡처하거나 즉시 카메라 모드에서 시작하는 UFOBeep 아이콘을 길게 누릅니다.';
 
   @override
   String get onboardingCompassTitle => '그들이 보는 곳';
@@ -2019,11 +2063,11 @@ class AppLocalizationsKo extends AppLocalizations {
       'Compass는 그들이 UFO를 보았을 때 정확한 방향을 보여줍니다. 휴대 전화와 봐!';
 
   @override
-  String get onboardingCommunityTitle => 'Skywatchers와 연결';
+  String get onboardingCommunityTitle => 'Skywatchers에 가입';
 
   @override
   String get onboardingCommunityBody =>
-      '당신의 아침 커피 위에 최신 UFO 광경을 읽으십시오. 전문 MUFON 데이터를 액세스하고 동료 skywatchers와 연결하십시오.';
+      '찾아보기, 액세스 MUFON 보고서, 동료 skywatchers와 연결.';
 
   @override
   String get skip => '팟캐스트';
@@ -2268,43 +2312,43 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing UFO Alert...';
+  String get processingAlert => '처리 UFO 경고 ...';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => '환경 조건 분석';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => '날씨 분석';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => '위치 분석';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => '항공기 추적';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => '위성 분석';
 
   @override
-  String get celestialAnalysis => 'Celestial Analysis';
+  String get celestialAnalysis => 'Celestial 분석';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return '분석 $processor ...';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => '날씨 예보';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => '문의사항';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => '인근 항공기';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => '위성 위치';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => '연락처';
 }

@@ -909,6 +909,31 @@ class AppLocalizationsCs extends AppLocalizations {
   String get addPhotosAndVideos => 'Přidat fotografie a videa';
 
   @override
+  String get attachMedia => 'Připojit média';
+
+  @override
+  String get addCommentOptional => 'Přidat komentář (nepovinné)';
+
+  @override
+  String get describeNewMedia => 'Popište nová média...';
+
+  @override
+  String get filesSelected => 'vybrané soubory';
+
+  @override
+  String get selectMediaToAttach =>
+      'Prosím vyberte fotografie nebo videa k připojení';
+
+  @override
+  String get newMediaUploaded => 'Nová média nahraná';
+
+  @override
+  String get mediaFilesUploaded => 'nahrané nové soubory médií';
+
+  @override
+  String get filesAttachedSuccessfully => 'úspěšně připojené soubory';
+
+  @override
   String get howToReportToMufon => 'Jak podat zprávu MUFON';
 
   @override
@@ -2069,14 +2094,35 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'Získejte okamžité upozornění, až budou UFO spatřeny poblíž vaší pozice. Už nikdy nezmeškej pozorování!';
+      'Získejte upozornění v reálném čase, když jsou poblíž spatřeni UFO. Už nikdy nezmeškej pozorování.';
+
+  @override
+  String get onboardingAlertsTitle => 'Zůstaňte informováni';
+
+  @override
+  String get onboardingAlertsBody =>
+      'Nastavte, jak daleko by měla být pozorování, aby spustila výstrahy.';
 
   @override
   String get onboardingReportTitle => 'Vidíš něco? Píp to!';
 
   @override
   String get onboardingReportBody =>
-      'Zachyťte fotografie a videa pozorování UFO. Okamžitě se podělte s globální komunitou.';
+      'Snap fotografie nebo videa a sdílet okamžitě s blízkými pozorovateli.';
+
+  @override
+  String get onboardingPermissionsTitle => 'Vaše kamera & umístění';
+
+  @override
+  String get onboardingPermissionsBody =>
+      'Povolit fotoaparát, umístění a upozornění, takže můžete:\n- Hlášení pozorování rychle\n- Získejte upozornění pro UFO blízko vás';
+
+  @override
+  String get onboardingCameraTitle => 'Důkazy o chycení';
+
+  @override
+  String get onboardingCameraBody =>
+      'Sdílet fotografie a videa, které jste právě zachytili z vaší galerie nebo dlouhotrvající-stiskněte ikonu UFOBeep pro spuštění v režimu okamžité kamery.';
 
   @override
   String get onboardingCompassTitle => 'Uvidíme, kde budou hledat';
@@ -2086,11 +2132,11 @@ class AppLocalizationsCs extends AppLocalizations {
       'Kompas ukazuje přesný směr, kterým se svědek díval, když viděl UFO. Namiř telefon a podívej se!';
 
   @override
-  String get onboardingCommunityTitle => 'Spojte se s Skywatchers';
+  String get onboardingCommunityTitle => 'Připojte se k Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Přečtěte si poslední pozorování UFO nad ranní kávu. Přístup k profesionálním údajům MUFON a spojit se s kolegy skywatchers.';
+      'Procházení pozorování, přístup k hlášení MUFON, a připojit se k kolegům skywatchers.';
 
   @override
   String get skip => 'Přeskočit';
@@ -2341,43 +2387,43 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing UFO Alert...';
+  String get processingAlert => 'Zpracování UFO...';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => 'Analýza podmínek prostředí';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => 'Analýza počasí';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => 'Analýza umístění';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => 'Sledování letadel';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => 'Satelitní analýza';
 
   @override
-  String get celestialAnalysis => 'Celestial Analysis';
+  String get celestialAnalysis => 'Nebeská analýza';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return 'Analyzuji _ _ PLACETETELER _ 0 _ _...';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => 'povětrnostní podmínky';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => 'údaje o umístění';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => 'v blízkosti letadla';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => 'družicové pozice';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => 'nebeské objekty';
 }

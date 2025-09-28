@@ -913,6 +913,31 @@ class AppLocalizationsTr extends AppLocalizations {
   String get addPhotosAndVideos => 'Fotoğraflar ve Videolar ekleyin';
 
   @override
+  String get attachMedia => 'Bir Medya';
+
+  @override
+  String get addCommentOptional => 'Yorum ekleyin (isteğen)';
+
+  @override
+  String get describeNewMedia => 'Yeni medyayı açıklayın...';
+
+  @override
+  String get filesSelected => 'seçilen dosyalar';
+
+  @override
+  String get selectMediaToAttach =>
+      'Lütfen fotoğraf veya videoları eklemek için seçin';
+
+  @override
+  String get newMediaUploaded => 'Yeni medya yüklendi';
+
+  @override
+  String get mediaFilesUploaded => 'yeni medya dosyaları yüklendi';
+
+  @override
+  String get filesAttachedSuccessfully => 'dosyalar başarıyla eklendi';
+
+  @override
   String get howToReportToMufon => 'MUFON\'a Nasıl Rapor Verilir';
 
   @override
@@ -2074,14 +2099,35 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'UFO\'ların konumunuzun yakınında görüldüğünde anlık uyarılar alın. Asla tekrar bir görüş kaçırmayın!';
+      'UFO\'ların yakınlaştığında gerçek zamanlı uyarılar alın. Asla tekrar bir görüş kaçırmayın.';
 
   @override
-  String get onboardingReportTitle => 'Bir şey görün? Beep it!';
+  String get onboardingAlertsTitle => 'Stay Informed';
+
+  @override
+  String get onboardingAlertsBody =>
+      'Ne kadar uzakta görüşlerin uyarıları tetikleyebilmesi gerektiğini ayarlayın.';
+
+  @override
+  String get onboardingReportTitle => 'Bir şey görün? Arıp It!';
 
   @override
   String get onboardingReportBody =>
-      'UFO manzaralarının fotoğraflarını ve videolarını yakalayın. Küresel toplulukla anında paylaşın.';
+      'Bir fotoğraf veya video yapın ve yakındaki bekçilerle anında paylaşın.';
+
+  @override
+  String get onboardingPermissionsTitle => 'Kameranız ve Konumunuz';
+
+  @override
+  String get onboardingPermissionsBody =>
+      'Enable kamera, yer ve bildirimleri böylece yapabilirsiniz:\nRapor hızlı bir şekilde gözden geçiriyor\n– Size yakın UFO için uyarılar alın';
+
+  @override
+  String get onboardingCameraTitle => 'Yakalama Kanıtları';
+
+  @override
+  String get onboardingCameraBody =>
+      'Sadece galerinizden ya da uzun süren UFOBeep ikonunu anında kamera modunda başlatmak için yakaladığınız fotoğrafları ve videoları paylaşın.';
 
   @override
   String get onboardingCompassTitle => 'Nerede Baktıklarını Gördüler';
@@ -2091,11 +2137,11 @@ class AppLocalizationsTr extends AppLocalizations {
       'Compass, tanıkın UFO\'yu gördüklerinde aradığını gösteriyor. Telefonunuzu açın ve görün!';
 
   @override
-  String get onboardingCommunityTitle => 'Skywatchers ile Bağlan';
+  String get onboardingCommunityTitle => 'Skywatchers katılın';
 
   @override
   String get onboardingCommunityBody =>
-      'Sabah kahveniz üzerinde en son UFO görüşlerini okuyun. Profesyonel MUFON verilerine erişim ve diğer gök gözlemcileriyle bağlantı kurun.';
+      'Görmek, MUFON raporlarına erişmek ve diğer gök gözlemcileriyle bağlantı kurmak.';
 
   @override
   String get skip => 'Skip';
@@ -2350,40 +2396,40 @@ class AppLocalizationsTr extends AppLocalizations {
   String get processingAlert => 'Processing UFO Alert...';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => 'Çevre koşullarını analiz edin';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => 'Hava Analizi';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => 'Konum Analysis';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => 'Uçak Takipi';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => 'Uydu Analizi';
 
   @override
   String get celestialAnalysis => 'Celestial Analysis';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return 'Analyating $processor...';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => 'hava koşulları';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => 'konum detayları';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => 'yakındaki uçaklar';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => 'uydu pozisyonları';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => 'temel nesneler';
 }

@@ -901,6 +901,30 @@ class AppLocalizationsHe extends AppLocalizations {
   String get addPhotosAndVideos => 'הוסף תמונות וסרטונים';
 
   @override
+  String get attachMedia => 'המונחים:';
+
+  @override
+  String get addCommentOptional => 'הוסף תגובה (אופציונלי)';
+
+  @override
+  String get describeNewMedia => 'תאר את התקשורת החדשה...';
+
+  @override
+  String get filesSelected => 'קבצים נבחרים';
+
+  @override
+  String get selectMediaToAttach => 'נא לבחור תמונות או קטעי וידאו לצרף';
+
+  @override
+  String get newMediaUploaded => 'התקשורת החדשה עלתה';
+
+  @override
+  String get mediaFilesUploaded => 'קבצי מדיה חדשים שהועלו';
+
+  @override
+  String get filesAttachedSuccessfully => 'קבצים מחוברים בהצלחה';
+
+  @override
   String get howToReportToMufon => 'כיצד לדווח על MUFON';
 
   @override
@@ -2033,14 +2057,35 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'קבל התראות מיידיות כאשר עב\"מים נצפו ליד המיקום שלך. לעולם אל תחמיצו שוב מראה!';
+      'קבל התראות בזמן אמת כאשר עב\"מים נצפו בקרבת מקום. לעולם אל תחמיצו שוב מראה.';
+
+  @override
+  String get onboardingAlertsTitle => 'נשאר Informed';
+
+  @override
+  String get onboardingAlertsBody =>
+      'הגדר כמה רחוק מראות צריך להיות כדי לעורר התראות.';
 
   @override
   String get onboardingReportTitle => 'רואים משהו? היזהרו!';
 
   @override
   String get onboardingReportBody =>
-      'לצלם תמונות וסרטונים של מראה עב\"מים. שתפו עם הקהילה העולמית מיד.';
+      'סנייפ תמונה או וידאו ולשתף מיד עם צופים סמוכים.';
+
+  @override
+  String get onboardingPermissionsTitle => 'המצלמה והמיקום שלך';
+
+  @override
+  String get onboardingPermissionsBody =>
+      'מצלמה, מיקום, הודעות כך שתוכל:\nדיווח מהיר\n- - - קבל התראות עבור עב\"מים לידך';
+
+  @override
+  String get onboardingCameraTitle => 'לכידת ראיות';
+
+  @override
+  String get onboardingCameraBody =>
+      'שתפו תמונות וסרטונים שתפסתם מהגלריה שלכם או מדכאי ה- עב\'בפ כדי להתחיל במצב מצלמה מיידי.';
 
   @override
   String get onboardingCompassTitle => 'ראו היכן הם נראים';
@@ -2050,11 +2095,11 @@ class AppLocalizationsHe extends AppLocalizations {
       'Compass מראה לך את הכיוון המדויק שהעד חיפש כשראו את העב\"ם. מצא את הטלפון והמראה שלך!';
 
   @override
-  String get onboardingCommunityTitle => 'צור קשר עם Skywatchers';
+  String get onboardingCommunityTitle => 'הצטרפו ל-Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'קראו את מראה העב\"ם האחרון מעל קפה הבוקר. גישה למידע מקצועי MUFON ולהתחבר עם צופים אחרים.';
+      'תצפיות Browse, גישה לדיווחי MUFON, ולהתחבר עם צופים אחרים.';
 
   @override
   String get skip => 'דלג';
@@ -2305,43 +2350,43 @@ class AppLocalizationsHe extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing UFO Alert...';
+  String get processingAlert => 'המונחים:.';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => 'ניתוח תנאים סביבתיים';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => 'ניתוח מזג אוויר';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => 'ניתוח מיקום';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => 'מעקב מטוסים';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => 'ניתוח לווין';
 
   @override
-  String get celestialAnalysis => 'Celestial Analysis';
+  String get celestialAnalysis => 'ניתוח';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return 'ניתוח - PLACEHOLDER_0____.';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => 'תנאי מזג אוויר';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => 'פרטי מיקום';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => 'מטוס סמוך';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => 'עמדות לוויין';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => 'אובייקטים שמיים';
 }

@@ -904,6 +904,30 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addPhotosAndVideos => 'أضف الصور الفوتوغرافية';
 
   @override
+  String get attachMedia => 'Attach Media';
+
+  @override
+  String get addCommentOptional => 'يضاف تعليق (اختياري)';
+
+  @override
+  String get describeNewMedia => 'صفوا وسائل الإعلام الجديدة.';
+
+  @override
+  String get filesSelected => 'ملفات مختارة';
+
+  @override
+  String get selectMediaToAttach => 'يرجى اختيار الصور أو الفيديو الملحق بها';
+
+  @override
+  String get newMediaUploaded => 'تحميل وسائط الإعلام الجديدة';
+
+  @override
+  String get mediaFilesUploaded => 'ملفات إعلامية جديدة تم تحميلها';
+
+  @override
+  String get filesAttachedSuccessfully => 'الملفات المرفقة بنجاح';
+
+  @override
   String get howToReportToMufon => 'How to Report to MUFON';
 
   @override
@@ -2046,14 +2070,35 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'الحصول على إنذارات فورية عندما يتم رصد طائرات يو إف أوز بالقرب من موقعك. لا تفوتني رؤية ثانية!';
+      'الحصول على تنبيهات في الوقت الحقيقي عندما يتم رصد طائرات يو إف أو في الجوار. لا تفوتني رؤية ثانية.';
+
+  @override
+  String get onboardingAlertsTitle => 'ابقوا على علم';
+
+  @override
+  String get onboardingAlertsBody =>
+      'حددوا كم ينبغي أن تكون المشاهدات بعيدة عن الأنذار.';
 
   @override
   String get onboardingReportTitle => 'أترى شيئاً؟ !';
 
   @override
   String get onboardingReportBody =>
-      'التقط صور و أشرطة فيديو لمشاهدات منظمة الطيران المدني شارك مع المجتمع العالمي على الفور.';
+      'نلتقط صورة أو شريط فيديو ونتشارك على الفور مع المشاهدين المجاورين.';
+
+  @override
+  String get onboardingPermissionsTitle => 'موقعكم';
+
+  @override
+  String get onboardingPermissionsBody =>
+      'آلة تصوير وموقع وإخطارات حتى تتمكن من:\n- مشاهدة التقارير بسرعة\n- إحصلْ على تنبيهاتِ مِنْ طائراتِ UFO بالقرب منك';
+
+  @override
+  String get onboardingCameraTitle => 'الأدلة';
+
+  @override
+  String get onboardingCameraBody =>
+      'نتشارك الصور والفيديوات التي التقطتها للتو من معرضك أو كاميرا طويلة.';
 
   @override
   String get onboardingCompassTitle => 'انظر إلى أين بدوا';
@@ -2063,11 +2108,11 @@ class AppLocalizationsAr extends AppLocalizations {
       'البوصلة تُظهر لك الإتجاه الذي كان ينظر إليه الشاهد عندما رأوا مكتب الطوارئ صوب هاتفك وانظر!';
 
   @override
-  String get onboardingCommunityTitle => 'الاتصال مع Skywatchers';
+  String get onboardingCommunityTitle => 'انضموا إلى \"سكاي واتش\"';
 
   @override
   String get onboardingCommunityBody =>
-      'إقرأ آخر مشاهدات \"يو إف أو\" على قهوتك الصباحية الحصول على البيانات المهنية MUFON والتواصل مع زملاء مراقبة السماء.';
+      'مشاهدات الحشد، الوصول إلى تقارير (مافون) والتواصل مع الزملاء المشاهدين.';
 
   @override
   String get skip => 'Skip';
@@ -2318,43 +2363,43 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing UFO Alert...';
+  String get processingAlert => 'تجهيز إنذار \"يو إف أو\".';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => 'تحليل الظروف البيئية';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => 'تحليل الطقس';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => 'تحليل الموقع';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => 'تعقب الطائرات';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => 'التحليل الساتلي';
 
   @override
-  String get celestialAnalysis => 'Celestial Analysis';
+  String get celestialAnalysis => 'تحليل المهرجان';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return 'تحليل.';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => 'الأحوال الجوية';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => 'تفاصيل الموقع';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => 'طائرة قريبة';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => 'المواقع الساتلية';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => 'الأجسام السماوية';
 }

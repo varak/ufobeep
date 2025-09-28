@@ -892,6 +892,30 @@ class AppLocalizationsJa extends AppLocalizations {
   String get addPhotosAndVideos => '写真とビデオを追加';
 
   @override
+  String get attachMedia => 'アタッチメディア';
+
+  @override
+  String get addCommentOptional => 'コメントを追加(オプション)';
+
+  @override
+  String get describeNewMedia => '新しいメディアを記述する...';
+
+  @override
+  String get filesSelected => '選択したファイル';
+
+  @override
+  String get selectMediaToAttach => '添付する写真や動画を選択してください';
+
+  @override
+  String get newMediaUploaded => 'メディア掲載';
+
+  @override
+  String get mediaFilesUploaded => 'アップロードされた新しいメディアファイル';
+
+  @override
+  String get filesAttachedSuccessfully => '添付ファイル';
+
+  @override
   String get howToReportToMufon => 'MUFONへの報告方法';
 
   @override
@@ -2002,14 +2026,33 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'UFO があなたの場所の近くで見つけられたら即刻の警報を得て下さい。 再び目撃を逃さない!';
+      'UFO が近くにあるときにリアルタイムのアラートを取得します。 再び視力を逃さない.';
+
+  @override
+  String get onboardingAlertsTitle => '情報を受け取る';
+
+  @override
+  String get onboardingAlertsBody => 'アラートをトリガーするには、遠距離の視線を設定してください.';
 
   @override
   String get onboardingReportTitle => 'お問い合わせ お問い合わせ!';
 
   @override
-  String get onboardingReportBody =>
-      'UFOの視線の写真やビデオをキャプチャします。 世界中のコミュニティと即座に共有できます.';
+  String get onboardingReportBody => '写真やビデオをスナップし、近くの時計師と即座に共有します.';
+
+  @override
+  String get onboardingPermissionsTitle => 'あなたのカメラと場所';
+
+  @override
+  String get onboardingPermissionsBody =>
+      'カメラ、場所、通知を有効にすると、次のことができます。\n– 視線を迅速に報告\n– – 近くのUFOのアラートを入手';
+
+  @override
+  String get onboardingCameraTitle => 'キャプチャ証拠';
+
+  @override
+  String get onboardingCameraBody =>
+      'あなたのギャラリーから撮影した写真やビデオをシェアするか、UFOBeepアイコンを長押しして、インスタントカメラモードを開始します.';
 
   @override
   String get onboardingCompassTitle => '彼らが探している場所を見る';
@@ -2019,11 +2062,10 @@ class AppLocalizationsJa extends AppLocalizations {
       'Compass は、UFO を見たときに目撃した証人が探していた正確な方向を示します。 電話で見てみる!';
 
   @override
-  String get onboardingCommunityTitle => 'Skywatchersとつながる';
+  String get onboardingCommunityTitle => 'Skywatchersに参加する';
 
   @override
-  String get onboardingCommunityBody =>
-      '朝のコーヒーを眺めながら最新のUFOを眺めましょう。 プロフェッショナルなMUFONデータにアクセスし、仲間のSkywatchersに接続します.';
+  String get onboardingCommunityBody => 'MUFONレポートにアクセスし、仲間のSkywatchersと接続します.';
 
   @override
   String get skip => 'ツイート';
@@ -2268,43 +2310,43 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing UFO Alert...';
+  String get processingAlert => 'UFOアラートの処理.';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => '環境条件の分析';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => '気象分析';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => '位置分析';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => '航空機の追跡';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => '衛星分析';
 
   @override
-  String get celestialAnalysis => 'Celestial Analysis';
+  String get celestialAnalysis => '空間解析';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return '解析 ${processor}__________________________________________________________________________________________________________________________________________________________.';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => '気象条件';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => '位置情報';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => '近くの航空機';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => '衛星の位置';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => '天体オブジェクト';
 }

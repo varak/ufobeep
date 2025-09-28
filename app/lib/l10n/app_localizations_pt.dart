@@ -916,6 +916,30 @@ class AppLocalizationsPt extends AppLocalizations {
   String get addPhotosAndVideos => 'Adicionar Fotos e Vídeos';
 
   @override
+  String get attachMedia => 'Anexar mídia';
+
+  @override
+  String get addCommentOptional => 'Adicionar um comentário (opcional)';
+
+  @override
+  String get describeNewMedia => 'Descreva a nova mídia...';
+
+  @override
+  String get filesSelected => 'ficheiros seleccionados';
+
+  @override
+  String get selectMediaToAttach => 'Selecione fotos ou vídeos para anexar';
+
+  @override
+  String get newMediaUploaded => 'Nova mídia enviada';
+
+  @override
+  String get mediaFilesUploaded => 'novos arquivos de mídia enviados';
+
+  @override
+  String get filesAttachedSuccessfully => 'arquivos anexados com sucesso';
+
+  @override
   String get howToReportToMufon => 'Como informar à MUFON';
 
   @override
@@ -2082,14 +2106,35 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'Receba alertas instantâneos quando os OVNIs forem vistos perto da sua localização. Nunca mais percas uma visão!';
+      'Receba alertas em tempo real quando os OVNIs forem vistos por perto. Nunca mais percas uma visão.';
+
+  @override
+  String get onboardingAlertsTitle => 'Mantenha-se informado';
+
+  @override
+  String get onboardingAlertsBody =>
+      'Defina o quão longe devem estar os avistamentos para activar alertas.';
 
   @override
   String get onboardingReportTitle => 'Vês alguma coisa? Bip!';
 
   @override
   String get onboardingReportBody =>
-      'Capture fotos e vídeos de avistamentos de OVNIs. Compartilhe com a comunidade global instantaneamente.';
+      'Tire uma foto ou vídeo e compartilhe instantaneamente com os observadores próximos.';
+
+  @override
+  String get onboardingPermissionsTitle => 'Sua & localização da câmera';
+
+  @override
+  String get onboardingPermissionsBody =>
+      'Habilitar câmera, localização e notificações para que você possa:\n– Relatar avistamentos rapidamente\n– Obter alertas para OVNIs perto de você';
+
+  @override
+  String get onboardingCameraTitle => 'Capturar Evidências';
+
+  @override
+  String get onboardingCameraBody =>
+      'Compartilhe fotos e vídeos que você acabou de capturar de sua galeria ou pressione o ícone OVNIBeep para iniciar em modo de câmera instantânea.';
 
   @override
   String get onboardingCompassTitle => 'Veja para onde olharam';
@@ -2099,11 +2144,11 @@ class AppLocalizationsPt extends AppLocalizations {
       'A bússola mostra-te a direcção exacta que a testemunha estava a ver quando viram o OVNI. Aponta o telefone e olha!';
 
   @override
-  String get onboardingCommunityTitle => 'Conecte-se com Skywatchers';
+  String get onboardingCommunityTitle => 'Junte-se aos Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Leia as últimas aparições de OVNIs no seu café da manhã. Acesse dados MUFON profissionais e conecte-se com outros observadores do céu.';
+      'Veja avistamentos, acesse relatórios MUFON e conecte-se com outros observadores do céu.';
 
   @override
   String get skip => 'Pular';
@@ -2355,43 +2400,43 @@ class AppLocalizationsPt extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing UFO Alert...';
+  String get processingAlert => 'Processando alerta de OVNI...';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => 'Análise das condições ambientais';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => 'Análise Meteorológica';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => 'Análise de Localização';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => 'Rastreamento de aeronaves';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => 'Análise por Satélite';
 
   @override
-  String get celestialAnalysis => 'Celestial Analysis';
+  String get celestialAnalysis => 'Análise Celestial';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return 'Analisando __PACEHOLDER_0__...';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => 'condições meteorológicas';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => 'detalhes da localização';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => 'aeronaves vizinhas';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => 'posições de satélite';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => 'objetos celestes';
 }

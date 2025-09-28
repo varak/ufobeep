@@ -1818,6 +1818,54 @@ abstract class AppLocalizations {
   /// **'Add Photos & Videos'**
   String get addPhotosAndVideos;
 
+  /// No description provided for @attachMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Attach Media'**
+  String get attachMedia;
+
+  /// No description provided for @addCommentOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a comment (optional)'**
+  String get addCommentOptional;
+
+  /// No description provided for @describeNewMedia.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the new media...'**
+  String get describeNewMedia;
+
+  /// No description provided for @filesSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'files selected'**
+  String get filesSelected;
+
+  /// No description provided for @selectMediaToAttach.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select photos or videos to attach'**
+  String get selectMediaToAttach;
+
+  /// No description provided for @newMediaUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'New media uploaded'**
+  String get newMediaUploaded;
+
+  /// No description provided for @mediaFilesUploaded.
+  ///
+  /// In en, this message translates to:
+  /// **'new media files uploaded'**
+  String get mediaFilesUploaded;
+
+  /// No description provided for @filesAttachedSuccessfully.
+  ///
+  /// In en, this message translates to:
+  /// **'files attached successfully'**
+  String get filesAttachedSuccessfully;
+
   /// No description provided for @howToReportToMufon.
   ///
   /// In en, this message translates to:
@@ -3933,20 +3981,56 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingWelcomeBody.
   ///
   /// In en, this message translates to:
-  /// **'Get instant alerts when UFOs are spotted near your location. Never miss a sighting again!'**
+  /// **'Get real-time alerts when UFOs are spotted nearby. Never miss a sighting again.'**
   String get onboardingWelcomeBody;
+
+  /// No description provided for @onboardingAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Informed'**
+  String get onboardingAlertsTitle;
+
+  /// No description provided for @onboardingAlertsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Set how far away sightings should be to trigger alerts.'**
+  String get onboardingAlertsBody;
 
   /// No description provided for @onboardingReportTitle.
   ///
   /// In en, this message translates to:
-  /// **'See something? Beep it!'**
+  /// **'See Something? Beep It!'**
   String get onboardingReportTitle;
 
   /// No description provided for @onboardingReportBody.
   ///
   /// In en, this message translates to:
-  /// **'Capture photos and videos of UFO sightings. Share with the global community instantly.'**
+  /// **'Snap a photo or video and share instantly with nearby watchers.'**
   String get onboardingReportBody;
+
+  /// No description provided for @onboardingPermissionsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Camera & Location'**
+  String get onboardingPermissionsTitle;
+
+  /// No description provided for @onboardingPermissionsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable camera, location, and notifications so you can:\n– Report sightings fast\n– Get alerts for UFOs near you'**
+  String get onboardingPermissionsBody;
+
+  /// No description provided for @onboardingCameraTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Capture Evidence'**
+  String get onboardingCameraTitle;
+
+  /// No description provided for @onboardingCameraBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Share photos and videos you just captured from your gallery or long-press the UFOBeep icon to start in instant camera mode.'**
+  String get onboardingCameraBody;
 
   /// No description provided for @onboardingCompassTitle.
   ///
@@ -3963,13 +4047,13 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingCommunityTitle.
   ///
   /// In en, this message translates to:
-  /// **'Connect with Skywatchers'**
+  /// **'Join the Skywatchers'**
   String get onboardingCommunityTitle;
 
   /// No description provided for @onboardingCommunityBody.
   ///
   /// In en, this message translates to:
-  /// **'Read the latest UFO sightings over your morning coffee. Access professional MUFON data and connect with fellow skywatchers.'**
+  /// **'Browse sightings, access MUFON reports, and connect with fellow skywatchers.'**
   String get onboardingCommunityBody;
 
   /// No description provided for @skip.

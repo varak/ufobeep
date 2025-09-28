@@ -903,6 +903,30 @@ class AppLocalizationsNo extends AppLocalizations {
   String get addPhotosAndVideos => 'Add Photos & Videos';
 
   @override
+  String get attachMedia => 'Attach Media';
+
+  @override
+  String get addCommentOptional => 'Add a comment (optional)';
+
+  @override
+  String get describeNewMedia => 'Describe the new media...';
+
+  @override
+  String get filesSelected => 'files selected';
+
+  @override
+  String get selectMediaToAttach => 'Please select photos or videos to attach';
+
+  @override
+  String get newMediaUploaded => 'New media uploaded';
+
+  @override
+  String get mediaFilesUploaded => 'new media files uploaded';
+
+  @override
+  String get filesAttachedSuccessfully => 'files attached successfully';
+
+  @override
   String get howToReportToMufon => 'How to Report to MUFON';
 
   @override
@@ -2064,14 +2088,35 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'Get instant alerts when UFOs are spotted near your location. Never miss a sighting again!';
+      'Get real-time alerts when UFOs are spotted nearby. Never miss a sighting again.';
 
   @override
-  String get onboardingReportTitle => 'See something? Beep it!';
+  String get onboardingAlertsTitle => 'Stay Informed';
+
+  @override
+  String get onboardingAlertsBody =>
+      'Set how far away sightings should be to trigger alerts.';
+
+  @override
+  String get onboardingReportTitle => 'See Something? Beep It!';
 
   @override
   String get onboardingReportBody =>
-      'Capture photos and videos of UFO sightings. Share with the global community instantly.';
+      'Snap a photo or video and share instantly with nearby watchers.';
+
+  @override
+  String get onboardingPermissionsTitle => 'Your Camera & Location';
+
+  @override
+  String get onboardingPermissionsBody =>
+      'Enable camera, location, and notifications so you can:\n– Report sightings fast\n– Get alerts for UFOs near you';
+
+  @override
+  String get onboardingCameraTitle => 'Capture Evidence';
+
+  @override
+  String get onboardingCameraBody =>
+      'Share photos and videos you just captured from your gallery or long-press the UFOBeep icon to start in instant camera mode.';
 
   @override
   String get onboardingCompassTitle => 'See Where They Looked';
@@ -2081,11 +2126,11 @@ class AppLocalizationsNo extends AppLocalizations {
       'Compass shows you the exact direction the witness was looking when they saw the UFO. Point your phone and look!';
 
   @override
-  String get onboardingCommunityTitle => 'Connect with Skywatchers';
+  String get onboardingCommunityTitle => 'Join the Skywatchers';
 
   @override
   String get onboardingCommunityBody =>
-      'Read the latest UFO sightings over your morning coffee. Access professional MUFON data and connect with fellow skywatchers.';
+      'Browse sightings, access MUFON reports, and connect with fellow skywatchers.';
 
   @override
   String get skip => 'Skip';

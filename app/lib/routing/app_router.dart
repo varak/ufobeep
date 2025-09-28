@@ -14,6 +14,7 @@ import '../screens/beep/beep_screen.dart';
 import '../screens/beep/beep_composition_screen.dart';
 import '../screens/beep/camera_capture_screen.dart';
 import '../screens/beep/multi_file_upload_screen.dart';
+import '../screens/beep/attach_media_screen.dart';
 import '../screens/compass/compass_screen.dart';
 import '../screens/map/map_screen.dart';
 import '../screens/profile/profile_screen.dart';
@@ -177,7 +178,23 @@ GoRouter appRouter(AppRouterRef ref) {
           ));
         },
       ),
-      
+
+      // Attach Media Screen
+      GoRoute(
+        path: '/attach-media/:sightingId',
+        name: 'attach-media',
+        builder: (context, state) {
+          final sightingId = state.pathParameters['sightingId']!;
+          final extra = state.extra as Map<String, dynamic>?;
+          final initialMediaFiles = extra?['initialMediaFiles'] as List<File>?;
+
+          return AttachMediaScreen(
+            sightingId: sightingId,
+            initialMediaFiles: initialMediaFiles,
+          );
+        },
+      ),
+
       // Splash Screen (handles its own navigation after initialization)
       GoRoute(
         path: '/splash',
@@ -259,9 +276,14 @@ GoRouter appRouter(AppRouterRef ref) {
             builder: (context, state) {
               final attachTo = state.uri.queryParameters['attachTo'];
               final autoGallery = state.uri.queryParameters['autoGallery'] == 'true';
-              
+
               // Handle camera return data and share intent data
               final extra = state.extra as Map<String, dynamic>?;
+              debugPrint('🔍 BEEP ROUTE DEBUG: extra = $extra');
+
+              // Check for attachToSightingId in extra data (from Add Photos flow)
+              final attachToSightingId = extra?['attachToSightingId'] as String? ?? attachTo;
+              debugPrint('🔍 BEEP ROUTE DEBUG: attachToSightingId = $attachToSightingId');
               File? mediaFile;
               List<File>? sharedMediaFiles;
               SensorData? sensorData;
@@ -278,6 +300,12 @@ GoRouter appRouter(AppRouterRef ref) {
                   debugPrint('📸 BEEP ROUTE: Camera return data - single file');
                 }
                 
+                // Check for direct initialMediaFiles from Add Photos flow
+                else if (extra.containsKey('initialMediaFiles')) {
+                  sharedMediaFiles = extra['initialMediaFiles'] as List<File>?;
+                  debugPrint('🔍 BEEP ROUTE DEBUG: Direct initialMediaFiles = ${sharedMediaFiles?.length} files');
+                }
+
                 // Share intent data (multiple files) - extract ALL files, don't set single mediaFile
                 else if (extra.containsKey('mediaFiles')) {
                   final mediaFiles = extra['mediaFiles'] as List?;
@@ -299,7 +327,7 @@ GoRouter appRouter(AppRouterRef ref) {
               }
               
               return BeepScreen(
-                attachToSightingId: attachTo,
+                attachToSightingId: attachToSightingId,
                 autoOpenGallery: autoGallery,
                 initialMediaFile: mediaFile,
                 initialMediaFiles: sharedMediaFiles,

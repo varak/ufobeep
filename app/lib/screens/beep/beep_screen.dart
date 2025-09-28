@@ -683,22 +683,31 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
       
       debugPrint('🔴 BEEP: Final GPS coordinates: lat=$validLat, lon=$validLon');
       
-      wd.mark("sending beep to API");
-      // Create new sighting with media
-      final beepResult = await BeepService().sendBeep(
-        description: description.isEmpty ? null : description,
-        latitude: validLat,
-        longitude: validLon,
-        heading: sensorData?.azimuthDeg,
-        hasMedia: true, // This will defer alerts until media upload completes
-      );
-      
-      final sightingIdFromResponse = beepResult['sighting_id']?.toString();
-      if (sightingIdFromResponse == null) {
-        throw Exception('Failed to get sighting ID from API response');
+      wd.mark("determining sighting ID");
+      final String sightingId;
+
+      if (widget.attachToSightingId != null) {
+        // Attach to existing sighting
+        sightingId = widget.attachToSightingId!;
+        debugPrint('🔴 BEEP: Attaching to existing sighting: $sightingId');
+      } else {
+        // Create new sighting with media
+        wd.mark("creating new sighting");
+        final beepResult = await BeepService().sendBeep(
+          description: description.isEmpty ? null : description,
+          latitude: validLat,
+          longitude: validLon,
+          heading: sensorData?.azimuthDeg,
+          hasMedia: true, // This will defer alerts until media upload completes
+        );
+
+        final sightingIdFromResponse = beepResult['sighting_id']?.toString();
+        if (sightingIdFromResponse == null) {
+          throw Exception('Failed to get sighting ID from API response');
+        }
+        sightingId = sightingIdFromResponse;
+        debugPrint('🔴 BEEP: New sighting created with ID: $sightingId (alerts deferred)');
       }
-      final sightingId = sightingIdFromResponse;
-      debugPrint('🔴 BEEP: Sighting created with ID: $sightingId (alerts deferred)');
     
       wd.mark("starting media upload phase");
       // Now upload all media files, then trigger alerts
@@ -1273,7 +1282,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     context.push('/beep/camera');
                   },
                   child: GlassCard(
-                  child: Container(
+                    child: Container(
                     height: 56,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
@@ -1300,6 +1309,7 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                               color: AppColors.brandPrimary,
                             ),
                           ),
+                    ),
                   ),
                 ),
 

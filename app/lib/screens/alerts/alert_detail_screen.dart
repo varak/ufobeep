@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -487,7 +488,11 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                     alert: alert,
                     currentUserDeviceId: _currentUserDeviceId,
                     currentUsername: _currentUsername,
-                    onAddPhotos: () => _showAddPhotosDialog(widget.alertId),
+                    onAddPhotos: () async {
+                      await context.push('/attach-media/${widget.alertId}');
+                      // Refresh alert data when returning from attach screen
+                      _refreshAlert();
+                    },
                     onReportToMufon: () => _showMufonReportDialog(),
                     onWitnessConfirmed: (witnessCount) {
                       // Refresh witness status after confirmation
@@ -622,138 +627,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     context.go(uri.toString());
   }
 
-  Future<void> _pickFromGalleryForAlert(String alertId) async {
-    try {
-      final FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.media,
-        allowMultiple: true, // Enable multiple file selection
-        withData: false,
-      );
-
-      if (result == null || result.files.isEmpty) {
-        return; // User cancelled
-      }
-
-      // Close the modal
-      Navigator.of(context).pop();
-
-      // Navigate to beep composition screen with selected files for attachment
-      context.push('/beep/composition', extra: {
-        'mediaFiles': result.files,
-        'attachToSightingId': alertId,
-      });
-
-    } catch (e) {
-      debugPrint('Error picking files: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to pick files: $e')),
-      );
-    }
-  }
 
   void _refreshAlert() {
     // Refresh the alert data after media upload
     ref.refresh(alertByIdProvider(widget.alertId));
   }
 
-  void _showAddPhotosDialog(String alertId) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.darkSurface,
-      builder: (context) => Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              AppLocalizations.of(context)!.edit,
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                color: AppColors.textPrimary,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              AppLocalizations.of(context)!.beepExplain,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  child: GlassCard(
-                    onTap: () async {
-                      await UiFeedback.click();
-                      Navigator.pop(context);
-                      context.push('/beep/camera', extra: {
-                        'attachToSightingId': alertId,
-                      });
-                    },
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.camera_alt,
-                          color: Colors.white,
-                          size: 32,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          AppLocalizations.of(context)!.capturePhoto,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: GlassCard(
-                    onTap: () async {
-                      await UiFeedback.click();
-                      Navigator.pop(context);
-                      await _pickFromGalleryForAlert(alertId);
-                    },
-                    child: Column(
-                      children: [
-                        Icon(
-                          Icons.photo_library,
-                          color: Colors.white,
-                          size: 32,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          AppLocalizations.of(context)!.pickFromGallery,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                AppLocalizations.of(context)!.cancel,
-                style: const TextStyle(color: AppColors.textSecondary),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
   void _showMufonReportDialog() {
     showDialog(

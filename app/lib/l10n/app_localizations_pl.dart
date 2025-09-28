@@ -915,6 +915,31 @@ class AppLocalizationsPl extends AppLocalizations {
   String get addPhotosAndVideos => 'Dodaj zdjęcia i filmy';
 
   @override
+  String get attachMedia => 'Dołącz media';
+
+  @override
+  String get addCommentOptional => 'Dodaj komentarz (opcjonalnie)';
+
+  @override
+  String get describeNewMedia => 'Opisz nowe media...';
+
+  @override
+  String get filesSelected => 'zaznaczone pliki';
+
+  @override
+  String get selectMediaToAttach =>
+      'Proszę wybrać zdjęcia lub filmy, aby dołączyć';
+
+  @override
+  String get newMediaUploaded => 'Nowe media';
+
+  @override
+  String get mediaFilesUploaded => 'nowe pliki multimedialne przesłane';
+
+  @override
+  String get filesAttachedSuccessfully => 'pliki dołączone pomyślnie';
+
+  @override
   String get howToReportToMufon => 'Jak zgłosić się do MUFON';
 
   @override
@@ -2080,14 +2105,35 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get onboardingWelcomeBody =>
-      'Uzyskaj natychmiastowy alarm, gdy UFO zostaną zauważone w pobliżu twojej lokalizacji. Nigdy więcej nie przegap widoku!';
+      'Uzyskaj informacje o czasie rzeczywistym, gdy UFO jest w pobliżu. Nigdy więcej nie przegap widoku.';
+
+  @override
+  String get onboardingAlertsTitle => 'Zostań poinformowany';
+
+  @override
+  String get onboardingAlertsBody =>
+      'Ustal, jak daleko powinny być obserwacje, aby wywołać ostrzeżenia.';
 
   @override
   String get onboardingReportTitle => 'Widzisz coś? Pip!';
 
   @override
   String get onboardingReportBody =>
-      'Uchwycić zdjęcia i filmy z obserwacji UFO. Natychmiast podziel się z globalną społecznością.';
+      'Snap zdjęcie lub wideo i udostępniać natychmiast z pobliskich obserwatorów.';
+
+  @override
+  String get onboardingPermissionsTitle => 'Twoja kamera i lokalizacja';
+
+  @override
+  String get onboardingPermissionsBody =>
+      'Włącz kamerę, lokalizację i powiadomienia, dzięki czemu możesz:\n- Zgłoś to szybko.\n- Pobierz ostrzeżenia dla UFO w pobliżu';
+
+  @override
+  String get onboardingCameraTitle => 'Dowody przechwytywania';
+
+  @override
+  String get onboardingCameraBody =>
+      'Udostępnij zdjęcia i filmy, które właśnie nagrałeś z galerii lub naciśnij ikonę UFOBeep, aby rozpocząć w trybie natychmiastowym.';
 
   @override
   String get onboardingCompassTitle => 'Zobacz, gdzie patrzyli';
@@ -2097,11 +2143,11 @@ class AppLocalizationsPl extends AppLocalizations {
       'Kompas pokazuje dokładny kierunek, w którym patrzył świadek, gdy zobaczył UFO. Wyceluj w telefon i patrz!';
 
   @override
-  String get onboardingCommunityTitle => 'Połącz się z obserwatorami';
+  String get onboardingCommunityTitle => 'Dołącz do obserwatorów';
 
   @override
   String get onboardingCommunityBody =>
-      'Przeczytaj najnowsze obserwacje UFO nad poranną kawą. Dostęp do profesjonalnych danych MUFON i połączyć się z innymi obserwatorami.';
+      'Przeglądanie obserwacji, dostęp do raportów MUFON i połączenie z innymi obserwatorami.';
 
   @override
   String get skip => 'Pomiń';
@@ -2352,43 +2398,43 @@ class AppLocalizationsPl extends AppLocalizations {
   }
 
   @override
-  String get processingAlert => 'Processing UFO Alert...';
+  String get processingAlert => 'Przetwarzam alarm UFO...';
 
   @override
-  String get analyzingEnvironment => 'Analyzing environmental conditions';
+  String get analyzingEnvironment => 'Analiza warunków środowiskowych';
 
   @override
-  String get weatherAnalysis => 'Weather Analysis';
+  String get weatherAnalysis => 'Analiza pogody';
 
   @override
-  String get locationAnalysis => 'Location Analysis';
+  String get locationAnalysis => 'Analiza lokalizacji';
 
   @override
-  String get aircraftTracking => 'Aircraft Tracking';
+  String get aircraftTracking => 'Śledzenie statków powietrznych';
 
   @override
-  String get satelliteAnalysis => 'Satellite Analysis';
+  String get satelliteAnalysis => 'Analiza satelitarna';
 
   @override
-  String get celestialAnalysis => 'Celestial Analysis';
+  String get celestialAnalysis => 'Analiza Niebiańska';
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzing $processor...';
+    return 'Analiza _ _ PLACEScorter _ 0 _ _...';
   }
 
   @override
-  String get processorWeather => 'weather conditions';
+  String get processorWeather => 'warunki pogodowe';
 
   @override
-  String get processorLocation => 'location details';
+  String get processorLocation => 'szczegóły dotyczące lokalizacji';
 
   @override
-  String get processorAircraft => 'nearby aircraft';
+  String get processorAircraft => 'pobliskie statki powietrzne';
 
   @override
-  String get processorSatellites => 'satellite positions';
+  String get processorSatellites => 'pozycje satelitarne';
 
   @override
-  String get processorCelestial => 'celestial objects';
+  String get processorCelestial => 'obiekty niebieskie';
 }

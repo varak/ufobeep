@@ -15,7 +15,7 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  static const int _totalPages = 4;
+  static const int _totalPages = 5;
 
   // Solid blue theme colors (no opacity/blur)
   static const Color _backgroundColor = Color(0xFF0A0F2C); // Solid dark navy
@@ -77,10 +77,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     });
                   },
                   children: [
-                    _buildSlide1(),
-                    _buildSlide2(),
-                    _buildCameraFeaturesSlide(),
-                    _buildSlide4(),
+                    _buildSlide1(),                    // Welcome
+                    _buildProximityAlertsSlide(),      // Stay Informed
+                    _buildSlide2(),                    // See Something? Beep It!
+                    _buildPermissionsSlide(),          // Camera & Location Permissions
+                    _buildSlide4(),                    // Join the Skywatchers
                   ],
                 ),
               ),
@@ -386,6 +387,162 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       ),
     );
   }
+
+  Widget _buildProximityAlertsSlide() {
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Blue circle icon to match other slides
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _accentColor.withOpacity(0.1),
+              border: Border.all(color: _accentColor, width: 3),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.radar,
+                size: 100,
+                color: _accentColor,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 40),
+
+          Text(
+            AppLocalizations.of(context)!.onboardingAlertsTitle,
+            style: const TextStyle(
+              color: _titleColor,
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+
+          const SizedBox(height: 16),
+
+          Text(
+            AppLocalizations.of(context)!.onboardingAlertsBody,
+            style: const TextStyle(
+              color: _bodyTextColor,
+              fontSize: 18,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCameraFeaturesSlide() {
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Blue circle icon to match other slides
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _accentColor.withOpacity(0.1),
+              border: Border.all(color: _accentColor, width: 3),
+            ),
+            child: const Center(
+              child: Text(
+                '📸',
+                style: TextStyle(fontSize: 120),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 40),
+
+          Text(
+            AppLocalizations.of(context)!.onboardingCameraTitle,
+            style: const TextStyle(
+              color: _titleColor,
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+
+          const SizedBox(height: 16),
+
+          Text(
+            AppLocalizations.of(context)!.onboardingCameraBody,
+            style: const TextStyle(
+              color: _bodyTextColor,
+              fontSize: 18,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPermissionsSlide() {
+    return Padding(
+      padding: const EdgeInsets.all(32.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // Blue circle icon to match other slides
+          Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: _accentColor.withOpacity(0.1),
+              border: Border.all(color: _accentColor, width: 3),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.security,
+                size: 100,
+                color: _accentColor,
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 40),
+
+          Text(
+            AppLocalizations.of(context)!.onboardingPermissionsTitle,
+            style: const TextStyle(
+              color: _titleColor,
+              fontSize: 32,
+              fontWeight: FontWeight.bold,
+            ),
+            textAlign: TextAlign.center,
+          ),
+
+          const SizedBox(height: 16),
+
+          Text(
+            AppLocalizations.of(context)!.onboardingPermissionsBody,
+            style: const TextStyle(
+              color: _bodyTextColor,
+              fontSize: 18,
+              height: 1.4,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
+      ),
+    );
+  }
+
 }
 
 // Static method to check if onboarding is needed

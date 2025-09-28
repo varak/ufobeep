@@ -316,7 +316,13 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
       debugPrint('📸 CAMERA -> pop result: ${result.path}');
       debugPrint('📸 CAMERA: Result details - isVideo: ${result.isVideo}, hasMetadata: ${result.photoMetadata != null}, hasSensorData: ${result.sensorData != null}');
       
-      if (widget.returnToComposition) {
+      if (widget.returnToComposition && widget.attachToSightingId != null) {
+        // Navigate to beep screen with captured media for attachment
+        context.pushReplacement('/beepscreen', extra: {
+          'initialMediaFiles': [savedFile],
+          'attachToSightingId': widget.attachToSightingId,
+        });
+      } else if (widget.returnToComposition) {
         // Return data to composition screen (legacy behavior)
         context.pop({
           'mediaFile': savedFile,
@@ -467,8 +473,14 @@ class _CameraCaptureScreenState extends State<CameraCaptureScreen> {
 
       // Navigate appropriately based on mode (video)
       if (mounted) {
-        if (widget.returnToComposition) {
-          // Return video data to composition screen
+        if (widget.returnToComposition && widget.attachToSightingId != null) {
+          // Navigate to beep screen with captured video for attachment
+          context.pushReplacement('/beepscreen', extra: {
+            'initialMediaFiles': [savedFile],
+            'attachToSightingId': widget.attachToSightingId,
+          });
+        } else if (widget.returnToComposition) {
+          // Return video data to composition screen (legacy behavior)
           context.pop({
             'mediaFile': savedFile,
             'isVideo': true,
