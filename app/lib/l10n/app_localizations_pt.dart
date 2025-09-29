@@ -218,7 +218,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Reportado por __PLACEHOLDER_0_';
+    return 'Denunciado por $username';
   }
 
   @override
@@ -295,7 +295,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Apontando para __PLACEHOLDER_0_';
+    return 'Apontando para $direction';
   }
 
   @override
@@ -428,7 +428,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$username comentado em __PLACEHOLDER_1_';
+    return '$username comentou em $beepTitle';
   }
 
   @override
@@ -2219,12 +2219,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '${planet}_ visível em $planet° - pode ser confundido com aeronaves';
+    return '${altitude}_ visível em $planet° - pode ser confundido com aeronaves';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$planet baixo no horizonte ($planet°)';
+    return '$altitude baixo no horizonte ($planet°)';
   }
 
   @override
@@ -2462,7 +2462,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'Lua (__PLACEHOLDER_0_)';
+    return 'Lua ($phase)';
   }
 
   @override
@@ -2613,8 +2613,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get heavyRain => 'chuva pesada';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
-    return '${count}__aeronaves detectadas dentro de ${count}km (posição atual)';
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
+    return '${radius}__aeronaves detectadas dentro de ${count}km (posição atual)';
   }
 
   @override

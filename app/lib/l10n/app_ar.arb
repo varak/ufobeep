@@ -6,7 +6,7 @@
   "close": "اقترب",
   "save": "أنقذ",
   "delete": "تحذف",
-  "edit": "Edit",
+  "edit": "حرر",
   "retry": "Retry",
   "yes": "نعم",
   "no": "لا",
@@ -419,7 +419,7 @@
   "shapeUnknown": "مجهول",
   "actionsTitle": "الإجراءات",
   "addPhotosAndVideos": "أضف الصور الفوتوغرافية",
-  "attachMedia": "Attach Media",
+  "attachMedia": "إرفاق الوسائط",
   "addCommentOptional": "يضاف تعليق (اختياري)",
   "describeNewMedia": "صفوا وسائل الإعلام الجديدة.",
   "filesSelected": "ملفات مختارة",
@@ -443,7 +443,7 @@
   },
   "aircraftTrackingTitle": "تعقب الطائرات",
   "weatherConditionsTitle": "أحوال الطقس",
-  "noSatellitePasses": "No visible satellite passes found",
+  "noSatellitePasses": "لم يتم العثور على تصاريح مرئية عبر الأقمار الصناعية",
   "contentAnalysisTitle": "تحليل المحتوى",
   "contentSafe": "المضمون آمن",
   "contentFlagged": "مضمون الاستعراض",
@@ -585,7 +585,7 @@
   "mediaImageNotFound": "لم يعثر على صورة",
   "mediaPlayVideo": "العب فيديو",
   "mediaViewImage": "الصورة البصرية",
-  "mediaCount": "__PLACEHOLDER_0_صور",
+  "mediaCount": "{count} الصور",
   "mediaCountSingle": "صورة واحدة",
   "mediaMoreImages": "أكثر",
   "errorNotFound": "بيب لم يعثر عليه",
@@ -717,7 +717,7 @@
   "dataPrivacy": "خصوصية البيانات",
   "locationPermissionExplanation": "يَحتاجُ UFOBeep ''Always السماح الموقع لمراقبة حركةِكَ وإرسال إنذارات قريبةِ عندما أنت في مواقعِ جديدةِ.",
   "benefitsTitle": "الاستحقاقات",
-  "locationTrackingBenefits": "• الحصول على تنبيه OFO أينما كنت السفر\n• Automatic location updates\n• No manual setup required",
+  "locationTrackingBenefits": "• احصل على تنبيهات الأجسام الطائرة المجهولة أينما سافرت\n• تحديثات الموقع التلقائية\n• لا يلزم الإعداد اليدوي",
   "allowLocationAccess": "السماح بالوصول إلى الموقع",
   "locationPermissionRequired": "يلزم الحصول على إذن بالأماكن لتتبع المعلومات الأساسية",
   "locationTrackingEnabled": "تيسير تتبع مواقع المعلومات الأساسية",
@@ -900,7 +900,7 @@
   "onboardingCompassBody": "البوصلة تُظهر لك الإتجاه الذي كان ينظر إليه الشاهد عندما رأوا مكتب الطوارئ صوب هاتفك وانظر!",
   "onboardingCommunityTitle": "انضموا إلى \"سكاي واتش\"",
   "onboardingCommunityBody": "مشاهدات الحشد، الوصول إلى تقارير (مافون) والتواصل مع الزملاء المشاهدين.",
-  "skip": "Skip",
+  "skip": "تخطي",
   "getStarted": "ابدأ",
   "viewOnboardingAgain": "مشاهدة على متن الطائرة مرة أخرى",
   "customAlertRange": "إنذار عرفي",
@@ -916,8 +916,8 @@
   "celestialMoonThin": "...",
   "celestialMoonHidden": "_BAR_",
   "celestialNoPlanets": "لا توجد كواكب مشرقة مرئية يمكن أن تكون مُخطئة بالنسبة للأجسام الطائرة",
-  "celestialPlanetHigh": "{planet}__ مرتفعات ({planet}°) -",
-  "celestialPlanetMedium": "__PLACEHOLDER_0_ مرئي في __PLACEHOLDER_1_",
+  "celestialPlanetHigh": "{altitude}__ مرتفعات ({planet}°) -",
+  "celestialPlanetMedium": "{planet} مرئي عند {altitude} ° - يمكن أن يخطئ في الطائرات",
   "celestialPlanetLow": "{planet} منخفض على الأفق (_PLACEHOLDER_1_°)",
   "celestialNoStars": "لا نجوم مشرقة بشكل غير عادي مرئية",
   "celestialStarSingle": "_BAR_",
@@ -954,7 +954,7 @@
   "moonPhaseThirdQuarter": "الربع الثالث",
   "moonPhaseWaningCrescent": "Waning Industries",
   "planetBelowHorizon": "_BAR_",
-  "planetHighOverheadProminent": "{planet}__ مرتفعات ({planet}°) -",
+  "planetHighOverheadProminent": "{altitude}__ مرتفعات ({planet}°) -",
   "planetMidSkyProminent": "_",
   "planetMidSky": "_",
   "starVeryBright": "_BAR_ _BAR_",
@@ -963,7 +963,7 @@
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
   "satellitesVisibleMightExplain": "قد يفسر الرؤية",
-  "satellitesVisibleUnlikelyExplain": "__PLACEHOLDER_0_ سواتل مرئية - من غير المحتمل أن تفسر الرؤية",
+  "satellitesVisibleUnlikelyExplain": "{count} الأقمار الصناعية المرئية - من غير المرجح أن تفسر الرؤية",
   "noSatellitesVisible": "لا توجد سواتل مرئية",
   "aircraftDetectedInRadius": "_BAR_ _BAR_",
   "processingAlert": "تجهيز إنذار \"يو إف أو\".",
@@ -982,7 +982,7 @@
   "calculatingCelestialData": "حساب البيانات السماوية...",
   "sunLabel": "الشمس",
   "moonLabel": "القمر",
-  "planetsVisible": "Planets: __PLACEHOLDER_0_",
+  "planetsVisible": "الكواكب: {count} مرئي",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1109,7 +1109,7 @@
   "lightRain": "الأمطار الخفيفة",
   "moderateRain": "الأمطار المتوسطة",
   "heavyRain": "الأمطار الغزيرة",
-  "aircraftDetectedCurrentPositions": "__PLACEHOLDER_0_طائرة مكتشفة في __PLACEHOLDER_1_km (مواقع جارية)",
+  "aircraftDetectedCurrentPositions": "{count} تم اكتشاف الطائرات ضمن {radius} كم (المواقع الحالية)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1122,7 +1122,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "__PLACEHOLDER_0_ سواتل شمسية مرئية - من غير المرجح أن تفسر الرؤية",
+  "dimSatellitesUnlikely": "{count} الأقمار الصناعية الخافتة المرئية - من غير المرجح أن تفسر الرؤية",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {

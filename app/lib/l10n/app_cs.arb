@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Nošení objektu: _ _ PLACETETELER _ 0 _ _ °",
+  "bearingToObject": "Azimut k objektu: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {

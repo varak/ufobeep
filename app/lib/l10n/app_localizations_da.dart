@@ -2143,7 +2143,7 @@ class AppLocalizationsDa extends AppLocalizations {
       'Gennemse observationer, adgang MUFON rapporter, og oprette forbindelse med andre skywatchers.';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'Overspringe';
 
   @override
   String get getStarted => 'Start';
@@ -2604,7 +2604,11 @@ class AppLocalizationsDa extends AppLocalizations {
   String get heavyRain => 'kraftig regn';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '_ _ PLACEREPORT _ 0 _ _ luftfartøj opdaget inden _ _ PLACEREPORT _ 1 _ _ km (nuværende positioner)';
   }
 

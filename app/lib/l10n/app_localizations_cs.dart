@@ -234,7 +234,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Nošení objektu: _ _ PLACETETELER _ 0 _ _ °';
+    return 'Azimut k objektu: $bearing°';
   }
 
   @override
@@ -2601,7 +2601,11 @@ class AppLocalizationsCs extends AppLocalizations {
   String get heavyRain => 'těžký déšť';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '_ _ PLACETETERER _ 0 _ _ zjištěná letadla v _ _ PLACETELER _ 1 _ _ km (aktuální polohy)';
   }
 

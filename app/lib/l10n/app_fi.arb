@@ -1132,7 +1132,7 @@
     }
   },
   "mufonReportingDate": "MUFON Raportointipäivä",
-  "satelliteNameDirection": "{name} - __PLACEHOLDER_1_",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {

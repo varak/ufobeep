@@ -407,7 +407,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Heures calmes: ${start}_$start';
+    return 'Heures calmes: ${end}_$start';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$username commente $username';
+    return '$beepTitle commente $username';
   }
 
   @override
@@ -2237,7 +2237,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '$planet visible à $planet° - peut être confondu avec un aéronef';
+    return '$altitude visible à $planet° - peut être confondu avec un aéronef';
   }
 
   @override
@@ -2371,17 +2371,17 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet à $planet° - en évidence';
+    return '$altitude à $planet° - en évidence';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet à $planet°';
+    return '$altitude à $planet°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star très lumineux à $star°';
+    return '$altitude très lumineux à $star°';
   }
 
   @override
@@ -2391,7 +2391,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star à $star°';
+    return '$altitude à $star°';
   }
 
   @override
@@ -2402,7 +2402,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '__PLACEHOLDER_0_ satellites visibles - pourrait expliquer l\'observation';
+    return '$count satellites visibles - pourrait expliquer l’observation';
   }
 
   @override
@@ -2415,7 +2415,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count avion détecté dans ${count}km';
+    return '$radius avion détecté dans ${count}km';
   }
 
   @override
@@ -2632,8 +2632,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get heavyRain => 'fortes pluies';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
-    return '$count avions détectés dans ${count}km (positions actuelles)';
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
+    return '$radius avions détectés dans ${count}km (positions actuelles)';
   }
 
   @override

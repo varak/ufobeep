@@ -330,7 +330,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String wind(num speed, String unit) {
-    return '风速:_PLACEHOLDER_0__PLACEHOLDER_1_';
+    return '风：$speed $unit';
   }
 
   @override
@@ -2509,7 +2509,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get heavyRain => '暴风雨';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '在_PLACEHOLDER_0_km(现有位置)内探测到的飞机';
   }
 

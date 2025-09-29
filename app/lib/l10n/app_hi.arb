@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "ऑब्जेक्ट करने के लिए असर: __PLACEHOLDER_0_°",
+  "bearingToObject": "वस्तु के लिए असर: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "पायलट मोड",
   "compassStandardDescription": "बुनियादी शीर्षक और नेविगेशन",
   "compassPilotDescription": "ETA और वेक्टर के साथ उन्नत नेविगेशन",
-  "pointingTo": "पॉइंट टू __PLACEHOLDER_0_",
+  "pointingTo": "{direction} की ओर इशारा करते हुए",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -786,7 +786,7 @@
   "signInEmailDescription": "हम आपको साइन इन करने के लिए एक सुरक्षित लिंक भेज देंगे",
   "signInEmailAddress": "ईमेल पता",
   "signInEmailPlaceholder": "email.com",
-  "signInTryAgainIn": "फिर से कोशिश करो __PLACEHOLDER_0_s",
+  "signInTryAgainIn": "{seconds}s में पुन: प्रयास करें",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -845,7 +845,7 @@
   "phoneAuthVerifyYourPhone": "अपने फ़ोन को सत्यापित करें",
   "phoneAuthEnterVerificationCode": "सत्यापन कोड",
   "phoneAuthAddPhoneForSecurity": "खाता वसूली और सुरक्षा के लिए अपना फोन नंबर जोड़ें",
-  "phoneAuthEnterSixDigitCode": "6-digits कोड में प्रवेश करें __PLACEHOLDER_0_",
+  "phoneAuthEnterSixDigitCode": "{phoneNumber} पर भेजा गया 6-अंकीय कोड दर्ज करें",
   "@phoneAuthEnterSixDigitCode": {
     "placeholders": {
       "phoneNumber": {
@@ -911,8 +911,8 @@
   "celestialSunDaylight": "सूर्य ऊपर है - दिन की रोशनी की स्थिति दृष्टि दृश्यता को प्रभावित कर सकती है",
   "celestialSunTwilight": "Twilight की स्थिति - कुछ दृश्यता लेकिन डेलाइट से अंधेरा",
   "celestialSunDark": "अंधेरे की स्थिति - आकाश में वस्तुओं को देखने के लिए इष्टतम",
-  "celestialMoonBright": "Bright __PLACEHOLDER_0_ चंद्रमा दृश्य - अन्य वस्तुओं को रोशनी या अस्पष्ट कर सकता है",
-  "celestialMoonModerate": "__PLACEHOLDER_0_ चंद्रमा दृश्य - मध्यम प्रकाश की स्थिति",
+  "celestialMoonBright": "उज्ज्वल {phase} चंद्रमा दिखाई दे रहा है - अन्य वस्तुओं को रोशन या अस्पष्ट कर सकता है",
+  "celestialMoonModerate": "{phase} चंद्रमा दिखाई देता है - मध्यम प्रकाश की स्थिति",
   "celestialMoonThin": "पतला {phase} चंद्र दृश्य - न्यूनतम प्रकाश",
   "celestialMoonHidden": "{phase} चंद्र क्षितिज से नीचे - कोई चंद्र रोशनी नहीं",
   "celestialNoPlanets": "यूएफओ के लिए कोई उज्ज्वल ग्रह दिखाई नहीं दे सकता है",
@@ -965,7 +965,7 @@
   "satellitesVisibleMightExplain": "{count}0__ उपग्रह दृश्यमान - दृष्टि की व्याख्या कर सकते हैं",
   "satellitesVisibleUnlikelyExplain": "{count}0__ उपग्रह दृश्य - देखने की व्याख्या करने की संभावना नहीं",
   "noSatellitesVisible": "कोई उपग्रह दिखाई नहीं देता",
-  "aircraftDetectedInRadius": "__PLACEHOLDER_0_0__ विमान का पता __PLACEHOLDER_1_Km के भीतर हुआ।",
+  "aircraftDetectedInRadius": "{count} विमान {radius}किमी के भीतर पाया गया",
   "processingAlert": "यूएफओ चेतावनी प्रसंस्करण ...",
   "analyzingEnvironment": "पर्यावरणीय परिस्थितियों का विश्लेषण",
   "weatherAnalysis": "मौसम विश्लेषण",
@@ -982,7 +982,7 @@
   "calculatingCelestialData": "खगोलीय डेटा की गणना ...",
   "sunLabel": "सूर्य",
   "moonLabel": "चाँद",
-  "planetsVisible": "ग्रह: __PLACEHOLDER_0_ दृश्यमान",
+  "planetsVisible": "ग्रह: {count} दृश्यमान",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1109,7 +1109,7 @@
   "lightRain": "हल्की बारिश",
   "moderateRain": "मध्यम बारिश",
   "heavyRain": "भारी बारिश",
-  "aircraftDetectedCurrentPositions": "{count} विमान का पता __PLACEHOLDER_1_km (current position) के भीतर हुआ।",
+  "aircraftDetectedCurrentPositions": "{count} {radius}किमी (वर्तमान स्थिति) के भीतर पाया गया विमान",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {

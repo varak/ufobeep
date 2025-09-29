@@ -76,11 +76,11 @@
       }
     }
   },
-  "uploadingMedia": "Media uploaden..",
+  "uploadingMedia": "Media uploaden...",
   "includeLocation": "Plaats",
   "includeTimestamp": "Tijdstempel invoegen",
   "beepFailed": "Kon Beep niet sturen.",
-  "mediaProcessing": "Media verwerken..",
+  "mediaProcessing": "Verwerking van media...",
   "cameraPermissionTitle": "Cameratoegang nodig",
   "cameraPermissionBody": "Grant camera toegang tot UFO foto's en video's vastleggen.",
   "locationPermissionTitle": "Locatie Toestemming vereist",
@@ -419,7 +419,7 @@
   "shapeUnknown": "onbekend",
   "actionsTitle": "Acties",
   "addPhotosAndVideos": "Foto's en video's toevoegen",
-  "attachMedia": "Media toevoegen",
+  "attachMedia": "Media bijvoegen",
   "addCommentOptional": "Een opmerking toevoegen (facultatief)",
   "describeNewMedia": "Beschrijf de nieuwe media...",
   "filesSelected": "geselecteerde bestanden",
@@ -786,7 +786,7 @@
   "signInEmailDescription": "We sturen je een beveiligde link om je aan te melden",
   "signInEmailAddress": "E-mailadres",
   "signInEmailPlaceholder": "your@email.com",
-  "signInTryAgainIn": "Probeer opnieuw in __PLACEHOLDER_0_s",
+  "signInTryAgainIn": "Probeer het opnieuw in {seconds}s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {

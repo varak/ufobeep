@@ -2598,7 +2598,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get heavyRain => 'rankkasade';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '__PASSIHOLDER_0__-ilma-alus havaittu __PASSIHOLDER_1_km (nykyiset paikat)';
   }
 
@@ -2612,6 +2616,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return '$name - __PLACEHOLDER_1_';
+    return '$name - $direction';
   }
 }

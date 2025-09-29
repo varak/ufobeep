@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "风速:_PLACEHOLDER_0__PLACEHOLDER_1_",
+  "wind": "风：{speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {

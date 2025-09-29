@@ -176,7 +176,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get uploadingMedia => 'Media uploaden..';
+  String get uploadingMedia => 'Media uploaden...';
 
   @override
   String get includeLocation => 'Plaats';
@@ -188,7 +188,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get beepFailed => 'Kon Beep niet sturen.';
 
   @override
-  String get mediaProcessing => 'Media verwerken..';
+  String get mediaProcessing => 'Verwerking van media...';
 
   @override
   String get cameraPermissionTitle => 'Cameratoegang nodig';
@@ -912,7 +912,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get addPhotosAndVideos => 'Foto\'s en video\'s toevoegen';
 
   @override
-  String get attachMedia => 'Media toevoegen';
+  String get attachMedia => 'Media bijvoegen';
 
   @override
   String get addCommentOptional => 'Een opmerking toevoegen (facultatief)';
@@ -1819,7 +1819,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Probeer opnieuw in __PLACEHOLDER_0_s';
+    return 'Probeer het opnieuw in ${seconds}s';
   }
 
   @override
@@ -2607,7 +2607,11 @@ class AppLocalizationsNl extends AppLocalizations {
   String get heavyRain => 'zware regenval';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km (huidige posities)';
   }
 

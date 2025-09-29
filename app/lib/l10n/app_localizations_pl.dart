@@ -2611,7 +2611,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get heavyRain => 'intensywny deszcz';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '_ _ PLACESORM _ 0 _ _ statek powietrzny wykryty w _ _ PLACESORM _ 1 _ _ km (aktualne pozycje)';
   }
 
