@@ -18,18 +18,18 @@ class AlertDetailsSection extends StatefulWidget {
     super.key,
     required this.alert,
     this.showDescription = true,
-    this.widget.showLocation = true,
-    this.widget.units = 'metric',
-    this.widget.use24HourTime = true,
-    this.widget.onShareTap,
+    this.showLocation = true,
+    this.units = 'metric',
+    this.use24HourTime = true,
+    this.onShareTap,
   });
 
   final Alert alert;
   final bool showDescription;
-  final bool widget.showLocation;
-  final String widget.units;
-  final bool widget.use24HourTime;
-  final VoidCallback? widget.onShareTap;
+  final bool showLocation;
+  final String units;
+  final bool use24HourTime;
+  final VoidCallback? onShareTap;
 
   @override
   _AlertDetailsSectionState createState() => _AlertDetailsSectionState();
@@ -99,7 +99,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
             if (widget.alert.enrichment?['report_date'] != null)
               _buildDetailRow(
                 Icons.storage,
-                _isMufonAlert(widget.alert) ? AppLocalizations.of(context)!.mufonReportingDate : AppLocalizations.of(context)!.reportedTime,
+                _isMufonAlert(alert) ? AppLocalizations.of(context)!.mufonReportingDate : AppLocalizations.of(context)!.reportedTime,
                 _parseAndFormatDateISO(widget.alert.enrichment!['report_date']) ?? widget.alert.enrichment!['report_date'],
               ),
 
@@ -111,7 +111,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
             ),
 
             // Always show location for MUFON reports
-            if (widget.showLocation) ...[
+            if (showLocation) ...[
               _buildDetailRow(
                 Icons.location_on,
                 AppLocalizations.of(context)!.locationLabel,
@@ -137,7 +137,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
             _buildCompactDetailRow(
               '🕐',
               AppLocalizations.of(context)!.timeLabel,
-              _formatFullDateTime(widget.alert.createdAt, use24Hour: widget.use24HourTime),
+              _formatFullDateTime(widget.alert.createdAt, use24Hour: use24HourTime),
               secondaryInfo: _formatDateTime(context, widget.alert.createdAt),
             ),
 
@@ -154,7 +154,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
               _buildWitnessRow(context),
             
             // Location info (if enabled) - only for non-MUFON reports
-            if (widget.showLocation) ...[
+            if (showLocation) ...[
               _buildCompactDetailRow(
                 '📍',
                 AppLocalizations.of(context)!.locationLabel,
@@ -167,7 +167,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
             ],
 
             // Share URL section for non-MUFON reports (add spacing if location was shown)
-            if (widget.showLocation) const SizedBox(height: 12),
+            if (showLocation) const SizedBox(height: 12),
             _buildShareUrlRow(context, alert),
 
           ],
@@ -197,7 +197,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
         return _buildCompactDetailRow(
           '📏',
           AppLocalizations.of(context)!.distanceLabel,
-          UnitConversion.formatDistance(distance * 1000, widget.units),
+          UnitConversion.formatDistance(distance * 1000, units),
         );
       },
     );
@@ -648,7 +648,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
                       ),
                     ),
                     IconButton(
-                      onPressed: widget.onShareTap ?? () {
+                      onPressed: onShareTap ?? () {
                         Clipboard.setData(ClipboardData(text: shareLink));
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
