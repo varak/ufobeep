@@ -1032,10 +1032,21 @@ async def get_analysis_status(sighting_id: str):
             "results": []
         }
 
-# MCP Server - Clean import
-try:
-    from .mcp.router import mcp_router
-    app.include_router(mcp_router)
-    logger.info("✅ MCP server endpoints loaded")
-except Exception as e:
-    logger.error(f"❌ Failed to load MCP endpoints: {e}")
+# MCP Server Endpoints - Direct implementation (keeping it simple)
+@app.get("/api/mcp/stats")
+async def mcp_stats():
+    """Basic UFO database statistics for AI systems"""
+    try:
+        async with database_service.pool.acquire() as conn:
+            total = await conn.fetchval("SELECT COUNT(*) FROM sightings")
+            with_media = await conn.fetchval("SELECT COUNT(*) FROM sightings WHERE array_length(media_files, 1) > 0")
+
+            return {
+                "tool": "get_basic_stats",
+                "total_sightings": total,
+                "sightings_with_media": with_media,
+                "last_updated": "real-time"
+            }
+    except Exception as e:
+        logger.error(f"MCP stats error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
