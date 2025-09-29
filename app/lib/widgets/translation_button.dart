@@ -60,7 +60,7 @@ class _TranslationButtonState extends State<TranslationButton> {
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : Icon(
-                      widget.isTranslated ? Icons.translate_off : Icons.translate,
+                      widget.isTranslated ? Icons.undo : Icons.translate,
                       size: 18,
                     ),
               label: Text(

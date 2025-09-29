@@ -2671,6 +2671,22 @@ class AppLocalizationsPt extends AppLocalizations {
       'A recolher as informações do dispositivo...';
 
   @override
+  String get translating => 'Translating...';
+
+  @override
+  String get showOriginal => 'Show Original';
+
+  @override
+  String translateTo(String language) {
+    return 'Translate to $language';
+  }
+
+  @override
+  String translatedFrom(String language) {
+    return 'Translated from $language';
+  }
+
+  @override
   String get weatherClear => 'Limpar';
 
   @override

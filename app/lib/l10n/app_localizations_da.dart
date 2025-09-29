@@ -2660,6 +2660,22 @@ class AppLocalizationsDa extends AppLocalizations {
   String get gatheringDeviceInfo => 'Indsamling af enhedsinformation...';
 
   @override
+  String get translating => 'Translating...';
+
+  @override
+  String get showOriginal => 'Show Original';
+
+  @override
+  String translateTo(String language) {
+    return 'Translate to $language';
+  }
+
+  @override
+  String translatedFrom(String language) {
+    return 'Translated from $language';
+  }
+
+  @override
   String get weatherClear => 'Ryd';
 
   @override

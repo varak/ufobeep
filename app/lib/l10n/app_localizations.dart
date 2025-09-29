@@ -4920,6 +4920,30 @@ abstract class AppLocalizations {
   /// **'Gathering device info...'**
   String get gatheringDeviceInfo;
 
+  /// No description provided for @translating.
+  ///
+  /// In en, this message translates to:
+  /// **'Translating...'**
+  String get translating;
+
+  /// No description provided for @showOriginal.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Original'**
+  String get showOriginal;
+
+  /// No description provided for @translateTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Translate to {language}'**
+  String translateTo(String language);
+
+  /// No description provided for @translatedFrom.
+  ///
+  /// In en, this message translates to:
+  /// **'Translated from {language}'**
+  String translatedFrom(String language);
+
   /// No description provided for @weatherClear.
   ///
   /// In en, this message translates to:
