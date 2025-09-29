@@ -2569,6 +2569,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get chooseYourUsername => 'Wybierz nazwę użytkownika';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Czysto';
 
   @override

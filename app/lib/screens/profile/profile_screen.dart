@@ -231,6 +231,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
             ),
+            maxLines: 2, // Allow wrapping for long translations
+            overflow: TextOverflow.visible,
           ),
         ),
         const SizedBox(height: 16),
@@ -243,7 +245,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               _buildSimpleSettingItem(
                 icon: Icons.language_outlined,
                 title: AppLocalizations.of(context)!.language,
-                value: preferences.language.toUpperCase(),
+                value: _getLanguageDisplayName(preferences.language),
                 onTap: () => context.push('/profile/language'),
               ),
               
@@ -288,6 +290,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
             ),
+            maxLines: 2, // Allow wrapping for long translations
+            overflow: TextOverflow.visible,
           ),
         ),
         const SizedBox(height: 16),
@@ -1041,9 +1045,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: AppColors.textSecondary),
+            child: Text(
+              AppLocalizations.of(context)!.cancel,
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
           ),
         ],
@@ -1061,6 +1065,34 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     ref.read(userPreferencesProvider.notifier).updatePreferences(
       preferences.copyWith(quietHoursEnd: hour),
     );
+  }
+
+  String _getLanguageDisplayName(String languageCode) {
+    switch (languageCode.toLowerCase()) {
+      case 'en': return 'English';
+      case 'de': return 'Deutsch';
+      case 'es': return 'Español';
+      case 'fr': return 'Français';
+      case 'it': return 'Italiano';
+      case 'pt': return 'Português';
+      case 'ru': return 'Русский';
+      case 'ja': return '日本語';
+      case 'zh': return '中文';
+      case 'ar': return 'العربية';
+      case 'nl': return 'Nederlands';
+      case 'pl': return 'Polski';
+      case 'cs': return 'Čeština';
+      case 'tr': return 'Türkçe';
+      case 'ko': return '한국어';
+      case 'hi': return 'हिन्दी';
+      case 'sv': return 'Svenska';
+      case 'da': return 'Dansk';
+      case 'no': return 'Norsk';
+      case 'fi': return 'Suomi';
+      case 'el': return 'Ελληνικά';
+      case 'he': return 'עברית';
+      default: return languageCode.toUpperCase();
+    }
   }
 
   void _toggleMediaOnlyAlerts(bool enabled) {
@@ -1182,9 +1214,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text(
-              'Cancel',
-              style: TextStyle(color: AppColors.textSecondary),
+            child: Text(
+              AppLocalizations.of(context)!.cancel,
+              style: const TextStyle(color: AppColors.textSecondary),
             ),
           ),
           TextButton(
@@ -1206,9 +1238,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                 debugPrint('Failed to get more names: $e');
               }
             },
-            child: const Text(
-              'More Names',
-              style: TextStyle(color: AppColors.brandPrimary),
+            child: Text(
+              AppLocalizations.of(context)!.moreNames,
+              style: const TextStyle(color: AppColors.brandPrimary),
             ),
           ),
         ],

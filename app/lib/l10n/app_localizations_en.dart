@@ -439,10 +439,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get units => 'Units';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => 'Imperial';
 
   @override
-  String get unitsMetric => 'Metric (km, km/h)';
+  String get unitsMetric => 'Metric';
 
   @override
   String get privacyPolicy => 'Privacy Policy';
@@ -667,10 +667,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get timeFormat => 'Time Format';
 
   @override
-  String get timeFormat24Hour => '24-hour (14:30)';
+  String get timeFormat24Hour => '24-hour';
 
   @override
-  String get timeFormat12Hour => '12-hour (2:30 PM)';
+  String get timeFormat12Hour => '12-hour';
 
   @override
   String get timeFormatDesc => 'Display time in 24-hour or 12-hour format';
@@ -2550,6 +2550,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get moreNames => 'More Names';
 
   @override
   String get weatherClear => 'Clear';

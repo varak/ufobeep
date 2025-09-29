@@ -2554,6 +2554,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get chooseYourUsername => 'Välj ditt användarnamn';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Clear';
 
   @override

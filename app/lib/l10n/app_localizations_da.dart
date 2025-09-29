@@ -2562,6 +2562,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get chooseYourUsername => 'Vælg dit brugernavn';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Ryd';
 
   @override

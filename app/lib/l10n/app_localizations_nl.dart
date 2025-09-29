@@ -2565,6 +2565,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get chooseYourUsername => 'Kies uw gebruikersnaam';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Wissen';
 
   @override

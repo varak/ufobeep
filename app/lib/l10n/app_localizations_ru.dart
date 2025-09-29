@@ -2585,6 +2585,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get chooseYourUsername => 'Выберите имя пользователя';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Чисто';
 
   @override

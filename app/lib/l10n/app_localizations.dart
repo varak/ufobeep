@@ -933,13 +933,13 @@ abstract class AppLocalizations {
   /// No description provided for @unitsImperial.
   ///
   /// In en, this message translates to:
-  /// **'Imperial (mi, mph)'**
+  /// **'Imperial'**
   String get unitsImperial;
 
   /// No description provided for @unitsMetric.
   ///
   /// In en, this message translates to:
-  /// **'Metric (km, km/h)'**
+  /// **'Metric'**
   String get unitsMetric;
 
   /// No description provided for @privacyPolicy.
@@ -1353,13 +1353,13 @@ abstract class AppLocalizations {
   /// No description provided for @timeFormat24Hour.
   ///
   /// In en, this message translates to:
-  /// **'24-hour (14:30)'**
+  /// **'24-hour'**
   String get timeFormat24Hour;
 
   /// No description provided for @timeFormat12Hour.
   ///
   /// In en, this message translates to:
-  /// **'12-hour (2:30 PM)'**
+  /// **'12-hour'**
   String get timeFormat12Hour;
 
   /// No description provided for @timeFormatDesc.
@@ -4745,6 +4745,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose Your Username'**
   String get chooseYourUsername;
+
+  /// No description provided for @moreNames.
+  ///
+  /// In en, this message translates to:
+  /// **'More Names'**
+  String get moreNames;
 
   /// No description provided for @weatherClear.
   ///

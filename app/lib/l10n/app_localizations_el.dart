@@ -2591,6 +2591,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get chooseYourUsername => 'Επιλέξτε το όνομα χρήστη σας';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Καθαρισμός';
 
   @override

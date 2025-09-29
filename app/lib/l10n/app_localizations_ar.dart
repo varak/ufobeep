@@ -2534,6 +2534,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chooseYourUsername => 'اختر اسم مستعملك';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'آمن';
 
   @override

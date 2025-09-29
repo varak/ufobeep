@@ -2521,6 +2521,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get chooseYourUsername => 'בחר את שם המשתמש שלך';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Clear';
 
   @override

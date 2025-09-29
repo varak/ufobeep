@@ -2556,6 +2556,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get chooseYourUsername => 'Valitse käyttäjätunnus';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Tyhjennä';
 
   @override

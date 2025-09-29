@@ -2559,6 +2559,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get chooseYourUsername => 'Vyberte si uživatelské jméno';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Vyčistit';
 
   @override

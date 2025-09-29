@@ -2479,6 +2479,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chooseYourUsername => 'ユーザー名を選択する';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'クリア';
 
   @override

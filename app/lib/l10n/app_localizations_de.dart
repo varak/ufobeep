@@ -2572,6 +2572,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get chooseYourUsername => 'Wählen Sie Ihren Benutzernamen';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => 'Klar';
 
   @override

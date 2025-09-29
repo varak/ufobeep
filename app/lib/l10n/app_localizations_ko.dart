@@ -2481,6 +2481,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chooseYourUsername => '사용자 이름';
 
   @override
+  String get moreNames => 'More Names';
+
+  @override
   String get weatherClear => '이름 *';
 
   @override
