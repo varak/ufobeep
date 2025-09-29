@@ -9,9 +9,12 @@ from .endpoints import search_sightings, recent_alerts, sighting_details, basic_
 # Create MCP router
 mcp_router = APIRouter(prefix="/api/mcp", tags=["mcp"])
 
-# Import database service
-from services.database_service import DatabaseService
-database_service = DatabaseService()
+# Import database service from parent
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+from app.services.database_service import database_service
 
 @mcp_router.get("/search-sightings")
 async def mcp_search_sightings_endpoint(
