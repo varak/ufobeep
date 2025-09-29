@@ -1034,7 +1034,7 @@ async def get_analysis_status(sighting_id: str):
 
 # MCP Server - Clean import
 try:
-    from mcp.router import mcp_router
+    from .mcp.router import mcp_router
     app.include_router(mcp_router)
     logger.info("✅ MCP server endpoints loaded")
 except Exception as e:
