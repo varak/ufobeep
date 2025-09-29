@@ -1370,8 +1370,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     final userPrefs = ref.read(userPreferencesProvider);
     final userLanguage = userPrefs?.language ?? 'en';
 
-    // Detect content language (simple heuristic)
-    final contentLanguage = TranslationService().detectContentLanguage(alert.description ?? '');
+    // Use database original_language for smart translation decisions
+    final contentLanguage = alert.originalLanguage ?? 'unknown';
 
     return GlassCard(
       padding: const EdgeInsets.all(16),
