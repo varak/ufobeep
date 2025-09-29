@@ -66,6 +66,12 @@ const nextConfig = {
         destination: '/api/debug/:path*',
       },
 
+      // Translation endpoints - proxy to LibreTranslate
+      {
+        source: '/api/translate',
+        destination: 'http://localhost:5000/translate',
+      },
+
       // All other API routes - proxy to backend
       {
         source: '/api/:path*',
