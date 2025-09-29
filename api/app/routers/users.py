@@ -1805,8 +1805,8 @@ async def export_user_data(current_user = Depends(get_current_user_from_jwt)):
 
         # Get user's sightings
         sightings = await conn.fetch("""
-            SELECT id, title, description, latitude, longitude, created_at,
-                   category, witness_count, status, source, occurred_at
+            SELECT id, title, description, created_at, category, witness_count,
+                   status, source, occurred_at, sensor_data
             FROM sightings WHERE reporter_id = $1
             ORDER BY created_at DESC
         """, user_id)
@@ -1853,8 +1853,7 @@ async def export_user_data(current_user = Depends(get_current_user_from_jwt)):
                     'id': str(s['id']),
                     'title': s['title'],
                     'description': s['description'],
-                    'latitude': float(s['latitude']) if s['latitude'] else None,
-                    'longitude': float(s['longitude']) if s['longitude'] else None,
+                    'location': s['sensor_data'].get('location', {}) if s['sensor_data'] else {},
                     'created_at': s['created_at'].isoformat(),
                     'category': s['category'],
                     'witness_count': s['witness_count'],
