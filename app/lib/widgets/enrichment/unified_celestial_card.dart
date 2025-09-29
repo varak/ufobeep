@@ -110,7 +110,7 @@ class UnifiedCelestialCard extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Calculating celestial data...',
+                    AppLocalizations.of(context)!.calculatingCelestialData,
                     style: TextStyle(
                       color: AppColors.textSecondary,
                       fontSize: 14,
@@ -160,7 +160,7 @@ class UnifiedCelestialCard extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Sun: $description',
+              AppLocalizations.of(context)!.sunWithDescription(description),
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,
@@ -185,7 +185,7 @@ class UnifiedCelestialCard extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Moon: $description',
+              AppLocalizations.of(context)!.moonWithDescription(description),
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,
@@ -211,7 +211,7 @@ class UnifiedCelestialCard extends StatelessWidget {
               Text('🪐', style: TextStyle(fontSize: 16)),
               const SizedBox(width: 8),
               Text(
-                'Planets: ${planets.length} visible',
+                AppLocalizations.of(context)!.planetsVisible(planets.length),
                 style: TextStyle(
                   color: AppColors.textPrimary,
                   fontSize: 14,
@@ -240,7 +240,7 @@ class UnifiedCelestialCard extends StatelessWidget {
           const SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Stars: $starNames',
+              '${AppLocalizations.of(context)!.starsLabel}: $starNames',
               style: TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 14,

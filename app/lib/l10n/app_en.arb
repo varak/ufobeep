@@ -978,5 +978,54 @@
   "processorLocation": "location details",
   "processorAircraft": "nearby aircraft",
   "processorSatellites": "satellite positions",
-  "processorCelestial": "celestial objects"
+  "processorCelestial": "celestial objects",
+  "calculatingCelestialData": "Calculating celestial data...",
+  "sunLabel": "Sun",
+  "moonLabel": "Moon",
+  "planetsVisible": "Planets: {count} visible",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Stars",
+  "noSatellitesVisibleAtTime": "No satellites were visible at the exact time of your sighting",
+  "satellitesVisibleOverheadAtTime": "Satellites visible overhead at sighting time & location",
+  "belowHorizon": "below horizon",
+  "analysisFailedGeneric": "Analysis Failed",
+  "unknownWeather": "Unknown",
+  "noWeatherDescription": "No description",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satellites ({count} visible now)",
+  "noSatellitesVisibleAtTime": "No satellites were visible at the exact time of your sighting",
+  "sunWithDescription": "Sun: {description}",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Moon: {description}",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  }
 }

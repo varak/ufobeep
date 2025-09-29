@@ -90,11 +90,12 @@ class AstronomicalTranslationService {
     bool couldExplainSighting,
     AppLocalizations l10n
   ) {
-    // Use simple fallback until new ARB keys are translated
     if (visibleCount == 0) {
-      return 'No satellites visible at sighting time';
+      return l10n.noSatellitesVisibleAtTime;
+    } else if (couldExplainSighting) {
+      return l10n.satellitesVisibleMightExplain(visibleCount);
     } else {
-      return '$visibleCount satellites visible';
+      return l10n.satellitesVisibleUnlikelyExplain(visibleCount);
     }
   }
 
@@ -105,10 +106,10 @@ class AstronomicalTranslationService {
     AppLocalizations l10n
   ) {
     if (aircraftCount == 0) {
-      return l10n.noAircraftDetected ?? 'No aircraft detected';
+      return l10n.noAircraftDetected;
     } else {
       final radius = radiusKm?.toStringAsFixed(0) ?? '50';
-      return '$aircraftCount aircraft detected within ${radius}km';
+      return l10n.aircraftDetectedInRadius(aircraftCount, radius);
     }
   }
 
@@ -122,9 +123,9 @@ class AstronomicalTranslationService {
     final translatedPhase = translateMoonPhase(phaseName, l10n);
 
     if (altitude < 0) {
-      return '$translatedPhase below horizon';
+      return l10n.celestialMoonHidden(translatedPhase);
     } else {
-      return '$translatedPhase visible - ${illumination.toStringAsFixed(1)}% illuminated';
+      return l10n.celestialMoonModerate(translatedPhase);
     }
   }
 

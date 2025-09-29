@@ -175,7 +175,7 @@ class EnrichmentSection extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             const Text(
-              'Analysis Failed',
+              AppLocalizations.of(context)!.analysisFailedGeneric,
               style: TextStyle(
                 color: AppColors.semanticError,
                 fontSize: 16,
@@ -298,7 +298,7 @@ class WeatherCardFromJson extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        weatherData['weather_main']?.toString() ?? 'Unknown',
+                        weatherData['weather_main']?.toString() ?? AppLocalizations.of(context)!.unknownWeather,
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 18,
@@ -306,7 +306,7 @@ class WeatherCardFromJson extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        weatherData['weather_description']?.toString() ?? 'No description',
+                        weatherData['weather_description']?.toString() ?? AppLocalizations.of(context)!.noWeatherDescription,
                         style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 14,
@@ -556,14 +556,14 @@ class _CelestialObject extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Alt: $altitude',
+                '${AppLocalizations.of(context)!.altitudeAbbrev}: $altitude',
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 10,
                 ),
               ),
               Text(
-                'Az: $azimuth',
+                '${AppLocalizations.of(context)!.azimuthAbbrev}: $azimuth',
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 10,
@@ -632,7 +632,7 @@ class SatelliteCardFromJson extends StatelessWidget {
               ...satellitesOverhead.map((sat) => _buildOverheadSatellite(sat)),
             ] else ...[
               Text(
-                'No satellites were visible at the exact time of your sighting.',
+                AppLocalizations.of(context)!.noSatellitesVisibleAtTime,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
@@ -1506,7 +1506,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
             ),
             const SizedBox(height: 12),
             Text(
-              explanation.isNotEmpty ? explanation : 'No satellites visible at sighting time',
+              explanation.isNotEmpty ? explanation : AppLocalizations.of(context)!.noSatellitesVisibleAtTime,
               style: TextStyle(
                 color: couldExplain ? AppColors.warning : AppColors.textSecondary,
                 fontSize: 15,
