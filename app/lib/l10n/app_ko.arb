@@ -978,5 +978,129 @@
   "processorLocation": "문의사항",
   "processorAircraft": "인근 항공기",
   "processorSatellites": "위성 위치",
-  "processorCelestial": "연락처"
+  "processorCelestial": "연락처",
+  "calculatingCelestialData": "Celestial 데이터를 계산 ...",
+  "sunLabel": "(주)",
+  "moonLabel": "이름 *",
+  "planetsVisible": "플래닛: {count}",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "이름 *",
+  "planetsLabel": "플래닛",
+  "moonWithPhase": "달 ({phase})",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "위성이 당신의 광경의 정확한 시간에 볼 수 없습니다",
+  "satellitesVisibleOverheadAtTime": "광경 시간 및 위치에 눈에 보이는 오버 헤드",
+  "belowHorizon": "수평선의 밑에",
+  "analysisFailedGeneric": "분석 실패",
+  "unknownWeather": "이름 *",
+  "noWeatherDescription": "설명 없음",
+  "altitudeAbbrev": "사이트맵",
+  "azimuthAbbrev": "아사쿠사",
+  "satellitesVisibleNow": "위성 ({count} 지금 볼 수)",
+  "sunWithDescription": "태양: {description}",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "달: {description}",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "알 수없는 행성",
+  "unknownStar": "알 수없는 별",
+  "unknownSatellite": "알 수없는 위성",
+  "unknownDirection": "알 수없는 방향",
+  "brightStars": "밝은 별",
+  "satellites": "위성 TV",
+  "seeAllSatellites": "모든 {count} 위성보기",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "최대 고도: ₢ 킹",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "경도: ₢ 킹",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "이름 *",
+  "altitudeValue": "{degrees}° 고도",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "{degrees}° azimuth에 대하여",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "유효한 celestial 자료 없음.",
+  "satelliteNameDirection": "{name} - {direction}",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

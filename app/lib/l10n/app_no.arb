@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "unknown",
+  "unknown": "Unknown",
   "report": "report",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "Recent UFO Beeps",
@@ -978,5 +978,129 @@
   "processorLocation": "location details",
   "processorAircraft": "nearby aircraft",
   "processorSatellites": "satellite positions",
-  "processorCelestial": "celestial objects"
+  "processorCelestial": "celestial objects",
+  "calculatingCelestialData": "Calculating celestial data...",
+  "sunLabel": "Sun",
+  "moonLabel": "Moon",
+  "planetsVisible": "Planets: {count} visible",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Stars",
+  "planetsLabel": "Planets",
+  "moonWithPhase": "Moon ({phase})",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "No satellites were visible at the exact time of your sighting",
+  "satellitesVisibleOverheadAtTime": "Satellites visible overhead at sighting time & location",
+  "belowHorizon": "below horizon",
+  "analysisFailedGeneric": "Analysis Failed",
+  "unknownWeather": "Unknown",
+  "noWeatherDescription": "No description",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satellites ({count} visible now)",
+  "sunWithDescription": "Sun: {description}",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Moon: {description}",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Unknown Planet",
+  "unknownStar": "Unknown Star",
+  "unknownSatellite": "Unknown Satellite",
+  "unknownDirection": "unknown direction",
+  "brightStars": "Bright Stars",
+  "satellites": "Satellites",
+  "seeAllSatellites": "See all {count} satellites",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Max elevation: {degrees}°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Magnitude: {value}",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Unknown",
+  "altitudeValue": "{degrees}° altitude",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "{degrees}° azimuth",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "No celestial data available.",
+  "satelliteNameDirection": "{name} - {direction}",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

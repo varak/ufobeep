@@ -126,6 +126,12 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
     }
   }
 
+  const formatDateOnly = (dateString: string) => {
+    // Always return just the date, never include time (for MUFON import dates)
+    const date = new Date(dateString)
+    return date.toISOString().split('T')[0]
+  }
+
   const getCleanDescription = () => {
     if (!alert.description) return ''
     
@@ -233,7 +239,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             {alert.enrichment_data?.sighting_datetime && (
               <div className="mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-text-tertiary text-sm font-medium">{t('eventTime')}</span>
+                  <span className="text-text-tertiary text-sm font-medium">{t('eventTime')}:</span>
                   <span className="text-text-primary text-sm">{parseMufonDate(alert.enrichment_data.sighting_datetime)}</span>
                 </div>
               </div>
@@ -242,7 +248,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             {alert.enrichment_data?.report_date && (
               <div className="mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}</span>
+                  <span className="text-text-tertiary text-sm font-medium">{t('reportedTime')}:</span>
                   <span className="text-text-primary text-sm">{alert.enrichment_data.report_date}</span>
                 </div>
               </div>
@@ -251,7 +257,7 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             <div>
               <div className="flex items-center gap-2">
                 <span className="text-text-tertiary text-sm font-medium">{t('addedToUfobeep')}:</span>
-                <span className="text-text-primary text-sm">{formatDateISO(alert.created_at)}</span>
+                <span className="text-text-primary text-sm">{formatDateOnly(alert.created_at)}</span>
               </div>
             </div>
           </div>

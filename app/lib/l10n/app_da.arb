@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "ukendt",
+  "unknown": "Ukendt",
   "report": "rapport",
   "mufon": "mofon",
   "recentUfoBeepsTitle": "Nylig UFO Bipper",
@@ -978,5 +978,129 @@
   "processorLocation": "lokaliseringsoplysninger",
   "processorAircraft": "flyvemaskiner i nærheden",
   "processorSatellites": "satellitposition",
-  "processorCelestial": "himmelobjekter"
+  "processorCelestial": "himmelobjekter",
+  "calculatingCelestialData": "Beregning af himmelsk data...",
+  "sunLabel": "Sol",
+  "moonLabel": "Måne",
+  "planetsVisible": "Planeter: _ _ PLACEREPORT _ 0 _ _ visible",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Stjerner",
+  "planetsLabel": "Planeter",
+  "moonWithPhase": "Måne (_ _ PLACEREPER _ 0 _ _)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Ingen satellitter var synlige på det nøjagtige tidspunkt for din observation",
+  "satellitesVisibleOverheadAtTime": "Satellitter synlige overhead ved observation tid & placering",
+  "belowHorizon": "under horisonten",
+  "analysisFailedGeneric": "Analyse mislykkedes",
+  "unknownWeather": "Ukendt",
+  "noWeatherDescription": "Ingen beskrivelse",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satellitter (_ _ PLACEREPER _ 0 _ _ synlige nu)",
+  "sunWithDescription": "Sun: _ _ PLACEREPER _ 0 _ _",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Måne: _ _ PLACEREPORT _ 0 _ _",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Ukendt planet",
+  "unknownStar": "Ukendt stjerne",
+  "unknownSatellite": "Ukendt satellit",
+  "unknownDirection": "ukendt retning",
+  "brightStars": "Lyse stjerner",
+  "satellites": "Satellitter",
+  "seeAllSatellites": "Se alle _ _ PLACEREPORT _ 0 _ _ satellitter",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Maks. højde: _ _ PLACEREPORT _ 0 _ _ °",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Størrelse: _ _ PLACEREPORT _ 0 _ _",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Ukendt",
+  "altitudeValue": "_ _ PLACEREPORT _ 0 _ _ _ ° højde",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "_ _ PLACEREPORT _ 0 _ _ _ ° azimuth",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Der foreligger ingen himmelsk data.",
+  "satelliteNameDirection": "_ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

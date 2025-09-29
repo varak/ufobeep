@@ -978,5 +978,129 @@
   "processorLocation": "स्थान विवरण",
   "processorAircraft": "निकट विमान",
   "processorSatellites": "उपग्रह स्थिति",
-  "processorCelestial": "आकाशीय वस्तुएं"
+  "processorCelestial": "आकाशीय वस्तुएं",
+  "calculatingCelestialData": "खगोलीय डेटा की गणना ...",
+  "sunLabel": "सूर्य",
+  "moonLabel": "चाँद",
+  "planetsVisible": "ग्रह: __PLACEHOLDER_0_ दृश्यमान",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "स्टार",
+  "planetsLabel": "ग्रह",
+  "moonWithPhase": "चंद्र (_PLACEHOLDER_0___)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "आपके दर्शन के सटीक समय पर कोई उपग्रह दिखाई नहीं देता",
+  "satellitesVisibleOverheadAtTime": "उपग्रह दृष्टि समय और स्थान पर दिखाई देते हैं",
+  "belowHorizon": "क्षितिज के नीचे",
+  "analysisFailedGeneric": "विश्लेषण विफल",
+  "unknownWeather": "अज्ञात",
+  "noWeatherDescription": "कोई विवरण नहीं",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "उपग्रह (_PLACEHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "sunWithDescription": "सूर्य: {description}_",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "चंद्रमा: {description}",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "अज्ञात ग्रह",
+  "unknownStar": "अज्ञात स्टार",
+  "unknownSatellite": "अज्ञात उपग्रह",
+  "unknownDirection": "अज्ञात दिशा",
+  "brightStars": "ब्राइट स्टार",
+  "satellites": "उपग्रह",
+  "seeAllSatellites": "सभी देखें {count} उपग्रह",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "अधिकतम ऊंचाई: 0 _ 0 _ 0",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "आयाम: _ _ _ _ _ _ _ _ _",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "अज्ञात",
+  "altitudeValue": "{degrees}° ऊंचाई",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "Azimuth",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "उपलब्ध नहीं है।.",
+  "satelliteNameDirection": "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

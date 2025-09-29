@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "okänd",
+  "unknown": "Okänd",
   "report": "rapportrapport",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "Nyligen UFO Beeps",
@@ -978,5 +978,129 @@
   "processorLocation": "plats detaljer",
   "processorAircraft": "närliggande flygplan",
   "processorSatellites": "satellitpositioner",
-  "processorCelestial": "himmelska föremål"
+  "processorCelestial": "himmelska föremål",
+  "calculatingCelestialData": "Beräkning av himmelska data...",
+  "sunLabel": "Sol sol sol solen",
+  "moonLabel": "Månen",
+  "planetsVisible": "Planeter: __PLACEHOLDER_0_ synliga",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Stjärnor",
+  "planetsLabel": "Planeter",
+  "moonWithPhase": "Månen (_PLACEHOLDER_0__)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Inga satelliter var synliga vid exakt tidpunkt för din observation",
+  "satellitesVisibleOverheadAtTime": "Satelliter synliga överhuvudet vid observationstid och plats",
+  "belowHorizon": "under horisonten",
+  "analysisFailedGeneric": "Analys misslyckades",
+  "unknownWeather": "Okänd",
+  "noWeatherDescription": "Ingen beskrivning",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satelliter (__PLACEHOLDER_0_ syns nu)",
+  "sunWithDescription": "Solen: {description}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Månen: {description}__",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Okänd planet",
+  "unknownStar": "Okänd stjärna",
+  "unknownSatellite": "Okänd satellit",
+  "unknownDirection": "okänd riktning",
+  "brightStars": "Bright Stars",
+  "satellites": "Satelliter",
+  "seeAllSatellites": "Se alla satelliter {count}",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Max höjd: __PLACEHOLDER_0_°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Magnitud: {value}",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Okänd",
+  "altitudeValue": "__PLACEHOLDER_0_° höjd",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "__PLACEHOLDER_0_° azimuth",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Inga himmelska data tillgängliga.",
+  "satelliteNameDirection": "{name} {direction}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }
