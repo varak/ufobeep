@@ -57,7 +57,7 @@ class AlertDetailsSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           
-          // Description (if available and enabled)
+          // Description with inline translation (if available and enabled)
           if (showDescription && alert.description != null && alert.description!.isNotEmpty) ...[
             Text(
               alert.description!,
@@ -65,6 +65,16 @@ class AlertDetailsSection extends StatelessWidget {
                 color: AppColors.textSecondary,
                 fontSize: 18,
                 height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 8),
+            // Simple translation text links (not giant button)
+            Text(
+              'Translate to Deutsch | Show Original',
+              style: const TextStyle(
+                color: AppColors.brandPrimary,
+                fontSize: 14,
+                decoration: TextDecoration.underline,
               ),
             ),
             const SizedBox(height: 16),

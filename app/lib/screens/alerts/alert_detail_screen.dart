@@ -455,11 +455,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // Translation section for descriptions (revolutionary feature!)
-                if (alert.description != null && alert.description!.isNotEmpty) ...[
-                  _buildTranslationSection(alert),
-                  const SizedBox(height: 16),
-                ],
+                // Translation will be integrated directly into AlertDetailsSection
 
                 // Direction and compass - hidden only for beep creators (show for all alerts including MUFON)
                 if (!_isOriginalCreator(alert)) ...[

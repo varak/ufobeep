@@ -4,6 +4,8 @@ import 'dart:convert';
 
 /// Real-time content translation service using Google Translate
 /// Makes UFO reports accessible in any language globally
+enum TranslationProvider { googleTranslate, libreTranslate }
+
 class TranslationService {
   static final TranslationService _instance = TranslationService._internal();
   factory TranslationService() => _instance;
@@ -11,6 +13,9 @@ class TranslationService {
 
   // Session-based translation cache to avoid repeated API calls
   final Map<String, String> _translationCache = {};
+
+  // Switch between translation providers for testing
+  TranslationProvider provider = TranslationProvider.googleTranslate;
 
   /// Language code mapping for Google Translate API
   static const Map<String, String> languageNames = {
@@ -98,9 +103,22 @@ class TranslationService {
     }
 
     try {
-      debugPrint('🌐 Translating to $targetLanguage: "${text.substring(0, text.length > 50 ? 50 : text.length)}..."');
+      final stopwatch = Stopwatch()..start();
+      debugPrint('🌐 [${provider.name}] Translating ${text.length} chars to $targetLanguage: "${text.substring(0, text.length > 50 ? 50 : text.length)}..."');
 
-      final translatedText = await _callGoogleTranslate(text, targetLanguage);
+      String translatedText;
+
+      switch (provider) {
+        case TranslationProvider.googleTranslate:
+          translatedText = await _callGoogleTranslate(text, targetLanguage);
+          break;
+        case TranslationProvider.libreTranslate:
+          translatedText = await _callLibreTranslate(text, targetLanguage);
+          break;
+      }
+
+      stopwatch.stop();
+      debugPrint('✅ [${provider.name}] Translation complete in ${stopwatch.elapsedMilliseconds}ms: ${translatedText.length} chars result: "${translatedText.substring(0, translatedText.length > 50 ? 50 : translatedText.length)}..."');
 
       // Cache the result
       _translationCache[cacheKey] = translatedText;
@@ -114,8 +132,8 @@ class TranslationService {
     }
   }
 
-  /// Batch translate multiple texts efficiently
-  Future<List<String>> batchTranslate(List<String> texts, String targetLanguage) async {
+  /// Batch translate multiple texts efficiently - Google Translate method
+  Future<List<String>> batchTranslateGoogle(List<String> texts, String targetLanguage) async {
     if (texts.isEmpty) return texts;
 
     // Filter out empty texts but preserve positions
@@ -167,6 +185,33 @@ class TranslationService {
     }
   }
 
+  /// Translate using LibreTranslate (local server, unlimited)
+  Future<String> _callLibreTranslate(String text, String targetLanguage) async {
+    try {
+      const url = 'http://localhost:5000/translate';
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'q': text,
+          'source': 'auto',
+          'target': targetLanguage,
+          'format': 'text',
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final decoded = jsonDecode(response.body);
+        return decoded['translatedText'] as String;
+      }
+
+      throw Exception('LibreTranslate API returned ${response.statusCode}');
+    } catch (e) {
+      debugPrint('❌ LibreTranslate API error: $e');
+      rethrow;
+    }
+  }
+
   /// Translate using Google Translate web API (free, unofficial)
   Future<String> _callGoogleTranslate(String text, String targetLanguage) async {
     try {
@@ -194,6 +239,82 @@ class TranslationService {
       debugPrint('❌ Google Translate API error: $e');
       rethrow;
     }
+  }
+
+  /// Switch translation provider for testing
+  void setProvider(TranslationProvider newProvider) {
+    provider = newProvider;
+    debugPrint('🔄 Switched to ${provider.name} translation provider');
+    clearCache(); // Clear cache when switching providers
+  }
+
+  /// Batch translate with timing comparison
+  Future<List<String>> batchTranslate(List<String> texts, String targetLanguage) async {
+    if (texts.isEmpty) return texts;
+
+    final stopwatch = Stopwatch()..start();
+    debugPrint('🚀 [${provider.name}] Batch translating ${texts.length} texts to $targetLanguage');
+
+    try {
+      List<String> results;
+
+      switch (provider) {
+        case TranslationProvider.googleTranslate:
+          results = await _batchTranslateGoogle(texts, targetLanguage);
+          break;
+        case TranslationProvider.libreTranslate:
+          results = await _batchTranslateLibre(texts, targetLanguage);
+          break;
+      }
+
+      stopwatch.stop();
+      debugPrint('✅ [${provider.name}] Batch translation complete in ${stopwatch.elapsedMilliseconds}ms (${(stopwatch.elapsedMilliseconds / texts.length).toStringAsFixed(1)}ms per text)');
+
+      return results;
+    } catch (e) {
+      stopwatch.stop();
+      debugPrint('❌ [${provider.name}] Batch translation failed after ${stopwatch.elapsedMilliseconds}ms: $e');
+      return texts;
+    }
+  }
+
+  /// Batch translate using Google Translate (with rate limiting)
+  Future<List<String>> _batchTranslateGoogle(List<String> texts, String targetLanguage) async {
+    final results = <String>[];
+
+    for (final text in texts) {
+      if (text.trim().isEmpty) {
+        results.add(text);
+        continue;
+      }
+
+      final translated = await _callGoogleTranslate(text, targetLanguage);
+      results.add(translated);
+
+      // Rate limiting for Google
+      if (results.length < texts.length) {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+    }
+
+    return results;
+  }
+
+  /// Batch translate using LibreTranslate (no rate limiting needed)
+  Future<List<String>> _batchTranslateLibre(List<String> texts, String targetLanguage) async {
+    final results = <String>[];
+
+    for (final text in texts) {
+      if (text.trim().isEmpty) {
+        results.add(text);
+        continue;
+      }
+
+      final translated = await _callLibreTranslate(text, targetLanguage);
+      results.add(translated);
+    }
+
+    return results;
   }
 
   /// Clear translation cache (useful for language changes)
