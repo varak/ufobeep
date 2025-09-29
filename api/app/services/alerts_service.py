@@ -228,7 +228,7 @@ class AlertsService:
                        s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info,
                        s.weather_data, s.celestial_data, s.aircraft_data, s.satellite_data, s.geocoding_data, s.content_analysis_data,
                        s.enrichment_data,
-                       u.username as reporter_username, s.source, s.occurred_at, s.external_url,
+                       u.username as reporter_username, s.source, s.occurred_at, s.external_url, s.external_id,
                        COALESCE(c.comment_count, 0) as comment_count, s.short_url
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
@@ -279,7 +279,7 @@ class AlertsService:
                        s.witness_count, s.created_at, s.reporter_id, s.sensor_data, s.media_info,
                        s.weather_data, s.celestial_data, s.aircraft_data, s.satellite_data, s.geocoding_data, s.content_analysis_data,
                        s.enrichment_data,
-                       u.username as reporter_username, s.source, s.occurred_at, s.external_url,
+                       u.username as reporter_username, s.source, s.occurred_at, s.external_url, s.external_id,
                        COALESCE(c.comment_count, 0) as comment_count, s.short_url
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
