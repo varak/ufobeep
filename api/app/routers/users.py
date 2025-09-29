@@ -1853,7 +1853,7 @@ async def export_user_data(current_user = Depends(get_current_user_from_jwt)):
                     'id': str(s['id']),
                     'title': s['title'],
                     'description': s['description'],
-                    'location': s['sensor_data'].get('location', {}) if s['sensor_data'] else {},
+                    'sensor_data': s['sensor_data'],
                     'created_at': s['created_at'].isoformat(),
                     'category': s['category'],
                     'witness_count': s['witness_count'],
