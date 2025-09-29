@@ -69,8 +69,39 @@ class _NotificationManagementScreenState
       debugPrint('✅ Subscriptions response: ${response.data}');
 
       if (mounted) {
+        final rawSubscriptions = List<Map<String, dynamic>>.from(response.data['subscriptions'] ?? []);
+
+        // Enhance subscription data with full alert details
+        final enhancedSubscriptions = <Map<String, dynamic>>[];
+
+        for (final sub in rawSubscriptions) {
+          try {
+            final sightingId = sub['sighting_id'];
+            if (sightingId != null) {
+              // Load full alert data for this subscription
+              final alertResponse = await ApiClient.dio.get('/beep/$sightingId');
+              final alertData = alertResponse.data['data'];
+
+              // Combine subscription metadata with full alert data
+              enhancedSubscriptions.add({
+                ...sub, // Original subscription data (followed_at, etc.)
+                'alert_title': alertData['title'] ?? 'UFO Sighting',
+                'alert_description': alertData['description'],
+                'alert_location': alertData['location']?['name'] ?? 'Unknown Location',
+                'alert_created_at': alertData['created_at'],
+                'alert_source': alertData['source'],
+                'alert_username': alertData['reporter_username'],
+              });
+            }
+          } catch (e) {
+            // If alert loading fails, keep basic subscription data
+            debugPrint('❌ Failed to load alert details for ${sub['sighting_id']}: $e');
+            enhancedSubscriptions.add(sub);
+          }
+        }
+
         setState(() {
-          _subscriptions = List<Map<String, dynamic>>.from(response.data['subscriptions'] ?? []);
+          _subscriptions = enhancedSubscriptions;
           _loadingSubscriptions = false;
         });
       }
@@ -529,11 +560,35 @@ class _NotificationManagementScreenState
   }
 
   Widget _buildSubscriptionTile(Map<String, dynamic> subscription) {
-    final title = subscription['title'] ?? 'UFO Sighting';
-    final location = subscription['location_name'] ?? 'Unknown Location';
+    // Use enhanced alert data (copying alert pattern)
+    final title = subscription['alert_title'] ?? subscription['title'] ?? 'UFO Sighting';
+    final location = subscription['alert_location'] ?? subscription['location_name'] ?? 'Unknown Location';
     final sightingId = subscription['sighting_id'];
     final commentCount = subscription['comment_count'] ?? 0;
+    final createdAt = subscription['alert_created_at'];
+    final source = subscription['alert_source'];
+    final username = subscription['alert_username'];
     final isLast = _subscriptions.indexOf(subscription) == _subscriptions.length - 1;
+
+    // Format date added to UFOBeep (copying alert date pattern)
+    String dateAdded = '';
+    if (createdAt != null) {
+      try {
+        final date = DateTime.parse(createdAt);
+        final now = DateTime.now();
+        final difference = now.difference(date);
+
+        if (difference.inDays > 0) {
+          dateAdded = '${difference.inDays}d ago';
+        } else if (difference.inHours > 0) {
+          dateAdded = '${difference.inHours}h ago';
+        } else {
+          dateAdded = 'Recent';
+        }
+      } catch (e) {
+        dateAdded = 'Added to UFOBeep';
+      }
+    }
 
     return Column(
       children: [
@@ -550,6 +605,14 @@ class _NotificationManagementScreenState
                 location,
                 style: const TextStyle(color: Colors.white70),
               ),
+              if (dateAdded.isNotEmpty)
+                Text(
+                  dateAdded,
+                  style: const TextStyle(
+                    color: Colors.white60,
+                    fontSize: 12,
+                  ),
+                ),
               if (commentCount > 0)
                 Text(
                   '$commentCount comments',
