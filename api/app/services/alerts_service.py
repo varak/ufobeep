@@ -630,6 +630,10 @@ class AlertsService:
                 enrichment['mufon_case_number'] = enrichment_base['mufon_case_number']
             if 'external_id' in enrichment_base:
                 enrichment['external_id'] = enrichment_base['external_id']
+            if 'sighting_datetime' in enrichment_base:
+                enrichment['sighting_datetime'] = enrichment_base['sighting_datetime']
+            if 'report_date' in enrichment_base:
+                enrichment['report_date'] = enrichment_base['report_date']
             sources_used.append('enrichment_data_mufon_metadata')
 
         logger.info(f"🔄 ENRICHMENT DEBUG: Built enrichment from sources: {sources_used}")
