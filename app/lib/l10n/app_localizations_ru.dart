@@ -402,12 +402,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Активный$endTime -$startTime';
+    return 'Активный$startTime -$startTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Тихие часы: $end - $start';
+    return 'Тихие часы: $start - $start';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$beepTitle прокомментировал $username';
+    return '$username прокомментировал $username';
   }
 
   @override
@@ -2231,17 +2231,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '$altitude высокие накладные расходы ($planet°)';
+    return '$planet высокие накладные расходы ($planet°)';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '$altitude видимый на $planet° - может быть ошибочно принят за самолет';
+    return '$planet видимый на $planet° - может быть ошибочно принят за самолет';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$altitude low on horizon ($planet°)';
+    return '$planet low on horizon ($planet°)';
   }
 
   @override
@@ -2249,12 +2249,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '$altitude видно на высоте $star°';
+    return '$star видно на высоте $star°';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$names яркие звезды - $count';
+    return '$count яркие звезды - $count';
   }
 
   @override
@@ -2363,32 +2363,32 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$altitude высокие накладные расходы ($planet°)';
+    return '$planet высокие накладные расходы ($planet°)';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$altitude на $planet° - видный';
+    return '$planet на $planet° - видный';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$altitude в $planet°';
+    return '$planet в $planet°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$altitude очень яркий на $star°';
+    return '$star очень яркий на $star°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$altitude видно на высоте $star°';
+    return '$star видно на высоте $star°';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$altitude в $star°';
+    return '$star в $star°';
   }
 
   @override
@@ -2412,7 +2412,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$radius самолет обнаружен в ${count}km';
+    return '$count самолет обнаружен в ${count}km';
   }
 
   @override
@@ -2622,6 +2622,15 @@ class AppLocalizationsRu extends AppLocalizations {
       'Разрешить критические оповещения в тихие часы';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Уведомления о молчании во время сна';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Активный$startTime -$startTime';
+  }
+
+  @override
   String get followingAlerts => 'После предупреждений';
 
   @override
@@ -2637,8 +2646,42 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '$count Комментарии';
   }
+
+  @override
+  String get photo => 'Фото';
+
+  @override
+  String get video => 'Видео';
+
+  @override
+  String get initializationComplete => 'Инициализация завершена!';
+
+  @override
+  String get validatingEnvironment => 'Проверка окружающей среды...';
+
+  @override
+  String get requestingPermissions => 'Запросить разрешения...';
+
+  @override
+  String get loadingAuthSession => 'Загрузка Auth Session...';
+
+  @override
+  String get checkingUserRegistration =>
+      'Проверка регистрации пользователей...';
+
+  @override
+  String get loadingPreferences => 'Погрузочные предпочтения...';
+
+  @override
+  String get settingUpLocalization => 'Создание локализации...';
+
+  @override
+  String get checkingConnectivity => 'Проверка подключения...';
+
+  @override
+  String get gatheringDeviceInfo => 'Сбор информации об устройстве...';
 
   @override
   String get weatherClear => 'Чисто';
@@ -2683,12 +2726,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get heavyRain => 'сильный дождь';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '$radius самолет обнаружен в пределах ${count}km (текущие позиции)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count самолет обнаружен в пределах ${count}km (текущие позиции)';
   }
 
   @override

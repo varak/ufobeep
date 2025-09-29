@@ -687,6 +687,16 @@
   "unfollow": "이름 *",
   "unfollowAlert": "알림 받기",
   "commentsCount": "{count} 댓글",
+  "photo": "- 사진",
+  "video": "한국어",
+  "initializationComplete": "초기화 완료!",
+  "validatingEnvironment": "검증 환경 ...",
+  "requestingPermissions": "요청 권한 ...",
+  "loadingAuthSession": "로딩중...",
+  "checkingUserRegistration": "사용자 등록 확인 ...",
+  "loadingPreferences": "로딩...",
+  "checkingConnectivity": "연결 확인 ...",
+  "gatheringDeviceInfo": "장치 정보 ...",
   "weatherClear": "이름 *",
   "weatherClearSky": "맑은 하늘",
   "rain": "뚱 베어",
@@ -802,5 +812,6 @@
   "ufobeepOnlySource": "UFOBeep 만",
   "alertRadius": "Alert 반경",
   "signInSubtitle": "실시간 UFO 시력 경고 및 MUFON 보고서",
-  "invalidRange": "1과 99999 사이의 번호를 입력하십시오"
+  "invalidRange": "1과 99999 사이의 번호를 입력하십시오",
+  "settingUpLocalization": "현지화 설정 ..."
 }

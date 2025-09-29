@@ -176,7 +176,7 @@ class AppLocalizationsNl extends AppLocalizations {
   }
 
   @override
-  String get uploadingMedia => 'Media uploaden...';
+  String get uploadingMedia => 'Media uploaden..';
 
   @override
   String get includeLocation => 'Plaats';
@@ -188,7 +188,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get beepFailed => 'Kon Beep niet sturen.';
 
   @override
-  String get mediaProcessing => 'Verwerking van media...';
+  String get mediaProcessing => 'Media verwerken..';
 
   @override
   String get cameraPermissionTitle => 'Cameratoegang nodig';
@@ -914,7 +914,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get addPhotosAndVideos => 'Foto\'s en video\'s toevoegen';
 
   @override
-  String get attachMedia => 'Media bijvoegen';
+  String get attachMedia => 'Media toevoegen';
 
   @override
   String get addCommentOptional => 'Een opmerking toevoegen (facultatief)';
@@ -1821,7 +1821,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Probeer het opnieuw in ${seconds}s';
+    return 'Probeer opnieuw in __PLACEHOLDER_0_s';
   }
 
   @override
@@ -2602,6 +2602,15 @@ class AppLocalizationsNl extends AppLocalizations {
       'Kritieke waarschuwingen toestaan tijdens stille uren';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Stiltemeldingen tijdens slaapuren';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Actief __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__';
+  }
+
+  @override
   String get followingAlerts => 'Volgende waarschuwingen';
 
   @override
@@ -2617,8 +2626,42 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '__PLAATSHOLDER_0___commentaren';
   }
+
+  @override
+  String get photo => 'Foto';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get initializationComplete => 'Initialisatie voltooid!';
+
+  @override
+  String get validatingEnvironment => 'Omgeving valideren...';
+
+  @override
+  String get requestingPermissions => 'Verzoek om toestemming...';
+
+  @override
+  String get loadingAuthSession => 'Bezig met laden van aanmeldingssessie...';
+
+  @override
+  String get checkingUserRegistration =>
+      'Gebruikersregistratie wordt gecontroleerd...';
+
+  @override
+  String get loadingPreferences => 'Voorkeuren laden...';
+
+  @override
+  String get settingUpLocalization => 'Lokalisatie instellen...';
+
+  @override
+  String get checkingConnectivity => 'Verbinding wordt gecontroleerd...';
+
+  @override
+  String get gatheringDeviceInfo => 'Verzamelen van apparaatinformatie...';
 
   @override
   String get weatherClear => 'Wissen';
@@ -2663,11 +2706,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get heavyRain => 'zware regenval';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km (huidige posities)';
   }
 

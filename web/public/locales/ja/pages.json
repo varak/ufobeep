@@ -2,5 +2,6 @@
   "welcomeTitle": "UFOBeepへようこそ",
   "settings": "コンテンツ",
   "settingsTitle": "コンテンツ",
-  "pageOf": "ページの {currentPage}_ の {totalPages}_ ({totalCount}_の総ビープ)"
+  "pageOf": "ページの {currentPage}_ の {totalPages}_ ({totalCount}_の総ビープ)",
+  "settingUpLocalization": "ローカル化の設定."
 }

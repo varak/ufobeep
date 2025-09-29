@@ -1147,6 +1147,15 @@
   "commentsCount": "{count} Комментарии",
   "photo": "Фото",
   "video": "Видео",
+  "initializationComplete": "Инициализация завершена!",
+  "validatingEnvironment": "Проверка окружающей среды...",
+  "requestingPermissions": "Запросить разрешения...",
+  "loadingAuthSession": "Загрузка Auth Session...",
+  "checkingUserRegistration": "Проверка регистрации пользователей...",
+  "loadingPreferences": "Погрузочные предпочтения...",
+  "settingUpLocalization": "Создание локализации...",
+  "checkingConnectivity": "Проверка подключения...",
+  "gatheringDeviceInfo": "Сбор информации об устройстве...",
   "@commentsCount": {
     "placeholders": {
       "count": {

@@ -218,7 +218,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Denunciado por $username';
+    return 'Reportado por __PLACEHOLDER_0_';
   }
 
   @override
@@ -295,7 +295,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Apontando para $direction';
+    return 'Apontando para __PLACEHOLDER_0_';
   }
 
   @override
@@ -402,7 +402,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Ativo $startTime - $endTime';
+    return 'Ativo ${startTime}_ __PLACEHOLDER_1_';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$username comentou em $beepTitle';
+    return '$username comentado em __PLACEHOLDER_1_';
   }
 
   @override
@@ -2221,12 +2221,12 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '${altitude}_ visível em $planet° - pode ser confundido com aeronaves';
+    return '${planet}_ visível em $planet° - pode ser confundido com aeronaves';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$altitude baixo no horizonte ($planet°)';
+    return '$planet baixo no horizonte ($planet°)';
   }
 
   @override
@@ -2464,7 +2464,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'Lua ($phase)';
+    return 'Lua (__PLACEHOLDER_0_)';
   }
 
   @override
@@ -2608,6 +2608,15 @@ class AppLocalizationsPt extends AppLocalizations {
       'Permitir alertas críticos durante horas silenciosas';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Notificações de silêncio durante as horas de sono';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Ativo ${startTime}_ __PLACEHOLDER_1_';
+  }
+
+  @override
   String get followingAlerts => 'Seguir as Alertas';
 
   @override
@@ -2623,8 +2632,43 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '__PACEHOLDER_0__ comentários';
   }
+
+  @override
+  String get photo => 'Foto';
+
+  @override
+  String get video => 'Vídeo';
+
+  @override
+  String get initializationComplete => 'Inicialização completa!';
+
+  @override
+  String get validatingEnvironment => 'A validar o ambiente...';
+
+  @override
+  String get requestingPermissions => 'Solicitando permissões...';
+
+  @override
+  String get loadingAuthSession => 'A carregar a sessão de autenticação...';
+
+  @override
+  String get checkingUserRegistration =>
+      'A verificar o registo do utilizador...';
+
+  @override
+  String get loadingPreferences => 'Carregando preferências...';
+
+  @override
+  String get settingUpLocalization => 'A configurar a localização...';
+
+  @override
+  String get checkingConnectivity => 'A verificar a conectividade...';
+
+  @override
+  String get gatheringDeviceInfo =>
+      'A recolher as informações do dispositivo...';
 
   @override
   String get weatherClear => 'Limpar';
@@ -2669,12 +2713,8 @@ class AppLocalizationsPt extends AppLocalizations {
   String get heavyRain => 'chuva pesada';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '${radius}__aeronaves detectadas dentro de ${count}km (posição atual)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '${count}__aeronaves detectadas dentro de ${count}km (posição atual)';
   }
 
   @override

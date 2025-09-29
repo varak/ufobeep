@@ -689,6 +689,14 @@
   "commentsCount": "_",
   "photo": "الصورة",
   "video": "Video",
+  "initializationComplete": "التمهيد مكتمل!",
+  "validatingEnvironment": "البيئة المقيّمة...",
+  "requestingPermissions": "طلب الإذن.",
+  "loadingAuthSession": "....",
+  "checkingUserRegistration": "التحقق من تسجيل المستخدمين...",
+  "loadingPreferences": "الأفضليات...",
+  "checkingConnectivity": "التحقق من التواصل...",
+  "gatheringDeviceInfo": "جمع المعلومات عن الجهاز.",
   "weatherClear": "آمن",
   "weatherClearSky": "السماء",
   "rain": "Rain",
@@ -804,5 +812,6 @@
   "ufobeepOnlySource": "UFOBeep فقط",
   "alertRadius": "Alert Radius",
   "signInSubtitle": "تنبيهات مرئية من طراز UFO في الوقت الحقيقي وتقارير MUFON",
-  "invalidRange": "يرجى الدخول إلى رقم يتراوح بين 1 و 999"
+  "invalidRange": "يرجى الدخول إلى رقم يتراوح بين 1 و 999",
+  "settingUpLocalization": "...."
 }

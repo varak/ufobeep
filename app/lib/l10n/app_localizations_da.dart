@@ -2145,7 +2145,7 @@ class AppLocalizationsDa extends AppLocalizations {
       'Gennemse observationer, adgang MUFON rapporter, og oprette forbindelse med andre skywatchers.';
 
   @override
-  String get skip => 'Overspringe';
+  String get skip => 'Skip';
 
   @override
   String get getStarted => 'Start';
@@ -2599,6 +2599,15 @@ class AppLocalizationsDa extends AppLocalizations {
       'Tillad kritiske advarsler i stille timer';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Tavshedsanmeldelser under søvntid';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Aktiv _ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _';
+  }
+
+  @override
   String get followingAlerts => 'Følgende indberetninger';
 
   @override
@@ -2614,8 +2623,41 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '_ _ PLACEREPER _ 0 _ _ kommentarer';
   }
+
+  @override
+  String get photo => 'Foto';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get initializationComplete => 'Initialisering fuldført!';
+
+  @override
+  String get validatingEnvironment => 'Validerende miljø...';
+
+  @override
+  String get requestingPermissions => 'Anmoder om tilladelse...';
+
+  @override
+  String get loadingAuthSession => 'Indlæser auth session...';
+
+  @override
+  String get checkingUserRegistration => 'Kontrol af brugerregistrering...';
+
+  @override
+  String get loadingPreferences => 'Indlæser præferencer...';
+
+  @override
+  String get settingUpLocalization => 'Opsætning af lokalisering...';
+
+  @override
+  String get checkingConnectivity => 'Tjek forbindelse...';
+
+  @override
+  String get gatheringDeviceInfo => 'Indsamling af enhedsinformation...';
 
   @override
   String get weatherClear => 'Ryd';
@@ -2660,11 +2702,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get heavyRain => 'kraftig regn';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '_ _ PLACEREPORT _ 0 _ _ luftfartøj opdaget inden _ _ PLACEREPORT _ 1 _ _ km (nuværende positioner)';
   }
 

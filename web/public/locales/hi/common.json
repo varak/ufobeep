@@ -687,6 +687,16 @@
   "unfollow": "अनफ़ॉलो",
   "unfollowAlert": "अनफ़ॉलो अलर्ट",
   "commentsCount": "0 _ 0 _ 0 टिप्पणी",
+  "photo": "फोटो",
+  "video": "वीडियो",
+  "initializationComplete": "आरंभीकरण पूरा!",
+  "validatingEnvironment": "पर्यावरण को मान्य करना.",
+  "requestingPermissions": "अनुमति का अनुरोध...",
+  "loadingAuthSession": "Auth session...",
+  "checkingUserRegistration": "उपयोगकर्ता पंजीकरण की जाँच...",
+  "loadingPreferences": "वरीयताओं लोड हो रहा है...",
+  "checkingConnectivity": "सम्पर्क करने का विवरण.",
+  "gatheringDeviceInfo": "उपकरण जानकारी इकट्ठा करना.",
   "weatherClear": "स्पष्ट",
   "weatherClearSky": "आकाश",
   "rain": "रेन",
@@ -802,5 +812,6 @@
   "ufobeepOnlySource": "केवल UFOBeep",
   "alertRadius": "चेतावनी त्रिज्या",
   "signInSubtitle": "रियल टाइम यूएफओ दर्शन अलर्ट और एमयूएफएन रिपोर्ट",
-  "invalidRange": "कृपया 1 और 99999 के बीच नंबर दर्ज करें"
+  "invalidRange": "कृपया 1 और 99999 के बीच नंबर दर्ज करें",
+  "settingUpLocalization": "स्थानीयकरण की स्थापना..."
 }

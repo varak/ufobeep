@@ -1145,6 +1145,17 @@
   "unfollow": "Unfollow",
   "unfollowAlert": "Nieprzestrzeganie ostrzeżenia",
   "commentsCount": "_ _ PLACESENER _ 0 _ _ komentarze",
+  "photo": "Zdjęcie",
+  "video": "Wideo",
+  "initializationComplete": "Inicjalizacja zakończona!",
+  "validatingEnvironment": "Sprawdzanie środowiska...",
+  "requestingPermissions": "Proszę o pozwolenie...",
+  "loadingAuthSession": "Wczytywanie sesji auth...",
+  "checkingUserRegistration": "Sprawdzanie rejestracji użytkowników...",
+  "loadingPreferences": "Wczytywanie preferencji...",
+  "settingUpLocalization": "Ustawienie lokalizacji...",
+  "checkingConnectivity": "Sprawdzam łączność...",
+  "gatheringDeviceInfo": "Zbieranie informacji o urządzeniu...",
   "@commentsCount": {
     "placeholders": {
       "count": {

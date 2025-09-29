@@ -1145,6 +1145,17 @@
   "unfollow": "Sluta följa",
   "unfollowAlert": "Sluta följa Alert",
   "commentsCount": "{count} kommentarer",
+  "photo": "Foto",
+  "video": "Video",
+  "initializationComplete": "Initialisering komplett!",
+  "validatingEnvironment": "Validera miljö...",
+  "requestingPermissions": "Begär tillstånd...",
+  "loadingAuthSession": "Loading auth session...",
+  "checkingUserRegistration": "Kontrollera användarregistrering...",
+  "loadingPreferences": "Loading preferenser...",
+  "settingUpLocalization": "Ställ in lokalisering...",
+  "checkingConnectivity": "Kontrollera anslutning...",
+  "gatheringDeviceInfo": "Insamling av enhet info...",
   "@commentsCount": {
     "placeholders": {
       "count": {

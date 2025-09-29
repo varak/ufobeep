@@ -2,5 +2,6 @@
   "welcomeTitle": "مرحبا بكم في UFOBeep",
   "settings": "التركيبات",
   "settingsTitle": "التركيبات",
-  "pageOf": "Page {currentPage}______________BAR_ _BAR_"
+  "pageOf": "Page {currentPage}______________BAR_ _BAR_",
+  "settingUpLocalization": "...."
 }

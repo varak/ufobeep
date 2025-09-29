@@ -12,7 +12,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get appName => 'UFOBeep';
 
   @override
-  String get ok => 'De acuerdo';
+  String get ok => 'OK';
 
   @override
   String get cancel => 'Cancelar';
@@ -387,7 +387,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Permitir alertas urgentes durante horas tranquilas';
 
   @override
-  String get dndMode => 'No molestar';
+  String get dndMode => 'No te molestes';
 
   @override
   String get dndUntil => 'No molestar hasta';
@@ -402,12 +402,12 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Active $endTime $startTime';
+    return 'Active $startTime $startTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Horas de silencio: $start - $end';
+    return 'Horas tranquilas: $start __PLACEHOLDER_1_';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '${beepTitle}_ comentado $username';
+    return '${username}_ comentado $username';
   }
 
   @override
@@ -917,7 +917,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get addPhotosAndVideos => 'Añadir fotos > Videos';
 
   @override
-  String get attachMedia => 'Adjuntar medios';
+  String get attachMedia => 'Attach Media';
 
   @override
   String get addCommentOptional => 'Agregar un comentario (opcional)';
@@ -969,7 +969,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get noSatellitePasses =>
-      'No se encontraron pases satelitales visibles';
+      'No se encontraron pases de satélite visibles';
 
   @override
   String get contentAnalysisTitle => 'Análisis de contenidos';
@@ -1666,7 +1666,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get locationTrackingDisabledWarning =>
-      'No recibirás alertas de proximidad cuando te mudes a nuevas ubicaciones';
+      'No recibirás alertas de proximidad cuando te mudes a nuevos lugares';
 
   @override
   String get trackingStatus => 'Situación de seguimiento';
@@ -1707,7 +1707,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get locationTrackingBenefits =>
-      '• Recibe alertas de ovnis dondequiera que viajes\n• Actualizaciones automáticas de ubicación\n• No se requiere configuración manual';
+      '• Obtenga alertas de OVNI dondequiera que viaje\n• Actualizaciones de ubicación automática\n• No se requiere configuración manual';
 
   @override
   String get allowLocationAccess => 'Permitir acceso a la ubicación';
@@ -1924,7 +1924,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get emailAuthHowItWorksSteps =>
-      '1. Le enviamos un enlace de inicio de sesión seguro\n2. Revisa tu correo electrónico y toca el enlace\n3. Tu correo electrónico se verifica automáticamente\n4. ¡No se necesitan contraseñas!';
+      '1. Le enviamos un enlace de registro seguro\n2. Revisa tu correo electrónico y pulsa el enlace\n3. Su correo electrónico se verifica automáticamente\n4. ¡No se necesitan contraseñas!';
 
   @override
   String get emailAuthSecurityNotice =>
@@ -1932,7 +1932,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get phoneAuthFailedToSendCode =>
-      'No se pudo enviar el código de verificación. Por favor, inténtalo de nuevo.';
+      'No ha enviado código de verificación. Por favor, inténtalo de nuevo.';
 
   @override
   String get phoneAuthInvalidCodeTryAgain =>
@@ -2160,7 +2160,7 @@ class AppLocalizationsEs extends AppLocalizations {
       'Explore los avistamientos, acceda a informes de MUFON y conéctese con otros observadores de cielo.';
 
   @override
-  String get skip => 'Saltarse';
+  String get skip => 'Skip';
 
   @override
   String get getStarted => 'Empieza';
@@ -2219,35 +2219,34 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get celestialNoPlanets =>
-      'No hay planetas brillantes visibles que puedan confundirse con ovnis';
+      'No hay planetas brillantes visibles que podrían confundirse con los OVNIs';
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '${altitude}_ alta overhead (${planet}_ °) - muy prominente';
+    return '${planet}_ alta overhead (${planet}_ °) - muy prominente';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '${altitude}_ visible at ${planet}__° - podría confundirse con aviones';
+    return '${planet}_ visible at ${planet}__° - podría confundirse con aviones';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$altitude bajo en horizonte (${planet}_°)';
+    return '$planet bajo en horizonte (${planet}_°)';
   }
 
   @override
-  String get celestialNoStars =>
-      'No hay estrellas inusualmente brillantes visibles';
+  String get celestialNoStars => 'No estrellas inusualmente brillantes visible';
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '${altitude}_ prominente en ${star}_nivel';
+    return '${star}_ prominente en ${star}_nivel';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$names estrellas brillantes visibles - $count';
+    return '$count estrellas brillantes visibles - $count';
   }
 
   @override
@@ -2357,32 +2356,32 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '${altitude}_ alta overhead (${planet}_ °) - muy prominente';
+    return '${planet}_ alta overhead (${planet}_ °) - muy prominente';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '${altitude}_ ${planet}_° - prominente';
+    return '${planet}_ ${planet}_° - prominente';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '${altitude}_ ${planet}_°';
+    return '${planet}_ ${planet}_°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$altitude muy brillante en ${star}_ °';
+    return '$star muy brillante en ${star}_ °';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '${altitude}_ prominente en ${star}_nivel';
+    return '${star}_ prominente en ${star}_nivel';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '${altitude}_ ${star}_°';
+    return '${star}_ ${star}_°';
   }
 
   @override
@@ -2406,7 +2405,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count aeronaves detectadas dentro de ${radius}km';
+    return '${count}__ __PLACEHOLDER_1_km';
   }
 
   @override
@@ -2477,7 +2476,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get noSatellitesVisibleAtTime =>
-      'No había satélites visibles en el momento exacto de su avistamiento';
+      'No había satélites visibles en la hora exacta de su avistamiento';
 
   @override
   String get satellitesVisibleOverheadAtTime =>
@@ -2493,7 +2492,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get unknownWeather => 'Desconocida';
 
   @override
-  String get noWeatherDescription => 'Sin descripción';
+  String get noWeatherDescription => 'No hay descripción';
 
   @override
   String get altitudeAbbrev => 'Alt';
@@ -2563,13 +2562,14 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get noCelestialDataAvailable => 'No hay datos celestes disponibles.';
+  String get noCelestialDataAvailable =>
+      'No hay datos celestiales disponibles.';
 
   @override
   String get gettingLocation => 'Conseguir su ubicación...';
 
   @override
-  String get media => 'Medio';
+  String get media => 'Media';
 
   @override
   String get locationRequired => 'Ubicación requerida';
@@ -2590,7 +2590,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get quickActions => 'Medidas rápidas';
 
   @override
-  String get doNotDisturb => 'No molestar';
+  String get doNotDisturb => 'No te molestes';
 
   @override
   String get temporarilySilenceNotifications =>
@@ -2616,6 +2616,15 @@ class AppLocalizationsEs extends AppLocalizations {
       'Permitir alertas críticas durante horas tranquilas';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Notificaciones de silencio durante las horas de sueño';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Active $startTime $startTime';
+  }
+
+  @override
   String get followingAlerts => 'Following Alerts';
 
   @override
@@ -2631,8 +2640,42 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '${count}_ comentarios';
   }
+
+  @override
+  String get photo => 'Foto';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get initializationComplete => '¡La inicialización completa!';
+
+  @override
+  String get validatingEnvironment => 'Medio ambiente validante...';
+
+  @override
+  String get requestingPermissions => 'Solicitando permisos...';
+
+  @override
+  String get loadingAuthSession => 'Cargando sesión de austeridad...';
+
+  @override
+  String get checkingUserRegistration =>
+      'Comprobando el registro del usuario...';
+
+  @override
+  String get loadingPreferences => 'Cargando preferencias...';
+
+  @override
+  String get settingUpLocalization => 'Configurar la localización...';
+
+  @override
+  String get checkingConnectivity => 'Comprobando conectividad...';
+
+  @override
+  String get gatheringDeviceInfo => 'Reunión de información del dispositivo...';
 
   @override
   String get weatherClear => 'Despejado';
@@ -2677,12 +2720,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get heavyRain => 'lluvia pesada';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '$count aeronaves detectadas dentro de ${radius}km (posiciones actuales)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '${count}___ aeronaves detectadas dentro de __PLACEHOLDER_1_km (posiciones corrientes)';
   }
 
   @override
@@ -2695,6 +2734,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return '$name - $direction';
+    return '$name __PLACEHOLDER_1_';
   }
 }

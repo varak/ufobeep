@@ -330,7 +330,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String wind(num speed, String unit) {
-    return '风：$speed $unit';
+    return '风速:_PLACEHOLDER_0__PLACEHOLDER_1_';
   }
 
   @override
@@ -2502,6 +2502,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get allowCriticalAlertsDuringQuietHours => '允许在安静时间发出紧急警报';
 
   @override
+  String get silenceNotificationsDuringSleepHours => '睡眠时间的沉默通知';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return '活动_PLACEHOLDER_0__$startTime';
+  }
+
+  @override
   String get followingAlerts => '警报后';
 
   @override
@@ -2517,8 +2525,41 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '– PLACEHOLDER_ 0_ 注释';
   }
+
+  @override
+  String get photo => '图片';
+
+  @override
+  String get video => '视频';
+
+  @override
+  String get initializationComplete => '启动完毕!';
+
+  @override
+  String get validatingEnvironment => '正在验证环境...';
+
+  @override
+  String get requestingPermissions => '请求权限...';
+
+  @override
+  String get loadingAuthSession => '正在装入认证会话...';
+
+  @override
+  String get checkingUserRegistration => '正在检查用户注册...';
+
+  @override
+  String get loadingPreferences => '正在装入首选项...';
+
+  @override
+  String get settingUpLocalization => '建立本地化...';
+
+  @override
+  String get checkingConnectivity => '正在检查连接...';
+
+  @override
+  String get gatheringDeviceInfo => '正在收集设备信息...';
 
   @override
   String get weatherClear => '清除';
@@ -2563,11 +2604,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get heavyRain => '暴风雨';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '在_PLACEHOLDER_0_km(现有位置)内探测到的飞机';
   }
 

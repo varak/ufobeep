@@ -121,7 +121,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance 離れたところ';
+    return '__PLACEHOLDER_0_ 離れて';
   }
 
   @override
@@ -510,7 +510,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String timeHoursAgo(int count) {
-    return '$count 時間前';
+    return '__PLACEHOLDER_0_時間前';
   }
 
   @override
@@ -1038,7 +1038,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '$distance 離れたところ';
+    return '__PLACEHOLDER_0_ 離れて';
   }
 
   @override
@@ -1255,7 +1255,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '$count画像';
+    return '__PLACEHOLDER_0_さんの画像';
   }
 
   @override
@@ -1682,7 +1682,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String hoursAgo(int hours) {
-    return '$hours時間前';
+    return '__PLACEHOLDER_0_時間前';
   }
 
   @override
@@ -2109,12 +2109,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '$phase moon visible - 中程度の照明条件';
+    return '__PLACEHOLDER_0_月 見える - 適度な照明条件';
   }
 
   @override
   String celestialMoonThin(Object phase) {
-    return '薄い$phaseの月が見える - 最小限の照明';
+    return '薄い __PLACEHOLDER_0_ 月 見える - 最小限の照明';
   }
 
   @override
@@ -2127,7 +2127,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '$altitude 高オーバーヘッド($planet°) - 非常に著名';
+    return '$planet 高オーバーヘッド($planet°) - 非常に著名';
   }
 
   @override
@@ -2137,7 +2137,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$altitude 水平線上に低い (_$planet°)';
+    return '$planet 水平線上に低い (_$planet°)';
   }
 
   @override
@@ -2150,7 +2150,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$count 明るい星が見える - $names';
+    return '__PLACEHOLDER_0_ 明るい星が見える - ${count}_';
   }
 
   @override
@@ -2167,12 +2167,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return 'UFOと混同される可能性のある明るい天体を$count';
+    return '__PLACEHOLDER_0_ UFOと混同できる明るいオブジェクト';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return '$count 明るいオブジェクトが見える';
+    return '__PLACEHOLDER_0_ 可視オブジェクト';
   }
 
   @override
@@ -2259,12 +2259,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$altitude 高オーバーヘッド($planet°) - 非常に著名';
+    return '$planet 高オーバーヘッド($planet°) - 非常に著名';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '${altitude}_ で $planet° - 目立つ';
+    return '${planet}_ で $planet° - 目立つ';
   }
 
   @override
@@ -2274,7 +2274,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '${altitude}_ 非常に明るい $star°';
+    return '${star}_ 非常に明るい $star°';
   }
 
   @override
@@ -2514,11 +2514,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get allowCriticalAlertsDuringQuietHours => '静かな時間の間に重要なアラートを許可する';
 
   @override
+  String get silenceNotificationsDuringSleepHours => '睡眠時間中の沈黙通知';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'アクティブ_PLACEHOLDER_0___________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
   String get followingAlerts => 'アラートのフォロー';
 
   @override
   String activeCount(int count) {
-    return '$count アクティブ';
+    return '__PLACEHOLDER_0_ アクティブ';
   }
 
   @override
@@ -2529,8 +2537,41 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '__PLACEHOLDER_0_コメント';
   }
+
+  @override
+  String get photo => 'プロフィール';
+
+  @override
+  String get video => 'ビデオ';
+
+  @override
+  String get initializationComplete => '初期化完了!';
+
+  @override
+  String get validatingEnvironment => '検証環境...';
+
+  @override
+  String get requestingPermissions => '許可を求める...';
+
+  @override
+  String get loadingAuthSession => 'Authセッションをロードする...';
+
+  @override
+  String get checkingUserRegistration => 'ユーザー登録の確認...';
+
+  @override
+  String get loadingPreferences => '好みの読み込み...';
+
+  @override
+  String get settingUpLocalization => 'ローカル化の設定.';
+
+  @override
+  String get checkingConnectivity => '接続チェック...';
+
+  @override
+  String get gatheringDeviceInfo => 'デバイス情報収集.';
 
   @override
   String get weatherClear => 'クリア';
@@ -2575,11 +2616,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get heavyRain => '豪雨';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '${count}_________km(現在の位置)内の航空機が検出される';
   }
 

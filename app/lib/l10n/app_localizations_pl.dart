@@ -2606,6 +2606,15 @@ class AppLocalizationsPl extends AppLocalizations {
       'Zezwolić na krytyczne ostrzeżenia w godzinach ciszy';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Powiadomienia o ciszy w godzinach snu';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Active _ _ PLACESECRET _ 0 _ _ _ - _ _ PLACESECRET _ 1 _ _';
+  }
+
+  @override
   String get followingAlerts => 'Wpisy';
 
   @override
@@ -2621,8 +2630,42 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '_ _ PLACESENER _ 0 _ _ komentarze';
   }
+
+  @override
+  String get photo => 'Zdjęcie';
+
+  @override
+  String get video => 'Wideo';
+
+  @override
+  String get initializationComplete => 'Inicjalizacja zakończona!';
+
+  @override
+  String get validatingEnvironment => 'Sprawdzanie środowiska...';
+
+  @override
+  String get requestingPermissions => 'Proszę o pozwolenie...';
+
+  @override
+  String get loadingAuthSession => 'Wczytywanie sesji auth...';
+
+  @override
+  String get checkingUserRegistration =>
+      'Sprawdzanie rejestracji użytkowników...';
+
+  @override
+  String get loadingPreferences => 'Wczytywanie preferencji...';
+
+  @override
+  String get settingUpLocalization => 'Ustawienie lokalizacji...';
+
+  @override
+  String get checkingConnectivity => 'Sprawdzam łączność...';
+
+  @override
+  String get gatheringDeviceInfo => 'Zbieranie informacji o urządzeniu...';
 
   @override
   String get weatherClear => 'Czysto';
@@ -2667,11 +2710,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get heavyRain => 'intensywny deszcz';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '_ _ PLACESORM _ 0 _ _ statek powietrzny wykryty w _ _ PLACESORM _ 1 _ _ km (aktualne pozycje)';
   }
 

@@ -2593,6 +2593,15 @@ class AppLocalizationsFi extends AppLocalizations {
       'Salli kriittiset kuulutukset hiljaisina tunteina';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Hiljaisuusilmoitukset nukkumistuntien aikana';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Aktiivinen __PASSIHOLDER_0__ - __PASSIHOLDER_1__';
+  }
+
+  @override
   String get followingAlerts => 'Kuulutusten jälkeen';
 
   @override
@@ -2608,8 +2617,41 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '__Placeholder_0__ comments';
   }
+
+  @override
+  String get photo => 'Valokuva';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get initializationComplete => 'Alustus valmis!';
+
+  @override
+  String get validatingEnvironment => 'Validoidaan ympäristö...';
+
+  @override
+  String get requestingPermissions => 'Pyydän oikeuksia...';
+
+  @override
+  String get loadingAuthSession => 'Ladataan auth-istuntoa...';
+
+  @override
+  String get checkingUserRegistration => 'Tarkistan käyttäjärekisterin...';
+
+  @override
+  String get loadingPreferences => 'Ladataan asetuksia...';
+
+  @override
+  String get settingUpLocalization => 'Lokalisointi...';
+
+  @override
+  String get checkingConnectivity => 'Tarkistan yhteyksiä...';
+
+  @override
+  String get gatheringDeviceInfo => 'Keräyslaitteen tiedot...';
 
   @override
   String get weatherClear => 'Tyhjennä';
@@ -2654,11 +2696,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get heavyRain => 'rankkasade';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '__PASSIHOLDER_0__-ilma-alus havaittu __PASSIHOLDER_1_km (nykyiset paikat)';
   }
 
@@ -2672,6 +2710,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return '$name - $direction';
+    return '$name - __PLACEHOLDER_1_';
   }
 }

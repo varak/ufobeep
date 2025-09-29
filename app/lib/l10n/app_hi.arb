@@ -1145,6 +1145,17 @@
   "unfollow": "अनफ़ॉलो",
   "unfollowAlert": "अनफ़ॉलो अलर्ट",
   "commentsCount": "0 _ 0 _ 0 टिप्पणी",
+  "photo": "फोटो",
+  "video": "वीडियो",
+  "initializationComplete": "आरंभीकरण पूरा!",
+  "validatingEnvironment": "पर्यावरण को मान्य करना.",
+  "requestingPermissions": "अनुमति का अनुरोध...",
+  "loadingAuthSession": "Auth session...",
+  "checkingUserRegistration": "उपयोगकर्ता पंजीकरण की जाँच...",
+  "loadingPreferences": "वरीयताओं लोड हो रहा है...",
+  "settingUpLocalization": "स्थानीयकरण की स्थापना...",
+  "checkingConnectivity": "सम्पर्क करने का विवरण.",
+  "gatheringDeviceInfo": "उपकरण जानकारी इकट्ठा करना.",
   "@commentsCount": {
     "placeholders": {
       "count": {

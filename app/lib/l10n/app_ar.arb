@@ -1147,6 +1147,15 @@
   "commentsCount": "_",
   "photo": "الصورة",
   "video": "Video",
+  "initializationComplete": "التمهيد مكتمل!",
+  "validatingEnvironment": "البيئة المقيّمة...",
+  "requestingPermissions": "طلب الإذن.",
+  "loadingAuthSession": "....",
+  "checkingUserRegistration": "التحقق من تسجيل المستخدمين...",
+  "loadingPreferences": "الأفضليات...",
+  "settingUpLocalization": "....",
+  "checkingConnectivity": "التحقق من التواصل...",
+  "gatheringDeviceInfo": "جمع المعلومات عن الجهاز.",
   "@commentsCount": {
     "placeholders": {
       "count": {

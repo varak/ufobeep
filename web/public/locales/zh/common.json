@@ -689,6 +689,14 @@
   "commentsCount": "– PLACEHOLDER_ 0_ 注释",
   "photo": "图片",
   "video": "视频",
+  "initializationComplete": "启动完毕!",
+  "validatingEnvironment": "正在验证环境...",
+  "requestingPermissions": "请求权限...",
+  "loadingAuthSession": "正在装入认证会话...",
+  "checkingUserRegistration": "正在检查用户注册...",
+  "loadingPreferences": "正在装入首选项...",
+  "checkingConnectivity": "正在检查连接...",
+  "gatheringDeviceInfo": "正在收集设备信息...",
   "weatherClear": "清除",
   "weatherClearSky": "天空清净",
   "rain": "风雨",
@@ -804,5 +812,6 @@
   "ufobeepOnlySource": "仅限UUOBEP",
   "alertRadius": "提醒半径",
   "signInSubtitle": "实时UFO目击警报和MUFON报告",
-  "invalidRange": "请输入1到99999之间的数字"
+  "invalidRange": "请输入1到99999之间的数字",
+  "settingUpLocalization": "建立本地化..."
 }

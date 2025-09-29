@@ -689,6 +689,14 @@
   "commentsCount": "__PLAATSHOLDER_0___commentaren",
   "photo": "Foto",
   "video": "Video",
+  "initializationComplete": "Initialisatie voltooid!",
+  "validatingEnvironment": "Omgeving valideren...",
+  "requestingPermissions": "Verzoek om toestemming...",
+  "loadingAuthSession": "Bezig met laden van aanmeldingssessie...",
+  "checkingUserRegistration": "Gebruikersregistratie wordt gecontroleerd...",
+  "loadingPreferences": "Voorkeuren laden...",
+  "checkingConnectivity": "Verbinding wordt gecontroleerd...",
+  "gatheringDeviceInfo": "Verzamelen van apparaatinformatie...",
   "weatherClear": "Wissen",
   "weatherClearSky": "heldere lucht",
   "rain": "Regen",
@@ -804,5 +812,6 @@
   "ufobeepOnlySource": "UFObeep alleen",
   "alertRadius": "Waarschuw Straal",
   "signInSubtitle": "Real-time UFO waarnemingen en MUFON rapporten",
-  "invalidRange": "Vul een nummer in tussen 1 en 99999"
+  "invalidRange": "Vul een nummer in tussen 1 en 99999",
+  "settingUpLocalization": "Lokalisatie instellen..."
 }

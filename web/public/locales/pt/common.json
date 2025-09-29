@@ -689,6 +689,14 @@
   "commentsCount": "__PACEHOLDER_0__ comentários",
   "photo": "Foto",
   "video": "Vídeo",
+  "initializationComplete": "Inicialização completa!",
+  "validatingEnvironment": "A validar o ambiente...",
+  "requestingPermissions": "Solicitando permissões...",
+  "loadingAuthSession": "A carregar a sessão de autenticação...",
+  "checkingUserRegistration": "A verificar o registo do utilizador...",
+  "loadingPreferences": "Carregando preferências...",
+  "checkingConnectivity": "A verificar a conectividade...",
+  "gatheringDeviceInfo": "A recolher as informações do dispositivo...",
   "weatherClear": "Limpar",
   "weatherClearSky": "céu limpo",
   "rain": "Chuva",
@@ -804,5 +812,6 @@
   "ufobeepOnlySource": "Apenas OVNIBeep",
   "alertRadius": "Alertar o Raio",
   "signInSubtitle": "Alertas de avistamento de OVNIs em tempo real e relatórios MUFON",
-  "invalidRange": "Digite um número entre 1 e 99999"
+  "invalidRange": "Digite um número entre 1 e 99999",
+  "settingUpLocalization": "A configurar a localização..."
 }

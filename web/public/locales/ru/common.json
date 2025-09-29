@@ -689,6 +689,14 @@
   "commentsCount": "{count} Комментарии",
   "photo": "Фото",
   "video": "Видео",
+  "initializationComplete": "Инициализация завершена!",
+  "validatingEnvironment": "Проверка окружающей среды...",
+  "requestingPermissions": "Запросить разрешения...",
+  "loadingAuthSession": "Загрузка Auth Session...",
+  "checkingUserRegistration": "Проверка регистрации пользователей...",
+  "loadingPreferences": "Погрузочные предпочтения...",
+  "checkingConnectivity": "Проверка подключения...",
+  "gatheringDeviceInfo": "Сбор информации об устройстве...",
   "weatherClear": "Чисто",
   "weatherClearSky": "ясное небо",
   "rain": "Дождь",
@@ -804,5 +812,6 @@
   "ufobeepOnlySource": "НЛО-пип только",
   "alertRadius": "Предупреждение Радиус",
   "signInSubtitle": "Оповещения о наблюдении НЛО в реальном времени и отчеты MUFON",
-  "invalidRange": "Пожалуйста, введите номер от 1 до 99999"
+  "invalidRange": "Пожалуйста, введите номер от 1 до 99999",
+  "settingUpLocalization": "Создание локализации..."
 }

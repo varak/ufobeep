@@ -1145,6 +1145,17 @@
   "unfollow": "Takipsiz",
   "unfollowAlert": "Unfollow Alert",
   "commentsCount": "{count} yorum",
+  "photo": "Fotoğraflar",
+  "video": "Video",
+  "initializationComplete": "Başlangıç tamamlandı!",
+  "validatingEnvironment": "Geçerlilik ortamı...",
+  "requestingPermissions": "İzin talep etmek...",
+  "loadingAuthSession": "Yükleniyor auth session...",
+  "checkingUserRegistration": "Kullanıcı kayıtlarını kontrol edin...",
+  "loadingPreferences": "Yükleniyor tercihler...",
+  "settingUpLocalization": "Yerelleşme kurmak...",
+  "checkingConnectivity": "Bağlantıyı kontrol edin...",
+  "gatheringDeviceInfo": "Gathering device info...",
   "@commentsCount": {
     "placeholders": {
       "count": {

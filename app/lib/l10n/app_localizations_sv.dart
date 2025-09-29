@@ -12,7 +12,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get appName => 'UFOBeep';
 
   @override
-  String get ok => 'OKEJ';
+  String get ok => 'OK';
 
   @override
   String get cancel => 'Avbokning';
@@ -24,10 +24,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get save => 'Spara';
 
   @override
-  String get delete => 'Ta bort';
+  String get delete => 'Delete';
 
   @override
-  String get edit => 'Redigera';
+  String get edit => 'Edit';
 
   @override
   String get retry => 'Retry';
@@ -45,7 +45,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get next => 'Nästa';
 
   @override
-  String get done => 'Färdig';
+  String get done => 'Done';
 
   @override
   String get loading => 'Loading..';
@@ -121,12 +121,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '$distance bort';
+    return '__PLACEHOLDER_0_ bort';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Bäring $bearing°';
+    return 'Bär __PLACEHOLDER_0_°';
   }
 
   @override
@@ -233,7 +233,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Bäring till objekt: $bearing°';
+    return 'Bär mot objekt: __PLACEHOLDER_0_°';
   }
 
   @override
@@ -310,7 +310,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'En ny iakttagelse rapporterades $distance bort.';
+    return 'En ny observation rapporterades __PLACEHOLDER_0_ bort.';
   }
 
   @override
@@ -334,7 +334,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Molntäcke: $percent%';
+    return 'Cloud cover: __PLACEHOLDER_0_%';
   }
 
   @override
@@ -402,12 +402,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Aktiv $startTime - $endTime';
+    return 'Aktiv __PLACEHOLDER_0_ - $startTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Tyst timmar: $end ${start}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Tyst timmar: $start ${start}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$beepTitle kommenterade ${username}_';
+    return '$username kommenterade ${username}_';
   }
 
   @override
@@ -514,14 +514,14 @@ class AppLocalizationsSv extends AppLocalizations {
   String get imageOnly => 'Bild endast';
 
   @override
-  String get mediaOnly => 'Endast media';
+  String get mediaOnly => 'Media Endast';
 
   @override
   String get timeJustNow => 'just nu';
 
   @override
   String timeDaysAgo(int count) {
-    return '$count dagar sedan';
+    return '__PLACEHOLDER_0_dagar sedan';
   }
 
   @override
@@ -1038,7 +1038,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '$witnessText nära $locationName';
+    return '__PLACEHOLDER_0_ nära ${locationName}_';
   }
 
   @override
@@ -1051,7 +1051,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count vittnen';
+    return '__PLACEHOLDER_0_ vittnen';
   }
 
   @override
@@ -1062,7 +1062,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '$distance bort';
+    return '__PLACEHOLDER_0_ bort';
   }
 
   @override
@@ -1724,7 +1724,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String daysAgo(int days) {
-    return '$days dagar sedan';
+    return '__PLACEHOLDER_0_dagar sedan';
   }
 
   @override
@@ -1760,7 +1760,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String signInWelcome(String username) {
-    return 'Välkommen $username!';
+    return 'Välkommen __PLACEHOLDER_0_!';
   }
 
   @override
@@ -1813,7 +1813,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Försök igen om ${seconds}s';
+    return 'Försök igen i __PLACEHOLDER_0_s';
   }
 
   @override
@@ -2137,7 +2137,7 @@ class AppLocalizationsSv extends AppLocalizations {
       'Bläddra i observationer, få tillgång till MUFON-rapporter och ansluta med andra skywatchers.';
 
   @override
-  String get skip => 'Skippa';
+  String get skip => 'Skip';
 
   @override
   String get getStarted => 'Kom igång';
@@ -2176,7 +2176,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Ljus $phase måne synlig - kan belysa eller skymma andra föremål';
+    return 'Ljus __PLACEHOLDER_0_ månen synlig - kan belysa eller dölja andra föremål';
   }
 
   @override
@@ -2186,12 +2186,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String celestialMoonThin(Object phase) {
-    return 'Tunn $phase måne synlig - minimal belysning';
+    return 'Thin __PLACEHOLDER_0_ månen synlig - minimal belysning';
   }
 
   @override
   String celestialMoonHidden(Object phase) {
-    return '$phase Månen under horisonten - ingen månbelysning';
+    return '__PLACEHOLDER_0_ månen under horisonten - ingen månbelysning';
   }
 
   @override
@@ -2205,12 +2205,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '$planet synlig på $altitude° – kan misstas för flygplan';
+    return '$planet synlig på __PLACEHOLDER_1_° - kan misstas för flygplan';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$planet lågt på horisonten ($altitude°)';
+    return '__PLACEHOLDER_0_ låg på horisont (_PLACEHOLDER_1_°)';
   }
 
   @override
@@ -2218,12 +2218,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '$star framträdande på $altitude° höjd';
+    return '$star är framträdande på __PLACEHOLDER_1_° höjd';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$names ljusa stjärnor synliga – ${count}________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return '$count ljusa stjärnor synliga – ${count}________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
   }
 
   @override
@@ -2327,7 +2327,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '$planet under horisonten';
+    return '__PLACEHOLDER_0_ under horisont';
   }
 
   @override
@@ -2337,27 +2337,27 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet på $altitude° - framträdande';
+    return '$planet vid __PLACEHOLDER_1_° - framträdande';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet på $altitude°';
+    return '__PLACEHOLDER_0_ vid __PLACEHOLDER_1_°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star mycket ljusstark på $altitude°';
+    return '$star mycket ljus vid __PLACEHOLDER_1_°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star framträdande på $altitude° höjd';
+    return '$star är framträdande på __PLACEHOLDER_1_° höjd';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star på $altitude°';
+    return '__PLACEHOLDER_0_ vid __PLACEHOLDER_1_°';
   }
 
   @override
@@ -2381,7 +2381,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count flygplan upptäckta inom ${radius}km';
+    return '${count}_ flygplan som upptäcks inom __PLACEHOLDER_1_km';
   }
 
   @override
@@ -2407,7 +2407,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String analyzing(Object processor) {
-    return 'Analyserar $processor...';
+    return 'Analysera __PLACEHOLDER_0_...';
   }
 
   @override
@@ -2436,7 +2436,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return 'Planeter: $count synliga';
+    return 'Planeter: __PLACEHOLDER_0_ synliga';
   }
 
   @override
@@ -2478,7 +2478,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String satellitesVisibleNow(int count) {
-    return 'Satelliter ($count synliga nu)';
+    return 'Satelliter (__PLACEHOLDER_0_ syns nu)';
   }
 
   @override
@@ -2516,7 +2516,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String maxElevation(String degrees) {
-    return 'Högsta höjd: $degrees°';
+    return 'Max höjd: __PLACEHOLDER_0_°';
   }
 
   @override
@@ -2529,12 +2529,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String altitudeValue(String degrees) {
-    return '$degrees° höjd över havet';
+    return '__PLACEHOLDER_0_° höjd';
   }
 
   @override
   String azimuthValue(String degrees) {
-    return '$degrees° azimut';
+    return '__PLACEHOLDER_0_° azimuth';
   }
 
   @override
@@ -2591,11 +2591,20 @@ class AppLocalizationsSv extends AppLocalizations {
       'Tillåt kritiska varningar under tysta timmar';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Tystnadsmeddelanden under sömn timmar';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Aktiv __PLACEHOLDER_0_ - $startTime';
+  }
+
+  @override
   String get followingAlerts => 'Följ Alerts';
 
   @override
   String activeCount(int count) {
-    return '$count aktiva';
+    return '__PLACEHOLDER_0_ aktiv';
   }
 
   @override
@@ -2606,8 +2615,41 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '$count kommentarer';
   }
+
+  @override
+  String get photo => 'Foto';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get initializationComplete => 'Initialisering komplett!';
+
+  @override
+  String get validatingEnvironment => 'Validera miljö...';
+
+  @override
+  String get requestingPermissions => 'Begär tillstånd...';
+
+  @override
+  String get loadingAuthSession => 'Loading auth session...';
+
+  @override
+  String get checkingUserRegistration => 'Kontrollera användarregistrering...';
+
+  @override
+  String get loadingPreferences => 'Loading preferenser...';
+
+  @override
+  String get settingUpLocalization => 'Ställ in lokalisering...';
+
+  @override
+  String get checkingConnectivity => 'Kontrollera anslutning...';
+
+  @override
+  String get gatheringDeviceInfo => 'Insamling av enhet info...';
 
   @override
   String get weatherClear => 'Clear';
@@ -2652,12 +2694,8 @@ class AppLocalizationsSv extends AppLocalizations {
   String get heavyRain => 'tungt regn';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '$count flygplan upptäckta inom ${radius}km (aktuella positioner)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '${count}_ flygplan som upptäcks inom __PLACEHOLDER_1_km (nuvarande positioner)';
   }
 
   @override

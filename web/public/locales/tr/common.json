@@ -687,6 +687,16 @@
   "unfollow": "Takipsiz",
   "unfollowAlert": "Unfollow Alert",
   "commentsCount": "{count} yorum",
+  "photo": "Fotoğraflar",
+  "video": "Video",
+  "initializationComplete": "Başlangıç tamamlandı!",
+  "validatingEnvironment": "Geçerlilik ortamı...",
+  "requestingPermissions": "İzin talep etmek...",
+  "loadingAuthSession": "Yükleniyor auth session...",
+  "checkingUserRegistration": "Kullanıcı kayıtlarını kontrol edin...",
+  "loadingPreferences": "Yükleniyor tercihler...",
+  "checkingConnectivity": "Bağlantıyı kontrol edin...",
+  "gatheringDeviceInfo": "Gathering device info...",
   "weatherClear": "Clear",
   "weatherClearSky": "net gökyüzü",
   "rain": "Rain",
@@ -802,5 +812,6 @@
   "ufobeepOnlySource": "UFOBeep sadece",
   "alertRadius": "Uyarı Radius",
   "signInSubtitle": "Gerçek zamanlı UFO uyarıları ve MUFON raporları",
-  "invalidRange": "Lütfen 1 ile 99999 arasında bir numara girin"
+  "invalidRange": "Lütfen 1 ile 99999 arasında bir numara girin",
+  "settingUpLocalization": "Yerelleşme kurmak..."
 }

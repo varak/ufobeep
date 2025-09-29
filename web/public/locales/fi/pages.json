@@ -2,5 +2,6 @@
   "welcomeTitle": "Tervetuloa UFO- piippiin",
   "settings": "Asetukset",
   "settingsTitle": "Asetukset",
-  "pageOf": "Sivu __PASSIHOLDER_0__ of _PASSIHOLDER_1__ (__PASSIHOLDER_2_ total piips)"
+  "pageOf": "Sivu __PASSIHOLDER_0__ of _PASSIHOLDER_1__ (__PASSIHOLDER_2_ total piips)",
+  "settingUpLocalization": "Lokalisointi..."
 }

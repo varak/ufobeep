@@ -234,7 +234,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Azimut k objektu: $bearing°';
+    return 'Nošení objektu: _ _ PLACETETELER _ 0 _ _ °';
   }
 
   @override
@@ -2595,6 +2595,15 @@ class AppLocalizationsCs extends AppLocalizations {
       'Povolit kritické výstrahy během klidných hodin';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Oznámení o mlčení během spánku';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Active _ _ PLACETIER _ 0 _ - _ _ PLACETIER _ 1 _ _';
+  }
+
+  @override
   String get followingAlerts => 'Následující záznamy';
 
   @override
@@ -2610,8 +2619,41 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '_ _ PLACETETERER _ 0 _ _ komentáře';
   }
+
+  @override
+  String get photo => 'Fotografie';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get initializationComplete => 'Inicializace dokončena!';
+
+  @override
+  String get validatingEnvironment => 'Potvrzující prostředí...';
+
+  @override
+  String get requestingPermissions => 'Žádám o povolení...';
+
+  @override
+  String get loadingAuthSession => 'Nahrávám auth relace...';
+
+  @override
+  String get checkingUserRegistration => 'Kontroluji registraci uživatele...';
+
+  @override
+  String get loadingPreferences => 'Načítání preferencí...';
+
+  @override
+  String get settingUpLocalization => 'Nastavení lokalizace...';
+
+  @override
+  String get checkingConnectivity => 'Kontroluji konektivitu...';
+
+  @override
+  String get gatheringDeviceInfo => 'Informace o shromažďovacím zařízení...';
 
   @override
   String get weatherClear => 'Vyčistit';
@@ -2656,11 +2698,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get heavyRain => 'těžký déšť';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '_ _ PLACETETERER _ 0 _ _ zjištěná letadla v _ _ PLACETELER _ 1 _ _ km (aktuální polohy)';
   }
 

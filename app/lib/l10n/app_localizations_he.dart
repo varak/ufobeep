@@ -24,10 +24,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get save => 'להציל';
 
   @override
-  String get delete => 'למחוק';
+  String get delete => 'Delete';
 
   @override
-  String get edit => 'עריכה';
+  String get edit => 'Editעריכה';
 
   @override
   String get retry => 'Retry';
@@ -1131,7 +1131,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get howItWorks => 'איך זה עובד';
 
   @override
-  String get backToBeeps => 'חזרה לצפצופים';
+  String get backToBeeps => 'Back to Beeps';
 
   @override
   String get loadingDetails => 'עקבו אחרי beepפרטים...';
@@ -2177,7 +2177,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$planet נמוך באופק ($altitude°)';
+    return '<PLACEHOLDER_0___נמוך באופק (__PLACEHOLDER_1_ °)';
   }
 
   @override
@@ -2185,7 +2185,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '$star בולט בגובה $altitude°';
+    return '_PLACEHOLDER_0__ בולטת ב-__PLACEHOLDER_1_גבהים';
   }
 
   @override
@@ -2304,27 +2304,27 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet ב- $altitude° - בולט';
+    return '_PLACEHOLDER_0_____PLACEHOLDER_1_ ° - בולט';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet ב- $altitude°';
+    return 'שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star בהיר מאוד ב-$altitude°';
+    return '<PLACEHOLDER_0____ בהיר מאוד ב-__PLACEHOLDER_1_ °_';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star בולט בגובה $altitude°';
+    return '_PLACEHOLDER_0__ בולטת ב-__PLACEHOLDER_1_גבהים';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star ב- $altitude°';
+    return 'שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_';
   }
 
   @override
@@ -2557,6 +2557,14 @@ class AppLocalizationsHe extends AppLocalizations {
       'לאפשר התראות קריטיות בשעות שקטות';
 
   @override
+  String get silenceNotificationsDuringSleepHours => 'הודעות שתיקה בשעות השינה';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Active_PLACEHOLDER_0____${startTime}__________________________________________________________________';
+  }
+
+  @override
   String get followingAlerts => 'בעקבות התראות';
 
   @override
@@ -2572,8 +2580,41 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '<PLACEHOLDER_0__הערות';
   }
+
+  @override
+  String get photo => 'צילום תמונה';
+
+  @override
+  String get video => 'וידאו';
+
+  @override
+  String get initializationComplete => 'העדיפות המלאה!';
+
+  @override
+  String get validatingEnvironment => 'אימות הסביבה...';
+
+  @override
+  String get requestingPermissions => 'לבקש הרשאות...';
+
+  @override
+  String get loadingAuthSession => 'עקבו אחרי auth Meeting...';
+
+  @override
+  String get checkingUserRegistration => 'בדיקת רישום משתמשים...';
+
+  @override
+  String get loadingPreferences => 'שמירה על העדפות...';
+
+  @override
+  String get settingUpLocalization => 'הקמת מקומיות...';
+
+  @override
+  String get checkingConnectivity => 'לבדוק קישוריות...';
+
+  @override
+  String get gatheringDeviceInfo => 'איסוף מידע של המכשיר...';
 
   @override
   String get weatherClear => 'Clear';
@@ -2618,11 +2659,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get heavyRain => 'גשם כבד';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return 'PLACEHOLDER_0___ מטוסים שזוהו בתוך _PLACEHOLDER_1___ ק\"מ (מיקומים נוכחיים)';
   }
 

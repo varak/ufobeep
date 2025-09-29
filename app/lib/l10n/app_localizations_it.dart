@@ -334,7 +334,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Nuvolosità: $percent%';
+    return 'Copertura cloud: __PLACEHOLDER_0_%';
   }
 
   @override
@@ -402,7 +402,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Attivo $endTime $startTime';
+    return 'Attivo $startTime $startTime';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$beepTitle ha commentato su $username';
+    return '$username ha commentato su $username';
   }
 
   @override
@@ -1060,7 +1060,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '$count testimoni';
+    return '__PLACEHOLDER_0_';
   }
 
   @override
@@ -2223,7 +2223,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '$altitude visibile a $planet° - potrebbero essere scambiati per aerei';
+    return '$planet visibile a $planet° - potrebbero essere scambiati per aerei';
   }
 
   @override
@@ -2237,12 +2237,12 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '$altitude prominente a $star° altitudine';
+    return '$star prominente a $star° altitudine';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$names stelle luminose visibili - $count';
+    return '$count stelle luminose visibili - $count';
   }
 
   @override
@@ -2356,27 +2356,27 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '${altitude}_ a $planet° - prominente';
+    return '${planet}_ a $planet° - prominente';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '${altitude}_ $planet';
+    return '${planet}_ $planet';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$altitude molto luminoso a $star°';
+    return '$star molto luminoso a $star°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$altitude prominente a $star° altitudine';
+    return '$star prominente a $star° altitudine';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '${altitude}_ $star';
+    return '${star}_ $star';
   }
 
   @override
@@ -2400,7 +2400,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '${radius}_ aeromobili rilevati in ${count}km';
+    return '${count}_ aeromobili rilevati in ${count}km';
   }
 
   @override
@@ -2426,7 +2426,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String analyzing(Object processor) {
-    return 'Analisi di $processor...';
+    return 'Analisi __PLACEHOLDER_0_...';
   }
 
   @override
@@ -2548,7 +2548,7 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String altitudeValue(String degrees) {
-    return '$degrees° altitudine';
+    return '__PLACEHOLDER_0_';
   }
 
   @override
@@ -2610,6 +2610,15 @@ class AppLocalizationsIt extends AppLocalizations {
       'Permettere avvisi critici durante le ore tranquille';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Cancella le notifiche durante le ore di sonno';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Attivo $startTime $startTime';
+  }
+
+  @override
   String get followingAlerts => 'Seguenti avvisi';
 
   @override
@@ -2625,8 +2634,41 @@ class AppLocalizationsIt extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '$count commenti';
   }
+
+  @override
+  String get photo => 'Foto';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get initializationComplete => 'Inizializzazione completa!';
+
+  @override
+  String get validatingEnvironment => 'Convalida ambiente...';
+
+  @override
+  String get requestingPermissions => 'Richiesta di autorizzazioni...';
+
+  @override
+  String get loadingAuthSession => 'Caricamento in corso...';
+
+  @override
+  String get checkingUserRegistration => 'Controllo registrazione utente...';
+
+  @override
+  String get loadingPreferences => 'Preferenze di caricamento...';
+
+  @override
+  String get settingUpLocalization => 'Impostare la localizzazione...';
+
+  @override
+  String get checkingConnectivity => 'Controllo della connettività...';
+
+  @override
+  String get gatheringDeviceInfo => 'Raccogliere informazioni dispositivo...';
 
   @override
   String get weatherClear => 'Libero';
@@ -2671,12 +2713,8 @@ class AppLocalizationsIt extends AppLocalizations {
   String get heavyRain => 'pioggia pesante';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return 'Aerei rilevati entro ${raggio}km (posizioni attuali)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '${count}_ aeromobili rilevati all\'interno __PLACEHOLDER_1_km (posizione corrente)';
   }
 
   @override

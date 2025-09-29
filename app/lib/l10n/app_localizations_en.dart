@@ -2589,6 +2589,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Allow critical alerts during quiet hours';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Silence notifications during sleep hours';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Active $startTime - $endTime';
+  }
+
+  @override
   String get followingAlerts => 'Following Alerts';
 
   @override
@@ -2606,6 +2615,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String commentsCount(int count) {
     return '$count comments';
   }
+
+  @override
+  String get photo => 'Photo';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get initializationComplete => 'Initialization complete!';
+
+  @override
+  String get validatingEnvironment => 'Validating environment...';
+
+  @override
+  String get requestingPermissions => 'Requesting permissions...';
+
+  @override
+  String get loadingAuthSession => 'Loading auth session...';
+
+  @override
+  String get checkingUserRegistration => 'Checking user registration...';
+
+  @override
+  String get loadingPreferences => 'Loading preferences...';
+
+  @override
+  String get settingUpLocalization => 'Setting up localization...';
+
+  @override
+  String get checkingConnectivity => 'Checking connectivity...';
+
+  @override
+  String get gatheringDeviceInfo => 'Gathering device info...';
 
   @override
   String get weatherClear => 'Clear';
@@ -2650,11 +2692,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get heavyRain => 'heavy rain';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '$count aircraft detected within ${radius}km (current positions)';
   }
 

@@ -4812,6 +4812,18 @@ abstract class AppLocalizations {
   /// **'Allow critical alerts during quiet hours'**
   String get allowCriticalAlertsDuringQuietHours;
 
+  /// No description provided for @silenceNotificationsDuringSleepHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Silence notifications during sleep hours'**
+  String get silenceNotificationsDuringSleepHours;
+
+  /// No description provided for @quietHoursActiveTimeRange.
+  ///
+  /// In en, this message translates to:
+  /// **'Active {startTime} - {endTime}'**
+  String quietHoursActiveTimeRange(String startTime, String endTime);
+
   /// No description provided for @followingAlerts.
   ///
   /// In en, this message translates to:
@@ -4841,6 +4853,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} comments'**
   String commentsCount(int count);
+
+  /// No description provided for @photo.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo'**
+  String get photo;
+
+  /// No description provided for @video.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get video;
+
+  /// No description provided for @initializationComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Initialization complete!'**
+  String get initializationComplete;
+
+  /// No description provided for @validatingEnvironment.
+  ///
+  /// In en, this message translates to:
+  /// **'Validating environment...'**
+  String get validatingEnvironment;
+
+  /// No description provided for @requestingPermissions.
+  ///
+  /// In en, this message translates to:
+  /// **'Requesting permissions...'**
+  String get requestingPermissions;
+
+  /// No description provided for @loadingAuthSession.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading auth session...'**
+  String get loadingAuthSession;
+
+  /// No description provided for @checkingUserRegistration.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking user registration...'**
+  String get checkingUserRegistration;
+
+  /// No description provided for @loadingPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading preferences...'**
+  String get loadingPreferences;
+
+  /// No description provided for @settingUpLocalization.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up localization...'**
+  String get settingUpLocalization;
+
+  /// No description provided for @checkingConnectivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking connectivity...'**
+  String get checkingConnectivity;
+
+  /// No description provided for @gatheringDeviceInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Gathering device info...'**
+  String get gatheringDeviceInfo;
 
   /// No description provided for @weatherClear.
   ///
@@ -4930,11 +5008,7 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count} aircraft detected within {radius}km (current positions)'**
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  );
+  String aircraftDetectedCurrentPositions(int count, String radius);
 
   /// No description provided for @dimSatellitesUnlikely.
   ///

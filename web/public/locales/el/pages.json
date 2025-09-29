@@ -2,5 +2,6 @@
   "welcomeTitle": "Καλώς ήρθατε στο UFOBeep",
   "settings": "Settings",
   "settingsTitle": "Settings",
-  "pageOf": "Σελίδα _{currentPage}__PLACEHOLDER_1_ (__PLACEHOLDER_2_ σύνολο μπιπ)"
+  "pageOf": "Σελίδα _{currentPage}__PLACEHOLDER_1_ (__PLACEHOLDER_2_ σύνολο μπιπ)",
+  "settingUpLocalization": "Setting εντοπισμού..."
 }

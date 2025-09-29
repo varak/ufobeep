@@ -1147,6 +1147,15 @@
   "commentsCount": "__PLACEHOLDER_0_ Kommentare",
   "photo": "Foto",
   "video": "Video",
+  "initializationComplete": "Initialisierung komplett!",
+  "validatingEnvironment": "Gültige Umgebung...",
+  "requestingPermissions": "Berechtigungen anfordern...",
+  "loadingAuthSession": "Laden einer Auth-Sitzung...",
+  "checkingUserRegistration": "Benutzerregistrierung prüfen...",
+  "loadingPreferences": "Vorlieben laden...",
+  "settingUpLocalization": "Lokalisierung einrichten...",
+  "checkingConnectivity": "Konnektivität prüfen...",
+  "gatheringDeviceInfo": "Informationen zum Gerät sammeln...",
   "@commentsCount": {
     "placeholders": {
       "count": {

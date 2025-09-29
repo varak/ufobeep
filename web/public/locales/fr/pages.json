@@ -2,5 +2,6 @@
   "welcomeTitle": "Bienvenue à UFOBeep",
   "settings": "Paramètres",
   "settingsTitle": "Paramètres",
-  "pageOf": "Page {currentPage} de {totalPages} ({totalCount} bips totaux)"
+  "pageOf": "Page {currentPage} de {totalPages} ({totalCount} bips totaux)",
+  "settingUpLocalization": "Mise en place de la localisation..."
 }

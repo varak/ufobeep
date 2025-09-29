@@ -687,6 +687,16 @@
   "unfollow": "Sluta följa",
   "unfollowAlert": "Sluta följa Alert",
   "commentsCount": "{count} kommentarer",
+  "photo": "Foto",
+  "video": "Video",
+  "initializationComplete": "Initialisering komplett!",
+  "validatingEnvironment": "Validera miljö...",
+  "requestingPermissions": "Begär tillstånd...",
+  "loadingAuthSession": "Loading auth session...",
+  "checkingUserRegistration": "Kontrollera användarregistrering...",
+  "loadingPreferences": "Loading preferenser...",
+  "checkingConnectivity": "Kontrollera anslutning...",
+  "gatheringDeviceInfo": "Insamling av enhet info...",
   "weatherClear": "Clear",
   "weatherClearSky": "klar himmel",
   "rain": "Regn",
@@ -802,5 +812,6 @@
   "ufobeepOnlySource": "UFOBeep endast",
   "alertRadius": "Alert Radius",
   "signInSubtitle": "Real-time UFO-observationsvarningar och MUFON-rapporter",
-  "invalidRange": "Ange ett nummer mellan 1 och 99999"
+  "invalidRange": "Ange ett nummer mellan 1 och 99999",
+  "settingUpLocalization": "Ställ in lokalisering..."
 }

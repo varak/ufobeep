@@ -5,8 +5,8 @@
   "cancel": "ביטול",
   "close": "סגור",
   "save": "להציל",
-  "delete": "למחוק",
-  "edit": "עריכה",
+  "delete": "Delete",
+  "edit": "Editעריכה",
   "retry": "Retry",
   "yes": "כן",
   "no": "לא",
@@ -541,7 +541,7 @@
   "sightingsMap": "🗺️ Sightings Map",
   "globalSightingNetwork": "רשת Sighting",
   "howItWorks": "איך זה עובד",
-  "backToBeeps": "חזרה לצפצופים",
+  "backToBeeps": "Back to Beeps",
   "loadingDetails": "עקבו אחרי beepפרטים...",
   "details": "פרטים",
   "location": "מיקום Location",
@@ -918,9 +918,9 @@
   "celestialNoPlanets": "אין כוכבי לכת בהירים שיכולים לטעות עבור עב\"מים",
   "celestialPlanetHigh": "_PLACEHOLDER_0__High Overhead (_{planet} °)",
   "celestialPlanetMedium": "_PLACEHOLDER_0___ גלוי ב-_PLACEHOLDER_1__ ° - יכול להיות שגוי עבור מטוסים",
-  "celestialPlanetLow": "{planet} נמוך באופק ({altitude}°)",
+  "celestialPlanetLow": "<PLACEHOLDER_0___נמוך באופק (__PLACEHOLDER_1_ °)",
   "celestialNoStars": "אין כוכבים בהירים במיוחד",
-  "celestialStarSingle": "{star} בולט בגובה {altitude}°",
+  "celestialStarSingle": "_PLACEHOLDER_0__ בולטת ב-__PLACEHOLDER_1_גבהים",
   "celestialStarsMultiple": "PLACEHOLDER_0__ בהיר כוכבים גלויים לעין -_PLACEHOLDER_1_____________________________________________________________________",
   "celestialSummaryDaylight": "תנאי תאורה",
   "celestialSummaryDark": "תנאי השמיים האפלים",
@@ -955,11 +955,11 @@
   "moonPhaseWaningCrescent": "סאהר",
   "planetBelowHorizon": "<PLACEHOLDER_0__ מתחת לאופק",
   "planetHighOverheadProminent": "_PLACEHOLDER_0__High Overhead (_{planet} °)",
-  "planetMidSkyProminent": "{planet} ב- {altitude}° - בולט",
-  "planetMidSky": "{planet} ב- {altitude}°",
-  "starVeryBright": "{star} בהיר מאוד ב-{altitude}°",
-  "starProminent": "{star} בולט בגובה {altitude}°",
-  "starVisible": "{star} ב- {altitude}°",
+  "planetMidSkyProminent": "_PLACEHOLDER_0_____PLACEHOLDER_1_ ° - בולט",
+  "planetMidSky": "שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_",
+  "starVeryBright": "<PLACEHOLDER_0____ בהיר מאוד ב-__PLACEHOLDER_1_ °_",
+  "starProminent": "_PLACEHOLDER_0__ בולטת ב-__PLACEHOLDER_1_גבהים",
+  "starVisible": "שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_",
   "altitudeShort": "אליט",
   "magnitudeShort": "מגדל",
   "satellitesVisibleMightExplain": "PLACEHOLDER_0_לוויינים גלויים - עשויים להסביר את הראייה",
@@ -1118,6 +1118,20 @@
   "startTime": "התחל זמן",
   "endTime": "סוף הזמן",
   "allowCriticalAlertsDuringQuietHours": "לאפשר התראות קריטיות בשעות שקטות",
+  "silenceNotificationsDuringSleepHours": "הודעות שתיקה בשעות השינה",
+  "quietHoursActiveTimeRange": "Active_PLACEHOLDER_0____{startTime}__________________________________________________________________",
+  "@quietHoursActiveTimeRange": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "9:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
   "followingAlerts": "בעקבות התראות",
   "activeCount": "PLACEHOLDER_0_ פעיל",
   "@activeCount": {
@@ -1130,6 +1144,26 @@
   },
   "unfollow": "עקבו",
   "unfollowAlert": "תגית: Unfollow",
+  "commentsCount": "<PLACEHOLDER_0__הערות",
+  "photo": "צילום תמונה",
+  "video": "וידאו",
+  "initializationComplete": "העדיפות המלאה!",
+  "validatingEnvironment": "אימות הסביבה...",
+  "requestingPermissions": "לבקש הרשאות...",
+  "loadingAuthSession": "עקבו אחרי auth Meeting...",
+  "checkingUserRegistration": "בדיקת רישום משתמשים...",
+  "loadingPreferences": "שמירה על העדפות...",
+  "settingUpLocalization": "הקמת מקומיות...",
+  "checkingConnectivity": "לבדוק קישוריות...",
+  "gatheringDeviceInfo": "איסוף מידע של המכשיר...",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "Clear",
   "weatherClearSky": "השמיים צלולים",
   "rain": "גשם",

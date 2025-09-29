@@ -1147,6 +1147,15 @@
   "commentsCount": "__PLACEHOLDER_0_コメント",
   "photo": "プロフィール",
   "video": "ビデオ",
+  "initializationComplete": "初期化完了!",
+  "validatingEnvironment": "検証環境...",
+  "requestingPermissions": "許可を求める...",
+  "loadingAuthSession": "Authセッションをロードする...",
+  "checkingUserRegistration": "ユーザー登録の確認...",
+  "loadingPreferences": "好みの読み込み...",
+  "settingUpLocalization": "ローカル化の設定.",
+  "checkingConnectivity": "接続チェック...",
+  "gatheringDeviceInfo": "デバイス情報収集.",
   "@commentsCount": {
     "placeholders": {
       "count": {

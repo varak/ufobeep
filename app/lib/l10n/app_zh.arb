@@ -1147,6 +1147,15 @@
   "commentsCount": "– PLACEHOLDER_ 0_ 注释",
   "photo": "图片",
   "video": "视频",
+  "initializationComplete": "启动完毕!",
+  "validatingEnvironment": "正在验证环境...",
+  "requestingPermissions": "请求权限...",
+  "loadingAuthSession": "正在装入认证会话...",
+  "checkingUserRegistration": "正在检查用户注册...",
+  "loadingPreferences": "正在装入首选项...",
+  "settingUpLocalization": "建立本地化...",
+  "checkingConnectivity": "正在检查连接...",
+  "gatheringDeviceInfo": "正在收集设备信息...",
   "@commentsCount": {
     "placeholders": {
       "count": {

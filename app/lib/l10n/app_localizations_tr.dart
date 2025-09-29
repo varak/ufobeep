@@ -15,7 +15,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get ok => 'TAMAM TAMAM';
 
   @override
-  String get cancel => 'İptal';
+  String get cancel => 'Cancel';
 
   @override
   String get close => 'Close';
@@ -24,10 +24,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get save => 'Kaydet';
 
   @override
-  String get delete => 'Silmek';
+  String get delete => 'Delete';
 
   @override
-  String get edit => 'Düzenlemek';
+  String get edit => 'Edit';
 
   @override
   String get retry => 'Retry';
@@ -45,7 +45,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get next => 'Sonraki';
 
   @override
-  String get done => 'Yapılmış';
+  String get done => 'Done';
 
   @override
   String get loading => 'Yükleniyor..';
@@ -402,12 +402,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Aktif $endTime - $startTime';
+    return 'Aktif $startTime - $startTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Sessiz saatler: $end - $start';
+    return 'Sessiz saatler: $start - $start';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$beepTitle, $username';
+    return '$username, $username';
   }
 
   @override
@@ -656,7 +656,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add More Add';
 
   @override
-  String get addMedia => 'Medya Ekle';
+  String get addMedia => 'Media Add Media';
 
   @override
   String get retakePhoto => 'Retake Photo';
@@ -2056,7 +2056,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get dataExportFailed => 'Veri ihraç etmek için başarısız oldu';
 
   @override
-  String get deleteAccount => 'Hesabı Sil';
+  String get deleteAccount => 'Delete Hesabı';
 
   @override
   String get deleteAccountDescription =>
@@ -2073,7 +2073,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get deletingAccount => 'Deleting...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Hesabı Sil';
+  String get deleteAccountConfirmTitle => 'Delete Hesabı';
 
   @override
   String get deleteAccountConfirmMessage =>
@@ -2088,7 +2088,7 @@ class AppLocalizationsTr extends AppLocalizations {
       '• • • Profiliniz ve kullanıcı adı\n• • • Bütün arılarınız ve raporlarınız\n• • • Tüm yorumlarınız\n• Cihaz kayıt verileri\n• Konum ve tercih verileri';
 
   @override
-  String get deleteAccountPermanent => 'Kalıcı Olarak Sil';
+  String get deleteAccountPermanent => 'Delete Sürekli';
 
   @override
   String get accountDeletedSuccessfully => 'Hesap silindi başarıyla';
@@ -2146,7 +2146,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Görmek, MUFON raporlarına erişmek ve diğer gök gözlemcileriyle bağlantı kurmak.';
 
   @override
-  String get skip => 'Atlamak';
+  String get skip => 'Skip';
 
   @override
   String get getStarted => 'Başlayın';
@@ -2209,17 +2209,17 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '$altitude yüksek üst ($planet°) - çok belirgin';
+    return '$planet yüksek üst ($planet°) - çok belirgin';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '$altitude, $planet°\'de görünür - uçaklar için yanlış olabilir';
+    return '$planet, $planet°\'de görünür - uçaklar için yanlış olabilir';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$altitude düşük ufukta ($planet°)';
+    return '$planet düşük ufukta ($planet°)';
   }
 
   @override
@@ -2228,12 +2228,12 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '$altitude, $star° yükseklik';
+    return '$star, $star° yükseklik';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$names parlak yıldızlar görünür - $count';
+    return '$count parlak yıldızlar görünür - $count';
   }
 
   @override
@@ -2342,32 +2342,32 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$altitude yüksek üst ($planet°) - çok belirgin';
+    return '$planet yüksek üst ($planet°) - çok belirgin';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$altitude at $planet° - belirgin';
+    return '$planet at $planet° - belirgin';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$altitude at $planet°';
+    return '$planet at $planet°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$altitude çok parlak $star°';
+    return '$star çok parlak $star°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$altitude, $star° yükseklik';
+    return '$star, $star° yükseklik';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$altitude at $star°';
+    return '$star at $star°';
   }
 
   @override
@@ -2391,7 +2391,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$radius uçakları, ${count}km';
+    return '$count uçakları, ${count}km';
   }
 
   @override
@@ -2554,7 +2554,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get gettingLocation => 'Konumunuzu almak...';
 
   @override
-  String get media => 'Medya';
+  String get media => 'Media';
 
   @override
   String get locationRequired => 'Konum Required';
@@ -2601,6 +2601,15 @@ class AppLocalizationsTr extends AppLocalizations {
       'Sessiz saatler boyunca kritik uyarılara izin verin';
 
   @override
+  String get silenceNotificationsDuringSleepHours =>
+      'Uyku saatleri sırasında Sessiz bildirimleri';
+
+  @override
+  String quietHoursActiveTimeRange(String startTime, String endTime) {
+    return 'Aktif $startTime - $startTime';
+  }
+
+  @override
   String get followingAlerts => 'Takip Uyarıları';
 
   @override
@@ -2616,8 +2625,42 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '$count comments';
+    return '$count yorum';
   }
+
+  @override
+  String get photo => 'Fotoğraflar';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String get initializationComplete => 'Başlangıç tamamlandı!';
+
+  @override
+  String get validatingEnvironment => 'Geçerlilik ortamı...';
+
+  @override
+  String get requestingPermissions => 'İzin talep etmek...';
+
+  @override
+  String get loadingAuthSession => 'Yükleniyor auth session...';
+
+  @override
+  String get checkingUserRegistration =>
+      'Kullanıcı kayıtlarını kontrol edin...';
+
+  @override
+  String get loadingPreferences => 'Yükleniyor tercihler...';
+
+  @override
+  String get settingUpLocalization => 'Yerelleşme kurmak...';
+
+  @override
+  String get checkingConnectivity => 'Bağlantıyı kontrol edin...';
+
+  @override
+  String get gatheringDeviceInfo => 'Gathering device info...';
 
   @override
   String get weatherClear => 'Clear';
@@ -2662,12 +2705,8 @@ class AppLocalizationsTr extends AppLocalizations {
   String get heavyRain => 'ağır yağmur yağmur';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '$radius uçakları, ${count}km (şimdiki pozisyonlar) içinde tespit edildi';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count uçakları, ${count}km (şimdiki pozisyonlar) içinde tespit edildi';
   }
 
   @override

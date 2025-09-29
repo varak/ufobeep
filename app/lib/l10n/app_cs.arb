@@ -1145,6 +1145,17 @@
   "unfollow": "Nesledovat",
   "unfollowAlert": "Poplach bez sledování",
   "commentsCount": "_ _ PLACETETERER _ 0 _ _ komentáře",
+  "photo": "Fotografie",
+  "video": "Video",
+  "initializationComplete": "Inicializace dokončena!",
+  "validatingEnvironment": "Potvrzující prostředí...",
+  "requestingPermissions": "Žádám o povolení...",
+  "loadingAuthSession": "Nahrávám auth relace...",
+  "checkingUserRegistration": "Kontroluji registraci uživatele...",
+  "loadingPreferences": "Načítání preferencí...",
+  "settingUpLocalization": "Nastavení lokalizace...",
+  "checkingConnectivity": "Kontroluji konektivitu...",
+  "gatheringDeviceInfo": "Informace o shromažďovacím zařízení...",
   "@commentsCount": {
     "placeholders": {
       "count": {

@@ -689,6 +689,14 @@
   "commentsCount": "__PLACEHOLDER_0_コメント",
   "photo": "プロフィール",
   "video": "ビデオ",
+  "initializationComplete": "初期化完了!",
+  "validatingEnvironment": "検証環境...",
+  "requestingPermissions": "許可を求める...",
+  "loadingAuthSession": "Authセッションをロードする...",
+  "checkingUserRegistration": "ユーザー登録の確認...",
+  "loadingPreferences": "好みの読み込み...",
+  "checkingConnectivity": "接続チェック...",
+  "gatheringDeviceInfo": "デバイス情報収集.",
   "weatherClear": "クリア",
   "weatherClearSky": "澄んだ空",
   "rain": "ログイン",
@@ -804,5 +812,6 @@
   "ufobeepOnlySource": "UFOBeepのみ",
   "alertRadius": "アラート半径",
   "signInSubtitle": "リアルタイム UFO 視線アラートと MUFON レポート",
-  "invalidRange": "1と99999の間に数字を入力してください"
+  "invalidRange": "1と99999の間に数字を入力してください",
+  "settingUpLocalization": "ローカル化の設定."
 }

@@ -1118,6 +1118,20 @@
   "startTime": "Aloitusaika",
   "endTime": "Loppuaika",
   "allowCriticalAlertsDuringQuietHours": "Salli kriittiset kuulutukset hiljaisina tunteina",
+  "silenceNotificationsDuringSleepHours": "Hiljaisuusilmoitukset nukkumistuntien aikana",
+  "quietHoursActiveTimeRange": "Aktiivinen __PASSIHOLDER_0__ - __PASSIHOLDER_1__",
+  "@quietHoursActiveTimeRange": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "9:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
   "followingAlerts": "Kuulutusten jälkeen",
   "activeCount": "_Placeholder_0__ aktiivinen",
   "@activeCount": {
@@ -1130,6 +1144,26 @@
   },
   "unfollow": "Ei seuraa",
   "unfollowAlert": "Noudata varoitusta",
+  "commentsCount": "__Placeholder_0__ comments",
+  "photo": "Valokuva",
+  "video": "Video",
+  "initializationComplete": "Alustus valmis!",
+  "validatingEnvironment": "Validoidaan ympäristö...",
+  "requestingPermissions": "Pyydän oikeuksia...",
+  "loadingAuthSession": "Ladataan auth-istuntoa...",
+  "checkingUserRegistration": "Tarkistan käyttäjärekisterin...",
+  "loadingPreferences": "Ladataan asetuksia...",
+  "settingUpLocalization": "Lokalisointi...",
+  "checkingConnectivity": "Tarkistan yhteyksiä...",
+  "gatheringDeviceInfo": "Keräyslaitteen tiedot...",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "Tyhjennä",
   "weatherClearSky": "kirkas taivas",
   "rain": "Sade",
@@ -1167,7 +1201,7 @@
     }
   },
   "mufonReportingDate": "MUFON Raportointipäivä",
-  "satelliteNameDirection": "{name} - {direction}",
+  "satelliteNameDirection": "{name} - __PLACEHOLDER_1_",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {

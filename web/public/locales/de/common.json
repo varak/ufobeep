@@ -689,6 +689,14 @@
   "commentsCount": "__PLACEHOLDER_0_ Kommentare",
   "photo": "Foto",
   "video": "Video",
+  "initializationComplete": "Initialisierung komplett!",
+  "validatingEnvironment": "Gültige Umgebung...",
+  "requestingPermissions": "Berechtigungen anfordern...",
+  "loadingAuthSession": "Laden einer Auth-Sitzung...",
+  "checkingUserRegistration": "Benutzerregistrierung prüfen...",
+  "loadingPreferences": "Vorlieben laden...",
+  "checkingConnectivity": "Konnektivität prüfen...",
+  "gatheringDeviceInfo": "Informationen zum Gerät sammeln...",
   "weatherClear": "Klar",
   "weatherClearSky": "klarer himmel",
   "rain": "Regen",
@@ -804,5 +812,6 @@
   "ufobeepOnlySource": "UFOBeep nur",
   "alertRadius": "Über uns",
   "signInSubtitle": "Echtzeit-UFO-Sichtungen und MUFON-Berichte",
-  "invalidRange": "Bitte geben Sie eine Nummer zwischen 1 und 99999 ein"
+  "invalidRange": "Bitte geben Sie eine Nummer zwischen 1 und 99999 ein",
+  "settingUpLocalization": "Lokalisierung einrichten..."
 }
