@@ -1512,7 +1512,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
             ),
             const SizedBox(height: 12),
             Text(
-              explanation.isNotEmpty ? explanation : AppLocalizations.of(context)!.noSatellitesVisibleAtTime,
+              AstronomicalTranslationService.translateSatelliteSummary(totalNow, satellitesOverhead.length, couldExplain, AppLocalizations.of(context)!),
               style: TextStyle(
                 color: couldExplain ? AppColors.warning : AppColors.textSecondary,
                 fontSize: 15,
@@ -1541,7 +1541,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          'See all $totalNow satellites',
+                          AppLocalizations.of(context)!.seeAllSatellites(totalNow),
                           style: const TextStyle(
                             color: AppColors.brandPrimary,
                             fontSize: 12,
@@ -1572,7 +1572,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          'Show less',
+                          AppLocalizations.of(context)!.showLess,
                           style: const TextStyle(
                             color: AppColors.brandPrimary,
                             fontSize: 12,
