@@ -1409,4 +1409,26 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     );
   }
 
+  /// Build translation section for alert descriptions
+  Widget _buildTranslationSection(Alert alert) {
+    final userPrefs = ref.read(userPreferencesProvider);
+    final userLanguage = userPrefs?.language ?? 'en';
+
+    // Use database original_language for smart translation decisions
+    final contentLanguage = alert.originalLanguage ?? 'unknown';
+
+    return TranslationButton(
+      originalText: alert.description ?? '',
+      targetLanguage: userLanguage,
+      contentLanguage: contentLanguage,
+      isTranslated: _isDescriptionTranslated,
+      onTranslationChanged: (translatedText, isTranslated) {
+        setState(() {
+          _translatedDescription = translatedText;
+          _isDescriptionTranslated = isTranslated;
+        });
+      },
+    );
+  }
+
 }
