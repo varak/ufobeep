@@ -1063,7 +1063,7 @@ class AppLocalizationsCs extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'neznámý';
+  String get unknown => 'Neznámé';
 
   @override
   String get report => 'zpráva';
@@ -2426,4 +2426,128 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get processorCelestial => 'nebeské objekty';
+
+  @override
+  String get calculatingCelestialData => 'Vypočítávám nebeská data...';
+
+  @override
+  String get sunLabel => 'Slunce';
+
+  @override
+  String get moonLabel => 'Měsíc';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Planety: _ _ PLACETETELER _ 0 _ _ viditelný';
+  }
+
+  @override
+  String get starsLabel => 'Hvězdy';
+
+  @override
+  String get planetsLabel => 'Planety';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'Měsíční (_ _ PLACETETELER _ 0 _ _)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'Žádné satelity nebyly viditelné v přesný čas vašeho pozorování';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'Satelity viditelné nad hlavou při pozorování času a umístění';
+
+  @override
+  String get belowHorizon => 'pod horizontem';
+
+  @override
+  String get analysisFailedGeneric => 'Analýza selhala';
+
+  @override
+  String get unknownWeather => 'Neznámé';
+
+  @override
+  String get noWeatherDescription => 'Bez popisu';
+
+  @override
+  String get altitudeAbbrev => 'Alt';
+
+  @override
+  String get azimuthAbbrev => 'Az';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'Satelity (_ _ PLACETETELER _ 0 _ _ viditelné nyní)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'Sun: _ _ PLACETETELER _ 0 _ _';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'Měsíc: _ _ PLACETETELER _ 0 _ _';
+  }
+
+  @override
+  String get unknownPlanet => 'Neznámá planeta';
+
+  @override
+  String get unknownStar => 'Neznámá hvězda';
+
+  @override
+  String get unknownSatellite => 'Neznámý satelit';
+
+  @override
+  String get unknownDirection => 'neznámý směr';
+
+  @override
+  String get brightStars => 'Světlé hvězdy';
+
+  @override
+  String get satellites => 'Satelity';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'Viz všechny _ _ PLACETETELER _ 0 _ _ satelity';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'Maximální výška: _ _ PLACETETERER _ 0 _ _ °';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'Velikost: _ _ PLACETETERER _ 0 _ _';
+  }
+
+  @override
+  String get unknownGeneric => 'Neznámé';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '_ _ PLACETETERER _ 0 _ _ ° nadmořská výška';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '_ _ PLACETETELER _ 0 _ _ ° azimut';
+  }
+
+  @override
+  String get noCelestialDataAvailable =>
+      'Nejsou k dispozici žádné nebeské údaje.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '_ _ PLACETIER _ 0 _ _ - _ _ PLACETIER _ 1 _ _';
+  }
 }

@@ -1076,7 +1076,7 @@ class AppLocalizationsRu extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'неизвестный';
+  String get unknown => 'Неизвестный';
 
   @override
   String get report => 'доклад';
@@ -2453,4 +2453,127 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get processorCelestial => 'небесные объекты';
+
+  @override
+  String get calculatingCelestialData => 'Расчет небесных данных...';
+
+  @override
+  String get sunLabel => 'Солнце';
+
+  @override
+  String get moonLabel => 'Луна';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Планеты: $count видимые';
+  }
+
+  @override
+  String get starsLabel => 'Звезды';
+
+  @override
+  String get planetsLabel => 'Планеты';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'Луна ($phase)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'Спутников не было видно в точное время вашего наблюдения';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'Спутники, видимые над головой при наблюдении времени и местоположения';
+
+  @override
+  String get belowHorizon => 'ниже горизонта';
+
+  @override
+  String get analysisFailedGeneric => 'Анализ провалился';
+
+  @override
+  String get unknownWeather => 'Неизвестный';
+
+  @override
+  String get noWeatherDescription => 'Нет описания';
+
+  @override
+  String get altitudeAbbrev => 'Альт';
+
+  @override
+  String get azimuthAbbrev => 'А';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'Спутники ($count теперь видны)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'Солнце: $description';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'Луна: $description';
+  }
+
+  @override
+  String get unknownPlanet => 'Неизвестная планета';
+
+  @override
+  String get unknownStar => 'Неизвестная звезда';
+
+  @override
+  String get unknownSatellite => 'Неизвестный спутник';
+
+  @override
+  String get unknownDirection => 'неизвестное направление';
+
+  @override
+  String get brightStars => 'Яркие звезды';
+
+  @override
+  String get satellites => 'Спутники';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'Смотреть все $count';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'Высота Макса: $degrees°';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'Величина: $value';
+  }
+
+  @override
+  String get unknownGeneric => 'Неизвестный';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '$degrees° высота';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '$degrees° азимут';
+  }
+
+  @override
+  String get noCelestialDataAvailable => 'Никаких небесных данных.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '$name - $direction';
+  }
 }

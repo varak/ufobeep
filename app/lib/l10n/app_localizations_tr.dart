@@ -1067,7 +1067,7 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'bilinmeyen';
+  String get unknown => 'Bilinmeyen';
 
   @override
   String get report => 'rapor';
@@ -2432,4 +2432,127 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get processorCelestial => 'temel nesneler';
+
+  @override
+  String get calculatingCelestialData => 'Mezarsal verileri hesaplayın...';
+
+  @override
+  String get sunLabel => 'Güneş';
+
+  @override
+  String get moonLabel => 'Moon';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Gezegenler: $count görünür';
+  }
+
+  @override
+  String get starsLabel => 'Yıldızlar';
+
+  @override
+  String get planetsLabel => 'Gezegenler';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'Ay ($phase)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'Hiçbir uydu, görüşünüzün tam zamanında görünür değildi';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'Uydular, zamanı ve yeri göz önünde bulunduruyor';
+
+  @override
+  String get belowHorizon => 'aşağıda ufk';
+
+  @override
+  String get analysisFailedGeneric => 'Analiz başarısız oldu';
+
+  @override
+  String get unknownWeather => 'Bilinmeyen';
+
+  @override
+  String get noWeatherDescription => 'Hiçbir açıklama';
+
+  @override
+  String get altitudeAbbrev => 'Alt';
+
+  @override
+  String get azimuthAbbrev => 'Az';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'Uydular ($count şimdi görünür)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'Güneş: $description';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'Ay: $description';
+  }
+
+  @override
+  String get unknownPlanet => 'Bilinmeyen Gezegen';
+
+  @override
+  String get unknownStar => 'Bilinmeyen Star';
+
+  @override
+  String get unknownSatellite => 'Bilinmeyen Uydu';
+
+  @override
+  String get unknownDirection => 'bilinmeyen yön';
+
+  @override
+  String get brightStars => 'Parlak Yıldızlar';
+
+  @override
+  String get satellites => 'Uydular';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'Tüm $count uydular';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'Max yükseklik: $degrees°';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'Magnitude: $value';
+  }
+
+  @override
+  String get unknownGeneric => 'Bilinmeyen';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '$degrees° yükseklik';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '$degrees° azimuth';
+  }
+
+  @override
+  String get noCelestialDataAvailable => 'Mevcut sayısız veri yok.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '$name - $direction';
+  }
 }

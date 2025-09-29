@@ -1064,7 +1064,7 @@ class AppLocalizationsDa extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'ukendt';
+  String get unknown => 'Ukendt';
 
   @override
   String get report => 'rapport';
@@ -2430,4 +2430,127 @@ class AppLocalizationsDa extends AppLocalizations {
 
   @override
   String get processorCelestial => 'himmelobjekter';
+
+  @override
+  String get calculatingCelestialData => 'Beregning af himmelsk data...';
+
+  @override
+  String get sunLabel => 'Sol';
+
+  @override
+  String get moonLabel => 'Måne';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Planeter: _ _ PLACEREPORT _ 0 _ _ visible';
+  }
+
+  @override
+  String get starsLabel => 'Stjerner';
+
+  @override
+  String get planetsLabel => 'Planeter';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'Måne (_ _ PLACEREPER _ 0 _ _)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'Ingen satellitter var synlige på det nøjagtige tidspunkt for din observation';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'Satellitter synlige overhead ved observation tid & placering';
+
+  @override
+  String get belowHorizon => 'under horisonten';
+
+  @override
+  String get analysisFailedGeneric => 'Analyse mislykkedes';
+
+  @override
+  String get unknownWeather => 'Ukendt';
+
+  @override
+  String get noWeatherDescription => 'Ingen beskrivelse';
+
+  @override
+  String get altitudeAbbrev => 'Alt';
+
+  @override
+  String get azimuthAbbrev => 'Az';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'Satellitter (_ _ PLACEREPER _ 0 _ _ synlige nu)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'Sun: _ _ PLACEREPER _ 0 _ _';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'Måne: _ _ PLACEREPORT _ 0 _ _';
+  }
+
+  @override
+  String get unknownPlanet => 'Ukendt planet';
+
+  @override
+  String get unknownStar => 'Ukendt stjerne';
+
+  @override
+  String get unknownSatellite => 'Ukendt satellit';
+
+  @override
+  String get unknownDirection => 'ukendt retning';
+
+  @override
+  String get brightStars => 'Lyse stjerner';
+
+  @override
+  String get satellites => 'Satellitter';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'Se alle _ _ PLACEREPORT _ 0 _ _ satellitter';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'Maks. højde: _ _ PLACEREPORT _ 0 _ _ °';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'Størrelse: _ _ PLACEREPORT _ 0 _ _';
+  }
+
+  @override
+  String get unknownGeneric => 'Ukendt';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '_ _ PLACEREPORT _ 0 _ _ _ ° højde';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '_ _ PLACEREPORT _ 0 _ _ _ ° azimuth';
+  }
+
+  @override
+  String get noCelestialDataAvailable => 'Der foreligger ingen himmelsk data.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '_ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _';
+  }
 }

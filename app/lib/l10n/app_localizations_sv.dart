@@ -1064,7 +1064,7 @@ class AppLocalizationsSv extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'okänd';
+  String get unknown => 'Okänd';
 
   @override
   String get report => 'rapportrapport';
@@ -2422,4 +2422,127 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get processorCelestial => 'himmelska föremål';
+
+  @override
+  String get calculatingCelestialData => 'Beräkning av himmelska data...';
+
+  @override
+  String get sunLabel => 'Sol sol sol solen';
+
+  @override
+  String get moonLabel => 'Månen';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Planeter: __PLACEHOLDER_0_ synliga';
+  }
+
+  @override
+  String get starsLabel => 'Stjärnor';
+
+  @override
+  String get planetsLabel => 'Planeter';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'Månen (_PLACEHOLDER_0__)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'Inga satelliter var synliga vid exakt tidpunkt för din observation';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'Satelliter synliga överhuvudet vid observationstid och plats';
+
+  @override
+  String get belowHorizon => 'under horisonten';
+
+  @override
+  String get analysisFailedGeneric => 'Analys misslyckades';
+
+  @override
+  String get unknownWeather => 'Okänd';
+
+  @override
+  String get noWeatherDescription => 'Ingen beskrivning';
+
+  @override
+  String get altitudeAbbrev => 'Alt';
+
+  @override
+  String get azimuthAbbrev => 'Az';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'Satelliter (__PLACEHOLDER_0_ syns nu)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'Solen: ${description}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'Månen: ${description}__';
+  }
+
+  @override
+  String get unknownPlanet => 'Okänd planet';
+
+  @override
+  String get unknownStar => 'Okänd stjärna';
+
+  @override
+  String get unknownSatellite => 'Okänd satellit';
+
+  @override
+  String get unknownDirection => 'okänd riktning';
+
+  @override
+  String get brightStars => 'Bright Stars';
+
+  @override
+  String get satellites => 'Satelliter';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'Se alla satelliter $count';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'Max höjd: __PLACEHOLDER_0_°';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'Magnitud: $value';
+  }
+
+  @override
+  String get unknownGeneric => 'Okänd';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '__PLACEHOLDER_0_° höjd';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '__PLACEHOLDER_0_° azimuth';
+  }
+
+  @override
+  String get noCelestialDataAvailable => 'Inga himmelska data tillgängliga.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '$name ${direction}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+  }
 }

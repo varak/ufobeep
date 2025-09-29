@@ -2351,4 +2351,125 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get processorCelestial => '연락처';
+
+  @override
+  String get calculatingCelestialData => 'Celestial 데이터를 계산 ...';
+
+  @override
+  String get sunLabel => '(주)';
+
+  @override
+  String get moonLabel => '이름 *';
+
+  @override
+  String planetsVisible(int count) {
+    return '플래닛: $count';
+  }
+
+  @override
+  String get starsLabel => '이름 *';
+
+  @override
+  String get planetsLabel => '플래닛';
+
+  @override
+  String moonWithPhase(String phase) {
+    return '달 ($phase)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime => '위성이 당신의 광경의 정확한 시간에 볼 수 없습니다';
+
+  @override
+  String get satellitesVisibleOverheadAtTime => '광경 시간 및 위치에 눈에 보이는 오버 헤드';
+
+  @override
+  String get belowHorizon => '수평선의 밑에';
+
+  @override
+  String get analysisFailedGeneric => '분석 실패';
+
+  @override
+  String get unknownWeather => '이름 *';
+
+  @override
+  String get noWeatherDescription => '설명 없음';
+
+  @override
+  String get altitudeAbbrev => '사이트맵';
+
+  @override
+  String get azimuthAbbrev => '아사쿠사';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return '위성 ($count 지금 볼 수)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return '태양: $description';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return '달: $description';
+  }
+
+  @override
+  String get unknownPlanet => '알 수없는 행성';
+
+  @override
+  String get unknownStar => '알 수없는 별';
+
+  @override
+  String get unknownSatellite => '알 수없는 위성';
+
+  @override
+  String get unknownDirection => '알 수없는 방향';
+
+  @override
+  String get brightStars => '밝은 별';
+
+  @override
+  String get satellites => '위성 TV';
+
+  @override
+  String seeAllSatellites(int count) {
+    return '모든 $count 위성보기';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return '최대 고도: ₢ 킹';
+  }
+
+  @override
+  String magnitude(String value) {
+    return '경도: ₢ 킹';
+  }
+
+  @override
+  String get unknownGeneric => '이름 *';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '$degrees° 고도';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '$degrees° azimuth에 대하여';
+  }
+
+  @override
+  String get noCelestialDataAvailable => '유효한 celestial 자료 없음.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '$name - $direction';
+  }
 }

@@ -2422,4 +2422,127 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get processorCelestial => 'आकाशीय वस्तुएं';
+
+  @override
+  String get calculatingCelestialData => 'खगोलीय डेटा की गणना ...';
+
+  @override
+  String get sunLabel => 'सूर्य';
+
+  @override
+  String get moonLabel => 'चाँद';
+
+  @override
+  String planetsVisible(int count) {
+    return 'ग्रह: __PLACEHOLDER_0_ दृश्यमान';
+  }
+
+  @override
+  String get starsLabel => 'स्टार';
+
+  @override
+  String get planetsLabel => 'ग्रह';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'चंद्र (_PLACEHOLDER_0___)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'आपके दर्शन के सटीक समय पर कोई उपग्रह दिखाई नहीं देता';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'उपग्रह दृष्टि समय और स्थान पर दिखाई देते हैं';
+
+  @override
+  String get belowHorizon => 'क्षितिज के नीचे';
+
+  @override
+  String get analysisFailedGeneric => 'विश्लेषण विफल';
+
+  @override
+  String get unknownWeather => 'अज्ञात';
+
+  @override
+  String get noWeatherDescription => 'कोई विवरण नहीं';
+
+  @override
+  String get altitudeAbbrev => 'Alt';
+
+  @override
+  String get azimuthAbbrev => 'Az';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'उपग्रह (_PLACEHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'सूर्य: ${description}_';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'चंद्रमा: $description';
+  }
+
+  @override
+  String get unknownPlanet => 'अज्ञात ग्रह';
+
+  @override
+  String get unknownStar => 'अज्ञात स्टार';
+
+  @override
+  String get unknownSatellite => 'अज्ञात उपग्रह';
+
+  @override
+  String get unknownDirection => 'अज्ञात दिशा';
+
+  @override
+  String get brightStars => 'ब्राइट स्टार';
+
+  @override
+  String get satellites => 'उपग्रह';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'सभी देखें $count उपग्रह';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'अधिकतम ऊंचाई: 0 _ 0 _ 0';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'आयाम: _ _ _ _ _ _ _ _ _';
+  }
+
+  @override
+  String get unknownGeneric => 'अज्ञात';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '$degrees° ऊंचाई';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return 'Azimuth';
+  }
+
+  @override
+  String get noCelestialDataAvailable => 'उपलब्ध नहीं है।.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _';
+  }
 }

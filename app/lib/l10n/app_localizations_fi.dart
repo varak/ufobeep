@@ -1063,7 +1063,7 @@ class AppLocalizationsFi extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'tuntematon';
+  String get unknown => 'Tuntematon';
 
   @override
   String get report => 'raportti';
@@ -2424,4 +2424,127 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get processorCelestial => 'taivaankappaleet';
+
+  @override
+  String get calculatingCelestialData => 'Lasketaan taivaallisia tietoja...';
+
+  @override
+  String get sunLabel => 'Su';
+
+  @override
+  String get moonLabel => 'Kuu';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Planeetat: __PAIKKAHOLDER_0_ näkyvissä';
+  }
+
+  @override
+  String get starsLabel => 'Tähdet';
+
+  @override
+  String get planetsLabel => 'Planeetat';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'Kuu (___PASSIHOLDER_0__)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'Satelliitteja ei näkynyt tarkkana havaintoajankohtana';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'Satelliitit näkyvät yläpuolella havaintohetkellä ja paikan päällä';
+
+  @override
+  String get belowHorizon => 'horisontin alapuolella';
+
+  @override
+  String get analysisFailedGeneric => 'Analyysi epäonnistui';
+
+  @override
+  String get unknownWeather => 'Tuntematon';
+
+  @override
+  String get noWeatherDescription => 'Ei kuvausta';
+
+  @override
+  String get altitudeAbbrev => 'Alt';
+
+  @override
+  String get azimuthAbbrev => 'Az';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'Satelliitit (__Placeholder_0_ näkyvät nyt)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'Aurinko: __PAIKKAHOLDER_0___';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'Kuu: __PAIKKAHOLDER_0__';
+  }
+
+  @override
+  String get unknownPlanet => 'Tuntematon planeetta';
+
+  @override
+  String get unknownStar => 'Tuntematon tähti';
+
+  @override
+  String get unknownSatellite => 'Tuntematon satelliitti';
+
+  @override
+  String get unknownDirection => 'tuntematon suunta';
+
+  @override
+  String get brightStars => 'Kirkkaat tähdet';
+
+  @override
+  String get satellites => 'Satelliitit';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'Katso kaikki __PAIKKAHOLDER_0_ satelliitit';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'Suurin korkeus merenpinnasta: _Placeholder_0__°';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'Merkitys: __PAIKKAHOLDER_0___';
+  }
+
+  @override
+  String get unknownGeneric => 'Tuntematon';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '_Placeholder_0__° korkeus';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '__Placeholder_0_° azimuth';
+  }
+
+  @override
+  String get noCelestialDataAvailable => 'Ei taivaallista tietoa.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '$name - __PLACEHOLDER_1_';
+  }
 }

@@ -978,5 +978,129 @@
   "processorLocation": "פרטי מיקום",
   "processorAircraft": "מטוס סמוך",
   "processorSatellites": "עמדות לוויין",
-  "processorCelestial": "אובייקטים שמיים"
+  "processorCelestial": "אובייקטים שמיים",
+  "calculatingCelestialData": "חישוב נתונים שמימיים...",
+  "sunLabel": "השמש",
+  "moonLabel": "הירח",
+  "planetsVisible": "Planets:_PLACEHOLDER_0_ גלוי",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "כוכבים",
+  "planetsLabel": "כוכבי לכת",
+  "moonWithPhase": "מון (_PLACEHOLDER_0_______________)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "שום לווינים לא נראו בזמן המדויק של הראייה שלך",
+  "satellitesVisibleOverheadAtTime": "לוויינים גלויים לעין בזמן ובמיקום",
+  "belowHorizon": "מתחת האופק",
+  "analysisFailedGeneric": "ניתוח נכשל",
+  "unknownWeather": "לא ידוע",
+  "noWeatherDescription": "אין תיאור",
+  "altitudeAbbrev": "אליט",
+  "azimuthAbbrev": "אזאז",
+  "satellitesVisibleNow": "לוויינים (_PLACEHOLDER_0__ גלויים עכשיו)",
+  "sunWithDescription": "שם הסרטון: PLACEHOLDER_0__________",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "שם הסרטון: PLACEHOLDER_0_____",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "כוכב לכת לא ידוע",
+  "unknownStar": "כוכב לא ידוע",
+  "unknownSatellite": "לוויין לא ידוע",
+  "unknownDirection": "כיוון לא ידוע",
+  "brightStars": "כוכבים בהירים",
+  "satellites": "לוויינים",
+  "seeAllSatellites": "שם הסרטון: PLACEHOLDER_0_לוויינים",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "גובה מקס: PLACEHOLDER_0_ °_",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "כבוד: שם הסרטון: PLACEHOLDER_0______",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "לא ידוע",
+  "altitudeValue": "PL_PLACEHOLDER_0_גבהים",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "שם הסרטון: PLACEHOLDER_0_ ° Azimuth",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "אין נתונים שמיים זמינים.",
+  "satelliteNameDirection": "שם הסרטון: PLACEHOLDER__0_____{direction}______________________________________________________________________________",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

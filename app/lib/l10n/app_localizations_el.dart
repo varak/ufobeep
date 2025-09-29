@@ -1071,7 +1071,7 @@ class AppLocalizationsEl extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'άγνωστο';
+  String get unknown => 'Άγνωστο';
 
   @override
   String get report => 'έκθεση';
@@ -2458,4 +2458,128 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get processorCelestial => 'ουράνια αντικείμενα';
+
+  @override
+  String get calculatingCelestialData => 'Υπολογίζοντας ουράνια δεδομένα...';
+
+  @override
+  String get sunLabel => 'Ήλιος';
+
+  @override
+  String get moonLabel => 'Σελήνη';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Πλανήτες: __PLACEHOLDER_0_ ορατοί';
+  }
+
+  @override
+  String get starsLabel => 'Άστρα';
+
+  @override
+  String get planetsLabel => 'Πλανήτες';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'Σελήνη (___PLACEHOLDER_0_)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'Κανένας δορυφόρος δεν ήταν ορατός την ακριβή στιγμή της θέασής σας';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'Δορυφορικοί δορυφόροι ορατοί από πάνω κατά το χρόνο και την τοποθεσία παρατήρησης';
+
+  @override
+  String get belowHorizon => 'κάτω από τον ορίζοντα';
+
+  @override
+  String get analysisFailedGeneric => 'Αποτυχία ανάλυσης';
+
+  @override
+  String get unknownWeather => 'Άγνωστο';
+
+  @override
+  String get noWeatherDescription => 'Χωρίς περιγραφή';
+
+  @override
+  String get altitudeAbbrev => 'Άλτ';
+
+  @override
+  String get azimuthAbbrev => 'Αζ';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'Δορυφόροι (___PLACEHOLDER_0_ ορατοί τώρα)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'Ήλιος: ___PACHOLDER_0__';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'Φεγγάρι: ___PACHOLDER_0__';
+  }
+
+  @override
+  String get unknownPlanet => 'Άγνωστος πλανήτης';
+
+  @override
+  String get unknownStar => 'Άγνωστο άστρο';
+
+  @override
+  String get unknownSatellite => 'Άγνωστος δορυφόρος';
+
+  @override
+  String get unknownDirection => 'άγνωστη κατεύθυνση';
+
+  @override
+  String get brightStars => 'Φωτεινά αστέρια';
+
+  @override
+  String get satellites => 'Δορυφόροι';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'Δείτε όλους τους δορυφόρους __PLACEHOLDER_0_';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'Μέγιστη ανύψωση: __PLACEHOLDER_0_°';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'Μέγεθος: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String get unknownGeneric => 'Άγνωστο';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '__PLACEHOLDER_0_° υψόμετρο';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '__PLACEHOLDER_0_° αζιμούθιο';
+  }
+
+  @override
+  String get noCelestialDataAvailable =>
+      'Δεν υπάρχουν διαθέσιμα ουράνια δεδομένα.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '_________________________';
+  }
 }

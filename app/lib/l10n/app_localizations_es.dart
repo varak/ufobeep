@@ -1070,7 +1070,7 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'desconocida';
+  String get unknown => 'Desconocida';
 
   @override
   String get report => 'informe';
@@ -2446,4 +2446,128 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get processorCelestial => 'objetos celestiales';
+
+  @override
+  String get calculatingCelestialData => 'Calculando datos celestiales...';
+
+  @override
+  String get sunLabel => 'Sol';
+
+  @override
+  String get moonLabel => 'Luna';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Planetas: $count visible';
+  }
+
+  @override
+  String get starsLabel => 'Estrellas';
+
+  @override
+  String get planetsLabel => 'Planetas';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'Luna ($phase)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'No había satélites visibles en la hora exacta de su avistamiento';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'Satélites visibles en el tiempo de visualización & ubicación';
+
+  @override
+  String get belowHorizon => 'debajo del horizonte';
+
+  @override
+  String get analysisFailedGeneric => 'Análisis fracasado';
+
+  @override
+  String get unknownWeather => 'Desconocida';
+
+  @override
+  String get noWeatherDescription => 'No hay descripción';
+
+  @override
+  String get altitudeAbbrev => 'Alt';
+
+  @override
+  String get azimuthAbbrev => 'Az';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'Satélites (${count}_ visible ahora)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'Sol:';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'Moon:';
+  }
+
+  @override
+  String get unknownPlanet => 'Unknown Planet';
+
+  @override
+  String get unknownStar => 'Unknown Star';
+
+  @override
+  String get unknownSatellite => 'Satélite desconocido';
+
+  @override
+  String get unknownDirection => 'dirección desconocida';
+
+  @override
+  String get brightStars => 'Estrellas brillantes';
+
+  @override
+  String get satellites => 'Satélites';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'Ver todos los satélites $count';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'Altura máxima: ${degrees}_°';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'Magnitud: $value';
+  }
+
+  @override
+  String get unknownGeneric => 'Desconocida';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '${degrees}_nivel';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '${degrees}_ ° azimuth';
+  }
+
+  @override
+  String get noCelestialDataAvailable =>
+      'No hay datos celestiales disponibles.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '$name __PLACEHOLDER_1_';
+  }
 }

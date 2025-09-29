@@ -1039,7 +1039,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get unknown => '不详';
+  String get unknown => '未知';
 
   @override
   String get report => '报告';
@@ -2337,4 +2337,125 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get processorCelestial => '天体';
+
+  @override
+  String get calculatingCelestialData => '计算天体数据...';
+
+  @override
+  String get sunLabel => '太阳';
+
+  @override
+  String get moonLabel => '月亮';
+
+  @override
+  String planetsVisible(int count) {
+    return '行星:_PLACEHOLDER_0_可见';
+  }
+
+  @override
+  String get starsLabel => '恒星数';
+
+  @override
+  String get planetsLabel => '行星';
+
+  @override
+  String moonWithPhase(String phase) {
+    return '月球( __ PLACEHOLDER_ 0__)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime => '在你的目击时间没有看到卫星';
+
+  @override
+  String get satellitesVisibleOverheadAtTime => '视时间和地点可见的卫星';
+
+  @override
+  String get belowHorizon => '地平线以下';
+
+  @override
+  String get analysisFailedGeneric => '分析失败';
+
+  @override
+  String get unknownWeather => '未知';
+
+  @override
+  String get noWeatherDescription => '无说明';
+
+  @override
+  String get altitudeAbbrev => '备选案文';
+
+  @override
+  String get azimuthAbbrev => '阿兹';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return '卫星($count现在可见)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return '太阳:_PLACEHOLDER_0_';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return '月球: ~ PLACEHOLDER_0_ 月球主题 月球主题';
+  }
+
+  @override
+  String get unknownPlanet => '未知行星';
+
+  @override
+  String get unknownStar => '未知恒星';
+
+  @override
+  String get unknownSatellite => '未知的卫星';
+
+  @override
+  String get unknownDirection => '未知的方向';
+
+  @override
+  String get brightStars => '闪亮的恒星';
+
+  @override
+  String get satellites => '卫星';
+
+  @override
+  String seeAllSatellites(int count) {
+    return '见所有_PLACEHOLDER_0_ 卫星';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return '最大海拔 : - 地点 - 地点';
+  }
+
+  @override
+  String magnitude(String value) {
+    return '宽度 : – 地点/地点/地点/地点/地点/地点';
+  }
+
+  @override
+  String get unknownGeneric => '未知';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '高度为0';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '方位角数';
+  }
+
+  @override
+  String get noCelestialDataAvailable => '无天体数据可用.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '(原始内容存档于2017-09-01) (中文(中国大陆) )';
+  }
 }

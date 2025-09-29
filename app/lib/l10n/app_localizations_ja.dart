@@ -1040,7 +1040,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'インフォメーション';
+  String get unknown => '未知の';
 
   @override
   String get report => 'レポート';
@@ -2349,4 +2349,125 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get processorCelestial => '天体オブジェクト';
+
+  @override
+  String get calculatingCelestialData => '履歴データの計算...';
+
+  @override
+  String get sunLabel => '日曜日';
+
+  @override
+  String get moonLabel => 'ムーン';
+
+  @override
+  String planetsVisible(int count) {
+    return '惑星:_PLACEHOLDER_0___ 可視';
+  }
+
+  @override
+  String get starsLabel => 'スターズ';
+
+  @override
+  String get planetsLabel => 'プラネット';
+
+  @override
+  String moonWithPhase(String phase) {
+    return '月 (_${phase}_)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime => 'あなたの視線の正確な時刻で衛星が見えない';
+
+  @override
+  String get satellitesVisibleOverheadAtTime => '視力時間と位置で見える衛星';
+
+  @override
+  String get belowHorizon => '下の地平線';
+
+  @override
+  String get analysisFailedGeneric => '解析失敗';
+
+  @override
+  String get unknownWeather => '未知の';
+
+  @override
+  String get noWeatherDescription => '説明なし';
+
+  @override
+  String get altitudeAbbrev => 'ツイート';
+
+  @override
+  String get azimuthAbbrev => 'ツイート';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return '衛星 (_${count}_ 現在は表示)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return '日曜日: ${description}_';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return '月: ${description}_';
+  }
+
+  @override
+  String get unknownPlanet => '未知の惑星';
+
+  @override
+  String get unknownStar => '未知の星';
+
+  @override
+  String get unknownSatellite => '未知の衛星';
+
+  @override
+  String get unknownDirection => '未知の方向';
+
+  @override
+  String get brightStars => '明るい星';
+
+  @override
+  String get satellites => 'サテライト';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'すべてを見る $count 衛星';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return '最高の高度: $degrees°';
+  }
+
+  @override
+  String magnitude(String value) {
+    return '広さ: ${value}_______________________________________________________________________________________________________________________________________________________________________';
+  }
+
+  @override
+  String get unknownGeneric => '未知の';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '$degrees° 高度';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '$degrees°アジマス';
+  }
+
+  @override
+  String get noCelestialDataAvailable => '気象データがない.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '${name}_________________________________________________________________________________________________________________________________________________________________________________';
+  }
 }

@@ -1053,7 +1053,7 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
-  String get unknown => 'مجهول';
+  String get unknown => 'غير معروف';
 
   @override
   String get report => 'التقرير';
@@ -2402,4 +2402,126 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get processorCelestial => 'الأجسام السماوية';
+
+  @override
+  String get calculatingCelestialData => 'حساب البيانات السماوية...';
+
+  @override
+  String get sunLabel => 'الشمس';
+
+  @override
+  String get moonLabel => 'القمر';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Planets: __PLACEHOLDER_0_';
+  }
+
+  @override
+  String get starsLabel => 'النجوم';
+
+  @override
+  String get planetsLabel => 'Planets';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'مون (_PLACEHOLDER_0__)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'لم يكن هناك سواتل مرئية في نفس الوقت من رؤيتك';
+
+  @override
+  String get satellitesVisibleOverheadAtTime => 'سواتل مرئية في الموقع';
+
+  @override
+  String get belowHorizon => 'أقل من الأفق';
+
+  @override
+  String get analysisFailedGeneric => 'التحليل غير مكتمل';
+
+  @override
+  String get unknownWeather => 'غير معروف';
+
+  @override
+  String get noWeatherDescription => 'لا وصف';
+
+  @override
+  String get altitudeAbbrev => 'Alt';
+
+  @override
+  String get azimuthAbbrev => 'Az';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'السواتل (_PLACEHOLDER_0__ مرئية الآن)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'شمس:';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'القمر:';
+  }
+
+  @override
+  String get unknownPlanet => 'Unknown Planet';
+
+  @override
+  String get unknownStar => 'نجم مجهول';
+
+  @override
+  String get unknownSatellite => 'ساتل غير معروف';
+
+  @override
+  String get unknownDirection => 'اتجاه مجهول';
+
+  @override
+  String get brightStars => 'النجوم الجميلة';
+
+  @override
+  String get satellites => 'السواتل';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'انظر جميع سواتل';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return '(ماكس) _';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'الصلاحية: _';
+  }
+
+  @override
+  String get unknownGeneric => 'غير معروف';
+
+  @override
+  String altitudeValue(String degrees) {
+    return '_BAR_';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return '_BAR_';
+  }
+
+  @override
+  String get noCelestialDataAvailable => 'لا توجد بيانات سماوية متاحة.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return '_';
+  }
 }

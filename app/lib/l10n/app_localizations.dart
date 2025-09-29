@@ -2091,7 +2091,7 @@ abstract class AppLocalizations {
   /// No description provided for @unknown.
   ///
   /// In en, this message translates to:
-  /// **'unknown'**
+  /// **'Unknown'**
   String get unknown;
 
   /// No description provided for @report.
@@ -4529,6 +4529,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'celestial objects'**
   String get processorCelestial;
+
+  /// No description provided for @calculatingCelestialData.
+  ///
+  /// In en, this message translates to:
+  /// **'Calculating celestial data...'**
+  String get calculatingCelestialData;
+
+  /// No description provided for @sunLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun'**
+  String get sunLabel;
+
+  /// No description provided for @moonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Moon'**
+  String get moonLabel;
+
+  /// No description provided for @planetsVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'Planets: {count} visible'**
+  String planetsVisible(int count);
+
+  /// No description provided for @starsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Stars'**
+  String get starsLabel;
+
+  /// No description provided for @planetsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Planets'**
+  String get planetsLabel;
+
+  /// No description provided for @moonWithPhase.
+  ///
+  /// In en, this message translates to:
+  /// **'Moon ({phase})'**
+  String moonWithPhase(String phase);
+
+  /// No description provided for @noSatellitesVisibleAtTime.
+  ///
+  /// In en, this message translates to:
+  /// **'No satellites were visible at the exact time of your sighting'**
+  String get noSatellitesVisibleAtTime;
+
+  /// No description provided for @satellitesVisibleOverheadAtTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellites visible overhead at sighting time & location'**
+  String get satellitesVisibleOverheadAtTime;
+
+  /// No description provided for @belowHorizon.
+  ///
+  /// In en, this message translates to:
+  /// **'below horizon'**
+  String get belowHorizon;
+
+  /// No description provided for @analysisFailedGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis Failed'**
+  String get analysisFailedGeneric;
+
+  /// No description provided for @unknownWeather.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknownWeather;
+
+  /// No description provided for @noWeatherDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'No description'**
+  String get noWeatherDescription;
+
+  /// No description provided for @altitudeAbbrev.
+  ///
+  /// In en, this message translates to:
+  /// **'Alt'**
+  String get altitudeAbbrev;
+
+  /// No description provided for @azimuthAbbrev.
+  ///
+  /// In en, this message translates to:
+  /// **'Az'**
+  String get azimuthAbbrev;
+
+  /// No description provided for @satellitesVisibleNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellites ({count} visible now)'**
+  String satellitesVisibleNow(int count);
+
+  /// No description provided for @sunWithDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Sun: {description}'**
+  String sunWithDescription(String description);
+
+  /// No description provided for @moonWithDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Moon: {description}'**
+  String moonWithDescription(String description);
+
+  /// No description provided for @unknownPlanet.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Planet'**
+  String get unknownPlanet;
+
+  /// No description provided for @unknownStar.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Star'**
+  String get unknownStar;
+
+  /// No description provided for @unknownSatellite.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown Satellite'**
+  String get unknownSatellite;
+
+  /// No description provided for @unknownDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'unknown direction'**
+  String get unknownDirection;
+
+  /// No description provided for @brightStars.
+  ///
+  /// In en, this message translates to:
+  /// **'Bright Stars'**
+  String get brightStars;
+
+  /// No description provided for @satellites.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellites'**
+  String get satellites;
+
+  /// No description provided for @seeAllSatellites.
+  ///
+  /// In en, this message translates to:
+  /// **'See all {count} satellites'**
+  String seeAllSatellites(int count);
+
+  /// No description provided for @maxElevation.
+  ///
+  /// In en, this message translates to:
+  /// **'Max elevation: {degrees}°'**
+  String maxElevation(String degrees);
+
+  /// No description provided for @magnitude.
+  ///
+  /// In en, this message translates to:
+  /// **'Magnitude: {value}'**
+  String magnitude(String value);
+
+  /// No description provided for @unknownGeneric.
+  ///
+  /// In en, this message translates to:
+  /// **'Unknown'**
+  String get unknownGeneric;
+
+  /// No description provided for @altitudeValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{degrees}° altitude'**
+  String altitudeValue(String degrees);
+
+  /// No description provided for @azimuthValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{degrees}° azimuth'**
+  String azimuthValue(String degrees);
+
+  /// No description provided for @noCelestialDataAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'No celestial data available.'**
+  String get noCelestialDataAvailable;
+
+  /// No description provided for @mufonReportingDate.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON Reporting Date'**
+  String get mufonReportingDate;
+
+  /// No description provided for @satelliteNameDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} - {direction}'**
+  String satelliteNameDirection(String name, String direction);
 }
 
 class _AppLocalizationsDelegate

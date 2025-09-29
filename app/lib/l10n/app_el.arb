@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "άγνωστο",
+  "unknown": "Άγνωστο",
   "report": "έκθεση",
   "mufon": "μουφόν",
   "recentUfoBeepsTitle": "Πρόσφατο UFO Μπιζέλια",
@@ -978,5 +978,129 @@
   "processorLocation": "λεπτομέρειες τοποθεσίας",
   "processorAircraft": "γειτονικά αεροσκάφη",
   "processorSatellites": "δορυφορικές θέσεις",
-  "processorCelestial": "ουράνια αντικείμενα"
+  "processorCelestial": "ουράνια αντικείμενα",
+  "calculatingCelestialData": "Υπολογίζοντας ουράνια δεδομένα...",
+  "sunLabel": "Ήλιος",
+  "moonLabel": "Σελήνη",
+  "planetsVisible": "Πλανήτες: __PLACEHOLDER_0_ ορατοί",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Άστρα",
+  "planetsLabel": "Πλανήτες",
+  "moonWithPhase": "Σελήνη (___PLACEHOLDER_0_)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Κανένας δορυφόρος δεν ήταν ορατός την ακριβή στιγμή της θέασής σας",
+  "satellitesVisibleOverheadAtTime": "Δορυφορικοί δορυφόροι ορατοί από πάνω κατά το χρόνο και την τοποθεσία παρατήρησης",
+  "belowHorizon": "κάτω από τον ορίζοντα",
+  "analysisFailedGeneric": "Αποτυχία ανάλυσης",
+  "unknownWeather": "Άγνωστο",
+  "noWeatherDescription": "Χωρίς περιγραφή",
+  "altitudeAbbrev": "Άλτ",
+  "azimuthAbbrev": "Αζ",
+  "satellitesVisibleNow": "Δορυφόροι (___PLACEHOLDER_0_ ορατοί τώρα)",
+  "sunWithDescription": "Ήλιος: ___PACHOLDER_0__",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Φεγγάρι: ___PACHOLDER_0__",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Άγνωστος πλανήτης",
+  "unknownStar": "Άγνωστο άστρο",
+  "unknownSatellite": "Άγνωστος δορυφόρος",
+  "unknownDirection": "άγνωστη κατεύθυνση",
+  "brightStars": "Φωτεινά αστέρια",
+  "satellites": "Δορυφόροι",
+  "seeAllSatellites": "Δείτε όλους τους δορυφόρους __PLACEHOLDER_0_",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Μέγιστη ανύψωση: __PLACEHOLDER_0_°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Μέγεθος: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Άγνωστο",
+  "altitudeValue": "__PLACEHOLDER_0_° υψόμετρο",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "__PLACEHOLDER_0_° αζιμούθιο",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Δεν υπάρχουν διαθέσιμα ουράνια δεδομένα.",
+  "satelliteNameDirection": "_________________________",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "tuntematon",
+  "unknown": "Tuntematon",
   "report": "raportti",
   "mufon": "mufoni",
   "recentUfoBeepsTitle": "Uusin UFO Piipit",
@@ -978,5 +978,129 @@
   "processorLocation": "sijaintitiedot",
   "processorAircraft": "lähilentokoneet",
   "processorSatellites": "satelliittipaikat",
-  "processorCelestial": "taivaankappaleet"
+  "processorCelestial": "taivaankappaleet",
+  "calculatingCelestialData": "Lasketaan taivaallisia tietoja...",
+  "sunLabel": "Su",
+  "moonLabel": "Kuu",
+  "planetsVisible": "Planeetat: __PAIKKAHOLDER_0_ näkyvissä",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Tähdet",
+  "planetsLabel": "Planeetat",
+  "moonWithPhase": "Kuu (___PASSIHOLDER_0__)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Satelliitteja ei näkynyt tarkkana havaintoajankohtana",
+  "satellitesVisibleOverheadAtTime": "Satelliitit näkyvät yläpuolella havaintohetkellä ja paikan päällä",
+  "belowHorizon": "horisontin alapuolella",
+  "analysisFailedGeneric": "Analyysi epäonnistui",
+  "unknownWeather": "Tuntematon",
+  "noWeatherDescription": "Ei kuvausta",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satelliitit (__Placeholder_0_ näkyvät nyt)",
+  "sunWithDescription": "Aurinko: __PAIKKAHOLDER_0___",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Kuu: __PAIKKAHOLDER_0__",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Tuntematon planeetta",
+  "unknownStar": "Tuntematon tähti",
+  "unknownSatellite": "Tuntematon satelliitti",
+  "unknownDirection": "tuntematon suunta",
+  "brightStars": "Kirkkaat tähdet",
+  "satellites": "Satelliitit",
+  "seeAllSatellites": "Katso kaikki __PAIKKAHOLDER_0_ satelliitit",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Suurin korkeus merenpinnasta: _Placeholder_0__°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Merkitys: __PAIKKAHOLDER_0___",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Tuntematon",
+  "altitudeValue": "_Placeholder_0__° korkeus",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "__Placeholder_0_° azimuth",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Ei taivaallista tietoa.",
+  "satelliteNameDirection": "{name} - __PLACEHOLDER_1_",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

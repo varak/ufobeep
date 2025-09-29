@@ -2389,4 +2389,127 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String get processorCelestial => 'אובייקטים שמיים';
+
+  @override
+  String get calculatingCelestialData => 'חישוב נתונים שמימיים...';
+
+  @override
+  String get sunLabel => 'השמש';
+
+  @override
+  String get moonLabel => 'הירח';
+
+  @override
+  String planetsVisible(int count) {
+    return 'Planets:_PLACEHOLDER_0_ גלוי';
+  }
+
+  @override
+  String get starsLabel => 'כוכבים';
+
+  @override
+  String get planetsLabel => 'כוכבי לכת';
+
+  @override
+  String moonWithPhase(String phase) {
+    return 'מון (_PLACEHOLDER_0_______________)';
+  }
+
+  @override
+  String get noSatellitesVisibleAtTime =>
+      'שום לווינים לא נראו בזמן המדויק של הראייה שלך';
+
+  @override
+  String get satellitesVisibleOverheadAtTime =>
+      'לוויינים גלויים לעין בזמן ובמיקום';
+
+  @override
+  String get belowHorizon => 'מתחת האופק';
+
+  @override
+  String get analysisFailedGeneric => 'ניתוח נכשל';
+
+  @override
+  String get unknownWeather => 'לא ידוע';
+
+  @override
+  String get noWeatherDescription => 'אין תיאור';
+
+  @override
+  String get altitudeAbbrev => 'אליט';
+
+  @override
+  String get azimuthAbbrev => 'אזאז';
+
+  @override
+  String satellitesVisibleNow(int count) {
+    return 'לוויינים (_PLACEHOLDER_0__ גלויים עכשיו)';
+  }
+
+  @override
+  String sunWithDescription(String description) {
+    return 'שם הסרטון: PLACEHOLDER_0__________';
+  }
+
+  @override
+  String moonWithDescription(String description) {
+    return 'שם הסרטון: PLACEHOLDER_0_____';
+  }
+
+  @override
+  String get unknownPlanet => 'כוכב לכת לא ידוע';
+
+  @override
+  String get unknownStar => 'כוכב לא ידוע';
+
+  @override
+  String get unknownSatellite => 'לוויין לא ידוע';
+
+  @override
+  String get unknownDirection => 'כיוון לא ידוע';
+
+  @override
+  String get brightStars => 'כוכבים בהירים';
+
+  @override
+  String get satellites => 'לוויינים';
+
+  @override
+  String seeAllSatellites(int count) {
+    return 'שם הסרטון: PLACEHOLDER_0_לוויינים';
+  }
+
+  @override
+  String maxElevation(String degrees) {
+    return 'גובה מקס: PLACEHOLDER_0_ °_';
+  }
+
+  @override
+  String magnitude(String value) {
+    return 'כבוד: שם הסרטון: PLACEHOLDER_0______';
+  }
+
+  @override
+  String get unknownGeneric => 'לא ידוע';
+
+  @override
+  String altitudeValue(String degrees) {
+    return 'PL_PLACEHOLDER_0_גבהים';
+  }
+
+  @override
+  String azimuthValue(String degrees) {
+    return 'שם הסרטון: PLACEHOLDER_0_ ° Azimuth';
+  }
+
+  @override
+  String get noCelestialDataAvailable => 'אין נתונים שמיים זמינים.';
+
+  @override
+  String get mufonReportingDate => 'MUFON Reporting Date';
+
+  @override
+  String satelliteNameDirection(String name, String direction) {
+    return 'שם הסרטון: PLACEHOLDER__0_____${direction}______________________________________________________________________________';
+  }
 }
