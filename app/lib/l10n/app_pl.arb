@@ -1156,6 +1156,35 @@
   "settingUpLocalization": "Ustawienie lokalizacji...",
   "checkingConnectivity": "Sprawdzam łączność...",
   "gatheringDeviceInfo": "Zbieranie informacji o urządzeniu...",
+  "translating": "Tłumaczę...",
+  "showOriginal": "Pokaż oryginał",
+  "translateTo": "Przetłumacz na _ _ PLACEScorter _ 0 _ _",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "Tłumaczone z _ _ PLACEScorpiter _ 0 _ _",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "translateContent": "Przetłumacz zawartość na _ _ PLACEScorter _ 0 _ _",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {

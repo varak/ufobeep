@@ -2654,24 +2654,24 @@ class AppLocalizationsFi extends AppLocalizations {
   String get gatheringDeviceInfo => 'Keräyslaitteen tiedot...';
 
   @override
-  String get translating => 'Translating...';
+  String get translating => 'Käännetään...';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => 'Näytä alkuperäinen';
 
   @override
   String translateTo(String language) {
-    return 'Translate to $language';
+    return 'Käännä __PAIKKAHOLDER_0___';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from $language';
+    return 'Käännetty __PASSIHOLDER_0__';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to $language';
+    return 'Käännä sisältö __PAIKKAHOLDER_0__';
   }
 
   @override
@@ -2717,7 +2717,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get heavyRain => 'rankkasade';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '__PASSIHOLDER_0__-ilma-alus havaittu __PASSIHOLDER_1_km (nykyiset paikat)';
   }
 
@@ -2731,6 +2735,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return '$name - __PLACEHOLDER_1_';
+    return '$name - $direction';
   }
 }

@@ -37,7 +37,7 @@
   "alertsTitle": "近くのアラート",
   "noAlerts": "近隣のアラートはありません.",
   "pullToRefresh": "リフレッシュするプル",
-  "alertDistance": "__PLACEHOLDER_0_ 離れて",
+  "alertDistance": "{distance} 離れたところ",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -254,7 +254,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACEHOLDER_0_時間前",
+  "timeHoursAgo": "{count} 時間前",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -507,7 +507,7 @@
   },
   "notificationActionSnooze": "スヌーズ 1h",
   "notificationActionDismiss": "免責事項",
-  "notificationDistance": "__PLACEHOLDER_0_ 離れて",
+  "notificationDistance": "{distance} 離れたところ",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -585,7 +585,7 @@
   "mediaImageNotFound": "画像が見つかりません",
   "mediaPlayVideo": "再生ビデオ",
   "mediaViewImage": "画像を見る",
-  "mediaCount": "__PLACEHOLDER_0_さんの画像",
+  "mediaCount": "{count}画像",
   "mediaCountSingle": "1 画像",
   "mediaMoreImages": "お問い合わせ",
   "errorNotFound": "ビープが見つかりません",
@@ -731,7 +731,7 @@
       }
     }
   },
-  "hoursAgo": "__PLACEHOLDER_0_時間前",
+  "hoursAgo": "{hours}時間前",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -912,22 +912,22 @@
   "celestialSunTwilight": "Twilight条件 - 一部の可視性が、日光よりも暗い",
   "celestialSunDark": "暗い条件 - 空のオブジェクトを観察するための最適",
   "celestialMoonBright": "明るい_PLACEHOLDER_0_月表示 - 他のオブジェクトを照らすか、または妨害する可能性があります",
-  "celestialMoonModerate": "__PLACEHOLDER_0_月 見える - 適度な照明条件",
-  "celestialMoonThin": "薄い __PLACEHOLDER_0_ 月 見える - 最小限の照明",
+  "celestialMoonModerate": "{phase} moon visible - 中程度の照明条件",
+  "celestialMoonThin": "薄い{phase}の月が見える - 最小限の照明",
   "celestialMoonHidden": "{phase} 月下の地平線 - 月の照明なし",
   "celestialNoPlanets": "UFOに誤った可能性がある明るい惑星が見えない",
-  "celestialPlanetHigh": "{planet} 高オーバーヘッド({planet}°) - 非常に著名",
+  "celestialPlanetHigh": "{altitude} 高オーバーヘッド({planet}°) - 非常に著名",
   "celestialPlanetMedium": "{planet}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
-  "celestialPlanetLow": "{planet} 水平線上に低い (_{planet}°)",
+  "celestialPlanetLow": "{altitude} 水平線上に低い (_{planet}°)",
   "celestialNoStars": "目に見える異常に明るい星無し",
   "celestialStarSingle": "{star}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
-  "celestialStarsMultiple": "__PLACEHOLDER_0_ 明るい星が見える - {count}_",
+  "celestialStarsMultiple": "{count} 明るい星が見える - {names}",
   "celestialSummaryDaylight": "日光条件",
   "celestialSummaryDark": "暗い空の状態",
   "celestialSummaryMoonUp": "月の照明プレゼント",
   "celestialSummaryMoonDown": "月なしの照明",
-  "celestialSummaryManyObjects": "__PLACEHOLDER_0_ UFOと混同できる明るいオブジェクト",
-  "celestialSummarySomeObjects": "__PLACEHOLDER_0_ 可視オブジェクト",
+  "celestialSummaryManyObjects": "UFOと混同される可能性のある明るい天体を{count}",
+  "celestialSummarySomeObjects": "{count} 明るいオブジェクトが見える",
   "celestialSummaryFewObjects": "空の最小限の明るいオブジェクト",
   "celestialSkySummary": "空の状態: {conditions}_______________________________________________________________________________________________________________________________________________________________________",
   "planetVenus": "ヴィーナス",
@@ -954,10 +954,10 @@
   "moonPhaseThirdQuarter": "第3四半期",
   "moonPhaseWaningCrescent": "開花クレセント",
   "planetBelowHorizon": "{planet}下地平線",
-  "planetHighOverheadProminent": "{planet} 高オーバーヘッド({planet}°) - 非常に著名",
-  "planetMidSkyProminent": "{planet}_ で {planet}° - 目立つ",
+  "planetHighOverheadProminent": "{altitude} 高オーバーヘッド({planet}°) - 非常に著名",
+  "planetMidSkyProminent": "{altitude}_ で {planet}° - 目立つ",
   "planetMidSky": "{planet}______________ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
-  "starVeryBright": "{star}_ 非常に明るい {star}°",
+  "starVeryBright": "{altitude}_ 非常に明るい {star}°",
   "starProminent": "{star}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "starVisible": "{star}______________ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
   "altitudeShort": "ツイート",
@@ -1133,7 +1133,7 @@
     }
   },
   "followingAlerts": "アラートのフォロー",
-  "activeCount": "__PLACEHOLDER_0_ アクティブ",
+  "activeCount": "{count} アクティブ",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1144,7 +1144,7 @@
   },
   "unfollow": "フォロー",
   "unfollowAlert": "フォロー解除アラート",
-  "commentsCount": "__PLACEHOLDER_0_コメント",
+  "commentsCount": "{count} コメント",
   "photo": "プロフィール",
   "video": "ビデオ",
   "initializationComplete": "初期化完了!",
@@ -1156,6 +1156,35 @@
   "settingUpLocalization": "ローカル化の設定.",
   "checkingConnectivity": "接続チェック...",
   "gatheringDeviceInfo": "デバイス情報収集.",
+  "translating": "翻訳する...",
+  "showOriginal": "ショーオリジナル",
+  "translateTo": "{language} への変換",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "{language} から翻訳",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "translateContent": "コンテンツの変換 {language}_",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {

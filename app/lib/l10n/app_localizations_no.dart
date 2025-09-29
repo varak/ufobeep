@@ -15,37 +15,37 @@ class AppLocalizationsNo extends AppLocalizations {
   String get ok => 'OK';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Annullere';
 
   @override
   String get close => 'Close';
 
   @override
-  String get save => 'Save';
+  String get save => 'Lagre';
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Slette';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'Redigere';
 
   @override
   String get retry => 'Retry';
 
   @override
-  String get yes => 'Yes';
+  String get yes => 'Ja';
 
   @override
-  String get no => 'No';
+  String get no => 'Nei';
 
   @override
-  String get back => 'Back';
+  String get back => 'Tilbake';
 
   @override
-  String get next => 'Next';
+  String get next => 'Neste';
 
   @override
-  String get done => 'Done';
+  String get done => 'Gjort';
 
   @override
   String get loading => 'Loading…';
@@ -114,7 +114,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get alertsTitle => 'Nearby Alerts';
 
   @override
-  String get noAlerts => 'No alerts nearby yet.';
+  String get noAlerts => 'Ingen varsler i nærheten ennå.';
 
   @override
   String get pullToRefresh => 'Pull to refresh';
@@ -260,7 +260,8 @@ class AppLocalizationsNo extends AppLocalizations {
   String get autoFollowEnabled => 'You’re now following this alert.';
 
   @override
-  String get noCommentsYet => 'No comments yet. Be the first to comment!';
+  String get noCommentsYet =>
+      'Ingen kommentarer ennå. Bli den første til å kommentere!';
 
   @override
   String get newCommentNotification => 'New comment on a sighting you follow.';
@@ -341,7 +342,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get nearbyAircraft => 'Nearby aircraft';
 
   @override
-  String get noAircraft => 'No aircraft nearby';
+  String get noAircraft => 'Ingen fly i nærheten';
 
   @override
   String get loadingContext => 'Loading environmental context…';
@@ -484,7 +485,7 @@ class AppLocalizationsNo extends AppLocalizations {
       'UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass';
 
   @override
-  String get noAlertsFound => 'No matching alerts';
+  String get noAlertsFound => 'Ingen samsvarende varsler';
 
   @override
   String get alertsFilterHelp =>
@@ -506,7 +507,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get imageOnly => 'Image Only';
 
   @override
-  String get mediaOnly => 'Media Only';
+  String get mediaOnly => 'Bare medier';
 
   @override
   String get timeJustNow => 'just now';
@@ -645,7 +646,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get addMoreMedia => 'Add More';
 
   @override
-  String get addMedia => 'Add Media';
+  String get addMedia => 'Legg til media';
 
   @override
   String get retakePhoto => 'Retake Photo';
@@ -905,7 +906,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get addPhotosAndVideos => 'Add Photos & Videos';
 
   @override
-  String get attachMedia => 'Attach Media';
+  String get attachMedia => 'Legge ved medier';
 
   @override
   String get addCommentOptional => 'Add a comment (optional)';
@@ -955,7 +956,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get weatherConditionsTitle => 'Weather Conditions';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses => 'Ingen synlige satellittpasseringer funnet';
 
   @override
   String get contentAnalysisTitle => 'Content Analysis';
@@ -1081,7 +1082,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get loadingBeeps => 'Loading recent beeps...';
 
   @override
-  String get noBeepsAvailable => 'No beeps available at the moment.';
+  String get noBeepsAvailable => 'Ingen pip tilgjengelig for øyeblikket.';
 
   @override
   String get anomalyReported => 'Anomaly reported';
@@ -1099,7 +1100,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get previousPage => 'Previous';
 
   @override
-  String get nextPage => 'Next';
+  String get nextPage => 'Neste';
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
@@ -1137,7 +1138,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get howItWorks => 'How It Works';
 
   @override
-  String get backToBeeps => 'Back to Beeps';
+  String get backToBeeps => 'Tilbake til Pip';
 
   @override
   String get loadingDetails => 'Loading beep details...';
@@ -1386,7 +1387,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get aircraftDataSource => 'Data Source';
 
   @override
-  String get noAircraftDetected => 'No aircraft detected';
+  String get noAircraftDetected => 'Ingen fly oppdaget';
 
   @override
   String get sightingReport => 'Sighting Report';
@@ -1686,7 +1687,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get locationTrackingBenefits =>
-      '• Get UFO alerts wherever you travel\n• Automatic location updates\n• No manual setup required';
+      '• Få UFO-varsler uansett hvor du reiser\n• Automatiske posisjonsoppdateringer\n• Ingen manuelt oppsett nødvendig';
 
   @override
   String get allowLocationAccess => 'Allow Location Access';
@@ -1843,7 +1844,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get emailAuthUserNotFound =>
-      'No account found with this email address.';
+      'Ingen konto funnet med denne e-postadressen.';
 
   @override
   String get emailAuthTooManyRequests =>
@@ -1899,7 +1900,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get emailAuthHowItWorksSteps =>
-      '1. We send you a secure sign-in link\n2. Check your email and tap the link\n3. Your email gets verified automatically\n4. No passwords needed!';
+      '1. Vi sender deg en sikker påloggingslenke\n2. Sjekk e-posten din og trykk på lenken\n3. E-posten din blir bekreftet automatisk\n4. Ingen passord nødvendig!';
 
   @override
   String get emailAuthSecurityNotice =>
@@ -2045,7 +2046,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get dataExportFailed => 'Failed to export data';
 
   @override
-  String get deleteAccount => 'Delete Account';
+  String get deleteAccount => 'Slett konto';
 
   @override
   String get deleteAccountDescription =>
@@ -2056,13 +2057,13 @@ class AppLocalizationsNo extends AppLocalizations {
       'This action cannot be undone. All your beeps, comments, and account data will be permanently deleted.';
 
   @override
-  String get deleteMyAccount => 'Delete My Account';
+  String get deleteMyAccount => 'Slett kontoen min';
 
   @override
   String get deletingAccount => 'Deleting...';
 
   @override
-  String get deleteAccountConfirmTitle => 'Delete Account';
+  String get deleteAccountConfirmTitle => 'Slett konto';
 
   @override
   String get deleteAccountConfirmMessage =>
@@ -2077,7 +2078,7 @@ class AppLocalizationsNo extends AppLocalizations {
       '• Your profile and username\n• All your beeps and reports\n• All your comments\n• Device registration data\n• Location and preference data';
 
   @override
-  String get deleteAccountPermanent => 'Delete Permanently';
+  String get deleteAccountPermanent => 'Slett permanent';
 
   @override
   String get accountDeletedSuccessfully => 'Account deleted successfully';
@@ -2135,7 +2136,7 @@ class AppLocalizationsNo extends AppLocalizations {
       'Browse sightings, access MUFON reports, and connect with fellow skywatchers.';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'Hoppe over';
 
   @override
   String get getStarted => 'Get Started';
@@ -2194,7 +2195,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get celestialNoPlanets =>
-      'No bright planets visible that could be mistaken for UFOs';
+      'Ingen lyssterke planeter synlige som kan forveksles med UFOer';
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
@@ -2212,7 +2213,7 @@ class AppLocalizationsNo extends AppLocalizations {
   }
 
   @override
-  String get celestialNoStars => 'No unusually bright stars visible';
+  String get celestialNoStars => 'Ingen uvanlig lyssterke stjerner synlige';
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
@@ -2375,7 +2376,7 @@ class AppLocalizationsNo extends AppLocalizations {
   }
 
   @override
-  String get noSatellitesVisible => 'No satellites visible';
+  String get noSatellitesVisible => 'Ingen satellitter synlige';
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
@@ -2450,7 +2451,7 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get noSatellitesVisibleAtTime =>
-      'No satellites were visible at the exact time of your sighting';
+      'Ingen satellitter var synlige på det nøyaktige tidspunktet du observerte';
 
   @override
   String get satellitesVisibleOverheadAtTime =>
@@ -2466,7 +2467,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get unknownWeather => 'Unknown';
 
   @override
-  String get noWeatherDescription => 'No description';
+  String get noWeatherDescription => 'Ingen beskrivelse';
 
   @override
   String get altitudeAbbrev => 'Alt';
@@ -2536,7 +2537,7 @@ class AppLocalizationsNo extends AppLocalizations {
   }
 
   @override
-  String get noCelestialDataAvailable => 'No celestial data available.';
+  String get noCelestialDataAvailable => 'Ingen himmeldata tilgjengelig.';
 
   @override
   String get gettingLocation => 'Getting your location...';
@@ -2713,7 +2714,11 @@ class AppLocalizationsNo extends AppLocalizations {
   String get heavyRain => 'heavy rain';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '$count aircraft detected within ${radius}km (current positions)';
   }
 

@@ -234,7 +234,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'Nošení objektu: _ _ PLACETETELER _ 0 _ _ °';
+    return 'Azimut k objektu: $bearing°';
   }
 
   @override
@@ -2656,24 +2656,24 @@ class AppLocalizationsCs extends AppLocalizations {
   String get gatheringDeviceInfo => 'Informace o shromažďovacím zařízení...';
 
   @override
-  String get translating => 'Translating...';
+  String get translating => 'Překládám...';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => 'Zobrazit originál';
 
   @override
   String translateTo(String language) {
-    return 'Translate to $language';
+    return 'Translate to _ _ PLACETETERER _ 0 _ _';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from $language';
+    return 'Přeloženo z _ _ PLACETETERER _ 0 _ _';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to $language';
+    return 'Přeložit obsah do _ _ PLACETETELER _ 0 _ _';
   }
 
   @override
@@ -2719,7 +2719,11 @@ class AppLocalizationsCs extends AppLocalizations {
   String get heavyRain => 'těžký déšť';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '_ _ PLACETETERER _ 0 _ _ zjištěná letadla v _ _ PLACETELER _ 1 _ _ km (aktuální polohy)';
   }
 

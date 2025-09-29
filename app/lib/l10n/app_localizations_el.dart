@@ -127,7 +127,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String alertDirection(int bearing) {
-    return 'Διόπτευση __PLACEHOLDER_0_°';
+    return 'Ρουλεμάν $bearing°';
   }
 
   @override
@@ -334,7 +334,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Σύννεφο: __PLACEHOLDER_0_%';
+    return 'Νεφοκάλυψη: $percent%';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '_${username}_ σχολίασε στο __PLACEHOLDER_1_';
+    return '$username σχολίασε στο $beepTitle';
   }
 
   @override
@@ -529,12 +529,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String timeHoursAgo(int count) {
-    return '__PLACEHOLDER_0_ ώρες πριν';
+    return '$count ώρες πριν';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '__PLACEHOLDER_0_ πριν από λίγα λεπτά';
+    return '$count λεπτά πριν';
   }
 
   @override
@@ -642,7 +642,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '__PLACEHOLDER_0_ Οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση';
+    return '$count άτομα επιβεβαίωσαν αυτή την παρατήρηση';
   }
 
   @override
@@ -650,7 +650,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Ανάλυση: __PLACEHOLDER_0_ media file(s) processed';
+    return 'Ανάλυση: $count επεξεργασμένα αρχεία πολυμέσων';
   }
 
   @override
@@ -958,7 +958,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '__PLACEHOLDER_0_ Οι άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση';
+    return '$count άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση';
   }
 
   @override
@@ -1058,7 +1058,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '__PLACEHOLDER_0_ μάρτυρες';
+    return '$count μάρτυρες';
   }
 
   @override
@@ -1118,7 +1118,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Σελίδα _${currentPage}__PLACEHOLDER_1_ (__PLACEHOLDER_2_ σύνολο μπιπ)';
+    return 'Σελίδα $currentPage από $totalPages ($totalCount συνολικά ηχητικά σήματα)';
   }
 
   @override
@@ -1288,7 +1288,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '__PLACEHOLDER_0_ εικόνες';
+    return '$count εικόνες';
   }
 
   @override
@@ -1733,12 +1733,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String minutesAgo(int minutes) {
-    return '__PLACEHOLDER_0_ πριν από λίγα λεπτά';
+    return '$minutes πριν από λεπτά';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '__PLACEHOLDER_0_ ώρες πριν';
+    return '$hours ώρες πριν';
   }
 
   @override
@@ -2210,22 +2210,22 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Φωτεινό __PLACEHOLDER_0_ φεγγάρι ορατό - μπορεί να φωτίσει ή να επισκιάσει άλλα αντικείμενα';
+    return 'Φωτεινό φεγγάρι $phase ορατό - μπορεί να φωτίσει ή να κρύψει άλλα αντικείμενα';
   }
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '__PLACEHOLDER_0_ φεγγάρι ορατό - μέτριες συνθήκες φωτισμού';
+    return '$phase ορατό φεγγάρι - μέτριες συνθήκες φωτισμού';
   }
 
   @override
   String celestialMoonThin(Object phase) {
-    return 'Λεπτό __PLACEHOLDER_0_ φεγγάρι ορατό - ελάχιστο φωτισμό';
+    return 'Λεπτό $phase φεγγάρι ορατό - ελάχιστος φωτισμός';
   }
 
   @override
   String celestialMoonHidden(Object phase) {
-    return '__PLACEHOLDER_0_ φεγγάρι κάτω από τον ορίζοντα - κανένας σεληνιακός φωτισμός';
+    return '$phase φεγγάρι κάτω από τον ορίζοντα - χωρίς σεληνιακό φωτισμό';
   }
 
   @override
@@ -2234,17 +2234,17 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '__PLACEHOLDER_0_ υψηλά γενικά έξοδα (__PLACEHOLDER_1_°) - πολύ επιφανής';
+    return '$planet ψηλά πάνω από το κεφάλι ($altitude°) - πολύ εμφανές';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '___PLACEHOLDER_0_ ορατό στο __PLACEHOLDER_1_° - θα μπορούσε να είναι λάθος για τα αεροσκάφη';
+    return '$planet ορατό σε $altitude° - θα μπορούσε να εκληφθεί λανθασμένα ως αεροσκάφος';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '__PLACEHOLDER_0_ χαμηλή στον ορίζοντα (__PLACEHOLDER_1_°)';
+    return '$planet χαμηλά στον ορίζοντα ($altitude°)';
   }
 
   @override
@@ -2253,12 +2253,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '__PLACEHOLDER_0_εξέχουσα σε __PLACEHOLDER_1_° υψόμετρο';
+    return '$star εμφανές σε $altitude° υψόμετρο';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '__PLACEHOLDER_0_ Φωτεινά αστέρια ορατά - __PLACEHOLDER_1_';
+    return '$count φωτεινά αστέρια ορατά - $names';
   }
 
   @override
@@ -2275,12 +2275,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return '__PLACEHOLDER_0_ φωτεινά αντικείμενα που θα μπορούσαν να συγχέονται με UFO';
+    return '$count φωτεινά αντικείμενα που θα μπορούσαν να συγχέονται με UFO';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return '__PLACEHOLDER_0_ φωτεινό αντικείμενο(τα) ορατό';
+    return '$count φωτεινά αντικείμενα ορατά';
   }
 
   @override
@@ -2363,17 +2363,17 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '__PLACEHOLDER_0_ κάτω από τον ορίζοντα';
+    return '$planet κάτω από τον ορίζοντα';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '__PLACEHOLDER_0_ υψηλά γενικά έξοδα (__PLACEHOLDER_1_°) - πολύ επιφανής';
+    return '$planet ψηλά πάνω από το κεφάλι ($altitude°) - πολύ εμφανές';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '${planet}__PLACEHOLDER_1_° - επιφανής';
+    return '$planet σε $altitude° - εμφανές';
   }
 
   @override
@@ -2383,12 +2383,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '__PLACEHOLDER_0_ πολύ φωτεινό στο $star°';
+    return '$star πολύ φωτεινό σε $altitude°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '__PLACEHOLDER_0_εξέχουσα σε __PLACEHOLDER_1_° υψόμετρο';
+    return '$star εμφανές σε $altitude° υψόμετρο';
   }
 
   @override
@@ -2404,12 +2404,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '__PLACEHOLDER_0_ ορατοί δορυφόροι - μπορεί να εξηγήσει την όραση';
+    return '$count δορυφόροι ορατοί - μπορεί να εξηγήσει την παρατήρηση';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '__PLACEHOLDER_0_ δορυφόροι ορατοί - απίθανο να εξηγήσει την όραση';
+    return '$count δορυφόροι ορατοί - απίθανο να εξηγήσει την παρατήρηση';
   }
 
   @override
@@ -2417,7 +2417,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '__PLACEHOLDER_0_ αεροσκάφος ανιχνεύεται εντός __PLACEHOLDER_1_km';
+    return '$count αεροσκάφος που εντοπίστηκε εντός ${radius}km';
   }
 
   @override
@@ -2472,7 +2472,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return 'Πλανήτες: __PLACEHOLDER_0_ ορατοί';
+    return 'Πλανήτες: $count ορατοί';
   }
 
   @override
@@ -2483,7 +2483,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'Σελήνη (___PLACEHOLDER_0_)';
+    return 'Σελήνη ($phase)';
   }
 
   @override
@@ -2514,7 +2514,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String satellitesVisibleNow(int count) {
-    return 'Δορυφόροι (___PLACEHOLDER_0_ ορατοί τώρα)';
+    return 'Δορυφόροι ($count ορατοί τώρα)';
   }
 
   @override
@@ -2547,12 +2547,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String seeAllSatellites(int count) {
-    return 'Δείτε όλους τους δορυφόρους __PLACEHOLDER_0_';
+    return 'Δείτε όλους τους δορυφόρους $count';
   }
 
   @override
   String maxElevation(String degrees) {
-    return 'Μέγιστη ανύψωση: __PLACEHOLDER_0_°';
+    return 'Μέγιστο υψόμετρο: $degrees°';
   }
 
   @override
@@ -2565,12 +2565,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String altitudeValue(String degrees) {
-    return '__PLACEHOLDER_0_° υψόμετρο';
+    return '$degrees° υψόμετρο';
   }
 
   @override
   String azimuthValue(String degrees) {
-    return '__PLACEHOLDER_0_° αζιμούθιο';
+    return '$degrees° αζιμούθιο';
   }
 
   @override
@@ -2641,7 +2641,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String activeCount(int count) {
-    return '__PLACEHOLDER_0_ ενεργό';
+    return '$count ενεργό';
   }
 
   @override
@@ -2689,24 +2689,24 @@ class AppLocalizationsEl extends AppLocalizations {
   String get gatheringDeviceInfo => 'Συγκέντρωση πληροφοριών συσκευής...';
 
   @override
-  String get translating => 'Translating...';
+  String get translating => 'Μεταφράζω...';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => 'Εμφάνιση αρχικού';
 
   @override
   String translateTo(String language) {
-    return 'Translate to $language';
+    return 'Μετάφραση σε $language';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from $language';
+    return 'Μεταφράστηκε από $language';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to $language';
+    return 'Μεταφράστε το περιεχόμενο στο $language';
   }
 
   @override
@@ -2752,13 +2752,17 @@ class AppLocalizationsEl extends AppLocalizations {
   String get heavyRain => 'βαριά βροχή';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
-    return '__PLACEHOLDER_0_ αεροσκάφος ανιχνεύεται εντός __PLACEHOLDER_1_km (τρέχουσες θέσεις)';
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
+    return '$count αεροσκάφος που εντοπίστηκε εντός ${radius}km (τρέχουσες θέσεις)';
   }
 
   @override
   String dimSatellitesUnlikely(int count) {
-    return '__PLACEHOLDER_0_ dim δορυφόρους ορατοί - απίθανο να εξηγήσει την όραση';
+    return '$count Ορατοί αμυδροί δορυφόροι - απίθανο να εξηγήσουν την παρατήρηση';
   }
 
   @override

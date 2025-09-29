@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Nošení objektu: _ _ PLACETETELER _ 0 _ _ °",
+  "bearingToObject": "Azimut k objektu: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -1156,6 +1156,35 @@
   "settingUpLocalization": "Nastavení lokalizace...",
   "checkingConnectivity": "Kontroluji konektivitu...",
   "gatheringDeviceInfo": "Informace o shromažďovacím zařízení...",
+  "translating": "Překládám...",
+  "showOriginal": "Zobrazit originál",
+  "translateTo": "Translate to _ _ PLACETETERER _ 0 _ _",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "Přeloženo z _ _ PLACETETERER _ 0 _ _",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "translateContent": "Přeložit obsah do _ _ PLACETETELER _ 0 _ _",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {

@@ -24,10 +24,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get save => 'להציל';
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'למחוק';
 
   @override
-  String get edit => 'Editעריכה';
+  String get edit => 'עריכה';
 
   @override
   String get retry => 'Retry';
@@ -1131,7 +1131,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get howItWorks => 'איך זה עובד';
 
   @override
-  String get backToBeeps => 'Back to Beeps';
+  String get backToBeeps => 'חזרה לצפצופים';
 
   @override
   String get loadingDetails => 'עקבו אחרי beepפרטים...';
@@ -2177,7 +2177,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '<PLACEHOLDER_0___נמוך באופק (__PLACEHOLDER_1_ °)';
+    return '$planet נמוך באופק ($altitude°)';
   }
 
   @override
@@ -2185,7 +2185,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '_PLACEHOLDER_0__ בולטת ב-__PLACEHOLDER_1_גבהים';
+    return '$star בולט בגובה $altitude°';
   }
 
   @override
@@ -2304,27 +2304,27 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '_PLACEHOLDER_0_____PLACEHOLDER_1_ ° - בולט';
+    return '$planet ב- $altitude° - בולט';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return 'שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_';
+    return '$planet ב- $altitude°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '<PLACEHOLDER_0____ בהיר מאוד ב-__PLACEHOLDER_1_ °_';
+    return '$star בהיר מאוד ב-$altitude°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '_PLACEHOLDER_0__ בולטת ב-__PLACEHOLDER_1_גבהים';
+    return '$star בולט בגובה $altitude°';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return 'שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_';
+    return '$star ב- $altitude°';
   }
 
   @override
@@ -2617,24 +2617,24 @@ class AppLocalizationsHe extends AppLocalizations {
   String get gatheringDeviceInfo => 'איסוף מידע של המכשיר...';
 
   @override
-  String get translating => 'Translating...';
+  String get translating => 'תרגום...';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => 'הצג מקורי';
 
   @override
   String translateTo(String language) {
-    return 'Translate to $language';
+    return 'תרגום לעברית עבור: PLACEHOLDER_0____';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from $language';
+    return 'תורגם מ -_PLACEHOLDER_0_______________';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to $language';
+    return 'תרגום התוכן ל-_PLACEHOLDER_0__________';
   }
 
   @override
@@ -2680,7 +2680,11 @@ class AppLocalizationsHe extends AppLocalizations {
   String get heavyRain => 'גשם כבד';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return 'PLACEHOLDER_0___ מטוסים שזוהו בתוך _PLACEHOLDER_1___ ק\"מ (מיקומים נוכחיים)';
   }
 

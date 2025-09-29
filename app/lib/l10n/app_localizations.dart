@@ -5038,7 +5038,11 @@ abstract class AppLocalizations {
   ///
   /// In en, this message translates to:
   /// **'{count} aircraft detected within {radius}km (current positions)'**
-  String aircraftDetectedCurrentPositions(int count, String radius);
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  );
 
   /// No description provided for @dimSatellitesUnlikely.
   ///

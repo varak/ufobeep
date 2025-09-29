@@ -1156,6 +1156,35 @@
   "settingUpLocalization": "Lokalisointi...",
   "checkingConnectivity": "Tarkistan yhteyksiä...",
   "gatheringDeviceInfo": "Keräyslaitteen tiedot...",
+  "translating": "Käännetään...",
+  "showOriginal": "Näytä alkuperäinen",
+  "translateTo": "Käännä __PAIKKAHOLDER_0___",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "Käännetty __PASSIHOLDER_0__",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "translateContent": "Käännä sisältö __PAIKKAHOLDER_0__",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {
@@ -1201,7 +1230,7 @@
     }
   },
   "mufonReportingDate": "MUFON Raportointipäivä",
-  "satelliteNameDirection": "{name} - __PLACEHOLDER_1_",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {

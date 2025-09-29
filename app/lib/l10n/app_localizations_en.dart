@@ -2713,7 +2713,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get heavyRain => 'heavy rain';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '$count aircraft detected within ${radius}km (current positions)';
   }
 

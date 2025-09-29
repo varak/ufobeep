@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Διόπτευση __PLACEHOLDER_0_°",
+  "alertDirection": "Ρουλεμάν {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -170,7 +170,7 @@
   "temperature": "Θερμοκρασία",
   "pushBodyWitness": "Ένας χρήστης επιβεβαίωσε ότι βλέπουν το ίδιο αντικείμενο.",
   "weather": "Καιρός",
-  "cloudCover": "Σύννεφο: __PLACEHOLDER_0_%",
+  "cloudCover": "Νεφοκάλυψη: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -217,7 +217,7 @@
   "pushNotificationNearby": "Κοντά",
   "pushNotificationInYourArea": "στην περιοχή σου. Πατήστε για να δείτε λεπτομέρειες.",
   "pushNotificationCommented": "{username} σχολίασε",
-  "pushNotificationCommentedOn": "_{username}_ σχολίασε στο __PLACEHOLDER_1_",
+  "pushNotificationCommentedOn": "{username} σχολίασε στο {beepTitle}",
   "pushNotificationGeneric": "ΑΤΙΑ μπιπ",
   "pushNotificationNewSighting": "Νέα θέαση κοντά",
   "language": "Γλώσσα",
@@ -254,7 +254,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLACEHOLDER_0_ ώρες πριν",
+  "timeHoursAgo": "{count} ώρες πριν",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -263,7 +263,7 @@
       }
     }
   },
-  "timeMinutesAgo": "__PLACEHOLDER_0_ πριν από λίγα λεπτά",
+  "timeMinutesAgo": "{count} λεπτά πριν",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -313,7 +313,7 @@
   "unknownLocation": "Άγνωστη τοποθεσία",
   "locationUnknown": "Άγνωστη τοποθεσία",
   "witnessesLabel": "Μάρτυρες",
-  "witnessesCountMessage": "__PLACEHOLDER_0_ Οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση",
+  "witnessesCountMessage": "{count} άτομα επιβεβαίωσαν αυτή την παρατήρηση",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -323,7 +323,7 @@
     }
   },
   "photoAnalysisTitle": "Ανάλυση φωτογραφιών",
-  "mediaItemsProcessed": "Ανάλυση: __PLACEHOLDER_0_ media file(s) processed",
+  "mediaItemsProcessed": "Ανάλυση: {count} επεξεργασμένα αρχεία πολυμέσων",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -432,7 +432,7 @@
   "whyReportToMufon": "Γιατί αναφέρεσαι στο MUFON?",
   "openMufonReport": "Άνοιγμα MUFON Έκθεση",
   "confirmedWitness": "Επιβεβαίωσες αυτή την παρατήρηση",
-  "witnessesHaveConfirmed": "__PLACEHOLDER_0_ Οι άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση",
+  "witnessesHaveConfirmed": "{count} άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -496,7 +496,7 @@
     }
   },
   "notificationWitnessText": "Νέα παρατήρηση",
-  "notificationWitnessTextMultiple": "__PLACEHOLDER_0_ μάρτυρες",
+  "notificationWitnessTextMultiple": "{count} μάρτυρες",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -530,7 +530,7 @@
   "ufoSightingAlert": "ΑΤΙΑ Εντοπισμός συναγερμού",
   "previousPage": "Προηγούμενο",
   "nextPage": "Επόμενο",
-  "pageOf": "Σελίδα _{currentPage}__PLACEHOLDER_1_ (__PLACEHOLDER_2_ σύνολο μπιπ)",
+  "pageOf": "Σελίδα {currentPage} από {totalPages} ({totalCount} συνολικά ηχητικά σήματα)",
   "firstPage": "Πρώτο",
   "lastPage": "Τελευταία",
   "jumpToPage": "Μετάβαση στη σελίδα",
@@ -585,7 +585,7 @@
   "mediaImageNotFound": "Η εικόνα δε βρέθηκε",
   "mediaPlayVideo": "Αναπαραγωγή βίντεο",
   "mediaViewImage": "Προβολή εικόνας",
-  "mediaCount": "__PLACEHOLDER_0_ εικόνες",
+  "mediaCount": "{count} εικόνες",
   "mediaCountSingle": "1 εικόνα",
   "mediaMoreImages": "+___PLACHOLDER_0_ more",
   "errorNotFound": "Το σήμα δεν βρέθηκε",
@@ -723,7 +723,7 @@
   "locationTrackingEnabled": "Ενεργοποίηση εντοπισμού τοποθεσίας φόντου",
   "locationTrackingDisabled": "Απενεργοποίηση εντοπισμού τοποθεσίας φόντου",
   "justNow": "Μόλις τώρα",
-  "minutesAgo": "__PLACEHOLDER_0_ πριν από λίγα λεπτά",
+  "minutesAgo": "{minutes} πριν από λεπτά",
   "@minutesAgo": {
     "placeholders": {
       "minutes": {
@@ -731,7 +731,7 @@
       }
     }
   },
-  "hoursAgo": "__PLACEHOLDER_0_ ώρες πριν",
+  "hoursAgo": "{hours} ώρες πριν",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -911,23 +911,23 @@
   "celestialSunDaylight": "Ο ήλιος είναι επάνω - συνθήκες ημέρας μπορεί να επηρεάσει την ορατότητα παρατήρησης",
   "celestialSunTwilight": "Συνθήκες λυκόφως - κάποια ορατότητα αλλά πιο σκοτεινή από το φως της ημέρας",
   "celestialSunDark": "Σκοτεινές συνθήκες - βέλτιστες για την παρατήρηση αντικειμένων στον ουρανό",
-  "celestialMoonBright": "Φωτεινό __PLACEHOLDER_0_ φεγγάρι ορατό - μπορεί να φωτίσει ή να επισκιάσει άλλα αντικείμενα",
-  "celestialMoonModerate": "__PLACEHOLDER_0_ φεγγάρι ορατό - μέτριες συνθήκες φωτισμού",
-  "celestialMoonThin": "Λεπτό __PLACEHOLDER_0_ φεγγάρι ορατό - ελάχιστο φωτισμό",
-  "celestialMoonHidden": "__PLACEHOLDER_0_ φεγγάρι κάτω από τον ορίζοντα - κανένας σεληνιακός φωτισμός",
+  "celestialMoonBright": "Φωτεινό φεγγάρι {phase} ορατό - μπορεί να φωτίσει ή να κρύψει άλλα αντικείμενα",
+  "celestialMoonModerate": "{phase} ορατό φεγγάρι - μέτριες συνθήκες φωτισμού",
+  "celestialMoonThin": "Λεπτό {phase} φεγγάρι ορατό - ελάχιστος φωτισμός",
+  "celestialMoonHidden": "{phase} φεγγάρι κάτω από τον ορίζοντα - χωρίς σεληνιακό φωτισμό",
   "celestialNoPlanets": "Κανένας φωτεινός πλανήτης ορατός που θα μπορούσε να είναι λάθος για UFO",
-  "celestialPlanetHigh": "__PLACEHOLDER_0_ υψηλά γενικά έξοδα (__PLACEHOLDER_1_°) - πολύ επιφανής",
-  "celestialPlanetMedium": "___PLACEHOLDER_0_ ορατό στο __PLACEHOLDER_1_° - θα μπορούσε να είναι λάθος για τα αεροσκάφη",
-  "celestialPlanetLow": "__PLACEHOLDER_0_ χαμηλή στον ορίζοντα (__PLACEHOLDER_1_°)",
+  "celestialPlanetHigh": "{planet} ψηλά πάνω από το κεφάλι ({altitude}°) - πολύ εμφανές",
+  "celestialPlanetMedium": "{planet} ορατό σε {altitude}° - θα μπορούσε να εκληφθεί λανθασμένα ως αεροσκάφος",
+  "celestialPlanetLow": "{planet} χαμηλά στον ορίζοντα ({altitude}°)",
   "celestialNoStars": "Δεν υπάρχουν ασυνήθιστα φωτεινά αστέρια ορατά",
-  "celestialStarSingle": "__PLACEHOLDER_0_εξέχουσα σε __PLACEHOLDER_1_° υψόμετρο",
-  "celestialStarsMultiple": "__PLACEHOLDER_0_ Φωτεινά αστέρια ορατά - __PLACEHOLDER_1_",
+  "celestialStarSingle": "{star} εμφανές σε {altitude}° υψόμετρο",
+  "celestialStarsMultiple": "{count} φωτεινά αστέρια ορατά - {names}",
   "celestialSummaryDaylight": "Συνθήκες ημέρας",
   "celestialSummaryDark": "Σκοτεινές συνθήκες ουρανού",
   "celestialSummaryMoonUp": "φωτισμός φεγγαριού παρούσα",
   "celestialSummaryMoonDown": "χωρίς φωτισμό φεγγαριού",
-  "celestialSummaryManyObjects": "__PLACEHOLDER_0_ φωτεινά αντικείμενα που θα μπορούσαν να συγχέονται με UFO",
-  "celestialSummarySomeObjects": "__PLACEHOLDER_0_ φωτεινό αντικείμενο(τα) ορατό",
+  "celestialSummaryManyObjects": "{count} φωτεινά αντικείμενα που θα μπορούσαν να συγχέονται με UFO",
+  "celestialSummarySomeObjects": "{count} φωτεινά αντικείμενα ορατά",
   "celestialSummaryFewObjects": "ελάχιστα φωτεινά αντικείμενα στον ουρανό",
   "celestialSkySummary": "Συνθήκες ουρανού: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "planetVenus": "Αφροδίτη",
@@ -953,19 +953,19 @@
   "moonPhaseWaningGibbous": "Κεραυνοί Γκίμπους",
   "moonPhaseThirdQuarter": "Τρίτο τρίμηνο",
   "moonPhaseWaningCrescent": "Κερδίζοντας ημισέληνος",
-  "planetBelowHorizon": "__PLACEHOLDER_0_ κάτω από τον ορίζοντα",
-  "planetHighOverheadProminent": "__PLACEHOLDER_0_ υψηλά γενικά έξοδα (__PLACEHOLDER_1_°) - πολύ επιφανής",
-  "planetMidSkyProminent": "{planet}__PLACEHOLDER_1_° - επιφανής",
+  "planetBelowHorizon": "{planet} κάτω από τον ορίζοντα",
+  "planetHighOverheadProminent": "{planet} ψηλά πάνω από το κεφάλι ({altitude}°) - πολύ εμφανές",
+  "planetMidSkyProminent": "{planet} σε {altitude}° - εμφανές",
   "planetMidSky": "__PLACHOLDER_0___PLACHOLDER_1_°",
-  "starVeryBright": "__PLACEHOLDER_0_ πολύ φωτεινό στο {star}°",
-  "starProminent": "__PLACEHOLDER_0_εξέχουσα σε __PLACEHOLDER_1_° υψόμετρο",
+  "starVeryBright": "{star} πολύ φωτεινό σε {altitude}°",
+  "starProminent": "{star} εμφανές σε {altitude}° υψόμετρο",
   "starVisible": "__PLACHOLDER_0___PLACHOLDER_1_°",
   "altitudeShort": "Άλτ",
   "magnitudeShort": "Μαγ",
-  "satellitesVisibleMightExplain": "__PLACEHOLDER_0_ ορατοί δορυφόροι - μπορεί να εξηγήσει την όραση",
-  "satellitesVisibleUnlikelyExplain": "__PLACEHOLDER_0_ δορυφόροι ορατοί - απίθανο να εξηγήσει την όραση",
+  "satellitesVisibleMightExplain": "{count} δορυφόροι ορατοί - μπορεί να εξηγήσει την παρατήρηση",
+  "satellitesVisibleUnlikelyExplain": "{count} δορυφόροι ορατοί - απίθανο να εξηγήσει την παρατήρηση",
   "noSatellitesVisible": "Δεν φαίνονται δορυφόροι",
-  "aircraftDetectedInRadius": "__PLACEHOLDER_0_ αεροσκάφος ανιχνεύεται εντός __PLACEHOLDER_1_km",
+  "aircraftDetectedInRadius": "{count} αεροσκάφος που εντοπίστηκε εντός {radius}km",
   "processingAlert": "Επεξεργασία συναγερμού UFO...",
   "analyzingEnvironment": "Ανάλυση των περιβαλλοντικών συνθηκών",
   "weatherAnalysis": "Ανάλυση καιρού",
@@ -982,7 +982,7 @@
   "calculatingCelestialData": "Υπολογίζοντας ουράνια δεδομένα...",
   "sunLabel": "Ήλιος",
   "moonLabel": "Σελήνη",
-  "planetsVisible": "Πλανήτες: __PLACEHOLDER_0_ ορατοί",
+  "planetsVisible": "Πλανήτες: {count} ορατοί",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -993,7 +993,7 @@
   },
   "starsLabel": "Άστρα",
   "planetsLabel": "Πλανήτες",
-  "moonWithPhase": "Σελήνη (___PLACEHOLDER_0_)",
+  "moonWithPhase": "Σελήνη ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1010,7 +1010,7 @@
   "noWeatherDescription": "Χωρίς περιγραφή",
   "altitudeAbbrev": "Άλτ",
   "azimuthAbbrev": "Αζ",
-  "satellitesVisibleNow": "Δορυφόροι (___PLACEHOLDER_0_ ορατοί τώρα)",
+  "satellitesVisibleNow": "Δορυφόροι ({count} ορατοί τώρα)",
   "sunWithDescription": "Ήλιος: ___PACHOLDER_0__",
   "@sunWithDescription": {
     "placeholders": {
@@ -1043,7 +1043,7 @@
   "unknownDirection": "άγνωστη κατεύθυνση",
   "brightStars": "Φωτεινά αστέρια",
   "satellites": "Δορυφόροι",
-  "seeAllSatellites": "Δείτε όλους τους δορυφόρους __PLACEHOLDER_0_",
+  "seeAllSatellites": "Δείτε όλους τους δορυφόρους {count}",
   "@seeAllSatellites": {
     "placeholders": {
       "count": {
@@ -1052,7 +1052,7 @@
       }
     }
   },
-  "maxElevation": "Μέγιστη ανύψωση: __PLACEHOLDER_0_°",
+  "maxElevation": "Μέγιστο υψόμετρο: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1071,7 +1071,7 @@
     }
   },
   "unknownGeneric": "Άγνωστο",
-  "altitudeValue": "__PLACEHOLDER_0_° υψόμετρο",
+  "altitudeValue": "{degrees}° υψόμετρο",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1080,7 +1080,7 @@
       }
     }
   },
-  "azimuthValue": "__PLACEHOLDER_0_° αζιμούθιο",
+  "azimuthValue": "{degrees}° αζιμούθιο",
   "@azimuthValue": {
     "placeholders": {
       "degrees": {
@@ -1133,7 +1133,7 @@
     }
   },
   "followingAlerts": "Μετά τις καταχωρίσεις",
-  "activeCount": "__PLACEHOLDER_0_ ενεργό",
+  "activeCount": "{count} ενεργό",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1156,6 +1156,35 @@
   "settingUpLocalization": "Setting εντοπισμού...",
   "checkingConnectivity": "Έλεγχος συνδεσιμότητας...",
   "gatheringDeviceInfo": "Συγκέντρωση πληροφοριών συσκευής...",
+  "translating": "Μεταφράζω...",
+  "showOriginal": "Εμφάνιση αρχικού",
+  "translateTo": "Μετάφραση σε {language}",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "Μεταφράστηκε από {language}",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "translateContent": "Μεταφράστε το περιεχόμενο στο {language}",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {
@@ -1178,7 +1207,7 @@
   "lightRain": "ελαφρά βροχή",
   "moderateRain": "μέτρια βροχή",
   "heavyRain": "βαριά βροχή",
-  "aircraftDetectedCurrentPositions": "__PLACEHOLDER_0_ αεροσκάφος ανιχνεύεται εντός __PLACEHOLDER_1_km (τρέχουσες θέσεις)",
+  "aircraftDetectedCurrentPositions": "{count} αεροσκάφος που εντοπίστηκε εντός {radius}km (τρέχουσες θέσεις)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1191,7 +1220,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "__PLACEHOLDER_0_ dim δορυφόρους ορατοί - απίθανο να εξηγήσει την όραση",
+  "dimSatellitesUnlikely": "{count} Ορατοί αμυδροί δορυφόροι - απίθανο να εξηγήσουν την παρατήρηση",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {

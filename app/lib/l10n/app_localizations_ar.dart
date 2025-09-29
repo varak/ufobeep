@@ -27,7 +27,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get delete => 'تحذف';
 
   @override
-  String get edit => 'Edit';
+  String get edit => 'حرر';
 
   @override
   String get retry => 'Retry';
@@ -906,7 +906,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get addPhotosAndVideos => 'أضف الصور الفوتوغرافية';
 
   @override
-  String get attachMedia => 'Attach Media';
+  String get attachMedia => 'إرفاق الوسائط';
 
   @override
   String get addCommentOptional => 'يضاف تعليق (اختياري)';
@@ -956,7 +956,8 @@ class AppLocalizationsAr extends AppLocalizations {
   String get weatherConditionsTitle => 'أحوال الطقس';
 
   @override
-  String get noSatellitePasses => 'No visible satellite passes found';
+  String get noSatellitePasses =>
+      'لم يتم العثور على تصاريح مرئية عبر الأقمار الصناعية';
 
   @override
   String get contentAnalysisTitle => 'تحليل المحتوى';
@@ -1269,7 +1270,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '__PLACEHOLDER_0_صور';
+    return '$count الصور';
   }
 
   @override
@@ -1679,7 +1680,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get locationTrackingBenefits =>
-      '• الحصول على تنبيه OFO أينما كنت السفر\n• Automatic location updates\n• No manual setup required';
+      '• احصل على تنبيهات الأجسام الطائرة المجهولة أينما سافرت\n• تحديثات الموقع التلقائية\n• لا يلزم الإعداد اليدوي';
 
   @override
   String get allowLocationAccess => 'السماح بالوصول إلى الموقع';
@@ -2117,7 +2118,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'مشاهدات الحشد، الوصول إلى تقارير (مافون) والتواصل مع الزملاء المشاهدين.';
 
   @override
-  String get skip => 'Skip';
+  String get skip => 'تخطي';
 
   @override
   String get getStarted => 'ابدأ';
@@ -2179,12 +2180,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '${planet}__ مرتفعات ($planet°) -';
+    return '${altitude}__ مرتفعات ($planet°) -';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '__PLACEHOLDER_0_ مرئي في __PLACEHOLDER_1_';
+    return '$planet مرئي عند $altitude ° - يمكن أن يخطئ في الطائرات';
   }
 
   @override
@@ -2312,7 +2313,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '${planet}__ مرتفعات ($planet°) -';
+    return '${altitude}__ مرتفعات ($planet°) -';
   }
 
   @override
@@ -2353,7 +2354,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '__PLACEHOLDER_0_ سواتل مرئية - من غير المحتمل أن تفسر الرؤية';
+    return '$count الأقمار الصناعية المرئية - من غير المرجح أن تفسر الرؤية';
   }
 
   @override
@@ -2416,7 +2417,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return 'Planets: __PLACEHOLDER_0_';
+    return 'الكواكب: $count مرئي';
   }
 
   @override
@@ -2630,24 +2631,24 @@ class AppLocalizationsAr extends AppLocalizations {
   String get gatheringDeviceInfo => 'جمع المعلومات عن الجهاز.';
 
   @override
-  String get translating => 'Translating...';
+  String get translating => 'ترجمة...';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => 'العرض الأصلي';
 
   @override
   String translateTo(String language) {
-    return 'Translate to $language';
+    return 'Translate to __PLACEHOLDER_0';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from $language';
+    return 'Translated from __PLACEHOLDER_0';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to $language';
+    return 'Translate content to __PLACEHOLDER_0';
   }
 
   @override
@@ -2693,13 +2694,17 @@ class AppLocalizationsAr extends AppLocalizations {
   String get heavyRain => 'الأمطار الغزيرة';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
-    return '__PLACEHOLDER_0_طائرة مكتشفة في __PLACEHOLDER_1_km (مواقع جارية)';
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
+    return '$count تم اكتشاف الطائرات ضمن $radius كم (المواقع الحالية)';
   }
 
   @override
   String dimSatellitesUnlikely(int count) {
-    return '__PLACEHOLDER_0_ سواتل شمسية مرئية - من غير المرجح أن تفسر الرؤية';
+    return '$count الأقمار الصناعية الخافتة المرئية - من غير المرجح أن تفسر الرؤية';
   }
 
   @override

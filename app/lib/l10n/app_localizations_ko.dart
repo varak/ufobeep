@@ -391,12 +391,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return '활성 $startTime - $startTime';
+    return '활성 $endTime - $startTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return '영업시간: $start - $start';
+    return '영업시간: $end - $start';
   }
 
   @override
@@ -418,7 +418,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$username에 대한 의견 $username';
+    return '$beepTitle에 대한 의견 $username';
   }
 
   @override
@@ -2129,17 +2129,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '$planet 높은 오버헤드 ($planet°) - 매우 눈에 띄는';
+    return '$altitude 높은 오버헤드 ($planet°) - 매우 눈에 띄는';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '$planet는 $planet°에서 볼 수 있습니다';
+    return '$altitude는 $planet°에서 볼 수 있습니다';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$planet 수평선 ($planet°)';
+    return '$altitude 수평선 ($planet°)';
   }
 
   @override
@@ -2147,12 +2147,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '$star $star° 고도로 눈에 띄는';
+    return '$altitude $star° 고도로 눈에 띄는';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$count 밝은 별 - $count';
+    return '$names 밝은 별 - $count';
   }
 
   @override
@@ -2261,32 +2261,32 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet 높은 오버헤드 ($planet°) - 매우 눈에 띄는';
+    return '$altitude 높은 오버헤드 ($planet°) - 매우 눈에 띄는';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$planet at $planet° - 저명한';
+    return '$altitude at $planet° - 저명한';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$planet 에 $planet°';
+    return '$altitude 에 $planet°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$star 매우 밝기 $star°';
+    return '$altitude 매우 밝기 $star°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$star $star° 고도로 눈에 띄는';
+    return '$altitude $star° 고도로 눈에 띄는';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$star 에 $star°';
+    return '$altitude 에 $star°';
   }
 
   @override
@@ -2310,7 +2310,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$count 항공기는 ${count}km 내에서 감지';
+    return '$radius 항공기는 ${count}km 내에서 감지';
   }
 
   @override
@@ -2520,7 +2520,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return '활성 $startTime - $startTime';
+    return '활성 $endTime - $startTime';
   }
 
   @override
@@ -2576,24 +2576,24 @@ class AppLocalizationsKo extends AppLocalizations {
   String get gatheringDeviceInfo => '장치 정보 ...';
 
   @override
-  String get translating => 'Translating...';
+  String get translating => '...에.';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => '쇼 Original';
 
   @override
   String translateTo(String language) {
-    return 'Translate to $language';
+    return '$language로 번역';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from $language';
+    return '$language의 번역';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to $language';
+    return '번역 내용으로 $language';
   }
 
   @override
@@ -2639,8 +2639,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get heavyRain => '무거운 비';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
-    return '$count 항공기는 ${count}km (현재 위치)에서 감지';
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
+    return '$radius 항공기는 ${count}km (현재 위치)에서 감지';
   }
 
   @override

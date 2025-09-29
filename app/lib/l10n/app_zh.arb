@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "风速:_PLACEHOLDER_0__PLACEHOLDER_1_",
+  "wind": "风：{speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -1156,6 +1156,35 @@
   "settingUpLocalization": "建立本地化...",
   "checkingConnectivity": "正在检查连接...",
   "gatheringDeviceInfo": "正在收集设备信息...",
+  "translating": "翻译中...",
+  "showOriginal": "显示原始",
+  "translateTo": "翻译为{language}",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "翻译自_PLACEHOLDER_0__",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "translateContent": "将内容翻译为_PLACEHOLDER_0__",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {

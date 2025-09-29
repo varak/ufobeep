@@ -1,18 +1,18 @@
 {
   "@@locale": "sv",
   "appName": "UFOBeep",
-  "ok": "OK",
+  "ok": "OKEJ",
   "cancel": "Avbokning",
   "close": "Nära",
   "save": "Spara",
-  "delete": "Delete",
-  "edit": "Edit",
+  "delete": "Ta bort",
+  "edit": "Redigera",
   "retry": "Retry",
   "yes": "Ja",
   "no": "Ingen",
   "back": "Tillbaka",
   "next": "Nästa",
-  "done": "Done",
+  "done": "Färdig",
   "loading": "Loading..",
   "processing": "Processing..",
   "errorGeneric": "Något gick fel.",
@@ -37,7 +37,7 @@
   "alertsTitle": "Nära Alerts",
   "noAlerts": "Inga varningar i närheten ännu.",
   "pullToRefresh": "Pull to refresh",
-  "alertDistance": "__PLACEHOLDER_0_ bort",
+  "alertDistance": "{distance} bort",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Bär __PLACEHOLDER_0_°",
+  "alertDirection": "Bäring {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Bär mot objekt: __PLACEHOLDER_0_°",
+  "bearingToObject": "Bäring till objekt: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrerande kompass..",
   "openAROverlay": "Open AR Overlay",
   "pushTitleAlertNearby": "UFO varning nära dig",
-  "pushBodyAlertNearby": "En ny observation rapporterades __PLACEHOLDER_0_ bort.",
+  "pushBodyAlertNearby": "En ny iakttagelse rapporterades {distance} bort.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatur",
   "pushBodyWitness": "En användare bekräftade att de ser samma objekt.",
   "weather": "Vädret",
-  "cloudCover": "Cloud cover: __PLACEHOLDER_0_%",
+  "cloudCover": "Molntäcke: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -210,14 +210,14 @@
   "dndUntil": "Stör inte förrän",
   "dndEnabled": "DND aktiverad till {time}__",
   "dndDisabled": "DND inaktiverad",
-  "quietHoursActive": "Aktiv __PLACEHOLDER_0_ - {startTime}",
-  "quietHoursScheduled": "Tyst timmar: {start} {start}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "quietHoursActive": "Aktiv {startTime} - {endTime}",
+  "quietHoursScheduled": "Tyst timmar: {end} {start}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "pushNotificationUfoAlert": "UFO Alert",
   "pushNotificationAnomalyAlert": "Anomaly Alert",
   "pushNotificationNearby": "I närheten",
   "pushNotificationInYourArea": "i ditt område. Tryck för att visa detaljer.",
   "pushNotificationCommented": "{username} kommenterade",
-  "pushNotificationCommentedOn": "{username} kommenterade {username}_",
+  "pushNotificationCommentedOn": "{beepTitle} kommenterade {username}_",
   "pushNotificationGeneric": "UFOBeep",
   "pushNotificationNewSighting": "Ny observation i närheten",
   "language": "Språkspråk",
@@ -243,9 +243,9 @@
   "reportOnly": "Text Endast",
   "videoOnly": "Video Endast",
   "imageOnly": "Bild endast",
-  "mediaOnly": "Media Endast",
+  "mediaOnly": "Endast media",
   "timeJustNow": "just nu",
-  "timeDaysAgo": "__PLACEHOLDER_0_dagar sedan",
+  "timeDaysAgo": "{count} dagar sedan",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -473,7 +473,7 @@
   "notificationSightingTitle": "UFOBeep UFO Alert",
   "notificationSightingUrgent": "URGENT UFOBEep UFO Alert",
   "notificationSightingEmergency": "EMERGENCY UFOBEep UFO Alert",
-  "notificationSightingBody": "__PLACEHOLDER_0_ nära {locationName}_",
+  "notificationSightingBody": "{witnessText} nära {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -496,7 +496,7 @@
     }
   },
   "notificationWitnessText": "Ny observation",
-  "notificationWitnessTextMultiple": "__PLACEHOLDER_0_ vittnen",
+  "notificationWitnessTextMultiple": "{count} vittnen",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -507,7 +507,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Avfärda",
-  "notificationDistance": "__PLACEHOLDER_0_ bort",
+  "notificationDistance": "{distance} bort",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -739,7 +739,7 @@
       }
     }
   },
-  "daysAgo": "__PLACEHOLDER_0_dagar sedan",
+  "daysAgo": "{days} dagar sedan",
   "@daysAgo": {
     "placeholders": {
       "days": {
@@ -757,7 +757,7 @@
   "splashRetry": "Retry",
   "splashContinue": "Fortsätt",
   "splashInitializing": "Initialisera...",
-  "signInWelcome": "Välkommen __PLACEHOLDER_0_!",
+  "signInWelcome": "Välkommen {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -786,7 +786,7 @@
   "signInEmailDescription": "Vi skickar dig en säker länk för att logga in",
   "signInEmailAddress": "E-postadress",
   "signInEmailPlaceholder": "din@email.com",
-  "signInTryAgainIn": "Försök igen i __PLACEHOLDER_0_s",
+  "signInTryAgainIn": "Försök igen om {seconds}s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -900,7 +900,7 @@
   "onboardingCompassBody": "Kompass visar dig den exakta riktning som vittnet såg när de såg UFO. Peka din telefon och titta!",
   "onboardingCommunityTitle": "Gå med i Skywatchers",
   "onboardingCommunityBody": "Bläddra i observationer, få tillgång till MUFON-rapporter och ansluta med andra skywatchers.",
-  "skip": "Skip",
+  "skip": "Skippa",
   "getStarted": "Kom igång",
   "viewOnboardingAgain": "Visa ombordstigning igen",
   "customAlertRange": "Anpassad Alert Range",
@@ -911,17 +911,17 @@
   "celestialSunDaylight": "Sol är upp - dagsljusförhållanden kan påverka synligheten",
   "celestialSunTwilight": "Twilight förhållanden - viss synlighet men mörkare än dagsljus",
   "celestialSunDark": "Mörka förhållanden - optimalt för att observera objekt i himlen",
-  "celestialMoonBright": "Ljus __PLACEHOLDER_0_ månen synlig - kan belysa eller dölja andra föremål",
+  "celestialMoonBright": "Ljus {phase} måne synlig - kan belysa eller skymma andra föremål",
   "celestialMoonModerate": "{phase} månen synlig - måttliga ljusförhållanden",
-  "celestialMoonThin": "Thin __PLACEHOLDER_0_ månen synlig - minimal belysning",
-  "celestialMoonHidden": "__PLACEHOLDER_0_ månen under horisonten - ingen månbelysning",
+  "celestialMoonThin": "Tunn {phase} måne synlig - minimal belysning",
+  "celestialMoonHidden": "{phase} Månen under horisonten - ingen månbelysning",
   "celestialNoPlanets": "Inga ljusa planeter synliga som kan misstas för UFO",
   "celestialPlanetHigh": "{planet} hög overhead (_PLACEHOLDER_1_°) - mycket framträdande",
-  "celestialPlanetMedium": "{planet} synlig på __PLACEHOLDER_1_° - kan misstas för flygplan",
-  "celestialPlanetLow": "__PLACEHOLDER_0_ låg på horisont (_PLACEHOLDER_1_°)",
+  "celestialPlanetMedium": "{planet} synlig på {altitude}° – kan misstas för flygplan",
+  "celestialPlanetLow": "{planet} lågt på horisonten ({altitude}°)",
   "celestialNoStars": "Inga ovanligt ljusa stjärnor synliga",
-  "celestialStarSingle": "{star} är framträdande på __PLACEHOLDER_1_° höjd",
-  "celestialStarsMultiple": "{count} ljusa stjärnor synliga – {count}________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "celestialStarSingle": "{star} framträdande på {altitude}° höjd",
+  "celestialStarsMultiple": "{names} ljusa stjärnor synliga – {count}________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "celestialSummaryDaylight": "Dagsljusförhållanden",
   "celestialSummaryDark": "Mörka himmelförhållanden",
   "celestialSummaryMoonUp": "månbelysning närvarande",
@@ -953,19 +953,19 @@
   "moonPhaseWaningGibbous": "Varning Gibbous",
   "moonPhaseThirdQuarter": "Tredje kvartalet",
   "moonPhaseWaningCrescent": "Varning Crescent",
-  "planetBelowHorizon": "__PLACEHOLDER_0_ under horisont",
+  "planetBelowHorizon": "{planet} under horisonten",
   "planetHighOverheadProminent": "{planet} hög overhead (_PLACEHOLDER_1_°) - mycket framträdande",
-  "planetMidSkyProminent": "{planet} vid __PLACEHOLDER_1_° - framträdande",
-  "planetMidSky": "__PLACEHOLDER_0_ vid __PLACEHOLDER_1_°",
-  "starVeryBright": "{star} mycket ljus vid __PLACEHOLDER_1_°",
-  "starProminent": "{star} är framträdande på __PLACEHOLDER_1_° höjd",
-  "starVisible": "__PLACEHOLDER_0_ vid __PLACEHOLDER_1_°",
+  "planetMidSkyProminent": "{planet} på {altitude}° - framträdande",
+  "planetMidSky": "{planet} på {altitude}°",
+  "starVeryBright": "{star} mycket ljusstark på {altitude}°",
+  "starProminent": "{star} framträdande på {altitude}° höjd",
+  "starVisible": "{star} på {altitude}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
   "satellitesVisibleMightExplain": "{count}-satelliter synliga - kan förklara observation",
   "satellitesVisibleUnlikelyExplain": "{count}-satelliter synliga - osannolikt att förklara observationer",
   "noSatellitesVisible": "Inga satelliter synliga",
-  "aircraftDetectedInRadius": "{count}_ flygplan som upptäcks inom __PLACEHOLDER_1_km",
+  "aircraftDetectedInRadius": "{count} flygplan upptäckta inom {radius}km",
   "processingAlert": "Bearbeta UFO Alert...",
   "analyzingEnvironment": "Analysera miljöförhållanden",
   "weatherAnalysis": "Väderanalys",
@@ -973,7 +973,7 @@
   "aircraftTracking": "Aircraft Tracking",
   "satelliteAnalysis": "Satellitanalys",
   "celestialAnalysis": "Celestial Analys",
-  "analyzing": "Analysera __PLACEHOLDER_0_...",
+  "analyzing": "Analyserar {processor}...",
   "processorWeather": "väderförhållanden",
   "processorLocation": "plats detaljer",
   "processorAircraft": "närliggande flygplan",
@@ -982,7 +982,7 @@
   "calculatingCelestialData": "Beräkning av himmelska data...",
   "sunLabel": "Sol sol sol solen",
   "moonLabel": "Månen",
-  "planetsVisible": "Planeter: __PLACEHOLDER_0_ synliga",
+  "planetsVisible": "Planeter: {count} synliga",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1010,7 +1010,7 @@
   "noWeatherDescription": "Ingen beskrivning",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "Satelliter (__PLACEHOLDER_0_ syns nu)",
+  "satellitesVisibleNow": "Satelliter ({count} synliga nu)",
   "sunWithDescription": "Solen: {description}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "@sunWithDescription": {
     "placeholders": {
@@ -1052,7 +1052,7 @@
       }
     }
   },
-  "maxElevation": "Max höjd: __PLACEHOLDER_0_°",
+  "maxElevation": "Högsta höjd: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1071,7 +1071,7 @@
     }
   },
   "unknownGeneric": "Okänd",
-  "altitudeValue": "__PLACEHOLDER_0_° höjd",
+  "altitudeValue": "{degrees}° höjd över havet",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1080,7 +1080,7 @@
       }
     }
   },
-  "azimuthValue": "__PLACEHOLDER_0_° azimuth",
+  "azimuthValue": "{degrees}° azimut",
   "@azimuthValue": {
     "placeholders": {
       "degrees": {
@@ -1119,7 +1119,7 @@
   "endTime": "Sluttid",
   "allowCriticalAlertsDuringQuietHours": "Tillåt kritiska varningar under tysta timmar",
   "silenceNotificationsDuringSleepHours": "Tystnadsmeddelanden under sömn timmar",
-  "quietHoursActiveTimeRange": "Aktiv __PLACEHOLDER_0_ - {startTime}",
+  "quietHoursActiveTimeRange": "Aktiv {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1133,7 +1133,7 @@
     }
   },
   "followingAlerts": "Följ Alerts",
-  "activeCount": "__PLACEHOLDER_0_ aktiv",
+  "activeCount": "{count} aktiva",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1156,6 +1156,35 @@
   "settingUpLocalization": "Ställ in lokalisering...",
   "checkingConnectivity": "Kontrollera anslutning...",
   "gatheringDeviceInfo": "Insamling av enhet info...",
+  "translating": "Översätta...",
+  "showOriginal": "Visa original",
+  "translateTo": "Översätt till {language}___",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "Översatt från {language}___",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "translateContent": "Översätt innehåll till {language}___",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {
@@ -1178,7 +1207,7 @@
   "lightRain": "ljus regn",
   "moderateRain": "måttligt regn",
   "heavyRain": "tungt regn",
-  "aircraftDetectedCurrentPositions": "{count}_ flygplan som upptäcks inom __PLACEHOLDER_1_km (nuvarande positioner)",
+  "aircraftDetectedCurrentPositions": "{count} flygplan upptäckta inom {radius}km (aktuella positioner)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {

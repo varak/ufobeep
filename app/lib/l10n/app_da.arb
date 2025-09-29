@@ -900,7 +900,7 @@
   "onboardingCompassBody": "Kompas viser dig den præcise retning vidnet kiggede, da de så UFO. Ret din telefon og se!",
   "onboardingCommunityTitle": "Deltag i Skywatchers",
   "onboardingCommunityBody": "Gennemse observationer, adgang MUFON rapporter, og oprette forbindelse med andre skywatchers.",
-  "skip": "Skip",
+  "skip": "Overspringe",
   "getStarted": "Start",
   "viewOnboardingAgain": "Vis Onboarding igen",
   "customAlertRange": "Brugerdefineret alarmområde",
@@ -1156,6 +1156,35 @@
   "settingUpLocalization": "Opsætning af lokalisering...",
   "checkingConnectivity": "Tjek forbindelse...",
   "gatheringDeviceInfo": "Indsamling af enhedsinformation...",
+  "translating": "Oversætter...",
+  "showOriginal": "Vis original",
+  "translateTo": "Oversæt til _ _ PLACEREPER _ 0 _ _",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "Oversat fra _ _ PLACEREPORT _ 0 _ _",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "translateContent": "Oversæt indhold til _ _ PLACEREPER _ 0 _ _",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {

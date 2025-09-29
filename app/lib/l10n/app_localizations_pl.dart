@@ -2668,24 +2668,24 @@ class AppLocalizationsPl extends AppLocalizations {
   String get gatheringDeviceInfo => 'Zbieranie informacji o urządzeniu...';
 
   @override
-  String get translating => 'Translating...';
+  String get translating => 'Tłumaczę...';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => 'Pokaż oryginał';
 
   @override
   String translateTo(String language) {
-    return 'Translate to $language';
+    return 'Przetłumacz na _ _ PLACEScorter _ 0 _ _';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from $language';
+    return 'Tłumaczone z _ _ PLACEScorpiter _ 0 _ _';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to $language';
+    return 'Przetłumacz zawartość na _ _ PLACEScorter _ 0 _ _';
   }
 
   @override
@@ -2731,7 +2731,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get heavyRain => 'intensywny deszcz';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '_ _ PLACESORM _ 0 _ _ statek powietrzny wykryty w _ _ PLACESORM _ 1 _ _ km (aktualne pozycje)';
   }
 

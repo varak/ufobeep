@@ -233,7 +233,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'ऑब्जेक्ट करने के लिए असर: __PLACEHOLDER_0_°';
+    return 'वस्तु के लिए असर: $bearing°';
   }
 
   @override
@@ -293,7 +293,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'पॉइंट टू __PLACEHOLDER_0_';
+    return '$direction की ओर इशारा करते हुए';
   }
 
   @override
@@ -1812,7 +1812,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'फिर से कोशिश करो __PLACEHOLDER_0_s';
+    return '${seconds}s में पुन: प्रयास करें';
   }
 
   @override
@@ -1976,7 +1976,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return '6-digits कोड में प्रवेश करें __PLACEHOLDER_0_';
+    return '$phoneNumber पर भेजा गया 6-अंकीय कोड दर्ज करें';
   }
 
   @override
@@ -2176,12 +2176,12 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Bright __PLACEHOLDER_0_ चंद्रमा दृश्य - अन्य वस्तुओं को रोशनी या अस्पष्ट कर सकता है';
+    return 'उज्ज्वल $phase चंद्रमा दिखाई दे रहा है - अन्य वस्तुओं को रोशन या अस्पष्ट कर सकता है';
   }
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '__PLACEHOLDER_0_ चंद्रमा दृश्य - मध्यम प्रकाश की स्थिति';
+    return '$phase चंद्रमा दिखाई देता है - मध्यम प्रकाश की स्थिति';
   }
 
   @override
@@ -2381,7 +2381,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '__PLACEHOLDER_0_0__ विमान का पता __PLACEHOLDER_1_Km के भीतर हुआ।';
+    return '$count विमान $radiusकिमी के भीतर पाया गया';
   }
 
   @override
@@ -2436,7 +2436,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return 'ग्रह: __PLACEHOLDER_0_ दृश्यमान';
+    return 'ग्रह: $count दृश्यमान';
   }
 
   @override
@@ -2652,24 +2652,24 @@ class AppLocalizationsHi extends AppLocalizations {
   String get gatheringDeviceInfo => 'उपकरण जानकारी इकट्ठा करना.';
 
   @override
-  String get translating => 'Translating...';
+  String get translating => 'अनुवाद.';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => 'मूल दिखाएँ';
 
   @override
   String translateTo(String language) {
-    return 'Translate to $language';
+    return '0 _ 0 _ 0 _ 0 _ 0';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from $language';
+    return 'से अनुवादित $language';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to $language';
+    return '0 _ 0 _ 0 _ 0 _ 0';
   }
 
   @override
@@ -2715,8 +2715,12 @@ class AppLocalizationsHi extends AppLocalizations {
   String get heavyRain => 'भारी बारिश';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
-    return '$count विमान का पता __PLACEHOLDER_1_km (current position) के भीतर हुआ।';
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
+    return '$count $radiusकिमी (वर्तमान स्थिति) के भीतर पाया गया विमान';
   }
 
   @override

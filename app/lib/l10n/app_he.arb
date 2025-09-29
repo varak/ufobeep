@@ -5,8 +5,8 @@
   "cancel": "ביטול",
   "close": "סגור",
   "save": "להציל",
-  "delete": "Delete",
-  "edit": "Editעריכה",
+  "delete": "למחוק",
+  "edit": "עריכה",
   "retry": "Retry",
   "yes": "כן",
   "no": "לא",
@@ -541,7 +541,7 @@
   "sightingsMap": "🗺️ Sightings Map",
   "globalSightingNetwork": "רשת Sighting",
   "howItWorks": "איך זה עובד",
-  "backToBeeps": "Back to Beeps",
+  "backToBeeps": "חזרה לצפצופים",
   "loadingDetails": "עקבו אחרי beepפרטים...",
   "details": "פרטים",
   "location": "מיקום Location",
@@ -918,9 +918,9 @@
   "celestialNoPlanets": "אין כוכבי לכת בהירים שיכולים לטעות עבור עב\"מים",
   "celestialPlanetHigh": "_PLACEHOLDER_0__High Overhead (_{planet} °)",
   "celestialPlanetMedium": "_PLACEHOLDER_0___ גלוי ב-_PLACEHOLDER_1__ ° - יכול להיות שגוי עבור מטוסים",
-  "celestialPlanetLow": "<PLACEHOLDER_0___נמוך באופק (__PLACEHOLDER_1_ °)",
+  "celestialPlanetLow": "{planet} נמוך באופק ({altitude}°)",
   "celestialNoStars": "אין כוכבים בהירים במיוחד",
-  "celestialStarSingle": "_PLACEHOLDER_0__ בולטת ב-__PLACEHOLDER_1_גבהים",
+  "celestialStarSingle": "{star} בולט בגובה {altitude}°",
   "celestialStarsMultiple": "PLACEHOLDER_0__ בהיר כוכבים גלויים לעין -_PLACEHOLDER_1_____________________________________________________________________",
   "celestialSummaryDaylight": "תנאי תאורה",
   "celestialSummaryDark": "תנאי השמיים האפלים",
@@ -955,11 +955,11 @@
   "moonPhaseWaningCrescent": "סאהר",
   "planetBelowHorizon": "<PLACEHOLDER_0__ מתחת לאופק",
   "planetHighOverheadProminent": "_PLACEHOLDER_0__High Overhead (_{planet} °)",
-  "planetMidSkyProminent": "_PLACEHOLDER_0_____PLACEHOLDER_1_ ° - בולט",
-  "planetMidSky": "שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_",
-  "starVeryBright": "<PLACEHOLDER_0____ בהיר מאוד ב-__PLACEHOLDER_1_ °_",
-  "starProminent": "_PLACEHOLDER_0__ בולטת ב-__PLACEHOLDER_1_גבהים",
-  "starVisible": "שם הסרטון: PLACEHOLDER_0_____PLACEHOLDER_1_°_",
+  "planetMidSkyProminent": "{planet} ב- {altitude}° - בולט",
+  "planetMidSky": "{planet} ב- {altitude}°",
+  "starVeryBright": "{star} בהיר מאוד ב-{altitude}°",
+  "starProminent": "{star} בולט בגובה {altitude}°",
+  "starVisible": "{star} ב- {altitude}°",
   "altitudeShort": "אליט",
   "magnitudeShort": "מגדל",
   "satellitesVisibleMightExplain": "PLACEHOLDER_0_לוויינים גלויים - עשויים להסביר את הראייה",
@@ -1156,6 +1156,35 @@
   "settingUpLocalization": "הקמת מקומיות...",
   "checkingConnectivity": "לבדוק קישוריות...",
   "gatheringDeviceInfo": "איסוף מידע של המכשיר...",
+  "translating": "תרגום...",
+  "showOriginal": "הצג מקורי",
+  "translateTo": "תרגום לעברית עבור: PLACEHOLDER_0____",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "תורגם מ -_PLACEHOLDER_0_______________",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
+  "translateContent": "תרגום התוכן ל-_PLACEHOLDER_0__________",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {

@@ -330,7 +330,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String wind(num speed, String unit) {
-    return '风速:_PLACEHOLDER_0__PLACEHOLDER_1_';
+    return '风：$speed $unit';
   }
 
   @override
@@ -2562,24 +2562,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get gatheringDeviceInfo => '正在收集设备信息...';
 
   @override
-  String get translating => 'Translating...';
+  String get translating => '翻译中...';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => '显示原始';
 
   @override
   String translateTo(String language) {
-    return 'Translate to $language';
+    return '翻译为$language';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from $language';
+    return '翻译自_PLACEHOLDER_0__';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to $language';
+    return '将内容翻译为_PLACEHOLDER_0__';
   }
 
   @override
@@ -2625,7 +2625,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get heavyRain => '暴风雨';
 
   @override
-  String aircraftDetectedCurrentPositions(int count, String radius) {
+  String aircraftDetectedCurrentPositions(
+    int count,
+    String radius,
+    Object raggio,
+  ) {
     return '在_PLACEHOLDER_0_km(现有位置)内探测到的飞机';
   }
 
