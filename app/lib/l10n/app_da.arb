@@ -1,0 +1,1148 @@
+{
+  "@@locale": "da",
+  "appName": "UFOBeep",
+  "ok": "OK",
+  "cancel": "Annullér",
+  "close": "Luk",
+  "save": "Gem",
+  "delete": "Slet",
+  "edit": "Redigér",
+  "retry": "Prøv igen",
+  "yes": "Ja",
+  "no": "Nej",
+  "back": "Tilbage",
+  "next": "Næste",
+  "done": "Færdig",
+  "loading": "Indlæser..",
+  "processing": "Behandler..",
+  "errorGeneric": "Noget gik galt.",
+  "networkError": "Netværksfejl. Tjek din forbindelse.",
+  "permissionsRequired": "Krævede tilladelser",
+  "learnMore": "Læs mere",
+  "welcomeTitle": "Velkommen til UFOBeep",
+  "welcomeSubtitle": "Real- time UFO advarsler i nærheden af dig",
+  "signIn": "Log ind",
+  "signOut": "Log ud",
+  "continueAsGuest": "Fortsæt som gæst",
+  "enterUsername": "Indtast et brugernavn",
+  "username": "Brugernavn",
+  "usernameUpdated": "Brugernavn opdateret",
+  "profile": "Profil",
+  "settings": "Indstillinger",
+  "tabAlerts": "Indberetninger",
+  "tabBeep": "Bip",
+  "tabChat": "Chat",
+  "tabMap": "Kort",
+  "tabSettings": "Indstillinger",
+  "alertsTitle": "I nærheden",
+  "noAlerts": "Ingen advarsler i nærheden endnu.",
+  "pullToRefresh": "Træk for at opdatere",
+  "alertDistance": "_ _ PLACEREPORT _ 0 _ _ væk",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Leje _ _ PLACEREPER _ 0 _ _ °",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
+  "viewAlert": "Vis alarm",
+  "viewOnMap": "Vis på kort",
+  "iSeeItToo": "Jeg ser det også",
+  "confirmWitnessed": "Bekræft at du var vidne til denne observation?",
+  "witnessConfirmed": "Tak - din bekræftelse blev sendt.",
+  "createBeepTitle": "Send et bip",
+  "beepExplain": "Indtag, hvad du ser, og alarm i nærheden tilskuere.",
+  "capturePhoto": "Fotooptagelse",
+  "captureVideo": "Optag video",
+  "pickFromGallery": "Vælg mellem galleri",
+  "descriptionHint": "Beskriv, hvad du ser på himlen..",
+  "submitBeep": "Send Beep",
+  "beepSent": "Beep sendt",
+  "beepSentWithUrl": "Beep sendt med succes",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadingMedia": "Uploader medier..",
+  "includeLocation": "Inkludér placering",
+  "includeTimestamp": "Inkludér tidsstempel",
+  "beepFailed": "Kunne ikke sende Beep.",
+  "mediaProcessing": "Behandler medier..",
+  "cameraPermissionTitle": "Kameraadgang nødvendig",
+  "cameraPermissionBody": "Grant kamera adgang til at fange UFO billeder og videoer.",
+  "locationPermissionTitle": "Lokaliseringstilladelse påkrævet",
+  "locationPermissionBody": "Vi bruger din placering til at sende og modtage nærliggende advarsler.",
+  "microphonePermissionTitle": "Mikrofonadgang nødvendig",
+  "microphonePermissionBody": "Grant mikrofon adgang til videooptagelse med lyd.",
+  "openSettings": "Åbn indstillinger",
+  "alertDetailTitle": "Observationsdetaljer",
+  "reportedBy": "Rapporteret af _ _ PLACEREPER _ 0 _ _",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Rapporteret _ _ PLACEREPORT _ 0 _ _",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "_ _ PLACEREPORT _ 0 _ _",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Leje til objekt: _ _ _ PLACEREPER _ 0 _ _ °",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
+  "openCompass": "Åbn kompas",
+  "openAR": "Åbne AR-overlay",
+  "openChat": "Åbn chat",
+  "commentsTitle": "Bemærkninger",
+  "addComment": "Tilføj en kommentar..",
+  "send": "Send",
+  "commentPosted": "Kommentar bogført",
+  "autoFollowEnabled": "Du følger nu denne alarm.",
+  "noCommentsYet": "Ingen kommentarer endnu. Vær den første til at kommentere!",
+  "newCommentNotification": "Ny kommentar til en observation du følger.",
+  "mapTitle": "Live kort",
+  "compassTitle": "Kompas",
+  "compassSettings": "Kompas indstillinger",
+  "compassMode": "Kompas tilstand",
+  "compassStandardMode": "Standardtilstand",
+  "compassPilotMode": "Pilottilstand",
+  "compassStandardDescription": "Overskrift og navigation",
+  "compassPilotDescription": "Avanceret navigation med ETA og vektoring",
+  "pointingTo": "At pege på _ _ PLACEREPORT _ 0 _ _",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
+  "calibratingCompass": "Kalibrerende kompas..",
+  "openAROverlay": "Åbne AR-overlay",
+  "pushTitleAlertNearby": "UFO alarm nær dig",
+  "pushBodyAlertNearby": "En ny observation blev rapporteret _ _ PLACEREPER _ 0 _ _ away.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
+  "pushTitleComment": "Ny kommentar",
+  "pushBodyComment": "Nogen kommenterede en observation du følger.",
+  "pushTitleWitness": "Vidnebekræftelse",
+  "temperature": "Temperatur",
+  "pushBodyWitness": "En bruger bekræftede, at de ser det samme objekt.",
+  "weather": "Vejret",
+  "cloudCover": "Skydække: _ _ PLACEREPORT _ 0 _ _%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Vind: _ _ PLACEREPORT _ 0 _ _ _ _ PLACEREPORT _ 1 _ _",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
+  "nearbyAircraft": "Luftfartøjer i nærheden",
+  "noAircraft": "Ingen fly i nærheden",
+  "loadingContext": "Indlæser miljøsammenhæng..",
+  "settingsTitle": "Indstillinger",
+  "notifications": "Meddelelser",
+  "enablePushNotifications": "Få meddelelser til fremtidige kommentarer",
+  "quietHours": "Stille timer",
+  "quietHoursDesc": "Tavshedsadvarsler mellem udvalgte timer.",
+  "quietHoursEnabled": "Aktivér stille timer",
+  "quietHoursFrom": "Fra",
+  "quietHoursUntil": "Indtil",
+  "quietHoursDefaultTime": "Standard stille timer",
+  "emergencyOverride": "Nødstyring",
+  "emergencyOverrideDesc": "Tillad hurtig varsling i stille timer",
+  "dndMode": "Må ikke forstyrres",
+  "dndUntil": "Må ikke forstyrres før",
+  "dndEnabled": "DND aktiveret indtil _ _ PLACEREPER _ 0 _ _",
+  "dndDisabled": "DND deaktiveret",
+  "quietHoursActive": "Stille timer aktive",
+  "quietHoursScheduled": "Stille timer: _ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _",
+  "pushNotificationUfoAlert": "UFO Indberetning",
+  "pushNotificationAnomalyAlert": "Anomali alarm",
+  "pushNotificationNearby": "I nærheden",
+  "pushNotificationInYourArea": "i dit område. Tryk på for at se detaljer.",
+  "pushNotificationCommented": "_ _ PLACEREPER _ 0 _ _ kommenterede",
+  "pushNotificationCommentedOn": "_ _ PLACEREPORT _ 0 _ _ kommenteret _ _ PLACEREPORT _ 1 _ _",
+  "pushNotificationGeneric": "UFOBeep",
+  "pushNotificationNewSighting": "Ny observation i nærheden",
+  "language": "Sprog",
+  "chooseLanguage": "Vælg sprog",
+  "units": "Enheder",
+  "unitsImperial": "Imperial (mi, mph)",
+  "unitsMetric": "Metric (km, km / h)",
+  "privacyPolicy": "Privacy Policy",
+  "termsOfUse": "Betingelser for anvendelse",
+  "errorNoLocation": "Placering utilgængelig. Prøv igen udenfor med klar himmel udsigt.",
+  "errorNoCamera": "Kameraet er ikke tilgængeligt på denne enhed.",
+  "errorUploadFailed": "Upload mislykkedes. Prøv igen.",
+  "errorPermissionDenied": "Tilladelse nægtet.",
+  "errorInvalidUsername": "Det brugernavn er ikke tilgængeligt.",
+  "nothingToShow": "Der er intet at vise endnu.",
+  "storeShortDesc": "Øjeblikkelig UFO advarsler i nærheden af dig. Fange, bekræfte og chatte i realtid.",
+  "storeLongDesc": "UFOBeep sender real- time advarsler, når nogen ser en UFO i nærheden. Fange billeder og videoer, bekræfte observationer med et tryk, se retning og afstand, og chatte med andre skywatchers.",
+  "keywords": "UFO, UAP, OVNI, udlændinge, observationer, skywatch, advarsler, radar, kompas",
+  "noAlertsFound": "Ingen matchende indberetninger",
+  "alertsFilterHelp": "Prøv at justere dine filtre for at se flere resultater",
+  "verified": "Verificeret",
+  "beepOnly": "Kun bip",
+  "reportOnly": "Kun tekst",
+  "videoOnly": "Kun video",
+  "imageOnly": "Kun billede",
+  "mediaOnly": "Kun medier",
+  "timeJustNow": "lige nu",
+  "timeDaysAgo": "_ _ PLACEREPORT _ 0 _ _ dage siden",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "_ _ PLACEREPORT _ 0 _ _ timer siden",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "_ _ PLACEREPER _ 0 _ _ minutter siden",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "loadMoreAlerts": "Indlæs flere rapporter",
+  "toggleMufonTooltip": "Slå MUFON-observationer til og fra",
+  "showMufonData": "Vis MUFON data",
+  "hideMufonData": "Skjul MUFON data",
+  "showingUfoBeepOnly": "Viser kun UFOBeep rapporter",
+  "showingAllReports": "Viser alle rapporter herunder MUFON database",
+  "filteredSuffix": "filtreret",
+  "detailsTitle": "Detaljer",
+  "mufonCase": "MUFON Sag",
+  "mufonSighting": "MUFON Sighting Report",
+  "mufonLightSighting": "MUFON Light Sighting Report",
+  "mufonSphereSighting": "MUFON Sphere Sightingrapport",
+  "mufonDiscSighting": "MUFON Disc Sighting Report",
+  "mufonTriangleSighting": "MUFON Trekantssigterapport",
+  "mufonCigarSighting": "MUFON Cigar Sighting Report",
+  "mufonOvalSighting": "MUFON Oval Sightingrapport",
+  "mufonRectangleSighting": "MUFON Rektangel Sighting Report",
+  "mufonCylinderSighting": "MUFON Cylinder Sightingrapport",
+  "mufonBoomerangSighting": "MUFON Boomerang Sightingrapport",
+  "mufonStarlikeSighting": "MUFON Starlike Sighting Report",
+  "mufonCaseDetailsTitle": "MUFON sag # _ _ PLACEREPER _ 0 _ _ Detaljer",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "sightingDate": "Observationsdato",
+  "mufonDatabaseEntryDate": "Dato for optagelse i MUFON Database",
+  "databaseEntry": "Databaseindgang",
+  "shareLink": "Del link",
+  "linkCopied": "Link til udklipsholder",
+  "locationLabel": "Sted:",
+  "distanceLabel": "Afstand",
+  "timeLabel": "Tid:",
+  "reportedByLabel": "Indberettet af",
+  "unknownLocation": "Ukendt placering",
+  "locationUnknown": "Sted ukendt",
+  "witnessesLabel": "Vidner",
+  "witnessesCountMessage": "_ _ PLACEREPORT _ 0 _ _ folk bekræftede denne observation",
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "photoAnalysisTitle": "Fotoanalyse",
+  "mediaItemsProcessed": "Analyse: _ _ PLACEREPORT _ 0 _ _ mediefil (r) behandlet",
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "addMoreMedia": "Tilføj mere",
+  "addMedia": "Tilføj medie",
+  "retakePhoto": "Genoptag foto",
+  "retakeVideo": "Genoptag video",
+  "camera": "Kamera",
+  "gallery": "Galleri",
+  "basicSettings": "Grundlæggende indstillinger",
+  "appSettings": "App indstillinger",
+  "timeFormat": "Tidsformat",
+  "timeFormat24Hour": "24 timer (14: 30)",
+  "timeFormat12Hour": "12-time (14: 30)",
+  "timeFormatDesc": "Vis tid i 24- timers eller 12- timers format",
+  "alertRange": "Advarselsområde",
+  "manageNotificationsDesc": "Administrer abonnementer og indstillinger",
+  "permissionsTitle": "Tilladelser",
+  "permissionLocation": "Sted",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Meddelelser",
+  "permissionPhotos": "Fotos",
+  "permissionGranted": "Tildelt",
+  "permissionNotGranted": "Ikke tilladt",
+  "permissionGrant": "Tilskud",
+  "generateUsername": "Generér nyt brugernavn",
+  "adminTools": "Admin- værktøjer",
+  "openAdminPanel": "Åbn Admin- panel",
+  "webAdminInterface": "Web Admin- grænseflade",
+  "adminBetaNotice": "Beta bygger kun. Adminér værktøjer til test nærhed advarsler, skubbe meddelelser, og system diagnostik.",
+  "whatDoYouSee": "Hvad ser du?",
+  "ufo": "UFO",
+  "sighting": "Sigtning",
+  "ufoSighting": "UFOBeep UFO Indberetning",
+  "envAnalysisTitle": "Miljøanalyse",
+  "envAnalysisPending": "Analyse verserende",
+  "envAnalysisPendingDesc": "Miljødata vil foreligge, når behandlingen påbegyndes.",
+  "unknownAircraft": "Ukendt luftfartøj",
+  "moreAircraft": "flere fly",
+  "showLess": "Få flere detaljer",
+  "premiumImageryTitle": "Premium Satellit Imagery",
+  "premiumImagerySubtitle": "Højopløsnings-kommercielle billeder",
+  "sightingTypeLabel": "Type",
+  "ufoTypeSphere": "Sphere Formand",
+  "ufoTypeTriangle": "Trekant",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Lys",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Cylinder",
+  "ufoTypeCigar": "Cigar",
+  "ufoTypeRectangle": "Rektangel",
+  "ufoTypeFormation": "Dannelse",
+  "ufoTypeUnknown": "Ukendt",
+  "ufoTypeBoomerang": "BoomerangCity in Germany",
+  "ufoTypeDiamond": "Diamant",
+  "ufoTypeOval": "Oval",
+  "ufoTypeCone": "Kone",
+  "ufoTypeCross": "Kryds",
+  "ufoTypeDumbbell": "Håndvægte",
+  "ufoTypeTeardrop": "Teardrop",
+  "ufoTypeTicTac": "Tic Tac",
+  "ufoTypeBullet": "Bullet",
+  "ufoTypeSaturn": "Saturn",
+  "ufoTypeStarLike": "Star- like",
+  "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "trekant",
+  "shapeDisc": "skive",
+  "shapeDisk": "disk",
+  "shapeSphere": "kugle",
+  "shapeCigar": "cigar",
+  "shapeLight": "lys",
+  "shapeBoomerang": "boomerang",
+  "shapeDiamond": "diamant",
+  "shapeRectangle": "rektangel",
+  "shapeOval": "oval",
+  "shapeCone": "kegle",
+  "shapeCross": "kors",
+  "shapeCylinder": "cylinder",
+  "shapeDumbbell": "håndvægt",
+  "shapeTeardrop": "teardrop",
+  "shapeTicTac": "tic- tac",
+  "shapeBullet": "kugle",
+  "shapeSaturn": "mættet",
+  "shapeStarlike": "starlike",
+  "shapeBlimp": "blimp",
+  "shapeFireball": "ildkugle",
+  "shapeFormation": "formation",
+  "shapeUnknown": "ukendt",
+  "actionsTitle": "Handlinger",
+  "addPhotosAndVideos": "Tilføj billeder og videoer",
+  "attachMedia": "Vedlæg medier",
+  "addCommentOptional": "Tilføj en kommentar (valgfri)",
+  "describeNewMedia": "Beskriv de nye medier...",
+  "filesSelected": "filer valgt",
+  "selectMediaToAttach": "Vælg billeder eller videoer der skal vedlægges",
+  "newMediaUploaded": "Nye medier uploadet",
+  "mediaFilesUploaded": "nye mediefiler uploadet",
+  "filesAttachedSuccessfully": "filer knyttet med succes",
+  "howToReportToMufon": "Sådan rapporterer du til MUFON",
+  "reportToMufon": "Rapport til MUFON",
+  "whyReportToMufon": "Hvorfor rapportere til MUFON?",
+  "openMufonReport": "Åbne MUFON Rapport",
+  "confirmedWitness": "Du bekræftede denne observation",
+  "witnessesHaveConfirmed": "_ _ PLACEREPORT _ 0 _ _ folk har bekræftet denne observation",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "aircraftTrackingTitle": "Flysporing",
+  "weatherConditionsTitle": "Vejrforhold",
+  "noSatellitePasses": "Ingen synlige satellitpas fundet",
+  "contentAnalysisTitle": "Indholdsanalyse",
+  "contentSafe": "Indholdet er sikkert",
+  "contentFlagged": "Indhold markeret med henblik på anmeldelse",
+  "confidenceLabel": "Tillid",
+  "methodLabel": "Metode",
+  "premiumImageryAccessOnly": "Premium satellit billeder er kun tilgængelig for:",
+  "premiumAccessCreators": "Advarselsskabere",
+  "premiumAccessWitnesses": "Bekræftede vidner inden for sigtbarhed",
+  "comingSoon": "Kommer snart",
+  "directionDistanceTitle": "Kørselsretning og afstand",
+  "mufonCaseTitle": "MUFON Case # _ _ PLACEREPER _ 0 _ _",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "satellitePassesTitle": "Satellitpas",
+  "satellitePassExplanation": "Synlig satellit passerer under observation tidsramme. Mange UFO rapporter er faktisk satellitter eller rumaffald.",
+  "followingAlert": "Efter alarm - du får kommentarmeddelelser",
+  "unfollowedAlert": "Ufulgt alarm - ikke flere kommentarmeddelelser",
+  "alertFollowError": "Fejl under opdatering af følg status",
+  "notificationChannelAlerts": "UFOBeep Alerts",
+  "notificationChannelAlertsDesc": "Anmeldelser for UFO bipper og nærhed advarsler",
+  "notificationSightingTitle": "UFOBeep UFO Indberetning",
+  "notificationSightingUrgent": "STOR UFO Indberetning",
+  "notificationSightingEmergency": "UFO FOR NØDSITUATIONER Indberetning",
+  "notificationSightingBody": "_ _ PLACEREPORT _ 0 _ _ nær _ _ PLACEREPORT _ 1 _ _",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "_ _ PLACEREPER _ 0 _ _ kommenterede",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Ny observation",
+  "notificationWitnessTextMultiple": "- Vidner",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Frafald",
+  "notificationDistance": "_ _ PLACEREPORT _ 0 _ _ væk",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "Ukendt",
+  "report": "rapport",
+  "mufon": "mofon",
+  "recentUfoBeepsTitle": "Nylig UFO Bipper",
+  "recentUfoBeepsSubtitle": "Live UFO observation rapporter fra vores globale samfund",
+  "recentUfoBeepsDescription": "Dette feed kombinerer real- time UFOBeep \"bipper\" fra vores mobile app-brugere med historiske rapporter fra MUFON databasen.",
+  "loadingBeeps": "Indlæser nylige bip...",
+  "noBeepsAvailable": "Ingen bip i øjeblikket.",
+  "anomalyReported": "Anomali rapporteret",
+  "copyShortLink": "Kopiér kort link",
+  "shareAlert": "Del alarm",
+  "ufoSightingAlert": "UFO Observationsadvarsel",
+  "previousPage": "Forrige",
+  "nextPage": "Næste",
+  "pageOf": "Side _ _ PLACEREPORT _ 0 _ af _ _ PLACEREPORT _ 1 _ _ (_ _ PLACEREPORT _ 2 _ _ i alt bip)",
+  "firstPage": "Første",
+  "lastPage": "Sidste",
+  "jumpToPage": "Spring til side",
+  "heroTagline": "Få advarsler når du skal gå udenfor og se op",
+  "heroDescription": "Aldrig gå glip af en anden UFO observation i dit område",
+  "downloadApp": "Download App",
+  "viewAllBeeps": "Vis alle bip",
+  "sightingsMap": "Observationskort",
+  "globalSightingNetwork": "Global Sighting- netværk",
+  "howItWorks": "Sådan virker det",
+  "backToBeeps": "Tilbage til bip",
+  "loadingDetails": "Indlæser bip detaljer...",
+  "details": "Detaljer",
+  "location": "Sted",
+  "timeAgo": "siden",
+  "timeMinutes": "m",
+  "timeHours": "h",
+  "timeDays": "d",
+  "distanceKm": "km",
+  "distanceMiles": "miles",
+  "distanceNearby": "i nærheden",
+  "ufobeepWitnesses": "Vidner",
+  "ufobeepConfirmations": "Bekræfter",
+  "ufobeepAlertLevel": "Alarmniveau",
+  "ufobeepReportType": "UFOBeep-rapport",
+  "mufonAttribution": "MUFON Databaserapport",
+  "mufonCaseNumber": "Case #",
+  "mufonGenericTitle": "MUFON Sighting Report",
+  "mufonSphere": "Sphere Formand",
+  "mufonLight": "Lys",
+  "mufonDisk": "Disk",
+  "mufonTriangle": "Trekant",
+  "mufonCigar": "Cigar",
+  "mufonOval": "Oval",
+  "mufonCylinder": "Cylinder",
+  "mufonRectangle": "Rektangel",
+  "mufonDiamond": "Diamant",
+  "mufonFireball": "Fireball",
+  "mufonFlash": "Flash",
+  "mufonFormation": "Dannelse",
+  "mufonChanging": "Ændring",
+  "mufonChevron": "Chevron Formand",
+  "mufonCone": "Kone",
+  "mufonCross": "Kryds",
+  "mufonEgg": "Æg",
+  "mufonOther": "Objekt",
+  "mufonUnknown": "Ukendt objekt",
+  "mufonTitleFormat": "MUFON _ _ PLACEREPORT _ 0 _ _ Rapport",
+  "nuforcAttribution": "NUFORC Databaserapport",
+  "nuforcCaseNumber": "Case #",
+  "nuforcGenericTitle": "NUFORC Observationsrapport",
+  "mediaImageNotFound": "Billede ikke fundet",
+  "mediaPlayVideo": "Afspil video",
+  "mediaViewImage": "Vis billede",
+  "mediaCount": "_ _ PLACEREPORT _ 0 _ _ billeder",
+  "mediaCountSingle": "1 billede",
+  "mediaMoreImages": "+ _ _ PLACEREPORT _ 0 _ _ mere",
+  "errorNotFound": "Bip ikke fundet",
+  "errorLoadError": "Kunne ikke indlæse bip detaljer",
+  "shareYourThoughts": "Del dine tanker om denne observation...",
+  "postComment": "Post Kommentar",
+  "loggedInAs": "Indskrevet som",
+  "logout": "Logout",
+  "notFollowing": "Ikke efter",
+  "follow": "Følg",
+  "navRecentBeeps": "Nylige bip",
+  "navMap": "Kort",
+  "navDownloadApp": "Download app",
+  "alertLevel": "Alarmniveau",
+  "witnesses": "Vidner",
+  "confirmations": "Bekræfter",
+  "reporterLabel": "Indberettet af brugeren",
+  "coordinatesLabel": "Koordinater",
+  "eventTime": "Begivenhedstid",
+  "reportedTime": "Rapporteret tid",
+  "addedToUfobeep": "Tilføjet UFOBeep",
+  "mufonDatabaseReport": "MUFON Sagsnummer:",
+  "copyShortLinkTitle": "Kopiér link til udklipsholderen",
+  "imageNotFound": "Billede ikke fundet",
+  "ufoSightingAlt": "UFO Bip UFO alarm",
+  "celestialDataTitle": "Himmelske objekter",
+  "visiblePlanets": "Synlige planeter",
+  "locationDataTitle": "Lokaliseringsinformation",
+  "timezone": "Tidszone",
+  "coordinates": "Koordinater",
+  "processingSummaryTitle": "Forarbejdningsoversigt",
+  "processingTime": "Behandlingstid",
+  "successful": "Succesfuld",
+  "failed": "Mislykkedes",
+  "locationEnrichmentTitle": "Placering",
+  "aircraftDataSource": "Datakilde",
+  "noAircraftDetected": "Intet luftfartøj detekteret",
+  "sightingReport": "Observationsrapport",
+  "ufoAlert": "UFO Indberetning",
+  "alert": "Indberetning",
+  "notificationTickerUfoAlert": "UFO Alert - Ny observation i nærheden",
+  "notificationTickerComment": "Ny kommentar til UFO Alert",
+  "weatherConditions": "Vejrforhold",
+  "visibility": "Synlighed",
+  "humidity": "Fugtighed",
+  "pressure": "Tryk",
+  "locationDetails": "Placering",
+  "city": "By",
+  "state": "Tilstand",
+  "country": "Land",
+  "satelliteActivity": "Satellitaktivitet",
+  "satellitesVisibleOverhead": "Satellitter synlige overhead ved observation tid & placering",
+  "dataSource": "Datakilde",
+  "blackskyImagery": "BlackSky Imagery",
+  "resolution": "Opløsning",
+  "groundResolution": "35cm jordopløsning",
+  "delivery": "Levering",
+  "averageDelivery": "90 minutters gennemsnit",
+  "cost": "Omkostninger",
+  "skyfiSatelliteImagery": "SkyFi Satellite Imagery",
+  "region": "Region",
+  "remoteArea": "Fjernområde",
+  "startingPrice": "Startpris",
+  "coverage": "Dækning",
+  "confidenceCoverage": "95% konfidensinterval",
+  "status": "Status",
+  "shareThoughts": "Del dine tanker om denne observation...",
+  "postCommand": "Post- kommando",
+  "clouds": "Skyer",
+  "windLabel": "Vind",
+  "filterAlerts": "Filterrapporter",
+  "alertSource": "Advarselskilde",
+  "ufobeepOnly": "Kun UFOBeep",
+  "ufobeepOnlyDescription": "Vis kun originale UFOBeep rapporter (udelukker MUFON database)",
+  "alertDistanceRange": "Advarselsafstand",
+  "showAllAlerts": "Vis alle rapporter",
+  "showAll": "Vis alle",
+  "distanceSliderDescription": "Træk for at justere hvor langt du ønsker at se advarsler. Start fra vejrsigtbarhed afstand op til at vise alle indberetninger uanset afstand.",
+  "applyFilters": "Anvend filtre",
+  "notificationRange": "Meddelelsesområde",
+  "notificationRangeDescription": "Få push advarsler for observationer inden for denne afstand",
+  "viewingRange": "Visningsområde",
+  "viewingRangeDescription": "Vis observationer inden for denne afstand når du søger",
+  "weatherVisibility": "Vejrsigtbarhed (~ 10 km)",
+  "localArea": "Lokalt område (25 km)",
+  "regional": "Regionalt",
+  "pushNotifications": "Trykmeddelelser",
+  "alertBrowsing": "Alert browsing",
+  "pushAlertsWithinDistance": "Få meddelelser inden for dette område",
+  "showAlertsWhenBrowsing": "Filtrér hvad du ser på listen",
+  "heroMainTagline": "Få et bip på telefonen, når ufoer er set i nærheden",
+  "heroSecondaryTagline": "Find ud af hvornår og hvor man kan se på himlen",
+  "sourceFilters": "Kilde",
+  "sourceFiltersDescription": "Vælg hvilke rapporter der vises i din feed",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "Kun UFOBeep",
+  "mufonOnlySource": "Kun MUFON",
+  "browseFilters": "Gennemse",
+  "browseFiltersDescription": "Hvordan man ser og sorterer indberetninger",
+  "sortByNewest": "Nyeste",
+  "sortByNearest": "Nærmeste",
+  "sortBy": "Sortér efter",
+  "pushAlertsTitle": "Push Alerts",
+  "pushAlertsDescription": "Hvad pings din telefon",
+  "alertRadius": "Alarm Radius",
+  "mufonNoPushInfo": "MUFON-rapporter importeres hver nat og udløser ikke push-advarsler",
+  "privacyData": "Databeskyttelse",
+  "privacyPolicyDesc": "Hvordan vi beskytter og bruger dine data",
+  "termsOfService": "Tjenestevilkår",
+  "termsOfServiceDesc": "Retsforskrifter",
+  "locationTracking": "Placering Tracking",
+  "locationTrackingDesc": "Baggrundsplacering for nærhedsindberetninger",
+  "locationTrackingTitle": "Baggrundslokaliseringssporing",
+  "locationTrackingExplanation": "UFOBeep overvåger din placering i baggrunden for at sende dig nærhed advarsler, når UFO observationer ske i nærheden af din nuværende placering, selv når du er væk fra hjemmet.",
+  "locationTrackingBattery": "Bruger intelligent geofencing til < 3% batteri sammenstød",
+  "backgroundLocationTracking": "Aktivér baggrund Sporing",
+  "locationTrackingActive": "Overvågningssted for nærhedsindberetninger",
+  "locationTrackingInactive": "Lokaliseringssporing er deaktiveret",
+  "locationTrackingDisabledWarning": "Du vil ikke modtage nærhed advarsler, når du flytter til nye steder",
+  "trackingStatus": "Sporingsstatus",
+  "monitoringStatus": "Overvågning",
+  "active": "Aktiv",
+  "inactive": "Inaktiv",
+  "lastKnownLocation": "Sidste kendte placering",
+  "lastLocationUpdate": "Sidste opdatering",
+  "movementThreshold": "Bevægelsestærskel",
+  "updateFrequency": "Opdatér frekvens",
+  "batteryImpact": "Batterieffekt",
+  "dataPrivacy": "Databeskyttelse",
+  "locationPermissionExplanation": "UFOBeep har brug for 'Always Tillad' placering tilladelse til at overvåge din bevægelse og sende nærhed advarsler, når du er på nye steder.",
+  "benefitsTitle": "Ydelser",
+  "locationTrackingBenefits": "• Få UFO advarsler, uanset hvor du rejser\n• Automatisk opdatering af placering\n• Ingen manuel opsætning påkrævet",
+  "allowLocationAccess": "Tillad stedadgang",
+  "locationPermissionRequired": "Placering er påkrævet for baggrundssporing",
+  "locationTrackingEnabled": "Sporing af baggrundsplacering aktiveret",
+  "locationTrackingDisabled": "Baggrundslokaliseringssporing deaktiveret",
+  "justNow": "Lige nu",
+  "minutesAgo": "_ _ PLACEREPER _ 0 _ _ minutter siden",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "_ _ PLACEREPORT _ 0 _ _ timer siden",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "_ _ PLACEREPORT _ 0 _ _ dage siden",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Datahåndtering",
+  "dataManagementDesc": "Eksportér eller slet dine kontodata",
+  "splashTagline": "Real- time observation indberetninger",
+  "splashStartingUp": "Starter...",
+  "splashInitializationFailed": "Initialisering mislykkedes",
+  "splashInitializationFailedTitle": "Initialisering mislykkedes",
+  "splashInitializationError": "App 'en kunne ikke initialisere korrekt:",
+  "splashRetry": "Prøv igen",
+  "splashContinue": "Fortsæt",
+  "splashInitializing": "Initialisering...",
+  "signInWelcome": "Velkommen!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Signal- in mislykkedes: _ _ PLACEREPORT _ 0 _ _",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Indtast venligst din e-mailadresse",
+  "signInPleaseEnterValidEmail": "Indtast en gyldig e- mail- adresse",
+  "signInMagicLinkSent": "Magisk link sendt! Tjek din e-mail og klik på linket for at logge ind.",
+  "signInMagicLinkFailed": "Kunne ikke sende et magisk link. Prøv igen.",
+  "signInAllDataCleared": "Alle data ryddet",
+  "signInSubtitle": "Real- time UFO observation advarsler og MUFON rapporter",
+  "signInGoogleLoading": "Signerer ind...",
+  "signInContinueWithGoogle": "Fortsæt med Google",
+  "signInOr": "eller",
+  "signInWithEmail": "Log ind med e-mail",
+  "signInEmailDescription": "Vi sender dig et sikkert link",
+  "signInEmailAddress": "E- mail- adresse",
+  "signInEmailPlaceholder": "din @ email.com",
+  "signInTryAgainIn": "Prøv igen i _ _ PLACEREPER _ 0 _ _ s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Sende...",
+  "signInSendMagicLink": "Send magisk link",
+  "signInCheckEmail": "Tjek din e-mail! Forbindelsen udløber om 15 minutter.",
+  "signInSecureAuth": "Sikker autentificering",
+  "signInSecureAuthDescription": "Brug Google Sign-In til øjeblikkelig adgang, eller e-mail magiske links, der udløber i 15 minutter.",
+  "signInClearAllDataDebug": "Ryd alle data (fejl)",
+  "emailAuthFailedToSend": "Kunne ikke sende e- mail",
+  "emailAuthFailedToSendTryAgain": "Kunne ikke sende e- mail. Prøv igen.",
+  "emailAuthInvalidEmail": "Ugyldig e- mail- adresse. Tjek venligst formatet.",
+  "emailAuthUserNotFound": "Ingen konto fundet med denne e-mailadresse.",
+  "emailAuthTooManyRequests": "For mange forsøg. Prøv igen senere.",
+  "emailAuthOperationNotAllowed": "E- mail- link sign- in er ikke aktiveret.",
+  "emailAuthQuotaExceeded": "Email kvote overskredet. Prøv igen i morgen.",
+  "emailAuthVerificationFailed": "Email-verifikation mislykkedes. Prøv igen.",
+  "emailAuthTitle": "E- mail- verificering",
+  "emailAuthVerifyYourEmail": "Verificér din e-mail",
+  "emailAuthDescription": "Tilføj din e-mail-adresse for konto opsving og sikkerhed. Vi sender dig et sikkert signal.",
+  "emailAuthEmailAddress": "E- mail- adresse",
+  "emailAuthEmailPlaceholder": "your.email @ example.com",
+  "emailAuthPleaseEnterEmail": "Indtast venligst din e-mailadresse",
+  "emailAuthPleaseEnterValidEmail": "Indtast en gyldig e- mail- adresse",
+  "emailAuthCheckEmailToContinue": "Tjek din e-mail og tap på verifikationslinket for at fortsætte.",
+  "emailAuthResendEmail": "Nulstil e- mail",
+  "emailAuthSendVerificationEmail": "Send verificering E- mail",
+  "emailAuthHowItWorks": "Hvordan e-mail-verifikation virker",
+  "emailAuthHowItWorksSteps": "1. Vi sender dig et sikkert signal.\n2. Tjek din e-mail og tryk på linket\n3. Din email bliver verificeret automatisk\n4. Ingen adgangskoder behøves!",
+  "emailAuthSecurityNotice": "Email-verifikation hjælper med at sikre din konto og gør det muligt konto opsving, hvis du mister adgang til din enhed.",
+  "phoneAuthFailedToSendCode": "Kunne ikke sende verifikationskode. Prøv igen.",
+  "phoneAuthInvalidCodeTryAgain": "Ugyldig verifikationskode. Prøv igen.",
+  "phoneAuthPhoneVerified": "Bekræftet telefonnummer: _ _ PLACEREPORT _ 0 _ _",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Telefonbekræftelse mislykkedes. Prøv igen.",
+  "phoneAuthCodeResent": "Verifikationskode",
+  "phoneAuthFailedToResendCode": "Kunne ikke videresende kode. Prøv igen.",
+  "phoneAuthInvalidPhoneNumber": "Ugyldigt telefonnummer. Tjek venligst formatet.",
+  "phoneAuthTooManyRequests": "For mange forsøg. Prøv igen senere.",
+  "phoneAuthInvalidVerificationCode": "Ugyldig verifikationskode. Tjek og prøv igen.",
+  "phoneAuthSessionExpired": "Verifikationsmødet udløb. Bed om en ny kode.",
+  "phoneAuthSmsQuotaExceeded": "SMS kvote overskredet. Prøv igen i morgen.",
+  "phoneAuthCredentialAlreadyInUse": "Dette telefonnummer er allerede knyttet til en anden konto.",
+  "phoneAuthVerificationFailedGeneric": "Verifikationen mislykkedes. Prøv igen.",
+  "phoneAuthTitle": "Telefonverifikation",
+  "phoneAuthVerifyYourPhone": "Verificér din telefon",
+  "phoneAuthEnterVerificationCode": "Indtast verifikation Kode",
+  "phoneAuthAddPhoneForSecurity": "Tilføj dit telefonnummer til konto opsving og sikkerhed",
+  "phoneAuthEnterSixDigitCode": "Indtast den 6cifrede kode sendt til _ _ PLACEREPER _ 0 _ _ _",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Telefonnummer",
+  "phoneAuthPhonePlaceholder": "+ 1 (555) 123- 4567",
+  "phoneAuthPleaseEnterPhone": "Indtast venligst dit telefonnummer",
+  "phoneAuthPleaseEnterValidPhone": "Indtast venligst et gyldigt telefonnummer",
+  "phoneAuthVerificationCode": "Verifikationskode",
+  "phoneAuthPleaseEnterSixDigitCode": "Indtast venligst den 6cifrede kode",
+  "phoneAuthResendCode": "Nulstil kode",
+  "phoneAuthSendVerificationCode": "Send verificering Kode",
+  "phoneAuthVerifyCode": "Verificér kode",
+  "phoneAuthChangePhoneNumber": "Skift telefonnummer",
+  "phoneAuthSmsNotice": "Vi sender dig en kode via SMS. Der kan gælde standardsatser for meddelelser.",
+  "phoneAuthCodeExpires": "Koden udløber om 60 sekunder. Tjek dine beskeder.",
+  "yourDataRights": "Dine datarettigheder",
+  "dataRightsExplanation": "Du har fuld kontrol over dine personlige data. Du kan eksportere alle dine data eller permanent slette din konto til enhver tid.",
+  "exportYourData": "Eksportér dine data",
+  "exportDataDescription": "Download alle dine kontodata",
+  "exportData": "Eksportdata",
+  "exportingData": "Eksporterer...",
+  "exportDataDetails": "Inkluderer: profil, bip, kommentarer, enhedsinfo, og præferencer. Data leveres i JSON-format.",
+  "dataExportedSuccessfully": "Data eksporteret med succes",
+  "dataExportFailed": "Kunne ikke eksportere data",
+  "deleteAccount": "Slet konto",
+  "deleteAccountDescription": "Fjern permanent din konto og alle data",
+  "deleteAccountWarning": "Denne handling kan ikke bringes til ophør. Alle dine bip, kommentarer og konto data vil blive slettet permanent.",
+  "deleteMyAccount": "Slet min konto",
+  "deletingAccount": "Sletning...",
+  "deleteAccountConfirmTitle": "Slet konto",
+  "deleteAccountConfirmMessage": "Er du helt sikker på, at du vil slette din konto? Denne handling er permanent og kan ikke gøres om.",
+  "dataWillBeDeleted": "Følgende data slettes permanent:",
+  "deletedDataList": "• Din profil og brugernavn\n• Alle dine bip og rapporter\n• Alle dine kommentarer\n• Enhedsregistreringsdata\n• Placering og præferencedata",
+  "deleteAccountPermanent": "Slet permanent",
+  "accountDeletedSuccessfully": "Konto slettet med succes",
+  "accountDeletionFailed": "Kunne ikke slette konto",
+  "onboardingWelcomeTitle": "Velkommen til UFOBeep",
+  "onboardingWelcomeBody": "Få realtidsadvarsler, når ufoer bliver set i nærheden. Gå aldrig glip af en observation igen.",
+  "onboardingAlertsTitle": "Bliv informeret",
+  "onboardingAlertsBody": "Angiv hvor langt væk observationer skal være for at udløse advarsler.",
+  "onboardingReportTitle": "Kan du se noget? Bip den!",
+  "onboardingReportBody": "Snap et billede eller video og dele med det samme med nærliggende tilskuere.",
+  "onboardingPermissionsTitle": "Dit kamera & placering",
+  "onboardingPermissionsBody": "Aktivér kamera, placering og meddelelser så du kan:\n- Rapportér observationer hurtigt\n- Få advarsler for ufoer nær dig",
+  "onboardingCameraTitle": "Indfangningsbevis",
+  "onboardingCameraBody": "Del billeder og videoer, du lige fanget fra dit galleri eller lang- tryk på UFOBeep ikonet for at starte i instant kamera tilstand.",
+  "onboardingCompassTitle": "Se hvor de kiggede",
+  "onboardingCompassBody": "Kompas viser dig den præcise retning vidnet kiggede, da de så UFO. Ret din telefon og se!",
+  "onboardingCommunityTitle": "Deltag i Skywatchers",
+  "onboardingCommunityBody": "Gennemse observationer, adgang MUFON rapporter, og oprette forbindelse med andre skywatchers.",
+  "skip": "Skip",
+  "getStarted": "Start",
+  "viewOnboardingAgain": "Vis Onboarding igen",
+  "customAlertRange": "Brugerdefineret alarmområde",
+  "enterRangeKm": "Indtast interval i km (1 - 99999)",
+  "largeRangeWarning": "Store intervaller (> 100 km) kan generere mange indberetninger",
+  "globalRangeWarning": "Meget store områder (> 1000 km) vil sende dig advarsler fra hele verden",
+  "invalidRange": "Indtast et tal mellem 1 og 99999",
+  "celestialSunDaylight": "Solen står op - dagslys kan påvirke sigtbarheden",
+  "celestialSunTwilight": "Twilight betingelser - nogle synlighed, men mørkere end dagslys",
+  "celestialSunDark": "Mørke forhold - optimal til observation af objekter i himlen",
+  "celestialMoonBright": "Bright _ _ PLACEREPER _ 0 _ _ moon synlige - kan belyse eller skjule andre objekter",
+  "celestialMoonModerate": "_ _ PLACEREPORT _ 0 _ _ månen synlig - moderate lysforhold",
+  "celestialMoonThin": "Tynd _ _ PLACEREPORT _ 0 _ _ moon synlig - minimal belysning",
+  "celestialMoonHidden": "_ _ PLACEREPORT _ 0 _ _ månen under horisonten - ingen månebelysning",
+  "celestialNoPlanets": "Ingen lyse planeter synlige, der kunne forveksles med ufoer",
+  "celestialPlanetHigh": "_ _ PLACEREPORT _ 0 _ _ high overhead (_ _ PLACEREPORT _ 1 _ _ °) - meget fremtrædende",
+  "celestialPlanetMedium": "_ _ PLACEREPORT _ 0 _ _ synlig på _ _ PLACEREPORT _ 1 _ _ ° - kunne forveksles med fly",
+  "celestialPlanetLow": "_ _ PLACEREPORT _ 0 _ _ lav i horisonten (_ _ PLACEREPORT _ 1 _ _ °)",
+  "celestialNoStars": "Ingen usædvanligt lyse stjerner synlige",
+  "celestialStarSingle": "_ _ PLACEREPORT _ 0 _ _ fremtrædende på _ _ PLACEREPORT _ 1 _ _ _ ° højde",
+  "celestialStarsMultiple": "_ _ PLACEREPORT _ 0 _ _ lyse stjerner synlige - _ _ PLACEREPORT _ 1 _ _",
+  "celestialSummaryDaylight": "Dagslys betingelser",
+  "celestialSummaryDark": "Mørke himmelforhold",
+  "celestialSummaryMoonUp": "månebelysning til stede",
+  "celestialSummaryMoonDown": "ingen månebelysning",
+  "celestialSummaryManyObjects": "_ _ PLACEREPORT _ 0 _ _ lyse objekter, der kan forveksles med UFO 'er",
+  "celestialSummarySomeObjects": "_ _ PLACEREPORT _ 0 _ _ bright objekt (er) synlige",
+  "celestialSummaryFewObjects": "minimal lyse objekter i himlen",
+  "celestialSkySummary": "Luftforhold: _ _ PLACEREPORT _ 0 _ _",
+  "planetVenus": "Venus",
+  "planetJupiter": "Jupiter",
+  "planetSaturn": "Saturn",
+  "planetMars": "Mars",
+  "planetMercury": "Kviksølv",
+  "planetUranus": "Uranus Formand",
+  "planetNeptune": "Neptun",
+  "starSirius": "Sirius",
+  "starCanopus": "Canopus",
+  "starArcturus": "Arcturus",
+  "starVega": "Vega",
+  "starCapella": "Capella Formand",
+  "starRigel": "Rigel",
+  "starProcyon": "Procyon",
+  "starBetelgeuse": "Betelgeuse",
+  "moonPhaseNew": "Ny måne",
+  "moonPhaseWaxingCrescent": "Voksende halvmåne",
+  "moonPhaseFirstQuarter": "Første kvartal",
+  "moonPhaseWaxingGibbous": "Waxing Gibbous",
+  "moonPhaseFull": "Fuldmåne",
+  "moonPhaseWaningGibbous": "Wening Gibbous",
+  "moonPhaseThirdQuarter": "Tredje kvartal",
+  "moonPhaseWaningCrescent": "Wening Crescent",
+  "planetBelowHorizon": "_ _ PLACEREPORT _ 0 _ _ under horisont",
+  "planetHighOverheadProminent": "_ _ PLACEREPORT _ 0 _ _ high overhead (_ _ PLACEREPORT _ 1 _ _ °) - meget fremtrædende",
+  "planetMidSkyProminent": "_ _ PLACEREPORT _ 0 _ _ at _ _ PLACEREPORT _ 1 _ _ ° - fremtrædende",
+  "planetMidSky": "_ _ PLACEREPORT _ 0 _ _ at _ _ PLACEREPORT _ 1 _ _ °",
+  "starVeryBright": "_ _ PLACEREPORT _ 0 _ _ meget lys på _ _ PLACEREPORT _ 1 _ _ °",
+  "starProminent": "_ _ PLACEREPORT _ 0 _ _ fremtrædende på _ _ PLACEREPORT _ 1 _ _ _ ° højde",
+  "starVisible": "_ _ PLACEREPORT _ 0 _ _ at _ _ PLACEREPORT _ 1 _ _ °",
+  "altitudeShort": "Alt",
+  "magnitudeShort": "Mag",
+  "satellitesVisibleMightExplain": "_ _ PLACEREPER _ 0 _ _ satellitter synlige - kan forklare observation",
+  "satellitesVisibleUnlikelyExplain": "_ _ PLACEREPORT _ 0 _ _ satellitter synlige - usandsynligt at forklare observation",
+  "noSatellitesVisible": "Ingen satellitter synlige",
+  "aircraftDetectedInRadius": "_ _ PLACEREPORT _ 0 _ _ luftfartøjer opdaget inden _ _ PLACEREPORT _ 1 _ _ km",
+  "processingAlert": "Behandling af UFO alarm...",
+  "analyzingEnvironment": "Analyse af miljøforhold",
+  "weatherAnalysis": "Vejranalyse",
+  "locationAnalysis": "Lokaliseringsanalyse",
+  "aircraftTracking": "Flysporing",
+  "satelliteAnalysis": "Satellitanalyse",
+  "celestialAnalysis": "Himmelsk analyse",
+  "analyzing": "Analyse _ _ PLACEREPORT _ 0 _ _...",
+  "processorWeather": "vejrforhold",
+  "processorLocation": "lokaliseringsoplysninger",
+  "processorAircraft": "flyvemaskiner i nærheden",
+  "processorSatellites": "satellitposition",
+  "processorCelestial": "himmelobjekter",
+  "calculatingCelestialData": "Beregning af himmelsk data...",
+  "sunLabel": "Sol",
+  "moonLabel": "Måne",
+  "planetsVisible": "Planeter: _ _ PLACEREPORT _ 0 _ _ visible",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Stjerner",
+  "planetsLabel": "Planeter",
+  "moonWithPhase": "Måne (_ _ PLACEREPER _ 0 _ _)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Ingen satellitter var synlige på det nøjagtige tidspunkt for din observation",
+  "satellitesVisibleOverheadAtTime": "Satellitter synlige overhead ved observation tid & placering",
+  "belowHorizon": "under horisonten",
+  "analysisFailedGeneric": "Analyse mislykkedes",
+  "unknownWeather": "Ukendt",
+  "noWeatherDescription": "Ingen beskrivelse",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satellitter (_ _ PLACEREPER _ 0 _ _ synlige nu)",
+  "sunWithDescription": "Sun: _ _ PLACEREPER _ 0 _ _",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Måne: _ _ PLACEREPORT _ 0 _ _",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Ukendt planet",
+  "unknownStar": "Ukendt stjerne",
+  "unknownSatellite": "Ukendt satellit",
+  "unknownDirection": "ukendt retning",
+  "brightStars": "Lyse stjerner",
+  "satellites": "Satellitter",
+  "seeAllSatellites": "Se alle _ _ PLACEREPORT _ 0 _ _ satellitter",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Maks. højde: _ _ PLACEREPORT _ 0 _ _ °",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Størrelse: _ _ PLACEREPORT _ 0 _ _",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Ukendt",
+  "altitudeValue": "_ _ PLACEREPORT _ 0 _ _ _ ° højde",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "_ _ PLACEREPORT _ 0 _ _ _ ° azimuth",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Der foreligger ingen himmelsk data.",
+  "gettingLocation": "Få din placering...",
+  "media": "Medier",
+  "locationRequired": "Sted påkrævet",
+  "confirmingWitness": "Bekræftende vidne...",
+  "chooseYourUsername": "Vælg dit brugernavn",
+  "weatherClear": "Ryd",
+  "weatherClearSky": "klar himmel",
+  "rain": "Regn",
+  "snow": "Sne",
+  "thunderstorm": "Tordenvejr",
+  "drizzle": "Støvregn",
+  "fog": "Tåge",
+  "fewClouds": "få skyer",
+  "scatteredClouds": "spredte skyer",
+  "brokenClouds": "bristede skyer",
+  "overcastClouds": "overskyet skyer",
+  "lightRain": "let regn",
+  "moderateRain": "moderat regn",
+  "heavyRain": "kraftig regn",
+  "aircraftDetectedCurrentPositions": "_ _ PLACEREPORT _ 0 _ _ luftfartøj opdaget inden _ _ PLACEREPORT _ 1 _ _ km (nuværende positioner)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "_ _ PLACEREPER _ 0 _ _ dim satellitter synlige - usandsynligt at forklare observation",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Rapporteringsdato",
+  "satelliteNameDirection": "_ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
+}

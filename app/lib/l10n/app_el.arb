@@ -1,0 +1,1148 @@
+{
+  "@@locale": "el",
+  "appName": "ΑΤΙΑ μπιπ",
+  "ok": "ΕΝΤΆΞΕΙ",
+  "cancel": "Ακύρωση",
+  "close": "Κλείσιμο",
+  "save": "Αποθήκευση",
+  "delete": "Διαγραφή",
+  "edit": "Επεξεργασία",
+  "retry": "Επανάληψη",
+  "yes": "Ναι",
+  "no": "Όχι",
+  "back": "Πίσω",
+  "next": "Επόμενο",
+  "done": "Έγινε",
+  "loading": "Φόρτωση..",
+  "processing": "Επεξεργασία..",
+  "errorGeneric": "Κάτι πήγε στραβά.",
+  "networkError": "Σφάλμα δικτύου. Έλεγξε τη σύνδεσή σου.",
+  "permissionsRequired": "Απαιτούμενες άδειες",
+  "learnMore": "Μάθετε περισσότερα",
+  "welcomeTitle": "Καλώς ήρθατε στο UFOBeep",
+  "welcomeSubtitle": "Σε πραγματικό χρόνο UFO ειδοποιήσεις κοντά σας",
+  "signIn": "Υπογραφή",
+  "signOut": "Υπογραφή",
+  "continueAsGuest": "Συνέχεια ως επισκέπτης",
+  "enterUsername": "Εισάγετε ένα όνομα χρήστη",
+  "username": "Όνομα χρήστη",
+  "usernameUpdated": "Ενημέρωση ονόματος χρήστη",
+  "profile": "Προφίλ",
+  "settings": "Settings",
+  "tabAlerts": "Καταχωρίσεις",
+  "tabBeep": "Μπιπ",
+  "tabChat": "Συζήτηση",
+  "tabMap": "Χάρτης",
+  "tabSettings": "Settings",
+  "alertsTitle": "Κοντινές ειδοποιήσεις",
+  "noAlerts": "Δεν υπάρχουν ειδοποιήσεις ακόμα κοντά.",
+  "pullToRefresh": "Τραβήξτε για ανανέωση",
+  "alertDistance": "__PACHOLDER_0_ μακριά",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Διόπτευση __PLACEHOLDER_0_°",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
+  "viewAlert": "Προβολή συναγερμού",
+  "viewOnMap": "Προβολή στο χάρτη",
+  "iSeeItToo": "Το βλέπω κι εγώ",
+  "confirmWitnessed": "Επιβεβαιώστε ότι είδατε αυτό το θέαμα?",
+  "witnessConfirmed": "Ευχαριστώ — η επιβεβαίωσή σας δημοσιεύτηκε.",
+  "createBeepTitle": "Στείλτε ένα μπιπ",
+  "beepExplain": "Συλλάβετε ό, τι βλέπετε και ειδοποιήστε τους κοντινούς παρατηρητές.",
+  "capturePhoto": "Φωτογραφία σύλληψης",
+  "captureVideo": "Λήψη βίντεο",
+  "pickFromGallery": "Επιλέξτε από τη συλλογή",
+  "descriptionHint": "Περιγράψτε τι βλέπετε στον ουρανό..",
+  "submitBeep": "Αποστολή μπιπ",
+  "beepSent": "Αποστολή μπιπ",
+  "beepSentWithUrl": "Το μπιπ στάλθηκε επιτυχώς",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadingMedia": "Αποστολή μέσων ενημέρωσης..",
+  "includeLocation": "Συμπερίληψη τοποθεσίας",
+  "includeTimestamp": "Συμπερίληψη χρονοσφραγίδας",
+  "beepFailed": "Αποτυχία αποστολής του Μπιπ.",
+  "mediaProcessing": "Επεξεργασία μέσων..",
+  "cameraPermissionTitle": "Απαιτείται πρόσβαση κάμερας",
+  "cameraPermissionBody": "Επιχορήγηση πρόσβασης κάμερας για να συλλάβει UFO φωτογραφίες και βίντεο.",
+  "locationPermissionTitle": "Απαιτούμενη άδεια θέσης",
+  "locationPermissionBody": "Χρησιμοποιούμε την τοποθεσία σας για να στείλουμε και να λάβουμε κοντινές ειδοποιήσεις.",
+  "microphonePermissionTitle": "Απαιτούμενη πρόσβαση μικροφώνου",
+  "microphonePermissionBody": "Επιχορήγηση πρόσβασης μικροφώνου για λήψη βίντεο με ήχο.",
+  "openSettings": "Άνοιγμα ρυθμίσεων",
+  "alertDetailTitle": "Ορατότητα λεπτομερειών",
+  "reportedBy": "Αναφέρθηκε από {username}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Αναφέρθηκε {timeAgo}",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Με σκοπό την ένσταση: {bearing}°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
+  "openCompass": "Ανοικτή πυξίδα",
+  "openAR": "Άνοιγμα επικάλυψης AR",
+  "openChat": "Άνοιγμα συνομιλίας",
+  "commentsTitle": "Σχόλια",
+  "addComment": "Προσθέστε ένα σχόλιο..",
+  "send": "Αποστολή",
+  "commentPosted": "Σχόλιο δημοσιεύτηκε",
+  "autoFollowEnabled": "Τώρα ακολουθείτε αυτή την προειδοποίηση.",
+  "noCommentsYet": "Κανένα σχόλιο ακόμα. Να είσαι ο πρώτος που θα σχολιάσει!",
+  "newCommentNotification": "Νέο σχόλιο για μια παρατήρηση που ακολουθείτε.",
+  "mapTitle": "Ζωντανός χάρτης",
+  "compassTitle": "Πυξίδα",
+  "compassSettings": "Settings πυξίδας",
+  "compassMode": "Λειτουργία πυξίδας",
+  "compassStandardMode": "Τυπική λειτουργία",
+  "compassPilotMode": "Πιλοτική λειτουργία",
+  "compassStandardDescription": "Βασική κλάση και πλοήγηση",
+  "compassPilotDescription": "Προηγμένη πλοήγηση με ETA και διανυσματική",
+  "pointingTo": "Επισημαίνοντας στο {direction}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
+  "calibratingCompass": "Βαθμονόμηση πυξίδας..",
+  "openAROverlay": "Άνοιγμα επικάλυψης AR",
+  "pushTitleAlertNearby": "Συναγερμός UFO κοντά σας",
+  "pushBodyAlertNearby": "Μια νέα παρατήρηση αναφέρθηκε {distance} μακριά.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
+  "pushTitleComment": "Νέο σχόλιο",
+  "pushBodyComment": "Κάποιος σχολίασε ότι σε είδε να ακολουθείς.",
+  "pushTitleWitness": "Επιβεβαίωση μάρτυρα",
+  "temperature": "Θερμοκρασία",
+  "pushBodyWitness": "Ένας χρήστης επιβεβαίωσε ότι βλέπουν το ίδιο αντικείμενο.",
+  "weather": "Καιρός",
+  "cloudCover": "Σύννεφο: __PLACEHOLDER_0_%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Άνεμος: {speed}_PLACEHOLDER_1_",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
+  "nearbyAircraft": "Κοντινά αεροσκάφη",
+  "noAircraft": "Κανένα αεροσκάφος κοντά",
+  "loadingContext": "Φόρτωση περιβαλλοντικού πλαισίου..",
+  "settingsTitle": "Settings",
+  "notifications": "Κοινοποιήσεις",
+  "enablePushNotifications": "Λήψη κοινοποιήσεων για μελλοντικά σχόλια",
+  "quietHours": "Ώρες ησυχίας",
+  "quietHoursDesc": "Συναγερμός σιωπής μεταξύ επιλεγμένων ωρών.",
+  "quietHoursEnabled": "Ενεργοποίηση ωρών ησυχίας",
+  "quietHoursFrom": "Από",
+  "quietHoursUntil": "Μέχρι",
+  "quietHoursDefaultTime": "Προκαθορισμένες ώρες ησυχίας",
+  "emergencyOverride": "Παράκαμψη έκτακτης ανάγκης",
+  "emergencyOverrideDesc": "Επίτρεψε επείγουσες ειδοποιήσεις κατά τη διάρκεια ωρών ηρεμίας",
+  "dndMode": "Μην ενοχλείστε",
+  "dndUntil": "Μην ενοχλείστε μέχρι",
+  "dndEnabled": "DND ενεργοποιημένο μέχρι {time}",
+  "dndDisabled": "Απενεργοποίηση DND",
+  "quietHoursActive": "Ώρες ηρεμίας ενεργές",
+  "quietHoursScheduled": "Ώρες ησυχίας: _________________________",
+  "pushNotificationUfoAlert": "ΑΤΙΑ Συναγερμός",
+  "pushNotificationAnomalyAlert": "Ανωμαλία",
+  "pushNotificationNearby": "Κοντά",
+  "pushNotificationInYourArea": "στην περιοχή σου. Πατήστε για να δείτε λεπτομέρειες.",
+  "pushNotificationCommented": "{username} σχολίασε",
+  "pushNotificationCommentedOn": "_{username}_ σχολίασε στο __PLACEHOLDER_1_",
+  "pushNotificationGeneric": "ΑΤΙΑ μπιπ",
+  "pushNotificationNewSighting": "Νέα θέαση κοντά",
+  "language": "Γλώσσα",
+  "chooseLanguage": "Επιλογή γλώσσας",
+  "units": "Μονάδες",
+  "unitsImperial": "Αυτοκρατορικό (mi, mph)",
+  "unitsMetric": "Μετρικό (km, km/h)",
+  "privacyPolicy": "Πολιτική απορρήτου",
+  "termsOfUse": "Όροι χρήσης",
+  "errorNoLocation": "Τοποθεσία μη διαθέσιμη. Δοκιμάστε ξανά έξω με καθαρή θέα στον ουρανό.",
+  "errorNoCamera": "Η κάμερα δεν είναι διαθέσιμη σε αυτή τη συσκευή.",
+  "errorUploadFailed": "Η αποστολή απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
+  "errorPermissionDenied": "Η άδεια απορρίπτεται.",
+  "errorInvalidUsername": "Αυτό το όνομα χρήστη δεν είναι διαθέσιμο.",
+  "nothingToShow": "Δεν έχω κάτι να δείξω ακόμα.",
+  "storeShortDesc": "Άμεση συναγερμούς UFO κοντά σας. Συλλάβετε, επιβεβαιώστε και συνομιλήστε σε πραγματικό χρόνο.",
+  "storeLongDesc": "Το UFOBeep στέλνει ειδοποιήσεις σε πραγματικό χρόνο όταν κάποιος εντοπίζει ένα UFO κοντά. Συλλάβετε φωτογραφίες και βίντεο, επιβεβαιώστε τις εμφανίσεις με μια βρύση, την κατεύθυνση προβολής και την απόσταση, και συνομιλήστε με άλλους παρατηρητές του ουρανού.",
+  "keywords": "UFO, UAP, OVNI, aliens, παρατηρήσεις, Skywatch, alerts, Radar, compass",
+  "noAlertsFound": "Καμία αντίστοιχη καταχώριση",
+  "alertsFilterHelp": "Δοκιμάστε να ρυθμίσετε τα φίλτρα σας για να δείτε περισσότερα αποτελέσματα",
+  "verified": "Επαληθευμένο",
+  "beepOnly": "Μόνο μπιπ",
+  "reportOnly": "Μόνο κείμενο",
+  "videoOnly": "Μόνο βίντεο",
+  "imageOnly": "Μόνο εικόνα",
+  "mediaOnly": "Μόνο μέσα ενημέρωσης",
+  "timeJustNow": "μόλις τώρα",
+  "timeDaysAgo": "__PACHOLDER_0_ ημέρες πριν",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "__PLACEHOLDER_0_ ώρες πριν",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "__PLACEHOLDER_0_ πριν από λίγα λεπτά",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "loadMoreAlerts": "Φόρτωση περισσότερων ειδοποιήσεων",
+  "toggleMufonTooltip": "Εναλλαγή προβολών MUFON",
+  "showMufonData": "Εμφάνιση δεδομένων MUFON",
+  "hideMufonData": "Απόκρυψη δεδομένων MUFON",
+  "showingUfoBeepOnly": "Εμφάνιση μόνο αναφορών UFOBeep",
+  "showingAllReports": "Εμφάνιση όλων των αναφορών συμπεριλαμβανομένης της βάσης δεδομένων MUFON",
+  "filteredSuffix": "φιλτράρεται",
+  "detailsTitle": "Λεπτομέρειες",
+  "mufonCase": "ΜΟΥΦΟΝ Υπόθεση",
+  "mufonSighting": "Έκθεση παρατήρησης MUFON",
+  "mufonLightSighting": "Έκθεση παρατήρησης φωτός MUFON",
+  "mufonSphereSighting": "Έκθεση παρατήρησης σφαίρας MUFON",
+  "mufonDiscSighting": "ΜΟΥΦΟΝ Έκθεση παρατήρησης δίσκων",
+  "mufonTriangleSighting": "ΜΟΥΦΟΝ Έκθεση παρατήρησης τριγώνου",
+  "mufonCigarSighting": "Έκθεση παρατήρησης πούρων MUFON",
+  "mufonOvalSighting": "Έκθεση Οβάλ παρατήρησης MUFON",
+  "mufonRectangleSighting": "ΜΟΥΦΟΝ Έκθεση παρατήρησης ορθογωνίου",
+  "mufonCylinderSighting": "Έκθεση παρατήρησης κυλίνδρων MUFON",
+  "mufonBoomerangSighting": "Έκθεση παρατήρησης MUFON Boomerang",
+  "mufonStarlikeSighting": "ΜΟΥΦΟΝ Starlike Sighting Αναφορά",
+  "mufonCaseDetailsTitle": "Υπόθεση MUFON #__PLACEHOLDER_0_ Λεπτομέρειες",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "sightingDate": "Ημερομηνία παρατήρησης",
+  "mufonDatabaseEntryDate": "Ημερομηνία εισόδου στο MUFON Βάση δεδομένων",
+  "databaseEntry": "Είσοδος βάσης δεδομένων",
+  "shareLink": "Κοινοποίηση δεσμού",
+  "linkCopied": "Δεσμός αντιγραφόμενο στο πρόχειρο",
+  "locationLabel": "Τοποθεσία:",
+  "distanceLabel": "Απόσταση",
+  "timeLabel": "Ώρα:",
+  "reportedByLabel": "Αναφέρθηκε από",
+  "unknownLocation": "Άγνωστη τοποθεσία",
+  "locationUnknown": "Άγνωστη τοποθεσία",
+  "witnessesLabel": "Μάρτυρες",
+  "witnessesCountMessage": "__PLACEHOLDER_0_ Οι άνθρωποι επιβεβαίωσαν αυτή την παρατήρηση",
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "photoAnalysisTitle": "Ανάλυση φωτογραφιών",
+  "mediaItemsProcessed": "Ανάλυση: __PLACEHOLDER_0_ media file(s) processed",
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "addMoreMedia": "Προσθήκη περισσότερων",
+  "addMedia": "Προσθήκη μέσου",
+  "retakePhoto": "Επανάληψη φωτογραφίας",
+  "retakeVideo": "Επανάληψη βίντεο",
+  "camera": "Κάμερα",
+  "gallery": "Γκαλερί",
+  "basicSettings": "Βασικές ρυθμίσεις",
+  "appSettings": "Settings εφαρμογών",
+  "timeFormat": "Μορφή χρόνου",
+  "timeFormat24Hour": "24 ώρες (14:30)",
+  "timeFormat12Hour": "12 ώρες (2:30 μ.μ.)",
+  "timeFormatDesc": "Εμφάνιση ώρας σε 24ωρη ή 12ωρη μορφή",
+  "alertRange": "Εύρος ειδοποίησης",
+  "manageNotificationsDesc": "Διαχείριση συνδρομών & ρυθμίσεων",
+  "permissionsTitle": "Άδειες",
+  "permissionLocation": "Τοποθεσία",
+  "permissionCamera": "Κάμερα",
+  "permissionNotifications": "Κοινοποιήσεις",
+  "permissionPhotos": "Φωτογραφίες",
+  "permissionGranted": "Χορηγείται",
+  "permissionNotGranted": "Δεν έχει χορηγηθεί",
+  "permissionGrant": "Επιχορήγηση",
+  "generateUsername": "Δημιουργία νέου ονόματος χρήστη",
+  "adminTools": "Εργαλεία διαχείρισης",
+  "openAdminPanel": "Άνοιγμα πίνακα διαχειριστή",
+  "webAdminInterface": "Διεπαφή διαχειριστή ιστού",
+  "adminBetaNotice": "Η Βήτα χτίζει μόνο. Εργαλεία διαχείρισης για τη δοκιμή ειδοποιήσεων εγγύτητας, ειδοποιήσεις ώθησης και διαγνωστικά συστημάτων.",
+  "whatDoYouSee": "Τι βλέπεις?",
+  "ufo": "ΑΤΙΑ",
+  "sighting": "Ορατότητα",
+  "ufoSighting": "UFOBeep UFO Συναγερμός",
+  "envAnalysisTitle": "Περιβαλλοντική ανάλυση",
+  "envAnalysisPending": "Εν αναμονή ανάλυσης",
+  "envAnalysisPendingDesc": "Τα περιβαλλοντικά δεδομένα θα είναι διαθέσιμα μόλις αρχίσει η επεξεργασία.",
+  "unknownAircraft": "Άγνωστο αεροσκάφος",
+  "moreAircraft": "περισσότερα αεροσκάφη",
+  "showLess": "Εμφάνιση λιγότερου",
+  "premiumImageryTitle": "Premium δορυφόρος Εικόνα",
+  "premiumImagerySubtitle": "Εμπορικές εικόνες υψηλής ανάλυσης",
+  "sightingTypeLabel": "Τύπος",
+  "ufoTypeSphere": "Σφαίρα",
+  "ufoTypeTriangle": "Τρίγωνο",
+  "ufoTypeDisk": "Δίσκος",
+  "ufoTypeLight": "Φως",
+  "ufoTypeFireball": "Πυρόμπαλα",
+  "ufoTypeCylinder": "Κύλινδρος",
+  "ufoTypeCigar": "Πούρα",
+  "ufoTypeRectangle": "Ορθογώνιο",
+  "ufoTypeFormation": "Σχηματισμός",
+  "ufoTypeUnknown": "Άγνωστο",
+  "ufoTypeBoomerang": "Μπούμερανγκ",
+  "ufoTypeDiamond": "Διαμάντι",
+  "ufoTypeOval": "Οβάλ",
+  "ufoTypeCone": "Κώνος",
+  "ufoTypeCross": "Σταυρός",
+  "ufoTypeDumbbell": "Βλακείες",
+  "ufoTypeTeardrop": "Δάκρυο",
+  "ufoTypeTicTac": "Tic Tac",
+  "ufoTypeBullet": "Σφαίρα",
+  "ufoTypeSaturn": "Κρόνος",
+  "ufoTypeStarLike": "Αστρική",
+  "ufoTypeBlimp": "Μπλίμπ",
+  "shapeTriangle": "τρίγωνο",
+  "shapeDisc": "δίσκος",
+  "shapeDisk": "δίσκος",
+  "shapeSphere": "σφαίρα",
+  "shapeCigar": "πούρα",
+  "shapeLight": "φως",
+  "shapeBoomerang": "βουμεράνγκ",
+  "shapeDiamond": "διαμάντι",
+  "shapeRectangle": "ορθογώνιο",
+  "shapeOval": "οβάλ",
+  "shapeCone": "κώνος",
+  "shapeCross": "σταυρός",
+  "shapeCylinder": "κύλινδρος",
+  "shapeDumbbell": "αλουμινόχαρτο",
+  "shapeTeardrop": "δάκρυο",
+  "shapeTicTac": "τικ-τακ",
+  "shapeBullet": "σφαίρα",
+  "shapeSaturn": "saturn",
+  "shapeStarlike": "αστεροειδής",
+  "shapeBlimp": "blimp",
+  "shapeFireball": "πυρόμπαλα",
+  "shapeFormation": "σχηματισμός",
+  "shapeUnknown": "άγνωστο",
+  "actionsTitle": "Δράσεις",
+  "addPhotosAndVideos": "Προσθήκη φωτογραφιών & βίντεο",
+  "attachMedia": "Προσάρτηση μέσου",
+  "addCommentOptional": "Προσθέστε ένα σχόλιο (προαιρετικό)",
+  "describeNewMedia": "Περιγράψτε τα νέα μέσα ενημέρωσης...",
+  "filesSelected": "επιλεγμένα αρχεία",
+  "selectMediaToAttach": "Παρακαλώ επιλέξτε φωτογραφίες ή βίντεο για επισύναψη",
+  "newMediaUploaded": "Μεταφόρτωση νέων μέσων",
+  "mediaFilesUploaded": "νέα αρχεία πολυμέσων που φορτώθηκαν",
+  "filesAttachedSuccessfully": "τα αρχεία επισυνάπτονται επιτυχώς",
+  "howToReportToMufon": "Πώς να αναφέρετε στο MUFON",
+  "reportToMufon": "Αναφορά στο MUFON",
+  "whyReportToMufon": "Γιατί αναφέρεσαι στο MUFON?",
+  "openMufonReport": "Άνοιγμα MUFON Έκθεση",
+  "confirmedWitness": "Επιβεβαίωσες αυτή την παρατήρηση",
+  "witnessesHaveConfirmed": "__PLACEHOLDER_0_ Οι άνθρωποι έχουν επιβεβαιώσει αυτή την παρατήρηση",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "aircraftTrackingTitle": "Παρακολούθηση αεροσκαφών",
+  "weatherConditionsTitle": "Καιρικές συνθήκες",
+  "noSatellitePasses": "Δε βρέθηκαν ορατά δορυφορικά περάσματα",
+  "contentAnalysisTitle": "Ανάλυση περιεχομένου",
+  "contentSafe": "Το περιεχόμενο είναι ασφαλές",
+  "contentFlagged": "Περιεχόμενο που φέρει τη σήμανση για επανεξέταση",
+  "confidenceLabel": "Εμπιστοσύνη",
+  "methodLabel": "Μέθοδος",
+  "premiumImageryAccessOnly": "Premium δορυφορική εικόνα είναι διαθέσιμη μόνο για:",
+  "premiumAccessCreators": "Προειδοποίηση δημιουργών",
+  "premiumAccessWitnesses": "Επιβεβαιωμένοι μάρτυρες εντός εμβέλειας ορατότητας",
+  "comingSoon": "Έρχομαι Σύντομα",
+  "directionDistanceTitle": "& Απόσταση κατεύθυνσης",
+  "mufonCaseTitle": "ΜΟΥΦΟΝ Υπόθεση #{caseNumber}",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "satellitePassesTitle": "Δορυφορικά περάσματα",
+  "satellitePassExplanation": "Ορατός δορυφόρος περνάει κατά τη διάρκεια του χρονικού πλαισίου παρατήρησης. Πολλές αναφορές για UFO είναι στην πραγματικότητα δορυφόροι ή διαστημικά συντρίμμια.",
+  "followingAlert": "Μετά την ειδοποίηση - θα λάβετε ειδοποιήσεις σχολίων",
+  "unfollowedAlert": "Μη ακολουθούμενη ειδοποίηση - όχι άλλες ειδοποιήσεις σχολίων",
+  "alertFollowError": "Σφάλμα ενημέρωσης της κατάστασης",
+  "notificationChannelAlerts": "Συναγερμοί UFOBeep",
+  "notificationChannelAlertsDesc": "Ειδοποιήσεις για UFO μπιπ και ειδοποιήσεις εγγύτητας",
+  "notificationSightingTitle": "UFOBeep UFO Συναγερμός",
+  "notificationSightingUrgent": "⚠️ URGENT UFOBeep UFO Συναγερμός",
+  "notificationSightingEmergency": "🚨 Έκτακτη UFOBeep UFO Συναγερμός",
+  "notificationSightingBody": "__PLACHOLDER_0___PLACHOLDER_1_",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "💬 {username} σχολίασε",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Νέα παρατήρηση",
+  "notificationWitnessTextMultiple": "__PLACEHOLDER_0_ μάρτυρες",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Σνούζ 1 ώρα",
+  "notificationActionDismiss": "Ελεύθεροι",
+  "notificationDistance": "__PACHOLDER_0_ μακριά",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "Άγνωστο",
+  "report": "έκθεση",
+  "mufon": "μουφόν",
+  "recentUfoBeepsTitle": "Πρόσφατο UFO Μπιζέλια",
+  "recentUfoBeepsSubtitle": "Ζωντανές αναφορές παρατήρησης UFO από την παγκόσμια κοινότητα μας",
+  "recentUfoBeepsDescription": "Αυτή η τροφοδοσία συνδυάζει σε πραγματικό χρόνο UFOBeep-beeps\" από τους χρήστες εφαρμογών κινητής τηλεφωνίας μας με ιστορικές αναφορές από τη βάση δεδομένων MUFON.",
+  "loadingBeeps": "Φόρτωση πρόσφατων μπιπ...",
+  "noBeepsAvailable": "Δεν υπάρχουν διαθέσιμα μπιπ προς το παρόν.",
+  "anomalyReported": "Ανωμαλία αναφερθεί",
+  "copyShortLink": "Αντιγραφή σύντομου δεσμού",
+  "shareAlert": "Κοινοποίηση ειδοποίησης",
+  "ufoSightingAlert": "ΑΤΙΑ Εντοπισμός συναγερμού",
+  "previousPage": "Προηγούμενο",
+  "nextPage": "Επόμενο",
+  "pageOf": "Σελίδα _{currentPage}__PLACEHOLDER_1_ (__PLACEHOLDER_2_ σύνολο μπιπ)",
+  "firstPage": "Πρώτο",
+  "lastPage": "Τελευταία",
+  "jumpToPage": "Μετάβαση στη σελίδα",
+  "heroTagline": "Πάρε ειδοποιήσεις όταν βγεις έξω και κοίτα ψηλά",
+  "heroDescription": "Ποτέ μην χάσετε άλλη παρατήρηση UFO στην περιοχή σας",
+  "downloadApp": "📱 Λήψη εφαρμογής",
+  "viewAllBeeps": "📋 Δείτε Όλους τους Μπιπς",
+  "sightingsMap": "🗺️ Χάρτης παρατήρησης",
+  "globalSightingNetwork": "Παγκόσμιο δίκτυο παρατήρησης",
+  "howItWorks": "Πώς Λειτουργεί",
+  "backToBeeps": "Επιστροφή στους Μπιπς",
+  "loadingDetails": "Φόρτωση λεπτομερειών ήχου...",
+  "details": "Λεπτομέρειες",
+  "location": "Τοποθεσία",
+  "timeAgo": "πριν",
+  "timeMinutes": "m",
+  "timeHours": "h",
+  "timeDays": "d",
+  "distanceKm": "km",
+  "distanceMiles": "μίλια",
+  "distanceNearby": "κοντά",
+  "ufobeepWitnesses": "Μάρτυρες",
+  "ufobeepConfirmations": "Επιβεβαίωση",
+  "ufobeepAlertLevel": "Επίπεδο συναγερμού",
+  "ufobeepReportType": "Αναφορά UFOBeep",
+  "mufonAttribution": "ΜΟΥΦΟΝ Έκθεση βάσης δεδομένων",
+  "mufonCaseNumber": "Υπόθεση #",
+  "mufonGenericTitle": "Έκθεση παρατήρησης MUFON",
+  "mufonSphere": "Σφαίρα",
+  "mufonLight": "Φως",
+  "mufonDisk": "Δίσκος",
+  "mufonTriangle": "Τρίγωνο",
+  "mufonCigar": "Πούρα",
+  "mufonOval": "Οβάλ",
+  "mufonCylinder": "Κύλινδρος",
+  "mufonRectangle": "Ορθογώνιο",
+  "mufonDiamond": "Διαμάντι",
+  "mufonFireball": "Πυρόμπαλα",
+  "mufonFlash": "Φλας",
+  "mufonFormation": "Σχηματισμός",
+  "mufonChanging": "Αλλαγή",
+  "mufonChevron": "Ακίδα",
+  "mufonCone": "Κώνος",
+  "mufonCross": "Σταυρός",
+  "mufonEgg": "Αυγά",
+  "mufonOther": "Αντικείμενο",
+  "mufonUnknown": "Άγνωστο αντικείμενο",
+  "mufonTitleFormat": "Έκθεση MUFON __PLACEHOLDER_0_",
+  "nuforcAttribution": "ΝΟΥΦΟΡΚ Έκθεση βάσης δεδομένων",
+  "nuforcCaseNumber": "Υπόθεση #",
+  "nuforcGenericTitle": "ΝΟΥΦΟΡΚ Έκθεση παρατήρησης",
+  "mediaImageNotFound": "Η εικόνα δε βρέθηκε",
+  "mediaPlayVideo": "Αναπαραγωγή βίντεο",
+  "mediaViewImage": "Προβολή εικόνας",
+  "mediaCount": "__PLACEHOLDER_0_ εικόνες",
+  "mediaCountSingle": "1 εικόνα",
+  "mediaMoreImages": "+___PLACHOLDER_0_ more",
+  "errorNotFound": "Το σήμα δεν βρέθηκε",
+  "errorLoadError": "Αποτυχία φόρτωσης λεπτομερειών ηχητικού σήματος",
+  "shareYourThoughts": "Μοιραστείτε τις σκέψεις σας για αυτή την εμφάνιση...",
+  "postComment": "Σχόλιο Post",
+  "loggedInAs": "Σύνδεση ως",
+  "logout": "Αποσύνδεση",
+  "notFollowing": "Δεν ακολουθεί",
+  "follow": "Συνέχεια",
+  "navRecentBeeps": "Πρόσφατες Beeps",
+  "navMap": "Χάρτης",
+  "navDownloadApp": "Λήψη εφαρμογής",
+  "alertLevel": "Επίπεδο συναγερμού",
+  "witnesses": "Μάρτυρες",
+  "confirmations": "Επιβεβαίωση",
+  "reporterLabel": "Αναφέρθηκε από το χρήστη",
+  "coordinatesLabel": "Συντεταγμένες",
+  "eventTime": "Ώρα συμβάντος",
+  "reportedTime": "Χρόνος αναφοράς",
+  "addedToUfobeep": "Προστέθηκε στο UFOBeep",
+  "mufonDatabaseReport": "ΜΟΥΦΟΝ Αριθμός υπόθεσης:",
+  "copyShortLinkTitle": "Αντιγραφή δεσμού στο πρόχειρο",
+  "imageNotFound": "Η εικόνα δε βρέθηκε",
+  "ufoSightingAlt": "ΑΤΙΑ Συναγερμός ΑΤΙΑ μπιπ",
+  "celestialDataTitle": "Ουράνια αντικείμενα",
+  "visiblePlanets": "Ορατοί Πλανήτες",
+  "locationDataTitle": "Πληροφορίες τοποθεσίας",
+  "timezone": "Ζώνη ώρας",
+  "coordinates": "Συντεταγμένες",
+  "processingSummaryTitle": "Περίληψη επεξεργασίας",
+  "processingTime": "Χρόνος επεξεργασίας",
+  "successful": "Επιτυχής",
+  "failed": "Αποτυχία",
+  "locationEnrichmentTitle": "Λεπτομέρειες τοποθεσίας",
+  "aircraftDataSource": "Πηγή δεδομένων",
+  "noAircraftDetected": "Δεν εντοπίστηκαν αεροσκάφη",
+  "sightingReport": "Έκθεση παρατήρησης",
+  "ufoAlert": "ΑΤΙΑ Συναγερμός",
+  "alert": "Συναγερμός",
+  "notificationTickerUfoAlert": "Συναγερμός UFO - Νέα Αξιοθέατα σε κοντινή απόσταση",
+  "notificationTickerComment": "Νέο σχόλιο για το UFO Alert",
+  "weatherConditions": "Καιρικές συνθήκες",
+  "visibility": "Ορατότητα",
+  "humidity": "Υγρασία",
+  "pressure": "Πίεση",
+  "locationDetails": "Λεπτομέρειες τοποθεσίας",
+  "city": "Πόλη",
+  "state": "Κατάσταση",
+  "country": "Χώρες",
+  "satelliteActivity": "Δορυφορική δραστηριότητα",
+  "satellitesVisibleOverhead": "Δορυφορικοί δορυφόροι ορατοί από πάνω κατά το χρόνο και την τοποθεσία παρατήρησης",
+  "dataSource": "Πηγή δεδομένων",
+  "blackskyImagery": "Εικόνα BlackSky",
+  "resolution": "Ανάλυση",
+  "groundResolution": "35cm ανάλυση εδάφους",
+  "delivery": "Παράδοση",
+  "averageDelivery": "μέσος όρος 90 λεπτών",
+  "cost": "Κόστος",
+  "skyfiSatelliteImagery": "Δορυφόρος SkyFi Εικόνα",
+  "region": "Περιφέρεια",
+  "remoteArea": "Απομακρυσμένη περιοχή",
+  "startingPrice": "Τιμή εκκίνησης",
+  "coverage": "Κάλυψη",
+  "confidenceCoverage": "95% εμπιστοσύνη",
+  "status": "Κατάσταση",
+  "shareThoughts": "Μοιραστείτε τις σκέψεις σας για αυτή την εμφάνιση...",
+  "postCommand": "Αποστολή",
+  "clouds": "Σύννεφα",
+  "windLabel": "Άνεμος",
+  "filterAlerts": "Συναγερμοί φίλτρου",
+  "alertSource": "Ειδοποίηση πηγής",
+  "ufobeepOnly": "Μόνο UFOBeep",
+  "ufobeepOnlyDescription": "Εμφάνιση μόνο πρωτότυπων αναφορών UFOBeep (αποκλείστε τη βάση δεδομένων MUFON)",
+  "alertDistanceRange": "Ειδοποίηση εύρους απόστασης",
+  "showAllAlerts": "Εμφάνιση όλων των ειδοποιήσεων",
+  "showAll": "Εμφάνιση όλων",
+  "distanceSliderDescription": "Σύρετε για να ρυθμίσετε πόσο μακριά θέλετε να δείτε ειδοποιήσεις. Ξεκινήστε από την απόσταση ορατότητας του καιρού μέχρι την εμφάνιση όλων των ειδοποιήσεων ανεξάρτητα από την απόσταση.",
+  "applyFilters": "Εφαρμογή φίλτρων",
+  "notificationRange": "Εύρος κοινοποίησης",
+  "notificationRangeDescription": "Πάρτε ειδοποιήσεις ώθησης για θεάσεις σε αυτή την απόσταση",
+  "viewingRange": "Προβολή εύρους",
+  "viewingRangeDescription": "Εμφάνιση προβολών σε αυτή την απόσταση κατά την περιήγηση",
+  "weatherVisibility": "Ορατότητα καιρού (~10 χιλιόμετρα)",
+  "localArea": "Τοπική περιοχή (25 χιλιόμετρα)",
+  "regional": "Περιφερειακή",
+  "pushNotifications": "Πιέστε τις ειδοποιήσεις",
+  "alertBrowsing": "Προειδοποίηση περιήγησης",
+  "pushAlertsWithinDistance": "Λήψη ειδοποιήσεων εντός αυτού του εύρους",
+  "showAlertsWhenBrowsing": "Φιλτράρισμα όσων βλέπετε στη λίστα",
+  "heroMainTagline": "Πάρτε ένα μπιπ στο τηλέφωνό σας όταν UFOs εντοπίζονται κοντά",
+  "heroSecondaryTagline": "Μάθε πότε και πού να κοιτάξεις τον ουρανό",
+  "sourceFilters": "Πηγή",
+  "sourceFiltersDescription": "Επιλέξτε ποιες αναφορές εμφανίζονται στη ροή σας",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "Μόνο UFOBeep",
+  "mufonOnlySource": "Μόνο MUFON",
+  "browseFilters": "Περιήγηση",
+  "browseFiltersDescription": "Πώς να δείτε και να ταξινομήσετε τις ειδοποιήσεις",
+  "sortByNewest": "Νεότερο",
+  "sortByNearest": "Πλησιέστερο",
+  "sortBy": "Ταξινόμηση κατά",
+  "pushAlertsTitle": "Συναγερμοί ώθησης",
+  "pushAlertsDescription": "Τι pings το τηλέφωνό σας",
+  "alertRadius": "Ακτίνα ειδοποίησης",
+  "mufonNoPushInfo": "Οι αναφορές MUFON εισάγονται τη νύχτα και δεν ενεργοποιούν ειδοποιήσεις ώθησης",
+  "privacyData": "Ιδιωτικότητα & Δεδομένα",
+  "privacyPolicyDesc": "Πώς προστατεύουμε και χρησιμοποιούμε τα δεδομένα σας",
+  "termsOfService": "Όροι υπηρεσίας",
+  "termsOfServiceDesc": "Νομικοί όροι και προϋποθέσεις",
+  "locationTracking": "Παρακολούθηση τοποθεσίας",
+  "locationTrackingDesc": "Θέση φόντου για τις καταχωρίσεις εγγύτητας",
+  "locationTrackingTitle": "Παρακολούθηση τοποθεσίας φόντου",
+  "locationTrackingExplanation": "UFOBeep παρακολουθεί τη θέση σας στο παρασκήνιο για να σας στείλει ειδοποιήσεις εγγύτητας όταν UFO εμφανίσεις συμβαίνουν κοντά στην τρέχουσα τοποθεσία σας, ακόμη και όταν είστε μακριά από το σπίτι.",
+  "locationTrackingBattery": "Χρησιμοποιεί ευφυή γεωφαινόμενη για την πρόσκρουση μπαταρίας <3%",
+  "backgroundLocationTracking": "Ενεργοποίηση φόντου Παρακολούθηση",
+  "locationTrackingActive": "Θέση παρακολούθησης για καταχωρίσεις εγγύτητας",
+  "locationTrackingInactive": "Η παρακολούθηση τοποθεσίας είναι απενεργοποιημένη",
+  "locationTrackingDisabledWarning": "Δεν θα λάβετε ειδοποιήσεις εγγύτητας όταν μετακομίσετε σε νέες τοποθεσίες",
+  "trackingStatus": "Κατάσταση παρακολούθησης",
+  "monitoringStatus": "Παρακολούθηση",
+  "active": "Ενεργό",
+  "inactive": "Ανενεργός",
+  "lastKnownLocation": "Τελευταία γνωστή τοποθεσία",
+  "lastLocationUpdate": "Τελευταία ενημέρωση",
+  "movementThreshold": "Κατώφλι κίνησης",
+  "updateFrequency": "Συχνότητα ενημέρωσης",
+  "batteryImpact": "Επιπτώσεις μπαταριών",
+  "dataPrivacy": "Προστασία δεδομένων",
+  "locationPermissionExplanation": "Το UFOBeep χρειάζεται άδεια τοποθεσίας 'Πάντα επιτρέπεται' για να παρακολουθεί την κίνησή σας και να στέλνει ειδοποιήσεις εγγύτητας όταν βρίσκεστε σε νέες τοποθεσίες.",
+  "benefitsTitle": "Οφέλη",
+  "locationTrackingBenefits": "• Πάρτε UFO ειδοποιήσεις όπου κι αν ταξιδεύετε\n• Αυτόματη ενημέρωση τοποθεσίας\n• Δεν απαιτείται χειροκίνητη ρύθμιση",
+  "allowLocationAccess": "Επίτρεψε πρόσβαση τοποθεσίας",
+  "locationPermissionRequired": "Απαιτείται άδεια τοποθεσίας για παρακολούθηση ιστορικού",
+  "locationTrackingEnabled": "Ενεργοποίηση εντοπισμού τοποθεσίας φόντου",
+  "locationTrackingDisabled": "Απενεργοποίηση εντοπισμού τοποθεσίας φόντου",
+  "justNow": "Μόλις τώρα",
+  "minutesAgo": "__PLACEHOLDER_0_ πριν από λίγα λεπτά",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "__PLACEHOLDER_0_ ώρες πριν",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "__PACHOLDER_0_ ημέρες πριν",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Διαχείριση δεδομένων",
+  "dataManagementDesc": "Εξαγωγή ή διαγραφή των δεδομένων του λογαριασμού σας",
+  "splashTagline": "Συναγερμοί εντοπισμού σε πραγματικό χρόνο",
+  "splashStartingUp": "Ξεκινώντας...",
+  "splashInitializationFailed": "Αποτυχία αρχικοποίησης",
+  "splashInitializationFailedTitle": "Αποτυχία αρχικοποίησης",
+  "splashInitializationError": "Η εφαρμογή απέτυχε να αρχικοποιήσει σωστά:",
+  "splashRetry": "Επανάληψη",
+  "splashContinue": "Συνέχεια",
+  "splashInitializing": "Αρχικοποίηση...",
+  "signInWelcome": "Καλωσόρισες!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Αποτυχία σύνδεσης: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Παρακαλώ εισάγετε τη διεύθυνση email σας",
+  "signInPleaseEnterValidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email",
+  "signInMagicLinkSent": "Ο μαγικός κρίκος στάλθηκε! Ελέγξτε το email σας και κάντε κλικ στο σύνδεσμο για να συνδεθείτε.",
+  "signInMagicLinkFailed": "Αποτυχία αποστολής μαγικού συνδέσμου. Παρακαλώ προσπαθήστε ξανά.",
+  "signInAllDataCleared": "Εκκαθάριση όλων των δεδομένων",
+  "signInSubtitle": "Συναγερμοί εντοπισμού UFO σε πραγματικό χρόνο και αναφορές MUFON",
+  "signInGoogleLoading": "Υπογραφή...",
+  "signInContinueWithGoogle": "Συνεχίστε με το Google",
+  "signInOr": "ή",
+  "signInWithEmail": "Σύνδεση με Email",
+  "signInEmailDescription": "Θα σου στείλουμε έναν ασφαλή σύνδεσμο για να υπογράψεις",
+  "signInEmailAddress": "Διεύθυνση ηλεκτρονικού ταχυδρομείου",
+  "signInEmailPlaceholder": "your@email.com",
+  "signInTryAgainIn": "Δοκιμάστε ξανά σε __PACHOLDER_0_s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Αποστολή...",
+  "signInSendMagicLink": "Αποστολή μαγικού δεσμού",
+  "signInCheckEmail": "Έλεγξε το email σου! Ο σύνδεσμος λήγει σε 15 λεπτά.",
+  "signInSecureAuth": "Ασφαλής ταυτοποίηση",
+  "signInSecureAuthDescription": "Χρησιμοποιήστε το Google Sign-In για άμεση πρόσβαση, ή email μαγικό συνδέσμους που λήγουν σε 15 λεπτά.",
+  "signInClearAllDataDebug": "Καθαρισμός όλων των δεδομένων (αποσφαλμάτωση)",
+  "emailAuthFailedToSend": "Αποτυχία αποστολής email",
+  "emailAuthFailedToSendTryAgain": "Αποτυχία αποστολής email. Παρακαλώ προσπαθήστε ξανά.",
+  "emailAuthInvalidEmail": "Μη έγκυρη διεύθυνση email. Παρακαλώ ελέγξτε τη μορφή.",
+  "emailAuthUserNotFound": "Δε βρέθηκε λογαριασμός με αυτή τη διεύθυνση email.",
+  "emailAuthTooManyRequests": "Πολλές προσπάθειες. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+  "emailAuthOperationNotAllowed": "Η σύνδεση email δεν είναι ενεργοποιημένη.",
+  "emailAuthQuotaExceeded": "Υπερέβη την ποσόστωση ηλεκτρονικού ταχυδρομείου. Παρακαλώ προσπαθήστε ξανά αύριο.",
+  "emailAuthVerificationFailed": "Η επαλήθευση ηλεκτρονικού ταχυδρομείου απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
+  "emailAuthTitle": "Επαλήθευση ηλεκτρονικού ταχυδρομείου",
+  "emailAuthVerifyYourEmail": "Επαλήθευση του email σας",
+  "emailAuthDescription": "Προσθέστε τη διεύθυνση ηλεκτρονικού ταχυδρομείου σας για την ανάκτηση λογαριασμού και την ασφάλεια. Θα σας στείλουμε έναν ασφαλή σύνδεσμο εισόδου.",
+  "emailAuthEmailAddress": "Διεύθυνση ηλεκτρονικού ταχυδρομείου",
+  "emailAuthEmailPlaceholder": "your.email@example.com",
+  "emailAuthPleaseEnterEmail": "Παρακαλώ εισάγετε τη διεύθυνση email σας",
+  "emailAuthPleaseEnterValidEmail": "Παρακαλώ εισάγετε μια έγκυρη διεύθυνση email",
+  "emailAuthCheckEmailToContinue": "Ελέγξτε το email σας και πατήστε το σύνδεσμο επαλήθευσης για να συνεχίσετε.",
+  "emailAuthResendEmail": "Επαναφορά email",
+  "emailAuthSendVerificationEmail": "Αποστολή επαλήθευσης Ηλεκτρονικό ταχυδρομείο",
+  "emailAuthHowItWorks": "Πώς λειτουργεί η επαλήθευση ηλεκτρονικού ταχυδρομείου",
+  "emailAuthHowItWorksSteps": "1. Σας στέλνουμε ασφαλή σύνδεση εισόδου\n2. Ελέγξτε το email σας και πατήστε το σύνδεσμο\n3. Το email σας επαληθεύεται αυτόματα\n4. Δεν χρειάζονται κωδικοί πρόσβασης!",
+  "emailAuthSecurityNotice": "Η επαλήθευση ηλεκτρονικού ταχυδρομείου βοηθά στην εξασφάλιση του λογαριασμού σας και επιτρέπει την ανάκτηση λογαριασμού αν χάσετε την πρόσβαση στη συσκευή σας.",
+  "phoneAuthFailedToSendCode": "Αποτυχία αποστολής κωδικού επαλήθευσης. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthInvalidCodeTryAgain": "Μη έγκυρος κωδικός επαλήθευσης. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthPhoneVerified": "Επαλήθευση αριθμού τηλεφώνου: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Η επαλήθευση τηλεφώνου απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthCodeResent": "Κωδικός επαλήθευσης",
+  "phoneAuthFailedToResendCode": "Αποτυχία αποστολής κώδικα. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthInvalidPhoneNumber": "Μη έγκυρο αριθμό τηλεφώνου. Παρακαλώ ελέγξτε τη μορφή.",
+  "phoneAuthTooManyRequests": "Πολλές προσπάθειες. Παρακαλώ προσπαθήστε ξανά αργότερα.",
+  "phoneAuthInvalidVerificationCode": "Μη έγκυρος κωδικός επαλήθευσης. Παρακαλώ ελέγξτε και προσπαθήστε ξανά.",
+  "phoneAuthSessionExpired": "Η συνεδρία επαλήθευσης έληξε. Παρακαλώ ζητήστε νέο κωδικό.",
+  "phoneAuthSmsQuotaExceeded": "Υπερέβη την ποσόστωση SMS. Παρακαλώ προσπαθήστε ξανά αύριο.",
+  "phoneAuthCredentialAlreadyInUse": "Αυτός ο αριθμός τηλεφώνου είναι ήδη συνδεδεμένος με άλλο λογαριασμό.",
+  "phoneAuthVerificationFailedGeneric": "Η επαλήθευση απέτυχε. Παρακαλώ προσπαθήστε ξανά.",
+  "phoneAuthTitle": "Επαλήθευση τηλεφώνου",
+  "phoneAuthVerifyYourPhone": "Επαλήθευση του τηλεφώνου σας",
+  "phoneAuthEnterVerificationCode": "Εισαγωγή επαλήθευσης Κωδικός",
+  "phoneAuthAddPhoneForSecurity": "Προσθέστε τον αριθμό τηλεφώνου σας για ανάκτηση λογαριασμού και ασφάλεια",
+  "phoneAuthEnterSixDigitCode": "Εισάγετε τον εξαψήφιο κωδικό που αποστέλλεται στο {phoneNumber}",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Αριθμός τηλεφώνου",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Παρακαλώ εισάγετε τον αριθμό τηλεφώνου σας",
+  "phoneAuthPleaseEnterValidPhone": "Παρακαλώ εισάγετε έναν έγκυρο αριθμό τηλεφώνου",
+  "phoneAuthVerificationCode": "Κωδικός επαλήθευσης",
+  "phoneAuthPleaseEnterSixDigitCode": "Παρακαλώ εισάγετε τον εξαψήφιο κωδικό",
+  "phoneAuthResendCode": "Επαναφορά κώδικα",
+  "phoneAuthSendVerificationCode": "Αποστολή επαλήθευσης Κωδικός",
+  "phoneAuthVerifyCode": "Επαλήθευση κώδικα",
+  "phoneAuthChangePhoneNumber": "Τροποποίηση αριθμού τηλεφώνου",
+  "phoneAuthSmsNotice": "Θα σας στείλουμε έναν κωδικό επαλήθευσης μέσω SMS. Ενδέχεται να ισχύουν τυποποιημένες τιμές μηνυμάτων.",
+  "phoneAuthCodeExpires": "Ο κωδικός λήγει σε 60 δευτερόλεπτα. Ελέγξτε τα μηνύματά σας.",
+  "yourDataRights": "Τα Δικαιώματα των Δεδομένων Σας",
+  "dataRightsExplanation": "Έχετε τον πλήρη έλεγχο των προσωπικών σας δεδομένων. Μπορείτε να εξαγάγετε όλα τα δεδομένα σας ή να διαγράψετε μόνιμα το λογαριασμό σας ανά πάσα στιγμή.",
+  "exportYourData": "Εξαγωγή των δεδομένων σας",
+  "exportDataDescription": "Κατεβάστε όλα τα δεδομένα του λογαριασμού σας",
+  "exportData": "Εξαγωγή δεδομένων",
+  "exportingData": "Εξαγωγή...",
+  "exportDataDetails": "Περιλαμβάνει: προφίλ, μπιπ, σχόλια, πληροφορίες συσκευών και προτιμήσεις. Τα δεδομένα παρέχονται σε μορφή JSON.",
+  "dataExportedSuccessfully": "Τα δεδομένα εξάγονται επιτυχώς",
+  "dataExportFailed": "Αποτυχία εξαγωγής δεδομένων",
+  "deleteAccount": "Διαγραφή λογαριασμού",
+  "deleteAccountDescription": "Διαρκώς αφαιρέστε το λογαριασμό σας και όλα τα δεδομένα",
+  "deleteAccountWarning": "Αυτή η ενέργεια δεν μπορεί να αναιρεθεί. Όλα τα μπιπ, τα σχόλια και τα δεδομένα λογαριασμού σας θα διαγραφούν οριστικά.",
+  "deleteMyAccount": "Διαγραφή του λογαριασμού μου",
+  "deletingAccount": "Διαγραφή...",
+  "deleteAccountConfirmTitle": "Διαγραφή λογαριασμού",
+  "deleteAccountConfirmMessage": "Είστε απολύτως σίγουροι ότι θέλετε να διαγράψετε το λογαριασμό σας; Αυτή η ενέργεια είναι μόνιμη και δεν μπορεί να αναιρεθεί.",
+  "dataWillBeDeleted": "Τα ακόλουθα δεδομένα θα διαγραφούν οριστικά:",
+  "deletedDataList": "• Το προφίλ και το όνομα χρήστη σας\n• Όλα τα μπιπ και οι αναφορές σας\n• Όλα τα σχόλιά σας\n• Δεδομένα εγγραφής συσκευών\n• Δεδομένα τοποθεσίας και προτίμησης",
+  "deleteAccountPermanent": "Διαγραφή μόνιμα",
+  "accountDeletedSuccessfully": "Ο λογαριασμός διαγράφηκε με επιτυχία",
+  "accountDeletionFailed": "Αποτυχία διαγραφής λογαριασμού",
+  "onboardingWelcomeTitle": "Καλώς ήρθατε στο UFOBeep",
+  "onboardingWelcomeBody": "Πάρτε σε πραγματικό χρόνο ειδοποιήσεις όταν UFOs εντοπίζονται κοντά. Ποτέ μην χάσεις μια ματιά ξανά.",
+  "onboardingAlertsTitle": "Μείνετε ενημερωμένοι",
+  "onboardingAlertsBody": "Καθορίστε πόσο μακριά θα πρέπει να είναι οι εμφανίσεις για να ενεργοποιήσετε τις ειδοποιήσεις.",
+  "onboardingReportTitle": "Βλέπεις κάτι; Μπιπ!",
+  "onboardingReportBody": "Τραβήξτε μια φωτογραφία ή βίντεο και μοιραστείτε αμέσως με κοντινούς παρατηρητές.",
+  "onboardingPermissionsTitle": "Η φωτογραφική σας μηχανή & τοποθεσία",
+  "onboardingPermissionsBody": "Ενεργοποίηση κάμερας, τοποθεσίας και ειδοποιήσεων ώστε να μπορείτε:\n– Αναφέρετε τις εμφανίσεις γρήγορα\n– Πάρτε ειδοποιήσεις για UFOs κοντά σας",
+  "onboardingCameraTitle": "Αποδείξεις σύλληψης",
+  "onboardingCameraBody": "Μοιραστείτε φωτογραφίες και βίντεο που μόλις τραβήξατε από τη γκαλερί σας ή πατήστε το εικονίδιο UFOBeep για να ξεκινήσετε σε λειτουργία στιγμιαίας κάμερας.",
+  "onboardingCompassTitle": "Βλέπε Πού Κοίταξαν",
+  "onboardingCompassBody": "Η πυξίδα σας δείχνει την ακριβή κατεύθυνση που έψαχνε ο μάρτυρας όταν είδαν το UFO. Σημάδεψε το τηλέφωνό σου και κοίτα!",
+  "onboardingCommunityTitle": "Μπείτε στους Παρατηρητές του Ουρανού",
+  "onboardingCommunityBody": "Περιήγηση θεάσεις, πρόσβαση MUFON εκθέσεις, και σύνδεση με συναδέλφους παρατηρητές του ουρανού.",
+  "skip": "Παράλειψη",
+  "getStarted": "Ξεκινήστε",
+  "viewOnboardingAgain": "Προβολή και πάλι επί του σκάφους",
+  "customAlertRange": "Προσαρμοσμένο εύρος ειδοποίησης",
+  "enterRangeKm": "Εισάγετε εύρος σε km (1-99999)",
+  "largeRangeWarning": "Μεγάλο εύρος (> 100 km) μπορεί να δημιουργήσει πολλές καταχωρίσεις",
+  "globalRangeWarning": "Πολύ μεγάλες σειρές (> 1000 χιλιόμετρα) θα σας στείλει ειδοποιήσεις από όλο τον κόσμο",
+  "invalidRange": "Παρακαλώ εισάγετε έναν αριθμό μεταξύ 1 και 99999",
+  "celestialSunDaylight": "Ο ήλιος είναι επάνω - συνθήκες ημέρας μπορεί να επηρεάσει την ορατότητα παρατήρησης",
+  "celestialSunTwilight": "Συνθήκες λυκόφως - κάποια ορατότητα αλλά πιο σκοτεινή από το φως της ημέρας",
+  "celestialSunDark": "Σκοτεινές συνθήκες - βέλτιστες για την παρατήρηση αντικειμένων στον ουρανό",
+  "celestialMoonBright": "Φωτεινό __PLACEHOLDER_0_ φεγγάρι ορατό - μπορεί να φωτίσει ή να επισκιάσει άλλα αντικείμενα",
+  "celestialMoonModerate": "__PLACEHOLDER_0_ φεγγάρι ορατό - μέτριες συνθήκες φωτισμού",
+  "celestialMoonThin": "Λεπτό __PLACEHOLDER_0_ φεγγάρι ορατό - ελάχιστο φωτισμό",
+  "celestialMoonHidden": "__PLACEHOLDER_0_ φεγγάρι κάτω από τον ορίζοντα - κανένας σεληνιακός φωτισμός",
+  "celestialNoPlanets": "Κανένας φωτεινός πλανήτης ορατός που θα μπορούσε να είναι λάθος για UFO",
+  "celestialPlanetHigh": "__PLACEHOLDER_0_ υψηλά γενικά έξοδα (__PLACEHOLDER_1_°) - πολύ επιφανής",
+  "celestialPlanetMedium": "___PLACEHOLDER_0_ ορατό στο __PLACEHOLDER_1_° - θα μπορούσε να είναι λάθος για τα αεροσκάφη",
+  "celestialPlanetLow": "__PLACEHOLDER_0_ χαμηλή στον ορίζοντα (__PLACEHOLDER_1_°)",
+  "celestialNoStars": "Δεν υπάρχουν ασυνήθιστα φωτεινά αστέρια ορατά",
+  "celestialStarSingle": "__PLACEHOLDER_0_εξέχουσα σε __PLACEHOLDER_1_° υψόμετρο",
+  "celestialStarsMultiple": "__PLACEHOLDER_0_ Φωτεινά αστέρια ορατά - __PLACEHOLDER_1_",
+  "celestialSummaryDaylight": "Συνθήκες ημέρας",
+  "celestialSummaryDark": "Σκοτεινές συνθήκες ουρανού",
+  "celestialSummaryMoonUp": "φωτισμός φεγγαριού παρούσα",
+  "celestialSummaryMoonDown": "χωρίς φωτισμό φεγγαριού",
+  "celestialSummaryManyObjects": "__PLACEHOLDER_0_ φωτεινά αντικείμενα που θα μπορούσαν να συγχέονται με UFO",
+  "celestialSummarySomeObjects": "__PLACEHOLDER_0_ φωτεινό αντικείμενο(τα) ορατό",
+  "celestialSummaryFewObjects": "ελάχιστα φωτεινά αντικείμενα στον ουρανό",
+  "celestialSkySummary": "Συνθήκες ουρανού: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "planetVenus": "Αφροδίτη",
+  "planetJupiter": "Δίας",
+  "planetSaturn": "Κρόνος",
+  "planetMars": "Άρης",
+  "planetMercury": "Υδράργυρος",
+  "planetUranus": "Ουρανός",
+  "planetNeptune": "Ποσειδώνας",
+  "starSirius": "Σείριος",
+  "starCanopus": "Κανόπους",
+  "starArcturus": "Αρκτούρος",
+  "starVega": "Βέγκα",
+  "starCapella": "Καπέλα",
+  "starRigel": "Ρίγκελ",
+  "starProcyon": "Προκυόνιο",
+  "starBetelgeuse": "Μπετελγκέζε",
+  "moonPhaseNew": "Νέα Σελήνη",
+  "moonPhaseWaxingCrescent": "Ημισέληνος",
+  "moonPhaseFirstQuarter": "Πρώτο τρίμηνο",
+  "moonPhaseWaxingGibbous": "Γυαλιά με κερί",
+  "moonPhaseFull": "Πανσέληνος",
+  "moonPhaseWaningGibbous": "Κεραυνοί Γκίμπους",
+  "moonPhaseThirdQuarter": "Τρίτο τρίμηνο",
+  "moonPhaseWaningCrescent": "Κερδίζοντας ημισέληνος",
+  "planetBelowHorizon": "__PLACEHOLDER_0_ κάτω από τον ορίζοντα",
+  "planetHighOverheadProminent": "__PLACEHOLDER_0_ υψηλά γενικά έξοδα (__PLACEHOLDER_1_°) - πολύ επιφανής",
+  "planetMidSkyProminent": "{planet}__PLACEHOLDER_1_° - επιφανής",
+  "planetMidSky": "__PLACHOLDER_0___PLACHOLDER_1_°",
+  "starVeryBright": "__PLACEHOLDER_0_ πολύ φωτεινό στο {star}°",
+  "starProminent": "__PLACEHOLDER_0_εξέχουσα σε __PLACEHOLDER_1_° υψόμετρο",
+  "starVisible": "__PLACHOLDER_0___PLACHOLDER_1_°",
+  "altitudeShort": "Άλτ",
+  "magnitudeShort": "Μαγ",
+  "satellitesVisibleMightExplain": "__PLACEHOLDER_0_ ορατοί δορυφόροι - μπορεί να εξηγήσει την όραση",
+  "satellitesVisibleUnlikelyExplain": "__PLACEHOLDER_0_ δορυφόροι ορατοί - απίθανο να εξηγήσει την όραση",
+  "noSatellitesVisible": "Δεν φαίνονται δορυφόροι",
+  "aircraftDetectedInRadius": "__PLACEHOLDER_0_ αεροσκάφος ανιχνεύεται εντός __PLACEHOLDER_1_km",
+  "processingAlert": "Επεξεργασία συναγερμού UFO...",
+  "analyzingEnvironment": "Ανάλυση των περιβαλλοντικών συνθηκών",
+  "weatherAnalysis": "Ανάλυση καιρού",
+  "locationAnalysis": "Ανάλυση τοποθεσίας",
+  "aircraftTracking": "Παρακολούθηση αεροσκαφών",
+  "satelliteAnalysis": "Δορυφορική Ανάλυση",
+  "celestialAnalysis": "Ουράνια Ανάλυση",
+  "analyzing": "Ανάλυση {processor}...",
+  "processorWeather": "καιρικές συνθήκες",
+  "processorLocation": "λεπτομέρειες τοποθεσίας",
+  "processorAircraft": "γειτονικά αεροσκάφη",
+  "processorSatellites": "δορυφορικές θέσεις",
+  "processorCelestial": "ουράνια αντικείμενα",
+  "calculatingCelestialData": "Υπολογίζοντας ουράνια δεδομένα...",
+  "sunLabel": "Ήλιος",
+  "moonLabel": "Σελήνη",
+  "planetsVisible": "Πλανήτες: __PLACEHOLDER_0_ ορατοί",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Άστρα",
+  "planetsLabel": "Πλανήτες",
+  "moonWithPhase": "Σελήνη (___PLACEHOLDER_0_)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Κανένας δορυφόρος δεν ήταν ορατός την ακριβή στιγμή της θέασής σας",
+  "satellitesVisibleOverheadAtTime": "Δορυφορικοί δορυφόροι ορατοί από πάνω κατά το χρόνο και την τοποθεσία παρατήρησης",
+  "belowHorizon": "κάτω από τον ορίζοντα",
+  "analysisFailedGeneric": "Αποτυχία ανάλυσης",
+  "unknownWeather": "Άγνωστο",
+  "noWeatherDescription": "Χωρίς περιγραφή",
+  "altitudeAbbrev": "Άλτ",
+  "azimuthAbbrev": "Αζ",
+  "satellitesVisibleNow": "Δορυφόροι (___PLACEHOLDER_0_ ορατοί τώρα)",
+  "sunWithDescription": "Ήλιος: ___PACHOLDER_0__",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Φεγγάρι: ___PACHOLDER_0__",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Άγνωστος πλανήτης",
+  "unknownStar": "Άγνωστο άστρο",
+  "unknownSatellite": "Άγνωστος δορυφόρος",
+  "unknownDirection": "άγνωστη κατεύθυνση",
+  "brightStars": "Φωτεινά αστέρια",
+  "satellites": "Δορυφόροι",
+  "seeAllSatellites": "Δείτε όλους τους δορυφόρους __PLACEHOLDER_0_",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Μέγιστη ανύψωση: __PLACEHOLDER_0_°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Μέγεθος: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Άγνωστο",
+  "altitudeValue": "__PLACEHOLDER_0_° υψόμετρο",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "__PLACEHOLDER_0_° αζιμούθιο",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Δεν υπάρχουν διαθέσιμα ουράνια δεδομένα.",
+  "gettingLocation": "Να πάρει τη θέση σας...",
+  "media": "Μέσα ενημέρωσης",
+  "locationRequired": "Απαιτούμενη τοποθεσία",
+  "confirmingWitness": "Επιβεβαιώνω μάρτυρα...",
+  "chooseYourUsername": "Επιλέξτε το όνομα χρήστη σας",
+  "weatherClear": "Καθαρισμός",
+  "weatherClearSky": "καθαρός ουρανός",
+  "rain": "Βροχή",
+  "snow": "Χιόνι",
+  "thunderstorm": "Καταιγίδα",
+  "drizzle": "Ψιλή",
+  "fog": "Ομίχλη",
+  "fewClouds": "λίγα σύννεφα",
+  "scatteredClouds": "διάσπαρτα σύννεφα",
+  "brokenClouds": "σπασμένα σύννεφα",
+  "overcastClouds": "σύννεφα από συννεφιά",
+  "lightRain": "ελαφρά βροχή",
+  "moderateRain": "μέτρια βροχή",
+  "heavyRain": "βαριά βροχή",
+  "aircraftDetectedCurrentPositions": "__PLACEHOLDER_0_ αεροσκάφος ανιχνεύεται εντός __PLACEHOLDER_1_km (τρέχουσες θέσεις)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "__PLACEHOLDER_0_ dim δορυφόρους ορατοί - απίθανο να εξηγήσει την όραση",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "ΜΟΥΦΟΝ Ημερομηνία αναφοράς",
+  "satelliteNameDirection": "_________________________",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
+}

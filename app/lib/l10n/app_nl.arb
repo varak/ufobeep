@@ -1,0 +1,1148 @@
+{
+  "@@locale": "nl",
+  "appName": "UFOBEEP",
+  "ok": "OK",
+  "cancel": "Annuleren",
+  "close": "Sluiten",
+  "save": "Opslaan",
+  "delete": "Verwijderen",
+  "edit": "Bewerken",
+  "retry": "Opnieuw proberen",
+  "yes": "Ja",
+  "no": "Nee",
+  "back": "Terug",
+  "next": "Volgende",
+  "done": "Klaar",
+  "loading": "Laden..",
+  "processing": "Verwerken..",
+  "errorGeneric": "Er ging iets mis.",
+  "networkError": "Netwerkfout. Controleer je verbinding.",
+  "permissionsRequired": "Toestemmingen vereist",
+  "learnMore": "Meer informatie",
+  "welcomeTitle": "Welkom bij UFObeep",
+  "welcomeSubtitle": "Real-time UFO waarschuwingen in uw buurt",
+  "signIn": "Aanmelden",
+  "signOut": "Afmelden",
+  "continueAsGuest": "Doorgaan als gast",
+  "enterUsername": "Gebruikersnaam invoeren",
+  "username": "Gebruikersnaam",
+  "usernameUpdated": "Gebruikersnaam bijgewerkt",
+  "profile": "Profiel",
+  "settings": "Instellingen",
+  "tabAlerts": "Waarschuwingen",
+  "tabBeep": "Piep",
+  "tabChat": "Gesprek",
+  "tabMap": "Kaart",
+  "tabSettings": "Instellingen",
+  "alertsTitle": "Waarschuwingen nabijgelegen",
+  "noAlerts": "Nog geen waarschuwingen in de buurt.",
+  "pullToRefresh": "Trek om te vernieuwen",
+  "alertDistance": "{distance}_ weg",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "__PLAATSHOLDER_0__°",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
+  "viewAlert": "Alert weergeven",
+  "viewOnMap": "Bekijk op kaart",
+  "iSeeItToo": "Ik zie het ook",
+  "confirmWitnessed": "Bevestigd dat je getuige was van deze waarneming?",
+  "witnessConfirmed": "Bedankt, uw bevestiging is geplaatst.",
+  "createBeepTitle": "Stuur een pieper",
+  "beepExplain": "Neem wat je ziet en waarschuw de bewakers in de buurt.",
+  "capturePhoto": "Foto vastleggen",
+  "captureVideo": "Video vastleggen",
+  "pickFromGallery": "Kies uit galerij",
+  "descriptionHint": "Beschrijf wat je ziet in de lucht..",
+  "submitBeep": "Beep sturen",
+  "beepSent": "Piep verzonden",
+  "beepSentWithUrl": "Beep succesvol verzonden",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadingMedia": "Media uploaden..",
+  "includeLocation": "Plaats",
+  "includeTimestamp": "Tijdstempel invoegen",
+  "beepFailed": "Kon Beep niet sturen.",
+  "mediaProcessing": "Media verwerken..",
+  "cameraPermissionTitle": "Cameratoegang nodig",
+  "cameraPermissionBody": "Grant camera toegang tot UFO foto's en video's vastleggen.",
+  "locationPermissionTitle": "Locatie Toestemming vereist",
+  "locationPermissionBody": "Wij gebruiken uw locatie om waarschuwingen in de buurt te versturen en te ontvangen.",
+  "microphonePermissionTitle": "Microfoontoegang nodig",
+  "microphonePermissionBody": "Geef microfoon toegang voor video-opname met audio.",
+  "openSettings": "Instellingen openen",
+  "alertDetailTitle": "Waarnemingsdetails",
+  "reportedBy": "Gerapporteerd door {username}",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Gerapporteerd __PLAATSHOLDER_0__",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "__PLAATSHOLDER_0___",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Richting naar object: __PLAATSHOLDER_0__°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
+  "openCompass": "Open kompas",
+  "openAR": "Open AR-overlay",
+  "openChat": "Gesprek openen",
+  "commentsTitle": "Opmerkingen",
+  "addComment": "Een commentaar toevoegen..",
+  "send": "Verzenden",
+  "commentPosted": "Commentaar geplaatst",
+  "autoFollowEnabled": "Je volgt nu dit alarm.",
+  "noCommentsYet": "Nog geen commentaar. Wees de eerste om te reageren!",
+  "newCommentNotification": "Nieuw commentaar op een waarneming die je volgt.",
+  "mapTitle": "Live map",
+  "compassTitle": "Kompas",
+  "compassSettings": "Compass-instellingen",
+  "compassMode": "Kompasmodus",
+  "compassStandardMode": "Standaardmodus",
+  "compassPilotMode": "Pilootmodus",
+  "compassStandardDescription": "Basisrichting en navigatie",
+  "compassPilotDescription": "Geavanceerde navigatie met ETA en vectoring",
+  "pointingTo": "{direction}",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
+  "calibratingCompass": "Kalibreren kompas..",
+  "openAROverlay": "Open AR-overlay",
+  "pushTitleAlertNearby": "UFO-alarm nabij u",
+  "pushBodyAlertNearby": "Er werd een nieuwe waarneming gemeld.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
+  "pushTitleComment": "Nieuwe opmerking",
+  "pushBodyComment": "Iemand zei iets over een waarneming die je volgt.",
+  "pushTitleWitness": "Getuigenbevestiging",
+  "temperature": "Temperatuur",
+  "pushBodyWitness": "Een gebruiker bevestigde dat ze hetzelfde object zien.",
+  "weather": "Weer",
+  "cloudCover": "Cloud cover: __PLAATSHOLDER_0___%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Wind: __PLAATSHOLDER_0__ __PLAATSHOLDER_1__",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
+  "nearbyAircraft": "Luchtvaartuigen in de buurt",
+  "noAircraft": "Geen vliegtuig in de buurt",
+  "loadingContext": "Milieucontext wordt geladen..",
+  "settingsTitle": "Instellingen",
+  "notifications": "Kennisgevingen",
+  "enablePushNotifications": "Notificaties opvragen voor toekomstige reacties",
+  "quietHours": "Rustige uren",
+  "quietHoursDesc": "Stiltemeldingen tussen geselecteerde uren.",
+  "quietHoursEnabled": "Rustige uren inschakelen",
+  "quietHoursFrom": "Van",
+  "quietHoursUntil": "Tot",
+  "quietHoursDefaultTime": "Standaard rustige uren",
+  "emergencyOverride": "Noodoverschrijving",
+  "emergencyOverrideDesc": "Noodoproepen tijdens stille uren toestaan",
+  "dndMode": "Niet storen",
+  "dndUntil": "Niet storen tot",
+  "dndEnabled": "DND ingeschakeld tot {time}",
+  "dndDisabled": "DND uitgeschakeld",
+  "quietHoursActive": "Rustige uren actief",
+  "quietHoursScheduled": "Rustige uren: __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
+  "pushNotificationUfoAlert": "UFO Waarschuwing",
+  "pushNotificationAnomalyAlert": "Anomaly Alert",
+  "pushNotificationNearby": "In de buurt",
+  "pushNotificationInYourArea": "in uw gebied. Tik op details weergeven.",
+  "pushNotificationCommented": "{username}commentaar",
+  "pushNotificationCommentedOn": "__PLAATSHOLDER_0__ commentaar op __PLAATSHOLDER_1__",
+  "pushNotificationGeneric": "UFOBEEP",
+  "pushNotificationNewSighting": "Nieuwe waarnemingen in de buurt",
+  "language": "Taal",
+  "chooseLanguage": "Taal kiezen",
+  "units": "Eenheden",
+  "unitsImperial": "Keizerlijk (mi, mph)",
+  "unitsMetric": "Metrisch (km, km/h)",
+  "privacyPolicy": "Privacybeleid",
+  "termsOfUse": "Gebruiksvoorwaarden",
+  "errorNoLocation": "Locatie is niet beschikbaar. Probeer het nog eens buiten met helder uitzicht op de hemel.",
+  "errorNoCamera": "Camera niet beschikbaar op dit apparaat.",
+  "errorUploadFailed": "Uploaden mislukt. Probeer het nog eens.",
+  "errorPermissionDenied": "Toestemming geweigerd.",
+  "errorInvalidUsername": "Die gebruikersnaam is niet beschikbaar.",
+  "nothingToShow": "Nog niets te zien.",
+  "storeShortDesc": "Instant UFO waarschuwingen in uw buurt. Vangen, bevestigen en praten in real time.",
+  "storeLongDesc": "UFObeep stuurt real-time waarschuwingen als iemand een UFO in de buurt ziet. Foto's en video's vastleggen, waarnemingen bevestigen met een tik, richting en afstand bekijken en chatten met collega-skywatchers.",
+  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
+  "noAlertsFound": "Geen overeenkomstige waarschuwingen",
+  "alertsFilterHelp": "Probeer uw filters aan te passen om meer resultaten te zien",
+  "verified": "Geverifieerd",
+  "beepOnly": "Alleen piepen",
+  "reportOnly": "Alleen tekst",
+  "videoOnly": "Alleen video",
+  "imageOnly": "Alleen afbeelding",
+  "mediaOnly": "Alleen media",
+  "timeJustNow": "net",
+  "timeDaysAgo": "__PLAATSHOLDER_0__ dagen geleden",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "__PLAATSHOLDER_0___ uren geleden",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "__PLAATSHOLDER_0___ minuten geleden",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "loadMoreAlerts": "Meer waarschuwingen laden",
+  "toggleMufonTooltip": "MUFON waarnemingen aan/uit",
+  "showMufonData": "MUFON-gegevens tonen",
+  "hideMufonData": "MUFON-gegevens verbergen",
+  "showingUfoBeepOnly": "Alleen UFObeep-rapporten tonen",
+  "showingAllReports": "Alle rapporten inclusief MUFON-database tonen",
+  "filteredSuffix": "gefilterd",
+  "detailsTitle": "Gegevens",
+  "mufonCase": "MUFON Zaak",
+  "mufonSighting": "MUFON-waarnemingsrapport",
+  "mufonLightSighting": "MUFON Lichtzichtrapport",
+  "mufonSphereSighting": "MUFON Sphere Sighting Report",
+  "mufonDiscSighting": "MUFON Schijfzichtrapport",
+  "mufonTriangleSighting": "MUFON Driehoekverslag",
+  "mufonCigarSighting": "MUFON Cigar Sighting Report",
+  "mufonOvalSighting": "MUFON Oval Sighting Report",
+  "mufonRectangleSighting": "MUFON Rechthoekig overzichtsrapport",
+  "mufonCylinderSighting": "MUFON-cilinderzichtrapport",
+  "mufonBoomerangSighting": "MUFON Boomerang Sighting Report",
+  "mufonStarlikeSighting": "MUFON Starlike Sighting Report",
+  "mufonCaseDetailsTitle": "MUFON-geval #__PLAATSHOLDER_0_ Details",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "sightingDate": "Datum van waarneming",
+  "mufonDatabaseEntryDate": "Datum ingevoerd in MUFON Database",
+  "databaseEntry": "Databaseinvoer",
+  "shareLink": "Link delen",
+  "linkCopied": "Koppeling naar klembord",
+  "locationLabel": "Locatie:",
+  "distanceLabel": "Afstand",
+  "timeLabel": "Tijd:",
+  "reportedByLabel": "Gerapporteerd door",
+  "unknownLocation": "Onbekende locatie",
+  "locationUnknown": "Locatie onbekend",
+  "witnessesLabel": "Getuigen",
+  "witnessesCountMessage": "De mensen hebben deze waarneming bevestigd",
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "photoAnalysisTitle": "Fotoanalyse",
+  "mediaItemsProcessed": "Analyse: __PLAATSHOLDER_0__ mediabestand(s) verwerkt",
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "addMoreMedia": "Meer toevoegen",
+  "addMedia": "Media toevoegen",
+  "retakePhoto": "Foto hernemen",
+  "retakeVideo": "Video opnieuw opnemen",
+  "camera": "Camera",
+  "gallery": "Galerij",
+  "basicSettings": "Basisinstellingen",
+  "appSettings": "Appinstellingen",
+  "timeFormat": "Tijdformaat",
+  "timeFormat24Hour": "24 uur (14:30)",
+  "timeFormat12Hour": "12 uur (2.30 uur)",
+  "timeFormatDesc": "Weergavetijd in 24-uurs- of 12-uursformaat",
+  "alertRange": "Waarschuwingsbereik",
+  "manageNotificationsDesc": "Abonnementeninstellingen beheren",
+  "permissionsTitle": "Rechten",
+  "permissionLocation": "Locatie",
+  "permissionCamera": "Camera",
+  "permissionNotifications": "Kennisgevingen",
+  "permissionPhotos": "Foto's",
+  "permissionGranted": "Toegestaan",
+  "permissionNotGranted": "Niet toegekend",
+  "permissionGrant": "Subsidie",
+  "generateUsername": "Nieuwe gebruikersnaam aanmaken",
+  "adminTools": "Beheergereedschappen",
+  "openAdminPanel": "Beheerpaneel openen",
+  "webAdminInterface": "Webbeheerderinterface",
+  "adminBetaNotice": "Beta bouwt alleen. Admin tools voor het testen van nabijheid waarschuwingen, push meldingen, en systeemdiagnostiek.",
+  "whatDoYouSee": "Wat zie je?",
+  "ufo": "UFO",
+  "sighting": "Waarneming",
+  "ufoSighting": "UFOPEEP UFO Waarschuwing",
+  "envAnalysisTitle": "Milieuanalyse",
+  "envAnalysisPending": "Analyse in afwachting",
+  "envAnalysisPendingDesc": "Milieugegevens zullen beschikbaar zijn zodra de verwerking begint.",
+  "unknownAircraft": "Onbekend vliegtuig",
+  "moreAircraft": "meer vliegtuigen",
+  "showLess": "Minder tonen",
+  "premiumImageryTitle": "Premium satelliet Afbeelding",
+  "premiumImagerySubtitle": "Handelsbeelden met hoge resolutie",
+  "sightingTypeLabel": "Type",
+  "ufoTypeSphere": "Bol",
+  "ufoTypeTriangle": "Driehoek",
+  "ufoTypeDisk": "Schijf",
+  "ufoTypeLight": "Licht",
+  "ufoTypeFireball": "Vuurbal",
+  "ufoTypeCylinder": "Cilinder",
+  "ufoTypeCigar": "Sigaren",
+  "ufoTypeRectangle": "Rechthoek",
+  "ufoTypeFormation": "Vorming",
+  "ufoTypeUnknown": "Onbekend",
+  "ufoTypeBoomerang": "Boomerang",
+  "ufoTypeDiamond": "Diamant",
+  "ufoTypeOval": "Oval",
+  "ufoTypeCone": "Cone",
+  "ufoTypeCross": "Kruis",
+  "ufoTypeDumbbell": "Dumbbell",
+  "ufoTypeTeardrop": "Teardrop",
+  "ufoTypeTicTac": "Tic Tac",
+  "ufoTypeBullet": "Kogel",
+  "ufoTypeSaturn": "Saturnus",
+  "ufoTypeStarLike": "Sterrenachtig",
+  "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "driehoek",
+  "shapeDisc": "schijf",
+  "shapeDisk": "schijf",
+  "shapeSphere": "bol",
+  "shapeCigar": "sigaren",
+  "shapeLight": "licht",
+  "shapeBoomerang": "boemerang",
+  "shapeDiamond": "diamant",
+  "shapeRectangle": "rechthoek",
+  "shapeOval": "ovaal",
+  "shapeCone": "kegel",
+  "shapeCross": "kruis",
+  "shapeCylinder": "cilinder",
+  "shapeDumbbell": "halter",
+  "shapeTeardrop": "traanwortel",
+  "shapeTicTac": "tic-tac",
+  "shapeBullet": "kogel",
+  "shapeSaturn": "saturnus",
+  "shapeStarlike": "sterachtig",
+  "shapeBlimp": "zeppelin",
+  "shapeFireball": "vuurbal",
+  "shapeFormation": "vorming",
+  "shapeUnknown": "onbekend",
+  "actionsTitle": "Acties",
+  "addPhotosAndVideos": "Foto's en video's toevoegen",
+  "attachMedia": "Media toevoegen",
+  "addCommentOptional": "Een opmerking toevoegen (facultatief)",
+  "describeNewMedia": "Beschrijf de nieuwe media...",
+  "filesSelected": "geselecteerde bestanden",
+  "selectMediaToAttach": "Selecteer foto's of video's om bij te voegen",
+  "newMediaUploaded": "Nieuwe media geüpload",
+  "mediaFilesUploaded": "nieuwe mediabestanden geüpload",
+  "filesAttachedSuccessfully": "bestanden met succes bijgevoegd",
+  "howToReportToMufon": "Hoe rapporteren aan MUFON",
+  "reportToMufon": "Verslag aan MUFON",
+  "whyReportToMufon": "Waarom verslag uitbrengen aan MUFON?",
+  "openMufonReport": "MUFON openen Verslag",
+  "confirmedWitness": "Je hebt deze waarneming bevestigd",
+  "witnessesHaveConfirmed": "Mensen hebben deze waarneming bevestigd",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "aircraftTrackingTitle": "Tracking van luchtvaartuigen",
+  "weatherConditionsTitle": "Weersomstandigheden",
+  "noSatellitePasses": "Geen zichtbare satellietpassen gevonden",
+  "contentAnalysisTitle": "Inhoudsanalyse",
+  "contentSafe": "Inhoud is veilig",
+  "contentFlagged": "Inhoud gemarkeerd voor beoordeling",
+  "confidenceLabel": "Vertrouwen",
+  "methodLabel": "Methode",
+  "premiumImageryAccessOnly": "Premium satellietbeelden zijn alleen beschikbaar voor:",
+  "premiumAccessCreators": "Waarschuwingsmakers",
+  "premiumAccessWitnesses": "Bevestigde getuigen binnen zichtbereik",
+  "comingSoon": "Binnenkort",
+  "directionDistanceTitle": "Richting en afstand",
+  "mufonCaseTitle": "MUFON Zaak #__PLAATSHOLDER_0__",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "satellitePassesTitle": "Satellietpassen",
+  "satellitePassExplanation": "Zichtbare satelliet passeert tijdens de waarneming. Veel UFO rapporten zijn eigenlijk satellieten of ruimte puin.",
+  "followingAlert": "Na waarschuwing - je krijgt commentaar meldingen",
+  "unfollowedAlert": "Ongevolgd alarm - geen commentaarmeldingen meer",
+  "alertFollowError": "Fout bij bijwerken van volgstatus",
+  "notificationChannelAlerts": "UFOBEEP-waarschuwingen",
+  "notificationChannelAlertsDesc": "Kennisgevingen voor UFO-pieps en nabijheidswaarschuwingen",
+  "notificationSightingTitle": "UFOPEEP UFO Waarschuwing",
+  "notificationSightingUrgent": "UFO UFO UFO Waarschuwing",
+  "notificationSightingEmergency": "Ufobeep UFO Waarschuwing",
+  "notificationSightingBody": "__PLAATSHOLDER_0__ in de buurt __PLAATSHOLDER_1__",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "{username}commentaar",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Nieuwe waarneming",
+  "notificationWitnessTextMultiple": "Getuigen",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Ingetrokken",
+  "notificationDistance": "{distance}_ weg",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "Onbekend",
+  "report": "rapport",
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Recente UFO Pieps",
+  "recentUfoBeepsSubtitle": "Live UFO waarnemingen van onze wereldwijde gemeenschap",
+  "recentUfoBeepsDescription": "Deze feed combineert real-time UFObeep \"pieps\" van onze mobiele app gebruikers met historische rapporten uit de MUFON database.",
+  "loadingBeeps": "Laden van recente piepers...",
+  "noBeepsAvailable": "Er zijn momenteel geen piepers beschikbaar.",
+  "anomalyReported": "Anomalie gemeld",
+  "copyShortLink": "Korte verwijzing kopiëren",
+  "shareAlert": "Alert delen",
+  "ufoSightingAlert": "UFO Waarnemingsalarm",
+  "previousPage": "Vorige",
+  "nextPage": "Volgende",
+  "pageOf": "Pagina __PLAATSHOLDER_0__ van __PLAATSHOLDER_1__ (__PLAATSHOLDER_2__ totale piepers)",
+  "firstPage": "Eerste",
+  "lastPage": "Laatste",
+  "jumpToPage": "Naar pagina springen",
+  "heroTagline": "Ontvang waarschuwingen wanneer naar buiten te gaan en op te zoeken",
+  "heroDescription": "Mis nooit een andere UFO waarneming in uw gebied",
+  "downloadApp": "Download App",
+  "viewAllBeeps": "Bekijk alle piepers",
+  "sightingsMap": "Kaart van de waarneming",
+  "globalSightingNetwork": "Wereldwijd waarnemingsnetwerk",
+  "howItWorks": "Hoe het werkt",
+  "backToBeeps": "Terug naar Beeps",
+  "loadingDetails": "Bezig met laden van piepgegevens...",
+  "details": "Gegevens",
+  "location": "Locatie",
+  "timeAgo": "geleden",
+  "timeMinutes": "m",
+  "timeHours": "h",
+  "timeDays": "d",
+  "distanceKm": "km",
+  "distanceMiles": "mijl",
+  "distanceNearby": "dichtbij",
+  "ufobeepWitnesses": "Getuigen",
+  "ufobeepConfirmations": "Bevestigingen",
+  "ufobeepAlertLevel": "Waarschuwingsniveau",
+  "ufobeepReportType": "UFObeep-rapport",
+  "mufonAttribution": "MUFON Databaserapport",
+  "mufonCaseNumber": "Zaak #",
+  "mufonGenericTitle": "MUFON-waarnemingsrapport",
+  "mufonSphere": "Bol",
+  "mufonLight": "Licht",
+  "mufonDisk": "Schijf",
+  "mufonTriangle": "Driehoek",
+  "mufonCigar": "Sigaren",
+  "mufonOval": "Oval",
+  "mufonCylinder": "Cilinder",
+  "mufonRectangle": "Rechthoek",
+  "mufonDiamond": "Diamant",
+  "mufonFireball": "Vuurbal",
+  "mufonFlash": "Flits",
+  "mufonFormation": "Vorming",
+  "mufonChanging": "Veranderen",
+  "mufonChevron": "Chevron",
+  "mufonCone": "Cone",
+  "mufonCross": "Kruis",
+  "mufonEgg": "Eieren",
+  "mufonOther": "Object",
+  "mufonUnknown": "Onbekend object",
+  "mufonTitleFormat": "MUFON __PLAATSHOLDER_0__ Verslag",
+  "nuforcAttribution": "NUFORC Databaserapport",
+  "nuforcCaseNumber": "Zaak #",
+  "nuforcGenericTitle": "NUFORC Waarnemingsrapport",
+  "mediaImageNotFound": "Afbeelding niet gevonden",
+  "mediaPlayVideo": "Video afspelen",
+  "mediaViewImage": "Afbeelding bekijken",
+  "mediaCount": "{count} afbeeldingen",
+  "mediaCountSingle": "1 afbeelding",
+  "mediaMoreImages": "Meer",
+  "errorNotFound": "Piep niet gevonden",
+  "errorLoadError": "Kon piepgegevens niet laden",
+  "shareYourThoughts": "Deel je gedachten over deze waarneming...",
+  "postComment": "Postcommentaar",
+  "loggedInAs": "Aangemeld als",
+  "logout": "Afmelden",
+  "notFollowing": "Niet volgen",
+  "follow": "Volgen",
+  "navRecentBeeps": "Recente piepers",
+  "navMap": "Kaart",
+  "navDownloadApp": "App downloaden",
+  "alertLevel": "Waarschuwingsniveau",
+  "witnesses": "Getuigen",
+  "confirmations": "Bevestigingen",
+  "reporterLabel": "Gerapporteerd door gebruiker",
+  "coordinatesLabel": "Coördinaten",
+  "eventTime": "Gebeurtenistijd",
+  "reportedTime": "Gerapporteerde tijd",
+  "addedToUfobeep": "Toegevoegd aan UFObeep",
+  "mufonDatabaseReport": "MUFON Zaaknummer:",
+  "copyShortLinkTitle": "Verwijzing naar klembord kopiëren",
+  "imageNotFound": "Afbeelding niet gevonden",
+  "ufoSightingAlt": "UFO Beep UFO alarm",
+  "celestialDataTitle": "Hemelse objecten",
+  "visiblePlanets": "Zichtbare planeten",
+  "locationDataTitle": "Informatie over de locatie",
+  "timezone": "Tijdzone",
+  "coordinates": "Coördinaten",
+  "processingSummaryTitle": "Samenvatting van de verwerking",
+  "processingTime": "Verwerkingstijd",
+  "successful": "Succesvol",
+  "failed": "Mislukt",
+  "locationEnrichmentTitle": "Locatiedetails",
+  "aircraftDataSource": "Gegevensbron",
+  "noAircraftDetected": "Geen vliegtuig gedetecteerd",
+  "sightingReport": "Waarnemingsrapport",
+  "ufoAlert": "UFO Waarschuwing",
+  "alert": "Waarschuwing",
+  "notificationTickerUfoAlert": "UFO Alert - Nieuwe Waarneming nabij",
+  "notificationTickerComment": "Nieuwe reactie op UFO-alarm",
+  "weatherConditions": "Weersomstandigheden",
+  "visibility": "Zichtbaarheid",
+  "humidity": "Vochtigheid",
+  "pressure": "Druk",
+  "locationDetails": "Locatiedetails",
+  "city": "Stad",
+  "state": "Staat",
+  "country": "Land",
+  "satelliteActivity": "Satellietactiviteit",
+  "satellitesVisibleOverhead": "Satellieten zichtbaar overhead op waarnemingstijd en locatie",
+  "dataSource": "Gegevensbron",
+  "blackskyImagery": "BlackSky Imagery",
+  "resolution": "Resolutie",
+  "groundResolution": "35cm grondresolutie",
+  "delivery": "Levering",
+  "averageDelivery": "gemiddeld 90 minuten",
+  "cost": "Kosten",
+  "skyfiSatelliteImagery": "SkyFi Satellite Afbeelding",
+  "region": "Gebieden",
+  "remoteArea": "Gebied op afstand",
+  "startingPrice": "Startprijs",
+  "coverage": "Dekking",
+  "confidenceCoverage": "95% betrouwbaarheid",
+  "status": "Status",
+  "shareThoughts": "Deel je gedachten over deze waarneming...",
+  "postCommand": "Postopdracht",
+  "clouds": "Wolken",
+  "windLabel": "Wind",
+  "filterAlerts": "Filterwaarschuwingen",
+  "alertSource": "Waarschuwingsbron",
+  "ufobeepOnly": "UFObeep alleen",
+  "ufobeepOnlyDescription": "Alleen originele UFObeep-rapporten tonen (exclusief MUFON-database)",
+  "alertDistanceRange": "Waarschuwingsafstand",
+  "showAllAlerts": "Alle waarschuwingen tonen",
+  "showAll": "Alles tonen",
+  "distanceSliderDescription": "Sleep om aan te passen hoe ver u alerts wilt zien. Begin vanaf de zichtafstand tot alle waarschuwingen, ongeacht de afstand.",
+  "applyFilters": "Filters toepassen",
+  "notificationRange": "Notificatiebereik",
+  "notificationRangeDescription": "Krijg push waarschuwingen voor waarnemingen binnen deze afstand",
+  "viewingRange": "Beeldbereik",
+  "viewingRangeDescription": "Toon waarnemingen binnen deze afstand bij het surfen",
+  "weatherVisibility": "Weerzicht (~10km)",
+  "localArea": "Plaatselijk gebied (25 km)",
+  "regional": "Regionaal",
+  "pushNotifications": "Aanmeldingen pushen",
+  "alertBrowsing": "Alert bladeren",
+  "pushAlertsWithinDistance": "Notificatieberichten binnen dit bereik ophalen",
+  "showAlertsWhenBrowsing": "Filter wat je ziet in de lijst",
+  "heroMainTagline": "Haal een piep op je telefoon als UFO's in de buurt worden gezien",
+  "heroSecondaryTagline": "Zoek uit wanneer en waar naar de hemel te kijken",
+  "sourceFilters": "Bron",
+  "sourceFiltersDescription": "Kies welke rapporten in uw feed verschijnen",
+  "ufobeepAndMufon": "UFOBEEP + MUFON",
+  "ufobeepOnlySource": "UFObeep alleen",
+  "mufonOnlySource": "Uitsluitend MUFON",
+  "browseFilters": "Bladeren",
+  "browseFiltersDescription": "Hoe waarschuwingen te bekijken en te sorteren",
+  "sortByNewest": "Nieuwste",
+  "sortByNearest": "Dichtstbijzijnde",
+  "sortBy": "Sorteren op",
+  "pushAlertsTitle": "Waarschuwingen indrukken",
+  "pushAlertsDescription": "Wat pings je telefoon",
+  "alertRadius": "Waarschuw Straal",
+  "mufonNoPushInfo": "MUFON rapporten worden 's nachts geïmporteerd en niet push waarschuwingen veroorzaken",
+  "privacyData": "Privacy & gegevens",
+  "privacyPolicyDesc": "Hoe wij uw gegevens beschermen en gebruiken",
+  "termsOfService": "Servicevoorwaarden",
+  "termsOfServiceDesc": "Juridische voorwaarden",
+  "locationTracking": "Locatie volgen",
+  "locationTrackingDesc": "Achtergrondlocatie voor nabijheidswaarschuwingen",
+  "locationTrackingTitle": "Achtergrondlocatie volgen",
+  "locationTrackingExplanation": "UFObeep bewaakt uw locatie op de achtergrond om u nabijheid waarschuwingen te sturen wanneer UFO waarnemingen gebeuren in de buurt van uw huidige locatie, zelfs als je weg van huis.",
+  "locationTrackingBattery": "Gebruikt intelligente geofencing voor <3% batterij impact",
+  "backgroundLocationTracking": "Achtergrond inschakelen Tracking",
+  "locationTrackingActive": "Waarnemingslocatie voor nabijheidswaarschuwingen",
+  "locationTrackingInactive": "Locatie volgen is uitgeschakeld",
+  "locationTrackingDisabledWarning": "U ontvangt geen nabijheidswaarschuwingen wanneer u naar nieuwe locaties verhuist",
+  "trackingStatus": "Trackingstatus",
+  "monitoringStatus": "Toezicht",
+  "active": "Actief",
+  "inactive": "Inactief",
+  "lastKnownLocation": "Laatste bekende locatie",
+  "lastLocationUpdate": "Laatste update",
+  "movementThreshold": "Bewegingsdrempel",
+  "updateFrequency": "Frequentie bijwerken",
+  "batteryImpact": "Inslag van de batterij",
+  "dataPrivacy": "Gegevensbescherming",
+  "locationPermissionExplanation": "UFObeep heeft 'Always Allow' location permissie nodig om uw beweging te monitoren en nabijheidswaarschuwingen te verzenden wanneer u op nieuwe locaties bent.",
+  "benefitsTitle": "Voordelen",
+  "locationTrackingBenefits": "• Ontvang UFO waarschuwingen overal waar u reist\n• Automatische locatie updates\n• Geen handmatige installatie vereist",
+  "allowLocationAccess": "Locatietoegang toestaan",
+  "locationPermissionRequired": "Locatie toestemming is vereist voor achtergrond tracking",
+  "locationTrackingEnabled": "Achtergrondlocatie traceren ingeschakeld",
+  "locationTrackingDisabled": "Achtergrondlocatie volgen uitgeschakeld",
+  "justNow": "Net",
+  "minutesAgo": "__PLAATSHOLDER_0___ minuten geleden",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "__PLAATSHOLDER_0___ uren geleden",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "__PLAATSHOLDER_0__ dagen geleden",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Gegevensbeheer",
+  "dataManagementDesc": "Uw accountgegevens exporteren of verwijderen",
+  "splashTagline": "Signaleringen in realtime",
+  "splashStartingUp": "Starten...",
+  "splashInitializationFailed": "Initialisatie mislukt",
+  "splashInitializationFailedTitle": "Initialisatie mislukt",
+  "splashInitializationError": "De app kon niet goed initialiseren:",
+  "splashRetry": "Opnieuw proberen",
+  "splashContinue": "Doorgaan",
+  "splashInitializing": "Initialiseren...",
+  "signInWelcome": "Welkom!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Aanmelden mislukt: __PLAATSHOLDER_0___",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Vul uw e-mailadres in",
+  "signInPleaseEnterValidEmail": "Vul een geldig e-mailadres in",
+  "signInMagicLinkSent": "Magische link verzonden! Controleer uw e-mail en klik op de link om u aan te melden.",
+  "signInMagicLinkFailed": "Kon magische verwijzing niet versturen. Probeer het nog eens.",
+  "signInAllDataCleared": "Alle gegevens zijn gewist",
+  "signInSubtitle": "Real-time UFO waarnemingen en MUFON rapporten",
+  "signInGoogleLoading": "Aanmelden...",
+  "signInContinueWithGoogle": "Doorgaan met Google",
+  "signInOr": "of",
+  "signInWithEmail": "Aanmelden met e-mail",
+  "signInEmailDescription": "We sturen je een beveiligde link om je aan te melden",
+  "signInEmailAddress": "E-mailadres",
+  "signInEmailPlaceholder": "your@email.com",
+  "signInTryAgainIn": "Probeer opnieuw in __PLACEHOLDER_0_s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Verzenden...",
+  "signInSendMagicLink": "Magische koppeling versturen",
+  "signInCheckEmail": "Check je e-mail! De verbinding verloopt over 15 minuten.",
+  "signInSecureAuth": "Veilige authenticatie",
+  "signInSecureAuthDescription": "Gebruik Google Sign-In voor directe toegang, of e-mail magische links die vervallen in 15 minuten.",
+  "signInClearAllDataDebug": "Alle gegevens wissen (debug)",
+  "emailAuthFailedToSend": "Versturen van e-mail is mislukt",
+  "emailAuthFailedToSendTryAgain": "Versturen van e-mail is mislukt. Probeer het nog eens.",
+  "emailAuthInvalidEmail": "Ongeldig e-mailadres. Controleer het formaat.",
+  "emailAuthUserNotFound": "Geen account gevonden met dit e-mailadres.",
+  "emailAuthTooManyRequests": "Te veel pogingen. Probeer het later nog eens.",
+  "emailAuthOperationNotAllowed": "Aanmelden van e-maillink is niet ingeschakeld.",
+  "emailAuthQuotaExceeded": "E-mailquota overschreden. Probeer het morgen opnieuw.",
+  "emailAuthVerificationFailed": "E-mailverificatie mislukt. Probeer het nog eens.",
+  "emailAuthTitle": "E-mailverificatie",
+  "emailAuthVerifyYourEmail": "Uw e-mail verifiëren",
+  "emailAuthDescription": "Voeg uw e-mailadres toe voor accountherstel en beveiliging. We sturen je een beveiligde link.",
+  "emailAuthEmailAddress": "E-mailadres",
+  "emailAuthEmailPlaceholder": "your.email@example.com",
+  "emailAuthPleaseEnterEmail": "Vul uw e-mailadres in",
+  "emailAuthPleaseEnterValidEmail": "Vul een geldig e-mailadres in",
+  "emailAuthCheckEmailToContinue": "Controleer uw e-mail en tik op de verificatie-link om verder te gaan.",
+  "emailAuthResendEmail": "E-mail opnieuw verzenden",
+  "emailAuthSendVerificationEmail": "Verificatie verzenden E-mail",
+  "emailAuthHowItWorks": "Hoe e-mailverificatie werkt",
+  "emailAuthHowItWorksSteps": "1. Wij sturen u een veilige inlog link\n2. Controleer uw e-mail en tik op de link\n3. Uw e-mail wordt automatisch geverifieerd\n4. Geen wachtwoorden nodig!",
+  "emailAuthSecurityNotice": "E-mailverificatie helpt uw account veilig te stellen en maakt accountherstel mogelijk als u de toegang tot uw apparaat verliest.",
+  "phoneAuthFailedToSendCode": "Kon verificatiecode niet versturen. Probeer het nog eens.",
+  "phoneAuthInvalidCodeTryAgain": "Ongeldige verificatiecode. Probeer het nog eens.",
+  "phoneAuthPhoneVerified": "Telefoonnummer geverifieerd: __PLAATSHOLDER_0___",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Telefoonverificatie mislukt. Probeer het nog eens.",
+  "phoneAuthCodeResent": "Verificatiecode",
+  "phoneAuthFailedToResendCode": "Hersturen van code is mislukt. Probeer het nog eens.",
+  "phoneAuthInvalidPhoneNumber": "Ongeldig telefoonnummer. Controleer het formaat.",
+  "phoneAuthTooManyRequests": "Te veel pogingen. Probeer het later nog eens.",
+  "phoneAuthInvalidVerificationCode": "Ongeldige verificatiecode. Controleer en probeer het opnieuw.",
+  "phoneAuthSessionExpired": "De verificatiesessie is verlopen. Vraag een nieuwe code aan.",
+  "phoneAuthSmsQuotaExceeded": "SMS-quotum overschreden. Probeer het morgen opnieuw.",
+  "phoneAuthCredentialAlreadyInUse": "Dit telefoonnummer is al gekoppeld aan een ander account.",
+  "phoneAuthVerificationFailedGeneric": "Verificatie mislukt. Probeer het nog eens.",
+  "phoneAuthTitle": "Telefooncontrole",
+  "phoneAuthVerifyYourPhone": "Uw telefoon controleren",
+  "phoneAuthEnterVerificationCode": "Verificatie invoeren Rubriek",
+  "phoneAuthAddPhoneForSecurity": "Voeg uw telefoonnummer voor account herstel en beveiliging",
+  "phoneAuthEnterSixDigitCode": "Voer de 6-cijferige code in die naar {phoneNumber} is verzonden",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Telefoonnummer",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Voer uw telefoonnummer in",
+  "phoneAuthPleaseEnterValidPhone": "Voer een geldig telefoonnummer in",
+  "phoneAuthVerificationCode": "Verificatiecode",
+  "phoneAuthPleaseEnterSixDigitCode": "Voer de 6-cijferige code in",
+  "phoneAuthResendCode": "Code opnieuw verzenden",
+  "phoneAuthSendVerificationCode": "Verificatie verzenden Rubriek",
+  "phoneAuthVerifyCode": "Code verifiëren",
+  "phoneAuthChangePhoneNumber": "Telefoonnummer wijzigen",
+  "phoneAuthSmsNotice": "We sturen je een verificatiecode via SMS. Standaard berichtentarieven kunnen van toepassing zijn.",
+  "phoneAuthCodeExpires": "Code verloopt over 60 seconden. Controleer je berichten.",
+  "yourDataRights": "Uw gegevensrechten",
+  "dataRightsExplanation": "U heeft volledige controle over uw persoonlijke gegevens. U kunt al uw gegevens exporteren of permanent uw account te allen tijde verwijderen.",
+  "exportYourData": "Uw gegevens exporteren",
+  "exportDataDescription": "Download al uw accountgegevens",
+  "exportData": "Gegevens exporteren",
+  "exportingData": "Exporteren...",
+  "exportDataDetails": "Omvat: profiel, piepers, opmerkingen, apparaatinformatie en voorkeuren. Gegevens worden verstrekt in JSON formaat.",
+  "dataExportedSuccessfully": "Gegevens met succes geëxporteerd",
+  "dataExportFailed": "Exporteren van gegevens is mislukt",
+  "deleteAccount": "Account verwijderen",
+  "deleteAccountDescription": "Uw account en alle gegevens definitief verwijderen",
+  "deleteAccountWarning": "Deze actie kan niet ongedaan worden gemaakt. Al uw piepers, opmerkingen en accountgegevens worden permanent verwijderd.",
+  "deleteMyAccount": "Mijn account verwijderen",
+  "deletingAccount": "Verwijderen...",
+  "deleteAccountConfirmTitle": "Account verwijderen",
+  "deleteAccountConfirmMessage": "Weet u absoluut zeker dat u uw account wilt verwijderen? Deze actie is permanent en kan niet ongedaan worden gemaakt.",
+  "dataWillBeDeleted": "De volgende gegevens worden definitief verwijderd:",
+  "deletedDataList": "• Uw profiel en gebruikersnaam\n• Al je piepjes en rapporten\n• Al uw opmerkingen\n• Device registratie gegevens\n• Locatie en voorkeursgegevens",
+  "deleteAccountPermanent": "Permanent verwijderen",
+  "accountDeletedSuccessfully": "Account succesvol verwijderd",
+  "accountDeletionFailed": "Verwijderen van account mislukt",
+  "onboardingWelcomeTitle": "Welkom bij UFObeep",
+  "onboardingWelcomeBody": "Ontvang realtime waarschuwingen als UFO's in de buurt worden gezien. Mis nooit meer een waarneming.",
+  "onboardingAlertsTitle": "Blijf op de hoogte",
+  "onboardingAlertsBody": "Stel in hoe ver weg waarnemingen moeten zijn om waarschuwingen te veroorzaken.",
+  "onboardingReportTitle": "Zie je iets? Piep het!",
+  "onboardingReportBody": "Maak een foto of video en deel direct met de bewakers in de buurt.",
+  "onboardingPermissionsTitle": "Uw camera & locatie",
+  "onboardingPermissionsBody": "Activeer camera, locatie en meldingen zodat u kunt:\nRapporteer waarnemingen snel\nWat? Waarschuwingen voor UFO's in uw buurt",
+  "onboardingCameraTitle": "Bewijs verzamelen",
+  "onboardingCameraBody": "Deel foto's en video's die u zojuist van uw galerie hebt opgenomen of druk op het UFObeep-pictogram om te starten in directe cameramodus.",
+  "onboardingCompassTitle": "Kijk waar ze keken",
+  "onboardingCompassBody": "Kompas toont je de exacte richting die de getuige keek toen ze de UFO zagen. Richt je telefoon en kijk!",
+  "onboardingCommunityTitle": "Word lid van de Skywatchers",
+  "onboardingCommunityBody": "Browse waarnemingen, toegang MUFON rapporten, en verbinding met collega-skywatchers.",
+  "skip": "Overslaan",
+  "getStarted": "Starten",
+  "viewOnboardingAgain": "Weer aan boord bekijken",
+  "customAlertRange": "Aangepast waarschuwingsbereik",
+  "enterRangeKm": "Bereik invoeren in km (1-99999)",
+  "largeRangeWarning": "Grote reeksen (>100 km) kunnen veel waarschuwingen genereren",
+  "globalRangeWarning": "Zeer grote bereik (>1000km) zal u waarschuwingen van over de hele wereld sturen",
+  "invalidRange": "Vul een nummer in tussen 1 en 99999",
+  "celestialSunDaylight": "Zon is op - daglicht omstandigheden kunnen het zicht van de waarneming beïnvloeden",
+  "celestialSunTwilight": "Twilight omstandigheden - sommige zichtbaarheid maar donkerder dan daglicht",
+  "celestialSunDark": "Donkere omstandigheden - optimaal voor het observeren van objecten in de lucht",
+  "celestialMoonBright": "Helder __PLAATSHOLDER_0__ maan zichtbaar - kan verlichten of obscure andere objecten",
+  "celestialMoonModerate": "__PLAATSHOLDER_0___ maan zichtbaar - matige lichtomstandigheden",
+  "celestialMoonThin": "Dun __PLAATSHOLDER_0__ maan zichtbaar - minimale verlichting",
+  "celestialMoonHidden": "__PLAATSHOLDER_0___ maan onder de horizon - geen maanverlichting",
+  "celestialNoPlanets": "Geen heldere planeten zichtbaar die kunnen worden verward met UFO's",
+  "celestialPlanetHigh": "__PLAATSHOLDER_0___ hoge overhead (__PLAATSHOLDER_1__°) - zeer prominent",
+  "celestialPlanetMedium": "__PLAATSHOLDER_0___ zichtbaar op __PLAATSHOLDER_1___° - kan worden verward met vliegtuigen",
+  "celestialPlanetLow": "__PLAATSHOLDER_0___ laag aan de horizon (__PLAATSHOLDER_1__°)",
+  "celestialNoStars": "Geen ongewoon heldere sterren zichtbaar",
+  "celestialStarSingle": "__PLAATSHOLDER_0___ prominent op __PLAATSHOLDER_1__° hoogte",
+  "celestialStarsMultiple": "__PLAATSHOLDER_0___ heldere sterren zichtbaar - __PLAATSHOLDER_1__",
+  "celestialSummaryDaylight": "Daglichtomstandigheden",
+  "celestialSummaryDark": "Donkere hemelomstandigheden",
+  "celestialSummaryMoonUp": "maanverlichting aanwezig",
+  "celestialSummaryMoonDown": "geen maanverlichting",
+  "celestialSummaryManyObjects": "__PLAATSHOLDER_0___ heldere objecten die kunnen worden verward met UFO's",
+  "celestialSummarySomeObjects": "__PLAATSHOLDER_0___ helder object(s) zichtbaar",
+  "celestialSummaryFewObjects": "minimale heldere objecten in de lucht",
+  "celestialSkySummary": "Luchtomstandigheden: __PLAATSHOLDER_0___",
+  "planetVenus": "Venus",
+  "planetJupiter": "Jupiter",
+  "planetSaturn": "Saturnus",
+  "planetMars": "Mars",
+  "planetMercury": "Kwik",
+  "planetUranus": "Uranus",
+  "planetNeptune": "Neptunus",
+  "starSirius": "Sirius",
+  "starCanopus": "Canopus",
+  "starArcturus": "Arcturus",
+  "starVega": "Vega",
+  "starCapella": "Capella",
+  "starRigel": "Rigel",
+  "starProcyon": "Procyon",
+  "starBetelgeuse": "Betelgeuse",
+  "moonPhaseNew": "Nieuwe maan",
+  "moonPhaseWaxingCrescent": "Waxing Crescent",
+  "moonPhaseFirstQuarter": "Eerste kwartaal",
+  "moonPhaseWaxingGibbous": "Waxing Gibbous",
+  "moonPhaseFull": "Volle maan",
+  "moonPhaseWaningGibbous": "Wandelende Gibbous",
+  "moonPhaseThirdQuarter": "Derde kwartaal",
+  "moonPhaseWaningCrescent": "Wanning Crescent",
+  "planetBelowHorizon": "__PLAATSHOLDER_0___ onder de horizon",
+  "planetHighOverheadProminent": "__PLAATSHOLDER_0___ hoge overhead (__PLAATSHOLDER_1__°) - zeer prominent",
+  "planetMidSkyProminent": "__PLAATSHOLDER_0___ op __PLAATSHOLDER_1__° - prominent",
+  "planetMidSky": "__PLAATSHOLDER_0__ op __PLAATSHOLDER_1__°",
+  "starVeryBright": "__PLAATSHOLDER_0___ zeer helder op __PLAATSHOLDER_1__°",
+  "starProminent": "__PLAATSHOLDER_0___ prominent op __PLAATSHOLDER_1__° hoogte",
+  "starVisible": "__PLAATSHOLDER_0__ op __PLAATSHOLDER_1__°",
+  "altitudeShort": "Alt",
+  "magnitudeShort": "Mag",
+  "satellitesVisibleMightExplain": "Satellieten zichtbaar - kan het waarnemen verklaren",
+  "satellitesVisibleUnlikelyExplain": "Satellieten zichtbaar - waarschijnlijk niet te verklaren",
+  "noSatellitesVisible": "Geen satellieten zichtbaar",
+  "aircraftDetectedInRadius": "__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km",
+  "processingAlert": "UFO-alarm wordt verwerkt...",
+  "analyzingEnvironment": "Analyse van milieuomstandigheden",
+  "weatherAnalysis": "Weeranalyse",
+  "locationAnalysis": "Locatieanalyse",
+  "aircraftTracking": "Tracking van luchtvaartuigen",
+  "satelliteAnalysis": "Satellietanalyse",
+  "celestialAnalysis": "Galactische analyse",
+  "analyzing": "Analyseren __PLAATSHOLDER_0___...",
+  "processorWeather": "weersomstandigheden",
+  "processorLocation": "locatiegegevens",
+  "processorAircraft": "nabijgelegen vliegtuigen",
+  "processorSatellites": "satellietposities",
+  "processorCelestial": "hemelobjecten",
+  "calculatingCelestialData": "Berekenen van hemelse gegevens...",
+  "sunLabel": "Zon",
+  "moonLabel": "Maan",
+  "planetsVisible": "Planeten: __PLAATSHOLDER_0__ zichtbaar",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Sterren",
+  "planetsLabel": "Planeten",
+  "moonWithPhase": "Maan (__PLAATSHOLDER_0__)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Er waren geen satellieten zichtbaar op het moment van uw waarneming",
+  "satellitesVisibleOverheadAtTime": "Satellieten zichtbaar overhead op waarnemingstijd en locatie",
+  "belowHorizon": "onder de horizon",
+  "analysisFailedGeneric": "Analyse mislukt",
+  "unknownWeather": "Onbekend",
+  "noWeatherDescription": "Geen beschrijving",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satellieten (__PLAATSHOLDER_0__ nu zichtbaar)",
+  "sunWithDescription": "Zon: __PLAATSHOLDER_0__",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Maan: __PLAATSHOLDER_0__",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Onbekende planeet",
+  "unknownStar": "Onbekende ster",
+  "unknownSatellite": "Onbekende satelliet",
+  "unknownDirection": "onbekende richting",
+  "brightStars": "Heldere sterren",
+  "satellites": "Satellieten",
+  "seeAllSatellites": "Zie alle __PLAATSHOLDER_0__satellieten",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Max. verhoging: {degrees}°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Hoogte: __PLAATSHOLDER_0___",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Onbekend",
+  "altitudeValue": "__PLAATSHOLDER_0__° hoogte",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "__PLAATSHOLDER_0__° azimut",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Geen hemelse gegevens beschikbaar.",
+  "gettingLocation": "Je locatie vinden...",
+  "media": "Media",
+  "locationRequired": "Locatie vereist",
+  "confirmingWitness": "Bevestigde getuige...",
+  "chooseYourUsername": "Kies uw gebruikersnaam",
+  "weatherClear": "Wissen",
+  "weatherClearSky": "heldere lucht",
+  "rain": "Regen",
+  "snow": "Sneeuw",
+  "thunderstorm": "Onweer",
+  "drizzle": "Motregenweather forecast",
+  "fog": "Mist",
+  "fewClouds": "weinig wolken",
+  "scatteredClouds": "verspreide wolken",
+  "brokenClouds": "gebroken wolken",
+  "overcastClouds": "bewolkt",
+  "lightRain": "lichte regen",
+  "moderateRain": "matige regen",
+  "heavyRain": "zware regenval",
+  "aircraftDetectedCurrentPositions": "__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km (huidige posities)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "Dim satellieten zichtbaar - waarschijnlijk niet te verklaren",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Rapportagedatum",
+  "satelliteNameDirection": "__PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
+}

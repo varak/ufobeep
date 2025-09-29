@@ -1,0 +1,1148 @@
+{
+  "@@locale": "ja",
+  "appName": "UFOビープ",
+  "ok": "お問い合わせ",
+  "cancel": "キャンセル",
+  "close": "ふりがな",
+  "save": "保存する",
+  "delete": "削除",
+  "edit": "編集",
+  "retry": "リトリート",
+  "yes": "お問い合わせ",
+  "no": "なし",
+  "back": "バックナンバー",
+  "next": "次へ",
+  "done": "ログイン",
+  "loading": "ローディング..",
+  "processing": "加工..",
+  "errorGeneric": "何かが間違っていた.",
+  "networkError": "ネットワークエラー。 接続を確認してください.",
+  "permissionsRequired": "必要な許可",
+  "learnMore": "もっと詳しく",
+  "welcomeTitle": "UFOBeepへようこそ",
+  "welcomeSubtitle": "近くのリアルタイム UFO アラート",
+  "signIn": "サインイン",
+  "signOut": "サインアップ",
+  "continueAsGuest": "ゲストとして",
+  "enterUsername": "ユーザー名を入力してください",
+  "username": "ユーザ名",
+  "usernameUpdated": "更新されたユーザー名",
+  "profile": "プロフィール",
+  "settings": "コンテンツ",
+  "tabAlerts": "アラート",
+  "tabBeep": "ビープ",
+  "tabChat": "チャット",
+  "tabMap": "サイトマップ",
+  "tabSettings": "コンテンツ",
+  "alertsTitle": "近くのアラート",
+  "noAlerts": "近隣のアラートはありません.",
+  "pullToRefresh": "リフレッシュするプル",
+  "alertDistance": "__PLACEHOLDER_0_ 離れて",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "軸受け_PLACEHOLDER_0__°",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
+  "viewAlert": "アラートを見る",
+  "viewOnMap": "サイトマップ",
+  "iSeeItToo": "見てみる",
+  "confirmWitnessed": "目撃したことを確認しますか?",
+  "witnessConfirmed": "ありがとうございます.",
+  "createBeepTitle": "ビープを送る",
+  "beepExplain": "近く見ているものをキャプチャし、近くの監視者に警告します.",
+  "capturePhoto": "写真のキャプチャ",
+  "captureVideo": "ビデオのキャプチャ",
+  "pickFromGallery": "ギャラリーから選ぶ",
+  "descriptionHint": "空を眺めているものを記述する..",
+  "submitBeep": "ビープを送る",
+  "beepSent": "フィードバック",
+  "beepSentWithUrl": "首尾よく送られるビープ",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadingMedia": "メディアのアップロード..",
+  "includeLocation": "場所を含んで下さい",
+  "includeTimestamp": "タイムスタンプを含める",
+  "beepFailed": "ビープを送ることができません.",
+  "mediaProcessing": "加工媒体..",
+  "cameraPermissionTitle": "必要なカメラアクセス",
+  "cameraPermissionBody": "UFO の写真やビデオをキャプチャするためのカメラアクセスを許可します.",
+  "locationPermissionTitle": "所在地 許可 必須",
+  "locationPermissionBody": "近隣のアラートを送受信する場所を使用します.",
+  "microphonePermissionTitle": "必要なマイクアクセス",
+  "microphonePermissionBody": "ビデオキャプチャ用のマイクアクセスを音声で付与します.",
+  "openSettings": "設定を開く",
+  "alertDetailTitle": "観光スポット詳細",
+  "reportedBy": "{username} による報告",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "レポート {timeAgo}_",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "{distance}_______________________________________________________________________________________________________________________________________________________________________",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "オブジェクトへのベアリング:_PLACEHOLDER_0__°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
+  "openCompass": "コンパスを開く",
+  "openAR": "AR オーバーレイを開く",
+  "openChat": "チャットを開く",
+  "commentsTitle": "コメント",
+  "addComment": "コメントを追加..",
+  "send": "お問い合わせ",
+  "commentPosted": "コメント投稿",
+  "autoFollowEnabled": "このアラートに続いています.",
+  "noCommentsYet": "コメントはまだありません。 コメントを投稿する!",
+  "newCommentNotification": "あなたがフォローする目撃に関する新しいコメント.",
+  "mapTitle": "ライブマップ",
+  "compassTitle": "コンパス",
+  "compassSettings": "コンパス設定",
+  "compassMode": "コンパスモード",
+  "compassStandardMode": "標準モード",
+  "compassPilotMode": "パイロットモード",
+  "compassStandardDescription": "基本的な見出しとナビゲーション",
+  "compassPilotDescription": "ETAとベクターの高度なナビゲーション",
+  "pointingTo": "{direction} へのポイント",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
+  "calibratingCompass": "キャリブレーションコンパス..",
+  "openAROverlay": "AR オーバーレイを開く",
+  "pushTitleAlertNearby": "あなたの近くにUFOアラート",
+  "pushBodyAlertNearby": "新たな視力が報告されました_PLACEHOLDER_0__ 離れて.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
+  "pushTitleComment": "新規コメント",
+  "pushBodyComment": "誰かがフォローする目撃にコメントしました.",
+  "pushTitleWitness": "ウィットネスの確認",
+  "temperature": "温度",
+  "pushBodyWitness": "同じオブジェクトが確認されたユーザ.",
+  "weather": "ふりがな",
+  "cloudCover": "雲カバー: {percent}%の特長",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "風:_PLACEHOLDER_0______{unit}_",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
+  "nearbyAircraft": "近隣の航空機",
+  "noAircraft": "近くの航空機無し",
+  "loadingContext": "環境のコンテキストをロードする..",
+  "settingsTitle": "コンテンツ",
+  "notifications": "お知らせ",
+  "enablePushNotifications": "今後のコメントの通知を得る",
+  "quietHours": "静かな時間",
+  "quietHoursDesc": "選択した時間間のサイレンスアラート.",
+  "quietHoursEnabled": "静かな時間を有効にする",
+  "quietHoursFrom": "詳しくはこちら",
+  "quietHoursUntil": "まで",
+  "quietHoursDefaultTime": "デフォルトの静かな時間",
+  "emergencyOverride": "緊急オーバーライド",
+  "emergencyOverrideDesc": "静かな時間の間に緊急のアラートを許可する",
+  "dndMode": "蒸留しない",
+  "dndUntil": "邪魔しないでください",
+  "dndEnabled": "DND が {time} まで有効",
+  "dndDisabled": "DND 無効",
+  "quietHoursActive": "活動的な静かな時間",
+  "quietHoursScheduled": "静かな時間: {start}_________________________________________________________________________________________________________________________________________________________________________________",
+  "pushNotificationUfoAlert": "ユーチューブ アラート",
+  "pushNotificationAnomalyAlert": "異常アラート",
+  "pushNotificationNearby": "アクセス",
+  "pushNotificationInYourArea": "エリア内 タップすると詳細が表示されます.",
+  "pushNotificationCommented": "{username}_コメント",
+  "pushNotificationCommentedOn": "{username}_ にコメント _PLACEHOLDER_1___",
+  "pushNotificationGeneric": "UFOビープ",
+  "pushNotificationNewSighting": "近辺の新景気",
+  "language": "用語集",
+  "chooseLanguage": "言語を選択",
+  "units": "ユニット",
+  "unitsImperial": "インペリアル(ミ, mph)",
+  "unitsMetric": "メートル(km/h)",
+  "privacyPolicy": "プライバシーポリシー",
+  "termsOfUse": "利用規約",
+  "errorNoLocation": "利用できない場所 空を眺めながらもう一度お試しください.",
+  "errorNoCamera": "このデバイスでカメラが利用できなくなった.",
+  "errorUploadFailed": "アップロードが失敗しました。 お問い合わせ.",
+  "errorPermissionDenied": "許可が拒否されました.",
+  "errorInvalidUsername": "ユーザー名は利用できません.",
+  "nothingToShow": "何も見せません.",
+  "storeShortDesc": "近くのインスタントUFOアラート。 リアルタイムでキャプチャ、確認、チャット.",
+  "storeLongDesc": "UFOBeep は、近くの UFO を指すときにリアルタイムのアラートを送信します。 写真やビデオをキャプチャし、タップ、ビューの方向と距離を確認し、仲間のSkywatchersとチャットします.",
+  "keywords": "UFO、UAP、OVNI、aliens、視線、skywatch、alerts、レーダー、compass",
+  "noAlertsFound": "マッチングアラートなし",
+  "alertsFilterHelp": "フィルターを調整して、より多くの結果を見る",
+  "verified": "プロフィール",
+  "beepOnly": "ビープのみ",
+  "reportOnly": "テキストのみ",
+  "videoOnly": "ビデオのみ",
+  "imageOnly": "画像のみ",
+  "mediaOnly": "メディアのみ",
+  "timeJustNow": "ただ今",
+  "timeDaysAgo": "{count} 日前",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "__PLACEHOLDER_0_時間前",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{count} 分前",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "loadMoreAlerts": "より多くのアラートをロードする",
+  "toggleMufonTooltip": "MUFONの視線をトグル",
+  "showMufonData": "MUFONデータを表示する",
+  "hideMufonData": "MUFONデータを隠す",
+  "showingUfoBeepOnly": "UFOBeepレポートのみを表示する",
+  "showingAllReports": "MUFONデータベースを含むすべてのレポートを表示",
+  "filteredSuffix": "フィルター",
+  "detailsTitle": "ニュース",
+  "mufonCase": "MUFONについて 導入事例",
+  "mufonSighting": "MUFONサイティングレポート",
+  "mufonLightSighting": "MUFONライトサイティングレポート",
+  "mufonSphereSighting": "MUFON 球面視レポート",
+  "mufonDiscSighting": "MUFONについて ディスクサイトレポート",
+  "mufonTriangleSighting": "MUFONについて トライアングルシーティングレポート",
+  "mufonCigarSighting": "MUFONシガーサイトングレポート",
+  "mufonOvalSighting": "MUFONオーバルサイトングレポート",
+  "mufonRectangleSighting": "MUFONについて 長方形のサイトングレポート",
+  "mufonCylinderSighting": "MUFONシリンダーサイティングレポート",
+  "mufonBoomerangSighting": "MUFON Boomerangのサイトレポート",
+  "mufonStarlikeSighting": "MUFONについて 星型観光レポート",
+  "mufonCaseDetailsTitle": "MUFON ケース #{caseNumber}_",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "sightingDate": "予定日",
+  "mufonDatabaseEntryDate": "MUFON に入力された日付 データベース",
+  "databaseEntry": "データベースのエントリ",
+  "shareLink": "シェアリンク",
+  "linkCopied": "クリップボードにコピーされたリンク",
+  "locationLabel": "所在地:",
+  "distanceLabel": "アクセス",
+  "timeLabel": "時間:",
+  "reportedByLabel": "レポート",
+  "unknownLocation": "未知の場所",
+  "locationUnknown": "所在地 不明",
+  "witnessesLabel": "ウィッチネス",
+  "witnessesCountMessage": "{count} 人々はこの視線を確認しました",
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "photoAnalysisTitle": "フォト分析",
+  "mediaItemsProcessed": "解析: {count} メディアファイル(s) 処理",
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "addMoreMedia": "詳しくはこちら",
+  "addMedia": "メディアの追加",
+  "retakePhoto": "写真を撮る",
+  "retakeVideo": "Retake ビデオ",
+  "camera": "カメラ",
+  "gallery": "ギャラリー",
+  "basicSettings": "基本設定",
+  "appSettings": "アプリの設定",
+  "timeFormat": "時間フォーマット",
+  "timeFormat24Hour": "24時間(14:30)",
+  "timeFormat12Hour": "12時間(2:30 PM)",
+  "timeFormatDesc": "24時間または12時間のフォーマットの表示時間",
+  "alertRange": "アラート範囲",
+  "manageNotificationsDesc": "サブスクリプションと設定の管理",
+  "permissionsTitle": "パーミッション",
+  "permissionLocation": "アクセス",
+  "permissionCamera": "カメラ",
+  "permissionNotifications": "お知らせ",
+  "permissionPhotos": "ニュース",
+  "permissionGranted": "助成対象者",
+  "permissionNotGranted": "免責事項",
+  "permissionGrant": "助成金",
+  "generateUsername": "新しいユーザー名を生成する",
+  "adminTools": "管理者ツール",
+  "openAdminPanel": "開いた管理者のパネル",
+  "webAdminInterface": "ウェブ管理者インターフェイス",
+  "adminBetaNotice": "ベータビルドのみ。 近接アラートのテスト、プッシュ通知、システム診断のための管理ツール.",
+  "whatDoYouSee": "お問い合わせ?",
+  "ufo": "ユーチューブ",
+  "sighting": "スタイリング",
+  "ufoSighting": "UFOベープUFO アラート",
+  "envAnalysisTitle": "環境分析",
+  "envAnalysisPending": "解析の終わること",
+  "envAnalysisPendingDesc": "処理が始まると環境データが使用可能になります.",
+  "unknownAircraft": "未知の航空機",
+  "moreAircraft": "より多くの航空機",
+  "showLess": "少ないショー",
+  "premiumImageryTitle": "プレミアム衛星 イメージ",
+  "premiumImagerySubtitle": "高解像度商用イメージ",
+  "sightingTypeLabel": "タイプ:",
+  "ufoTypeSphere": "スフィア",
+  "ufoTypeTriangle": "トライアングル",
+  "ufoTypeDisk": "ディスク",
+  "ufoTypeLight": "ライトライト",
+  "ufoTypeFireball": "ファイアーボール",
+  "ufoTypeCylinder": "シリンダー",
+  "ufoTypeCigar": "シガー",
+  "ufoTypeRectangle": "長方形",
+  "ufoTypeFormation": "フォーム",
+  "ufoTypeUnknown": "未知の",
+  "ufoTypeBoomerang": "ブーメラン",
+  "ufoTypeDiamond": "ダイヤモンド",
+  "ufoTypeOval": "オーバル",
+  "ufoTypeCone": "コーン",
+  "ufoTypeCross": "ログイン",
+  "ufoTypeDumbbell": "ダンベル",
+  "ufoTypeTeardrop": "ティアドロップ",
+  "ufoTypeTicTac": "シックタック",
+  "ufoTypeBullet": "ニュース",
+  "ufoTypeSaturn": "サターン",
+  "ufoTypeStarLike": "星のような",
+  "ufoTypeBlimp": "ログイン",
+  "shapeTriangle": "トライアングル",
+  "shapeDisc": "ディスク",
+  "shapeDisk": "ディスク",
+  "shapeSphere": "スフィア",
+  "shapeCigar": "シガー",
+  "shapeLight": "ライトライト",
+  "shapeBoomerang": "ログイン",
+  "shapeDiamond": "ダイヤモンド",
+  "shapeRectangle": "リフォーム",
+  "shapeOval": "オーバル",
+  "shapeCone": "ログイン",
+  "shapeCross": "クロス",
+  "shapeCylinder": "シリンダー",
+  "shapeDumbbell": "ダンベル",
+  "shapeTeardrop": "涙ドロップ",
+  "shapeTicTac": "ティックタック",
+  "shapeBullet": "ニュースレター",
+  "shapeSaturn": "サターン",
+  "shapeStarlike": "スターライク",
+  "shapeBlimp": "ログイン",
+  "shapeFireball": "サッカー",
+  "shapeFormation": "フォーム",
+  "shapeUnknown": "インフォメーション",
+  "actionsTitle": "アクション",
+  "addPhotosAndVideos": "写真とビデオを追加",
+  "attachMedia": "アタッチメディア",
+  "addCommentOptional": "コメントを追加(オプション)",
+  "describeNewMedia": "新しいメディアを記述する...",
+  "filesSelected": "選択したファイル",
+  "selectMediaToAttach": "添付する写真や動画を選択してください",
+  "newMediaUploaded": "メディア掲載",
+  "mediaFilesUploaded": "アップロードされた新しいメディアファイル",
+  "filesAttachedSuccessfully": "添付ファイル",
+  "howToReportToMufon": "MUFONへの報告方法",
+  "reportToMufon": "MUFONへの報告",
+  "whyReportToMufon": "なぜMUFONへの報告?",
+  "openMufonReport": "MUFONを開く レポート",
+  "confirmedWitness": "この視線を確認しました",
+  "witnessesHaveConfirmed": "{count} 人々はこの視線を確認しました",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "aircraftTrackingTitle": "航空機の追跡",
+  "weatherConditionsTitle": "気象条件",
+  "noSatellitePasses": "目に見えない衛星パスが見つかりません",
+  "contentAnalysisTitle": "コンテンツ分析",
+  "contentSafe": "コンテンツは安全です",
+  "contentFlagged": "審査対象のコンテンツ",
+  "confidenceLabel": "コンプライアンス",
+  "methodLabel": "メソッド",
+  "premiumImageryAccessOnly": "プレミアム衛星画像のみ利用可能です:",
+  "premiumAccessCreators": "アラート作成者",
+  "premiumAccessWitnesses": "可視範囲内で確認された証人",
+  "comingSoon": "近日公開",
+  "directionDistanceTitle": "方向及び間隔",
+  "mufonCaseTitle": "MUFONについて ケース #{caseNumber}_",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "satellitePassesTitle": "衛星パス",
+  "satellitePassExplanation": "視力時間枠の間に可視衛星パス. 多くのUFOレポートは、実際には衛星や宇宙の破片です.",
+  "followingAlert": "次のアラート - コメント通知を取得します",
+  "unfollowedAlert": "フォローされていないアラート - コメント通知はありません",
+  "alertFollowError": "エラー更新 ステータスをフォローする",
+  "notificationChannelAlerts": "UFOBeepアラート",
+  "notificationChannelAlertsDesc": "UFOビープと近接アラートの通知",
+  "notificationSightingTitle": "UFOベープUFO アラート",
+  "notificationSightingUrgent": "⚠️ ウルゲン UFOBeep UFO アラート",
+  "notificationSightingEmergency": "緊急UFOBeep UFO アラート",
+  "notificationSightingBody": "{witnessText}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "💬_PLACEHOLDER_0__コメント",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "新しい視線",
+  "notificationWitnessTextMultiple": "{count} 証人",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "スヌーズ 1h",
+  "notificationActionDismiss": "免責事項",
+  "notificationDistance": "__PLACEHOLDER_0_ 離れて",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "未知の",
+  "report": "レポート",
+  "mufon": "ミュフォン",
+  "recentUfoBeepsTitle": "最近のUFO ベップス",
+  "recentUfoBeepsSubtitle": "世界中のコミュニティからライブ UFO を目撃するレポート",
+  "recentUfoBeepsDescription": "このフィードは、MUFONデータベースからの履歴レポートを使用して、モバイルアプリユーザーからリアルタイムのUFOBeep \"beeps\"を組み合わせています.",
+  "loadingBeeps": "最近のビープ...",
+  "noBeepsAvailable": "現時点ではビープはありません.",
+  "anomalyReported": "異常報告",
+  "copyShortLink": "ショートリンクのコピー",
+  "shareAlert": "アラートを共有する",
+  "ufoSightingAlert": "ユーチューブ アラートの閲覧",
+  "previousPage": "新着情報",
+  "nextPage": "次へ",
+  "pageOf": "ページの {currentPage}_ の {totalPages}_ ({totalCount}_の総ビープ)",
+  "firstPage": "ファースト",
+  "lastPage": "最近の投稿",
+  "jumpToPage": "ページをジャンプ",
+  "heroTagline": "外部に行くときにアラートを取得し、調べる",
+  "heroDescription": "あなたのエリアで別のUFOの視線を見逃さない",
+  "downloadApp": "◀ アプリのダウンロード",
+  "viewAllBeeps": "すべてのビープを見る",
+  "sightingsMap": "サイトマップ",
+  "globalSightingNetwork": "グローバルサイトネットワーク",
+  "howItWorks": "仕組み",
+  "backToBeeps": "ビープスに戻る",
+  "loadingDetails": "ビープの詳細を読み込む...",
+  "details": "ニュース",
+  "location": "アクセス",
+  "timeAgo": "最近の投稿",
+  "timeMinutes": "m",
+  "timeHours": "h",
+  "timeDays": "d",
+  "distanceKm": "マイル",
+  "distanceMiles": "マイル",
+  "distanceNearby": "周辺エリア",
+  "ufobeepWitnesses": "ウィッチネス",
+  "ufobeepConfirmations": "確認事項",
+  "ufobeepAlertLevel": "アラートレベル",
+  "ufobeepReportType": "UFOBeepレポート",
+  "mufonAttribution": "MUFONについて データベースレポート",
+  "mufonCaseNumber": "ケース #",
+  "mufonGenericTitle": "MUFONサイティングレポート",
+  "mufonSphere": "スフィア",
+  "mufonLight": "ライトライト",
+  "mufonDisk": "ディスク",
+  "mufonTriangle": "トライアングル",
+  "mufonCigar": "シガー",
+  "mufonOval": "オーバル",
+  "mufonCylinder": "シリンダー",
+  "mufonRectangle": "長方形",
+  "mufonDiamond": "ダイヤモンド",
+  "mufonFireball": "ファイアーボール",
+  "mufonFlash": "フラッシュ",
+  "mufonFormation": "フォーム",
+  "mufonChanging": "変更について",
+  "mufonChevron": "シブロン",
+  "mufonCone": "コーン",
+  "mufonCross": "ログイン",
+  "mufonEgg": "ツイート",
+  "mufonOther": "オブジェクト",
+  "mufonUnknown": "未知のオブジェクト",
+  "mufonTitleFormat": "MUFON {classification} レポート",
+  "nuforcAttribution": "ログイン データベースレポート",
+  "nuforcCaseNumber": "ケース #",
+  "nuforcGenericTitle": "ログイン 観光レポート",
+  "mediaImageNotFound": "画像が見つかりません",
+  "mediaPlayVideo": "再生ビデオ",
+  "mediaViewImage": "画像を見る",
+  "mediaCount": "__PLACEHOLDER_0_さんの画像",
+  "mediaCountSingle": "1 画像",
+  "mediaMoreImages": "お問い合わせ",
+  "errorNotFound": "ビープが見つかりません",
+  "errorLoadError": "ビープの詳細を読み込む失敗",
+  "shareYourThoughts": "この視線についてのあなたの考えを共有する...",
+  "postComment": "投稿コメント",
+  "loggedInAs": "ログイン",
+  "logout": "ログイン",
+  "notFollowing": "お問い合わせ",
+  "follow": "フォロー",
+  "navRecentBeeps": "最近のビープ",
+  "navMap": "サイトマップ",
+  "navDownloadApp": "アプリのダウンロード",
+  "alertLevel": "アラートレベル",
+  "witnesses": "ウィッチネス",
+  "confirmations": "確認事項",
+  "reporterLabel": "ユーザーによる報告",
+  "coordinatesLabel": "コーディネート",
+  "eventTime": "イベント情報",
+  "reportedTime": "報告時間",
+  "addedToUfobeep": "UFOBeep に追加",
+  "mufonDatabaseReport": "MUFONについて 場合数:",
+  "copyShortLinkTitle": "クリップボードへのリンクをコピーする",
+  "imageNotFound": "画像が見つかりません",
+  "ufoSightingAlt": "ユーチューブ Beep UFOアラート",
+  "celestialDataTitle": "Celestialオブジェクト",
+  "visiblePlanets": "可視惑星",
+  "locationDataTitle": "所在地案内",
+  "timezone": "タイムゾーン",
+  "coordinates": "コーディネート",
+  "processingSummaryTitle": "加工概要",
+  "processingTime": "処理時間",
+  "successful": "成功する",
+  "failed": "失敗した",
+  "locationEnrichmentTitle": "ロケーション詳細",
+  "aircraftDataSource": "データソース",
+  "noAircraftDetected": "航空機が検出されない",
+  "sightingReport": "観光レポート",
+  "ufoAlert": "ユーチューブ アラート",
+  "alert": "アラート",
+  "notificationTickerUfoAlert": "UFOアラート - 近くの新しいサイト",
+  "notificationTickerComment": "UFOアラートの新しいコメント",
+  "weatherConditions": "気象条件",
+  "visibility": "可視性",
+  "humidity": "湿度: 8",
+  "pressure": "プレッシャー",
+  "locationDetails": "ロケーション詳細",
+  "city": "シティ",
+  "state": "ステータス",
+  "country": "カントリー",
+  "satelliteActivity": "衛星活動",
+  "satellitesVisibleOverhead": "視力時間と位置で見える衛星",
+  "dataSource": "データソース",
+  "blackskyImagery": "ブラックスカイのイメージ",
+  "resolution": "ソリューション",
+  "groundResolution": "35cmの地上の決断",
+  "delivery": "デリバリー",
+  "averageDelivery": "90分平均",
+  "cost": "コスト",
+  "skyfiSatelliteImagery": "SkyFi衛星 イメージ",
+  "region": "エリア",
+  "remoteArea": "遠隔区域",
+  "startingPrice": "開始価格",
+  "coverage": "カバレッジ",
+  "confidenceCoverage": "95%の自信",
+  "status": "ステータス",
+  "shareThoughts": "この視線についてのあなたの考えを共有する...",
+  "postCommand": "コマンドの投稿",
+  "clouds": "クラウド",
+  "windLabel": "ウインド",
+  "filterAlerts": "フィルターアラート",
+  "alertSource": "アラートソース",
+  "ufobeepOnly": "UFOBeepのみ",
+  "ufobeepOnlyDescription": "オリジナルの UFOBeep レポートのみ(MUFON データベースを除く)",
+  "alertDistanceRange": "アラート距離範囲",
+  "showAllAlerts": "すべてのアラートを表示",
+  "showAll": "すべて表示",
+  "distanceSliderDescription": "アラートを表示する距離を調整するためにドラッグします。 距離に関係なくすべてのアラートを表示するまで、気象可視距離から始めます.",
+  "applyFilters": "フィルターを適用",
+  "notificationRange": "通知範囲",
+  "notificationRangeDescription": "この距離内で視線のためのプッシュアラートを取得する",
+  "viewingRange": "眺めの範囲",
+  "viewingRangeDescription": "ブラウジング時にこの距離内で視力を表示",
+  "weatherVisibility": "天候の可視性(~10km)",
+  "localArea": "ローカルエリア (25km)",
+  "regional": "地域紹介",
+  "pushNotifications": "プッシュ通知",
+  "alertBrowsing": "アラートブラウジング",
+  "pushAlertsWithinDistance": "この範囲内で通知を取得する",
+  "showAlertsWhenBrowsing": "リストで見るものをフィルタリング",
+  "heroMainTagline": "UFOが近くにあるときに電話機にビープをつけましょう",
+  "heroSecondaryTagline": "空を眺める時と場所を調べる",
+  "sourceFilters": "ソース",
+  "sourceFiltersDescription": "フィードに表示されるレポートを選択する",
+  "ufobeepAndMufon": "UFOBeep + MUFONの",
+  "ufobeepOnlySource": "UFOBeepのみ",
+  "mufonOnlySource": "MUFONのみ",
+  "browseFilters": "ブラウザ",
+  "browseFiltersDescription": "アラートの表示とソート方法",
+  "sortByNewest": "新着情報",
+  "sortByNearest": "最近の投稿",
+  "sortBy": "並び替え",
+  "pushAlertsTitle": "プッシュ通知",
+  "pushAlertsDescription": "あなたの携帯電話をpings",
+  "alertRadius": "アラート半径",
+  "mufonNoPushInfo": "MUFONレポートは、夜間にインポートされ、プッシュアラートをトリガーしません",
+  "privacyData": "プライバシーとデータ",
+  "privacyPolicyDesc": "データを保護・利用する方法",
+  "termsOfService": "サービス利用規約",
+  "termsOfServiceDesc": "法的条件と条件",
+  "locationTracking": "位置追跡",
+  "locationTrackingDesc": "近接アラートの背景位置",
+  "locationTrackingTitle": "背景の場所の追跡",
+  "locationTrackingExplanation": "UFOBeep は、UFO の視線が、自宅から離れた場合でも、現在の場所の近くで起こるときに、あなたの位置を監視し、近接アラートを送信します.",
+  "locationTrackingBattery": "<3%電池の衝撃のための理性的なジオフェンシングを使用して下さい",
+  "backgroundLocationTracking": "背景を有効に トラッキング",
+  "locationTrackingActive": "近接アラートの監視場所",
+  "locationTrackingInactive": "位置の追跡は無効です",
+  "locationTrackingDisabledWarning": "新しい場所に移動すると、近接アラートが届かない",
+  "trackingStatus": "追跡ステータス",
+  "monitoringStatus": "モニタリング",
+  "active": "アクティブ",
+  "inactive": "インアクティブ",
+  "lastKnownLocation": "最終既知の場所",
+  "lastLocationUpdate": "最終更新日",
+  "movementThreshold": "動きの境界線",
+  "updateFrequency": "更新頻度",
+  "batteryImpact": "バッテリーの影響",
+  "dataPrivacy": "データプライバシー",
+  "locationPermissionExplanation": "UFOBeepは、新しい場所にあるときに、移動を監視し、近接アラートを送信します.",
+  "benefitsTitle": "メリット",
+  "locationTrackingBenefits": "・ 旅行中どこでもUFOアラートを入手\n• 自動位置の更新\n・ 手動セットアップ不要",
+  "allowLocationAccess": "ロケーションアクセスを許可する",
+  "locationPermissionRequired": "背景追跡のための場所の許可は必須です",
+  "locationTrackingEnabled": "背景位置追跡機能",
+  "locationTrackingDisabled": "障害を追跡する背景の場所",
+  "justNow": "今すぐ登録",
+  "minutesAgo": "{minutes} 分前",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "__PLACEHOLDER_0_時間前",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{days} 日前",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "データ管理",
+  "dataManagementDesc": "アカウントデータのエクスポートまたは削除",
+  "splashTagline": "リアルタイムの視力アラート",
+  "splashStartingUp": "スタートアップ.",
+  "splashInitializationFailed": "初期化失敗",
+  "splashInitializationFailedTitle": "初期化失敗",
+  "splashInitializationError": "アプリが正しく初期化できなかった:",
+  "splashRetry": "リトリート",
+  "splashContinue": "お問い合わせ",
+  "splashInitializing": "初期化...",
+  "signInWelcome": "ようこそ_PLACEHOLDER_0__!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "サインインが失敗しました: {error}_______________________________________________________________________________________________________________________________________________________________________",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "メールアドレスを入力してください",
+  "signInPleaseEnterValidEmail": "有効なメールアドレスを入力してください",
+  "signInMagicLinkSent": "マジックリンク送信! 電子メールをチェックし、リンクをクリックしてサインインします.",
+  "signInMagicLinkFailed": "魔法のリンクを送信失敗しました。 お問い合わせ.",
+  "signInAllDataCleared": "すべてのデータを消去",
+  "signInSubtitle": "リアルタイム UFO 視線アラートと MUFON レポート",
+  "signInGoogleLoading": "サインイン.",
+  "signInContinueWithGoogle": "Googleでフォローする",
+  "signInOr": "または",
+  "signInWithEmail": "電子メールでサインイン",
+  "signInEmailDescription": "サインインに安全なリンクをお送りします",
+  "signInEmailAddress": "メールアドレス",
+  "signInEmailPlaceholder": "お問い合わせ",
+  "signInTryAgainIn": "{seconds}s でもう一度お試しください",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "送信...",
+  "signInSendMagicLink": "マジックリンクを送信",
+  "signInCheckEmail": "メールでのお問い合わせ リンクは15分以内です.",
+  "signInSecureAuth": "安全な認証",
+  "signInSecureAuthDescription": "Googleサインインを使用して、即時アクセス、または15分で期限切れのマジックリンクを電子メールで送信します.",
+  "signInClearAllDataDebug": "すべてのデータをクリア(デバッグ)",
+  "emailAuthFailedToSend": "メールでのお問い合わせ",
+  "emailAuthFailedToSendTryAgain": "メールでのお問い合わせ お問い合わせ.",
+  "emailAuthInvalidEmail": "無効なメールアドレス。 フォーマットをご確認ください.",
+  "emailAuthUserNotFound": "このメールアドレスにアカウントが見つかりません.",
+  "emailAuthTooManyRequests": "多くの試み。 もう一度お試しください.",
+  "emailAuthOperationNotAllowed": "メールリンクのサインインが有効になっています.",
+  "emailAuthQuotaExceeded": "メールクォーターが超過しました。 明日は是非お試しください.",
+  "emailAuthVerificationFailed": "メール認証が失敗しました。 お問い合わせ.",
+  "emailAuthTitle": "メール認証",
+  "emailAuthVerifyYourEmail": "メールの確認",
+  "emailAuthDescription": "アカウントの回復とセキュリティのためにメールアドレスを追加します。 安全なサインインリンクをお送りします.",
+  "emailAuthEmailAddress": "メールアドレス",
+  "emailAuthEmailPlaceholder": "メール:info@example.com",
+  "emailAuthPleaseEnterEmail": "メールアドレスを入力してください",
+  "emailAuthPleaseEnterValidEmail": "有効なメールアドレスを入力してください",
+  "emailAuthCheckEmailToContinue": "確認画面から確認画面をタップすると、確認画面が表示されます.",
+  "emailAuthResendEmail": "電子メールを送信します",
+  "emailAuthSendVerificationEmail": "確認の送信 電子メール",
+  "emailAuthHowItWorks": "メール検証の仕組み",
+  "emailAuthHowItWorksSteps": "1。 安全なサインインリンクをお送りします\n2。 電子メールをチェックし、リンクをタップ\n3。 電子メールが自動的に確認されます\n4。 パスワード不要!",
+  "emailAuthSecurityNotice": "電子メールの検証は、あなたのアカウントを保護し、あなたのデバイスへのアクセスを失う場合、アカウントの回復を有効にするのに役立ちます.",
+  "phoneAuthFailedToSendCode": "認証コードの送信に失敗しました。 お問い合わせ.",
+  "phoneAuthInvalidCodeTryAgain": "無効な検証コード。 お問い合わせ.",
+  "phoneAuthPhoneVerified": "証明される電話番号: {phoneNumber}_______________________________________________________________________________________________________________________________________________________________________",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "電話確認が失敗しました。 お問い合わせ.",
+  "phoneAuthCodeResent": "認証コードの再入力",
+  "phoneAuthFailedToResendCode": "コードを再送できなかった。 お問い合わせ.",
+  "phoneAuthInvalidPhoneNumber": "無効な電話番号。 フォーマットをご確認ください.",
+  "phoneAuthTooManyRequests": "多くの試み。 もう一度お試しください.",
+  "phoneAuthInvalidVerificationCode": "無効な検証コード。 是非お試し下さい.",
+  "phoneAuthSessionExpired": "検証セッションが終了しました。 新しいリクエストコードをリクエストしてください.",
+  "phoneAuthSmsQuotaExceeded": "SMSのquotaは超過しました。 明日は是非お試しください.",
+  "phoneAuthCredentialAlreadyInUse": "この電話番号は他のアカウントに既にリンクされています.",
+  "phoneAuthVerificationFailedGeneric": "検証が失敗しました。 お問い合わせ.",
+  "phoneAuthTitle": "電話検証",
+  "phoneAuthVerifyYourPhone": "あなたの携帯電話を検証する",
+  "phoneAuthEnterVerificationCode": "認証を入力 コードコード",
+  "phoneAuthAddPhoneForSecurity": "アカウントの回復とセキュリティのために電話番号を追加します",
+  "phoneAuthEnterSixDigitCode": "{phoneNumber}に送信された6桁のコードを入力してください",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "電話番号",
+  "phoneAuthPhonePlaceholder": "〒107-0052 東京都港区赤坂1-12-32",
+  "phoneAuthPleaseEnterPhone": "電話番号を入力してください",
+  "phoneAuthPleaseEnterValidPhone": "有効な電話番号を入力してください",
+  "phoneAuthVerificationCode": "検証コード",
+  "phoneAuthPleaseEnterSixDigitCode": "6桁のコードを入力してください",
+  "phoneAuthResendCode": "コードを送信します",
+  "phoneAuthSendVerificationCode": "確認の送信 コードコード",
+  "phoneAuthVerifyCode": "コードを検証",
+  "phoneAuthChangePhoneNumber": "電話番号変更",
+  "phoneAuthSmsNotice": "確認コードをSMSでお送りします。 標準的なメッセージレートは適用できます.",
+  "phoneAuthCodeExpires": "コードの有効期限は60秒です。 メッセージを確認してください.",
+  "yourDataRights": "データの権利",
+  "dataRightsExplanation": "個人データを完全に制御できます。 すべてのデータをエクスポートしたり、いつでもアカウントを永久に削除することができます.",
+  "exportYourData": "データのエクスポート",
+  "exportDataDescription": "すべてのアカウントデータをダウンロード",
+  "exportData": "輸出データ",
+  "exportingData": "輸出...",
+  "exportDataDetails": "内容:プロファイル、ビープ、コメント、デバイス情報、および好み。 JSON 形式のデータ提供.",
+  "dataExportedSuccessfully": "正常にエクスポートされたデータ",
+  "dataExportFailed": "データをエクスポートできない",
+  "deleteAccount": "アカウントの削除",
+  "deleteAccountDescription": "永続的にアカウントとすべてのデータを削除",
+  "deleteAccountWarning": "このアクションは元に戻すことができません。 ビープ、コメント、アカウントデータはすべて永久に削除されます.",
+  "deleteMyAccount": "私のアカウントを削除",
+  "deletingAccount": "削除...",
+  "deleteAccountConfirmTitle": "アカウントの削除",
+  "deleteAccountConfirmMessage": "アカウントを削除したいかどうかは? このアクションは恒久的であり、元に戻すことはできません.",
+  "dataWillBeDeleted": "次のデータは永久に削除されます",
+  "deletedDataList": "・ プロフィールとユーザー名\n・ すべてのあなたのビープとレポート\n・ すべてのコメント\n• デバイス登録データ\n•場所と好みのデータ",
+  "deleteAccountPermanent": "永久削除",
+  "accountDeletedSuccessfully": "正常に削除されたアカウント",
+  "accountDeletionFailed": "アカウントを削除できない",
+  "onboardingWelcomeTitle": "UFOBeepへようこそ",
+  "onboardingWelcomeBody": "UFO が近くにあるときにリアルタイムのアラートを取得します。 再び視力を逃さない.",
+  "onboardingAlertsTitle": "情報を受け取る",
+  "onboardingAlertsBody": "アラートをトリガーするには、遠距離の視線を設定してください.",
+  "onboardingReportTitle": "お問い合わせ お問い合わせ!",
+  "onboardingReportBody": "写真やビデオをスナップし、近くの時計師と即座に共有します.",
+  "onboardingPermissionsTitle": "あなたのカメラと場所",
+  "onboardingPermissionsBody": "カメラ、場所、通知を有効にすると、次のことができます。\n– 視線を迅速に報告\n– – 近くのUFOのアラートを入手",
+  "onboardingCameraTitle": "キャプチャ証拠",
+  "onboardingCameraBody": "あなたのギャラリーから撮影した写真やビデオをシェアするか、UFOBeepアイコンを長押しして、インスタントカメラモードを開始します.",
+  "onboardingCompassTitle": "彼らが探している場所を見る",
+  "onboardingCompassBody": "Compass は、UFO を見たときに目撃した証人が探していた正確な方向を示します。 電話で見てみる!",
+  "onboardingCommunityTitle": "Skywatchersに参加する",
+  "onboardingCommunityBody": "MUFONレポートにアクセスし、仲間のSkywatchersと接続します.",
+  "skip": "ツイート",
+  "getStarted": "始める",
+  "viewOnboardingAgain": "再びオンボーディングを見る",
+  "customAlertRange": "カスタムアラート範囲",
+  "enterRangeKm": "範囲を入力します。 km (1-99999)",
+  "largeRangeWarning": "大きい範囲(>100km)は多くの警報を発生できます",
+  "globalRangeWarning": "非常に大きい範囲(>1000km)は世界から警告を送ります",
+  "invalidRange": "1と99999の間に数字を入力してください",
+  "celestialSunDaylight": "太陽がアップ - 日光条件は視認性に影響を与える可能性があります",
+  "celestialSunTwilight": "Twilight条件 - 一部の可視性が、日光よりも暗い",
+  "celestialSunDark": "暗い条件 - 空のオブジェクトを観察するための最適",
+  "celestialMoonBright": "明るい_PLACEHOLDER_0_月表示 - 他のオブジェクトを照らすか、または妨害する可能性があります",
+  "celestialMoonModerate": "__PLACEHOLDER_0_月 見える - 適度な照明条件",
+  "celestialMoonThin": "薄い __PLACEHOLDER_0_ 月 見える - 最小限の照明",
+  "celestialMoonHidden": "{phase} 月下の地平線 - 月の照明なし",
+  "celestialNoPlanets": "UFOに誤った可能性がある明るい惑星が見えない",
+  "celestialPlanetHigh": "{planet} 高オーバーヘッド({planet}°) - 非常に著名",
+  "celestialPlanetMedium": "{planet}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "celestialPlanetLow": "{planet} 水平線上に低い (_{planet}°)",
+  "celestialNoStars": "目に見える異常に明るい星無し",
+  "celestialStarSingle": "{star}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "celestialStarsMultiple": "__PLACEHOLDER_0_ 明るい星が見える - {count}_",
+  "celestialSummaryDaylight": "日光条件",
+  "celestialSummaryDark": "暗い空の状態",
+  "celestialSummaryMoonUp": "月の照明プレゼント",
+  "celestialSummaryMoonDown": "月なしの照明",
+  "celestialSummaryManyObjects": "__PLACEHOLDER_0_ UFOと混同できる明るいオブジェクト",
+  "celestialSummarySomeObjects": "__PLACEHOLDER_0_ 可視オブジェクト",
+  "celestialSummaryFewObjects": "空の最小限の明るいオブジェクト",
+  "celestialSkySummary": "空の状態: {conditions}_______________________________________________________________________________________________________________________________________________________________________",
+  "planetVenus": "ヴィーナス",
+  "planetJupiter": "ジュピター",
+  "planetSaturn": "サターン",
+  "planetMars": "マース",
+  "planetMercury": "マーキュリー",
+  "planetUranus": "ウランサス",
+  "planetNeptune": "ネプチューン",
+  "starSirius": "シリウス",
+  "starCanopus": "カンポス",
+  "starArcturus": "アークルス",
+  "starVega": "ベガ",
+  "starCapella": "カペラ",
+  "starRigel": "リグエル",
+  "starProcyon": "プロシヨン",
+  "starBetelgeuse": "ビーテルゲウス",
+  "moonPhaseNew": "ニュームーン",
+  "moonPhaseWaxingCrescent": "ワックス・クレセント",
+  "moonPhaseFirstQuarter": "第1四半期",
+  "moonPhaseWaxingGibbous": "ワックスギブス",
+  "moonPhaseFull": "フルムーン",
+  "moonPhaseWaningGibbous": "Waning ギブス",
+  "moonPhaseThirdQuarter": "第3四半期",
+  "moonPhaseWaningCrescent": "開花クレセント",
+  "planetBelowHorizon": "{planet}下地平線",
+  "planetHighOverheadProminent": "{planet} 高オーバーヘッド({planet}°) - 非常に著名",
+  "planetMidSkyProminent": "{planet}_ で {planet}° - 目立つ",
+  "planetMidSky": "{planet}______________ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+  "starVeryBright": "{star}_ 非常に明るい {star}°",
+  "starProminent": "{star}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "starVisible": "{star}______________ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+  "altitudeShort": "ツイート",
+  "magnitudeShort": "ツイート",
+  "satellitesVisibleMightExplain": "{count} 可視衛星 - 視線を説明するかもしれない",
+  "satellitesVisibleUnlikelyExplain": "{count} 見える衛星 - 視線を説明するのとは異なり",
+  "noSatellitesVisible": "衛星表示なし",
+  "aircraftDetectedInRadius": "{count}__ 航空機は_PLACEHOLDER_1___km以内に検出",
+  "processingAlert": "UFOアラートの処理.",
+  "analyzingEnvironment": "環境条件の分析",
+  "weatherAnalysis": "気象分析",
+  "locationAnalysis": "位置分析",
+  "aircraftTracking": "航空機の追跡",
+  "satelliteAnalysis": "衛星分析",
+  "celestialAnalysis": "空間解析",
+  "analyzing": "解析 {processor}__________________________________________________________________________________________________________________________________________________________.",
+  "processorWeather": "気象条件",
+  "processorLocation": "位置情報",
+  "processorAircraft": "近くの航空機",
+  "processorSatellites": "衛星の位置",
+  "processorCelestial": "天体オブジェクト",
+  "calculatingCelestialData": "履歴データの計算...",
+  "sunLabel": "日曜日",
+  "moonLabel": "ムーン",
+  "planetsVisible": "惑星:_PLACEHOLDER_0___ 可視",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "スターズ",
+  "planetsLabel": "プラネット",
+  "moonWithPhase": "月 (_{phase}_)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "あなたの視線の正確な時刻で衛星が見えない",
+  "satellitesVisibleOverheadAtTime": "視力時間と位置で見える衛星",
+  "belowHorizon": "下の地平線",
+  "analysisFailedGeneric": "解析失敗",
+  "unknownWeather": "未知の",
+  "noWeatherDescription": "説明なし",
+  "altitudeAbbrev": "ツイート",
+  "azimuthAbbrev": "ツイート",
+  "satellitesVisibleNow": "衛星 (_{count}_ 現在は表示)",
+  "sunWithDescription": "日曜日: {description}_",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "月: {description}_",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "未知の惑星",
+  "unknownStar": "未知の星",
+  "unknownSatellite": "未知の衛星",
+  "unknownDirection": "未知の方向",
+  "brightStars": "明るい星",
+  "satellites": "サテライト",
+  "seeAllSatellites": "すべてを見る {count} 衛星",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "最高の高度: {degrees}°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "広さ: {value}_______________________________________________________________________________________________________________________________________________________________________",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "未知の",
+  "altitudeValue": "{degrees}° 高度",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "{degrees}°アジマス",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "気象データがない.",
+  "gettingLocation": "あなたの場所を取得する...",
+  "media": "メディア",
+  "locationRequired": "所在地 必須",
+  "confirmingWitness": "証人確認...",
+  "chooseYourUsername": "ユーザー名を選択する",
+  "weatherClear": "クリア",
+  "weatherClearSky": "澄んだ空",
+  "rain": "ログイン",
+  "snow": "スノーボード",
+  "thunderstorm": "雷雨",
+  "drizzle": "ドリスル",
+  "fog": "フォグ",
+  "fewClouds": "クラウド数",
+  "scatteredClouds": "散らばる雲",
+  "brokenClouds": "壊れた雲",
+  "overcastClouds": "オーバーキャストクラウド",
+  "lightRain": "光雨",
+  "moderateRain": "適度な雨",
+  "heavyRain": "豪雨",
+  "aircraftDetectedCurrentPositions": "{count}_________km(現在の位置)内の航空機が検出される",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "{count} 透かし衛星が見える - 視線を説明するのとは異なり",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFONについて 報告日時",
+  "satelliteNameDirection": "{name}_________________________________________________________________________________________________________________________________________________________________________________",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
+}

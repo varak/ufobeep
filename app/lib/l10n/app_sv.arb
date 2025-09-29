@@ -1,0 +1,1148 @@
+{
+  "@@locale": "sv",
+  "appName": "UFOBeep",
+  "ok": "OK",
+  "cancel": "Avbokning",
+  "close": "Nära",
+  "save": "Spara",
+  "delete": "Delete",
+  "edit": "Edit",
+  "retry": "Retry",
+  "yes": "Ja",
+  "no": "Ingen",
+  "back": "Tillbaka",
+  "next": "Nästa",
+  "done": "Done",
+  "loading": "Loading..",
+  "processing": "Processing..",
+  "errorGeneric": "Något gick fel.",
+  "networkError": "Network error. Kolla din anslutning.",
+  "permissionsRequired": "Tillstånd som krävs",
+  "learnMore": "Lär dig mer",
+  "welcomeTitle": "Välkommen till UFOBeep",
+  "welcomeSubtitle": "UFO-varningar i realtid nära dig",
+  "signIn": "Logga in",
+  "signOut": "Logga ut",
+  "continueAsGuest": "Fortsätt som gäst",
+  "enterUsername": "Ange ett användarnamn",
+  "username": "Användarnamn",
+  "usernameUpdated": "Användarnamn uppdaterat",
+  "profile": "Profil",
+  "settings": "Inställningar",
+  "tabAlerts": "Varningar",
+  "tabBeep": "Beep",
+  "tabChat": "Chatta",
+  "tabMap": "Karta",
+  "tabSettings": "Inställningar",
+  "alertsTitle": "Nära Alerts",
+  "noAlerts": "Inga varningar i närheten ännu.",
+  "pullToRefresh": "Pull to refresh",
+  "alertDistance": "__PLACEHOLDER_0_ bort",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Bär __PLACEHOLDER_0_°",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
+  "viewAlert": "Visa alert",
+  "viewOnMap": "Visa på karta",
+  "iSeeItToo": "Jag ser det också",
+  "confirmWitnessed": "Bekräfta att du bevittnade denna observation?",
+  "witnessConfirmed": "Tack - din bekräftelse publicerades.",
+  "createBeepTitle": "Skicka ett Beep",
+  "beepExplain": "Fånga vad du ser och varna närliggande tittare.",
+  "capturePhoto": "Bildbild",
+  "captureVideo": "Fånga video",
+  "pickFromGallery": "Välj från galleri",
+  "descriptionHint": "Beskriv vad du ser på himlen",
+  "submitBeep": "Skicka Beep",
+  "beepSent": "Beep skickade",
+  "beepSentWithUrl": "Beep skickas framgångsrikt",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadingMedia": "Ladda upp media..",
+  "includeLocation": "Inkludera plats",
+  "includeTimestamp": "Inkludera timestamp",
+  "beepFailed": "Misslyckades med att skicka Beep.",
+  "mediaProcessing": "Processing media..",
+  "cameraPermissionTitle": "Kameraåtkomst behövs",
+  "cameraPermissionBody": "Grant kamera tillgång till fånga UFO bilder och videor.",
+  "locationPermissionTitle": "Platsbehörighet krävs",
+  "locationPermissionBody": "Vi använder din plats för att skicka och ta emot närliggande varningar.",
+  "microphonePermissionTitle": "Mikrofonåtkomst behövs",
+  "microphonePermissionBody": "Grant mikrofonåtkomst för videoinspelning med ljud.",
+  "openSettings": "Öppna inställningar",
+  "alertDetailTitle": "Sighting detaljer",
+  "reportedBy": "Rapporterad av {username}__",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Rapporterad {timeAgo}__",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "{distance}",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Bär mot objekt: __PLACEHOLDER_0_°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
+  "openCompass": "Öppen kompass",
+  "openAR": "Open AR Overlay",
+  "openChat": "Open chat",
+  "commentsTitle": "Kommentarer",
+  "addComment": "Lägg till en kommentar..",
+  "send": "Skicka",
+  "commentPosted": "Kommentarer publicerade",
+  "autoFollowEnabled": "Du följer nu denna varning.",
+  "noCommentsYet": "Inga kommentarer ännu. Bli först med att kommentera!",
+  "newCommentNotification": "Ny kommentar till en observation du följer.",
+  "mapTitle": "Live Map",
+  "compassTitle": "Kompass",
+  "compassSettings": "Compass Inställningar",
+  "compassMode": "Kompassläge",
+  "compassStandardMode": "Standardläge",
+  "compassPilotMode": "Pilotläge",
+  "compassStandardDescription": "Grundläggande rubrik och navigering",
+  "compassPilotDescription": "Avancerad navigering med ETA och vektor",
+  "pointingTo": "Peka på {direction}___",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
+  "calibratingCompass": "Kalibrerande kompass..",
+  "openAROverlay": "Open AR Overlay",
+  "pushTitleAlertNearby": "UFO varning nära dig",
+  "pushBodyAlertNearby": "En ny observation rapporterades __PLACEHOLDER_0_ bort.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
+  "pushTitleComment": "Ny kommentar",
+  "pushBodyComment": "Någon kommenterade en observation du följer.",
+  "pushTitleWitness": "Vittnesbekräftelse",
+  "temperature": "Temperatur",
+  "pushBodyWitness": "En användare bekräftade att de ser samma objekt.",
+  "weather": "Vädret",
+  "cloudCover": "Cloud cover: __PLACEHOLDER_0_%",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Vind: {speed}_{unit}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
+  "nearbyAircraft": "I närheten av flygplan",
+  "noAircraft": "Inga flygplan i närheten",
+  "loadingContext": "Ledande miljökontext..",
+  "settingsTitle": "Inställningar",
+  "notifications": "Meddelanden",
+  "enablePushNotifications": "Få meddelanden för framtida kommentarer",
+  "quietHours": "Tyst timmar",
+  "quietHoursDesc": "Tystnadsvarningar mellan utvalda timmar.",
+  "quietHoursEnabled": "Aktivera tysta timmar",
+  "quietHoursFrom": "Från",
+  "quietHoursUntil": "Fram till",
+  "quietHoursDefaultTime": "Standard tysta timmar",
+  "emergencyOverride": "Nödläge överskrider",
+  "emergencyOverrideDesc": "Tillåt akuta varningar under tysta timmar",
+  "dndMode": "Stör inte",
+  "dndUntil": "Stör inte förrän",
+  "dndEnabled": "DND aktiverad till {time}__",
+  "dndDisabled": "DND inaktiverad",
+  "quietHoursActive": "Tyst timmar aktiv",
+  "quietHoursScheduled": "Tyst timmar: {start} {start}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "pushNotificationUfoAlert": "UFO Alert",
+  "pushNotificationAnomalyAlert": "Anomaly Alert",
+  "pushNotificationNearby": "I närheten",
+  "pushNotificationInYourArea": "i ditt område. Tryck för att visa detaljer.",
+  "pushNotificationCommented": "{username} kommenterade",
+  "pushNotificationCommentedOn": "{username} kommenterade {username}_",
+  "pushNotificationGeneric": "UFOBeep",
+  "pushNotificationNewSighting": "Ny observation i närheten",
+  "language": "Språkspråk",
+  "chooseLanguage": "Välj språk",
+  "units": "Enheter",
+  "unitsImperial": "Imperial (mi, mph)",
+  "unitsMetric": "Metric (km, km/h)",
+  "privacyPolicy": "Integritetspolicy",
+  "termsOfUse": "Användarvillkor",
+  "errorNoLocation": "Plats otillgänglig. Försök igen utanför med klar himmelvy.",
+  "errorNoCamera": "Kamera otillgänglig på denna enhet.",
+  "errorUploadFailed": "Uppladdning misslyckades. Försök igen.",
+  "errorPermissionDenied": "Tillstånd förnekas.",
+  "errorInvalidUsername": "Det användarnamnet är inte tillgängligt.",
+  "nothingToShow": "Inget att visa ännu.",
+  "storeShortDesc": "Omedelbara UFO-varningar nära dig. Fånga, bekräfta och chatta i realtid.",
+  "storeLongDesc": "UFOBeep skickar realtidsvarningar när någon upptäcker en UFO i närheten. Fånga foton och videor, bekräfta observationer med en kran, visa riktning och avstånd och chatta med andra skywatchers.",
+  "keywords": "UFO,UAP,OVNI,aliens,sightings,skywatch,alerts,radar,compass",
+  "noAlertsFound": "Inga matchande varningar",
+  "alertsFilterHelp": "Försök att justera dina filter för att se fler resultat",
+  "verified": "Verifierad",
+  "beepOnly": "Beep Only",
+  "reportOnly": "Text Endast",
+  "videoOnly": "Video Endast",
+  "imageOnly": "Bild endast",
+  "mediaOnly": "Media Endast",
+  "timeJustNow": "just nu",
+  "timeDaysAgo": "__PLACEHOLDER_0_dagar sedan",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{count}_ för några timmar sedan",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{count} för några minuter sedan",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "loadMoreAlerts": "Load More Alerts",
+  "toggleMufonTooltip": "Toggle MUFON observationer",
+  "showMufonData": "Visa MUFON-data",
+  "hideMufonData": "Dölj MUFON-data",
+  "showingUfoBeepOnly": "Visa endast UFOBeep-rapporter",
+  "showingAllReports": "Visa alla rapporter inklusive MUFON-databas",
+  "filteredSuffix": "filtrerad",
+  "detailsTitle": "Detaljer",
+  "mufonCase": "Mufonen fall",
+  "mufonSighting": "MUFON Sighting Report",
+  "mufonLightSighting": "Mufon Light Sighting Report",
+  "mufonSphereSighting": "MUFON Sphere Sighting Report",
+  "mufonDiscSighting": "Mufonen Disc Sighting Report",
+  "mufonTriangleSighting": "Mufonen Triangle Sighting Report",
+  "mufonCigarSighting": "MUFON Cigar Sighting Report",
+  "mufonOvalSighting": "MUFON Oval Sighting Report",
+  "mufonRectangleSighting": "Mufonen Rectangle Sighting Report",
+  "mufonCylinderSighting": "MUFON Cylinder Sighting Report",
+  "mufonBoomerangSighting": "Mufon Boomerang Sighting Report",
+  "mufonStarlikeSighting": "Mufonen Starlike Sighting Report",
+  "mufonCaseDetailsTitle": "MUFON Case #_PLACEHOLDER_0_ Detaljer",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "sightingDate": "Sighting Date",
+  "mufonDatabaseEntryDate": "Datum in i MUFON Databas",
+  "databaseEntry": "Databasinträde",
+  "shareLink": "Dela Link",
+  "linkCopied": "Link kopierad till Clipboard",
+  "locationLabel": "Plats:",
+  "distanceLabel": "Avstånd",
+  "timeLabel": "Tid:",
+  "reportedByLabel": "Rapporterad av",
+  "unknownLocation": "Okänd plats",
+  "locationUnknown": "Plats okänd",
+  "witnessesLabel": "Vittnen",
+  "witnessesCountMessage": "{count} människor bekräftade denna observation",
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "photoAnalysisTitle": "Fotoanalys",
+  "mediaItemsProcessed": "Analys: {count} media file(s) bearbetade",
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "addMoreMedia": "Lägg till mer",
+  "addMedia": "Lägg till media",
+  "retakePhoto": "Retake Photo",
+  "retakeVideo": "Retake Video",
+  "camera": "Kamera",
+  "gallery": "Galleriet",
+  "basicSettings": "Grundläggande inställningar",
+  "appSettings": "App Inställningar",
+  "timeFormat": "Tidsformat",
+  "timeFormat24Hour": "24 timmar (14:30)",
+  "timeFormat12Hour": "12 timmar (2:30 PM)",
+  "timeFormatDesc": "Visa tid i 24-timmars eller 12-timmars format",
+  "alertRange": "Alert Range",
+  "manageNotificationsDesc": "Hantera prenumerationer och inställningar",
+  "permissionsTitle": "Tillstånd",
+  "permissionLocation": "Plats",
+  "permissionCamera": "Kamera",
+  "permissionNotifications": "Meddelanden",
+  "permissionPhotos": "Foton",
+  "permissionGranted": "Beviljas",
+  "permissionNotGranted": "Inte beviljad",
+  "permissionGrant": "Grant",
+  "generateUsername": "Skapa nytt användarnamn",
+  "adminTools": "Admin verktyg",
+  "openAdminPanel": "Open Admin Panel",
+  "webAdminInterface": "Web Admin Interface",
+  "adminBetaNotice": "Beta bygger bara. Admin verktyg för att testa närhetsvarningar, push-meddelanden och systemdiagnostik.",
+  "whatDoYouSee": "Vad ser du?",
+  "ufo": "UFO",
+  "sighting": "Sighting",
+  "ufoSighting": "UFOBeep UFO Alert",
+  "envAnalysisTitle": "Miljöanalys",
+  "envAnalysisPending": "Analys i väntan",
+  "envAnalysisPendingDesc": "Miljödata kommer att finnas tillgängliga när behandlingen påbörjas.",
+  "unknownAircraft": "Okända flygplan",
+  "moreAircraft": "fler flygplan",
+  "showLess": "Visa mindre",
+  "premiumImageryTitle": "Premium satellit Imagery",
+  "premiumImagerySubtitle": "Högupplöst kommersiellt bildspråk",
+  "sightingTypeLabel": "Typ",
+  "ufoTypeSphere": "Sfären",
+  "ufoTypeTriangle": "Triangeln",
+  "ufoTypeDisk": "Disk",
+  "ufoTypeLight": "Ljus ljus",
+  "ufoTypeFireball": "Fireball",
+  "ufoTypeCylinder": "Cylinder",
+  "ufoTypeCigar": "Cigar",
+  "ufoTypeRectangle": "Rectangle",
+  "ufoTypeFormation": "Formation",
+  "ufoTypeUnknown": "Okänd",
+  "ufoTypeBoomerang": "Boomerang",
+  "ufoTypeDiamond": "Diamant",
+  "ufoTypeOval": "Oval",
+  "ufoTypeCone": "Cone",
+  "ufoTypeCross": "Korset korsar",
+  "ufoTypeDumbbell": "Dumbbell",
+  "ufoTypeTeardrop": "Teardrop",
+  "ufoTypeTicTac": "Tic Tac",
+  "ufoTypeBullet": "Bullet",
+  "ufoTypeSaturn": "Saturnus",
+  "ufoTypeStarLike": "Star-liknande",
+  "ufoTypeBlimp": "Blimp",
+  "shapeTriangle": "triangel",
+  "shapeDisc": "disk",
+  "shapeDisk": "disk",
+  "shapeSphere": "sfären",
+  "shapeCigar": "cigarr",
+  "shapeLight": "ljust ljus",
+  "shapeBoomerang": "boomerang",
+  "shapeDiamond": "diamant",
+  "shapeRectangle": "rectangle",
+  "shapeOval": "oval",
+  "shapeCone": "cone",
+  "shapeCross": "korsar kors",
+  "shapeCylinder": "cylinder",
+  "shapeDumbbell": "dumbbell",
+  "shapeTeardrop": "teardrop",
+  "shapeTicTac": "tic-tac",
+  "shapeBullet": "bullet",
+  "shapeSaturn": "saturnus",
+  "shapeStarlike": "starlike",
+  "shapeBlimp": "blimp",
+  "shapeFireball": "fireball",
+  "shapeFormation": "bildandet",
+  "shapeUnknown": "okänd",
+  "actionsTitle": "Aktiviteter",
+  "addPhotosAndVideos": "Lägg till foton och videor",
+  "attachMedia": "Bifoga media",
+  "addCommentOptional": "Lägg till en kommentar (valfritt)",
+  "describeNewMedia": "Beskriv de nya medierna...",
+  "filesSelected": "filer som valts",
+  "selectMediaToAttach": "Vänligen välj foton eller videor för att fästa",
+  "newMediaUploaded": "Nya medier laddade upp",
+  "mediaFilesUploaded": "nya mediefiler laddade upp",
+  "filesAttachedSuccessfully": "filer som bifogas framgångsrikt",
+  "howToReportToMufon": "Hur man rapporterar till Mufon",
+  "reportToMufon": "Rapport till MUFON",
+  "whyReportToMufon": "Varför rapportera till MUFON?",
+  "openMufonReport": "Open MUFON Rapport",
+  "confirmedWitness": "Du bekräftade denna observation",
+  "witnessesHaveConfirmed": "{count} människor har bekräftat denna observation",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "aircraftTrackingTitle": "Aircraft Tracking",
+  "weatherConditionsTitle": "Väderförhållanden",
+  "noSatellitePasses": "Inga synliga satellitpass hittades",
+  "contentAnalysisTitle": "Innehållsanalys",
+  "contentSafe": "Innehållet är säkert",
+  "contentFlagged": "Innehåll flaggat för granskning",
+  "confidenceLabel": "Förtroende",
+  "methodLabel": "Metod",
+  "premiumImageryAccessOnly": "Premium satellitbilder är endast tillgängliga för:",
+  "premiumAccessCreators": "Varningsskapare",
+  "premiumAccessWitnesses": "Bekräftade vittnen inom synlighetsområdet",
+  "comingSoon": "Kommer snart",
+  "directionDistanceTitle": "Direction & Distance",
+  "mufonCaseTitle": "Mufonen Fall #_PLACEHOLDER_0__",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "satellitePassesTitle": "Satellitpass",
+  "satellitePassExplanation": "Synlig satellit passerar under siktetiden. Många UFO-rapporter är faktiskt satelliter eller rymdskrot.",
+  "followingAlert": "Efter varning - du får kommentarmeddelanden",
+  "unfollowedAlert": "Slutförd varning - inga fler kommentarmeddelanden",
+  "alertFollowError": "Feluppdatering följer status",
+  "notificationChannelAlerts": "UFOBeep Alerts",
+  "notificationChannelAlertsDesc": "Meddelanden för UFO-pips och närhetsvarningar",
+  "notificationSightingTitle": "UFOBeep UFO Alert",
+  "notificationSightingUrgent": "URGENT UFOBEep UFO Alert",
+  "notificationSightingEmergency": "EMERGENCY UFOBEep UFO Alert",
+  "notificationSightingBody": "__PLACEHOLDER_0_ nära {locationName}_",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "{username} kommenterade",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Ny observation",
+  "notificationWitnessTextMultiple": "__PLACEHOLDER_0_ vittnen",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Snooze 1h",
+  "notificationActionDismiss": "Avfärda",
+  "notificationDistance": "__PLACEHOLDER_0_ bort",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "Okänd",
+  "report": "rapportrapport",
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "Nyligen UFO Beeps",
+  "recentUfoBeepsSubtitle": "Live UFO-observationsrapporter från vårt globala samhälle",
+  "recentUfoBeepsDescription": "Detta foder kombinerar realtids UFOBeep \"pips\" från våra mobilappanvändare med historiska rapporter från MUFON-databasen.",
+  "loadingBeeps": "Loading new beeps...",
+  "noBeepsAvailable": "Inga pip tillgängliga för tillfället.",
+  "anomalyReported": "Anomaly rapporterade",
+  "copyShortLink": "Kopiera kort länk",
+  "shareAlert": "Dela alert",
+  "ufoSightingAlert": "UFO Sighting Alert",
+  "previousPage": "Föregående",
+  "nextPage": "Nästa",
+  "pageOf": "Page {currentPage} av {totalPages}_ (_PLACEHOLDER_2_______________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "firstPage": "Först först",
+  "lastPage": "Senaste",
+  "jumpToPage": "Hoppa till sida",
+  "heroTagline": "Få varningar när du ska gå ut och titta upp",
+  "heroDescription": "Missa aldrig en annan UFO-observation i ditt område",
+  "downloadApp": "Nedladdning App",
+  "viewAllBeeps": "Visa alla Beeps",
+  "sightingsMap": "Sightings Map",
+  "globalSightingNetwork": "Global Sighting Network",
+  "howItWorks": "Hur det fungerar",
+  "backToBeeps": "Tillbaka till Beeps",
+  "loadingDetails": "Loading beep detaljer...",
+  "details": "Detaljer",
+  "location": "Plats",
+  "timeAgo": "för länge sedan",
+  "timeMinutes": "m",
+  "timeHours": "h",
+  "timeDays": "d",
+  "distanceKm": "km",
+  "distanceMiles": "miljö",
+  "distanceNearby": "närliggande",
+  "ufobeepWitnesses": "Vittnen",
+  "ufobeepConfirmations": "Bekräftelser",
+  "ufobeepAlertLevel": "Alert Level",
+  "ufobeepReportType": "UFOBeep-rapport",
+  "mufonAttribution": "Mufonen Databasrapport",
+  "mufonCaseNumber": "Fall #",
+  "mufonGenericTitle": "MUFON Sighting Report",
+  "mufonSphere": "Sfären",
+  "mufonLight": "Ljus ljus",
+  "mufonDisk": "Disk",
+  "mufonTriangle": "Triangeln",
+  "mufonCigar": "Cigar",
+  "mufonOval": "Oval",
+  "mufonCylinder": "Cylinder",
+  "mufonRectangle": "Rectangle",
+  "mufonDiamond": "Diamant",
+  "mufonFireball": "Fireball",
+  "mufonFlash": "Flash",
+  "mufonFormation": "Formation",
+  "mufonChanging": "Ändra",
+  "mufonChevron": "Chevron",
+  "mufonCone": "Cone",
+  "mufonCross": "Korset korsar",
+  "mufonEgg": "Ägg",
+  "mufonOther": "Objekt",
+  "mufonUnknown": "Okända objekt",
+  "mufonTitleFormat": "MUFON {classification} Rapport",
+  "nuforcAttribution": "NUFORC Databasrapport",
+  "nuforcCaseNumber": "Fall #",
+  "nuforcGenericTitle": "NUFORC Sighting Report",
+  "mediaImageNotFound": "Bild som inte hittats",
+  "mediaPlayVideo": "Spela Video",
+  "mediaViewImage": "Visa bild",
+  "mediaCount": "{count}_ bilder",
+  "mediaCountSingle": "1 bild",
+  "mediaMoreImages": "+_PLACEHOLDER_0_ mer",
+  "errorNotFound": "Beep hittades inte",
+  "errorLoadError": "Misslyckades med att ladda beep detaljer",
+  "shareYourThoughts": "Dela dina tankar om denna observation...",
+  "postComment": "Post Comment",
+  "loggedInAs": "Logga in som",
+  "logout": "Logout",
+  "notFollowing": "Inte följa",
+  "follow": "Följ",
+  "navRecentBeeps": "Nyligen Beeps",
+  "navMap": "Karta",
+  "navDownloadApp": "Ladda ner App",
+  "alertLevel": "Alert Level",
+  "witnesses": "Vittnen",
+  "confirmations": "Bekräftelser",
+  "reporterLabel": "Rapporterad av användaren",
+  "coordinatesLabel": "Koordinater",
+  "eventTime": "Event Time",
+  "reportedTime": "Rapporterad tid",
+  "addedToUfobeep": "Tillagd till UFOBeep",
+  "mufonDatabaseReport": "Mufonen Fallnummer:",
+  "copyShortLinkTitle": "Kopiera länk till Clipboard",
+  "imageNotFound": "Bild som inte hittats",
+  "ufoSightingAlt": "UFO Beep UFO varning",
+  "celestialDataTitle": "Celestial Objects",
+  "visiblePlanets": "Synliga planeter",
+  "locationDataTitle": "Platsinformation",
+  "timezone": "Timezone",
+  "coordinates": "Koordinater",
+  "processingSummaryTitle": "Processing Sammanfattning",
+  "processingTime": "Bearbetningstid",
+  "successful": "Framgång",
+  "failed": "Misslyckades",
+  "locationEnrichmentTitle": "Plats detaljer",
+  "aircraftDataSource": "Datakälla",
+  "noAircraftDetected": "Inga flygplan upptäckta",
+  "sightingReport": "Sighting Report",
+  "ufoAlert": "UFO Alert",
+  "alert": "Alert",
+  "notificationTickerUfoAlert": "UFO Alert - Ny syn i närheten",
+  "notificationTickerComment": "Ny kommentar till UFO Alert",
+  "weatherConditions": "Väderförhållanden",
+  "visibility": "Synlighet",
+  "humidity": "Humidity",
+  "pressure": "Tryck",
+  "locationDetails": "Plats detaljer",
+  "city": "Staden City",
+  "state": "Staten",
+  "country": "Landet",
+  "satelliteActivity": "Satellitaktivitet",
+  "satellitesVisibleOverhead": "Satelliter synliga överhuvudet vid observationstid och plats",
+  "dataSource": "Datakälla",
+  "blackskyImagery": "BlackSky Imagery",
+  "resolution": "Resolution",
+  "groundResolution": "35cm grundupplösning",
+  "delivery": "Leverans",
+  "averageDelivery": "90 minuter genomsnitt",
+  "cost": "Kostnad",
+  "skyfiSatelliteImagery": "SkyFi satellit Imagery",
+  "region": "Region",
+  "remoteArea": "Fjärrområde",
+  "startingPrice": "Starta pris",
+  "coverage": "Täckning",
+  "confidenceCoverage": "95% förtroende",
+  "status": "Status",
+  "shareThoughts": "Dela dina tankar om denna observation...",
+  "postCommand": "Postkommando",
+  "clouds": "Moln",
+  "windLabel": "Vind",
+  "filterAlerts": "Filter Alerts",
+  "alertSource": "Alert Source",
+  "ufobeepOnly": "Ufobeep bara",
+  "ufobeepOnlyDescription": "Visa endast original UFOBeep-rapporter (exkludera MUFON-databas)",
+  "alertDistanceRange": "Alert Distance Range",
+  "showAllAlerts": "Visa alla varningar",
+  "showAll": "Visa alla",
+  "distanceSliderDescription": "Dra för att justera hur långt du vill se varningar. Börja från väder synlighet avstånd upp till att visa alla varningar oavsett avstånd.",
+  "applyFilters": "Applicera filter",
+  "notificationRange": "Anmälan Range",
+  "notificationRangeDescription": "Få push-varningar för observationer inom detta avstånd",
+  "viewingRange": "Visa Range",
+  "viewingRangeDescription": "Visa observationer inom detta avstånd när du surfar",
+  "weatherVisibility": "Vädersynlighet (~10 km)",
+  "localArea": "Lokalt område (25 km)",
+  "regional": "Regional",
+  "pushNotifications": "Push Notifications",
+  "alertBrowsing": "Alert Browsing",
+  "pushAlertsWithinDistance": "Få meddelanden inom detta område",
+  "showAlertsWhenBrowsing": "Filtrera vad du ser i listan",
+  "heroMainTagline": "Få ett pip på din telefon när UFOs finns i närheten",
+  "heroSecondaryTagline": "Ta reda på när och var du ska titta på himlen",
+  "sourceFilters": "Källa",
+  "sourceFiltersDescription": "Välj vilka rapporter som visas i ditt flöde",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "UFOBeep endast",
+  "mufonOnlySource": "Mufon bara",
+  "browseFilters": "Bläddra",
+  "browseFiltersDescription": "Hur man ser och sorterar varningar",
+  "sortByNewest": "Nyaste",
+  "sortByNearest": "Närmast",
+  "sortBy": "Sort by",
+  "pushAlertsTitle": "Push Alerts",
+  "pushAlertsDescription": "Vad pingar din telefon",
+  "alertRadius": "Alert Radius",
+  "mufonNoPushInfo": "MUFON-rapporter importeras nattligt och utlöser inte push-varningar",
+  "privacyData": "Privacy & Data",
+  "privacyPolicyDesc": "Hur vi skyddar och använder dina data",
+  "termsOfService": "Villkor för Service",
+  "termsOfServiceDesc": "Juridiska villkor och villkor",
+  "locationTracking": "Location Tracking",
+  "locationTrackingDesc": "Bakgrundsplats för närhetsvarningar",
+  "locationTrackingTitle": "Background Location Tracking",
+  "locationTrackingExplanation": "UFOBeep övervakar din plats i bakgrunden för att skicka dig närhetsvarningar när UFO-observationer sker nära din nuvarande plats, även när du är hemifrån.",
+  "locationTrackingBattery": "Använder intelligent geofencing för <3% batteripåverkan",
+  "backgroundLocationTracking": "Aktivera Background Tracking",
+  "locationTrackingActive": "Övervaka plats för närhetsvarningar",
+  "locationTrackingInactive": "Location tracking är inaktiverad",
+  "locationTrackingDisabledWarning": "Du får inte närhetsvarningar när du flyttar till nya platser",
+  "trackingStatus": "Spårningsstatus",
+  "monitoringStatus": "Övervakning",
+  "active": "Aktiv",
+  "inactive": "Inaktiv",
+  "lastKnownLocation": "Sista kända plats",
+  "lastLocationUpdate": "Sista uppdateringen",
+  "movementThreshold": "Rörelsetröskel",
+  "updateFrequency": "Uppdatera frekvens",
+  "batteryImpact": "Batteripåverkan",
+  "dataPrivacy": "Data Privacy",
+  "locationPermissionExplanation": "UFOBeep behöver \"Always Allow\" plats tillstånd att övervaka din rörelse och skicka närhet varningar när du är på nya platser.",
+  "benefitsTitle": "Fördelar",
+  "locationTrackingBenefits": "•• Få UFO-varningar var du än reser\n• Automatiska platsuppdateringar\n•• Ingen manuell installation krävs",
+  "allowLocationAccess": "Tillåt platsåtkomst",
+  "locationPermissionRequired": "Platstillstånd krävs för bakgrundsspårning",
+  "locationTrackingEnabled": "Bakgrundsplats spårning aktiverad",
+  "locationTrackingDisabled": "Bakgrundsplats spårning inaktiverad",
+  "justNow": "Just nu",
+  "minutesAgo": "{minutes} för några minuter sedan",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours}_ för några timmar sedan",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "__PLACEHOLDER_0_dagar sedan",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Data Management",
+  "dataManagementDesc": "Exportera eller ta bort dina kontodata",
+  "splashTagline": "Real-time sighting varningar",
+  "splashStartingUp": "Börjar...",
+  "splashInitializationFailed": "Initialisering misslyckades",
+  "splashInitializationFailedTitle": "Initialisering misslyckades",
+  "splashInitializationError": "Appen misslyckades med att starta ordentligt:",
+  "splashRetry": "Retry",
+  "splashContinue": "Fortsätt",
+  "splashInitializing": "Initialisera...",
+  "signInWelcome": "Välkommen __PLACEHOLDER_0_!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Sign-in misslyckades: {error}",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Vänligen ange din e-postadress",
+  "signInPleaseEnterValidEmail": "Ange en giltig e-postadress",
+  "signInMagicLinkSent": "Magisk länk skickad! Kontrollera din e-post och klicka på länken för att logga in.",
+  "signInMagicLinkFailed": "Misslyckades med att skicka magisk länk. Försök igen.",
+  "signInAllDataCleared": "All data cleared",
+  "signInSubtitle": "Real-time UFO-observationsvarningar och MUFON-rapporter",
+  "signInGoogleLoading": "Logga in...",
+  "signInContinueWithGoogle": "Fortsätt med Google",
+  "signInOr": "eller",
+  "signInWithEmail": "Logga in med e-post",
+  "signInEmailDescription": "Vi skickar dig en säker länk för att logga in",
+  "signInEmailAddress": "E-postadress",
+  "signInEmailPlaceholder": "din@email.com",
+  "signInTryAgainIn": "Försök igen i __PLACEHOLDER_0_s",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Skicka...",
+  "signInSendMagicLink": "Skicka Magic Link",
+  "signInCheckEmail": "Kontrollera din e-post! Länken löper ut på 15 minuter.",
+  "signInSecureAuth": "Säker autentisering",
+  "signInSecureAuthDescription": "Använd Google Sign-In för omedelbar åtkomst, eller e-post magiska länkar som löper ut på 15 minuter.",
+  "signInClearAllDataDebug": "Clear All Data (Debug)",
+  "emailAuthFailedToSend": "Underlåten att skicka e-post",
+  "emailAuthFailedToSendTryAgain": "Misslyckades med att skicka e-post. Försök igen.",
+  "emailAuthInvalidEmail": "Ogiltig e-postadress. Vänligen kontrollera formatet.",
+  "emailAuthUserNotFound": "Inget konto hittades med denna e-postadress.",
+  "emailAuthTooManyRequests": "För många försök. Försök igen senare.",
+  "emailAuthOperationNotAllowed": "E-postlänkskylt är inte aktiverat.",
+  "emailAuthQuotaExceeded": "E-post kvot översteg. Försök igen imorgon.",
+  "emailAuthVerificationFailed": "E-postverifiering misslyckades. Försök igen.",
+  "emailAuthTitle": "Email Verification",
+  "emailAuthVerifyYourEmail": "Verifiera din e-post",
+  "emailAuthDescription": "Lägg till din e-postadress för kontoåterställning och säkerhet. Vi skickar dig en säker inloggningslänk.",
+  "emailAuthEmailAddress": "E-postadress",
+  "emailAuthEmailPlaceholder": "your.email@example.com",
+  "emailAuthPleaseEnterEmail": "Vänligen ange din e-postadress",
+  "emailAuthPleaseEnterValidEmail": "Ange en giltig e-postadress",
+  "emailAuthCheckEmailToContinue": "Kontrollera din e-post och tryck på verifieringslänken för att fortsätta.",
+  "emailAuthResendEmail": "Återvänd e-post",
+  "emailAuthSendVerificationEmail": "Skicka verifiering E-post",
+  "emailAuthHowItWorks": "Hur e-postverifiering fungerar",
+  "emailAuthHowItWorksSteps": "1. Vi skickar en säker inloggningslänk\n2. Kontrollera din e-post och tryck på länken\n3. Din e-post verifieras automatiskt\n4. Inga lösenord behövs!",
+  "emailAuthSecurityNotice": "E-postverifiering hjälper till att säkra ditt konto och möjliggör återställning av konton om du förlorar åtkomsten till din enhet.",
+  "phoneAuthFailedToSendCode": "Misslyckades med att skicka verifieringskod. Försök igen.",
+  "phoneAuthInvalidCodeTryAgain": "Ogiltig verifieringskod. Försök igen.",
+  "phoneAuthPhoneVerified": "Telefonnummer verifierat: {phoneNumber}",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "Telefonverifiering misslyckades. Försök igen.",
+  "phoneAuthCodeResent": "Verifieringskod förbittring",
+  "phoneAuthFailedToResendCode": "Misslyckades med att återställa kod. Försök igen.",
+  "phoneAuthInvalidPhoneNumber": "Ogiltigt telefonnummer. Vänligen kontrollera formatet.",
+  "phoneAuthTooManyRequests": "För många försök. Försök igen senare.",
+  "phoneAuthInvalidVerificationCode": "Ogiltig verifieringskod. Vänligen kontrollera och försök igen.",
+  "phoneAuthSessionExpired": "Verifieringssessionen löpte ut. Be om en ny kod.",
+  "phoneAuthSmsQuotaExceeded": "SMS kvot översteg. Försök igen imorgon.",
+  "phoneAuthCredentialAlreadyInUse": "Detta telefonnummer är redan kopplat till ett annat konto.",
+  "phoneAuthVerificationFailedGeneric": "Verifiering misslyckades. Försök igen.",
+  "phoneAuthTitle": "Telefonverifiering",
+  "phoneAuthVerifyYourPhone": "Verifiera din telefon",
+  "phoneAuthEnterVerificationCode": "Ange verifiering Kodkod",
+  "phoneAuthAddPhoneForSecurity": "Lägg till ditt telefonnummer för kontoåterställning och säkerhet",
+  "phoneAuthEnterSixDigitCode": "Ange den 6-siffriga koden som skickats till {phoneNumber}____________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Telefonnummer",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123-4567",
+  "phoneAuthPleaseEnterPhone": "Vänligen ange ditt telefonnummer",
+  "phoneAuthPleaseEnterValidPhone": "Ange ett giltigt telefonnummer",
+  "phoneAuthVerificationCode": "Verifieringskod",
+  "phoneAuthPleaseEnterSixDigitCode": "Ange 6-siffrig kod",
+  "phoneAuthResendCode": "Resend Code",
+  "phoneAuthSendVerificationCode": "Skicka verifiering Kodkod",
+  "phoneAuthVerifyCode": "Verifiera koden",
+  "phoneAuthChangePhoneNumber": "Ändra telefonnummer",
+  "phoneAuthSmsNotice": "Vi skickar en verifieringskod via SMS. Standardmeddelandet kan gälla.",
+  "phoneAuthCodeExpires": "Koden löper ut på 60 sekunder. Kolla dina meddelanden.",
+  "yourDataRights": "Din datarättigheter",
+  "dataRightsExplanation": "Du har full kontroll över dina personuppgifter. Du kan exportera alla dina uppgifter eller permanent radera ditt konto när som helst.",
+  "exportYourData": "Exportera dina data",
+  "exportDataDescription": "Ladda ner alla dina kontodata",
+  "exportData": "Exportera data",
+  "exportingData": "Exportera...",
+  "exportDataDetails": "Inkluderar: profil, pip, kommentarer, enhetsinformation och preferenser. Data finns i JSON-format.",
+  "dataExportedSuccessfully": "Data som exporteras framgångsrikt",
+  "dataExportFailed": "Underlåten att exportera data",
+  "deleteAccount": "Radera konto",
+  "deleteAccountDescription": "Ta permanent bort ditt konto och all data",
+  "deleteAccountWarning": "Denna åtgärd kan inte ångras. Alla dina pip, kommentarer och kontodata raderas permanent.",
+  "deleteMyAccount": "Ta bort mitt konto",
+  "deletingAccount": "Ta bort...",
+  "deleteAccountConfirmTitle": "Radera konto",
+  "deleteAccountConfirmMessage": "Är du helt säker på att du vill ta bort ditt konto? Denna åtgärd är permanent och kan inte ångras.",
+  "dataWillBeDeleted": "Följande data raderas permanent:",
+  "deletedDataList": "•• Din profil och användarnamn\n•• Alla dina pip och rapporter\n•• Alla dina kommentarer\n• Enhetsregistreringsdata\n• Plats- och preferensdata",
+  "deleteAccountPermanent": "Ta bort permanent",
+  "accountDeletedSuccessfully": "Kontot raderat framgångsrikt",
+  "accountDeletionFailed": "Underlåten att ta bort konto",
+  "onboardingWelcomeTitle": "Välkommen till UFOBeep",
+  "onboardingWelcomeBody": "Få realtidsvarningar när UFOs finns i närheten. Missa aldrig en observation igen.",
+  "onboardingAlertsTitle": "Håll dig informerad",
+  "onboardingAlertsBody": "Ange hur långt borta observationer bör vara att utlösa varningar.",
+  "onboardingReportTitle": "Se något? Beep It!",
+  "onboardingReportBody": "Snappa ett foto eller video och dela direkt med närliggande tittare.",
+  "onboardingPermissionsTitle": "Din kamera och plats",
+  "onboardingPermissionsBody": "Aktivera kamera, plats och meddelanden så att du kan:\nRapportera observationer snabbt\n– För Få varningar för UFO nära dig",
+  "onboardingCameraTitle": "Fånga bevis",
+  "onboardingCameraBody": "Dela foton och videor du bara fångade från ditt galleri eller länge trycka på UFOBeep-ikonen för att starta direktkameraläge.",
+  "onboardingCompassTitle": "Se var de såg",
+  "onboardingCompassBody": "Kompass visar dig den exakta riktning som vittnet såg när de såg UFO. Peka din telefon och titta!",
+  "onboardingCommunityTitle": "Gå med i Skywatchers",
+  "onboardingCommunityBody": "Bläddra i observationer, få tillgång till MUFON-rapporter och ansluta med andra skywatchers.",
+  "skip": "Skip",
+  "getStarted": "Kom igång",
+  "viewOnboardingAgain": "Visa ombordstigning igen",
+  "customAlertRange": "Anpassad Alert Range",
+  "enterRangeKm": "Inträde i km (1-99999)",
+  "largeRangeWarning": "Stora intervall (> 100km) kan generera många varningar",
+  "globalRangeWarning": "Mycket stora intervall (>1000km) skickar dig varningar från hela världen",
+  "invalidRange": "Ange ett nummer mellan 1 och 99999",
+  "celestialSunDaylight": "Sol är upp - dagsljusförhållanden kan påverka synligheten",
+  "celestialSunTwilight": "Twilight förhållanden - viss synlighet men mörkare än dagsljus",
+  "celestialSunDark": "Mörka förhållanden - optimalt för att observera objekt i himlen",
+  "celestialMoonBright": "Ljus __PLACEHOLDER_0_ månen synlig - kan belysa eller dölja andra föremål",
+  "celestialMoonModerate": "{phase} månen synlig - måttliga ljusförhållanden",
+  "celestialMoonThin": "Thin __PLACEHOLDER_0_ månen synlig - minimal belysning",
+  "celestialMoonHidden": "__PLACEHOLDER_0_ månen under horisonten - ingen månbelysning",
+  "celestialNoPlanets": "Inga ljusa planeter synliga som kan misstas för UFO",
+  "celestialPlanetHigh": "{planet} hög overhead (_PLACEHOLDER_1_°) - mycket framträdande",
+  "celestialPlanetMedium": "{planet} synlig på __PLACEHOLDER_1_° - kan misstas för flygplan",
+  "celestialPlanetLow": "__PLACEHOLDER_0_ låg på horisont (_PLACEHOLDER_1_°)",
+  "celestialNoStars": "Inga ovanligt ljusa stjärnor synliga",
+  "celestialStarSingle": "{star} är framträdande på __PLACEHOLDER_1_° höjd",
+  "celestialStarsMultiple": "{count} ljusa stjärnor synliga – {count}________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "celestialSummaryDaylight": "Dagsljusförhållanden",
+  "celestialSummaryDark": "Mörka himmelförhållanden",
+  "celestialSummaryMoonUp": "månbelysning närvarande",
+  "celestialSummaryMoonDown": "ingen månbelysning",
+  "celestialSummaryManyObjects": "{count} ljusa objekt som kan förväxlas med UFO:er",
+  "celestialSummarySomeObjects": "{count} ljusa objekt (er) synliga",
+  "celestialSummaryFewObjects": "minimala ljusa föremål i himlen",
+  "celestialSkySummary": "Sky villkor: {conditions}",
+  "planetVenus": "Venus",
+  "planetJupiter": "Jupiter",
+  "planetSaturn": "Saturnus",
+  "planetMars": "Mars",
+  "planetMercury": "Mercury",
+  "planetUranus": "Uranus",
+  "planetNeptune": "Neptunus",
+  "starSirius": "Sirius",
+  "starCanopus": "Canopus",
+  "starArcturus": "Arcturus",
+  "starVega": "Vega",
+  "starCapella": "Capella",
+  "starRigel": "Rigel",
+  "starProcyon": "Procyon",
+  "starBetelgeuse": "Betelgeuse",
+  "moonPhaseNew": "Ny måne",
+  "moonPhaseWaxingCrescent": "Waxing Crescent",
+  "moonPhaseFirstQuarter": "Första kvartalet",
+  "moonPhaseWaxingGibbous": "Waxing Gibbous",
+  "moonPhaseFull": "Fullmåne",
+  "moonPhaseWaningGibbous": "Varning Gibbous",
+  "moonPhaseThirdQuarter": "Tredje kvartalet",
+  "moonPhaseWaningCrescent": "Varning Crescent",
+  "planetBelowHorizon": "__PLACEHOLDER_0_ under horisont",
+  "planetHighOverheadProminent": "{planet} hög overhead (_PLACEHOLDER_1_°) - mycket framträdande",
+  "planetMidSkyProminent": "{planet} vid __PLACEHOLDER_1_° - framträdande",
+  "planetMidSky": "__PLACEHOLDER_0_ vid __PLACEHOLDER_1_°",
+  "starVeryBright": "{star} mycket ljus vid __PLACEHOLDER_1_°",
+  "starProminent": "{star} är framträdande på __PLACEHOLDER_1_° höjd",
+  "starVisible": "__PLACEHOLDER_0_ vid __PLACEHOLDER_1_°",
+  "altitudeShort": "Alt",
+  "magnitudeShort": "Mag",
+  "satellitesVisibleMightExplain": "{count}-satelliter synliga - kan förklara observation",
+  "satellitesVisibleUnlikelyExplain": "{count}-satelliter synliga - osannolikt att förklara observationer",
+  "noSatellitesVisible": "Inga satelliter synliga",
+  "aircraftDetectedInRadius": "{count}_ flygplan som upptäcks inom __PLACEHOLDER_1_km",
+  "processingAlert": "Bearbeta UFO Alert...",
+  "analyzingEnvironment": "Analysera miljöförhållanden",
+  "weatherAnalysis": "Väderanalys",
+  "locationAnalysis": "Platsanalys",
+  "aircraftTracking": "Aircraft Tracking",
+  "satelliteAnalysis": "Satellitanalys",
+  "celestialAnalysis": "Celestial Analys",
+  "analyzing": "Analysera __PLACEHOLDER_0_...",
+  "processorWeather": "väderförhållanden",
+  "processorLocation": "plats detaljer",
+  "processorAircraft": "närliggande flygplan",
+  "processorSatellites": "satellitpositioner",
+  "processorCelestial": "himmelska föremål",
+  "calculatingCelestialData": "Beräkning av himmelska data...",
+  "sunLabel": "Sol sol sol solen",
+  "moonLabel": "Månen",
+  "planetsVisible": "Planeter: __PLACEHOLDER_0_ synliga",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Stjärnor",
+  "planetsLabel": "Planeter",
+  "moonWithPhase": "Månen (_PLACEHOLDER_0__)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Inga satelliter var synliga vid exakt tidpunkt för din observation",
+  "satellitesVisibleOverheadAtTime": "Satelliter synliga överhuvudet vid observationstid och plats",
+  "belowHorizon": "under horisonten",
+  "analysisFailedGeneric": "Analys misslyckades",
+  "unknownWeather": "Okänd",
+  "noWeatherDescription": "Ingen beskrivning",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satelliter (__PLACEHOLDER_0_ syns nu)",
+  "sunWithDescription": "Solen: {description}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Månen: {description}__",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Okänd planet",
+  "unknownStar": "Okänd stjärna",
+  "unknownSatellite": "Okänd satellit",
+  "unknownDirection": "okänd riktning",
+  "brightStars": "Bright Stars",
+  "satellites": "Satelliter",
+  "seeAllSatellites": "Se alla satelliter {count}",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Max höjd: __PLACEHOLDER_0_°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Magnitud: {value}",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Okänd",
+  "altitudeValue": "__PLACEHOLDER_0_° höjd",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "__PLACEHOLDER_0_° azimuth",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Inga himmelska data tillgängliga.",
+  "gettingLocation": "Få din plats...",
+  "media": "Medier",
+  "locationRequired": "Plats krävs",
+  "confirmingWitness": "Bekräfta vittne...",
+  "chooseYourUsername": "Välj ditt användarnamn",
+  "weatherClear": "Clear",
+  "weatherClearSky": "klar himmel",
+  "rain": "Regn",
+  "snow": "Snö snö",
+  "thunderstorm": "Thunderstorm",
+  "drizzle": "Drizzle",
+  "fog": "Fog",
+  "fewClouds": "få moln",
+  "scatteredClouds": "spridda moln",
+  "brokenClouds": "trasiga moln",
+  "overcastClouds": "overcast moln",
+  "lightRain": "ljus regn",
+  "moderateRain": "måttligt regn",
+  "heavyRain": "tungt regn",
+  "aircraftDetectedCurrentPositions": "{count}_ flygplan som upptäcks inom __PLACEHOLDER_1_km (nuvarande positioner)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "{count}_ dim satelliter synliga - osannolikt att förklara observationer",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "Mufonen Rapporteringsdatum",
+  "satelliteNameDirection": "{name} {direction}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
+}

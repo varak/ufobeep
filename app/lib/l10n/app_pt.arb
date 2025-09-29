@@ -1,0 +1,1148 @@
+{
+  "@@locale": "pt",
+  "appName": "OVNIBeep",
+  "ok": "ESTÁ BEM",
+  "cancel": "Cancelar",
+  "close": "Fechar",
+  "save": "Gravar",
+  "delete": "Apagar",
+  "edit": "Editar",
+  "retry": "Repetir",
+  "yes": "Sim",
+  "no": "Não",
+  "back": "Voltar",
+  "next": "Próxima",
+  "done": "Feito",
+  "loading": "Carregando..",
+  "processing": "Processando..",
+  "errorGeneric": "Algo correu mal.",
+  "networkError": "Erro de rede. Verifica a tua ligação.",
+  "permissionsRequired": "Permissões necessárias",
+  "learnMore": "Saiba mais",
+  "welcomeTitle": "Bem-vindo ao OVNIBeep",
+  "welcomeSubtitle": "Alertas de OVNI em tempo real perto de você",
+  "signIn": "Iniciar sessão",
+  "signOut": "Sair",
+  "continueAsGuest": "Continuar como convidado",
+  "enterUsername": "Digite um nome de usuário",
+  "username": "Utilizador",
+  "usernameUpdated": "Nome de utilizador actualizado",
+  "profile": "Perfil",
+  "settings": "Configurações",
+  "tabAlerts": "Alertas",
+  "tabBeep": "Bip",
+  "tabChat": "Conversar",
+  "tabMap": "Mapa",
+  "tabSettings": "Configurações",
+  "alertsTitle": "Alertas próximos",
+  "noAlerts": "Ainda não há alertas por perto.",
+  "pullToRefresh": "Puxar para atualizar",
+  "alertDistance": "__PACEHOLDER_0____",
+  "@alertDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2 mi"
+      }
+    }
+  },
+  "alertDirection": "Rolamento __PLACELODER_0___",
+  "@alertDirection": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "137"
+      }
+    }
+  },
+  "viewAlert": "Ver alerta",
+  "viewOnMap": "Ver no mapa",
+  "iSeeItToo": "Eu também vejo",
+  "confirmWitnessed": "Confirma que viu isto?",
+  "witnessConfirmed": "Obrigado — sua confirmação foi publicada.",
+  "createBeepTitle": "Enviar uma Bip",
+  "beepExplain": "Capture o que você vê e alerta os observadores próximos.",
+  "capturePhoto": "Capturar foto",
+  "captureVideo": "Capturar vídeo",
+  "pickFromGallery": "Escolher na galeria",
+  "descriptionHint": "Descreva o que está a ver no céu..",
+  "submitBeep": "Enviar o Bip",
+  "beepSent": "Bip enviado",
+  "beepSentWithUrl": "Beep enviado com sucesso",
+  "@beepSentWithUrl": {
+    "placeholders": {
+      "shortUrl": {
+        "type": "String"
+      }
+    }
+  },
+  "uploadingMedia": "Enviando mídia..",
+  "includeLocation": "Incluir localização",
+  "includeTimestamp": "Incluir a hora",
+  "beepFailed": "Não foi possível enviar o Beep.",
+  "mediaProcessing": "Processando mídia..",
+  "cameraPermissionTitle": "Acesso necessário à câmara",
+  "cameraPermissionBody": "Conceda acesso à câmera para capturar fotos e vídeos de OVNI.",
+  "locationPermissionTitle": "Permissão de localização necessária",
+  "locationPermissionBody": "Usamos a sua localização para enviar e receber alertas nas proximidades.",
+  "microphonePermissionTitle": "Acesso ao microfone necessário",
+  "microphonePermissionBody": "Conceda acesso ao microfone para captura de vídeo com áudio.",
+  "openSettings": "Abrir Configurações",
+  "alertDetailTitle": "Detalhes da visão",
+  "reportedBy": "Reportado por __PLACEHOLDER_0_",
+  "@reportedBy": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "reportedAt": "Reportado {timeAgo}",
+  "@reportedAt": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String",
+        "example": "5m ago"
+      }
+    }
+  },
+  "distanceAway": "__PACELODER_0_",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "2.4 km"
+      }
+    }
+  },
+  "bearingToObject": "Rolamento para objeto: {bearing}_°",
+  "@bearingToObject": {
+    "placeholders": {
+      "bearing": {
+        "type": "int",
+        "example": "92"
+      }
+    }
+  },
+  "openCompass": "Abrir bússola",
+  "openAR": "Abrir sobreposição do AR",
+  "openChat": "Abrir a conversa",
+  "commentsTitle": "Observações",
+  "addComment": "Adicionar um comentário..",
+  "send": "Enviar",
+  "commentPosted": "Comentário publicado",
+  "autoFollowEnabled": "Você está agora seguindo este alerta.",
+  "noCommentsYet": "Sem comentários ainda. Seja o primeiro a comentar!",
+  "newCommentNotification": "Novo comentário sobre um avistamento que você segue.",
+  "mapTitle": "Mapa ao Vivo",
+  "compassTitle": "Bússola",
+  "compassSettings": "Configuração da Bússola",
+  "compassMode": "Modo Bússola",
+  "compassStandardMode": "Modo Padrão",
+  "compassPilotMode": "Modo Pilot",
+  "compassStandardDescription": "Cabeçalho básico e navegação",
+  "compassPilotDescription": "Navegação avançada com ETA e vectorização",
+  "pointingTo": "Apontando para __PLACEHOLDER_0_",
+  "@pointingTo": {
+    "placeholders": {
+      "direction": {
+        "type": "String",
+        "example": "SE"
+      }
+    }
+  },
+  "calibratingCompass": "Calibrando bússola..",
+  "openAROverlay": "Abrir sobreposição do AR",
+  "pushTitleAlertNearby": "Alerta OVNI perto de você",
+  "pushBodyAlertNearby": "Foi relatado um novo avistamento {distance}_______________________________________________________________________________________________________________________________________________________________________________________________.",
+  "@pushBodyAlertNearby": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "0.8 mi"
+      }
+    }
+  },
+  "pushTitleComment": "Novo comentário",
+  "pushBodyComment": "Alguém comentou sobre um avistamento que você segue.",
+  "pushTitleWitness": "Confirmação da testemunha",
+  "temperature": "Temperatura",
+  "pushBodyWitness": "Um usuário confirmou que vê o mesmo objeto.",
+  "weather": "Tempo",
+  "cloudCover": "Capa da nuvem: __PACEHOLDER_0__",
+  "@cloudCover": {
+    "placeholders": {
+      "percent": {
+        "type": "int",
+        "example": "63"
+      }
+    }
+  },
+  "wind": "Vento:",
+  "@wind": {
+    "placeholders": {
+      "speed": {
+        "type": "num",
+        "example": "12.4"
+      },
+      "unit": {
+        "type": "String",
+        "example": "mph"
+      }
+    }
+  },
+  "nearbyAircraft": "Aviões próximos",
+  "noAircraft": "Nenhuma aeronave próxima",
+  "loadingContext": "Carregando contexto ambiental..",
+  "settingsTitle": "Configurações",
+  "notifications": "Notificação",
+  "enablePushNotifications": "Obter notificações para comentários futuros",
+  "quietHours": "Horas calmas",
+  "quietHoursDesc": "Alertas de silêncio entre as horas selecionadas.",
+  "quietHoursEnabled": "Habilitar horas silenciosas",
+  "quietHoursFrom": "De",
+  "quietHoursUntil": "Até",
+  "quietHoursDefaultTime": "Horas de silêncio padrão",
+  "emergencyOverride": "Sobreposição de emergência",
+  "emergencyOverrideDesc": "Permitir alertas urgentes durante horas silenciosas",
+  "dndMode": "Não Perturbe",
+  "dndUntil": "Não perturbe até",
+  "dndEnabled": "DND ativado até {time}",
+  "dndDisabled": "DND desabilitado",
+  "quietHoursActive": "Horas de silêncio activas",
+  "quietHoursScheduled": "Horas de silêncio: __PACEHOLDER_0__ __PACEHOLDER_1_",
+  "pushNotificationUfoAlert": "UFO Alerta",
+  "pushNotificationAnomalyAlert": "Alerta de Anomalias",
+  "pushNotificationNearby": "Perto",
+  "pushNotificationInYourArea": "na sua área. Toque rapidamente para ver os detalhes.",
+  "pushNotificationCommented": "__PACEHOLDER_0___ comentado",
+  "pushNotificationCommentedOn": "{username} comentado em __PLACEHOLDER_1_",
+  "pushNotificationGeneric": "OVNIBeep",
+  "pushNotificationNewSighting": "Novo avistamento nas proximidades",
+  "language": "Língua",
+  "chooseLanguage": "Escolher idioma",
+  "units": "Unidades",
+  "unitsImperial": "Imperial (mi, mph)",
+  "unitsMetric": "Metrico (km, km/h)",
+  "privacyPolicy": "Política de Privacidade",
+  "termsOfUse": "Termos de Utilização",
+  "errorNoLocation": "Localização não disponível. Tente novamente fora com visão clara do céu.",
+  "errorNoCamera": "Câmera indisponível neste dispositivo.",
+  "errorUploadFailed": "O envio falhou. Por favor, tente de novo.",
+  "errorPermissionDenied": "Permissão negada.",
+  "errorInvalidUsername": "Esse nome de usuário não está disponível.",
+  "nothingToShow": "Nada para mostrar ainda.",
+  "storeShortDesc": "Alertas de OVNI instantâneos perto de ti. Capturar, confirmar e conversar em tempo real.",
+  "storeLongDesc": "OVNIBeep envia alertas em tempo real quando alguém vê um OVNI por perto. Capture fotos e vídeos, confirme avistamentos com toque, view direction & distance e converse com outros observadores do céu.",
+  "keywords": "OVNI,UAP,OVNI,aliens,estrelas,sightings,skywatch,alerts,radar,compass",
+  "noAlertsFound": "Sem alertas correspondentes",
+  "alertsFilterHelp": "Tente ajustar seus filtros para ver mais resultados",
+  "verified": "Verificado",
+  "beepOnly": "Apenas Beep",
+  "reportOnly": "Somente texto",
+  "videoOnly": "Apenas Vídeo",
+  "imageOnly": "Apenas a Imagem",
+  "mediaOnly": "Somente mídia",
+  "timeJustNow": "agora mesmo",
+  "timeDaysAgo": "{count} há dias",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "timeHoursAgo": "{count} há horas",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "timeMinutesAgo": "{count} há minutos",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "12"
+      }
+    }
+  },
+  "loadMoreAlerts": "Carregar mais alertas",
+  "toggleMufonTooltip": "Alternar os avistamentos do MUFON",
+  "showMufonData": "Mostrar dados MUFON",
+  "hideMufonData": "Ocultar dados MUFON",
+  "showingUfoBeepOnly": "Mostrando apenas relatórios UFOBeep",
+  "showingAllReports": "A mostrar todos os relatórios, incluindo a base de dados MUFON",
+  "filteredSuffix": "filtrado",
+  "detailsTitle": "Detalhes",
+  "mufonCase": "MUFON Processo",
+  "mufonSighting": "Relatório de Avistamento de MUFON",
+  "mufonLightSighting": "Relatório de observação da luz de MUFON",
+  "mufonSphereSighting": "Relatório de observação da esfera de MUFON",
+  "mufonDiscSighting": "MUFON Relatório de Avistamento do Disco",
+  "mufonTriangleSighting": "MUFON Relatório de Visão do Triângulo",
+  "mufonCigarSighting": "Relatório de observação do charuto MUFON",
+  "mufonOvalSighting": "Relatório de observação ocular de MUFON",
+  "mufonRectangleSighting": "MUFON Relatório de Vista Rectângulo",
+  "mufonCylinderSighting": "Relatório de observação do cilindro MUFON",
+  "mufonBoomerangSighting": "MUFON Boomerang Sighting Report",
+  "mufonStarlikeSighting": "MUFON Relatório de Avistamento Estelar",
+  "mufonCaseDetailsTitle": "CASO MUFON #{caseNumber} Detalhes",
+  "@mufonCaseDetailsTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "sightingDate": "Data de observação",
+  "mufonDatabaseEntryDate": "Data de entrada em MUFON Base de dados",
+  "databaseEntry": "Entrada da Base de Dados",
+  "shareLink": "Partilhar a Ligação",
+  "linkCopied": "Ligação copiada para a área de transferência",
+  "locationLabel": "Localização:",
+  "distanceLabel": "Distância",
+  "timeLabel": "Tempo:",
+  "reportedByLabel": "Reportado por",
+  "unknownLocation": "Localização desconhecida",
+  "locationUnknown": "Localização Desconhecido",
+  "witnessesLabel": "Testemunhas",
+  "witnessesCountMessage": "As pessoas confirmaram este avistamento",
+  "@witnessesCountMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "photoAnalysisTitle": "Análise Fotográfica",
+  "mediaItemsProcessed": "Análise: {count} arquivos de mídia processados",
+  "@mediaItemsProcessed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      }
+    }
+  },
+  "addMoreMedia": "Adicionar mais",
+  "addMedia": "Adicionar mídia",
+  "retakePhoto": "Retirar foto",
+  "retakeVideo": "Retomar vídeo",
+  "camera": "Câmera",
+  "gallery": "Galeria",
+  "basicSettings": "Configuração Básica",
+  "appSettings": "Configuração da Aplicação",
+  "timeFormat": "Formato de Hora",
+  "timeFormat24Hour": "24 horas (14:30)",
+  "timeFormat12Hour": "12 horas (2h30)",
+  "timeFormatDesc": "Tempo de exibição em formato 24 horas ou 12 horas",
+  "alertRange": "Intervalo de Alerta",
+  "manageNotificationsDesc": "Gerenciar as & configurações de assinaturas",
+  "permissionsTitle": "Permissões",
+  "permissionLocation": "Localização",
+  "permissionCamera": "Câmera",
+  "permissionNotifications": "Notificação",
+  "permissionPhotos": "Fotos",
+  "permissionGranted": "Concedido",
+  "permissionNotGranted": "Não concedido",
+  "permissionGrant": "Subvenção",
+  "generateUsername": "Gerar um novo nome de utilizador",
+  "adminTools": "Ferramentas de Administração",
+  "openAdminPanel": "Abrir o Painel de Administração",
+  "webAdminInterface": "Interface de Administração Web",
+  "adminBetaNotice": "Só Beta constrói. Ferramentas de administração para testar alertas de proximidade, notificações de push e diagnósticos do sistema.",
+  "whatDoYouSee": "O que vês?",
+  "ufo": "UFO",
+  "sighting": "Avistamento",
+  "ufoSighting": "OVNIBeep Alerta",
+  "envAnalysisTitle": "Análise Ambiental",
+  "envAnalysisPending": "Análise Pendente",
+  "envAnalysisPendingDesc": "Os dados ambientais estarão disponíveis assim que o processamento começar.",
+  "unknownAircraft": "Aeronaves desconhecidas",
+  "moreAircraft": "mais aeronaves",
+  "showLess": "Mostrar menos",
+  "premiumImageryTitle": "Satélite Premium Imagem",
+  "premiumImagerySubtitle": "Imagens comerciais de alta resolução",
+  "sightingTypeLabel": "Tipo",
+  "ufoTypeSphere": "Esfera",
+  "ufoTypeTriangle": "Triângulo",
+  "ufoTypeDisk": "Disco",
+  "ufoTypeLight": "Luz",
+  "ufoTypeFireball": "Bola de Fogo",
+  "ufoTypeCylinder": "Cilindro",
+  "ufoTypeCigar": "Charuto",
+  "ufoTypeRectangle": "Rectângulo",
+  "ufoTypeFormation": "Formação",
+  "ufoTypeUnknown": "Desconhecido",
+  "ufoTypeBoomerang": "Boomerang",
+  "ufoTypeDiamond": "Diamante",
+  "ufoTypeOval": "Oval",
+  "ufoTypeCone": "Cone",
+  "ufoTypeCross": "Cruz",
+  "ufoTypeDumbbell": "Dumblebell",
+  "ufoTypeTeardrop": "Lágrima",
+  "ufoTypeTicTac": "Tic Tac",
+  "ufoTypeBullet": "Bala",
+  "ufoTypeSaturn": "Saturno",
+  "ufoTypeStarLike": "Estrelado",
+  "ufoTypeBlimp": "Pimenta",
+  "shapeTriangle": "triângulo",
+  "shapeDisc": "disco",
+  "shapeDisk": "disco",
+  "shapeSphere": "esfera",
+  "shapeCigar": "charuto",
+  "shapeLight": "luz",
+  "shapeBoomerang": "bumerangue",
+  "shapeDiamond": "diamante",
+  "shapeRectangle": "retângulo",
+  "shapeOval": "oval",
+  "shapeCone": "cone",
+  "shapeCross": "cruz",
+  "shapeCylinder": "cilindro",
+  "shapeDumbbell": "haltere",
+  "shapeTeardrop": "lágrima",
+  "shapeTicTac": "tic-tac",
+  "shapeBullet": "bala",
+  "shapeSaturn": "saturn",
+  "shapeStarlike": "estrelado",
+  "shapeBlimp": "dirigível",
+  "shapeFireball": "bola de fogo",
+  "shapeFormation": "formação",
+  "shapeUnknown": "desconhecido",
+  "actionsTitle": "Acções",
+  "addPhotosAndVideos": "Adicionar Fotos e Vídeos",
+  "attachMedia": "Anexar mídia",
+  "addCommentOptional": "Adicionar um comentário (opcional)",
+  "describeNewMedia": "Descreva a nova mídia...",
+  "filesSelected": "ficheiros seleccionados",
+  "selectMediaToAttach": "Selecione fotos ou vídeos para anexar",
+  "newMediaUploaded": "Nova mídia enviada",
+  "mediaFilesUploaded": "novos arquivos de mídia enviados",
+  "filesAttachedSuccessfully": "arquivos anexados com sucesso",
+  "howToReportToMufon": "Como informar à MUFON",
+  "reportToMufon": "Relatório à MUFON",
+  "whyReportToMufon": "Por que se reportar a MUFON?",
+  "openMufonReport": "Abrir MUFON Relatório",
+  "confirmedWitness": "Confirmaste esta aparição",
+  "witnessesHaveConfirmed": "As pessoas confirmaram esta aparição",
+  "@witnessesHaveConfirmed": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "aircraftTrackingTitle": "Rastreamento de aeronaves",
+  "weatherConditionsTitle": "Condições meteorológicas",
+  "noSatellitePasses": "Nenhum passe de satélite visível encontrado",
+  "contentAnalysisTitle": "Análise de Conteúdo",
+  "contentSafe": "O conteúdo é seguro",
+  "contentFlagged": "Conteúdo marcado para revisão",
+  "confidenceLabel": "Confiança",
+  "methodLabel": "Método",
+  "premiumImageryAccessOnly": "Imagens de satélite Premium só estão disponíveis para:",
+  "premiumAccessCreators": "Alertar criadores",
+  "premiumAccessWitnesses": "Testemunhas confirmadas dentro do intervalo de visibilidade",
+  "comingSoon": "Em breve",
+  "directionDistanceTitle": "Direcção & Distância",
+  "mufonCaseTitle": "MUFON Caso #__PLACEHOLDER_0_",
+  "@mufonCaseTitle": {
+    "placeholders": {
+      "caseNumber": {
+        "type": "String",
+        "example": "12345"
+      }
+    }
+  },
+  "satellitePassesTitle": "Passagens por Satélite",
+  "satellitePassExplanation": "O satélite visível passa durante o período de avistamento. Muitos relatórios de OVNIs são realmente satélites ou detritos espaciais.",
+  "followingAlert": "A seguir alerta - você receberá notificações de comentários",
+  "unfollowedAlert": "Alerta não seguido - sem notificações de comentários",
+  "alertFollowError": "Erro ao atualizar o status da sequência",
+  "notificationChannelAlerts": "Alertas OVNIBeep",
+  "notificationChannelAlertsDesc": "Notificações para bips de OVNI e alertas de proximidade",
+  "notificationSightingTitle": "OVNIBeep Alerta",
+  "notificationSightingUrgent": "OVNI URGENTE Alerta",
+  "notificationSightingEmergency": "OVNI OVNI EMERGÊNCIA Alerta",
+  "notificationSightingBody": "LOCALIZADOR",
+  "@notificationSightingBody": {
+    "placeholders": {
+      "witnessText": {
+        "type": "String",
+        "example": "3 witnesses"
+      },
+      "locationName": {
+        "type": "String",
+        "example": "Downtown Park"
+      }
+    }
+  },
+  "notificationCommentTitle": "_{username}_ comentado",
+  "@notificationCommentTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String",
+        "example": "stargazer01"
+      }
+    }
+  },
+  "notificationWitnessText": "Novo avistamento",
+  "notificationWitnessTextMultiple": "__PACEHOLDER_0__ testemunhas",
+  "@notificationWitnessTextMultiple": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "notificationActionSnooze": "Soneca 1h",
+  "notificationActionDismiss": "Demitir",
+  "notificationDistance": "__PACEHOLDER_0____",
+  "@notificationDistance": {
+    "placeholders": {
+      "distance": {
+        "type": "String",
+        "example": "1.2km"
+      }
+    }
+  },
+  "unknown": "Desconhecido",
+  "report": "relatório",
+  "mufon": "mufon",
+  "recentUfoBeepsTitle": "OVNI recente Abelhas",
+  "recentUfoBeepsSubtitle": "Relatórios de avistamento de OVNIs vivos da nossa comunidade global",
+  "recentUfoBeepsDescription": "Este feed combina \"beeps\" UFOBeep em tempo real de nossos usuários de aplicativos móveis com relatórios históricos do banco de dados MUFON.",
+  "loadingBeeps": "Carregando beeps recentes...",
+  "noBeepsAvailable": "Não há sinal de momento.",
+  "anomalyReported": "Anomalia notificada",
+  "copyShortLink": "Copiar link curto",
+  "shareAlert": "Alerta de partilha",
+  "ufoSightingAlert": "UFO Alerta de observação",
+  "previousPage": "Anterior",
+  "nextPage": "Próxima",
+  "pageOf": "Página __PACEVOLDER_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "firstPage": "Primeiro",
+  "lastPage": "Último",
+  "jumpToPage": "Ir para a página",
+  "heroTagline": "Obter alertas quando sair e olhar para cima",
+  "heroDescription": "Nunca perca outro OVNI na sua área",
+  "downloadApp": "Aplicação de Download",
+  "viewAllBeeps": "Ver todos os Beeps",
+  "sightingsMap": "Mapa de Imagens",
+  "globalSightingNetwork": "Rede de observação global",
+  "howItWorks": "Como Funciona",
+  "backToBeeps": "Voltar para Beeps",
+  "loadingDetails": "Carregando detalhes do bip...",
+  "details": "Detalhes",
+  "location": "Localização",
+  "timeAgo": "atrás",
+  "timeMinutes": "m",
+  "timeHours": "h",
+  "timeDays": "d",
+  "distanceKm": "km",
+  "distanceMiles": "milhas",
+  "distanceNearby": "próximo",
+  "ufobeepWitnesses": "Testemunhas",
+  "ufobeepConfirmations": "Confirmações",
+  "ufobeepAlertLevel": "Nível de Alerta",
+  "ufobeepReportType": "Relatório UFOBeep",
+  "mufonAttribution": "MUFON Relatório da Base de Dados",
+  "mufonCaseNumber": "Caso #",
+  "mufonGenericTitle": "Relatório de Avistamento de MUFON",
+  "mufonSphere": "Esfera",
+  "mufonLight": "Luz",
+  "mufonDisk": "Disco",
+  "mufonTriangle": "Triângulo",
+  "mufonCigar": "Charuto",
+  "mufonOval": "Oval",
+  "mufonCylinder": "Cilindro",
+  "mufonRectangle": "Rectângulo",
+  "mufonDiamond": "Diamante",
+  "mufonFireball": "Bola de Fogo",
+  "mufonFlash": "Flash",
+  "mufonFormation": "Formação",
+  "mufonChanging": "Mudando",
+  "mufonChevron": "Chevron",
+  "mufonCone": "Cone",
+  "mufonCross": "Cruz",
+  "mufonEgg": "Ovos",
+  "mufonOther": "Objecto",
+  "mufonUnknown": "Objecto Desconhecido",
+  "mufonTitleFormat": "MUFON {classification}_ Relatório",
+  "nuforcAttribution": "NUFORC Relatório da Base de Dados",
+  "nuforcCaseNumber": "Caso #",
+  "nuforcGenericTitle": "NUFORC Relatório de Avistamento",
+  "mediaImageNotFound": "Imagem não encontrada",
+  "mediaPlayVideo": "Reproduzir vídeo",
+  "mediaViewImage": "Ver imagem",
+  "mediaCount": "__PACEHOLDER_0____ imagens",
+  "mediaCountSingle": "1 imagem",
+  "mediaMoreImages": "Mais",
+  "errorNotFound": "Beep não encontrado",
+  "errorLoadError": "Falha ao carregar os detalhes do bip",
+  "shareYourThoughts": "Compartilhe seus pensamentos sobre este avistamento...",
+  "postComment": "Comentário da Mensagem",
+  "loggedInAs": "Entrar como",
+  "logout": "Sair",
+  "notFollowing": "Não seguindo",
+  "follow": "Seguir",
+  "navRecentBeeps": "Beeps recentes",
+  "navMap": "Mapa",
+  "navDownloadApp": "Aplicativo de Download",
+  "alertLevel": "Nível de Alerta",
+  "witnesses": "Testemunhas",
+  "confirmations": "Confirmações",
+  "reporterLabel": "Relatado pelo usuário",
+  "coordinatesLabel": "Coordenadas",
+  "eventTime": "Hora do evento",
+  "reportedTime": "Hora de notificação",
+  "addedToUfobeep": "Adicionado ao OVNIBeep",
+  "mufonDatabaseReport": "MUFON Número do caso:",
+  "copyShortLinkTitle": "Copiar o link para a área de transferência",
+  "imageNotFound": "Imagem não encontrada",
+  "ufoSightingAlt": "UFO Alerta de OVNIs",
+  "celestialDataTitle": "Objetos Celestiais",
+  "visiblePlanets": "Planetas Visíveis",
+  "locationDataTitle": "Informação da Localização",
+  "timezone": "Fuso horário",
+  "coordinates": "Coordenadas",
+  "processingSummaryTitle": "Resumo de Processamento",
+  "processingTime": "Tempo de processamento",
+  "successful": "Sucesso",
+  "failed": "Falha",
+  "locationEnrichmentTitle": "Detalhes da localização",
+  "aircraftDataSource": "Fonte dos Dados",
+  "noAircraftDetected": "Nenhuma aeronave detectada",
+  "sightingReport": "Relatório de Avistamento",
+  "ufoAlert": "UFO Alerta",
+  "alert": "Alerta",
+  "notificationTickerUfoAlert": "Alerta de OVNIs - Novas Visões nas proximidades",
+  "notificationTickerComment": "Novo comentário sobre o alerta UFO",
+  "weatherConditions": "Condições meteorológicas",
+  "visibility": "Visibilidade",
+  "humidity": "Humidade",
+  "pressure": "Pressão",
+  "locationDetails": "Detalhes da localização",
+  "city": "Cidade",
+  "state": "Estado",
+  "country": "País",
+  "satelliteActivity": "Actividade por Satélite",
+  "satellitesVisibleOverhead": "Satélites visíveis em cima ao avistar hora e local",
+  "dataSource": "Fonte dos Dados",
+  "blackskyImagery": "Imagem de BlackSky",
+  "resolution": "Resolução",
+  "groundResolution": "resolução do solo de 35cm",
+  "delivery": "Entrega",
+  "averageDelivery": "média de 90 minutos",
+  "cost": "Custo",
+  "skyfiSatelliteImagery": "Satélite SkyFi Imagem",
+  "region": "Região",
+  "remoteArea": "Área Remota",
+  "startingPrice": "Preço Inicial",
+  "coverage": "Cobertura",
+  "confidenceCoverage": "95% de confiança",
+  "status": "Estado",
+  "shareThoughts": "Compartilhe seus pensamentos sobre este avistamento...",
+  "postCommand": "Comando Postal",
+  "clouds": "Nuvens",
+  "windLabel": "Vento",
+  "filterAlerts": "Alertas de Filtro",
+  "alertSource": "Fonte de Alerta",
+  "ufobeepOnly": "Apenas OVNIBeep",
+  "ufobeepOnlyDescription": "Mostrar apenas os relatórios originais do UFOBeep (exclua a base de dados MUFON)",
+  "alertDistanceRange": "Intervalo de Distância do Alerta",
+  "showAllAlerts": "Mostrar Todos os Alertas",
+  "showAll": "Mostrar Tudo",
+  "distanceSliderDescription": "Arraste para ajustar até onde quer ver alertas. Comece da distância de visibilidade do tempo até mostrar todos os alertas, independentemente da distância.",
+  "applyFilters": "Aplicar os Filtros",
+  "notificationRange": "Intervalo de Notificação",
+  "notificationRangeDescription": "Obter alertas para avistamentos dentro desta distância",
+  "viewingRange": "Visualizando o Intervalo",
+  "viewingRangeDescription": "Mostrar avistamentos dentro desta distância ao navegar",
+  "weatherVisibility": "Visibilidade do Tempo (~10km)",
+  "localArea": "Área Local (25 km)",
+  "regional": "Regional",
+  "pushNotifications": "Push Notificações",
+  "alertBrowsing": "Alerta de Navegação",
+  "pushAlertsWithinDistance": "Obter notificações dentro deste intervalo",
+  "showAlertsWhenBrowsing": "Filtrar o que vê na lista",
+  "heroMainTagline": "Obter um sinal no seu telefone quando OVNIs são vistos nas proximidades",
+  "heroSecondaryTagline": "Descubra quando e onde olhar para o céu",
+  "sourceFilters": "Origem",
+  "sourceFiltersDescription": "Escolha quais relatórios aparecem na sua fonte",
+  "ufobeepAndMufon": "UFOBeep + MUFON",
+  "ufobeepOnlySource": "Apenas OVNIBeep",
+  "mufonOnlySource": "Apenas MUFON",
+  "browseFilters": "Navegar",
+  "browseFiltersDescription": "Como visualizar e classificar alertas",
+  "sortByNewest": "Mais recente",
+  "sortByNearest": "Mais perto",
+  "sortBy": "Ordenar por",
+  "pushAlertsTitle": "Ativar Alertas",
+  "pushAlertsDescription": "O que pings seu telefone",
+  "alertRadius": "Alertar o Raio",
+  "mufonNoPushInfo": "Relatórios MUFON são importados todas as noites e não acionam alertas push",
+  "privacyData": "Privacidade e Dados",
+  "privacyPolicyDesc": "Como protegemos e usamos seus dados",
+  "termsOfService": "Termos de Serviço",
+  "termsOfServiceDesc": "Termos e condições legais",
+  "locationTracking": "Rastreamento de Localização",
+  "locationTrackingDesc": "Local de referência para as indicações de proximidade",
+  "locationTrackingTitle": "Rastreamento de Localização de Fundo",
+  "locationTrackingExplanation": "UFOBeep monitora sua localização no fundo para enviar alertas de proximidade quando avistamentos de UFO acontecem perto de sua localização atual, mesmo quando você está longe de casa.",
+  "locationTrackingBattery": "Utiliza geofecção inteligente para impacto <3% da bateria",
+  "backgroundLocationTracking": "Activar o Fundo Rastreamento",
+  "locationTrackingActive": "Localização de monitorização das indicações de proximidade",
+  "locationTrackingInactive": "A localização está desactivada",
+  "locationTrackingDisabledWarning": "Você não receberá alertas de proximidade quando mudar para novos locais",
+  "trackingStatus": "Estado de Rastreamento",
+  "monitoringStatus": "Acompanhamento",
+  "active": "Activo",
+  "inactive": "Inativo",
+  "lastKnownLocation": "Última Localização Conhecida",
+  "lastLocationUpdate": "Última atualização",
+  "movementThreshold": "Limiar de Movimento",
+  "updateFrequency": "Actualizar a Frequência",
+  "batteryImpact": "Impacto da Bateria",
+  "dataPrivacy": "Privacidade de Dados",
+  "locationPermissionExplanation": "OVNIBeep precisa de permissão de localização para monitorar seu movimento e enviar alertas de proximidade quando você estiver em novos locais.",
+  "benefitsTitle": "Benefícios",
+  "locationTrackingBenefits": "• Obter alertas OVNIs onde quer que você viaje\n• Atualizações automáticas de localização\n• Não é necessária nenhuma configuração manual",
+  "allowLocationAccess": "Permitir o Acesso de Localização",
+  "locationPermissionRequired": "A permissão de localização é necessária para o rastreamento de fundo",
+  "locationTrackingEnabled": "Monitoramento de localização de fundo habilitado",
+  "locationTrackingDisabled": "Rastreamento de localização de fundo desabilitado",
+  "justNow": "Agora mesmo",
+  "minutesAgo": "{minutes} há minutos",
+  "@minutesAgo": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "hoursAgo": "{hours} há horas",
+  "@hoursAgo": {
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+  "daysAgo": "{days} há dias",
+  "@daysAgo": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "dataManagement": "Gestão de Dados",
+  "dataManagementDesc": "Exportar ou apagar os dados da sua conta",
+  "splashTagline": "Alertas de avistamento em tempo real",
+  "splashStartingUp": "A começar...",
+  "splashInitializationFailed": "A inicialização falhou",
+  "splashInitializationFailedTitle": "Falha na inicialização",
+  "splashInitializationError": "O aplicativo falhou ao inicializar corretamente:",
+  "splashRetry": "Repetir",
+  "splashContinue": "Continuar",
+  "splashInitializing": "Inicializando...",
+  "signInWelcome": "Bem-vindos!",
+  "@signInWelcome": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "signInFailed": "Falha ao iniciar sessão: __PACELODER_0_",
+  "@signInFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "signInPleaseEnterEmail": "Digite seu endereço de e- mail",
+  "signInPleaseEnterValidEmail": "Digite um endereço de e- mail válido",
+  "signInMagicLinkSent": "Ligação mágica enviada! Verifique seu e-mail e clique no link para iniciar sessão.",
+  "signInMagicLinkFailed": "Não foi possível enviar o link mágico. Por favor, tente de novo.",
+  "signInAllDataCleared": "Todos os dados apagados",
+  "signInSubtitle": "Alertas de avistamento de OVNIs em tempo real e relatórios MUFON",
+  "signInGoogleLoading": "A assinar...",
+  "signInContinueWithGoogle": "Continuar com o Google",
+  "signInOr": "ou",
+  "signInWithEmail": "Iniciar sessão com o Email",
+  "signInEmailDescription": "Vamos enviar-lhe uma ligação segura para entrar",
+  "signInEmailAddress": "Endereço de e- mail",
+  "signInEmailPlaceholder": "your@email.com",
+  "signInTryAgainIn": "Tente novamente em __PACEHOLDER_0__",
+  "@signInTryAgainIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "signInSending": "Enviando...",
+  "signInSendMagicLink": "Enviar uma Ligação Mágica",
+  "signInCheckEmail": "Vê o teu e-mail! O link expira em 15 minutos.",
+  "signInSecureAuth": "Autenticação Segura",
+  "signInSecureAuthDescription": "Use o Google Sign-In para acesso instantâneo ou links mágicos de e-mail que expiram em 15 minutos.",
+  "signInClearAllDataDebug": "Limpar Todos os Dados (Depurar)",
+  "emailAuthFailedToSend": "Falha ao enviar o e- mail",
+  "emailAuthFailedToSendTryAgain": "Não foi possível enviar o e- mail. Por favor, tente de novo.",
+  "emailAuthInvalidEmail": "Endereço de e- mail inválido. Por favor, verifique o formato.",
+  "emailAuthUserNotFound": "Nenhuma conta encontrada com este endereço de e- mail.",
+  "emailAuthTooManyRequests": "Demasiadas tentativas. Por favor, tente novamente mais tarde.",
+  "emailAuthOperationNotAllowed": "O login do link de e- mail não está ativado.",
+  "emailAuthQuotaExceeded": "Cota de e- mail excedida. Por favor, tente de novo amanhã.",
+  "emailAuthVerificationFailed": "A verificação por e- mail falhou. Por favor, tente de novo.",
+  "emailAuthTitle": "Verificação por E- mail",
+  "emailAuthVerifyYourEmail": "Verificar o seu E- mail",
+  "emailAuthDescription": "Adicione seu endereço de e-mail para recuperação de conta e segurança. Vamos enviar-lhe uma ligação segura.",
+  "emailAuthEmailAddress": "Endereço de E- mail",
+  "emailAuthEmailPlaceholder": "your.email@example.com",
+  "emailAuthPleaseEnterEmail": "Digite seu endereço de e- mail",
+  "emailAuthPleaseEnterValidEmail": "Digite um endereço de e- mail válido",
+  "emailAuthCheckEmailToContinue": "Verifique seu e-mail e toque no link de verificação para continuar.",
+  "emailAuthResendEmail": "Reenviar e- mail",
+  "emailAuthSendVerificationEmail": "Enviar Verificação E- mail",
+  "emailAuthHowItWorks": "Como funciona a verificação de email",
+  "emailAuthHowItWorksSteps": "1. Enviamos-lhe uma ligação segura de entrada.\n2. Verifique seu e-mail e toque no link\n3. Seu e-mail é verificado automaticamente\n4. Não são necessárias senhas!",
+  "emailAuthSecurityNotice": "A verificação por e-mail ajuda a proteger sua conta e permite a recuperação da conta se você perder o acesso ao seu dispositivo.",
+  "phoneAuthFailedToSendCode": "Não foi possível enviar o código de verificação. Por favor, tente de novo.",
+  "phoneAuthInvalidCodeTryAgain": "Código de verificação inválido. Por favor, tente de novo.",
+  "phoneAuthPhoneVerified": "Número de telefone verificado: __PACELODER_0_",
+  "@phoneAuthPhoneVerified": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthVerificationFailed": "A verificação do telefone falhou. Por favor, tente de novo.",
+  "phoneAuthCodeResent": "Código de verificação",
+  "phoneAuthFailedToResendCode": "Não foi possível reenviar o código. Por favor, tente de novo.",
+  "phoneAuthInvalidPhoneNumber": "Número de telefone inválido. Por favor, verifique o formato.",
+  "phoneAuthTooManyRequests": "Demasiadas tentativas. Por favor, tente novamente mais tarde.",
+  "phoneAuthInvalidVerificationCode": "Código de verificação inválido. Por favor, verifique e tente novamente.",
+  "phoneAuthSessionExpired": "Sessão de verificação expirada. Por favor, solicite um novo código.",
+  "phoneAuthSmsQuotaExceeded": "Quota SMS excedida. Por favor, tente de novo amanhã.",
+  "phoneAuthCredentialAlreadyInUse": "Este número de telefone já está ligado a outra conta.",
+  "phoneAuthVerificationFailedGeneric": "A verificação falhou. Por favor, tente de novo.",
+  "phoneAuthTitle": "Verificação do Telefone",
+  "phoneAuthVerifyYourPhone": "Verificar o Seu Telefone",
+  "phoneAuthEnterVerificationCode": "Digite a verificação Código",
+  "phoneAuthAddPhoneForSecurity": "Adicione seu número de telefone para recuperação de conta e segurança",
+  "phoneAuthEnterSixDigitCode": "Digite o código de 6 dígitos enviado para {phoneNumber}",
+  "@phoneAuthEnterSixDigitCode": {
+    "placeholders": {
+      "phoneNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "phoneAuthPhoneNumber": "Número de telefone",
+  "phoneAuthPhonePlaceholder": "+1 (555) 123- 4567",
+  "phoneAuthPleaseEnterPhone": "Digite seu número de telefone",
+  "phoneAuthPleaseEnterValidPhone": "Digite um número de telefone válido",
+  "phoneAuthVerificationCode": "Código de verificação",
+  "phoneAuthPleaseEnterSixDigitCode": "Digite o código de 6 dígitos",
+  "phoneAuthResendCode": "Reenviar o Código",
+  "phoneAuthSendVerificationCode": "Enviar Verificação Código",
+  "phoneAuthVerifyCode": "Verificar o Código",
+  "phoneAuthChangePhoneNumber": "Mudar o Número de Telefone",
+  "phoneAuthSmsNotice": "Enviaremos um código de verificação via SMS. Podem aplicar-se as taxas normais de mensagens.",
+  "phoneAuthCodeExpires": "O código expira em 60 segundos. Verifica as tuas mensagens.",
+  "yourDataRights": "Seus Direitos de Dados",
+  "dataRightsExplanation": "Você tem total controle sobre seus dados pessoais. Você pode exportar todos os seus dados ou excluir permanentemente sua conta a qualquer momento.",
+  "exportYourData": "Exportar seus dados",
+  "exportDataDescription": "Baixe todos os dados de sua conta",
+  "exportData": "Exportar Dados",
+  "exportingData": "Exportando...",
+  "exportDataDetails": "Inclui: perfil, beeps, comentários, informações do dispositivo e preferências. Os dados são fornecidos no formato JSON.",
+  "dataExportedSuccessfully": "Dados exportados com sucesso",
+  "dataExportFailed": "Não foi possível exportar dados",
+  "deleteAccount": "Apagar conta",
+  "deleteAccountDescription": "Remova permanentemente sua conta e todos os dados",
+  "deleteAccountWarning": "Esta acção não pode ser desfeita. Todos os seus beeps, comentários e dados de conta serão excluídos permanentemente.",
+  "deleteMyAccount": "Apagar a Minha Conta",
+  "deletingAccount": "A apagar...",
+  "deleteAccountConfirmTitle": "Apagar conta",
+  "deleteAccountConfirmMessage": "Tem a certeza absoluta de que deseja apagar a sua conta? Esta acção é permanente e não pode ser desfeita.",
+  "dataWillBeDeleted": "Os seguintes dados serão permanentemente apagados:",
+  "deletedDataList": "• Seu perfil e nome de usuário\n• Todos os seus beeps e relatórios\n• Todos os seus comentários\n• Dados de registro de dispositivos\n• Dados de localização e de preferência",
+  "deleteAccountPermanent": "Apagar Permanentemente",
+  "accountDeletedSuccessfully": "Conta apagada com sucesso",
+  "accountDeletionFailed": "Falha ao apagar a conta",
+  "onboardingWelcomeTitle": "Bem-vindo ao OVNIBeep",
+  "onboardingWelcomeBody": "Receba alertas em tempo real quando os OVNIs forem vistos por perto. Nunca mais percas uma visão.",
+  "onboardingAlertsTitle": "Mantenha-se informado",
+  "onboardingAlertsBody": "Defina o quão longe devem estar os avistamentos para activar alertas.",
+  "onboardingReportTitle": "Vês alguma coisa? Bip!",
+  "onboardingReportBody": "Tire uma foto ou vídeo e compartilhe instantaneamente com os observadores próximos.",
+  "onboardingPermissionsTitle": "Sua & localização da câmera",
+  "onboardingPermissionsBody": "Habilitar câmera, localização e notificações para que você possa:\n– Relatar avistamentos rapidamente\n– Obter alertas para OVNIs perto de você",
+  "onboardingCameraTitle": "Capturar Evidências",
+  "onboardingCameraBody": "Compartilhe fotos e vídeos que você acabou de capturar de sua galeria ou pressione o ícone OVNIBeep para iniciar em modo de câmera instantânea.",
+  "onboardingCompassTitle": "Veja para onde olharam",
+  "onboardingCompassBody": "A bússola mostra-te a direcção exacta que a testemunha estava a ver quando viram o OVNI. Aponta o telefone e olha!",
+  "onboardingCommunityTitle": "Junte-se aos Skywatchers",
+  "onboardingCommunityBody": "Veja avistamentos, acesse relatórios MUFON e conecte-se com outros observadores do céu.",
+  "skip": "Pular",
+  "getStarted": "Iniciar",
+  "viewOnboardingAgain": "Ver a Onboard novamente",
+  "customAlertRange": "Intervalo de Alerta Personalizado",
+  "enterRangeKm": "Digite intervalo em km (1-99999)",
+  "largeRangeWarning": "Grandes intervalos (>100km) podem gerar muitos alertas",
+  "globalRangeWarning": "Faixas muito grandes (>1000km) enviarão alertas de todo o mundo",
+  "invalidRange": "Digite um número entre 1 e 99999",
+  "celestialSunDaylight": "O sol está de pé - as condições da luz do dia podem afetar a visibilidade da visão",
+  "celestialSunTwilight": "Crepúsculo condições - alguma visibilidade, mas mais escuro do que a luz do dia",
+  "celestialSunDark": "Condições escuras - ideal para observar objetos no céu",
+  "celestialMoonBright": "Luz {phase} lua visível - pode iluminar ou obscurecer outros objetos",
+  "celestialMoonModerate": "{phase}_ lua visível - condições de iluminação moderadas",
+  "celestialMoonThin": "Magro {phase}_ lua visível - iluminação mínima",
+  "celestialMoonHidden": "Lua abaixo do horizonte - sem iluminação lunar",
+  "celestialNoPlanets": "Nenhum planeta brilhante visível que possa ser confundido com OVNIs",
+  "celestialPlanetHigh": "(_________________) - muito proeminente",
+  "celestialPlanetMedium": "{planet}_ visível em {planet}° - pode ser confundido com aeronaves",
+  "celestialPlanetLow": "{planet} baixo no horizonte ({planet}°)",
+  "celestialNoStars": "Nenhuma estrela invulgarmente brilhante visível",
+  "celestialStarSingle": "__PACEHOLDER_0____ proeminente a altitude __PACEHOLDER_1___°",
+  "celestialStarsMultiple": "__PACEHOLDER_0__ estrelas brilhantes visíveis __PACEHOLDER_1_",
+  "celestialSummaryDaylight": "Condições de luz do dia",
+  "celestialSummaryDark": "Condições do céu escuro",
+  "celestialSummaryMoonUp": "iluminação da lua presente",
+  "celestialSummaryMoonDown": "sem iluminação da lua",
+  "celestialSummaryManyObjects": "{count}__ objetos brilhantes que podem ser confundidos com OVNIs",
+  "celestialSummarySomeObjects": "__PACEHOLDER_0___ objeto(s) brilhante(s) visível(ais)",
+  "celestialSummaryFewObjects": "objetos brilhantes mínimos no céu",
+  "celestialSkySummary": "Condições do céu: __PACELODER_0_",
+  "planetVenus": "Vênus",
+  "planetJupiter": "Júpiter",
+  "planetSaturn": "Saturno",
+  "planetMars": "Marte",
+  "planetMercury": "Mercúrio",
+  "planetUranus": "Urano",
+  "planetNeptune": "Netuno",
+  "starSirius": "Sirius",
+  "starCanopus": "Canopus",
+  "starArcturus": "Arcturus",
+  "starVega": "Vega",
+  "starCapella": "Capella",
+  "starRigel": "Rigel",
+  "starProcyon": "Procyon",
+  "starBetelgeuse": "Betelgeuse",
+  "moonPhaseNew": "Lua Nova",
+  "moonPhaseWaxingCrescent": "Crescente de Cera",
+  "moonPhaseFirstQuarter": "Primeiro trimestre",
+  "moonPhaseWaxingGibbous": "Gibbous de cera",
+  "moonPhaseFull": "Lua cheia",
+  "moonPhaseWaningGibbous": "Gibbous",
+  "moonPhaseThirdQuarter": "Terceiro trimestre",
+  "moonPhaseWaningCrescent": "Crescente em declínio",
+  "planetBelowHorizon": "__PACEHOLDER_0__ abaixo do horizonte",
+  "planetHighOverheadProminent": "(_________________) - muito proeminente",
+  "planetMidSkyProminent": "{planet}________________________________________________________________________________",
+  "planetMidSky": "LONDRES DE LOCALIZAÇÃO",
+  "starVeryBright": "__PACEHOLDER_0___ muito brilhante em __PACEHOLDER_1___",
+  "starProminent": "__PACEHOLDER_0____ proeminente a altitude __PACEHOLDER_1___°",
+  "starVisible": "LONDRES DE LOCALIZAÇÃO",
+  "altitudeShort": "Alt",
+  "magnitudeShort": "Mag",
+  "satellitesVisibleMightExplain": "{count}_ satélites visíveis - pode explicar o avistamento",
+  "satellitesVisibleUnlikelyExplain": "{count}_ satélites visíveis - improvável explicar o avistamento",
+  "noSatellitesVisible": "Nenhum satélite visível",
+  "aircraftDetectedInRadius": "Aeronaves detetadas dentro de 1 km",
+  "processingAlert": "Processando alerta de OVNI...",
+  "analyzingEnvironment": "Análise das condições ambientais",
+  "weatherAnalysis": "Análise Meteorológica",
+  "locationAnalysis": "Análise de Localização",
+  "aircraftTracking": "Rastreamento de aeronaves",
+  "satelliteAnalysis": "Análise por Satélite",
+  "celestialAnalysis": "Análise Celestial",
+  "analyzing": "Analisando __PACEHOLDER_0__...",
+  "processorWeather": "condições meteorológicas",
+  "processorLocation": "detalhes da localização",
+  "processorAircraft": "aeronaves vizinhas",
+  "processorSatellites": "posições de satélite",
+  "processorCelestial": "objetos celestes",
+  "calculatingCelestialData": "Calculando dados celestes...",
+  "sunLabel": "Sol",
+  "moonLabel": "Lua",
+  "planetsVisible": "Planetas: {count} visível",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Estrelas",
+  "planetsLabel": "Planetas",
+  "moonWithPhase": "Lua (__PLACEHOLDER_0_)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Nenhum satélite foi visível na hora exata de sua aparição",
+  "satellitesVisibleOverheadAtTime": "Satélites visíveis em cima ao avistar hora e local",
+  "belowHorizon": "abaixo do horizonte",
+  "analysisFailedGeneric": "A análise falhou",
+  "unknownWeather": "Desconhecido",
+  "noWeatherDescription": "Sem descrição",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satélites ({count} visível agora)",
+  "sunWithDescription": "Sol:",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Lua:",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Planeta Desconhecido",
+  "unknownStar": "Estrela desconhecida",
+  "unknownSatellite": "Satélite Desconhecido",
+  "unknownDirection": "direção desconhecida",
+  "brightStars": "Estrelas Brilhantes",
+  "satellites": "Satélites",
+  "seeAllSatellites": "Ver todos os satélites",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Elevação máxima: __PACELODER_0___",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Amplitude: __PACELODER_0_",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Desconhecido",
+  "altitudeValue": "Altitude de 0°",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "__PACEHOLDER_0___° azimute",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Nenhum dado celestial disponível.",
+  "gettingLocation": "A obter a sua localização...",
+  "media": "Mídia",
+  "locationRequired": "Localização necessária",
+  "confirmingWitness": "Confirmando testemunha...",
+  "chooseYourUsername": "Escolha seu nome de usuário",
+  "weatherClear": "Limpar",
+  "weatherClearSky": "céu limpo",
+  "rain": "Chuva",
+  "snow": "Neve",
+  "thunderstorm": "Trovão",
+  "drizzle": "Drizzle",
+  "fog": "Nevoeiro",
+  "fewClouds": "poucas nuvens",
+  "scatteredClouds": "nuvens dispersas",
+  "brokenClouds": "nuvens quebradas",
+  "overcastClouds": "nuvens nubladas",
+  "lightRain": "chuva leve",
+  "moderateRain": "chuva moderada",
+  "heavyRain": "chuva pesada",
+  "aircraftDetectedCurrentPositions": "{count}__aeronaves detectadas dentro de {count}km (posição atual)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "{count} os satélites menos visíveis - improvável explicar o avistamento",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Data de comunicação",
+  "satelliteNameDirection": "__PACEHOLDER_0__ __PACEHOLDER_1_",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
+}
