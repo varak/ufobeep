@@ -112,6 +112,7 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
         "occurred_at": alert.occurred_at.isoformat() if alert.occurred_at else None,
         "external_url": getattr(alert, 'external_url', None),
         "external_id": getattr(alert, 'external_id', None),
+        "original_language": getattr(alert, 'original_language', None),
         "short_url": short_url
     }
     

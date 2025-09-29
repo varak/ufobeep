@@ -83,6 +83,7 @@ class Alert {
   final int commentCount;
   final String? shortUrl;
   final DateTime? occurredAt;
+  final String? originalLanguage;
 
   // Computed properties
   bool get isVerified => status == 'verified';
@@ -160,6 +161,7 @@ class Alert {
     int? commentCount,
     String? shortUrl,
     DateTime? occurredAt,
+    String? originalLanguage,
   }) {
     return Alert(
       id: id ?? this.id,
@@ -194,6 +196,7 @@ class Alert {
       commentCount: commentCount ?? this.commentCount,
       shortUrl: shortUrl ?? this.shortUrl,
       occurredAt: occurredAt ?? this.occurredAt,
+      originalLanguage: originalLanguage ?? this.originalLanguage,
     );
   }
 
@@ -302,6 +305,7 @@ class Alert {
         commentCount: _safeInt(json['comment_count']) ?? 0,
         shortUrl: json['short_url'] as String?,
         occurredAt: json['occurred_at'] != null ? DateTime.parse(json['occurred_at'] as String) : null,
+        originalLanguage: json['original_language'] as String?,
       );
     } catch (e) {
       debugPrint('Error parsing alert JSON for ${json['id']}: $e');
@@ -345,6 +349,7 @@ class Alert {
       'comment_count': commentCount,
       if (shortUrl != null) 'short_url': shortUrl,
       if (occurredAt != null) 'occurred_at': occurredAt!.toIso8601String(),
+      if (originalLanguage != null) 'original_language': originalLanguage,
     };
   }
 }
