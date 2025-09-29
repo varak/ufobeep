@@ -34,8 +34,6 @@ import '../../services/comments_service.dart';
 import '../../services/push_notification_service.dart';
 import '../../models/comment.dart';
 import '../../utils/short_url_utils.dart';
-import '../../services/translation_service.dart';
-import '../../widgets/translation_button.dart';
 
 class AlertDetailScreen extends ConsumerStatefulWidget {
   const AlertDetailScreen({super.key, required this.alertId, this.initialCommentId, this.shouldFocusComment});
@@ -67,10 +65,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   List<Comment>? _comments;
   bool _loadingComments = true;
   String? _commentsError;
-
-  // Translation state
-  String? _translatedDescription;
-  bool _isDescriptionTranslated = false;
 
   @override
   void initState() {
@@ -455,11 +449,6 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 const SizedBox(height: 16),
 
-                // Translation section for descriptions
-                if (alert.description != null && alert.description!.isNotEmpty) ...[
-                  _buildTranslationSection(alert),
-                  const SizedBox(height: 16),
-                ],
 
                 // Direction and compass - hidden only for beep creators (show for all alerts including MUFON)
                 if (!_isOriginalCreator(alert)) ...[
@@ -1365,48 +1354,5 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     return missingSections >= 2;
   }
 
-  /// Build translation section for alert descriptions (revolutionary feature!)
-  Widget _buildTranslationSection(Alert alert) {
-    final userPrefs = ref.read(userPreferencesProvider);
-    final userLanguage = userPrefs?.language ?? 'en';
-
-    // Use database original_language for smart translation decisions
-    final contentLanguage = alert.originalLanguage ?? 'unknown';
-
-    return GlassCard(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Show translated description if available
-          if (_isDescriptionTranslated && _translatedDescription != null) ...[
-            Text(
-              _translatedDescription!,
-              style: const TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 18,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 12),
-          ],
-
-          // Translation button
-          TranslationButton(
-            originalText: alert.description ?? '',
-            targetLanguage: userLanguage,
-            contentLanguage: contentLanguage,
-            isTranslated: _isDescriptionTranslated,
-            onTranslationChanged: (translatedText, isTranslated) {
-              setState(() {
-                _translatedDescription = translatedText;
-                _isDescriptionTranslated = isTranslated;
-              });
-            },
-          ),
-        ],
-      ),
-    );
-  }
 
 }

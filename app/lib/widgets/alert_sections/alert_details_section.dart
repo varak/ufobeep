@@ -91,47 +91,56 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
                     const SizedBox(height: 8),
                     if (needsTranslation) ...[
                       if (_isTranslating)
-                        const Text(
-                          'Translating...',
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.translating,
+                          style: const TextStyle(
                             color: AppColors.textTertiary,
-                            fontSize: 14,
+                            fontSize: 16,
                             fontStyle: FontStyle.italic,
                           ),
                         )
                       else if (_translatedDescription != null && !_showOriginal)
-                        Row(
-                          children: [
-                            Text(
-                              'Translated from ${TranslationService.languageNames[originalLanguage] ?? originalLanguage.toUpperCase()}',
-                              style: const TextStyle(
-                                color: AppColors.textTertiary,
-                                fontSize: 13,
-                              ),
-                            ),
-                            const Text(' • ', style: TextStyle(color: AppColors.textTertiary)),
-                            GestureDetector(
-                              onTap: () => setState(() => _showOriginal = true),
-                              child: const Text(
-                                'Show Original',
-                                style: TextStyle(
-                                  color: AppColors.brandPrimary,
-                                  fontSize: 13,
-                                  decoration: TextDecoration.underline,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            children: [
+                              Text(
+                                AppLocalizations.of(context)!.translatedFrom(TranslationService.languageNames[originalLanguage] ?? originalLanguage.toUpperCase()),
+                                style: const TextStyle(
+                                  color: AppColors.textTertiary,
+                                  fontSize: 15,
                                 ),
                               ),
-                            ),
-                          ],
+                              const Text(' • ', style: TextStyle(color: AppColors.textTertiary, fontSize: 15)),
+                              GestureDetector(
+                                onTap: () => setState(() => _showOriginal = true),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                                  child: Text(
+                                    AppLocalizations.of(context)!.showOriginal,
+                                    style: const TextStyle(
+                                      color: AppColors.brandPrimary,
+                                      fontSize: 15,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         )
                       else
                         GestureDetector(
                           onTap: () => _translateDescription(userLanguage),
-                          child: Text(
-                            'Translate to ${TranslationService.languageNames[userLanguage] ?? userLanguage.toUpperCase()}',
-                            style: const TextStyle(
-                              color: AppColors.brandPrimary,
-                              fontSize: 13,
-                              decoration: TextDecoration.underline,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                            child: Text(
+                              AppLocalizations.of(context)!.translateTo(TranslationService.languageNames[userLanguage] ?? userLanguage.toUpperCase()),
+                              style: const TextStyle(
+                                color: AppColors.brandPrimary,
+                                fontSize: 15,
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                         ),
