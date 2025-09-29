@@ -109,7 +109,7 @@ class AstronomicalTranslationService {
       return l10n.noAircraftDetected;
     } else {
       final radius = radiusKm?.toStringAsFixed(0) ?? '50';
-      return l10n.aircraftDetectedCurrentPositions(aircraftCount, radius);
+      return l10n.aircraftDetectedInRadius(aircraftCount, radius);
     }
   }
 
