@@ -451,6 +451,11 @@ async def healthz():
 def ping():
     return {"message": "pong"}
 
+@app.get("/mcp/test")
+async def mcp_test():
+    """Simple MCP test endpoint"""
+    return {"message": "MCP working", "server": "ufobeep"}
+
 # Mount static files for media serving (use /static to avoid conflict with /media/upload)
 app.mount("/static", StaticFiles(directory="media"), name="media")
 # Mount well-known files for App Links and AASA verification
