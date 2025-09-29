@@ -2556,7 +2556,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get confirmingWitness => 'Potvrzuji svědka...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Vyberte si uživatelské jméno';
 
   @override
   String get weatherClear => 'Vyčistit';

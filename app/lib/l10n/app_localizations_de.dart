@@ -2569,7 +2569,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get confirmingWitness => 'Bestätigen Sie Zeuge...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Wählen Sie Ihren Benutzernamen';
 
   @override
   String get weatherClear => 'Klar';

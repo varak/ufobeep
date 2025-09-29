@@ -2551,7 +2551,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get confirmingWitness => 'Bekräfta vittne...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Välj ditt användarnamn';
 
   @override
   String get weatherClear => 'Clear';

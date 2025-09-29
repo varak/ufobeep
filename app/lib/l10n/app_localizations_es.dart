@@ -2576,7 +2576,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get confirmingWitness => 'Confirmando el testigo...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Elija su nombre de usuario';
 
   @override
   String get weatherClear => 'Despejado';

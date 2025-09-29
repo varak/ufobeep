@@ -2588,7 +2588,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get confirmingWitness => 'Επιβεβαιώνω μάρτυρα...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Επιλέξτε το όνομα χρήστη σας';
 
   @override
   String get weatherClear => 'Καθαρισμός';

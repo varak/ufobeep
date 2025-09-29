@@ -2551,7 +2551,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get confirmingWitness => 'गवाहों की पुष्टि ...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'अपना यूज़र नाम चुनें';
 
   @override
   String get weatherClear => 'स्पष्ट';

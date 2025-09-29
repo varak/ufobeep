@@ -2553,7 +2553,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get confirmingWitness => 'Vahvistan todistajan...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Valitse käyttäjätunnus';
 
   @override
   String get weatherClear => 'Tyhjennä';

@@ -2587,7 +2587,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get confirmingWitness => 'Témoin confirmé...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Choisissez votre nom d\'utilisateur';
 
   @override
   String get weatherClear => 'Effacer';

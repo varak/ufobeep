@@ -2559,7 +2559,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get confirmingWitness => 'Bekræftende vidne...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Vælg dit brugernavn';
 
   @override
   String get weatherClear => 'Ryd';

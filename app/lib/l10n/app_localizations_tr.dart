@@ -2561,7 +2561,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get confirmingWitness => 'Tanıyın ...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Kullanıcı adınızı seçin';
 
   @override
   String get weatherClear => 'Clear';

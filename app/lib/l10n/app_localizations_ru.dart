@@ -2582,7 +2582,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get confirmingWitness => 'Подтверждающий свидетель...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Выберите имя пользователя';
 
   @override
   String get weatherClear => 'Чисто';

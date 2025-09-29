@@ -2464,7 +2464,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get confirmingWitness => '确认证人...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => '选择您的用户名';
 
   @override
   String get weatherClear => '清除';

@@ -2478,7 +2478,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get confirmingWitness => '증인 확인...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => '사용자 이름';
 
   @override
   String get weatherClear => '이름 *';

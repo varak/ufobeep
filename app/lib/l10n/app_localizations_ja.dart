@@ -2476,7 +2476,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get confirmingWitness => '証人確認...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'ユーザー名を選択する';
 
   @override
   String get weatherClear => 'クリア';

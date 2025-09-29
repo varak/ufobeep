@@ -2566,7 +2566,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get confirmingWitness => 'Potwierdzam świadka...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Wybierz nazwę użytkownika';
 
   @override
   String get weatherClear => 'Czysto';

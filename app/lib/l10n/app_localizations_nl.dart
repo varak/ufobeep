@@ -2562,7 +2562,7 @@ class AppLocalizationsNl extends AppLocalizations {
   String get confirmingWitness => 'Bevestigde getuige...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'Kies uw gebruikersnaam';
 
   @override
   String get weatherClear => 'Wissen';

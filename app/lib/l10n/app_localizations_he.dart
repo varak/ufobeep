@@ -2518,7 +2518,7 @@ class AppLocalizationsHe extends AppLocalizations {
   String get confirmingWitness => 'עדות...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'בחר את שם המשתמש שלך';
 
   @override
   String get weatherClear => 'Clear';

@@ -2530,7 +2530,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get confirmingWitness => 'تأكيد الشاهد...';
 
   @override
-  String get chooseYourUsername => 'Choose Your Username';
+  String get chooseYourUsername => 'اختر اسم مستعملك';
 
   @override
   String get weatherClear => 'آمن';
