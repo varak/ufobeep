@@ -479,13 +479,16 @@ async def mcp_search(lat: float, lon: float, radius: int = 50, limit: int = 20):
         from app.services.alerts_service import AlertsService
         alerts_service = AlertsService(database_service.pool)
 
-        result = await alerts_service.get_alerts(
-            page=1, limit=limit, latitude=lat, longitude=lon,
-            verified_only=False, sort_by="newest"
+        alerts = await alerts_service.get_recent_alerts(
+            limit=limit,
+            offset=0,
+            user_latitude=lat,
+            user_longitude=lon,
+            sort_by="newest"
         )
 
         sightings = []
-        for alert in result.get("alerts", []):
+        for alert in alerts:
             sightings.append({
                 "id": alert.get("id"),
                 "title": alert.get("title", "UFO Sighting"),
@@ -500,7 +503,7 @@ async def mcp_search(lat: float, lon: float, radius: int = 50, limit: int = 20):
         return {
             "tool": "search_ufo_sightings",
             "sightings": sightings,
-            "total_count": result.get("total", 0),
+            "total_count": len(alerts),
             "search_location": [lat, lon],
             "radius_km": radius
         }
