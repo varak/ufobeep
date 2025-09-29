@@ -252,7 +252,7 @@ export default function Home() {
                   🤖 For AI Researchers
                 </h5>
                 <p className="text-text-secondary text-sm mb-3">
-                  Access UFOBeep's database through our MCP server for AI analysis and pattern recognition.
+                  Access UFOBeep&apos;s database through our MCP server for AI analysis and pattern recognition.
                 </p>
                 <div className="space-y-1 text-xs text-text-tertiary">
                   <p><strong>Search endpoint:</strong> <code className="bg-dark-surface px-2 py-1 rounded">http://ufobeep.com:8000/mcp/search</code></p>
@@ -268,10 +268,10 @@ export default function Home() {
               <div>
                 <h5 className="font-semibold mb-4 text-text-primary">Example AI Queries</h5>
                 <ul className="space-y-1 text-xs text-text-secondary">
-                  <li>• "Find UFO sightings near Area 51"</li>
-                  <li>• "Show triangular UFOs in Nevada"</li>
-                  <li>• "Analyze sighting patterns during clear weather"</li>
-                  <li>• "UFO activity in the last 48 hours"</li>
+                  <li>• &quot;Find UFO sightings near Area 51&quot;</li>
+                  <li>• &quot;Show triangular UFOs in Nevada&quot;</li>
+                  <li>• &quot;Analyze sighting patterns during clear weather&quot;</li>
+                  <li>• &quot;UFO activity in the last 48 hours&quot;</li>
                 </ul>
               </div>
             </div>
