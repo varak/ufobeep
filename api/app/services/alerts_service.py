@@ -38,6 +38,7 @@ class Alert:
     source: Optional[str] = None
     occurred_at: Optional[datetime] = None
     external_url: Optional[str] = None
+    external_id: Optional[str] = None
     short_url: Optional[str] = None
 
 class AlertsService:
@@ -268,6 +269,7 @@ class AlertsService:
                 source=row["source"],
                 occurred_at=row["occurred_at"],
                 external_url=row["external_url"],
+                external_id=row["external_id"],
                 short_url=row["short_url"]
             )
     
@@ -319,6 +321,7 @@ class AlertsService:
                 source=row["source"],
                 occurred_at=row["occurred_at"],
                 external_url=row["external_url"],
+                external_id=row["external_id"],
                 short_url=row["short_url"]
             )
     
