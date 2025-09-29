@@ -474,39 +474,31 @@ async def mcp_stats():
 
 @app.get("/mcp/search")
 async def mcp_search(lat: float, lon: float, radius: int = 50, limit: int = 20):
-    """Search UFO sightings for AI systems"""
+    """Search UFO sightings for AI systems - reuses /beep endpoint logic"""
     try:
-        from app.services.alerts_service import AlertsService
-        alerts_service = AlertsService(database_service.pool)
+        # Use the exact same endpoint logic as /beep
+        import urllib.parse
 
-        alerts = await alerts_service.get_recent_alerts(
-            limit=limit,
-            offset=0,
-            user_latitude=lat,
-            user_longitude=lon,
-            sort_by="newest"
-        )
+        # Call the working /beep endpoint internally
+        beep_url = f"http://localhost:8000/beep?limit={limit}&latitude={lat}&longitude={lon}&page=1&sort_by=newest"
 
-        sightings = []
-        for alert in alerts:
-            sightings.append({
-                "id": alert.id,
-                "title": alert.title or "UFO Sighting",
-                "location": getattr(alert.location, 'name', 'Unknown') if alert.location else "Unknown",
-                "coordinates": [alert.latitude or 0, alert.longitude or 0],
-                "timestamp": alert.created_at.isoformat() if alert.created_at else None,
-                "description": alert.description or "",
-                "witness_count": alert.witness_count or 1,
-                "distance_km": getattr(alert, 'distance_km', 0)
-            })
+        import aiohttp
+        async with aiohttp.ClientSession() as session:
+            async with session.get(beep_url) as response:
+                if response.status == 200:
+                    beep_data = await response.json()
 
-        return {
-            "tool": "search_ufo_sightings",
-            "sightings": sightings,
-            "total_count": len(alerts),
-            "search_location": [lat, lon],
-            "radius_km": radius
-        }
+                    # Convert to MCP format
+                    return {
+                        "tool": "search_ufo_sightings",
+                        "sightings": beep_data.get("data", {}).get("alerts", []),
+                        "total_count": beep_data.get("data", {}).get("total", 0),
+                        "search_location": [lat, lon],
+                        "radius_km": radius
+                    }
+                else:
+                    return {"error": f"Internal API error: {response.status}"}
+
     except Exception as e:
         return {"error": str(e)}
 
