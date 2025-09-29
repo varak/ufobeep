@@ -37,6 +37,13 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
     super.dispose();
   }
 
+  /// Get display alert with potentially translated content
+  Alert _getDisplayAlert(Alert alert) {
+    // For now, return original alert (translation will be added later)
+    // TODO: Implement translation when filter is enabled
+    return alert;
+  }
+
   @override
   Widget build(BuildContext context) {
     final alertsAsync = ref.watch(alertsListProvider);

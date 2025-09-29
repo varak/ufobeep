@@ -49,6 +49,7 @@ class Alert {
     this.commentCount = 0,
     this.shortUrl,
     this.occurredAt,
+    this.originalLanguage,
   });
 
   final String id;

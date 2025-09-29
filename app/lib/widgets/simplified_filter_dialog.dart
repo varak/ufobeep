@@ -416,7 +416,7 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
     // Show translation toggle for all users - everyone deserves to read foreign content!
 
     return Card(
-      color: AppColors.nightSkyDeep.withOpacity(0.7),
+      color: AppColors.darkSurface.withOpacity(0.7),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(16),

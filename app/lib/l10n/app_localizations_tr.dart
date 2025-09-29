@@ -2679,6 +2679,11 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String translateContent(String language) {
+    return 'Translate content to $language';
+  }
+
+  @override
   String get weatherClear => 'Clear';
 
   @override

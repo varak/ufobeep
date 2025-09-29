@@ -2646,6 +2646,11 @@ class AppLocalizationsAr extends AppLocalizations {
   }
 
   @override
+  String translateContent(String language) {
+    return 'Translate content to $language';
+  }
+
+  @override
   String get weatherClear => 'آمن';
 
   @override

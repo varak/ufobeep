@@ -4944,6 +4944,12 @@ abstract class AppLocalizations {
   /// **'Translated from {language}'**
   String translatedFrom(String language);
 
+  /// No description provided for @translateContent.
+  ///
+  /// In en, this message translates to:
+  /// **'Translate content to {language}'**
+  String translateContent(String language);
+
   /// No description provided for @weatherClear.
   ///
   /// In en, this message translates to:
