@@ -175,7 +175,7 @@ class EnrichmentSection extends ConsumerWidget {
             ),
             const SizedBox(height: 12),
             const Text(
-              AppLocalizations.of(context)!.analysisFailedGeneric,
+              'Analysis Failed', // TODO: Pass context for translation
               style: TextStyle(
                 color: AppColors.semanticError,
                 fontSize: 16,
@@ -679,10 +679,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    AppLocalizations.of(context)!.satelliteNameDirection(
-                      pass['satellite_name']?.toString() ?? AppLocalizations.of(context)!.unknown,
-                      pass['direction'] ?? AppLocalizations.of(context)!.unknownDirection
-                    ),
+                    '${pass['satellite_name']?.toString() ?? 'Unknown'} - ${pass['direction'] ?? 'unknown direction'}',
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 12,
@@ -742,7 +739,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    sat['name'] ?? AppLocalizations.of(context)!.unknownSatellite,
+                    sat['name'] ?? 'Unknown Satellite',
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 12,
@@ -781,12 +778,12 @@ class SatelliteCardFromJson extends StatelessWidget {
 
     // Altitude
     if (sat['altitude'] != null) {
-      details.add(AppLocalizations.of(context)!.altitudeValue(sat['altitude'].toString()));
+      details.add('${sat['altitude']}° altitude');
     }
 
     // Azimuth
     if (sat['azimuth'] != null) {
-      details.add(AppLocalizations.of(context)!.azimuthValue(sat['azimuth'].toString()));
+      details.add('${sat['azimuth']}° azimuth');
     }
 
     return details.join(' • ');
@@ -797,12 +794,12 @@ class SatelliteCardFromJson extends StatelessWidget {
     
     // Max elevation
     if (pass['max_elevation_deg'] != null) {
-      details.add(AppLocalizations.of(context)!.maxElevation(pass['max_elevation_deg'].toString()));
+      details.add('Max elevation: ${pass['max_elevation_deg']}°');
     }
     
     // Brightness magnitude
     if (pass['brightness_magnitude'] != null) {
-      details.add(AppLocalizations.of(context)!.magnitude(pass['brightness_magnitude'].toString()));
+      details.add('Magnitude: ${pass['brightness_magnitude']}');
     }
     
     // Max elevation time

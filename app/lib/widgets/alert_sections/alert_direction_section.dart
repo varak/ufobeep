@@ -31,17 +31,17 @@ class AlertDirectionSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.explore,
                 color: AppColors.brandPrimary,
                 size: 20,
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               Text(
                 AppLocalizations.of(context)!.directionDistanceTitle,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
@@ -62,12 +62,12 @@ class AlertDirectionSection extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Row(
-            children: const [
-              Icon(Icons.explore, color: AppColors.textTertiary, size: 20),
-              SizedBox(width: 12),
+            children: [
+              const Icon(Icons.explore, color: AppColors.textTertiary, size: 20),
+              const SizedBox(width: 12),
               Text(
                 AppLocalizations.of(context)!.gettingLocation,
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
                 ),
