@@ -243,6 +243,42 @@ export default function Home() {
               </ul>
             </div>
           </div>
+
+          {/* Developers Section - Off main scroll */}
+          <div className="border-t border-dark-border mt-8 pt-8">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h5 className="font-semibold mb-4 text-text-primary flex items-center">
+                  🤖 For AI Researchers
+                </h5>
+                <p className="text-text-secondary text-sm mb-3">
+                  Access UFOBeep's database through our MCP server for AI analysis and pattern recognition.
+                </p>
+                <div className="space-y-1 text-xs text-text-tertiary">
+                  <p><strong>Search endpoint:</strong> <code className="bg-dark-surface px-2 py-1 rounded">http://ufobeep.com:8000/mcp/search</code></p>
+                  <p><strong>Database stats:</strong> <code className="bg-dark-surface px-2 py-1 rounded">http://ufobeep.com:8000/mcp/stats</code></p>
+                </div>
+                <a
+                  href="https://github.com/varak/ufobeep/blob/main/docs/MCP_SERVER.md"
+                  className="inline-block mt-3 text-blue-400 hover:text-blue-300 text-sm"
+                >
+                  View MCP Documentation →
+                </a>
+              </div>
+              <div>
+                <h5 className="font-semibold mb-4 text-text-primary">Example AI Queries</h5>
+                <ul className="space-y-1 text-xs text-text-secondary">
+                  <li>• "Find UFO sightings near Area 51"</li>
+                  <li>• "Show triangular UFOs in Nevada"</li>
+                  <li>• "Analyze sighting patterns during clear weather"</li>
+                  <li>• "UFO activity in the last 48 hours"</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8">
+          </div>
           <div className="border-t border-dark-border mt-8 pt-8 text-center text-sm text-text-tertiary">
             <p>&copy; 2024 UFOBeep. All rights reserved.</p>
           </div>
