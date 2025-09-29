@@ -490,14 +490,14 @@ async def mcp_search(lat: float, lon: float, radius: int = 50, limit: int = 20):
         sightings = []
         for alert in alerts:
             sightings.append({
-                "id": alert.get("id"),
-                "title": alert.get("title", "UFO Sighting"),
-                "location": alert.get("location", {}).get("name", "Unknown"),
-                "coordinates": [alert.get("latitude", 0), alert.get("longitude", 0)],
-                "timestamp": alert.get("created_at"),
-                "description": alert.get("description", ""),
-                "witness_count": alert.get("witness_count", 1),
-                "distance_km": alert.get("distance_km", 0)
+                "id": alert.id,
+                "title": alert.title or "UFO Sighting",
+                "location": getattr(alert.location, 'name', 'Unknown') if alert.location else "Unknown",
+                "coordinates": [alert.latitude or 0, alert.longitude or 0],
+                "timestamp": alert.created_at.isoformat() if alert.created_at else None,
+                "description": alert.description or "",
+                "witness_count": alert.witness_count or 1,
+                "distance_km": getattr(alert, 'distance_km', 0)
             })
 
         return {
