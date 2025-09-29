@@ -19,6 +19,7 @@ import 'routing/app_router.dart';
 import 'services/push_notification_service.dart';
 import 'services/sound_service.dart';
 import 'services/share_intent_service.dart';
+import 'package:flutter/services.dart';
 import 'services/pending_share_queue.dart';
 import 'services/notifications.dart';
 import 'services/ui_feedback.dart';

@@ -252,14 +252,138 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
   }
 
   Future<void> _capturePhoto() async {
-    // Avoid double taps racing navigation
+    // Avoid double taps racing
     if (Navigator.of(context).userGestureInProgress) return;
 
-    // Navigate to camera screen and await the result
-    final description = _descriptionController.text.trim();
-    debugPrint('🎯 CAMERA BUTTON: Navigating to /beep/camera with description: $description');
-    debugPrint('🌍 CAMERA BUTTON: Pre-fetched GPS available: ${_preFetchedGPS != null}');
+    // Play camera sound
+    await SoundService.I.play(AlertSound.tap, haptic: true);
 
+    // Show camera mode popup overlay
+    _showCameraModePopup();
+  }
+
+  void _showCameraModePopup() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        decoration: BoxDecoration(
+          color: AppColors.nightSkyBottom,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Photo option
+            GlassCard(
+              onTap: () async {
+                Navigator.pop(context);
+                await _launchNativeCamera(isVideo: false);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(Icons.camera_alt, color: Colors.white, size: 24),
+                    const SizedBox(width: 16),
+                    Text(
+                      'Photo',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Video option
+            GlassCard(
+              onTap: () async {
+                Navigator.pop(context);
+                await _launchNativeCamera(isVideo: true);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(Icons.videocam, color: Colors.white, size: 24),
+                    const SizedBox(width: 16),
+                    Text(
+                      'Video', // Use simple text for now
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _launchNativeCamera({required bool isVideo}) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      XFile? capturedFile;
+
+      if (isVideo) {
+        capturedFile = await picker.pickVideo(
+          source: ImageSource.camera,
+          maxDuration: const Duration(seconds: 30),
+        );
+      } else {
+        capturedFile = await picker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 90,
+        );
+      }
+
+      if (capturedFile != null) {
+        // Process the captured media
+        await _processNativeCameraResult(capturedFile, isVideo);
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Camera error: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _processNativeCameraResult(XFile mediaFile, bool isVideo) async {
+    try {
+      final File file = File(mediaFile.path);
+
+      // Add to captured media list
+      setState(() {
+        _capturedMedia.add(file);
+      });
+
+      debugPrint('📸 BEEP: Added ${isVideo ? 'video' : 'photo'} to media: ${file.path}');
+
+      // Note: Sensor data will be collected during beep submission
+
+    } catch (e) {
+      debugPrint('Error processing camera result: $e');
+    }
+  }
+
+  Future<void> _capturePhotoOld() async {
+    // Old camera navigation code
+    final description = _descriptionController.text.trim();
     final result = await context.push<CameraCaptureResult>('/beep/camera', extra: {
       'description': description,
       'preFetchedGPS': _preFetchedGPS,
@@ -1277,9 +1401,10 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     _sendQuickBeep();
                   },
                   onLongPress: _isBeeping ? null : () async {
-                    debugPrint('🔴 LONG PRESS: Opening camera directly');
+                    debugPrint('🔴 LONG PRESS: Showing camera mode popup');
                     await UiFeedback.click();
-                    context.push('/beep/camera');
+                    // Long press also shows the camera mode popup
+                    _showCameraModePopup();
                   },
                   child: GlassCard(
                     child: Container(

@@ -45,7 +45,32 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	
+
+	<!-- Quick Actions for 3D Touch / Long Press -->
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeCapture</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Take Photo</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>Capture UFO photo and beep</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>take_photo</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeCapture</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Take Video</string>
+			<key>UIApplicationShortcutItemSubtitle</key>
+			<string>Record UFO video and beep</string>
+			<key>UIApplicationShortcutItemType</key>
+			<string>take_video</string>
+		</dict>
+	</array>
+
 	<!-- Privacy Usage Descriptions -->
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>UFOBeep needs location access to record sighting coordinates and show nearby UFO alerts.</string>

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../providers/alerts_provider.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../theme/app_theme.dart';
@@ -56,17 +57,113 @@ class _AttachMediaScreenState extends ConsumerState<AttachMediaScreen> {
   Future<void> _capturePhoto() async {
     if (_isCapturing) return;
 
-    final result = await context.push<Map<String, dynamic>>('/beep/camera', extra: {
-      'returnToComposition': true,
-    });
+    // Show camera mode popup instead of navigation
+    _showCameraModePopup();
+  }
 
-    if (result != null && result['mediaFile'] != null) {
-      final mediaFile = result['mediaFile'] as File;
+  void _showCameraModePopup() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom + 100, // Move up to avoid nav bar
+        ),
+        child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.nightSkyBottom,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+        ),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Photo option
+            GlassCard(
+              onTap: () async {
+                Navigator.pop(context);
+                await _launchNativeCamera(isVideo: false);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(Icons.camera_alt, color: Colors.white, size: 24),
+                    const SizedBox(width: 16),
+                    Text(
+                      'Photo',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            // Video option
+            GlassCard(
+              onTap: () async {
+                Navigator.pop(context);
+                await _launchNativeCamera(isVideo: true);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    Icon(Icons.videocam, color: Colors.white, size: 24),
+                    const SizedBox(width: 16),
+                    Text(
+                      'Video',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _launchNativeCamera({required bool isVideo}) async {
+    try {
+      final ImagePicker picker = ImagePicker();
+      XFile? capturedFile;
+
+      if (isVideo) {
+        capturedFile = await picker.pickVideo(
+          source: ImageSource.camera,
+          maxDuration: const Duration(seconds: 30),
+        );
+      } else {
+        capturedFile = await picker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 90,
+        );
+      }
+
+      if (capturedFile != null) {
+        final mediaFile = File(capturedFile.path);
+        setState(() {
+          _selectedMedia.add(mediaFile);
+          _errorMessage = null;
+        });
+        debugPrint('📎 ATTACH: Added ${isVideo ? 'video' : 'photo'} - ${mediaFile.path}');
+      }
+    } catch (e) {
       setState(() {
-        _selectedMedia.add(mediaFile);
-        _errorMessage = null;
+        _errorMessage = 'Camera error: $e';
       });
-      debugPrint('📎 ATTACH: Added camera photo - ${mediaFile.path}');
     }
   }
 

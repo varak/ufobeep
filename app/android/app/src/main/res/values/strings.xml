@@ -3,4 +3,8 @@
     <string name="app_name">UFOBeep</string>
     <string name="shortcut_quick_beep_short">Quick Beep</string>
     <string name="shortcut_quick_beep_long">Take Photo and Beep</string>
+    <string name="shortcut_take_photo_short">Take Photo</string>
+    <string name="shortcut_take_photo_long">Take Photo and Beep</string>
+    <string name="shortcut_take_video_short">Take Video</string>
+    <string name="shortcut_take_video_long">Take Video and Beep</string>
 </resources>

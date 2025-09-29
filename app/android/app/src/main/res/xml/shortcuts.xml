@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
-        android:shortcutId="quick_beep"
+        android:shortcutId="take_photo"
         android:enabled="true"
         android:icon="@drawable/ic_camera_shortcut"
-        android:shortcutShortLabel="@string/shortcut_quick_beep_short"
-        android:shortcutLongLabel="@string/shortcut_quick_beep_long">
+        android:shortcutShortLabel="@string/shortcut_take_photo_short"
+        android:shortcutLongLabel="@string/shortcut_take_photo_long">
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetPackage="com.ufobeep.app"
-            android:targetClass="com.ufobeep.app.MainActivity">
-            <extra android:name="shortcut_action" android:value="quick_beep" />
+            android:targetPackage="com.ufobeep"
+            android:targetClass="com.ufobeep.MainActivity">
+            <extra android:name="shortcut_action" android:value="take_photo" />
+        </intent>
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="take_video"
+        android:enabled="true"
+        android:icon="@drawable/ic_camera_shortcut"
+        android:shortcutShortLabel="@string/shortcut_take_video_short"
+        android:shortcutLongLabel="@string/shortcut_take_video_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.ufobeep"
+            android:targetClass="com.ufobeep.MainActivity">
+            <extra android:name="shortcut_action" android:value="take_video" />
         </intent>
     </shortcut>
 </shortcuts>
