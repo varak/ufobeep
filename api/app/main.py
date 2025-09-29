@@ -1031,3 +1031,11 @@ async def get_analysis_status(sighting_id: str):
             "analysis_count": 0,
             "results": []
         }
+
+# MCP Server - Clean import
+try:
+    from mcp.router import mcp_router
+    app.include_router(mcp_router)
+    logger.info("✅ MCP server endpoints loaded")
+except Exception as e:
+    logger.error(f"❌ Failed to load MCP endpoints: {e}")

@@ -1,0 +1,25 @@
+name: ufobeep_camera_caps
+description: Tiny Flutter plugin exposing device camera zoom capabilities (min/max zoom ratio and lens anchors) for use with Camerawesome or custom cameras.
+version: 0.1.0
+homepage: https://ufobeep.com
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.22.0"
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.ufobeep.camera_caps
+        pluginClass: UfobeepCameraCapsPlugin
+      ios:
+        pluginClass: UfobeepCameraCapsPlugin
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
