@@ -40,6 +40,6 @@ async def mcp_sighting_details_endpoint(
     return await sighting_details(database_service.pool, sighting_id)
 
 @mcp_router.get("/stats")
-async def mcp_basic_stats_endpoint(database_service.pool=Depends(lambda: None)):
+async def mcp_basic_stats_endpoint():
     """Get basic UFO database statistics for AI systems"""
     return await basic_stats(database_service.pool)
