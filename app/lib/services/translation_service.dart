@@ -15,7 +15,7 @@ class TranslationService {
   final Map<String, String> _translationCache = {};
 
   // Switch between translation providers for testing
-  TranslationProvider provider = TranslationProvider.googleTranslate;
+  TranslationProvider provider = TranslationProvider.libreTranslate; // Test LibreTranslate first
 
   /// Language code mapping for Google Translate API
   static const Map<String, String> languageNames = {

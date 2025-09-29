@@ -68,15 +68,7 @@ class AlertDetailsSection extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            // Simple translation text links (not giant button)
-            Text(
-              'Translate to Deutsch | Show Original',
-              style: const TextStyle(
-                color: AppColors.brandPrimary,
-                fontSize: 14,
-                decoration: TextDecoration.underline,
-              ),
-            ),
+            // TODO: Implement proper dynamic translation links with user language detection
             const SizedBox(height: 16),
           ],
           
