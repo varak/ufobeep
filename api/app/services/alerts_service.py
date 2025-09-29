@@ -619,18 +619,15 @@ class AlertsService:
             enrichment['content_filter'] = self._parse_json(row_data['content_analysis_data'])
             sources_used.append('content_analysis_data')
 
-        # Fallback to old enrichment_data if separate columns are empty
-        if not enrichment and row_data.get('enrichment_data'):
-            enrichment = self._parse_json(row_data['enrichment_data']) or {}
-            sources_used.append('enrichment_data_fallback')
-
-        # Always include MUFON metadata if present (regardless of sources used)
+        # Start with enrichment_data as base (contains MUFON metadata)
         if row_data.get('enrichment_data'):
-            enrichment_raw = self._parse_json(row_data['enrichment_data']) or {}
-            if 'mufon_case_number' in enrichment_raw:
-                enrichment['mufon_case_number'] = enrichment_raw['mufon_case_number']
-            if 'external_id' in enrichment_raw:
-                enrichment['external_id'] = enrichment_raw['external_id']
+            enrichment_base = self._parse_json(row_data['enrichment_data']) or {}
+            # Include MUFON metadata from enrichment_data
+            if 'mufon_case_number' in enrichment_base:
+                enrichment['mufon_case_number'] = enrichment_base['mufon_case_number']
+            if 'external_id' in enrichment_base:
+                enrichment['external_id'] = enrichment_base['external_id']
+            sources_used.append('enrichment_data_mufon_metadata')
 
         logger.info(f"🔄 ENRICHMENT DEBUG: Built enrichment from sources: {sources_used}")
         logger.info(f"🔄 ENRICHMENT DEBUG: Final enrichment keys: {list(enrichment.keys())}")
