@@ -171,7 +171,7 @@ class AlertsService:
                        s.weather_data, s.celestial_data, s.aircraft_data, s.satellite_data, s.geocoding_data, s.content_analysis_data,
                        s.enrichment_data,
                        u.username as reporter_username, s.source,
-                       COALESCE(s.occurred_at, s.created_at) as occurred_at, s.external_url,
+                       COALESCE(s.occurred_at, s.created_at) as occurred_at, s.external_url, s.external_id,
                        COALESCE(c.comment_count, 0) as comment_count, s.short_url
                        {distance_select}
                 FROM sightings s
@@ -214,6 +214,7 @@ class AlertsService:
                         source=row["source"],
                         occurred_at=row["occurred_at"],
                         external_url=row["external_url"],
+                        external_id=row["external_id"],
                         short_url=row["short_url"]
                     ))
             
@@ -622,6 +623,14 @@ class AlertsService:
         if not enrichment and row_data.get('enrichment_data'):
             enrichment = self._parse_json(row_data['enrichment_data']) or {}
             sources_used.append('enrichment_data_fallback')
+
+        # Always include MUFON metadata if present (regardless of sources used)
+        if row_data.get('enrichment_data'):
+            enrichment_raw = self._parse_json(row_data['enrichment_data']) or {}
+            if 'mufon_case_number' in enrichment_raw:
+                enrichment['mufon_case_number'] = enrichment_raw['mufon_case_number']
+            if 'external_id' in enrichment_raw:
+                enrichment['external_id'] = enrichment_raw['external_id']
 
         logger.info(f"🔄 ENRICHMENT DEBUG: Built enrichment from sources: {sources_used}")
         logger.info(f"🔄 ENRICHMENT DEBUG: Final enrichment keys: {list(enrichment.keys())}")
