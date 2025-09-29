@@ -1156,6 +1156,26 @@
   "settingUpLocalization": "Setting up localization...",
   "checkingConnectivity": "Checking connectivity...",
   "gatheringDeviceInfo": "Gathering device info...",
+  "translating": "Translating...",
+  "showOriginal": "Show Original",
+  "translateTo": "Translate to {language}",
+  "@translateTo": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
+  "translatedFrom": "Translated from {language}",
+  "@translatedFrom": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "English"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {

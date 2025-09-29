@@ -9,6 +9,9 @@ import '../../l10n/app_localizations.dart';
 import '../../utils/unit_conversion.dart';
 import '../../services/permission_service.dart';
 import '../../utils/short_url_utils.dart';
+import '../../services/translation_service.dart';
+import '../../providers/user_preferences_provider.dart';
+import '../translation_button.dart';
 
 class AlertDetailsSection extends StatelessWidget {
   const AlertDetailsSection({
