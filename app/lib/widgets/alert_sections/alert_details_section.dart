@@ -709,7 +709,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
                       ),
                     ),
                     IconButton(
-                      onPressed: onShareTap ?? () {
+                      onPressed: widget.onShareTap ?? () {
                         Clipboard.setData(ClipboardData(text: shareLink));
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
