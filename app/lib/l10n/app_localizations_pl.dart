@@ -2554,7 +2554,74 @@ class AppLocalizationsPl extends AppLocalizations {
   String get noCelestialDataAvailable => 'Brak danych niebiańskich.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Zlokalizuję cię...';
+
+  @override
+  String get media => 'Media';
+
+  @override
+  String get locationRequired => 'Lokalizacja wymagana';
+
+  @override
+  String get confirmingWitness => 'Potwierdzam świadka...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Czysto';
+
+  @override
+  String get weatherClearSky => 'czyste niebo';
+
+  @override
+  String get rain => 'Deszcz';
+
+  @override
+  String get snow => 'Śnieg';
+
+  @override
+  String get thunderstorm => 'Burza';
+
+  @override
+  String get drizzle => 'Mżawkaweather condition';
+
+  @override
+  String get fog => 'Mgła';
+
+  @override
+  String get fewClouds => 'kilka chmur';
+
+  @override
+  String get scatteredClouds => 'rozproszone chmury';
+
+  @override
+  String get brokenClouds => 'rozbite chmury';
+
+  @override
+  String get overcastClouds => 'zachmurzone chmury';
+
+  @override
+  String get lightRain => 'lekki deszcz';
+
+  @override
+  String get moderateRain => 'umiarkowany deszcz';
+
+  @override
+  String get heavyRain => 'intensywny deszcz';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '_ _ PLACESORM _ 0 _ _ statek powietrzny wykryty w _ _ PLACESORM _ 1 _ _ km (aktualne pozycje)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '_ _ PLACESORM _ 0 _ _ dim satelity widoczne - mało prawdopodobne, aby wyjaśnić widzenie';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON Data sprawozdania';
 
   @override
   String satelliteNameDirection(String name, String direction) {

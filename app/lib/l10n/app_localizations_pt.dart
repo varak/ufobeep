@@ -211,7 +211,7 @@ class AppLocalizationsPt extends AppLocalizations {
       'Conceda acesso ao microfone para captura de vídeo com áudio.';
 
   @override
-  String get openSettings => 'Abrir configurações';
+  String get openSettings => 'Abrir Configurações';
 
   @override
   String get alertDetailTitle => 'Detalhes da visão';
@@ -2556,7 +2556,74 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noCelestialDataAvailable => 'Nenhum dado celestial disponível.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'A obter a sua localização...';
+
+  @override
+  String get media => 'Mídia';
+
+  @override
+  String get locationRequired => 'Localização necessária';
+
+  @override
+  String get confirmingWitness => 'Confirmando testemunha...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Limpar';
+
+  @override
+  String get weatherClearSky => 'céu limpo';
+
+  @override
+  String get rain => 'Chuva';
+
+  @override
+  String get snow => 'Neve';
+
+  @override
+  String get thunderstorm => 'Trovão';
+
+  @override
+  String get drizzle => 'Drizzle';
+
+  @override
+  String get fog => 'Nevoeiro';
+
+  @override
+  String get fewClouds => 'poucas nuvens';
+
+  @override
+  String get scatteredClouds => 'nuvens dispersas';
+
+  @override
+  String get brokenClouds => 'nuvens quebradas';
+
+  @override
+  String get overcastClouds => 'nuvens nubladas';
+
+  @override
+  String get lightRain => 'chuva leve';
+
+  @override
+  String get moderateRain => 'chuva moderada';
+
+  @override
+  String get heavyRain => 'chuva pesada';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '${count}__aeronaves detectadas dentro de ${count}km (posição atual)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '$count os satélites menos visíveis - improvável explicar o avistamento';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON Data de comunicação';
 
   @override
   String satelliteNameDirection(String name, String direction) {

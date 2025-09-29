@@ -2544,7 +2544,74 @@ class AppLocalizationsCs extends AppLocalizations {
       'Nejsou k dispozici žádné nebeské údaje.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Získávám vaši pozici...';
+
+  @override
+  String get media => 'Média';
+
+  @override
+  String get locationRequired => 'Požadované umístění';
+
+  @override
+  String get confirmingWitness => 'Potvrzuji svědka...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Vyčistit';
+
+  @override
+  String get weatherClearSky => 'jasná obloha';
+
+  @override
+  String get rain => 'Déšť';
+
+  @override
+  String get snow => 'Sníh';
+
+  @override
+  String get thunderstorm => 'Bouřka';
+
+  @override
+  String get drizzle => 'Mrholení';
+
+  @override
+  String get fog => 'Mlha';
+
+  @override
+  String get fewClouds => 'málo mraků';
+
+  @override
+  String get scatteredClouds => 'roztroušené mraky';
+
+  @override
+  String get brokenClouds => 'rozbité mraky';
+
+  @override
+  String get overcastClouds => 'zatažené mraky';
+
+  @override
+  String get lightRain => 'lehký déšť';
+
+  @override
+  String get moderateRain => 'střední déšť';
+
+  @override
+  String get heavyRain => 'těžký déšť';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '_ _ PLACETETERER _ 0 _ _ zjištěná letadla v _ _ PLACETELER _ 1 _ _ km (aktuální polohy)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '_ _ PLACETETERER _ 0 _ _ dim satelity viditelné - pravděpodobně nevysvětluje pozorování';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON Datum podání zprávy';
 
   @override
   String satelliteNameDirection(String name, String direction) {

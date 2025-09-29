@@ -2541,7 +2541,74 @@ class AppLocalizationsFi extends AppLocalizations {
   String get noCelestialDataAvailable => 'Ei taivaallista tietoa.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Sain sijaintisi...';
+
+  @override
+  String get media => 'Media';
+
+  @override
+  String get locationRequired => 'Sijainti vaaditaan';
+
+  @override
+  String get confirmingWitness => 'Vahvistan todistajan...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Tyhjennä';
+
+  @override
+  String get weatherClearSky => 'kirkas taivas';
+
+  @override
+  String get rain => 'Sade';
+
+  @override
+  String get snow => 'Lumi';
+
+  @override
+  String get thunderstorm => 'Ukkosmyrsky';
+
+  @override
+  String get drizzle => 'Tiima';
+
+  @override
+  String get fog => 'Sumu';
+
+  @override
+  String get fewClouds => 'muutama pilvi';
+
+  @override
+  String get scatteredClouds => 'hajallaan olevat pilvet';
+
+  @override
+  String get brokenClouds => 'rikkinäiset pilvet';
+
+  @override
+  String get overcastClouds => 'pilvet';
+
+  @override
+  String get lightRain => 'kevyt sade';
+
+  @override
+  String get moderateRain => 'kohtalainen sade';
+
+  @override
+  String get heavyRain => 'rankkasade';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '__PASSIHOLDER_0__-ilma-alus havaittu __PASSIHOLDER_1_km (nykyiset paikat)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '__PlaceHolder_0__himmennyssatelliitit näkyvissä - ei todennäköisesti selitä havaintoja';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON Raportointipäivä';
 
   @override
   String satelliteNameDirection(String name, String direction) {

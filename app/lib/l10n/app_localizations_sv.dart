@@ -2539,7 +2539,74 @@ class AppLocalizationsSv extends AppLocalizations {
   String get noCelestialDataAvailable => 'Inga himmelska data tillgängliga.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Få din plats...';
+
+  @override
+  String get media => 'Medier';
+
+  @override
+  String get locationRequired => 'Plats krävs';
+
+  @override
+  String get confirmingWitness => 'Bekräfta vittne...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Clear';
+
+  @override
+  String get weatherClearSky => 'klar himmel';
+
+  @override
+  String get rain => 'Regn';
+
+  @override
+  String get snow => 'Snö snö';
+
+  @override
+  String get thunderstorm => 'Thunderstorm';
+
+  @override
+  String get drizzle => 'Drizzle';
+
+  @override
+  String get fog => 'Fog';
+
+  @override
+  String get fewClouds => 'få moln';
+
+  @override
+  String get scatteredClouds => 'spridda moln';
+
+  @override
+  String get brokenClouds => 'trasiga moln';
+
+  @override
+  String get overcastClouds => 'overcast moln';
+
+  @override
+  String get lightRain => 'ljus regn';
+
+  @override
+  String get moderateRain => 'måttligt regn';
+
+  @override
+  String get heavyRain => 'tungt regn';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '${count}_ flygplan som upptäcks inom __PLACEHOLDER_1_km (nuvarande positioner)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '${count}_ dim satelliter synliga - osannolikt att förklara observationer';
+  }
+
+  @override
+  String get mufonReportingDate => 'Mufonen Rapporteringsdatum';
 
   @override
   String satelliteNameDirection(String name, String direction) {

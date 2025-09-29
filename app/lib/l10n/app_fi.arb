@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Ei taivaallista tietoa.",
+  "gettingLocation": "Sain sijaintisi...",
+  "media": "Media",
+  "locationRequired": "Sijainti vaaditaan",
+  "confirmingWitness": "Vahvistan todistajan...",
+  "weatherClear": "Tyhjennä",
+  "weatherClearSky": "kirkas taivas",
+  "rain": "Sade",
+  "snow": "Lumi",
+  "thunderstorm": "Ukkosmyrsky",
+  "drizzle": "Tiima",
+  "fog": "Sumu",
+  "fewClouds": "muutama pilvi",
+  "scatteredClouds": "hajallaan olevat pilvet",
+  "brokenClouds": "rikkinäiset pilvet",
+  "overcastClouds": "pilvet",
+  "lightRain": "kevyt sade",
+  "moderateRain": "kohtalainen sade",
+  "heavyRain": "rankkasade",
+  "aircraftDetectedCurrentPositions": "__PASSIHOLDER_0__-ilma-alus havaittu __PASSIHOLDER_1_km (nykyiset paikat)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "__PlaceHolder_0__himmennyssatelliitit näkyvissä - ei todennäköisesti selitä havaintoja",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Raportointipäivä",
   "satelliteNameDirection": "{name} - __PLACEHOLDER_1_",
   "@satelliteNameDirection": {
     "placeholders": {

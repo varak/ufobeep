@@ -2576,7 +2576,74 @@ class AppLocalizationsEl extends AppLocalizations {
       'Δεν υπάρχουν διαθέσιμα ουράνια δεδομένα.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Να πάρει τη θέση σας...';
+
+  @override
+  String get media => 'Μέσα ενημέρωσης';
+
+  @override
+  String get locationRequired => 'Απαιτούμενη τοποθεσία';
+
+  @override
+  String get confirmingWitness => 'Επιβεβαιώνω μάρτυρα...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Καθαρισμός';
+
+  @override
+  String get weatherClearSky => 'καθαρός ουρανός';
+
+  @override
+  String get rain => 'Βροχή';
+
+  @override
+  String get snow => 'Χιόνι';
+
+  @override
+  String get thunderstorm => 'Καταιγίδα';
+
+  @override
+  String get drizzle => 'Ψιλή';
+
+  @override
+  String get fog => 'Ομίχλη';
+
+  @override
+  String get fewClouds => 'λίγα σύννεφα';
+
+  @override
+  String get scatteredClouds => 'διάσπαρτα σύννεφα';
+
+  @override
+  String get brokenClouds => 'σπασμένα σύννεφα';
+
+  @override
+  String get overcastClouds => 'σύννεφα από συννεφιά';
+
+  @override
+  String get lightRain => 'ελαφρά βροχή';
+
+  @override
+  String get moderateRain => 'μέτρια βροχή';
+
+  @override
+  String get heavyRain => 'βαριά βροχή';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '__PLACEHOLDER_0_ αεροσκάφος ανιχνεύεται εντός __PLACEHOLDER_1_km (τρέχουσες θέσεις)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '__PLACEHOLDER_0_ dim δορυφόρους ορατοί - απίθανο να εξηγήσει την όραση';
+  }
+
+  @override
+  String get mufonReportingDate => 'ΜΟΥΦΟΝ Ημερομηνία αναφοράς';
 
   @override
   String satelliteNameDirection(String name, String direction) {

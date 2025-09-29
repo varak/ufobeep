@@ -525,7 +525,7 @@ abstract class AppLocalizations {
   /// No description provided for @openSettings.
   ///
   /// In en, this message translates to:
-  /// **'Open settings'**
+  /// **'Open Settings'**
   String get openSettings;
 
   /// No description provided for @alertDetailTitle.
@@ -4715,6 +4715,132 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No celestial data available.'**
   String get noCelestialDataAvailable;
+
+  /// No description provided for @gettingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Getting your location...'**
+  String get gettingLocation;
+
+  /// No description provided for @media.
+  ///
+  /// In en, this message translates to:
+  /// **'Media'**
+  String get media;
+
+  /// No description provided for @locationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Required'**
+  String get locationRequired;
+
+  /// No description provided for @confirmingWitness.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirming witness...'**
+  String get confirmingWitness;
+
+  /// No description provided for @chooseYourUsername.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Username'**
+  String get chooseYourUsername;
+
+  /// No description provided for @weatherClear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get weatherClear;
+
+  /// No description provided for @weatherClearSky.
+  ///
+  /// In en, this message translates to:
+  /// **'clear sky'**
+  String get weatherClearSky;
+
+  /// No description provided for @rain.
+  ///
+  /// In en, this message translates to:
+  /// **'Rain'**
+  String get rain;
+
+  /// No description provided for @snow.
+  ///
+  /// In en, this message translates to:
+  /// **'Snow'**
+  String get snow;
+
+  /// No description provided for @thunderstorm.
+  ///
+  /// In en, this message translates to:
+  /// **'Thunderstorm'**
+  String get thunderstorm;
+
+  /// No description provided for @drizzle.
+  ///
+  /// In en, this message translates to:
+  /// **'Drizzle'**
+  String get drizzle;
+
+  /// No description provided for @fog.
+  ///
+  /// In en, this message translates to:
+  /// **'Fog'**
+  String get fog;
+
+  /// No description provided for @fewClouds.
+  ///
+  /// In en, this message translates to:
+  /// **'few clouds'**
+  String get fewClouds;
+
+  /// No description provided for @scatteredClouds.
+  ///
+  /// In en, this message translates to:
+  /// **'scattered clouds'**
+  String get scatteredClouds;
+
+  /// No description provided for @brokenClouds.
+  ///
+  /// In en, this message translates to:
+  /// **'broken clouds'**
+  String get brokenClouds;
+
+  /// No description provided for @overcastClouds.
+  ///
+  /// In en, this message translates to:
+  /// **'overcast clouds'**
+  String get overcastClouds;
+
+  /// No description provided for @lightRain.
+  ///
+  /// In en, this message translates to:
+  /// **'light rain'**
+  String get lightRain;
+
+  /// No description provided for @moderateRain.
+  ///
+  /// In en, this message translates to:
+  /// **'moderate rain'**
+  String get moderateRain;
+
+  /// No description provided for @heavyRain.
+  ///
+  /// In en, this message translates to:
+  /// **'heavy rain'**
+  String get heavyRain;
+
+  /// No description provided for @aircraftDetectedCurrentPositions.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} aircraft detected within {radius}km (current positions)'**
+  String aircraftDetectedCurrentPositions(int count, String radius);
+
+  /// No description provided for @dimSatellitesUnlikely.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} dim satellites visible - unlikely to explain sighting'**
+  String dimSatellitesUnlikely(int count);
 
   /// No description provided for @mufonReportingDate.
   ///

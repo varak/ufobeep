@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Inga himmelska data tillgängliga.",
+  "gettingLocation": "Få din plats...",
+  "media": "Medier",
+  "locationRequired": "Plats krävs",
+  "confirmingWitness": "Bekräfta vittne...",
+  "weatherClear": "Clear",
+  "weatherClearSky": "klar himmel",
+  "rain": "Regn",
+  "snow": "Snö snö",
+  "thunderstorm": "Thunderstorm",
+  "drizzle": "Drizzle",
+  "fog": "Fog",
+  "fewClouds": "få moln",
+  "scatteredClouds": "spridda moln",
+  "brokenClouds": "trasiga moln",
+  "overcastClouds": "overcast moln",
+  "lightRain": "ljus regn",
+  "moderateRain": "måttligt regn",
+  "heavyRain": "tungt regn",
+  "aircraftDetectedCurrentPositions": "{count}_ flygplan som upptäcks inom __PLACEHOLDER_1_km (nuvarande positioner)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "{count}_ dim satelliter synliga - osannolikt att förklara observationer",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "Mufonen Rapporteringsdatum",
   "satelliteNameDirection": "{name} {direction}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
   "@satelliteNameDirection": {
     "placeholders": {

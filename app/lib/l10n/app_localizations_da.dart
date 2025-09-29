@@ -2547,7 +2547,74 @@ class AppLocalizationsDa extends AppLocalizations {
   String get noCelestialDataAvailable => 'Der foreligger ingen himmelsk data.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Få din placering...';
+
+  @override
+  String get media => 'Medier';
+
+  @override
+  String get locationRequired => 'Sted påkrævet';
+
+  @override
+  String get confirmingWitness => 'Bekræftende vidne...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Ryd';
+
+  @override
+  String get weatherClearSky => 'klar himmel';
+
+  @override
+  String get rain => 'Regn';
+
+  @override
+  String get snow => 'Sne';
+
+  @override
+  String get thunderstorm => 'Tordenvejr';
+
+  @override
+  String get drizzle => 'Støvregn';
+
+  @override
+  String get fog => 'Tåge';
+
+  @override
+  String get fewClouds => 'få skyer';
+
+  @override
+  String get scatteredClouds => 'spredte skyer';
+
+  @override
+  String get brokenClouds => 'bristede skyer';
+
+  @override
+  String get overcastClouds => 'overskyet skyer';
+
+  @override
+  String get lightRain => 'let regn';
+
+  @override
+  String get moderateRain => 'moderat regn';
+
+  @override
+  String get heavyRain => 'kraftig regn';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '_ _ PLACEREPORT _ 0 _ _ luftfartøj opdaget inden _ _ PLACEREPORT _ 1 _ _ km (nuværende positioner)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '_ _ PLACEREPER _ 0 _ _ dim satellitter synlige - usandsynligt at forklare observation';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON Rapporteringsdato';
 
   @override
   String satelliteNameDirection(String name, String direction) {

@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Brak danych niebiańskich.",
+  "gettingLocation": "Zlokalizuję cię...",
+  "media": "Media",
+  "locationRequired": "Lokalizacja wymagana",
+  "confirmingWitness": "Potwierdzam świadka...",
+  "weatherClear": "Czysto",
+  "weatherClearSky": "czyste niebo",
+  "rain": "Deszcz",
+  "snow": "Śnieg",
+  "thunderstorm": "Burza",
+  "drizzle": "Mżawkaweather condition",
+  "fog": "Mgła",
+  "fewClouds": "kilka chmur",
+  "scatteredClouds": "rozproszone chmury",
+  "brokenClouds": "rozbite chmury",
+  "overcastClouds": "zachmurzone chmury",
+  "lightRain": "lekki deszcz",
+  "moderateRain": "umiarkowany deszcz",
+  "heavyRain": "intensywny deszcz",
+  "aircraftDetectedCurrentPositions": "_ _ PLACESORM _ 0 _ _ statek powietrzny wykryty w _ _ PLACESORM _ 1 _ _ km (aktualne pozycje)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "_ _ PLACESORM _ 0 _ _ dim satelity widoczne - mało prawdopodobne, aby wyjaśnić widzenie",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Data sprawozdania",
   "satelliteNameDirection": "_ _ PLACESECRET _ 0 _ _ _ - _ PLACESECRET _ 1 _ _",
   "@satelliteNameDirection": {
     "placeholders": {

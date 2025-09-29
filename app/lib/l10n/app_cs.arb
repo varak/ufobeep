@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Nejsou k dispozici žádné nebeské údaje.",
+  "gettingLocation": "Získávám vaši pozici...",
+  "media": "Média",
+  "locationRequired": "Požadované umístění",
+  "confirmingWitness": "Potvrzuji svědka...",
+  "weatherClear": "Vyčistit",
+  "weatherClearSky": "jasná obloha",
+  "rain": "Déšť",
+  "snow": "Sníh",
+  "thunderstorm": "Bouřka",
+  "drizzle": "Mrholení",
+  "fog": "Mlha",
+  "fewClouds": "málo mraků",
+  "scatteredClouds": "roztroušené mraky",
+  "brokenClouds": "rozbité mraky",
+  "overcastClouds": "zatažené mraky",
+  "lightRain": "lehký déšť",
+  "moderateRain": "střední déšť",
+  "heavyRain": "těžký déšť",
+  "aircraftDetectedCurrentPositions": "_ _ PLACETETERER _ 0 _ _ zjištěná letadla v _ _ PLACETELER _ 1 _ _ km (aktuální polohy)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "_ _ PLACETETERER _ 0 _ _ dim satelity viditelné - pravděpodobně nevysvětluje pozorování",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Datum podání zprávy",
   "satelliteNameDirection": "_ _ PLACETIER _ 0 _ _ - _ _ PLACETIER _ 1 _ _",
   "@satelliteNameDirection": {
     "placeholders": {

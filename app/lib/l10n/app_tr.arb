@@ -87,7 +87,7 @@
   "locationPermissionBody": "Konumunuzu yakındaki uyarıları göndermek ve almak için kullanıyoruz.",
   "microphonePermissionTitle": "Mikrophone erişim gerekli gerekli",
   "microphonePermissionBody": "Video için mikrofon erişimi ses ile yakalamak için.",
-  "openSettings": "Açık ayarlar",
+  "openSettings": "Açık Ayarlar",
   "alertDetailTitle": "Sighting Details",
   "reportedBy": "{username}",
   "@reportedBy": {
@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Mevcut sayısız veri yok.",
+  "gettingLocation": "Konumunuzu almak...",
+  "media": "Media",
+  "locationRequired": "Konum Required",
+  "confirmingWitness": "Tanıyın ...",
+  "weatherClear": "Clear",
+  "weatherClearSky": "net gökyüzü",
+  "rain": "Rain",
+  "snow": "Snow",
+  "thunderstorm": "Fırtına",
+  "drizzle": "Drizzle",
+  "fog": "Fog",
+  "fewClouds": "birkaç bulut",
+  "scatteredClouds": "dağınık bulutlar",
+  "brokenClouds": "kırık bulutlar",
+  "overcastClouds": "overcast bulutlar",
+  "lightRain": "işık yağmuru",
+  "moderateRain": "ılımlı yağmur yağmur",
+  "heavyRain": "ağır yağmur yağmur",
+  "aircraftDetectedCurrentPositions": "{count} uçakları, {count}km (şimdiki pozisyonlar) içinde tespit edildi",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "{count} dim uyduları görünür - görüş açıklamayı açıklamak mümkün değildir",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Raporlama Tarihi",
   "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {

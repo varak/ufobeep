@@ -207,7 +207,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get microphonePermissionBody => 'ビデオキャプチャ用のマイクアクセスを音声で付与します.';
 
   @override
-  String get openSettings => 'オープン設定';
+  String get openSettings => '設定を開く';
 
   @override
   String get alertDetailTitle => '観光スポット詳細';
@@ -2464,7 +2464,74 @@ class AppLocalizationsJa extends AppLocalizations {
   String get noCelestialDataAvailable => '気象データがない.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'あなたの場所を取得する...';
+
+  @override
+  String get media => 'メディア';
+
+  @override
+  String get locationRequired => '所在地 必須';
+
+  @override
+  String get confirmingWitness => '証人確認...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'クリア';
+
+  @override
+  String get weatherClearSky => '澄んだ空';
+
+  @override
+  String get rain => 'ログイン';
+
+  @override
+  String get snow => 'スノーボード';
+
+  @override
+  String get thunderstorm => '雷雨';
+
+  @override
+  String get drizzle => 'ドリスル';
+
+  @override
+  String get fog => 'フォグ';
+
+  @override
+  String get fewClouds => 'クラウド数';
+
+  @override
+  String get scatteredClouds => '散らばる雲';
+
+  @override
+  String get brokenClouds => '壊れた雲';
+
+  @override
+  String get overcastClouds => 'オーバーキャストクラウド';
+
+  @override
+  String get lightRain => '光雨';
+
+  @override
+  String get moderateRain => '適度な雨';
+
+  @override
+  String get heavyRain => '豪雨';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '${count}_________km(現在の位置)内の航空機が検出される';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '$count 透かし衛星が見える - 視線を説明するのとは異なり';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFONについて 報告日時';
 
   @override
   String satelliteNameDirection(String name, String direction) {

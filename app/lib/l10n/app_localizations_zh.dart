@@ -2452,7 +2452,74 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noCelestialDataAvailable => '无天体数据可用.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => '找到你们的位置...';
+
+  @override
+  String get media => '媒体';
+
+  @override
+  String get locationRequired => '所需地点';
+
+  @override
+  String get confirmingWitness => '确认证人...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => '清除';
+
+  @override
+  String get weatherClearSky => '天空清净';
+
+  @override
+  String get rain => '风雨';
+
+  @override
+  String get snow => '雪';
+
+  @override
+  String get thunderstorm => '暴风雨';
+
+  @override
+  String get drizzle => '滴滴声';
+
+  @override
+  String get fog => '雾';
+
+  @override
+  String get fewClouds => '少数云';
+
+  @override
+  String get scatteredClouds => '散开的云';
+
+  @override
+  String get brokenClouds => '断云';
+
+  @override
+  String get overcastClouds => '覆盖云';
+
+  @override
+  String get lightRain => '轻雨';
+
+  @override
+  String get moderateRain => '中等雨量';
+
+  @override
+  String get heavyRain => '暴风雨';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '在_PLACEHOLDER_0_km(现有位置)内探测到的飞机';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '* PLACEHOLDER_0_ 显微卫星 - 不太可能解释目击';
+  }
+
+  @override
+  String get mufonReportingDate => '毛里求斯 报告日期';
 
   @override
   String satelliteNameDirection(String name, String direction) {

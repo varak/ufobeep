@@ -2466,7 +2466,74 @@ class AppLocalizationsKo extends AppLocalizations {
   String get noCelestialDataAvailable => '유효한 celestial 자료 없음.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => '당신의 위치...';
+
+  @override
+  String get media => '주요 특징';
+
+  @override
+  String get locationRequired => '오시는 길';
+
+  @override
+  String get confirmingWitness => '증인 확인...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => '이름 *';
+
+  @override
+  String get weatherClearSky => '맑은 하늘';
+
+  @override
+  String get rain => '뚱 베어';
+
+  @override
+  String get snow => '이름 *';
+
+  @override
+  String get thunderstorm => '연락처';
+
+  @override
+  String get drizzle => '팟캐스트';
+
+  @override
+  String get fog => '사이트맵';
+
+  @override
+  String get fewClouds => '몇몇 구름';
+
+  @override
+  String get scatteredClouds => '유출된 구름';
+
+  @override
+  String get brokenClouds => '부서진 구름';
+
+  @override
+  String get overcastClouds => 'overcast 구름';
+
+  @override
+  String get lightRain => '빛 비';
+
+  @override
+  String get moderateRain => '공급 업체';
+
+  @override
+  String get heavyRain => '무거운 비';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count 항공기는 ${count}km (현재 위치)에서 감지';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '$count dim 인공위성 - 눈에 띄는 것';
+  }
+
+  @override
+  String get mufonReportingDate => '사이트맵 공지사항';
 
   @override
   String satelliteNameDirection(String name, String direction) {

@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "유효한 celestial 자료 없음.",
+  "gettingLocation": "당신의 위치...",
+  "media": "주요 특징",
+  "locationRequired": "오시는 길",
+  "confirmingWitness": "증인 확인...",
+  "weatherClear": "이름 *",
+  "weatherClearSky": "맑은 하늘",
+  "rain": "뚱 베어",
+  "snow": "이름 *",
+  "thunderstorm": "연락처",
+  "drizzle": "팟캐스트",
+  "fog": "사이트맵",
+  "fewClouds": "몇몇 구름",
+  "scatteredClouds": "유출된 구름",
+  "brokenClouds": "부서진 구름",
+  "overcastClouds": "overcast 구름",
+  "lightRain": "빛 비",
+  "moderateRain": "공급 업체",
+  "heavyRain": "무거운 비",
+  "aircraftDetectedCurrentPositions": "{count} 항공기는 {count}km (현재 위치)에서 감지",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "{count} dim 인공위성 - 눈에 띄는 것",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "사이트맵 공지사항",
   "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {

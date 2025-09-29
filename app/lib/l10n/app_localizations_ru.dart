@@ -2570,7 +2570,74 @@ class AppLocalizationsRu extends AppLocalizations {
   String get noCelestialDataAvailable => 'Никаких небесных данных.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Получить свое местоположение...';
+
+  @override
+  String get media => 'СМИ';
+
+  @override
+  String get locationRequired => 'Местоположение требуется';
+
+  @override
+  String get confirmingWitness => 'Подтверждающий свидетель...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Чисто';
+
+  @override
+  String get weatherClearSky => 'ясное небо';
+
+  @override
+  String get rain => 'Дождь';
+
+  @override
+  String get snow => 'Снег';
+
+  @override
+  String get thunderstorm => 'Гроза';
+
+  @override
+  String get drizzle => 'Дриззл';
+
+  @override
+  String get fog => 'Туман';
+
+  @override
+  String get fewClouds => 'несколько облаков';
+
+  @override
+  String get scatteredClouds => 'рассеянные облака';
+
+  @override
+  String get brokenClouds => 'разбитые облака';
+
+  @override
+  String get overcastClouds => 'пасмурные облака';
+
+  @override
+  String get lightRain => 'легкий дождь';
+
+  @override
+  String get moderateRain => 'умеренный дождь';
+
+  @override
+  String get heavyRain => 'сильный дождь';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count самолет обнаружен в пределах ${count}km (текущие позиции)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '$count видимые тусклые спутники - вряд ли можно объяснить наблюдение';
+  }
+
+  @override
+  String get mufonReportingDate => 'МУФОН Дата представления докладов';
 
   @override
   String satelliteNameDirection(String name, String direction) {

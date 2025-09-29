@@ -2539,7 +2539,74 @@ class AppLocalizationsHi extends AppLocalizations {
   String get noCelestialDataAvailable => 'उपलब्ध नहीं है।.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'अपना स्थान प्राप्त करना.';
+
+  @override
+  String get media => 'मीडिया';
+
+  @override
+  String get locationRequired => 'आवश्यक स्थान';
+
+  @override
+  String get confirmingWitness => 'गवाहों की पुष्टि ...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'स्पष्ट';
+
+  @override
+  String get weatherClearSky => 'आकाश';
+
+  @override
+  String get rain => 'रेन';
+
+  @override
+  String get snow => 'बर्फ';
+
+  @override
+  String get thunderstorm => 'तूफान';
+
+  @override
+  String get drizzle => 'Drizzle';
+
+  @override
+  String get fog => 'कोहरा';
+
+  @override
+  String get fewClouds => 'कुछ बादल';
+
+  @override
+  String get scatteredClouds => 'बिखरे बादल';
+
+  @override
+  String get brokenClouds => 'टूटी हुई बादल';
+
+  @override
+  String get overcastClouds => 'बादल';
+
+  @override
+  String get lightRain => 'हल्की बारिश';
+
+  @override
+  String get moderateRain => 'मध्यम बारिश';
+
+  @override
+  String get heavyRain => 'भारी बारिश';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count विमान का पता __PLACEHOLDER_1_km (current position) के भीतर हुआ।';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '${count}Dim उपग्रह दिखाई देते हैं - देखने की व्याख्या करने की संभावना नहीं';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON रिपोर्टिंग तिथि';
 
   @override
   String satelliteNameDirection(String name, String direction) {

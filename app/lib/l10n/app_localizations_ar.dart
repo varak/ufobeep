@@ -210,7 +210,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'الحصول على الميكروفون للحصول على الفيديو بالصوت.';
 
   @override
-  String get openSettings => 'الأطر المفتوحة';
+  String get openSettings => 'Open Settings';
 
   @override
   String get alertDetailTitle => 'تفاصيل النظر';
@@ -2518,7 +2518,74 @@ class AppLocalizationsAr extends AppLocalizations {
   String get noCelestialDataAvailable => 'لا توجد بيانات سماوية متاحة.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'الحصول على موقعك...';
+
+  @override
+  String get media => 'وسائط الإعلام';
+
+  @override
+  String get locationRequired => 'الموقع المطلوب';
+
+  @override
+  String get confirmingWitness => 'تأكيد الشاهد...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'آمن';
+
+  @override
+  String get weatherClearSky => 'السماء';
+
+  @override
+  String get rain => 'Rain';
+
+  @override
+  String get snow => 'Snow';
+
+  @override
+  String get thunderstorm => 'Thunderstorm';
+
+  @override
+  String get drizzle => 'Drizzle';
+
+  @override
+  String get fog => 'Fog';
+
+  @override
+  String get fewClouds => 'بعض الغيوم';
+
+  @override
+  String get scatteredClouds => 'سحابات مبعثرة';
+
+  @override
+  String get brokenClouds => 'سحابات مكسورة';
+
+  @override
+  String get overcastClouds => 'الغيوم المنبعثة';
+
+  @override
+  String get lightRain => 'الأمطار الخفيفة';
+
+  @override
+  String get moderateRain => 'الأمطار المتوسطة';
+
+  @override
+  String get heavyRain => 'الأمطار الغزيرة';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '__PLACEHOLDER_0_طائرة مكتشفة في __PLACEHOLDER_1_km (مواقع جارية)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '__PLACEHOLDER_0_ سواتل شمسية مرئية - من غير المرجح أن تفسر الرؤية';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON التاريخ';
 
   @override
   String satelliteNameDirection(String name, String direction) {

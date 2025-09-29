@@ -2550,7 +2550,74 @@ class AppLocalizationsNl extends AppLocalizations {
   String get noCelestialDataAvailable => 'Geen hemelse gegevens beschikbaar.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Je locatie vinden...';
+
+  @override
+  String get media => 'Media';
+
+  @override
+  String get locationRequired => 'Locatie vereist';
+
+  @override
+  String get confirmingWitness => 'Bevestigde getuige...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Wissen';
+
+  @override
+  String get weatherClearSky => 'heldere lucht';
+
+  @override
+  String get rain => 'Regen';
+
+  @override
+  String get snow => 'Sneeuw';
+
+  @override
+  String get thunderstorm => 'Onweer';
+
+  @override
+  String get drizzle => 'Motregenweather forecast';
+
+  @override
+  String get fog => 'Mist';
+
+  @override
+  String get fewClouds => 'weinig wolken';
+
+  @override
+  String get scatteredClouds => 'verspreide wolken';
+
+  @override
+  String get brokenClouds => 'gebroken wolken';
+
+  @override
+  String get overcastClouds => 'bewolkt';
+
+  @override
+  String get lightRain => 'lichte regen';
+
+  @override
+  String get moderateRain => 'matige regen';
+
+  @override
+  String get heavyRain => 'zware regenval';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km (huidige posities)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return 'Dim satellieten zichtbaar - waarschijnlijk niet te verklaren';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON Rapportagedatum';
 
   @override
   String satelliteNameDirection(String name, String direction) {

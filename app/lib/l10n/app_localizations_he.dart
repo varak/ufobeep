@@ -2506,7 +2506,74 @@ class AppLocalizationsHe extends AppLocalizations {
   String get noCelestialDataAvailable => 'אין נתונים שמיים זמינים.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'לתפוס את המיקום שלך...';
+
+  @override
+  String get media => 'מדיה';
+
+  @override
+  String get locationRequired => 'מיקום נדרש';
+
+  @override
+  String get confirmingWitness => 'עדות...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Clear';
+
+  @override
+  String get weatherClearSky => 'השמיים צלולים';
+
+  @override
+  String get rain => 'גשם';
+
+  @override
+  String get snow => 'שלג';
+
+  @override
+  String get thunderstorm => 'סופת רעמים';
+
+  @override
+  String get drizzle => 'Drizzle';
+
+  @override
+  String get fog => 'פוג';
+
+  @override
+  String get fewClouds => 'עננים מעטים';
+
+  @override
+  String get scatteredClouds => 'עננים מפוזרים';
+
+  @override
+  String get brokenClouds => 'עננים שבורים';
+
+  @override
+  String get overcastClouds => 'עננים';
+
+  @override
+  String get lightRain => 'גשם בהיר';
+
+  @override
+  String get moderateRain => 'גשם בינוני';
+
+  @override
+  String get heavyRain => 'גשם כבד';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return 'PLACEHOLDER_0___ מטוסים שזוהו בתוך _PLACEHOLDER_1___ ק\"מ (מיקומים נוכחיים)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return 'PLACEHOLDER_0__ dim לוויינים גלויים - לא סביר להסביר את הראייה';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON דיווח על תאריך';
 
   @override
   String satelliteNameDirection(String name, String direction) {

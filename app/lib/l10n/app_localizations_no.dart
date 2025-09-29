@@ -210,7 +210,7 @@ class AppLocalizationsNo extends AppLocalizations {
       'Grant microphone access for video capture with audio.';
 
   @override
-  String get openSettings => 'Open settings';
+  String get openSettings => 'Open Settings';
 
   @override
   String get alertDetailTitle => 'Sighting Details';
@@ -2535,6 +2535,73 @@ class AppLocalizationsNo extends AppLocalizations {
 
   @override
   String get noCelestialDataAvailable => 'No celestial data available.';
+
+  @override
+  String get gettingLocation => 'Getting your location...';
+
+  @override
+  String get media => 'Media';
+
+  @override
+  String get locationRequired => 'Location Required';
+
+  @override
+  String get confirmingWitness => 'Confirming witness...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Clear';
+
+  @override
+  String get weatherClearSky => 'clear sky';
+
+  @override
+  String get rain => 'Rain';
+
+  @override
+  String get snow => 'Snow';
+
+  @override
+  String get thunderstorm => 'Thunderstorm';
+
+  @override
+  String get drizzle => 'Drizzle';
+
+  @override
+  String get fog => 'Fog';
+
+  @override
+  String get fewClouds => 'few clouds';
+
+  @override
+  String get scatteredClouds => 'scattered clouds';
+
+  @override
+  String get brokenClouds => 'broken clouds';
+
+  @override
+  String get overcastClouds => 'overcast clouds';
+
+  @override
+  String get lightRain => 'light rain';
+
+  @override
+  String get moderateRain => 'moderate rain';
+
+  @override
+  String get heavyRain => 'heavy rain';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count aircraft detected within ${radius}km (current positions)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '$count dim satellites visible - unlikely to explain sighting';
+  }
 
   @override
   String get mufonReportingDate => 'MUFON Reporting Date';

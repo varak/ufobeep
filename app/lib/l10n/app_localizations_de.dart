@@ -2557,7 +2557,74 @@ class AppLocalizationsDe extends AppLocalizations {
   String get noCelestialDataAvailable => 'Keine himmlischen Daten verfügbar.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Ihr Standort...';
+
+  @override
+  String get media => 'Medien';
+
+  @override
+  String get locationRequired => 'Ort Erforderlich';
+
+  @override
+  String get confirmingWitness => 'Bestätigen Sie Zeuge...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Klar';
+
+  @override
+  String get weatherClearSky => 'klarer himmel';
+
+  @override
+  String get rain => 'Regen';
+
+  @override
+  String get snow => 'Schnee';
+
+  @override
+  String get thunderstorm => 'Gewitter';
+
+  @override
+  String get drizzle => 'Dr';
+
+  @override
+  String get fog => 'Fohlen';
+
+  @override
+  String get fewClouds => 'wenig wolken';
+
+  @override
+  String get scatteredClouds => 'wolken';
+
+  @override
+  String get brokenClouds => 'wolken';
+
+  @override
+  String get overcastClouds => 'bewölkt';
+
+  @override
+  String get lightRain => 'lichtregen';
+
+  @override
+  String get moderateRain => 'mäßiger regen';
+
+  @override
+  String get heavyRain => 'starker regen';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count Flugzeug innerhalb ${count}km (aktuelle Positionen)';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '$count dim Satelliten sichtbar - unwahrscheinlich, um die Sichtbarkeit zu erklären';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON Datum';
 
   @override
   String satelliteNameDirection(String name, String direction) {

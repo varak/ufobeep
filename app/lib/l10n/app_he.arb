@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "אין נתונים שמיים זמינים.",
+  "gettingLocation": "לתפוס את המיקום שלך...",
+  "media": "מדיה",
+  "locationRequired": "מיקום נדרש",
+  "confirmingWitness": "עדות...",
+  "weatherClear": "Clear",
+  "weatherClearSky": "השמיים צלולים",
+  "rain": "גשם",
+  "snow": "שלג",
+  "thunderstorm": "סופת רעמים",
+  "drizzle": "Drizzle",
+  "fog": "פוג",
+  "fewClouds": "עננים מעטים",
+  "scatteredClouds": "עננים מפוזרים",
+  "brokenClouds": "עננים שבורים",
+  "overcastClouds": "עננים",
+  "lightRain": "גשם בהיר",
+  "moderateRain": "גשם בינוני",
+  "heavyRain": "גשם כבד",
+  "aircraftDetectedCurrentPositions": "PLACEHOLDER_0___ מטוסים שזוהו בתוך _PLACEHOLDER_1___ ק\"מ (מיקומים נוכחיים)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "PLACEHOLDER_0__ dim לוויינים גלויים - לא סביר להסביר את הראייה",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON דיווח על תאריך",
   "satelliteNameDirection": "שם הסרטון: PLACEHOLDER__0_____{direction}______________________________________________________________________________",
   "@satelliteNameDirection": {
     "placeholders": {

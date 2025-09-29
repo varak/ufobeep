@@ -212,7 +212,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Video için mikrofon erişimi ses ile yakalamak için.';
 
   @override
-  String get openSettings => 'Açık ayarlar';
+  String get openSettings => 'Açık Ayarlar';
 
   @override
   String get alertDetailTitle => 'Sighting Details';
@@ -2549,7 +2549,74 @@ class AppLocalizationsTr extends AppLocalizations {
   String get noCelestialDataAvailable => 'Mevcut sayısız veri yok.';
 
   @override
-  String get mufonReportingDate => 'MUFON Reporting Date';
+  String get gettingLocation => 'Konumunuzu almak...';
+
+  @override
+  String get media => 'Media';
+
+  @override
+  String get locationRequired => 'Konum Required';
+
+  @override
+  String get confirmingWitness => 'Tanıyın ...';
+
+  @override
+  String get chooseYourUsername => 'Choose Your Username';
+
+  @override
+  String get weatherClear => 'Clear';
+
+  @override
+  String get weatherClearSky => 'net gökyüzü';
+
+  @override
+  String get rain => 'Rain';
+
+  @override
+  String get snow => 'Snow';
+
+  @override
+  String get thunderstorm => 'Fırtına';
+
+  @override
+  String get drizzle => 'Drizzle';
+
+  @override
+  String get fog => 'Fog';
+
+  @override
+  String get fewClouds => 'birkaç bulut';
+
+  @override
+  String get scatteredClouds => 'dağınık bulutlar';
+
+  @override
+  String get brokenClouds => 'kırık bulutlar';
+
+  @override
+  String get overcastClouds => 'overcast bulutlar';
+
+  @override
+  String get lightRain => 'işık yağmuru';
+
+  @override
+  String get moderateRain => 'ılımlı yağmur yağmur';
+
+  @override
+  String get heavyRain => 'ağır yağmur yağmur';
+
+  @override
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count uçakları, ${count}km (şimdiki pozisyonlar) içinde tespit edildi';
+  }
+
+  @override
+  String dimSatellitesUnlikely(int count) {
+    return '$count dim uyduları görünür - görüş açıklamayı açıklamak mümkün değildir';
+  }
+
+  @override
+  String get mufonReportingDate => 'MUFON Raporlama Tarihi';
 
   @override
   String satelliteNameDirection(String name, String direction) {
