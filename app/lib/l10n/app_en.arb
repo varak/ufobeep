@@ -1176,6 +1176,15 @@
       }
     }
   },
+  "translateContent": "Translate content to {language}",
+  "@translateContent": {
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "Spanish"
+      }
+    }
+  },
   "@commentsCount": {
     "placeholders": {
       "count": {

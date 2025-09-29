@@ -13,6 +13,7 @@ import '../../widgets/alert_card.dart';
 import '../../widgets/alerts/visibility_indicator.dart';
 import '../../widgets/glass_card.dart';
 import '../../theme/app_theme.dart';
+import '../../services/translation_service.dart';
 
 class AlertsScreen extends ConsumerStatefulWidget {
   const AlertsScreen({super.key});
@@ -23,6 +24,12 @@ class AlertsScreen extends ConsumerStatefulWidget {
 
 class _AlertsScreenState extends ConsumerState<AlertsScreen> {
   final ScrollController _scrollController = ScrollController();
+
+  // Translation state for alert list
+  bool _isTranslatingAlerts = false;
+  bool _alertsTranslated = false;
+  Map<String, String> _translatedTitles = {};
+  Map<String, String> _translatedDescriptions = {};
 
   @override
   void dispose() {
@@ -280,7 +287,9 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                   itemCount: visibleAlerts.length,
                   itemBuilder: (context, index) {
                     final alert = visibleAlerts[index];
-                    return AlertCard(alert: alert);
+                    // Get potentially translated alert data
+                    final displayAlert = _getDisplayAlert(alert);
+                    return AlertCard(alert: displayAlert);
                   },
                 ),
               ),

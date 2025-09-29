@@ -95,6 +95,7 @@ class _TranslationButtonState extends State<TranslationButton> {
     }
 
     // Show if content language differs from user language
+    // EVERYONE deserves to read foreign content - English users traveling, etc.
     return TranslationService().needsTranslation(widget.contentLanguage, widget.targetLanguage);
   }
 

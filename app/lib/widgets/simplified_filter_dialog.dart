@@ -6,6 +6,7 @@ import '../models/alerts_filter.dart';
 import '../providers/alerts_provider.dart';
 import '../providers/user_preferences_provider.dart';
 import '../l10n/app_localizations.dart';
+import '../services/translation_service.dart';
 
 enum SourceFilter { both, ufobeepOnly, mufonOnly }
 enum SortOption { newest, nearest }
@@ -23,6 +24,9 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
   SortOption _sortOption = SortOption.newest;
   double _pushRadiusKm = 100.0;  // Default to 100km
   bool _ufobeepAlertsEnabled = true;
+
+  // Translation filter state (revolutionary feature!)
+  bool _translateContent = true; // Default ON for international users
 
   // Text controller for custom range input
   final TextEditingController _rangeController = TextEditingController();
@@ -107,6 +111,10 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
 
                     // PUSH ALERTS CARD
                     _buildPushCard(l10n),
+                    const SizedBox(height: 12),
+
+                    // TRANSLATION CARD (revolutionary!)
+                    _buildTranslationCard(l10n),
                     const SizedBox(height: 16),
                   ],
                 ),
@@ -398,5 +406,59 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
     debugPrint('🔧 DIALOG: Filter applied, user preferences updated, and AlertsList invalidated');
 
     Navigator.of(context).pop();
+  }
+
+  Widget _buildTranslationCard(AppLocalizations l10n) {
+    final userPrefs = ref.read(userPreferencesProvider);
+    final userLanguage = userPrefs?.language ?? 'en';
+    final languageName = TranslationService.languageNames[userLanguage] ?? userLanguage.toUpperCase();
+
+    // Show translation toggle for all users - everyone deserves to read foreign content!
+
+    return Card(
+      color: AppColors.nightSkyDeep.withOpacity(0.7),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.translate, color: AppColors.brandPrimary, size: 20),
+                const SizedBox(width: 8),
+                Text(
+                  'Translation',
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            SwitchListTile(
+              value: _translateContent,
+              onChanged: (value) {
+                setState(() {
+                  _translateContent = value;
+                });
+              },
+              title: Text(
+                l10n.translateContent(languageName),
+                style: const TextStyle(color: AppColors.textPrimary),
+              ),
+              subtitle: Text(
+                'Auto-translate titles and descriptions to your language',
+                style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+              ),
+              activeColor: AppColors.brandPrimary,
+              contentPadding: EdgeInsets.zero,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
