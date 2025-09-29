@@ -1027,5 +1027,72 @@
         "example": "5"
       }
     }
+  },
+  "unknownPlanet": "Unknown Planet",
+  "unknownStar": "Unknown Star",
+  "unknownSatellite": "Unknown Satellite",
+  "unknownDirection": "unknown direction",
+  "brightStars": "Bright Stars",
+  "satellites": "Satellites",
+  "seeAllSatellites": "See all {count} satellites",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Max elevation: {degrees}°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Magnitude: {value}",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknown": "Unknown",
+  "unknownGeneric": "Unknown",
+  "altitudeValue": "{degrees}° altitude",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "{degrees}° azimuth",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "No celestial data available.",
+  "satelliteNameDirection": "{name} - {direction}",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
   }
 }

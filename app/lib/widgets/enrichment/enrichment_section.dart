@@ -442,7 +442,7 @@ class CelestialCard extends StatelessWidget {
                 Expanded(
                   child: _CelestialObject(
                     icon: Icons.wb_sunny,
-                    name: 'Sun',
+                    name: AppLocalizations.of(context)!.sunLabel,
                     altitude: celestial.sun.altitudeFormatted,
                     azimuth: celestial.sun.azimuthFormatted,
                     isVisible: celestial.sun.isVisible,
@@ -606,7 +606,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Satellites ($totalNow visible now)',
+                        AppLocalizations.of(context)!.satellitesVisibleNow(totalNow),
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.w600,
@@ -673,7 +673,10 @@ class SatelliteCardFromJson extends StatelessWidget {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    '${pass['satellite_name']?.toString() ?? 'Unknown'} - ${pass['direction'] ?? 'unknown direction'}',
+                    AppLocalizations.of(context)!.satelliteNameDirection(
+                      pass['satellite_name']?.toString() ?? AppLocalizations.of(context)!.unknown,
+                      pass['direction'] ?? AppLocalizations.of(context)!.unknownDirection
+                    ),
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 12,
@@ -733,7 +736,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    sat['name'] ?? 'Unknown Satellite',
+                    sat['name'] ?? AppLocalizations.of(context)!.unknownSatellite,
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 12,
@@ -772,12 +775,12 @@ class SatelliteCardFromJson extends StatelessWidget {
 
     // Altitude
     if (sat['altitude'] != null) {
-      details.add('${sat['altitude']}° altitude');
+      details.add(AppLocalizations.of(context)!.altitudeValue(sat['altitude'].toString()));
     }
 
     // Azimuth
     if (sat['azimuth'] != null) {
-      details.add('${sat['azimuth']}° azimuth');
+      details.add(AppLocalizations.of(context)!.azimuthValue(sat['azimuth'].toString()));
     }
 
     return details.join(' • ');
@@ -788,12 +791,12 @@ class SatelliteCardFromJson extends StatelessWidget {
     
     // Max elevation
     if (pass['max_elevation_deg'] != null) {
-      details.add('Max elevation: ${pass['max_elevation_deg']}°');
+      details.add(AppLocalizations.of(context)!.maxElevation(pass['max_elevation_deg'].toString()));
     }
     
     // Brightness magnitude
     if (pass['brightness_magnitude'] != null) {
-      details.add('Magnitude: ${pass['brightness_magnitude']}');
+      details.add(AppLocalizations.of(context)!.magnitude(pass['brightness_magnitude'].toString()));
     }
     
     // Max elevation time
