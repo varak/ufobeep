@@ -1090,6 +1090,11 @@
     }
   },
   "noCelestialDataAvailable": "No celestial data available.",
+  "gettingLocation": "Getting your location...",
+  "media": "Media",
+  "locationRequired": "Location Required",
+  "openSettings": "Open Settings",
+  "confirmingWitness": "Confirming witness...",
   "mufonReportingDate": "MUFON Reporting Date",
   "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {

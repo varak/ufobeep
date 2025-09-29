@@ -280,7 +280,7 @@ class AlertHeroSection extends StatelessWidget {
       );
     }).toList();
 
-    final title = 'Media'; // Simple title for now
+    final title = AppLocalizations.of(context)!.media;
 
     // Use direct media grid - no callbacks
     return Container(

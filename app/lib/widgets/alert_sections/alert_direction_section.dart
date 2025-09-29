@@ -40,7 +40,7 @@ class AlertDirectionSection extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Text(
-                'Direction & Distance',
+                AppLocalizations.of(context)!.directionDistanceTitle,
                 style: TextStyle(
                   color: AppColors.brandPrimary,
                   fontSize: 16,
@@ -66,7 +66,7 @@ class AlertDirectionSection extends StatelessWidget {
               Icon(Icons.explore, color: AppColors.textTertiary, size: 20),
               SizedBox(width: 12),
               Text(
-                'Getting your location...',
+                AppLocalizations.of(context)!.gettingLocation,
                 style: TextStyle(
                   color: AppColors.textSecondary,
                   fontSize: 14,
