@@ -210,14 +210,14 @@
   "dndUntil": "할 수 없습니다",
   "dndEnabled": "{time}까지 DND 활성화",
   "dndDisabled": "DND 사용",
-  "quietHoursActive": "활성 {endTime} - {startTime}",
-  "quietHoursScheduled": "영업시간: {end} - {start}",
+  "quietHoursActive": "활성 {startTime} - {startTime}",
+  "quietHoursScheduled": "영업시간: {start} - {start}",
   "pushNotificationUfoAlert": "사이트맵 지원하다",
   "pushNotificationAnomalyAlert": "Anomaly 경고",
   "pushNotificationNearby": "이름 *",
   "pushNotificationInYourArea": "당신의 지역. 상세보기를 탭합니다.",
   "pushNotificationCommented": "{username} 댓글",
-  "pushNotificationCommentedOn": "{beepTitle}에 대한 의견 {username}",
+  "pushNotificationCommentedOn": "{username}에 대한 의견 {username}",
   "pushNotificationGeneric": "UFO버프",
   "pushNotificationNewSighting": "주변 관광",
   "language": "* 이름",
@@ -916,12 +916,12 @@
   "celestialMoonThin": "얇은 {phase} 달 - 최소 조명",
   "celestialMoonHidden": "{phase} 수평선 아래 달 - 달빛 없음",
   "celestialNoPlanets": "UFO에 대한 실수가 될 수있는 밝은 행성 없음",
-  "celestialPlanetHigh": "{altitude} 높은 오버헤드 ({planet}°) - 매우 눈에 띄는",
-  "celestialPlanetMedium": "{altitude}는 {planet}°에서 볼 수 있습니다",
-  "celestialPlanetLow": "{altitude} 수평선 ({planet}°)",
+  "celestialPlanetHigh": "{planet} 높은 오버헤드 ({planet}°) - 매우 눈에 띄는",
+  "celestialPlanetMedium": "{planet}는 {planet}°에서 볼 수 있습니다",
+  "celestialPlanetLow": "{planet} 수평선 ({planet}°)",
   "celestialNoStars": "눈에 띄는 밝은 별 없음",
-  "celestialStarSingle": "{altitude} {star}° 고도로 눈에 띄는",
-  "celestialStarsMultiple": "{names} 밝은 별 - {count}",
+  "celestialStarSingle": "{star} {star}° 고도로 눈에 띄는",
+  "celestialStarsMultiple": "{count} 밝은 별 - {count}",
   "celestialSummaryDaylight": "일광 조건",
   "celestialSummaryDark": "어두운 하늘 조건",
   "celestialSummaryMoonUp": "달 조명 현재",
@@ -954,18 +954,18 @@
   "moonPhaseThirdQuarter": "3분기",
   "moonPhaseWaningCrescent": "Waning 초승달",
   "planetBelowHorizon": "{planet} 아래 수평선",
-  "planetHighOverheadProminent": "{altitude} 높은 오버헤드 ({planet}°) - 매우 눈에 띄는",
-  "planetMidSkyProminent": "{altitude} at {planet}° - 저명한",
-  "planetMidSky": "{altitude} 에 {planet}°",
-  "starVeryBright": "{altitude} 매우 밝기 {star}°",
-  "starProminent": "{altitude} {star}° 고도로 눈에 띄는",
-  "starVisible": "{altitude} 에 {star}°",
+  "planetHighOverheadProminent": "{planet} 높은 오버헤드 ({planet}°) - 매우 눈에 띄는",
+  "planetMidSkyProminent": "{planet} at {planet}° - 저명한",
+  "planetMidSky": "{planet} 에 {planet}°",
+  "starVeryBright": "{star} 매우 밝기 {star}°",
+  "starProminent": "{star} {star}° 고도로 눈에 띄는",
+  "starVisible": "{star} 에 {star}°",
   "altitudeShort": "사이트맵",
   "magnitudeShort": "사이트맵",
   "satellitesVisibleMightExplain": "{count} 인공위성 - 광경을 설명 할 수 있습니다",
   "satellitesVisibleUnlikelyExplain": "{count} 인공위성 - 보자마자 설명하기",
   "noSatellitesVisible": "볼 수있는 위성",
-  "aircraftDetectedInRadius": "{radius} 항공기는 {count}km 내에서 감지",
+  "aircraftDetectedInRadius": "{count} 항공기는 {count}km 내에서 감지",
   "processingAlert": "처리 UFO 경고 ...",
   "analyzingEnvironment": "환경 조건 분석",
   "weatherAnalysis": "날씨 분석",
@@ -1118,6 +1118,20 @@
   "startTime": "시작 시간",
   "endTime": "종료 시간",
   "allowCriticalAlertsDuringQuietHours": "조용한 시간 동안 중요한 경고를 허용",
+  "silenceNotificationsDuringSleepHours": "수면 시간 동안 침묵 알림",
+  "quietHoursActiveTimeRange": "활성 {startTime} - {startTime}",
+  "@quietHoursActiveTimeRange": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "9:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
   "followingAlerts": "Alerts에 대하여",
   "activeCount": "{count} 활성",
   "@activeCount": {
@@ -1130,6 +1144,15 @@
   },
   "unfollow": "이름 *",
   "unfollowAlert": "알림 받기",
+  "commentsCount": "{count} 댓글",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "이름 *",
   "weatherClearSky": "맑은 하늘",
   "rain": "뚱 베어",
@@ -1144,7 +1167,7 @@
   "lightRain": "빛 비",
   "moderateRain": "공급 업체",
   "heavyRain": "무거운 비",
-  "aircraftDetectedCurrentPositions": "{radius} 항공기는 {count}km (현재 위치)에서 감지",
+  "aircraftDetectedCurrentPositions": "{count} 항공기는 {count}km (현재 위치)에서 감지",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {

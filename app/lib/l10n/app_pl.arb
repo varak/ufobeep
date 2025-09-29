@@ -1118,6 +1118,20 @@
   "startTime": "Czas rozpoczęcia",
   "endTime": "Czas zakończenia",
   "allowCriticalAlertsDuringQuietHours": "Zezwolić na krytyczne ostrzeżenia w godzinach ciszy",
+  "silenceNotificationsDuringSleepHours": "Powiadomienia o ciszy w godzinach snu",
+  "quietHoursActiveTimeRange": "Active _ _ PLACESECRET _ 0 _ _ _ - _ _ PLACESECRET _ 1 _ _",
+  "@quietHoursActiveTimeRange": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "9:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
   "followingAlerts": "Wpisy",
   "activeCount": "_ _ PLACESECRET _ 0 _ _ active",
   "@activeCount": {
@@ -1130,6 +1144,15 @@
   },
   "unfollow": "Unfollow",
   "unfollowAlert": "Nieprzestrzeganie ostrzeżenia",
+  "commentsCount": "_ _ PLACESENER _ 0 _ _ komentarze",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "Czysto",
   "weatherClearSky": "czyste niebo",
   "rain": "Deszcz",

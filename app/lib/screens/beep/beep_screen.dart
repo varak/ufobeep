@@ -288,12 +288,13 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     Icon(Icons.camera_alt, color: Colors.white, size: 24),
                     const SizedBox(width: 16),
                     Text(
-                      'Photo',
+                      AppLocalizations.of(context)!.photo,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
@@ -313,12 +314,13 @@ class _BeepScreenState extends ConsumerState<BeepScreen> {
                     Icon(Icons.videocam, color: Colors.white, size: 24),
                     const SizedBox(width: 16),
                     Text(
-                      'Video', // Use simple text for now
+                      AppLocalizations.of(context)!.video,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
                       ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),

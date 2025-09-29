@@ -210,14 +210,14 @@
   "dndUntil": "Не беспокоить, пока",
   "dndEnabled": "DND включен до {time}",
   "dndDisabled": "DND отключен",
-  "quietHoursActive": "Активный{endTime} -{startTime}",
-  "quietHoursScheduled": "Тихие часы: {end} - {start}",
+  "quietHoursActive": "Активный{startTime} -{startTime}",
+  "quietHoursScheduled": "Тихие часы: {start} - {start}",
   "pushNotificationUfoAlert": "НЛО Предупреждение",
   "pushNotificationAnomalyAlert": "Предупреждение об аномалиях",
   "pushNotificationNearby": "Рядом",
   "pushNotificationInYourArea": "в вашем районе. Нажмите, чтобы просмотреть детали.",
   "pushNotificationCommented": "{username} прокомментировал",
-  "pushNotificationCommentedOn": "{beepTitle} прокомментировал {username}",
+  "pushNotificationCommentedOn": "{username} прокомментировал {username}",
   "pushNotificationGeneric": "НЛО Бип",
   "pushNotificationNewSighting": "Новый взгляд рядом",
   "language": "Язык языка",
@@ -916,12 +916,12 @@
   "celestialMoonThin": "Тонкая {phase} Луна видимая - минимальное освещение",
   "celestialMoonHidden": "Луна под горизонтом - нет лунного освещения",
   "celestialNoPlanets": "Нет ярких планет, которые можно было бы принять за НЛО",
-  "celestialPlanetHigh": "{altitude} высокие накладные расходы ({planet}°)",
-  "celestialPlanetMedium": "{altitude} видимый на {planet}° - может быть ошибочно принят за самолет",
-  "celestialPlanetLow": "{altitude} low on horizon ({planet}°)",
+  "celestialPlanetHigh": "{planet} высокие накладные расходы ({planet}°)",
+  "celestialPlanetMedium": "{planet} видимый на {planet}° - может быть ошибочно принят за самолет",
+  "celestialPlanetLow": "{planet} low on horizon ({planet}°)",
   "celestialNoStars": "Не видно необычно ярких звезд",
-  "celestialStarSingle": "{altitude} видно на высоте {star}°",
-  "celestialStarsMultiple": "{names} яркие звезды - {count}",
+  "celestialStarSingle": "{star} видно на высоте {star}°",
+  "celestialStarsMultiple": "{count} яркие звезды - {count}",
   "celestialSummaryDaylight": "Условия дневного света",
   "celestialSummaryDark": "Темное небо условия",
   "celestialSummaryMoonUp": "лунное освещение",
@@ -954,18 +954,18 @@
   "moonPhaseThirdQuarter": "Третий квартал",
   "moonPhaseWaningCrescent": "Убывающий полумесяц",
   "planetBelowHorizon": "{planet} ниже горизонта",
-  "planetHighOverheadProminent": "{altitude} высокие накладные расходы ({planet}°)",
-  "planetMidSkyProminent": "{altitude} на {planet}° - видный",
-  "planetMidSky": "{altitude} в {planet}°",
-  "starVeryBright": "{altitude} очень яркий на {star}°",
-  "starProminent": "{altitude} видно на высоте {star}°",
-  "starVisible": "{altitude} в {star}°",
+  "planetHighOverheadProminent": "{planet} высокие накладные расходы ({planet}°)",
+  "planetMidSkyProminent": "{planet} на {planet}° - видный",
+  "planetMidSky": "{planet} в {planet}°",
+  "starVeryBright": "{star} очень яркий на {star}°",
+  "starProminent": "{star} видно на высоте {star}°",
+  "starVisible": "{star} в {star}°",
   "altitudeShort": "Альт",
   "magnitudeShort": "Магия",
   "satellitesVisibleMightExplain": "{count} видимые спутники - может объяснить наблюдение",
   "satellitesVisibleUnlikelyExplain": "{count} видимые спутники - вряд ли можно объяснить наблюдение",
   "noSatellitesVisible": "Спутников не видно",
-  "aircraftDetectedInRadius": "{radius} самолет обнаружен в {count}km",
+  "aircraftDetectedInRadius": "{count} самолет обнаружен в {count}km",
   "processingAlert": "Обработка сигналов НЛО...",
   "analyzingEnvironment": "Анализ экологических условий",
   "weatherAnalysis": "Анализ погоды",
@@ -1118,6 +1118,20 @@
   "startTime": "Время старта",
   "endTime": "Время конца",
   "allowCriticalAlertsDuringQuietHours": "Разрешить критические оповещения в тихие часы",
+  "silenceNotificationsDuringSleepHours": "Уведомления о молчании во время сна",
+  "quietHoursActiveTimeRange": "Активный{startTime} -{startTime}",
+  "@quietHoursActiveTimeRange": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "9:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
   "followingAlerts": "После предупреждений",
   "activeCount": "{count} активный",
   "@activeCount": {
@@ -1130,6 +1144,17 @@
   },
   "unfollow": "Не следовать",
   "unfollowAlert": "Предупреждение UnFollow",
+  "commentsCount": "{count} Комментарии",
+  "photo": "Фото",
+  "video": "Видео",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "Чисто",
   "weatherClearSky": "ясное небо",
   "rain": "Дождь",
@@ -1144,7 +1169,7 @@
   "lightRain": "легкий дождь",
   "moderateRain": "умеренный дождь",
   "heavyRain": "сильный дождь",
-  "aircraftDetectedCurrentPositions": "{radius} самолет обнаружен в пределах {count}km (текущие позиции)",
+  "aircraftDetectedCurrentPositions": "{count} самолет обнаружен в пределах {count}km (текущие позиции)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {

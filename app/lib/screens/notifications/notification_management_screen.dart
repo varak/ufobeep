@@ -411,9 +411,9 @@ class _NotificationManagementScreenState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Quiet Hours',
-          style: TextStyle(
+        Text(
+          AppLocalizations.of(context)!.quietHours,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -425,14 +425,17 @@ class _NotificationManagementScreenState
             children: [
               SwitchListTile(
                 secondary: const Icon(Icons.bedtime, color: AppColors.brandPrimary),
-                title: const Text(
-                  'Quiet Hours',
-                  style: TextStyle(color: Colors.white),
+                title: Text(
+                  AppLocalizations.of(context)!.quietHours,
+                  style: const TextStyle(color: Colors.white),
                 ),
                 subtitle: Text(
                   preferences.quietHoursEnabled
-                      ? 'Active ${_formatHour(preferences.quietHoursStart)} - ${_formatHour(preferences.quietHoursEnd)}'
-                      : 'Silence notifications during sleep hours',
+                      ? AppLocalizations.of(context)!.quietHoursActiveTimeRange(
+                          _formatHour(preferences.quietHoursStart),
+                          _formatHour(preferences.quietHoursEnd)
+                        )
+                      : AppLocalizations.of(context)!.silenceNotificationsDuringSleepHours,
                   style: const TextStyle(color: Colors.white70),
                 ),
                 value: preferences.quietHoursEnabled,

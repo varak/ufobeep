@@ -170,7 +170,7 @@
   "temperature": "Temperatura",
   "pushBodyWitness": "Un utente ha confermato di vedere lo stesso oggetto.",
   "weather": "Tempo",
-  "cloudCover": "Nuvolosità: {percent}%",
+  "cloudCover": "Copertura cloud: __PLACEHOLDER_0_%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -210,14 +210,14 @@
   "dndUntil": "Non disturbare fino a quando",
   "dndEnabled": "DND abilitato fino a {time}",
   "dndDisabled": "DISOCCUPATI",
-  "quietHoursActive": "Attivo {endTime} {startTime}",
+  "quietHoursActive": "Attivo {startTime} {startTime}",
   "quietHoursScheduled": "Ore tranquille: Traduzione:",
   "pushNotificationUfoAlert": "UFO Avviso",
   "pushNotificationAnomalyAlert": "Allarme Anomalia",
   "pushNotificationNearby": "Nelle vicinanze",
   "pushNotificationInYourArea": "nella tua zona. Tocca per visualizzare i dettagli.",
   "pushNotificationCommented": "{username} ha commentato",
-  "pushNotificationCommentedOn": "{beepTitle} ha commentato su {username}",
+  "pushNotificationCommentedOn": "{username} ha commentato su {username}",
   "pushNotificationGeneric": "UFOBeep",
   "pushNotificationNewSighting": "Nuovi avvistamenti nelle vicinanze",
   "language": "Lingua",
@@ -496,7 +496,7 @@
     }
   },
   "notificationWitnessText": "Nuovo avvistamento",
-  "notificationWitnessTextMultiple": "{count} testimoni",
+  "notificationWitnessTextMultiple": "__PLACEHOLDER_0_",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -917,11 +917,11 @@
   "celestialMoonHidden": "{phase} luna sotto orizzonte - nessuna illuminazione lunare",
   "celestialNoPlanets": "Nessun pianeta luminoso visibile che potrebbe essere sbagliato per UFOs",
   "celestialPlanetHigh": "{planet} high overhead (_PLACEHOLDER_1__°) - molto prominente",
-  "celestialPlanetMedium": "{altitude} visibile a {planet}° - potrebbero essere scambiati per aerei",
+  "celestialPlanetMedium": "{planet} visibile a {planet}° - potrebbero essere scambiati per aerei",
   "celestialPlanetLow": "{planet} basso all'orizzonte (_PLACEHOLDER_1__°)",
   "celestialNoStars": "Nessuna stella insolitamente luminosa visibile",
-  "celestialStarSingle": "{altitude} prominente a {star}° altitudine",
-  "celestialStarsMultiple": "{names} stelle luminose visibili - {count}",
+  "celestialStarSingle": "{star} prominente a {star}° altitudine",
+  "celestialStarsMultiple": "{count} stelle luminose visibili - {count}",
   "celestialSummaryDaylight": "Condizioni diurne",
   "celestialSummaryDark": "Condizioni del cielo scuro",
   "celestialSummaryMoonUp": "illuminazione della luna presente",
@@ -955,17 +955,17 @@
   "moonPhaseWaningCrescent": "Crescente della vita",
   "planetBelowHorizon": "{planet} sotto orizzonte",
   "planetHighOverheadProminent": "{planet} high overhead (_PLACEHOLDER_1__°) - molto prominente",
-  "planetMidSkyProminent": "{altitude}_ a {planet}° - prominente",
-  "planetMidSky": "{altitude}_ {planet}",
-  "starVeryBright": "{altitude} molto luminoso a {star}°",
-  "starProminent": "{altitude} prominente a {star}° altitudine",
-  "starVisible": "{altitude}_ {star}",
+  "planetMidSkyProminent": "{planet}_ a {planet}° - prominente",
+  "planetMidSky": "{planet}_ {planet}",
+  "starVeryBright": "{star} molto luminoso a {star}°",
+  "starProminent": "{star} prominente a {star}° altitudine",
+  "starVisible": "{star}_ {star}",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
   "satellitesVisibleMightExplain": "{count} satelliti visibili - potrebbe spiegare avvistamento",
   "satellitesVisibleUnlikelyExplain": "{count} satelliti visibili - improbabile spiegare avvistamento",
   "noSatellitesVisible": "Nessun satellite visibile",
-  "aircraftDetectedInRadius": "{radius}_ aeromobili rilevati in {count}km",
+  "aircraftDetectedInRadius": "{count}_ aeromobili rilevati in {count}km",
   "processingAlert": "Lavorazione UFO Alert...",
   "analyzingEnvironment": "Analisi delle condizioni ambientali",
   "weatherAnalysis": "Analisi del tempo",
@@ -973,7 +973,7 @@
   "aircraftTracking": "Tracciamento di aerei",
   "satelliteAnalysis": "Analisi satellitare",
   "celestialAnalysis": "Analisi Celeste",
-  "analyzing": "Analisi di {processor}...",
+  "analyzing": "Analisi __PLACEHOLDER_0_...",
   "processorWeather": "condizioni meteorologiche",
   "processorLocation": "dettagli della posizione",
   "processorAircraft": "aerei vicini",
@@ -1071,7 +1071,7 @@
     }
   },
   "unknownGeneric": "Sconosciuto",
-  "altitudeValue": "{degrees}° altitudine",
+  "altitudeValue": "__PLACEHOLDER_0_",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1118,6 +1118,20 @@
   "startTime": "Tempo di inizio",
   "endTime": "Tempo di chiusura",
   "allowCriticalAlertsDuringQuietHours": "Permettere avvisi critici durante le ore tranquille",
+  "silenceNotificationsDuringSleepHours": "Cancella le notifiche durante le ore di sonno",
+  "quietHoursActiveTimeRange": "Attivo {startTime} {startTime}",
+  "@quietHoursActiveTimeRange": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "9:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
   "followingAlerts": "Seguenti avvisi",
   "activeCount": "{count} attivo",
   "@activeCount": {
@@ -1130,6 +1144,17 @@
   },
   "unfollow": "Un seguito",
   "unfollowAlert": "Avviso di apertura",
+  "commentsCount": "{count} commenti",
+  "photo": "Foto",
+  "video": "Video",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "Libero",
   "weatherClearSky": "cielo limpido",
   "rain": "Pioggia",
@@ -1144,7 +1169,7 @@
   "lightRain": "pioggia leggera",
   "moderateRain": "pioggia moderata",
   "heavyRain": "pioggia pesante",
-  "aircraftDetectedCurrentPositions": "Aerei rilevati entro {raggio}km (posizioni attuali)",
+  "aircraftDetectedCurrentPositions": "{count}_ aeromobili rilevati all'interno __PLACEHOLDER_1_km (posizione corrente)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {

@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Conceda acesso ao microfone para captura de vídeo com áudio.",
   "openSettings": "Abrir Configurações",
   "alertDetailTitle": "Detalhes da visão",
-  "reportedBy": "Denunciado por {username}",
+  "reportedBy": "Reportado por __PLACEHOLDER_0_",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Modo Pilot",
   "compassStandardDescription": "Cabeçalho básico e navegação",
   "compassPilotDescription": "Navegação avançada com ETA e vectorização",
-  "pointingTo": "Apontando para {direction}",
+  "pointingTo": "Apontando para __PLACEHOLDER_0_",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -210,14 +210,14 @@
   "dndUntil": "Não perturbe até",
   "dndEnabled": "DND ativado até {time}",
   "dndDisabled": "DND desabilitado",
-  "quietHoursActive": "Ativo {startTime} - {endTime}",
+  "quietHoursActive": "Ativo {startTime}_ __PLACEHOLDER_1_",
   "quietHoursScheduled": "Horas de silêncio: __PACEHOLDER_0__ __PACEHOLDER_1_",
   "pushNotificationUfoAlert": "UFO Alerta",
   "pushNotificationAnomalyAlert": "Alerta de Anomalias",
   "pushNotificationNearby": "Perto",
   "pushNotificationInYourArea": "na sua área. Toque rapidamente para ver os detalhes.",
   "pushNotificationCommented": "__PACEHOLDER_0___ comentado",
-  "pushNotificationCommentedOn": "{username} comentou em {beepTitle}",
+  "pushNotificationCommentedOn": "{username} comentado em __PLACEHOLDER_1_",
   "pushNotificationGeneric": "OVNIBeep",
   "pushNotificationNewSighting": "Novo avistamento nas proximidades",
   "language": "Língua",
@@ -917,8 +917,8 @@
   "celestialMoonHidden": "Lua abaixo do horizonte - sem iluminação lunar",
   "celestialNoPlanets": "Nenhum planeta brilhante visível que possa ser confundido com OVNIs",
   "celestialPlanetHigh": "(_________________) - muito proeminente",
-  "celestialPlanetMedium": "{altitude}_ visível em {planet}° - pode ser confundido com aeronaves",
-  "celestialPlanetLow": "{altitude} baixo no horizonte ({planet}°)",
+  "celestialPlanetMedium": "{planet}_ visível em {planet}° - pode ser confundido com aeronaves",
+  "celestialPlanetLow": "{planet} baixo no horizonte ({planet}°)",
   "celestialNoStars": "Nenhuma estrela invulgarmente brilhante visível",
   "celestialStarSingle": "__PACEHOLDER_0____ proeminente a altitude __PACEHOLDER_1___°",
   "celestialStarsMultiple": "__PACEHOLDER_0__ estrelas brilhantes visíveis __PACEHOLDER_1_",
@@ -993,7 +993,7 @@
   },
   "starsLabel": "Estrelas",
   "planetsLabel": "Planetas",
-  "moonWithPhase": "Lua ({phase})",
+  "moonWithPhase": "Lua (__PLACEHOLDER_0_)",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1118,6 +1118,20 @@
   "startTime": "Hora de início",
   "endTime": "Hora do fim",
   "allowCriticalAlertsDuringQuietHours": "Permitir alertas críticos durante horas silenciosas",
+  "silenceNotificationsDuringSleepHours": "Notificações de silêncio durante as horas de sono",
+  "quietHoursActiveTimeRange": "Ativo {startTime}_ __PLACEHOLDER_1_",
+  "@quietHoursActiveTimeRange": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "9:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
   "followingAlerts": "Seguir as Alertas",
   "activeCount": "__PACEHOLDER_0__ ativo",
   "@activeCount": {
@@ -1130,6 +1144,17 @@
   },
   "unfollow": "Sem seguir",
   "unfollowAlert": "Alerta de Não Seguir",
+  "commentsCount": "__PACEHOLDER_0__ comentários",
+  "photo": "Foto",
+  "video": "Vídeo",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "Limpar",
   "weatherClearSky": "céu limpo",
   "rain": "Chuva",
@@ -1144,7 +1169,7 @@
   "lightRain": "chuva leve",
   "moderateRain": "chuva moderada",
   "heavyRain": "chuva pesada",
-  "aircraftDetectedCurrentPositions": "{radius}__aeronaves detectadas dentro de {count}km (posição atual)",
+  "aircraftDetectedCurrentPositions": "{count}__aeronaves detectadas dentro de {count}km (posição atual)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {

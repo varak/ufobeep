@@ -76,11 +76,11 @@
       }
     }
   },
-  "uploadingMedia": "Media uploaden...",
+  "uploadingMedia": "Media uploaden..",
   "includeLocation": "Plaats",
   "includeTimestamp": "Tijdstempel invoegen",
   "beepFailed": "Kon Beep niet sturen.",
-  "mediaProcessing": "Verwerking van media...",
+  "mediaProcessing": "Media verwerken..",
   "cameraPermissionTitle": "Cameratoegang nodig",
   "cameraPermissionBody": "Grant camera toegang tot UFO foto's en video's vastleggen.",
   "locationPermissionTitle": "Locatie Toestemming vereist",
@@ -419,7 +419,7 @@
   "shapeUnknown": "onbekend",
   "actionsTitle": "Acties",
   "addPhotosAndVideos": "Foto's en video's toevoegen",
-  "attachMedia": "Media bijvoegen",
+  "attachMedia": "Media toevoegen",
   "addCommentOptional": "Een opmerking toevoegen (facultatief)",
   "describeNewMedia": "Beschrijf de nieuwe media...",
   "filesSelected": "geselecteerde bestanden",
@@ -786,7 +786,7 @@
   "signInEmailDescription": "We sturen je een beveiligde link om je aan te melden",
   "signInEmailAddress": "E-mailadres",
   "signInEmailPlaceholder": "your@email.com",
-  "signInTryAgainIn": "Probeer het opnieuw in {seconds}s",
+  "signInTryAgainIn": "Probeer opnieuw in __PLACEHOLDER_0_s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -1118,6 +1118,20 @@
   "startTime": "Begintijd",
   "endTime": "Eindtijd",
   "allowCriticalAlertsDuringQuietHours": "Kritieke waarschuwingen toestaan tijdens stille uren",
+  "silenceNotificationsDuringSleepHours": "Stiltemeldingen tijdens slaapuren",
+  "quietHoursActiveTimeRange": "Actief __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
+  "@quietHoursActiveTimeRange": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "9:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
   "followingAlerts": "Volgende waarschuwingen",
   "activeCount": "{count}actief",
   "@activeCount": {
@@ -1130,6 +1144,17 @@
   },
   "unfollow": "Onvolgbaar",
   "unfollowAlert": "Waarschuwing niet volgen",
+  "commentsCount": "__PLAATSHOLDER_0___commentaren",
+  "photo": "Foto",
+  "video": "Video",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "Wissen",
   "weatherClearSky": "heldere lucht",
   "rain": "Regen",

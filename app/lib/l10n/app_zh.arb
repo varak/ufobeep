@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "风：{speed} {unit}",
+  "wind": "风速:_PLACEHOLDER_0__PLACEHOLDER_1_",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -1118,6 +1118,20 @@
   "startTime": "开始时间",
   "endTime": "结束时间",
   "allowCriticalAlertsDuringQuietHours": "允许在安静时间发出紧急警报",
+  "silenceNotificationsDuringSleepHours": "睡眠时间的沉默通知",
+  "quietHoursActiveTimeRange": "活动_PLACEHOLDER_0__{startTime}",
+  "@quietHoursActiveTimeRange": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "9:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
   "followingAlerts": "警报后",
   "activeCount": "_PLACEHOLDER_0_ 活动",
   "@activeCount": {
@@ -1130,6 +1144,17 @@
   },
   "unfollow": "未跟踪",
   "unfollowAlert": "不跟随提醒",
+  "commentsCount": "– PLACEHOLDER_ 0_ 注释",
+  "photo": "图片",
+  "video": "视频",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "清除",
   "weatherClearSky": "天空清净",
   "rain": "风雨",
