@@ -1157,7 +1157,7 @@
   "checkingConnectivity": "Проверка подключения...",
   "gatheringDeviceInfo": "Сбор информации об устройстве...",
   "translating": "Переводить...",
-  "showOriginal": "Шоу оригинальное",
+  "showOriginal": "Показать оригинал",
   "translateTo": "Переводить на {language}",
   "@translateTo": {
     "placeholders": {

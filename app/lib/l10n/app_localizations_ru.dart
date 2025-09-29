@@ -2687,7 +2687,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get translating => 'Переводить...';
 
   @override
-  String get showOriginal => 'Шоу оригинальное';
+  String get showOriginal => 'Показать оригинал';
 
   @override
   String translateTo(String language) {

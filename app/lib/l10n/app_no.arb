@@ -1157,7 +1157,7 @@
   "checkingConnectivity": "Checking connectivity...",
   "gatheringDeviceInfo": "Gathering device info...",
   "translating": "Translating...",
-  "showOriginal": "Show Original",
+  "showOriginal": "Vis original",
   "translateTo": "Translate to {language}",
   "@translateTo": {
     "placeholders": {

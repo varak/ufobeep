@@ -1157,7 +1157,7 @@
   "checkingConnectivity": "接続チェック...",
   "gatheringDeviceInfo": "デバイス情報収集.",
   "translating": "翻訳する...",
-  "showOriginal": "ショーオリジナル",
+  "showOriginal": "原文を表示",
   "translateTo": "{language} への変換",
   "@translateTo": {
     "placeholders": {

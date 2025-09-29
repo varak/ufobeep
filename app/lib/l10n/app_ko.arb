@@ -1157,7 +1157,7 @@
   "checkingConnectivity": "연결 확인 ...",
   "gatheringDeviceInfo": "장치 정보 ...",
   "translating": "...에.",
-  "showOriginal": "쇼 Original",
+  "showOriginal": "원본 보기",
   "translateTo": "{language}로 번역",
   "@translateTo": {
     "placeholders": {

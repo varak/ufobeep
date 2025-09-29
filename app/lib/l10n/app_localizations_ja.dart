@@ -2577,7 +2577,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get translating => '翻訳する...';
 
   @override
-  String get showOriginal => 'ショーオリジナル';
+  String get showOriginal => '原文を表示';
 
   @override
   String translateTo(String language) {

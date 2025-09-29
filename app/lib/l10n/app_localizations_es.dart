@@ -2681,7 +2681,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get translating => 'Traduciendo...';
 
   @override
-  String get showOriginal => 'Show Original';
+  String get showOriginal => 'Mostrar original';
 
   @override
   String translateTo(String language) {

@@ -1157,7 +1157,7 @@
   "checkingConnectivity": "Bağlantıyı kontrol edin...",
   "gatheringDeviceInfo": "Gathering device info...",
   "translating": "Translating...",
-  "showOriginal": "Show Original",
+  "showOriginal": "Orijinali göster",
   "translateTo": "{language}",
   "@translateTo": {
     "placeholders": {

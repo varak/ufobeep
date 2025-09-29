@@ -2579,7 +2579,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get translating => '...에.';
 
   @override
-  String get showOriginal => '쇼 Original';
+  String get showOriginal => '원본 보기';
 
   @override
   String translateTo(String language) {

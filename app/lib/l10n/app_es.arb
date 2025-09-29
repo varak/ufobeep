@@ -1157,7 +1157,7 @@
   "checkingConnectivity": "Comprobando conectividad...",
   "gatheringDeviceInfo": "Reunión de información del dispositivo...",
   "translating": "Traduciendo...",
-  "showOriginal": "Show Original",
+  "showOriginal": "Mostrar original",
   "translateTo": "Traducir a {language}",
   "@translateTo": {
     "placeholders": {

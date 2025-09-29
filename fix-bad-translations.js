@@ -46,6 +46,7 @@ const BAD_TRANSLATION_PATTERNS = [
   /\bDone\b/,
   /\bYes\b/,
   /\bNo\b/,
+  /\bShow Original\b/,  // Translation UI text
 ];
 
 // Known correct translations to avoid re-translating
