@@ -152,4 +152,51 @@ class AstronomicalTranslationService {
         return phase;
     }
   }
+
+  /// Translate weather conditions from API to localized versions
+  static String translateWeatherCondition(String condition, AppLocalizations l10n) {
+    switch (condition.toLowerCase()) {
+      case 'clear':
+        return l10n.weatherClear;
+      case 'clouds':
+        return l10n.clouds ?? condition;
+      case 'rain':
+        return l10n.rain ?? condition;
+      case 'snow':
+        return l10n.snow ?? condition;
+      case 'thunderstorm':
+        return l10n.thunderstorm ?? condition;
+      case 'drizzle':
+        return l10n.drizzle ?? condition;
+      case 'mist':
+      case 'fog':
+        return l10n.fog ?? condition;
+      default:
+        return condition;
+    }
+  }
+
+  /// Translate weather descriptions from API to localized versions
+  static String translateWeatherDescription(String description, AppLocalizations l10n) {
+    switch (description.toLowerCase()) {
+      case 'clear sky':
+        return l10n.weatherClearSky;
+      case 'few clouds':
+        return l10n.fewClouds ?? description;
+      case 'scattered clouds':
+        return l10n.scatteredClouds ?? description;
+      case 'broken clouds':
+        return l10n.brokenClouds ?? description;
+      case 'overcast clouds':
+        return l10n.overcastClouds ?? description;
+      case 'light rain':
+        return l10n.lightRain ?? description;
+      case 'moderate rain':
+        return l10n.moderateRain ?? description;
+      case 'heavy rain':
+        return l10n.heavyRain ?? description;
+      default:
+        return description;
+    }
+  }
 }

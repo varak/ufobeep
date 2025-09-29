@@ -1095,6 +1095,30 @@
   "locationRequired": "Location Required",
   "openSettings": "Open Settings",
   "confirmingWitness": "Confirming witness...",
+  "weatherClear": "Clear",
+  "weatherClearSky": "clear sky",
+  "clouds": "Clouds",
+  "rain": "Rain",
+  "snow": "Snow",
+  "thunderstorm": "Thunderstorm",
+  "drizzle": "Drizzle",
+  "fog": "Fog",
+  "fewClouds": "few clouds",
+  "scatteredClouds": "scattered clouds",
+  "brokenClouds": "broken clouds",
+  "overcastClouds": "overcast clouds",
+  "lightRain": "light rain",
+  "moderateRain": "moderate rain",
+  "heavyRain": "heavy rain",
+  "dimSatellitesUnlikely": "{count} dim satellites visible - unlikely to explain sighting",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
   "mufonReportingDate": "MUFON Reporting Date",
   "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {

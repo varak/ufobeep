@@ -298,7 +298,10 @@ class WeatherCardFromJson extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        weatherData['weather_main']?.toString() ?? AppLocalizations.of(context)!.unknownWeather,
+                        AstronomicalTranslationService.translateWeatherCondition(
+                          weatherData['weather_main']?.toString() ?? 'Unknown',
+                          AppLocalizations.of(context)!
+                        ),
                         style: TextStyle(
                           color: AppColors.textPrimary,
                           fontSize: 18,
@@ -306,7 +309,10 @@ class WeatherCardFromJson extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        weatherData['weather_description']?.toString() ?? AppLocalizations.of(context)!.noWeatherDescription,
+                        AstronomicalTranslationService.translateWeatherDescription(
+                          weatherData['weather_description']?.toString() ?? '',
+                          AppLocalizations.of(context)!
+                        ),
                         style: TextStyle(
                           color: AppColors.textSecondary,
                           fontSize: 14,
