@@ -1783,3 +1783,171 @@ async def get_user_subscriptions(user_id: str, current_user = Depends(get_curren
             'subscriptions': formatted_subs,
             'total_count': len(formatted_subs)
         }
+
+
+@router.get("/export")
+async def export_user_data(current_user = Depends(get_current_user_from_jwt)):
+    """Export all user data for GDPR compliance"""
+    user_id = str(current_user['id'])
+
+    pool = await get_database_pool()
+    async with pool.acquire() as conn:
+        # Get user profile data
+        user_data = await conn.fetchrow("""
+            SELECT id, email, username, created_at, updated_at, profile_data,
+                   visibility_settings, preferences
+            FROM users WHERE id = $1
+        """, uuid.UUID(user_id))
+
+        if not user_data:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        # Get user's sightings
+        sightings = await conn.fetch("""
+            SELECT id, title, description, latitude, longitude, created_at,
+                   category, witness_count, status, source, occurred_at
+            FROM sightings WHERE reporter_id = $1
+            ORDER BY created_at DESC
+        """, user_id)
+
+        # Get user's comments
+        comments = await conn.fetch("""
+            SELECT c.id, c.body, c.created_at, s.title as sighting_title
+            FROM comments c
+            JOIN sightings s ON c.sighting_id = s.id
+            WHERE c.user_id = $1
+            ORDER BY c.created_at DESC
+        """, user_id)
+
+        # Get user's follows
+        follows = await conn.fetch("""
+            SELECT f.sighting_id, f.created_at, s.title as sighting_title
+            FROM follows f
+            JOIN sightings s ON f.sighting_id = s.id
+            WHERE f.user_id = $1
+            ORDER BY f.created_at DESC
+        """, user_id)
+
+        # Format export data
+        export_data = {
+            'user_profile': {
+                'id': str(user_data['id']),
+                'email': user_data['email'],
+                'username': user_data['username'],
+                'created_at': user_data['created_at'].isoformat(),
+                'updated_at': user_data['updated_at'].isoformat() if user_data['updated_at'] else None,
+                'profile_data': user_data['profile_data'],
+                'visibility_settings': user_data['visibility_settings'],
+                'preferences': user_data['preferences']
+            },
+            'sightings': [
+                {
+                    'id': str(s['id']),
+                    'title': s['title'],
+                    'description': s['description'],
+                    'latitude': float(s['latitude']) if s['latitude'] else None,
+                    'longitude': float(s['longitude']) if s['longitude'] else None,
+                    'created_at': s['created_at'].isoformat(),
+                    'category': s['category'],
+                    'witness_count': s['witness_count'],
+                    'status': s['status'],
+                    'source': s['source'],
+                    'occurred_at': s['occurred_at'].isoformat() if s['occurred_at'] else None
+                }
+                for s in sightings
+            ],
+            'comments': [
+                {
+                    'id': str(c['id']),
+                    'body': c['body'],
+                    'created_at': c['created_at'].isoformat(),
+                    'sighting_title': c['sighting_title']
+                }
+                for c in comments
+            ],
+            'follows': [
+                {
+                    'sighting_id': str(f['sighting_id']),
+                    'followed_at': f['created_at'].isoformat(),
+                    'sighting_title': f['sighting_title']
+                }
+                for f in follows
+            ],
+            'export_metadata': {
+                'export_date': datetime.utcnow().isoformat(),
+                'export_version': '1.0',
+                'total_sightings': len(sightings),
+                'total_comments': len(comments),
+                'total_follows': len(follows)
+            }
+        }
+
+        return export_data
+
+
+@router.delete("/delete")
+async def delete_user_account(current_user = Depends(get_current_user_from_jwt)):
+    """Permanently delete user account and all associated data"""
+    user_id = str(current_user['id'])
+
+    pool = await get_database_pool()
+    async with pool.acquire() as conn:
+        async with conn.transaction():
+            # Verify user exists
+            user_exists = await conn.fetchval("""
+                SELECT EXISTS(SELECT 1 FROM users WHERE id = $1)
+            """, uuid.UUID(user_id))
+
+            if not user_exists:
+                raise HTTPException(status_code=404, detail="User not found")
+
+            # Get user's sightings to delete related data
+            user_sightings = await conn.fetch("""
+                SELECT id FROM sightings WHERE reporter_id = $1
+            """, user_id)
+
+            sighting_ids = [str(s['id']) for s in user_sightings]
+
+            # Delete in correct order to avoid foreign key constraints
+            if sighting_ids:
+                # Delete follows for user's sightings
+                await conn.execute("""
+                    DELETE FROM follows WHERE sighting_id = ANY($1)
+                """, sighting_ids)
+
+                # Delete comments on user's sightings
+                await conn.execute("""
+                    DELETE FROM comments WHERE sighting_id = ANY($1)
+                """, sighting_ids)
+
+                # Delete media files for user's sightings
+                await conn.execute("""
+                    DELETE FROM media_files WHERE sighting_id = ANY($1)
+                """, sighting_ids)
+
+            # Delete user's comments on other sightings
+            await conn.execute("""
+                DELETE FROM comments WHERE user_id = $1
+            """, user_id)
+
+            # Delete user's follows of other sightings
+            await conn.execute("""
+                DELETE FROM follows WHERE user_id = $1
+            """, user_id)
+
+            # Delete user's sightings
+            await conn.execute("""
+                DELETE FROM sightings WHERE reporter_id = $1
+            """, user_id)
+
+            # Delete user preferences and profile data
+            await conn.execute("""
+                DELETE FROM user_preferences WHERE user_id = $1
+            """, uuid.UUID(user_id))
+
+            # Finally delete the user
+            await conn.execute("""
+                DELETE FROM users WHERE id = $1
+            """, uuid.UUID(user_id))
+
+        return {"message": "Account deleted successfully"}

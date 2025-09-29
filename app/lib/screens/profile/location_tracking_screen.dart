@@ -413,30 +413,57 @@ class _LocationTrackingScreenState extends State<LocationTrackingScreen> {
 
         // Request background location permission if needed
         if (currentPermission != LocationPermission.always) {
-          print('LocationTracking UI: Requesting background permission...');
-          final newPermission = await Geolocator.requestPermission();
-          print('LocationTracking UI: Permission result: $newPermission');
+          print('LocationTracking UI: Need background permission, current: $currentPermission');
 
-          if (newPermission != LocationPermission.always) {
+          // If we only have whileInUse or denied permanently, direct user to settings
+          if (currentPermission == LocationPermission.whileInUse ||
+              currentPermission == LocationPermission.deniedForever) {
             if (mounted) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
-                    newPermission == LocationPermission.whileInUse
-                        ? 'Background location access is required. Please grant "Allow all the time" in settings.'
-                        : AppLocalizations.of(context)!.locationPermissionRequired,
+                    'Background location requires "Allow all the time" permission. Please enable this in Settings.',
                   ),
                   backgroundColor: AppColors.semanticError,
                   action: SnackBarAction(
-                    label: 'Settings',
+                    label: 'Open Settings',
                     onPressed: () => Geolocator.openAppSettings(),
                     textColor: Colors.white,
                   ),
+                  duration: const Duration(seconds: 6),
                 ),
               );
             }
             await _loadTrackingStatus();
             return;
+          }
+
+          // For denied permission, try requesting once
+          if (currentPermission == LocationPermission.denied) {
+            print('LocationTracking UI: Requesting basic permission...');
+            final newPermission = await Geolocator.requestPermission();
+            print('LocationTracking UI: Permission result: $newPermission');
+
+            if (newPermission != LocationPermission.always) {
+              if (mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Background location requires "Allow all the time" permission. Please enable this in Settings.',
+                    ),
+                    backgroundColor: AppColors.semanticError,
+                    action: SnackBarAction(
+                      label: 'Open Settings',
+                      onPressed: () => Geolocator.openAppSettings(),
+                      textColor: Colors.white,
+                    ),
+                    duration: const Duration(seconds: 6),
+                  ),
+                );
+              }
+              await _loadTrackingStatus();
+              return;
+            }
           }
         }
       }

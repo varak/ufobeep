@@ -120,21 +120,32 @@ class LocationTrackingService {
 
     // Check current permission
     LocationPermission permission = await Geolocator.checkPermission();
+    print('LocationTracking: Current permission status: $permission');
 
+    // If denied, request basic permission first
     if (permission == LocationPermission.denied) {
+      print('LocationTracking: Requesting basic location permission...');
       permission = await Geolocator.requestPermission();
+      print('LocationTracking: Basic permission result: $permission');
     }
 
     // For background monitoring, we need 'always' permission
     if (permission == LocationPermission.whileInUse) {
-      // Request upgrade to 'always' permission
-      // Note: This may show system dialog explaining background location usage
-      permission = await Geolocator.requestPermission();
+      print('LocationTracking: Have whileInUse permission, need always permission...');
+      // If we only have whileInUse, user needs to go to settings to grant always
+      // Don't request again as it won't work - return false and let UI handle it
+      print('LocationTracking: Background permission requires manual settings change');
+      return false;
+    }
+
+    // Check if we have denied permanently
+    if (permission == LocationPermission.deniedForever) {
+      print('LocationTracking: Permission denied permanently, need settings');
+      return false;
     }
 
     final granted = permission == LocationPermission.always;
-
-    print('LocationTracking: Permission status: $permission (granted: $granted)');
+    print('LocationTracking: Final permission status: $permission (granted: $granted)');
     return granted;
   }
 
