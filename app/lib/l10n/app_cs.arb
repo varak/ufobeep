@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "neznámý",
+  "unknown": "Neznámé",
   "report": "zpráva",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "Nedávné UFO Brouci",
@@ -978,5 +978,129 @@
   "processorLocation": "údaje o umístění",
   "processorAircraft": "v blízkosti letadla",
   "processorSatellites": "družicové pozice",
-  "processorCelestial": "nebeské objekty"
+  "processorCelestial": "nebeské objekty",
+  "calculatingCelestialData": "Vypočítávám nebeská data...",
+  "sunLabel": "Slunce",
+  "moonLabel": "Měsíc",
+  "planetsVisible": "Planety: _ _ PLACETETELER _ 0 _ _ viditelný",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Hvězdy",
+  "planetsLabel": "Planety",
+  "moonWithPhase": "Měsíční (_ _ PLACETETELER _ 0 _ _)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Žádné satelity nebyly viditelné v přesný čas vašeho pozorování",
+  "satellitesVisibleOverheadAtTime": "Satelity viditelné nad hlavou při pozorování času a umístění",
+  "belowHorizon": "pod horizontem",
+  "analysisFailedGeneric": "Analýza selhala",
+  "unknownWeather": "Neznámé",
+  "noWeatherDescription": "Bez popisu",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satelity (_ _ PLACETETELER _ 0 _ _ viditelné nyní)",
+  "sunWithDescription": "Sun: _ _ PLACETETELER _ 0 _ _",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Měsíc: _ _ PLACETETELER _ 0 _ _",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Neznámá planeta",
+  "unknownStar": "Neznámá hvězda",
+  "unknownSatellite": "Neznámý satelit",
+  "unknownDirection": "neznámý směr",
+  "brightStars": "Světlé hvězdy",
+  "satellites": "Satelity",
+  "seeAllSatellites": "Viz všechny _ _ PLACETETELER _ 0 _ _ satelity",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Maximální výška: _ _ PLACETETERER _ 0 _ _ °",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Velikost: _ _ PLACETETERER _ 0 _ _",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Neznámé",
+  "altitudeValue": "_ _ PLACETETERER _ 0 _ _ ° nadmořská výška",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "_ _ PLACETETELER _ 0 _ _ ° azimut",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Nejsou k dispozici žádné nebeské údaje.",
+  "satelliteNameDirection": "_ _ PLACETIER _ 0 _ _ - _ _ PLACETIER _ 1 _ _",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }
