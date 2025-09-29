@@ -1130,6 +1130,15 @@
   },
   "unfollow": "Unfollow",
   "unfollowAlert": "Unfollow Alert",
+  "commentsCount": "{count} comments",
+  "@commentsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
   "weatherClear": "Clear",
   "weatherClearSky": "clear sky",
   "rain": "Rain",

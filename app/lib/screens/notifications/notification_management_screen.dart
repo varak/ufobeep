@@ -10,6 +10,8 @@ import '../../services/beep_service.dart';
 import '../../services/auth_repository.dart';
 import '../../widgets/glass_card.dart';
 import '../../l10n/app_localizations.dart';
+import '../../utils/alert_title_utils.dart';
+import '../../providers/alerts_provider.dart';
 
 class NotificationManagementScreen extends ConsumerStatefulWidget {
   const NotificationManagementScreen({super.key});
@@ -560,15 +562,31 @@ class _NotificationManagementScreenState
   }
 
   Widget _buildSubscriptionTile(Map<String, dynamic> subscription) {
-    // Use enhanced alert data (copying alert pattern)
-    final title = subscription['alert_title'] ?? subscription['title'] ?? 'UFO Sighting';
-    final location = subscription['alert_location'] ?? subscription['location_name'] ?? 'Unknown Location';
+    // Create minimal Alert object for title translation (copying alert pattern)
     final sightingId = subscription['sighting_id'];
     final commentCount = subscription['comment_count'] ?? 0;
     final createdAt = subscription['alert_created_at'];
-    final source = subscription['alert_source'];
-    final username = subscription['alert_username'];
     final isLast = _subscriptions.indexOf(subscription) == _subscriptions.length - 1;
+
+    // Create Alert object from subscription data to use AlertTitleUtils
+    final alertForTitle = Alert(
+      id: sightingId ?? '',
+      title: subscription['alert_title'] ?? subscription['title'],
+      description: subscription['alert_description'],
+      latitude: 0.0, // Not needed for title
+      longitude: 0.0, // Not needed for title
+      createdAt: createdAt != null ? DateTime.parse(createdAt) : DateTime.now(),
+      source: subscription['alert_source'],
+      enrichment: null, // Would need full enrichment for MUFON cases
+    );
+
+    // Use same title logic as alerts tab
+    final translatedTitle = AlertTitleUtils.getDynamicTitle(
+      AppLocalizations.of(context)!,
+      alertForTitle
+    );
+
+    final location = subscription['alert_location'] ?? subscription['location_name'] ?? 'Unknown Location';
 
     // Format date added to UFOBeep (copying alert date pattern)
     String dateAdded = '';
@@ -578,12 +596,20 @@ class _NotificationManagementScreenState
         final now = DateTime.now();
         final difference = now.difference(date);
 
+        // Use T+ format like alerts tab (language-neutral)
         if (difference.inDays > 0) {
-          dateAdded = '${difference.inDays}d ago';
+          final days = difference.inDays;
+          final hours = difference.inHours.remainder(24);
+          dateAdded = 'T+${days}d${hours}h';
         } else if (difference.inHours > 0) {
-          dateAdded = '${difference.inHours}h ago';
+          final hours = difference.inHours;
+          final minutes = difference.inMinutes.remainder(60);
+          dateAdded = 'T+${hours}h${minutes}m';
+        } else if (difference.inMinutes > 0) {
+          final minutes = difference.inMinutes;
+          dateAdded = 'T+${minutes}m';
         } else {
-          dateAdded = 'Recent';
+          dateAdded = 'T+0m';
         }
       } catch (e) {
         dateAdded = 'Added to UFOBeep';
@@ -595,7 +621,7 @@ class _NotificationManagementScreenState
         ListTile(
           leading: const Icon(Icons.notifications_active, color: AppColors.brandPrimary),
           title: Text(
-            title.length > 50 ? '${title.substring(0, 50)}...' : title,
+            translatedTitle.length > 50 ? '${translatedTitle.substring(0, 50)}...' : translatedTitle,
             style: const TextStyle(color: Colors.white),
           ),
           subtitle: Column(
@@ -615,7 +641,7 @@ class _NotificationManagementScreenState
                 ),
               if (commentCount > 0)
                 Text(
-                  '$commentCount comments',
+                  AppLocalizations.of(context)!.commentsCount(commentCount),
                   style: const TextStyle(
                     color: AppColors.brandPrimary,
                     fontSize: 12,
