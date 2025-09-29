@@ -456,6 +456,57 @@ async def mcp_test():
     """Simple MCP test endpoint"""
     return {"message": "MCP working", "server": "ufobeep"}
 
+@app.get("/mcp/stats")
+async def mcp_stats():
+    """UFO database statistics for AI systems"""
+    try:
+        async with database_service.pool.acquire() as conn:
+            total = await conn.fetchval("SELECT COUNT(*) FROM sightings")
+            with_media = await conn.fetchval("SELECT COUNT(*) FROM sightings WHERE array_length(media_files, 1) > 0")
+            return {
+                "tool": "get_basic_stats",
+                "total_sightings": total,
+                "sightings_with_media": with_media,
+                "server": "ufobeep"
+            }
+    except Exception as e:
+        return {"error": str(e)}
+
+@app.get("/mcp/search")
+async def mcp_search(lat: float, lon: float, radius: int = 50, limit: int = 20):
+    """Search UFO sightings for AI systems"""
+    try:
+        from services.alerts_service import AlertsService
+        alerts_service = AlertsService(database_service.pool)
+
+        result = await alerts_service.get_alerts(
+            page=1, limit=limit, latitude=lat, longitude=lon,
+            verified_only=False, sort_by="newest"
+        )
+
+        sightings = []
+        for alert in result.get("alerts", []):
+            sightings.append({
+                "id": alert.get("id"),
+                "title": alert.get("title", "UFO Sighting"),
+                "location": alert.get("location", {}).get("name", "Unknown"),
+                "coordinates": [alert.get("latitude", 0), alert.get("longitude", 0)],
+                "timestamp": alert.get("created_at"),
+                "description": alert.get("description", ""),
+                "witness_count": alert.get("witness_count", 1),
+                "distance_km": alert.get("distance_km", 0)
+            })
+
+        return {
+            "tool": "search_ufo_sightings",
+            "sightings": sightings,
+            "total_count": result.get("total", 0),
+            "search_location": [lat, lon],
+            "radius_km": radius
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
 # Mount static files for media serving (use /static to avoid conflict with /media/upload)
 app.mount("/static", StaticFiles(directory="media"), name="media")
 # Mount well-known files for App Links and AASA verification
