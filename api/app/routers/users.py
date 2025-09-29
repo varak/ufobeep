@@ -1794,8 +1794,9 @@ async def export_user_data(current_user = Depends(get_current_user_from_jwt)):
     async with pool.acquire() as conn:
         # Get user profile data
         user_data = await conn.fetchrow("""
-            SELECT id, email, username, created_at, updated_at, profile_data,
-                   visibility_settings, preferences
+            SELECT id, email, username, created_at, updated_at, display_name, bio,
+                   preferred_language, units_metric, alert_range_km, min_alert_level,
+                   push_notifications, email_notifications, share_location, public_profile
             FROM users WHERE id = $1
         """, uuid.UUID(user_id))
 
@@ -1834,11 +1835,18 @@ async def export_user_data(current_user = Depends(get_current_user_from_jwt)):
                 'id': str(user_data['id']),
                 'email': user_data['email'],
                 'username': user_data['username'],
+                'display_name': user_data['display_name'],
+                'bio': user_data['bio'],
                 'created_at': user_data['created_at'].isoformat(),
                 'updated_at': user_data['updated_at'].isoformat() if user_data['updated_at'] else None,
-                'profile_data': user_data['profile_data'],
-                'visibility_settings': user_data['visibility_settings'],
-                'preferences': user_data['preferences']
+                'preferred_language': user_data['preferred_language'],
+                'units_metric': user_data['units_metric'],
+                'alert_range_km': float(user_data['alert_range_km']) if user_data['alert_range_km'] else None,
+                'min_alert_level': user_data['min_alert_level'],
+                'push_notifications': user_data['push_notifications'],
+                'email_notifications': user_data['email_notifications'],
+                'share_location': user_data['share_location'],
+                'public_profile': user_data['public_profile']
             },
             'sightings': [
                 {
@@ -1939,11 +1947,6 @@ async def delete_user_account(current_user = Depends(get_current_user_from_jwt))
             await conn.execute("""
                 DELETE FROM sightings WHERE reporter_id = $1
             """, user_id)
-
-            # Delete user preferences and profile data
-            await conn.execute("""
-                DELETE FROM user_preferences WHERE user_id = $1
-            """, uuid.UUID(user_id))
 
             # Finally delete the user
             await conn.execute("""
