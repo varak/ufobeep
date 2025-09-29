@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Keine himmlischen Daten verfügbar.",
+  "gettingLocation": "Ihr Standort...",
+  "media": "Medien",
+  "locationRequired": "Ort Erforderlich",
+  "confirmingWitness": "Bestätigen Sie Zeuge...",
+  "weatherClear": "Klar",
+  "weatherClearSky": "klarer himmel",
+  "rain": "Regen",
+  "snow": "Schnee",
+  "thunderstorm": "Gewitter",
+  "drizzle": "Dr",
+  "fog": "Fohlen",
+  "fewClouds": "wenig wolken",
+  "scatteredClouds": "wolken",
+  "brokenClouds": "wolken",
+  "overcastClouds": "bewölkt",
+  "lightRain": "lichtregen",
+  "moderateRain": "mäßiger regen",
+  "heavyRain": "starker regen",
+  "aircraftDetectedCurrentPositions": "{count} Flugzeug innerhalb {count}km (aktuelle Positionen)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "{count} dim Satelliten sichtbar - unwahrscheinlich, um die Sichtbarkeit zu erklären",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Datum",
   "satelliteNameDirection": "{name} {direction}_",
   "@satelliteNameDirection": {
     "placeholders": {

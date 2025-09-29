@@ -87,7 +87,7 @@
   "locationPermissionBody": "نستخدم موقعك لإرسال وإستلام إنذارات قريبة.",
   "microphonePermissionTitle": "الوصول إلى الميكروفون",
   "microphonePermissionBody": "الحصول على الميكروفون للحصول على الفيديو بالصوت.",
-  "openSettings": "الأطر المفتوحة",
+  "openSettings": "Open Settings",
   "alertDetailTitle": "تفاصيل النظر",
   "reportedBy": "Reported by __PLACEHOLDER_0",
   "@reportedBy": {
@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "لا توجد بيانات سماوية متاحة.",
+  "gettingLocation": "الحصول على موقعك...",
+  "media": "وسائط الإعلام",
+  "locationRequired": "الموقع المطلوب",
+  "confirmingWitness": "تأكيد الشاهد...",
+  "weatherClear": "آمن",
+  "weatherClearSky": "السماء",
+  "rain": "Rain",
+  "snow": "Snow",
+  "thunderstorm": "Thunderstorm",
+  "drizzle": "Drizzle",
+  "fog": "Fog",
+  "fewClouds": "بعض الغيوم",
+  "scatteredClouds": "سحابات مبعثرة",
+  "brokenClouds": "سحابات مكسورة",
+  "overcastClouds": "الغيوم المنبعثة",
+  "lightRain": "الأمطار الخفيفة",
+  "moderateRain": "الأمطار المتوسطة",
+  "heavyRain": "الأمطار الغزيرة",
+  "aircraftDetectedCurrentPositions": "__PLACEHOLDER_0_طائرة مكتشفة في __PLACEHOLDER_1_km (مواقع جارية)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "__PLACEHOLDER_0_ سواتل شمسية مرئية - من غير المرجح أن تفسر الرؤية",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON التاريخ",
   "satelliteNameDirection": "_",
   "@satelliteNameDirection": {
     "placeholders": {

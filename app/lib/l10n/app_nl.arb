@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Geen hemelse gegevens beschikbaar.",
+  "gettingLocation": "Je locatie vinden...",
+  "media": "Media",
+  "locationRequired": "Locatie vereist",
+  "confirmingWitness": "Bevestigde getuige...",
+  "weatherClear": "Wissen",
+  "weatherClearSky": "heldere lucht",
+  "rain": "Regen",
+  "snow": "Sneeuw",
+  "thunderstorm": "Onweer",
+  "drizzle": "Motregenweather forecast",
+  "fog": "Mist",
+  "fewClouds": "weinig wolken",
+  "scatteredClouds": "verspreide wolken",
+  "brokenClouds": "gebroken wolken",
+  "overcastClouds": "bewolkt",
+  "lightRain": "lichte regen",
+  "moderateRain": "matige regen",
+  "heavyRain": "zware regenval",
+  "aircraftDetectedCurrentPositions": "__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km (huidige posities)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "Dim satellieten zichtbaar - waarschijnlijk niet te verklaren",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Rapportagedatum",
   "satelliteNameDirection": "__PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
   "@satelliteNameDirection": {
     "placeholders": {

@@ -87,7 +87,7 @@
   "locationPermissionBody": "Usamos a sua localização para enviar e receber alertas nas proximidades.",
   "microphonePermissionTitle": "Acesso ao microfone necessário",
   "microphonePermissionBody": "Conceda acesso ao microfone para captura de vídeo com áudio.",
-  "openSettings": "Abrir configurações",
+  "openSettings": "Abrir Configurações",
   "alertDetailTitle": "Detalhes da visão",
   "reportedBy": "Reportado por __PLACEHOLDER_0_",
   "@reportedBy": {
@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Nenhum dado celestial disponível.",
+  "gettingLocation": "A obter a sua localização...",
+  "media": "Mídia",
+  "locationRequired": "Localização necessária",
+  "confirmingWitness": "Confirmando testemunha...",
+  "weatherClear": "Limpar",
+  "weatherClearSky": "céu limpo",
+  "rain": "Chuva",
+  "snow": "Neve",
+  "thunderstorm": "Trovão",
+  "drizzle": "Drizzle",
+  "fog": "Nevoeiro",
+  "fewClouds": "poucas nuvens",
+  "scatteredClouds": "nuvens dispersas",
+  "brokenClouds": "nuvens quebradas",
+  "overcastClouds": "nuvens nubladas",
+  "lightRain": "chuva leve",
+  "moderateRain": "chuva moderada",
+  "heavyRain": "chuva pesada",
+  "aircraftDetectedCurrentPositions": "{count}__aeronaves detectadas dentro de {count}km (posição atual)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "{count} os satélites menos visíveis - improvável explicar o avistamento",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Data de comunicação",
   "satelliteNameDirection": "__PACEHOLDER_0__ __PACEHOLDER_1_",
   "@satelliteNameDirection": {
     "placeholders": {

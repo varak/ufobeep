@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Никаких небесных данных.",
+  "gettingLocation": "Получить свое местоположение...",
+  "media": "СМИ",
+  "locationRequired": "Местоположение требуется",
+  "confirmingWitness": "Подтверждающий свидетель...",
+  "weatherClear": "Чисто",
+  "weatherClearSky": "ясное небо",
+  "rain": "Дождь",
+  "snow": "Снег",
+  "thunderstorm": "Гроза",
+  "drizzle": "Дриззл",
+  "fog": "Туман",
+  "fewClouds": "несколько облаков",
+  "scatteredClouds": "рассеянные облака",
+  "brokenClouds": "разбитые облака",
+  "overcastClouds": "пасмурные облака",
+  "lightRain": "легкий дождь",
+  "moderateRain": "умеренный дождь",
+  "heavyRain": "сильный дождь",
+  "aircraftDetectedCurrentPositions": "{count} самолет обнаружен в пределах {count}km (текущие позиции)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "{count} видимые тусклые спутники - вряд ли можно объяснить наблюдение",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "МУФОН Дата представления докладов",
   "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {

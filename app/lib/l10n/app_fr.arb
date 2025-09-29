@@ -1090,6 +1090,47 @@
     }
   },
   "noCelestialDataAvailable": "Aucune donnée céleste disponible.",
+  "gettingLocation": "Obtenir votre emplacement...",
+  "media": "Médias",
+  "locationRequired": "Lieu requis",
+  "confirmingWitness": "Témoin confirmé...",
+  "weatherClear": "Effacer",
+  "weatherClearSky": "ciel dégagé",
+  "rain": "Pluie",
+  "snow": "Neige",
+  "thunderstorm": "Orage",
+  "drizzle": "Essoufflement",
+  "fog": "Fog",
+  "fewClouds": "quelques nuages",
+  "scatteredClouds": "nuages dispersés",
+  "brokenClouds": "nuages brisés",
+  "overcastClouds": "nuages couvert",
+  "lightRain": "pluie légère",
+  "moderateRain": "pluie modérée",
+  "heavyRain": "fortes pluies",
+  "aircraftDetectedCurrentPositions": "{count} avions détectés dans {count}km (positions actuelles)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
+  "dimSatellitesUnlikely": "Satellites visibles - peu susceptibles d'expliquer l'observation",
+  "@dimSatellitesUnlikely": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "mufonReportingDate": "MUFON Date de présentation des rapports",
   "satelliteNameDirection": "{name}_{direction}",
   "@satelliteNameDirection": {
     "placeholders": {

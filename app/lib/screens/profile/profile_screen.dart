@@ -1102,8 +1102,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
         backgroundColor: AppColors.darkSurface,
-        title: const Text(
-          'Choose Your Username',
+        title: Text(
+          AppLocalizations.of(context)!.chooseYourUsername,
           style: TextStyle(color: AppColors.textPrimary, fontWeight: FontWeight.w600),
         ),
         content: Container(
