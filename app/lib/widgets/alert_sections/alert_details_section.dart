@@ -13,7 +13,7 @@ import '../../services/translation_service.dart';
 import '../../providers/user_preferences_provider.dart';
 import '../translation_button.dart';
 
-class AlertDetailsSection extends StatelessWidget {
+class AlertDetailsSection extends StatefulWidget {
   const AlertDetailsSection({
     super.key,
     required this.alert,
@@ -32,6 +32,15 @@ class AlertDetailsSection extends StatelessWidget {
   final VoidCallback? onShareTap;
 
   @override
+  _AlertDetailsSectionState createState() => _AlertDetailsSectionState();
+}
+
+class _AlertDetailsSectionState extends State<AlertDetailsSection> {
+  String? _translatedDescription;
+  bool _isDescriptionTranslated = false;
+  bool _isTranslating = false;
+
+  @override
   Widget build(BuildContext context) {
     return GlassCard(
       padding: const EdgeInsets.all(20),
@@ -44,8 +53,8 @@ class AlertDetailsSection extends StatelessWidget {
               Text('ℹ️', style: TextStyle(fontSize: 20)),
               const SizedBox(width: 8),
               Text(
-                alert.source == 'mufon' && alert.enrichment?['mufon_case_number'] != null
-                    ? AppLocalizations.of(context)!.mufonCaseTitle(alert.enrichment!['mufon_case_number'])
+                widget.alert.source == 'mufon' && widget.alert.enrichment?['mufon_case_number'] != null
+                    ? AppLocalizations.of(context)!.mufonCaseTitle(widget.alert.enrichment!['mufon_case_number'])
                     : AppLocalizations.of(context)!.detailsTitle,
                 style: const TextStyle(
                   color: AppColors.brandPrimary,
@@ -57,10 +66,10 @@ class AlertDetailsSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           
-          // Description with inline translation (if available and enabled)
-          if (showDescription && alert.description != null && alert.description!.isNotEmpty) ...[
+          // Description with smart translation (if available and enabled)
+          if (widget.showDescription && widget.widget.alert.description != null && widget.widget.alert.description!.isNotEmpty) ...[
             Text(
-              alert.description!,
+              _isDescriptionTranslated ? (_translatedDescription ?? widget.widget.alert.description!) : widget.widget.alert.description!,
               style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 18,
@@ -68,36 +77,37 @@ class AlertDetailsSection extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            // TODO: Implement proper dynamic translation links with user language detection
+            // Smart, unobtrusive translation links
+            _buildTranslationLinks(),
             const SizedBox(height: 16),
           ],
           
           // MUFON-specific metadata
-          if (alert.source == 'mufon') ...[
+          if (widget.widget.alert.source == 'mufon') ...[
             // Debug info - let's see what data we have
-            // print('DEBUG MUFON Alert: source=${alert.source}, occurredAt=${alert.occurredAt}, enrichment=${alert.enrichment}');
+            // print('DEBUG MUFON Alert: source=${widget.alert.source}, occurredAt=${widget.alert.occurredAt}, enrichment=${widget.alert.enrichment}');
 
             // Event date (when sighting actually occurred)
-            if (alert.enrichment?['sighting_datetime'] != null)
+            if (widget.alert.enrichment?['sighting_datetime'] != null)
               _buildDetailRow(
                 Icons.event,
                 AppLocalizations.of(context)!.eventTime,
-                _parseMufonSightingDate(alert.enrichment!['sighting_datetime']),
+                _parseMufonSightingDate(widget.alert.enrichment!['sighting_datetime']),
               ),
 
             // Date reported to MUFON database
-            if (alert.enrichment?['report_date'] != null)
+            if (widget.alert.enrichment?['report_date'] != null)
               _buildDetailRow(
                 Icons.storage,
                 _isMufonAlert(alert) ? AppLocalizations.of(context)!.mufonReportingDate : AppLocalizations.of(context)!.reportedTime,
-                _parseAndFormatDateISO(alert.enrichment!['report_date']) ?? alert.enrichment!['report_date'],
+                _parseAndFormatDateISO(widget.alert.enrichment!['report_date']) ?? widget.alert.enrichment!['report_date'],
               ),
 
             // Always show UFOBeep import date for MUFON reports
             _buildDetailRow(
               Icons.schedule,
               AppLocalizations.of(context)!.addedToUfobeep,
-              _formatDateOnly(alert.createdAt), // Date only, no time
+              _formatDateOnly(widget.alert.createdAt), // Date only, no time
             ),
 
             // Always show location for MUFON reports
@@ -106,12 +116,12 @@ class AlertDetailsSection extends StatelessWidget {
                 Icons.location_on,
                 AppLocalizations.of(context)!.locationLabel,
                 _getMufonLocationName(context, alert),
-                subtitle: alert.latitude != 0.0 && alert.longitude != 0.0
-                    ? '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}'
+                subtitle: widget.alert.latitude != 0.0 && widget.alert.longitude != 0.0
+                    ? '${widget.alert.latitude.toStringAsFixed(4)}, ${widget.alert.longitude.toStringAsFixed(4)}'
                     : null,
               ),
               // Always show distance if we have coordinates
-              if (alert.latitude != 0.0 && alert.longitude != 0.0)
+              if (widget.alert.latitude != 0.0 && widget.alert.longitude != 0.0)
                 _buildDistanceRow(context),
             ],
 
@@ -122,25 +132,25 @@ class AlertDetailsSection extends StatelessWidget {
           ],
           
           // UFOBeep-specific metadata (non-MUFON)
-          if (alert.source != 'mufon') ...[
+          if (widget.alert.source != 'mufon') ...[
             // Time info - compact format
             _buildCompactDetailRow(
               '🕐',
               AppLocalizations.of(context)!.timeLabel,
-              _formatFullDateTime(alert.createdAt, use24Hour: use24HourTime),
-              secondaryInfo: _formatDateTime(context, alert.createdAt),
+              _formatFullDateTime(widget.alert.createdAt, use24Hour: use24HourTime),
+              secondaryInfo: _formatDateTime(context, widget.alert.createdAt),
             ),
 
             // Reporter info - use reporterUsername field which has the data
-            if (alert.reporterUsername != null && alert.reporterUsername!.isNotEmpty && alert.source != 'mufon')
+            if (widget.alert.reporterUsername != null && widget.alert.reporterUsername!.isNotEmpty && widget.alert.source != 'mufon')
               _buildCompactDetailRow(
                 '👤',
                 AppLocalizations.of(context)!.reportedByLabel,
-                alert.reporterUsername!,
+                widget.alert.reporterUsername!,
               ),
             
             // Witness count (if more than 1)
-            if (alert.witnessCount > 1)
+            if (widget.alert.witnessCount > 1)
               _buildWitnessRow(context),
             
             // Location info (if enabled) - only for non-MUFON reports
@@ -149,10 +159,10 @@ class AlertDetailsSection extends StatelessWidget {
                 '📍',
                 AppLocalizations.of(context)!.locationLabel,
                 _getLocationDisplayName(alert, context),
-                secondaryInfo: '${alert.latitude.toStringAsFixed(4)}, ${alert.longitude.toStringAsFixed(4)}',
+                secondaryInfo: '${widget.alert.latitude.toStringAsFixed(4)}, ${widget.alert.longitude.toStringAsFixed(4)}',
               ),
               // Always show dynamic distance calculation if we have coordinates
-              if (alert.latitude != 0.0 && alert.longitude != 0.0)
+              if (widget.alert.latitude != 0.0 && widget.alert.longitude != 0.0)
                 _buildDistanceRow(context),
             ],
 
@@ -180,8 +190,8 @@ class AlertDetailsSection extends StatelessWidget {
         final distance = _calculateDistance(
           userLocation.latitude,
           userLocation.longitude,
-          alert.latitude,
-          alert.longitude,
+          widget.alert.latitude,
+          widget.alert.longitude,
         );
 
         return _buildCompactDetailRow(
@@ -245,7 +255,7 @@ class AlertDetailsSection extends StatelessWidget {
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            '${alert.witnessCount}',
+                            '${widget.alert.witnessCount}',
                             style: const TextStyle(
                               color: AppColors.semanticSuccess,
                               fontSize: 14,
@@ -259,7 +269,7 @@ class AlertDetailsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  AppLocalizations.of(context)!.witnessesCountMessage(alert.witnessCount),
+                  AppLocalizations.of(context)!.witnessesCountMessage(widget.alert.witnessCount),
                   style: const TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 12,
@@ -458,7 +468,7 @@ class AlertDetailsSection extends StatelessWidget {
   }
 
   bool _isMufonAlert(Alert alert) {
-    return alert.source == 'mufon' || alert.username == 'MUFON_Database';
+    return widget.alert.source == 'mufon' || widget.alert.username == 'MUFON_Database';
   }
 
   String? _parseAndFormatDateISO(String? dateString) {
@@ -488,41 +498,41 @@ class AlertDetailsSection extends StatelessWidget {
 
   String _getMufonLocationName(BuildContext context, Alert alert) {
     // For MUFON alerts, use enrichment data for better location names
-    if (alert.enrichment != null) {
+    if (widget.alert.enrichment != null) {
       // Try geocoding display name first - this gives the full address
-      final displayName = alert.enrichment!['geocoding']?['display_name'];
+      final displayName = widget.alert.enrichment!['geocoding']?['display_name'];
       if (displayName != null && displayName.toString().isNotEmpty) {
         return displayName.toString();
       }
 
       // Try formatted_address field
-      final formattedAddress = alert.enrichment!['geocoding']?['formatted_address'];
+      final formattedAddress = widget.alert.enrichment!['geocoding']?['formatted_address'];
       if (formattedAddress != null && formattedAddress.toString().isNotEmpty) {
         return formattedAddress.toString();
       }
 
       // Try location_name field
-      final locationName = alert.enrichment!['geocoding']?['location_name'];
+      final locationName = widget.alert.enrichment!['geocoding']?['location_name'];
       if (locationName != null && locationName.toString().isNotEmpty) {
         return locationName.toString();
       }
 
       // Try geocoding location field - shorter format like "Manteca, CA"
-      final geocodingLocation = alert.enrichment!['geocoding']?['location'];
+      final geocodingLocation = widget.alert.enrichment!['geocoding']?['location'];
       if (geocodingLocation != null && geocodingLocation.toString().isNotEmpty) {
         return geocodingLocation.toString();
       }
 
       // Try location_raw field
-      final locationRaw = alert.enrichment!['location_raw'];
+      final locationRaw = widget.alert.enrichment!['location_raw'];
       if (locationRaw != null && locationRaw.toString().isNotEmpty) {
         return locationRaw.toString();
       }
     }
 
     // Fall back to the basic locationName field
-    if (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location') {
-      return alert.locationName!;
+    if (widget.alert.locationName != null && widget.alert.locationName!.isNotEmpty && widget.alert.locationName != 'Unknown Location') {
+      return widget.alert.locationName!;
     }
 
     // Last resort - return unknown location
@@ -532,8 +542,8 @@ class AlertDetailsSection extends StatelessWidget {
 
 
   String _classificationLabel(AppLocalizations l10n) {
-    final c = alert.enrichment?['classification']?.toString().toLowerCase().trim() 
-        ?? alert.enrichment?['ufo_type']?.toString().toLowerCase().trim();
+    final c = widget.alert.enrichment?['classification']?.toString().toLowerCase().trim() 
+        ?? widget.alert.enrichment?['ufo_type']?.toString().toLowerCase().trim();
     
     // Return null for empty/null classifications to hide the section
     if (c == null || c.isEmpty) {
@@ -599,7 +609,7 @@ class AlertDetailsSection extends StatelessWidget {
 
   Widget _buildShareUrlRow(BuildContext context, Alert alert) {
     final locale = Localizations.localeOf(context).languageCode;
-    final shareUrl = getShortAlertUrl(alert.shortUrl, locale: locale);
+    final shareUrl = getShortAlertUrl(widget.alert.shortUrl, locale: locale);
     final shareLink = 'ufobeep.com$shareUrl';
 
     return Padding(
@@ -670,8 +680,8 @@ class AlertDetailsSection extends StatelessWidget {
 
   String _getLocationDisplayName(Alert alert, BuildContext context) {
     // First check geocoding enrichment data
-    if (alert.enrichment != null) {
-      final geocoding = alert.enrichment!['geocoding'];
+    if (widget.alert.enrichment != null) {
+      final geocoding = widget.alert.enrichment!['geocoding'];
       if (geocoding != null) {
         // Try formatted_address field
         final formattedAddress = geocoding['formatted_address'];
@@ -694,11 +704,109 @@ class AlertDetailsSection extends StatelessWidget {
     }
 
     // Fall back to basic locationName field
-    if (alert.locationName != null && alert.locationName!.isNotEmpty && alert.locationName != 'Unknown Location') {
-      return alert.locationName!;
+    if (widget.alert.locationName != null && widget.alert.locationName!.isNotEmpty && widget.alert.locationName != 'Unknown Location') {
+      return widget.alert.locationName!;
     }
 
     // Last resort
     return AppLocalizations.of(context)!.unknownLocation;
+  }
+
+  /// Build smart, unobtrusive translation links
+  Widget _buildTranslationLinks() {
+    // Get user language from context (simplified approach)
+    final userLanguage = 'es'; // TODO: Get from user preferences
+    final contentLanguage = widget.widget.alert.originalLanguage ?? 'en';
+
+    // Don't show if same language
+    if (contentLanguage == userLanguage) {
+      return const SizedBox.shrink();
+    }
+
+    final targetLanguageName = TranslationService.languageNames[userLanguage] ?? userLanguage.toUpperCase();
+
+    return Row(
+      children: [
+        if (_isTranslating) ...[
+          const SizedBox(
+            width: 12,
+            height: 12,
+            child: CircularProgressIndicator(strokeWidth: 1.5),
+          ),
+          const SizedBox(width: 8),
+          const Text(
+            'Translating...',
+            style: TextStyle(
+              color: AppColors.textTertiary,
+              fontSize: 12,
+            ),
+          ),
+        ] else ...[
+          GestureDetector(
+            onTap: _isDescriptionTranslated ? _showOriginal : _translateDescription,
+            child: Text(
+              _isDescriptionTranslated ? 'Show Original' : 'Translate to $targetLanguageName',
+              style: const TextStyle(
+                color: AppColors.brandPrimary,
+                fontSize: 12,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+          if (_isDescriptionTranslated) ...[
+            const Text(' | ', style: TextStyle(color: AppColors.textTertiary, fontSize: 12)),
+            Text(
+              'Translated from ${TranslationService.languageNames[contentLanguage] ?? contentLanguage.toUpperCase()}',
+              style: const TextStyle(
+                color: AppColors.textTertiary,
+                fontSize: 10,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ],
+      ],
+    );
+  }
+
+  Future<void> _translateDescription() async {
+    if (widget.widget.alert.description == null || widget.widget.alert.description!.isEmpty) return;
+
+    setState(() {
+      _isTranslating = true;
+    });
+
+    try {
+      final translatedText = await TranslationService().translateText(
+        widget.widget.alert.description!,
+        'es', // TODO: Get user language from preferences
+      );
+
+      setState(() {
+        _translatedDescription = translatedText;
+        _isDescriptionTranslated = true;
+        _isTranslating = false;
+      });
+
+    } catch (e) {
+      setState(() {
+        _isTranslating = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Translation failed: ${e.toString()}'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showOriginal() {
+    setState(() {
+      _isDescriptionTranslated = false;
+    });
   }
 }

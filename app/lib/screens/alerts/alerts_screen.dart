@@ -25,11 +25,7 @@ class AlertsScreen extends ConsumerStatefulWidget {
 class _AlertsScreenState extends ConsumerState<AlertsScreen> {
   final ScrollController _scrollController = ScrollController();
 
-  // Translation state for alert list
-  bool _isTranslatingAlerts = false;
-  bool _alertsTranslated = false;
-  Map<String, String> _translatedTitles = {};
-  Map<String, String> _translatedDescriptions = {};
+  // Clean up - removing batch translation state (too slow/unreliable)
 
   @override
   void dispose() {
@@ -37,87 +33,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
     super.dispose();
   }
 
-  /// Check if alerts need translation and batch translate them
-  Future<void> _checkAndTranslateAlerts(List<Alert> alerts, UserPreferences? preferences) async {
-    final userLanguage = preferences?.language ?? 'en';
-
-    // Skip if user doesn't want translation (would be set in filter)
-    // For now, always translate for non-English users (TODO: use filter setting)
-    if (userLanguage == 'en') return;
-
-    // Skip if we're already translating
-    if (_isTranslatingAlerts) return;
-
-    // Collect descriptions that need translation
-    final descriptionsToTranslate = <String>[];
-    final alertIds = <String>[];
-
-    for (final alert in alerts) {
-      // Only translate if we don't have it cached and description exists
-      if (!_translatedDescriptions.containsKey(alert.id) &&
-          alert.description != null &&
-          alert.description!.isNotEmpty) {
-
-        // Check if translation is needed (different languages)
-        final needsTranslation = TranslationService().needsTranslation(
-          alert.originalLanguage,
-          userLanguage,
-        );
-
-        if (needsTranslation) {
-          descriptionsToTranslate.add(alert.description!);
-          alertIds.add(alert.id);
-        }
-      }
-    }
-
-    if (descriptionsToTranslate.isEmpty) return;
-
-    // Batch translate all descriptions (THE REVOLUTIONARY PART!)
-    setState(() {
-      _isTranslatingAlerts = true;
-    });
-
-    try {
-      debugPrint('🚀 BATCH TRANSLATING ${descriptionsToTranslate.length} alert descriptions to $userLanguage');
-
-      final translatedDescriptions = await TranslationService().batchTranslate(
-        descriptionsToTranslate,
-        userLanguage,
-      );
-
-      // Store translated descriptions
-      for (int i = 0; i < alertIds.length; i++) {
-        _translatedDescriptions[alertIds[i]] = translatedDescriptions[i];
-      }
-
-      setState(() {
-        _isTranslatingAlerts = false;
-        _alertsTranslated = true;
-      });
-
-      debugPrint('✅ BATCH TRANSLATION COMPLETE: ${translatedDescriptions.length} descriptions translated');
-
-    } catch (e) {
-      setState(() {
-        _isTranslatingAlerts = false;
-      });
-      debugPrint('❌ BATCH TRANSLATION FAILED: $e');
-    }
-  }
-
-  /// Get display alert with potentially translated content
-  Alert _getDisplayAlert(Alert alert) {
-    // Check if we have translated description for this alert
-    if (_translatedDescriptions.containsKey(alert.id)) {
-      return alert.copyWith(
-        description: _translatedDescriptions[alert.id],
-      );
-    }
-
-    // Return original alert if no translation available
-    return alert;
-  }
+  // Batch translation removed - focusing on individual smart translation
 
   @override
   Widget build(BuildContext context) {
@@ -199,12 +115,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
     final alertsDataAsync = ref.watch(alertsListProvider);
     
     return alertsAsync.when(
-      data: (alertsData) {
-        // Check if translation is needed and trigger batch translation
-        _checkAndTranslateAlerts(alertsData.alerts, preferences);
-
-        return _buildAlertsList(context, ref, alertsData.alerts, filter, preferences, alertsData);
-      },
+      data: (alertsData) => _buildAlertsList(context, ref, alertsData.alerts, filter, preferences, alertsData),
       loading: () => Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -374,9 +285,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                   itemCount: visibleAlerts.length,
                   itemBuilder: (context, index) {
                     final alert = visibleAlerts[index];
-                    // Get potentially translated alert data
-                    final displayAlert = _getDisplayAlert(alert);
-                    return AlertCard(alert: displayAlert);
+                    return AlertCard(alert: alert);
                   },
                 ),
               ),
