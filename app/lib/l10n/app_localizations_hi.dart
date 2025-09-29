@@ -2605,6 +2605,11 @@ class AppLocalizationsHi extends AppLocalizations {
   String get unfollowAlert => 'अनफ़ॉलो अलर्ट';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'स्पष्ट';
 
   @override

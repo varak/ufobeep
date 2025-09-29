@@ -2607,6 +2607,11 @@ class AppLocalizationsFi extends AppLocalizations {
   String get unfollowAlert => 'Noudata varoitusta';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'Tyhjennä';
 
   @override

@@ -2624,6 +2624,11 @@ class AppLocalizationsIt extends AppLocalizations {
   String get unfollowAlert => 'Avviso di apertura';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'Libero';
 
   @override

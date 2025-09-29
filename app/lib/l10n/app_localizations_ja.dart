@@ -2528,6 +2528,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get unfollowAlert => 'フォロー解除アラート';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'クリア';
 
   @override

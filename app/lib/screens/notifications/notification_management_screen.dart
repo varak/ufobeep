@@ -650,7 +650,7 @@ class _NotificationManagementScreenState
             ],
           ),
           trailing: TextButton(
-            onPressed: () => _showUnfollowDialog(sightingId, title),
+            onPressed: () => _unfollowAlert(sightingId, translatedTitle),
             child: Text(
               AppLocalizations.of(context)!.unfollow,
               style: const TextStyle(color: AppColors.warning),
@@ -663,6 +663,37 @@ class _NotificationManagementScreenState
     );
   }
 
+
+  Future<void> _unfollowAlert(String sightingId, String title) async {
+    try {
+      // Direct unfollow without confirmation dialog
+      await ApiClient.dio.delete('/beep/$sightingId/follow');
+
+      if (mounted) {
+        // Remove from local list immediately
+        setState(() {
+          _subscriptions.removeWhere((sub) => sub['sighting_id'] == sightingId);
+        });
+
+        // Show success feedback
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unfollowed "$title"'),
+            backgroundColor: AppColors.success,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to unfollow: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    }
+  }
 
   Future<void> _showUnfollowDialog(String sightingId, String title) async {
     return showDialog<void>(

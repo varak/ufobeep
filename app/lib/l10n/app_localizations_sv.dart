@@ -2605,6 +2605,11 @@ class AppLocalizationsSv extends AppLocalizations {
   String get unfollowAlert => 'Sluta följa Alert';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'Clear';
 
   @override

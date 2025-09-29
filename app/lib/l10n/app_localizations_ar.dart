@@ -2584,6 +2584,11 @@ class AppLocalizationsAr extends AppLocalizations {
   String get unfollowAlert => 'إنذار غير متوفر';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'آمن';
 
   @override

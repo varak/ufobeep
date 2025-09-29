@@ -2620,6 +2620,11 @@ class AppLocalizationsPl extends AppLocalizations {
   String get unfollowAlert => 'Nieprzestrzeganie ostrzeżenia';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'Czysto';
 
   @override

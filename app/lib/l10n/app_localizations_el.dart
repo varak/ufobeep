@@ -2642,6 +2642,11 @@ class AppLocalizationsEl extends AppLocalizations {
   String get unfollowAlert => 'Ακολούθα την ειδοποίηση';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'Καθαρισμός';
 
   @override

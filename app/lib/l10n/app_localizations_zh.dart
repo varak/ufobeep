@@ -2516,6 +2516,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get unfollowAlert => '不跟随提醒';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => '清除';
 
   @override

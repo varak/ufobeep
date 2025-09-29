@@ -2530,6 +2530,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get unfollowAlert => '알림 받기';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => '이름 *';
 
   @override

@@ -4836,6 +4836,12 @@ abstract class AppLocalizations {
   /// **'Unfollow Alert'**
   String get unfollowAlert;
 
+  /// No description provided for @commentsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} comments'**
+  String commentsCount(int count);
+
   /// No description provided for @weatherClear.
   ///
   /// In en, this message translates to:

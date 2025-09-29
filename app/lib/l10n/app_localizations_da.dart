@@ -2613,6 +2613,11 @@ class AppLocalizationsDa extends AppLocalizations {
   String get unfollowAlert => 'Afføl alarm';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'Ryd';
 
   @override

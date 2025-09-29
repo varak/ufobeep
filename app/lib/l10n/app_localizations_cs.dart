@@ -2609,6 +2609,11 @@ class AppLocalizationsCs extends AppLocalizations {
   String get unfollowAlert => 'Poplach bez sledování';
 
   @override
+  String commentsCount(int count) {
+    return '$count comments';
+  }
+
+  @override
   String get weatherClear => 'Vyčistit';
 
   @override
