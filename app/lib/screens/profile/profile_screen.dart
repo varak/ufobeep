@@ -123,9 +123,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               const SizedBox(height: 24),
             ],
 
-            // Permissions Management
-            _buildPermissionsSection(),
-            
             const SizedBox(height: 32),
             
             // Hidden Admin Access (debug builds and beta versions)
@@ -354,14 +351,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
               _buildDivider(),
 
-              _buildNavItemWithSubtitle(
-                icon: Icons.my_location_outlined,
-                title: AppLocalizations.of(context)!.locationTracking,
-                subtitle: AppLocalizations.of(context)!.locationTrackingDesc,
-                onTap: () => context.push('/profile/location-tracking'),
-              ),
-
-              _buildDivider(),
 
               _buildNavItemWithSubtitle(
                 icon: Icons.folder_delete_outlined,
