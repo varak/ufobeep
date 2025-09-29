@@ -90,12 +90,12 @@ class AstronomicalTranslationService {
     bool couldExplainSighting,
     AppLocalizations l10n
   ) {
-    if (visibleCount == 0) {
+    if (totalCount == 0) {
       return l10n.noSatellitesVisibleAtTime;
     } else if (couldExplainSighting) {
-      return l10n.satellitesVisibleMightExplain(visibleCount);
+      return l10n.satellitesVisibleMightExplain(totalCount);
     } else {
-      return l10n.satellitesVisibleUnlikelyExplain(visibleCount);
+      return l10n.dimSatellitesUnlikely(totalCount);
     }
   }
 
@@ -109,7 +109,7 @@ class AstronomicalTranslationService {
       return l10n.noAircraftDetected;
     } else {
       final radius = radiusKm?.toStringAsFixed(0) ?? '50';
-      return l10n.aircraftDetectedInRadius(aircraftCount, radius);
+      return l10n.aircraftDetectedCurrentPositions(aircraftCount, radius);
     }
   }
 

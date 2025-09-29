@@ -23,12 +23,11 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
   Widget build(BuildContext context) {
     final aircraft = widget.data['aircraft'] as List? ?? [];
     final total = widget.data['total'] as int? ?? 0;
-    final summary = widget.data['summary'] as String? ??
-        AstronomicalTranslationService.translateAircraftSummary(
-          total,
-          widget.data['detection_radius_km']?.toDouble(),
-          AppLocalizations.of(context)!
-        );
+    final summary = AstronomicalTranslationService.translateAircraftSummary(
+      total,
+      widget.data['detection_radius_km']?.toDouble(),
+      AppLocalizations.of(context)!
+    );
 
     return GlassCard(
       child: Padding(

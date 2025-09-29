@@ -619,7 +619,7 @@ class SatelliteCardFromJson extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        explanation.isNotEmpty ? explanation : AstronomicalTranslationService.translateSatelliteSummary(totalNow, satellitesOverhead.length, couldExplain, AppLocalizations.of(context)!),
+                        AstronomicalTranslationService.translateSatelliteSummary(totalNow, satellitesOverhead.length, couldExplain, AppLocalizations.of(context)!),
                         style: TextStyle(
                           color: couldExplain ? AppColors.warning : AppColors.textTertiary,
                           fontSize: 12,

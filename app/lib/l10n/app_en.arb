@@ -1110,6 +1110,19 @@
   "lightRain": "light rain",
   "moderateRain": "moderate rain",
   "heavyRain": "heavy rain",
+  "aircraftDetectedCurrentPositions": "{count} aircraft detected within {radius}km (current positions)",
+  "@aircraftDetectedCurrentPositions": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "2"
+      },
+      "radius": {
+        "type": "String",
+        "example": "50"
+      }
+    }
+  },
   "dimSatellitesUnlikely": "{count} dim satellites visible - unlikely to explain sighting",
   "@dimSatellitesUnlikely": {
     "placeholders": {
