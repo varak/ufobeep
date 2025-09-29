@@ -501,28 +501,24 @@ output-class: AppLocalizations`;
       webCommon = JSON.parse(fs.readFileSync(webCommonPath, 'utf8'));
     }
 
-    // Copy and update all keys from mobile ARB to web common.json
+    // Copy missing keys from mobile ARB to web common.json
     let addedKeys = 0;
-    let updatedKeys = 0;
     for (const [key, value] of Object.entries(mobileArb)) {
       // Skip metadata keys that start with @
       if (key.startsWith('@') || key === '@@locale') continue;
 
-      // Always update/add the key to ensure consistency with mobile ARB
+      // If key doesn't exist in web common.json, add it
       if (!webCommon.hasOwnProperty(key)) {
         webCommon[key] = value;
         addedKeys++;
-      } else if (webCommon[key] !== value) {
-        webCommon[key] = value;
-        updatedKeys++;
       }
     }
 
     // Write updated web common.json
     fs.writeFileSync(webCommonPath, JSON.stringify(webCommon, null, 2) + '\n');
 
-    if (addedKeys > 0 || updatedKeys > 0) {
-      console.log(`  ✅ Synced ${addedKeys} new + ${updatedKeys} updated keys to web/common.json`);
+    if (addedKeys > 0) {
+      console.log(`  ✅ Synced ${addedKeys} missing keys to web/common.json`);
     } else {
       console.log(`  ✅ Web translations already up to date`);
     }
