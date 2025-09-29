@@ -67,9 +67,9 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
           const SizedBox(height: 16),
           
           // Description with smart translation (if available and enabled)
-          if (widget.showDescription && widget.widget.alert.description != null && widget.widget.alert.description!.isNotEmpty) ...[
+          if (widget.showDescription && widget.alert.description != null && widget.alert.description!.isNotEmpty) ...[
             Text(
-              _isDescriptionTranslated ? (_translatedDescription ?? widget.widget.alert.description!) : widget.widget.alert.description!,
+              _isDescriptionTranslated ? (_translatedDescription ?? widget.alert.description!) : widget.alert.description!,
               style: const TextStyle(
                 color: AppColors.textSecondary,
                 fontSize: 18,
@@ -83,7 +83,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
           ],
           
           // MUFON-specific metadata
-          if (widget.widget.alert.source == 'mufon') ...[
+          if (widget.alert.source == 'mufon') ...[
             // Debug info - let's see what data we have
             // print('DEBUG MUFON Alert: source=${widget.alert.source}, occurredAt=${widget.alert.occurredAt}, enrichment=${widget.alert.enrichment}');
 
@@ -716,7 +716,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
   Widget _buildTranslationLinks() {
     // Get user language from context (simplified approach)
     final userLanguage = 'es'; // TODO: Get from user preferences
-    final contentLanguage = widget.widget.alert.originalLanguage ?? 'en';
+    final contentLanguage = widget.alert.originalLanguage ?? 'en';
 
     // Don't show if same language
     if (contentLanguage == userLanguage) {
@@ -770,7 +770,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
   }
 
   Future<void> _translateDescription() async {
-    if (widget.widget.alert.description == null || widget.widget.alert.description!.isEmpty) return;
+    if (widget.alert.description == null || widget.alert.description!.isEmpty) return;
 
     setState(() {
       _isTranslating = true;
@@ -778,7 +778,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
 
     try {
       final translatedText = await TranslationService().translateText(
-        widget.widget.alert.description!,
+        widget.alert.description!,
         'es', // TODO: Get user language from preferences
       );
 
