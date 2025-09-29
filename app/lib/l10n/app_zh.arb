@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "不详",
+  "unknown": "未知",
   "report": "报告",
   "mufon": "木冯",
   "recentUfoBeepsTitle": "近期的UFO 黄蜂",
@@ -978,5 +978,129 @@
   "processorLocation": "地点细节",
   "processorAircraft": "附近飞机",
   "processorSatellites": "卫星位置",
-  "processorCelestial": "天体"
+  "processorCelestial": "天体",
+  "calculatingCelestialData": "计算天体数据...",
+  "sunLabel": "太阳",
+  "moonLabel": "月亮",
+  "planetsVisible": "行星:_PLACEHOLDER_0_可见",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "恒星数",
+  "planetsLabel": "行星",
+  "moonWithPhase": "月球( __ PLACEHOLDER_ 0__)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "在你的目击时间没有看到卫星",
+  "satellitesVisibleOverheadAtTime": "视时间和地点可见的卫星",
+  "belowHorizon": "地平线以下",
+  "analysisFailedGeneric": "分析失败",
+  "unknownWeather": "未知",
+  "noWeatherDescription": "无说明",
+  "altitudeAbbrev": "备选案文",
+  "azimuthAbbrev": "阿兹",
+  "satellitesVisibleNow": "卫星({count}现在可见)",
+  "sunWithDescription": "太阳:_PLACEHOLDER_0_",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "月球: ~ PLACEHOLDER_0_ 月球主题 月球主题",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "未知行星",
+  "unknownStar": "未知恒星",
+  "unknownSatellite": "未知的卫星",
+  "unknownDirection": "未知的方向",
+  "brightStars": "闪亮的恒星",
+  "satellites": "卫星",
+  "seeAllSatellites": "见所有_PLACEHOLDER_0_ 卫星",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "最大海拔 : - 地点 - 地点",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "宽度 : – 地点/地点/地点/地点/地点/地点",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "未知",
+  "altitudeValue": "高度为0",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "方位角数",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "无天体数据可用.",
+  "satelliteNameDirection": "(原始内容存档于2017-09-01) (中文(中国大陆) )",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

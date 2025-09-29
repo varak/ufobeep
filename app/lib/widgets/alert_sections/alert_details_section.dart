@@ -84,7 +84,7 @@ class AlertDetailsSection extends StatelessWidget {
             if (alert.enrichment?['report_date'] != null)
               _buildDetailRow(
                 Icons.storage,
-                _isMufonAlert(alert) ? 'MUFON Reporting Date' : AppLocalizations.of(context)!.reportedTime,
+                _isMufonAlert(alert) ? AppLocalizations.of(context)!.mufonReportingDate : AppLocalizations.of(context)!.reportedTime,
                 _parseAndFormatDateISO(alert.enrichment!['report_date']) ?? alert.enrichment!['report_date'],
               ),
 

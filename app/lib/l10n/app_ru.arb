@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "неизвестный",
+  "unknown": "Неизвестный",
   "report": "доклад",
   "mufon": "мафия",
   "recentUfoBeepsTitle": "Недавний НЛО Бипс",
@@ -978,5 +978,129 @@
   "processorLocation": "подробнее о местоположении",
   "processorAircraft": "близлежащие самолеты",
   "processorSatellites": "спутниковые позиции",
-  "processorCelestial": "небесные объекты"
+  "processorCelestial": "небесные объекты",
+  "calculatingCelestialData": "Расчет небесных данных...",
+  "sunLabel": "Солнце",
+  "moonLabel": "Луна",
+  "planetsVisible": "Планеты: {count} видимые",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Звезды",
+  "planetsLabel": "Планеты",
+  "moonWithPhase": "Луна ({phase})",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Спутников не было видно в точное время вашего наблюдения",
+  "satellitesVisibleOverheadAtTime": "Спутники, видимые над головой при наблюдении времени и местоположения",
+  "belowHorizon": "ниже горизонта",
+  "analysisFailedGeneric": "Анализ провалился",
+  "unknownWeather": "Неизвестный",
+  "noWeatherDescription": "Нет описания",
+  "altitudeAbbrev": "Альт",
+  "azimuthAbbrev": "А",
+  "satellitesVisibleNow": "Спутники ({count} теперь видны)",
+  "sunWithDescription": "Солнце: {description}",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Луна: {description}",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Неизвестная планета",
+  "unknownStar": "Неизвестная звезда",
+  "unknownSatellite": "Неизвестный спутник",
+  "unknownDirection": "неизвестное направление",
+  "brightStars": "Яркие звезды",
+  "satellites": "Спутники",
+  "seeAllSatellites": "Смотреть все {count}",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Высота Макса: {degrees}°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Величина: {value}",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Неизвестный",
+  "altitudeValue": "{degrees}° высота",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "{degrees}° азимут",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Никаких небесных данных.",
+  "satelliteNameDirection": "{name} - {direction}",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "مجهول",
+  "unknown": "غير معروف",
   "report": "التقرير",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "Recent UFO Beeps",
@@ -978,5 +978,129 @@
   "processorLocation": "تفاصيل الموقع",
   "processorAircraft": "طائرة قريبة",
   "processorSatellites": "المواقع الساتلية",
-  "processorCelestial": "الأجسام السماوية"
+  "processorCelestial": "الأجسام السماوية",
+  "calculatingCelestialData": "حساب البيانات السماوية...",
+  "sunLabel": "الشمس",
+  "moonLabel": "القمر",
+  "planetsVisible": "Planets: __PLACEHOLDER_0_",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "النجوم",
+  "planetsLabel": "Planets",
+  "moonWithPhase": "مون (_PLACEHOLDER_0__)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "لم يكن هناك سواتل مرئية في نفس الوقت من رؤيتك",
+  "satellitesVisibleOverheadAtTime": "سواتل مرئية في الموقع",
+  "belowHorizon": "أقل من الأفق",
+  "analysisFailedGeneric": "التحليل غير مكتمل",
+  "unknownWeather": "غير معروف",
+  "noWeatherDescription": "لا وصف",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "السواتل (_PLACEHOLDER_0__ مرئية الآن)",
+  "sunWithDescription": "شمس:",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "القمر:",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Unknown Planet",
+  "unknownStar": "نجم مجهول",
+  "unknownSatellite": "ساتل غير معروف",
+  "unknownDirection": "اتجاه مجهول",
+  "brightStars": "النجوم الجميلة",
+  "satellites": "السواتل",
+  "seeAllSatellites": "انظر جميع سواتل",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "(ماكس) _",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "الصلاحية: _",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "غير معروف",
+  "altitudeValue": "_BAR_",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "_BAR_",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "لا توجد بيانات سماوية متاحة.",
+  "satelliteNameDirection": "_",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

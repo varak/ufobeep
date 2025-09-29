@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "onbekend",
+  "unknown": "Onbekend",
   "report": "rapport",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "Recente UFO Pieps",
@@ -978,5 +978,129 @@
   "processorLocation": "locatiegegevens",
   "processorAircraft": "nabijgelegen vliegtuigen",
   "processorSatellites": "satellietposities",
-  "processorCelestial": "hemelobjecten"
+  "processorCelestial": "hemelobjecten",
+  "calculatingCelestialData": "Berekenen van hemelse gegevens...",
+  "sunLabel": "Zon",
+  "moonLabel": "Maan",
+  "planetsVisible": "Planeten: __PLAATSHOLDER_0__ zichtbaar",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "Sterren",
+  "planetsLabel": "Planeten",
+  "moonWithPhase": "Maan (__PLAATSHOLDER_0__)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "Er waren geen satellieten zichtbaar op het moment van uw waarneming",
+  "satellitesVisibleOverheadAtTime": "Satellieten zichtbaar overhead op waarnemingstijd en locatie",
+  "belowHorizon": "onder de horizon",
+  "analysisFailedGeneric": "Analyse mislukt",
+  "unknownWeather": "Onbekend",
+  "noWeatherDescription": "Geen beschrijving",
+  "altitudeAbbrev": "Alt",
+  "azimuthAbbrev": "Az",
+  "satellitesVisibleNow": "Satellieten (__PLAATSHOLDER_0__ nu zichtbaar)",
+  "sunWithDescription": "Zon: __PLAATSHOLDER_0__",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "Maan: __PLAATSHOLDER_0__",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "Onbekende planeet",
+  "unknownStar": "Onbekende ster",
+  "unknownSatellite": "Onbekende satelliet",
+  "unknownDirection": "onbekende richting",
+  "brightStars": "Heldere sterren",
+  "satellites": "Satellieten",
+  "seeAllSatellites": "Zie alle __PLAATSHOLDER_0__satellieten",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "Max. verhoging: {degrees}°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "Hoogte: __PLAATSHOLDER_0___",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "Onbekend",
+  "altitudeValue": "__PLAATSHOLDER_0__° hoogte",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "__PLAATSHOLDER_0__° azimut",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "Geen hemelse gegevens beschikbaar.",
+  "satelliteNameDirection": "__PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }

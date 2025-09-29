@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "unknown",
+  "unknown": "Unknown",
   "report": "report",
   "mufon": "mufon",
   "recentUfoBeepsTitle": "Recent UFO Beeps",
@@ -992,6 +992,16 @@
     }
   },
   "starsLabel": "Stars",
+  "planetsLabel": "Planets",
+  "moonWithPhase": "Moon ({phase})",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
   "noSatellitesVisibleAtTime": "No satellites were visible at the exact time of your sighting",
   "satellitesVisibleOverheadAtTime": "Satellites visible overhead at sighting time & location",
   "belowHorizon": "below horizon",
@@ -1001,7 +1011,6 @@
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
   "satellitesVisibleNow": "Satellites ({count} visible now)",
-  "noSatellitesVisibleAtTime": "No satellites were visible at the exact time of your sighting",
   "sunWithDescription": "Sun: {description}",
   "@sunWithDescription": {
     "placeholders": {
@@ -1061,7 +1070,6 @@
       }
     }
   },
-  "unknown": "Unknown",
   "unknownGeneric": "Unknown",
   "altitudeValue": "{degrees}° altitude",
   "@altitudeValue": {
@@ -1082,6 +1090,7 @@
     }
   },
   "noCelestialDataAvailable": "No celestial data available.",
+  "mufonReportingDate": "MUFON Reporting Date",
   "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {

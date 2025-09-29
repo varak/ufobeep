@@ -516,7 +516,7 @@
       }
     }
   },
-  "unknown": "インフォメーション",
+  "unknown": "未知の",
   "report": "レポート",
   "mufon": "ミュフォン",
   "recentUfoBeepsTitle": "最近のUFO ベップス",
@@ -978,5 +978,129 @@
   "processorLocation": "位置情報",
   "processorAircraft": "近くの航空機",
   "processorSatellites": "衛星の位置",
-  "processorCelestial": "天体オブジェクト"
+  "processorCelestial": "天体オブジェクト",
+  "calculatingCelestialData": "履歴データの計算...",
+  "sunLabel": "日曜日",
+  "moonLabel": "ムーン",
+  "planetsVisible": "惑星:_PLACEHOLDER_0___ 可視",
+  "@planetsVisible": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "starsLabel": "スターズ",
+  "planetsLabel": "プラネット",
+  "moonWithPhase": "月 (_{phase}_)",
+  "@moonWithPhase": {
+    "placeholders": {
+      "phase": {
+        "type": "String",
+        "example": "Full Moon"
+      }
+    }
+  },
+  "noSatellitesVisibleAtTime": "あなたの視線の正確な時刻で衛星が見えない",
+  "satellitesVisibleOverheadAtTime": "視力時間と位置で見える衛星",
+  "belowHorizon": "下の地平線",
+  "analysisFailedGeneric": "解析失敗",
+  "unknownWeather": "未知の",
+  "noWeatherDescription": "説明なし",
+  "altitudeAbbrev": "ツイート",
+  "azimuthAbbrev": "ツイート",
+  "satellitesVisibleNow": "衛星 (_{count}_ 現在は表示)",
+  "sunWithDescription": "日曜日: {description}_",
+  "@sunWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "high overhead"
+      }
+    }
+  },
+  "moonWithDescription": "月: {description}_",
+  "@moonWithDescription": {
+    "placeholders": {
+      "description": {
+        "type": "String",
+        "example": "full moon visible"
+      }
+    }
+  },
+  "@satellitesVisibleNow": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknownPlanet": "未知の惑星",
+  "unknownStar": "未知の星",
+  "unknownSatellite": "未知の衛星",
+  "unknownDirection": "未知の方向",
+  "brightStars": "明るい星",
+  "satellites": "サテライト",
+  "seeAllSatellites": "すべてを見る {count} 衛星",
+  "@seeAllSatellites": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "15"
+      }
+    }
+  },
+  "maxElevation": "最高の高度: {degrees}°",
+  "@maxElevation": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "magnitude": "広さ: {value}_______________________________________________________________________________________________________________________________________________________________________",
+  "@magnitude": {
+    "placeholders": {
+      "value": {
+        "type": "String",
+        "example": "2.5"
+      }
+    }
+  },
+  "unknownGeneric": "未知の",
+  "altitudeValue": "{degrees}° 高度",
+  "@altitudeValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "45"
+      }
+    }
+  },
+  "azimuthValue": "{degrees}°アジマス",
+  "@azimuthValue": {
+    "placeholders": {
+      "degrees": {
+        "type": "String",
+        "example": "180"
+      }
+    }
+  },
+  "noCelestialDataAvailable": "気象データがない.",
+  "satelliteNameDirection": "{name}_________________________________________________________________________________________________________________________________________________________________________________",
+  "@satelliteNameDirection": {
+    "placeholders": {
+      "name": {
+        "type": "String",
+        "example": "STARLINK-1234"
+      },
+      "direction": {
+        "type": "String",
+        "example": "SW to NE"
+      }
+    }
+  }
 }
