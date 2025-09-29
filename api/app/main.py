@@ -462,7 +462,7 @@ async def mcp_stats():
     try:
         async with database_service.pool.acquire() as conn:
             total = await conn.fetchval("SELECT COUNT(*) FROM sightings")
-            with_media = await conn.fetchval("SELECT COUNT(*) FROM sightings WHERE array_length(media_files, 1) > 0")
+            with_media = await conn.fetchval("SELECT COUNT(DISTINCT s.id) FROM sightings s JOIN media_files m ON s.id = m.sighting_id")
             return {
                 "tool": "get_basic_stats",
                 "total_sightings": total,
@@ -476,7 +476,7 @@ async def mcp_stats():
 async def mcp_search(lat: float, lon: float, radius: int = 50, limit: int = 20):
     """Search UFO sightings for AI systems"""
     try:
-        from services.alerts_service import AlertsService
+        from app.services.alerts_service import AlertsService
         alerts_service = AlertsService(database_service.pool)
 
         result = await alerts_service.get_alerts(
@@ -1095,7 +1095,7 @@ async def mcp_stats():
     try:
         async with database_service.pool.acquire() as conn:
             total = await conn.fetchval("SELECT COUNT(*) FROM sightings")
-            with_media = await conn.fetchval("SELECT COUNT(*) FROM sightings WHERE array_length(media_files, 1) > 0")
+            with_media = await conn.fetchval("SELECT COUNT(DISTINCT s.id) FROM sightings s JOIN media_files m ON s.id = m.sighting_id")
 
             return {
                 "tool": "get_basic_stats",
