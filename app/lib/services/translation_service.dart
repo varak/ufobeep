@@ -15,7 +15,7 @@ class TranslationService {
   final Map<String, String> _translationCache = {};
 
   // Switch between translation providers for testing
-  TranslationProvider provider = TranslationProvider.libreTranslate; // Test LibreTranslate first
+  TranslationProvider provider = TranslationProvider.googleTranslate; // Use Google until LibreTranslate networking fixed
 
   /// Language code mapping for Google Translate API
   static const Map<String, String> languageNames = {
@@ -188,7 +188,7 @@ class TranslationService {
   /// Translate using LibreTranslate (local server, unlimited)
   Future<String> _callLibreTranslate(String text, String targetLanguage) async {
     try {
-      const url = 'http://localhost:5000/translate';
+      const url = 'http://ufobeep.com:5000/translate';
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
