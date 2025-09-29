@@ -210,7 +210,7 @@
   "dndUntil": "No molestar hasta",
   "dndEnabled": "DND habilitado hasta {time}",
   "dndDisabled": "DND discapacitados",
-  "quietHoursActive": "Horas tranquilas activas",
+  "quietHoursActive": "Active {endTime} {startTime}",
   "quietHoursScheduled": "Horas de silencio: {start} - {end}",
   "pushNotificationUfoAlert": "OVNI Alerta",
   "pushNotificationAnomalyAlert": "Alerta de anomalía",
@@ -223,8 +223,8 @@
   "language": "Idioma",
   "chooseLanguage": "Elija idioma",
   "units": "Unidades",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metro (km/h)",
+  "unitsImperial": "Imperial",
+  "unitsMetric": "Métrica",
   "privacyPolicy": "Política de privacidad",
   "termsOfUse": "Términos de uso",
   "errorNoLocation": "Ubicación no disponible. Pruebe de nuevo afuera con vista clara al cielo.",
@@ -341,8 +341,8 @@
   "basicSettings": "Ajustes básicos",
   "appSettings": "Ajustes de la aplicación",
   "timeFormat": "Formato de tiempo",
-  "timeFormat24Hour": "24 horas (14:30)",
-  "timeFormat12Hour": "12 horas (2:30 pm)",
+  "timeFormat24Hour": "24 horas",
+  "timeFormat12Hour": "12 horas",
   "timeFormatDesc": "Tiempo de visualización en formato 24 horas o 12 horas",
   "alertRange": "Distancia de alerta",
   "manageNotificationsDesc": "Gestionar suscripciones y ajustes",
@@ -1095,6 +1095,41 @@
   "locationRequired": "Ubicación requerida",
   "confirmingWitness": "Confirmando el testigo...",
   "chooseYourUsername": "Elija su nombre de usuario",
+  "moreNames": "Más nombres",
+  "notificationSettings": "Ajustes de notificación",
+  "quickActions": "Medidas rápidas",
+  "doNotDisturb": "No molestar",
+  "temporarilySilenceNotifications": "Silenciar temporalmente todas las notificaciones",
+  "oneHour": "1h",
+  "eightHours": "8h",
+  "oneDay": "1 día",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "Hora de inicio",
+  "endTime": "Hora final",
+  "allowCriticalAlertsDuringQuietHours": "Permitir alertas críticas durante horas tranquilas",
+  "followingAlerts": "Following Alerts",
+  "activeCount": "{count} active",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "Unfollow",
+  "unfollowAlert": "Unfollow Alert",
   "weatherClear": "Despejado",
   "weatherClearSky": "cielo claro",
   "rain": "Lluvia",

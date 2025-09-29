@@ -370,7 +370,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get quietHoursDefaultTime => '기본 조용한 시간';
 
   @override
-  String get emergencyOverride => '비상 override';
+  String get emergencyOverride => '비상 Override';
 
   @override
   String get emergencyOverrideDesc => '조용한 시간 동안 긴급 경고를 허용';
@@ -390,7 +390,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get dndDisabled => 'DND 사용';
 
   @override
-  String get quietHoursActive => '활동 시간';
+  String quietHoursActive(String startTime, String endTime) {
+    return '활성 $endTime - $startTime';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -435,10 +437,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get units => '제품정보';
 
   @override
-  String get unitsImperial => '제국 (미, mph)';
+  String get unitsImperial => '한국어';
 
   @override
-  String get unitsMetric => '미터 (km, km/h)';
+  String get unitsMetric => '제품정보';
 
   @override
   String get privacyPolicy => '회사 소개';
@@ -659,10 +661,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get timeFormat => '시간 체재';
 
   @override
-  String get timeFormat24Hour => '24 시간 (14:30)';
+  String get timeFormat24Hour => '24 시간';
 
   @override
-  String get timeFormat12Hour => '12시간 (2:30 PM)';
+  String get timeFormat12Hour => '12시간';
 
   @override
   String get timeFormatDesc => '24 시간 12 시간 체재에 있는 전시 시간';
@@ -2481,7 +2483,51 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chooseYourUsername => '사용자 이름';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => '더 많은 이름';
+
+  @override
+  String get notificationSettings => '알림 설정';
+
+  @override
+  String get quickActions => '빠른 행동';
+
+  @override
+  String get doNotDisturb => '뚱 베어';
+
+  @override
+  String get temporarilySilenceNotifications => 'Temporarily 침묵 모든 알림';
+
+  @override
+  String get oneHour => '1시간';
+
+  @override
+  String get eightHours => '8시간';
+
+  @override
+  String get oneDay => '1 일';
+
+  @override
+  String get startTime => '시작 시간';
+
+  @override
+  String get endTime => '종료 시간';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours => '조용한 시간 동안 중요한 경고를 허용';
+
+  @override
+  String get followingAlerts => 'Alerts에 대하여';
+
+  @override
+  String activeCount(int count) {
+    return '$count 활성';
+  }
+
+  @override
+  String get unfollow => '이름 *';
+
+  @override
+  String get unfollowAlert => '알림 받기';
 
   @override
   String get weatherClear => '이름 *';

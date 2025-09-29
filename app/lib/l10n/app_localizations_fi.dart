@@ -378,7 +378,7 @@ class AppLocalizationsFi extends AppLocalizations {
   String get quietHoursDefaultTime => 'Oletus hiljaiset tunnit';
 
   @override
-  String get emergencyOverride => 'Hätäohitus';
+  String get emergencyOverride => 'Hätätila';
 
   @override
   String get emergencyOverrideDesc =>
@@ -399,7 +399,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get dndDisabled => 'DND ei käytössä';
 
   @override
-  String get quietHoursActive => 'Hiljaiset työajat';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Aktiivinen __PASSIHOLDER_0__ - __PASSIHOLDER_1__';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -445,10 +447,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get units => 'Yksikkö';
 
   @override
-  String get unitsImperial => 'Keisarillinen (mi,mph)';
+  String get unitsImperial => 'Keisarillinen';
 
   @override
-  String get unitsMetric => 'Metri (km, km/h)';
+  String get unitsMetric => 'Metrinen';
 
   @override
   String get privacyPolicy => 'Yksityisyyden suoja';
@@ -674,10 +676,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get timeFormat => 'Aikamuoto';
 
   @override
-  String get timeFormat24Hour => '24 tuntia (14:30)';
+  String get timeFormat24Hour => '24 tuntia';
 
   @override
-  String get timeFormat12Hour => '12 tuntia (2:30 PM)';
+  String get timeFormat12Hour => '12 tuntia';
 
   @override
   String get timeFormatDesc => 'Näyttöaika 24 tunnin tai 12 tunnin muodossa';
@@ -2556,7 +2558,53 @@ class AppLocalizationsFi extends AppLocalizations {
   String get chooseYourUsername => 'Valitse käyttäjätunnus';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'Lisää nimiä';
+
+  @override
+  String get notificationSettings => 'Ilmoitusasetukset';
+
+  @override
+  String get quickActions => 'Nopeat toimet';
+
+  @override
+  String get doNotDisturb => 'Älä häiritse';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'Väliaikaisesti vaienna kaikki ilmoitukset';
+
+  @override
+  String get oneHour => '1h';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => '1 vrk';
+
+  @override
+  String get startTime => 'Aloitusaika';
+
+  @override
+  String get endTime => 'Loppuaika';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Salli kriittiset kuulutukset hiljaisina tunteina';
+
+  @override
+  String get followingAlerts => 'Kuulutusten jälkeen';
+
+  @override
+  String activeCount(int count) {
+    return '_Placeholder_0__ aktiivinen';
+  }
+
+  @override
+  String get unfollow => 'Ei seuraa';
+
+  @override
+  String get unfollowAlert => 'Noudata varoitusta';
 
   @override
   String get weatherClear => 'Tyhjennä';

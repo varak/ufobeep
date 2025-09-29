@@ -402,7 +402,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get dndDisabled => 'DND uitgeschakeld';
 
   @override
-  String get quietHoursActive => 'Rustige uren actief';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Actief __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -448,10 +450,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get units => 'Eenheden';
 
   @override
-  String get unitsImperial => 'Keizerlijk (mi, mph)';
+  String get unitsImperial => 'Keizerlijk';
 
   @override
-  String get unitsMetric => 'Metrisch (km, km/h)';
+  String get unitsMetric => 'Metrisch';
 
   @override
   String get privacyPolicy => 'Privacybeleid';
@@ -676,10 +678,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get timeFormat => 'Tijdformaat';
 
   @override
-  String get timeFormat24Hour => '24 uur (14:30)';
+  String get timeFormat24Hour => '24 uur';
 
   @override
-  String get timeFormat12Hour => '12 uur (2.30 uur)';
+  String get timeFormat12Hour => '12 uur';
 
   @override
   String get timeFormatDesc => 'Weergavetijd in 24-uurs- of 12-uursformaat';
@@ -2565,7 +2567,53 @@ class AppLocalizationsNl extends AppLocalizations {
   String get chooseYourUsername => 'Kies uw gebruikersnaam';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'Meer namen';
+
+  @override
+  String get notificationSettings => 'Notificatieinstellingen';
+
+  @override
+  String get quickActions => 'Snelle acties';
+
+  @override
+  String get doNotDisturb => 'Niet storen';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'Alle meldingen tijdelijk stilleggen';
+
+  @override
+  String get oneHour => '1 uur';
+
+  @override
+  String get eightHours => '8 uur';
+
+  @override
+  String get oneDay => '1 dag';
+
+  @override
+  String get startTime => 'Begintijd';
+
+  @override
+  String get endTime => 'Eindtijd';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Kritieke waarschuwingen toestaan tijdens stille uren';
+
+  @override
+  String get followingAlerts => 'Volgende waarschuwingen';
+
+  @override
+  String activeCount(int count) {
+    return '${count}actief';
+  }
+
+  @override
+  String get unfollow => 'Onvolgbaar';
+
+  @override
+  String get unfollowAlert => 'Waarschuwing niet volgen';
 
   @override
   String get weatherClear => 'Wissen';

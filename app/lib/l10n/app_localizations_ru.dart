@@ -381,7 +381,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get quietHoursDefaultTime => 'По умолчанию тихие часы';
 
   @override
-  String get emergencyOverride => 'Аварийная отмена';
+  String get emergencyOverride => 'Экстренный контроль';
 
   @override
   String get emergencyOverrideDesc => 'Срочные оповещения в тихие часы';
@@ -401,7 +401,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get dndDisabled => 'DND отключен';
 
   @override
-  String get quietHoursActive => 'Тихие часы активны';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Активный$endTime -$startTime';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -447,10 +449,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get units => 'Подразделения';
 
   @override
-  String get unitsImperial => 'Имперский (mi, mph)';
+  String get unitsImperial => 'Император';
 
   @override
-  String get unitsMetric => 'Метрика (км, км/ч)';
+  String get unitsMetric => 'Метрический';
 
   @override
   String get privacyPolicy => 'Политика конфиденциальности';
@@ -681,10 +683,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get timeFormat => 'Формат времени';
 
   @override
-  String get timeFormat24Hour => '24 часа (14:30)';
+  String get timeFormat24Hour => '24 часа';
 
   @override
-  String get timeFormat12Hour => '12 часов (2:30 вечера)';
+  String get timeFormat12Hour => '12 часов';
 
   @override
   String get timeFormatDesc =>
@@ -2585,7 +2587,53 @@ class AppLocalizationsRu extends AppLocalizations {
   String get chooseYourUsername => 'Выберите имя пользователя';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'Больше имен';
+
+  @override
+  String get notificationSettings => 'Настройки уведомлений';
+
+  @override
+  String get quickActions => 'Быстрые действия';
+
+  @override
+  String get doNotDisturb => 'Не беспокоить';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'Временно заглушить все уведомления';
+
+  @override
+  String get oneHour => '1 ч';
+
+  @override
+  String get eightHours => '8 часов';
+
+  @override
+  String get oneDay => '1 день';
+
+  @override
+  String get startTime => 'Время старта';
+
+  @override
+  String get endTime => 'Время конца';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Разрешить критические оповещения в тихие часы';
+
+  @override
+  String get followingAlerts => 'После предупреждений';
+
+  @override
+  String activeCount(int count) {
+    return '$count активный';
+  }
+
+  @override
+  String get unfollow => 'Не следовать';
+
+  @override
+  String get unfollowAlert => 'Предупреждение UnFollow';
 
   @override
   String get weatherClear => 'Чисто';

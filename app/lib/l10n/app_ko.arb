@@ -204,13 +204,13 @@
   "quietHoursFrom": "이름 *",
   "quietHoursUntil": "까지",
   "quietHoursDefaultTime": "기본 조용한 시간",
-  "emergencyOverride": "비상 override",
+  "emergencyOverride": "비상 Override",
   "emergencyOverrideDesc": "조용한 시간 동안 긴급 경고를 허용",
   "dndMode": "뚱 베어",
   "dndUntil": "할 수 없습니다",
   "dndEnabled": "{time}까지 DND 활성화",
   "dndDisabled": "DND 사용",
-  "quietHoursActive": "활동 시간",
+  "quietHoursActive": "활성 {endTime} - {startTime}",
   "quietHoursScheduled": "영업시간: {end} - {start}",
   "pushNotificationUfoAlert": "사이트맵 지원하다",
   "pushNotificationAnomalyAlert": "Anomaly 경고",
@@ -223,8 +223,8 @@
   "language": "* 이름",
   "chooseLanguage": "한국어",
   "units": "제품정보",
-  "unitsImperial": "제국 (미, mph)",
-  "unitsMetric": "미터 (km, km/h)",
+  "unitsImperial": "한국어",
+  "unitsMetric": "제품정보",
   "privacyPolicy": "회사 소개",
   "termsOfUse": "이용 약관",
   "errorNoLocation": "자주 묻는 질문 맑은 하늘 전망과 함께 다시 시도하십시오.",
@@ -341,8 +341,8 @@
   "basicSettings": "기본 설정",
   "appSettings": "앱 설정",
   "timeFormat": "시간 체재",
-  "timeFormat24Hour": "24 시간 (14:30)",
-  "timeFormat12Hour": "12시간 (2:30 PM)",
+  "timeFormat24Hour": "24 시간",
+  "timeFormat12Hour": "12시간",
   "timeFormatDesc": "24 시간 12 시간 체재에 있는 전시 시간",
   "alertRange": "Alert 범위",
   "manageNotificationsDesc": "구독 및 설정 관리",
@@ -1095,6 +1095,41 @@
   "locationRequired": "오시는 길",
   "confirmingWitness": "증인 확인...",
   "chooseYourUsername": "사용자 이름",
+  "moreNames": "더 많은 이름",
+  "notificationSettings": "알림 설정",
+  "quickActions": "빠른 행동",
+  "doNotDisturb": "뚱 베어",
+  "temporarilySilenceNotifications": "Temporarily 침묵 모든 알림",
+  "oneHour": "1시간",
+  "eightHours": "8시간",
+  "oneDay": "1 일",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "시작 시간",
+  "endTime": "종료 시간",
+  "allowCriticalAlertsDuringQuietHours": "조용한 시간 동안 중요한 경고를 허용",
+  "followingAlerts": "Alerts에 대하여",
+  "activeCount": "{count} 활성",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "이름 *",
+  "unfollowAlert": "알림 받기",
   "weatherClear": "이름 *",
   "weatherClearSky": "맑은 하늘",
   "rain": "뚱 베어",

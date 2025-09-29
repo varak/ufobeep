@@ -204,13 +204,13 @@
   "quietHoursFrom": "Fra",
   "quietHoursUntil": "Indtil",
   "quietHoursDefaultTime": "Standard stille timer",
-  "emergencyOverride": "Nødstyring",
+  "emergencyOverride": "Nødudgang",
   "emergencyOverrideDesc": "Tillad hurtig varsling i stille timer",
   "dndMode": "Må ikke forstyrres",
   "dndUntil": "Må ikke forstyrres før",
   "dndEnabled": "DND aktiveret indtil _ _ PLACEREPER _ 0 _ _",
   "dndDisabled": "DND deaktiveret",
-  "quietHoursActive": "Stille timer aktive",
+  "quietHoursActive": "Aktiv _ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _",
   "quietHoursScheduled": "Stille timer: _ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _",
   "pushNotificationUfoAlert": "UFO Indberetning",
   "pushNotificationAnomalyAlert": "Anomali alarm",
@@ -223,8 +223,8 @@
   "language": "Sprog",
   "chooseLanguage": "Vælg sprog",
   "units": "Enheder",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metric (km, km / h)",
+  "unitsImperial": "Imperial",
+  "unitsMetric": "Metric",
   "privacyPolicy": "Privacy Policy",
   "termsOfUse": "Betingelser for anvendelse",
   "errorNoLocation": "Placering utilgængelig. Prøv igen udenfor med klar himmel udsigt.",
@@ -341,8 +341,8 @@
   "basicSettings": "Grundlæggende indstillinger",
   "appSettings": "App indstillinger",
   "timeFormat": "Tidsformat",
-  "timeFormat24Hour": "24 timer (14: 30)",
-  "timeFormat12Hour": "12-time (14: 30)",
+  "timeFormat24Hour": "24 timer",
+  "timeFormat12Hour": "12- time",
   "timeFormatDesc": "Vis tid i 24- timers eller 12- timers format",
   "alertRange": "Advarselsområde",
   "manageNotificationsDesc": "Administrer abonnementer og indstillinger",
@@ -1095,6 +1095,41 @@
   "locationRequired": "Sted påkrævet",
   "confirmingWitness": "Bekræftende vidne...",
   "chooseYourUsername": "Vælg dit brugernavn",
+  "moreNames": "Flere navne",
+  "notificationSettings": "Meddelelsesindstillinger",
+  "quickActions": "Hurtige handlinger",
+  "doNotDisturb": "Må ikke forstyrres",
+  "temporarilySilenceNotifications": "Midlertidigt stille alle meddelelser",
+  "oneHour": "1h",
+  "eightHours": "8h",
+  "oneDay": "1 dag",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "Starttidspunkt",
+  "endTime": "Sluttidspunkt",
+  "allowCriticalAlertsDuringQuietHours": "Tillad kritiske advarsler i stille timer",
+  "followingAlerts": "Følgende indberetninger",
+  "activeCount": "_ _ PLACEREPORT _ 0 _ _ active",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "Afføl",
+  "unfollowAlert": "Afføl alarm",
   "weatherClear": "Ryd",
   "weatherClearSky": "klar himmel",
   "rain": "Regn",

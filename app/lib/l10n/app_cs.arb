@@ -204,13 +204,13 @@
   "quietHoursFrom": "Od",
   "quietHoursUntil": "Dokud",
   "quietHoursDefaultTime": "Výchozí tiché hodiny",
-  "emergencyOverride": "Nouzové ovládání",
+  "emergencyOverride": "Nouzové ukončení",
   "emergencyOverrideDesc": "Povolit urgentní upozornění během klidných hodin",
   "dndMode": "Nerušit",
   "dndUntil": "Nepřerušujte, dokud",
   "dndEnabled": "DND povoleno do _ _ PLACETETELER _ 0 _ _",
   "dndDisabled": "DND vypnuto",
-  "quietHoursActive": "Tiché hodiny aktivní",
+  "quietHoursActive": "Active _ _ PLACETIER _ 0 _ - _ _ PLACETIER _ 1 _ _",
   "quietHoursScheduled": "Tiché hodiny: _ _ PLACETIER _ 0 _ _ - _ _ PLACETIER _ 1 _ _",
   "pushNotificationUfoAlert": "UFO Varování",
   "pushNotificationAnomalyAlert": "Anomální poplach",
@@ -223,8 +223,8 @@
   "language": "Jazyk",
   "chooseLanguage": "Vyberte jazyk",
   "units": "Jednotky",
-  "unitsImperial": "Císařský (mi, mph)",
-  "unitsMetric": "Metrické (km, km / h)",
+  "unitsImperial": "Císařský",
+  "unitsMetric": "Metrické",
   "privacyPolicy": "Ochrana osobních údajů",
   "termsOfUse": "Podmínky použití",
   "errorNoLocation": "Místo není k dispozici. Zkuste to znovu venku s jasným výhledem na oblohu.",
@@ -341,8 +341,8 @@
   "basicSettings": "Základní nastavení",
   "appSettings": "Nastavení aplikace",
   "timeFormat": "Časový formát",
-  "timeFormat24Hour": "24 hodin (14: 30)",
-  "timeFormat12Hour": "12- hodina (14: 30)",
+  "timeFormat24Hour": "24 hodin",
+  "timeFormat12Hour": "12 hodin",
   "timeFormatDesc": "Doba zobrazení ve formátu 24 hodin nebo 12 hodin",
   "alertRange": "Rozsah upozornění",
   "manageNotificationsDesc": "Správa předplatného a nastavení",
@@ -1095,6 +1095,41 @@
   "locationRequired": "Požadované umístění",
   "confirmingWitness": "Potvrzuji svědka...",
   "chooseYourUsername": "Vyberte si uživatelské jméno",
+  "moreNames": "Další jména",
+  "notificationSettings": "Nastavení oznámení",
+  "quickActions": "Rychlé akce",
+  "doNotDisturb": "Nerušit",
+  "temporarilySilenceNotifications": "Dočasné mlčení všech oznámení",
+  "oneHour": "1h",
+  "eightHours": "8h",
+  "oneDay": "1 den",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "Čas zahájení",
+  "endTime": "Čas ukončení",
+  "allowCriticalAlertsDuringQuietHours": "Povolit kritické výstrahy během klidných hodin",
+  "followingAlerts": "Následující záznamy",
+  "activeCount": "_ _ PLACETETERER _ 0 _ _ active",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "Nesledovat",
+  "unfollowAlert": "Poplach bez sledování",
   "weatherClear": "Vyčistit",
   "weatherClearSky": "jasná obloha",
   "rain": "Déšť",

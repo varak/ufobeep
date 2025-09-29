@@ -378,7 +378,7 @@ class AppLocalizationsCs extends AppLocalizations {
   String get quietHoursDefaultTime => 'Výchozí tiché hodiny';
 
   @override
-  String get emergencyOverride => 'Nouzové ovládání';
+  String get emergencyOverride => 'Nouzové ukončení';
 
   @override
   String get emergencyOverrideDesc =>
@@ -399,7 +399,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get dndDisabled => 'DND vypnuto';
 
   @override
-  String get quietHoursActive => 'Tiché hodiny aktivní';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Active _ _ PLACETIER _ 0 _ - _ _ PLACETIER _ 1 _ _';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -445,10 +447,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get units => 'Jednotky';
 
   @override
-  String get unitsImperial => 'Císařský (mi, mph)';
+  String get unitsImperial => 'Císařský';
 
   @override
-  String get unitsMetric => 'Metrické (km, km / h)';
+  String get unitsMetric => 'Metrické';
 
   @override
   String get privacyPolicy => 'Ochrana osobních údajů';
@@ -672,10 +674,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get timeFormat => 'Časový formát';
 
   @override
-  String get timeFormat24Hour => '24 hodin (14: 30)';
+  String get timeFormat24Hour => '24 hodin';
 
   @override
-  String get timeFormat12Hour => '12- hodina (14: 30)';
+  String get timeFormat12Hour => '12 hodin';
 
   @override
   String get timeFormatDesc =>
@@ -2559,7 +2561,52 @@ class AppLocalizationsCs extends AppLocalizations {
   String get chooseYourUsername => 'Vyberte si uživatelské jméno';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'Další jména';
+
+  @override
+  String get notificationSettings => 'Nastavení oznámení';
+
+  @override
+  String get quickActions => 'Rychlé akce';
+
+  @override
+  String get doNotDisturb => 'Nerušit';
+
+  @override
+  String get temporarilySilenceNotifications => 'Dočasné mlčení všech oznámení';
+
+  @override
+  String get oneHour => '1h';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => '1 den';
+
+  @override
+  String get startTime => 'Čas zahájení';
+
+  @override
+  String get endTime => 'Čas ukončení';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Povolit kritické výstrahy během klidných hodin';
+
+  @override
+  String get followingAlerts => 'Následující záznamy';
+
+  @override
+  String activeCount(int count) {
+    return '_ _ PLACETETERER _ 0 _ _ active';
+  }
+
+  @override
+  String get unfollow => 'Nesledovat';
+
+  @override
+  String get unfollowAlert => 'Poplach bez sledování';
 
   @override
   String get weatherClear => 'Vyčistit';

@@ -401,7 +401,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get dndDisabled => 'DND discapacitados';
 
   @override
-  String get quietHoursActive => 'Horas tranquilas activas';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Active $endTime $startTime';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -447,10 +449,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get units => 'Unidades';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => 'Imperial';
 
   @override
-  String get unitsMetric => 'Metro (km/h)';
+  String get unitsMetric => 'Métrica';
 
   @override
   String get privacyPolicy => 'Política de privacidad';
@@ -677,10 +679,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get timeFormat => 'Formato de tiempo';
 
   @override
-  String get timeFormat24Hour => '24 horas (14:30)';
+  String get timeFormat24Hour => '24 horas';
 
   @override
-  String get timeFormat12Hour => '12 horas (2:30 pm)';
+  String get timeFormat12Hour => '12 horas';
 
   @override
   String get timeFormatDesc =>
@@ -2579,7 +2581,53 @@ class AppLocalizationsEs extends AppLocalizations {
   String get chooseYourUsername => 'Elija su nombre de usuario';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'Más nombres';
+
+  @override
+  String get notificationSettings => 'Ajustes de notificación';
+
+  @override
+  String get quickActions => 'Medidas rápidas';
+
+  @override
+  String get doNotDisturb => 'No molestar';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'Silenciar temporalmente todas las notificaciones';
+
+  @override
+  String get oneHour => '1h';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => '1 día';
+
+  @override
+  String get startTime => 'Hora de inicio';
+
+  @override
+  String get endTime => 'Hora final';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Permitir alertas críticas durante horas tranquilas';
+
+  @override
+  String get followingAlerts => 'Following Alerts';
+
+  @override
+  String activeCount(int count) {
+    return '$count active';
+  }
+
+  @override
+  String get unfollow => 'Unfollow';
+
+  @override
+  String get unfollowAlert => 'Unfollow Alert';
 
   @override
   String get weatherClear => 'Despejado';

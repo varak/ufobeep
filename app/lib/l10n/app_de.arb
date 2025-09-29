@@ -204,13 +204,13 @@
   "quietHoursFrom": "Von",
   "quietHoursUntil": "Bis",
   "quietHoursDefaultTime": "Default Ruhezeiten",
-  "emergencyOverride": "Notüberschreitung",
+  "emergencyOverride": "Notfall Override",
   "emergencyOverrideDesc": "Erlauben Sie dringende Warnungen während der ruhigen Stunden",
   "dndMode": "Nicht stören",
   "dndUntil": "Nicht stören, bis",
   "dndEnabled": "DND aktiviert bis {time}",
   "dndDisabled": "DND deaktiviert",
-  "quietHoursActive": "Ruhezeiten aktiv",
+  "quietHoursActive": "Aktiv {endTime} {startTime}_",
   "quietHoursScheduled": "Ruhezeiten: {end} {start}_",
   "pushNotificationUfoAlert": "UFO Alarmstufe",
   "pushNotificationAnomalyAlert": "Anomaly Alert",
@@ -223,8 +223,8 @@
   "language": "Sprache",
   "chooseLanguage": "Sprache auswählen",
   "units": "Einheiten",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metrische (km, km/h)",
+  "unitsImperial": "Kaiser",
+  "unitsMetric": "Metric",
   "privacyPolicy": "Datenschutz",
   "termsOfUse": "Nutzungsbedingungen",
   "errorNoLocation": "Standort nicht verfügbar. Versuchen Sie wieder draußen mit klarem Himmelblick.",
@@ -341,8 +341,8 @@
   "basicSettings": "Grundeinstellungen",
   "appSettings": "App-Einstellungen",
   "timeFormat": "Zeitformat",
-  "timeFormat24Hour": "24-stunden (14:30)",
-  "timeFormat12Hour": "12-Stunden (2:30 Uhr)",
+  "timeFormat24Hour": "24 stunden",
+  "timeFormat12Hour": "12-stunden",
   "timeFormatDesc": "Anzeigezeit im 24-Stunden- oder 12-Stunden-Format",
   "alertRange": "Alarmbereich",
   "manageNotificationsDesc": "Abonnements verwalten & Einstellungen",
@@ -1095,6 +1095,41 @@
   "locationRequired": "Ort Erforderlich",
   "confirmingWitness": "Bestätigen Sie Zeuge...",
   "chooseYourUsername": "Wählen Sie Ihren Benutzernamen",
+  "moreNames": "Weitere Namen",
+  "notificationSettings": "Notifizierungseinstellungen",
+  "quickActions": "Schnelle Aktionen",
+  "doNotDisturb": "Nicht stören",
+  "temporarilySilenceNotifications": "Stille alle Benachrichtigungen vorübergehend",
+  "oneHour": "1h",
+  "eightHours": "8h",
+  "oneDay": "1 tag",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "Startzeit",
+  "endTime": "Endzeit",
+  "allowCriticalAlertsDuringQuietHours": "Erlauben Sie kritische Warnungen während der ruhigen Stunden",
+  "followingAlerts": "Nach Alerts",
+  "activeCount": "{count} aktiv",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "Unfollow",
+  "unfollowAlert": "Unfollow Alert",
   "weatherClear": "Klar",
   "weatherClearSky": "klarer himmel",
   "rain": "Regen",

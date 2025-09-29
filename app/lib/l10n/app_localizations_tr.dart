@@ -362,7 +362,7 @@ class AppLocalizationsTr extends AppLocalizations {
       'Gelecekteki yorumlar için bildirimleri alın';
 
   @override
-  String get quietHours => 'Sessiz saatler';
+  String get quietHours => 'Sessiz Saatler';
 
   @override
   String get quietHoursDesc => 'Seçilen saatler arasında sessizlik uyarıları.';
@@ -380,7 +380,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get quietHoursDefaultTime => 'Varsayılan sessiz saatler';
 
   @override
-  String get emergencyOverride => 'Acil durum';
+  String get emergencyOverride => 'Acil Durum Override';
 
   @override
   String get emergencyOverrideDesc =>
@@ -401,7 +401,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get dndDisabled => 'DND engelli';
 
   @override
-  String get quietHoursActive => 'Sessiz saatler aktif';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Aktif $endTime - $startTime';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -447,10 +449,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get units => 'Birimler';
 
   @override
-  String get unitsImperial => 'İmparatorluk (mi, mph)';
+  String get unitsImperial => 'İmparatorluk';
 
   @override
-  String get unitsMetric => 'Top (km, km/h)';
+  String get unitsMetric => 'Metrik';
 
   @override
   String get privacyPolicy => 'Gizlilik Politikası';
@@ -678,10 +680,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get timeFormat => 'Zaman Biçimi';
 
   @override
-  String get timeFormat24Hour => '24 saat (14:30)';
+  String get timeFormat24Hour => '24 saat';
 
   @override
-  String get timeFormat12Hour => '12 saat (2:30 PM)';
+  String get timeFormat12Hour => '12 saat';
 
   @override
   String get timeFormatDesc => '24 saat veya 12 saat içinde görüntü zamanı';
@@ -2565,6 +2567,52 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get moreNames => 'More Names';
+
+  @override
+  String get notificationSettings => 'Bildirim Ayarları';
+
+  @override
+  String get quickActions => 'Hızlı Eylemler';
+
+  @override
+  String get doNotDisturb => 'Yapmayın';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'Temporly tüm bildirimleri sessizlik';
+
+  @override
+  String get oneHour => '1h';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => '1 gün';
+
+  @override
+  String get startTime => 'Başlangıç Zaman Başlangıç';
+
+  @override
+  String get endTime => 'Zaman Sonu';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Sessiz saatler boyunca kritik uyarılara izin verin';
+
+  @override
+  String get followingAlerts => 'Takip Uyarıları';
+
+  @override
+  String activeCount(int count) {
+    return '$count aktif';
+  }
+
+  @override
+  String get unfollow => 'Takipsiz';
+
+  @override
+  String get unfollowAlert => 'Unfollow Alert';
 
   @override
   String get weatherClear => 'Clear';

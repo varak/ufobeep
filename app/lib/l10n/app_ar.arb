@@ -198,7 +198,7 @@
   "settingsTitle": "التركيبات",
   "notifications": "الإخطارات",
   "enablePushNotifications": "الحصول على الإخطارات للتعليقات المستقبلية",
-  "quietHours": "ساعات هادئة",
+  "quietHours": "ساعة هادئة",
   "quietHoursDesc": "تنبيه الصمت بين ساعات مختارة.",
   "quietHoursEnabled": "ساعات هدوء",
   "quietHoursFrom": "من",
@@ -210,7 +210,7 @@
   "dndUntil": "لا تزعج حتى",
   "dndEnabled": "DND enabled until __PLACEHOLDER_0",
   "dndDisabled": "معوق",
-  "quietHoursActive": "ساعات هادئة",
+  "quietHoursActive": "-",
   "quietHoursScheduled": "ساعات هادئة _",
   "pushNotificationUfoAlert": "UFO إنذار",
   "pushNotificationAnomalyAlert": "Anomaly Alert",
@@ -223,8 +223,8 @@
   "language": "اللغة",
   "chooseLanguage": "لغة الاختيار",
   "units": "الوحدات",
-  "unitsImperial": "امبراطورية (مي، م ف)",
-  "unitsMetric": "Metric (km, km/h)",
+  "unitsImperial": "الإمبراطورية",
+  "unitsMetric": "القياس",
   "privacyPolicy": "سياسة الخصوصية",
   "termsOfUse": "مدة الاستخدام",
   "errorNoLocation": "المكان غير متاح حاول مرة أخرى في الخارج مع منظر السماء الواضح.",
@@ -341,8 +341,8 @@
   "basicSettings": "الأساسيات",
   "appSettings": "App Settings",
   "timeFormat": "الشكل الزمني",
-  "timeFormat24Hour": "24 ساعة (14:30)",
-  "timeFormat12Hour": "12 ساعة (2:30 PM)",
+  "timeFormat24Hour": "24 ساعة",
+  "timeFormat12Hour": "12 ساعة",
   "timeFormatDesc": "وقت العرض على مدار الساعة أو 12 ساعة",
   "alertRange": "إنذار رانج",
   "manageNotificationsDesc": "الاشتراكات في المؤسسة",
@@ -1095,6 +1095,41 @@
   "locationRequired": "الموقع المطلوب",
   "confirmingWitness": "تأكيد الشاهد...",
   "chooseYourUsername": "اختر اسم مستعملك",
+  "moreNames": "المزيد من الأسماء",
+  "notificationSettings": "مجموعة الإخطارات",
+  "quickActions": "الإجراءات السريعة",
+  "doNotDisturb": "لا تغضب",
+  "temporarilySilenceNotifications": "الصمت المؤقت لجميع الإخطارات",
+  "oneHour": "1ح",
+  "eightHours": "8h",
+  "oneDay": "يوم واحد",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "بدء",
+  "endTime": "نهاية الوقت",
+  "allowCriticalAlertsDuringQuietHours": "السماح بالإنذارات الحرجة خلال ساعات الهدوء",
+  "followingAlerts": "بعد إنذار",
+  "activeCount": "_BAR_ _BAR_ _BAR_",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "Unfollow",
+  "unfollowAlert": "إنذار غير متوفر",
   "weatherClear": "آمن",
   "weatherClearSky": "السماء",
   "rain": "Rain",

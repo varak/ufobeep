@@ -210,7 +210,7 @@
   "dndUntil": "אל תפריע עד",
   "dndEnabled": "DND זמין עד_PLACEHOLDER_0___________________",
   "dndDisabled": "DND",
-  "quietHoursActive": "שעות שקט פעיל",
+  "quietHoursActive": "Active_PLACEHOLDER_0____{startTime}__________________________________________________________________",
   "quietHoursScheduled": "שעות שקטות: שם הסרטון: PLACEHOLDER__0_____{start}______________________________________________________________________________",
   "pushNotificationUfoAlert": "עב\"ם התראה",
   "pushNotificationAnomalyAlert": "אזהרה אנונימית",
@@ -223,8 +223,8 @@
   "language": "שפה",
   "chooseLanguage": "בחירת שפה",
   "units": "יחידות",
-  "unitsImperial": "אימפריאל (מי, mph)",
-  "unitsMetric": "Metric ( ק\"מ, ק\"מ)",
+  "unitsImperial": "אימפריאל הקיסרי",
+  "unitsMetric": "Metric",
   "privacyPolicy": "מדיניות הפרטיות",
   "termsOfUse": "תנאי שימוש",
   "errorNoLocation": "מיקום לא זמין נסה שוב בחוץ עם נוף השמיים ברור.",
@@ -341,8 +341,8 @@
   "basicSettings": "הגדרות בסיסיות",
   "appSettings": "הגדרות App Settings",
   "timeFormat": "עיצוב זמן",
-  "timeFormat24Hour": "24 שעות (14:30)",
-  "timeFormat12Hour": "12 שעות (2:30 ראש)",
+  "timeFormat24Hour": "24 שעות",
+  "timeFormat12Hour": "12 שעות",
   "timeFormatDesc": "מציג זמן בפורמט 24 שעות או 12 שעות",
   "alertRange": "המונחים",
   "manageNotificationsDesc": "ניהול מנויים והגדרות",
@@ -1095,6 +1095,41 @@
   "locationRequired": "מיקום נדרש",
   "confirmingWitness": "עדות...",
   "chooseYourUsername": "בחר את שם המשתמש שלך",
+  "moreNames": "עוד שמות",
+  "notificationSettings": "הגדרות Notification",
+  "quickActions": "פעולות מהירות",
+  "doNotDisturb": "אל תתבלבל",
+  "temporarilySilenceNotifications": "להשתיק את כל ההודעות",
+  "oneHour": "1h",
+  "eightHours": "8h",
+  "oneDay": "1 יום",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "התחל זמן",
+  "endTime": "סוף הזמן",
+  "allowCriticalAlertsDuringQuietHours": "לאפשר התראות קריטיות בשעות שקטות",
+  "followingAlerts": "בעקבות התראות",
+  "activeCount": "PLACEHOLDER_0_ פעיל",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "עקבו",
+  "unfollowAlert": "תגית: Unfollow",
   "weatherClear": "Clear",
   "weatherClearSky": "השמיים צלולים",
   "rain": "גשם",

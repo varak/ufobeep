@@ -352,7 +352,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get enablePushNotifications => '获取通知供今后评论';
 
   @override
-  String get quietHours => '安静时间';
+  String get quietHours => '安静小时';
 
   @override
   String get quietHoursDesc => '选定时数之间的静态提示 .';
@@ -370,7 +370,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get quietHoursDefaultTime => '默认安静时间';
 
   @override
-  String get emergencyOverride => '紧急控制';
+  String get emergencyOverride => '紧急覆盖';
 
   @override
   String get emergencyOverrideDesc => '允许静时紧急报警';
@@ -390,7 +390,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get dndDisabled => 'DND 已禁用';
 
   @override
-  String get quietHoursActive => '静默时间活动';
+  String quietHoursActive(String startTime, String endTime) {
+    return '活动_PLACEHOLDER_0__$startTime';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -435,10 +437,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get units => '单位';
 
   @override
-  String get unitsImperial => '帝国语( mi, mph)';
+  String get unitsImperial => '帝国';
 
   @override
-  String get unitsMetric => '计量(公里,公里/小时)';
+  String get unitsMetric => '度量衡';
 
   @override
   String get privacyPolicy => '隐私政策';
@@ -658,10 +660,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get timeFormat => '时间格式';
 
   @override
-  String get timeFormat24Hour => '24小时(14:30)';
+  String get timeFormat24Hour => '24小时';
 
   @override
-  String get timeFormat12Hour => '12小时(下午2: 30)';
+  String get timeFormat12Hour => '12小时';
 
   @override
   String get timeFormatDesc => '以24小时或12小时格式显示时间';
@@ -2467,7 +2469,51 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chooseYourUsername => '选择您的用户名';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => '更多名称';
+
+  @override
+  String get notificationSettings => '通知设置';
+
+  @override
+  String get quickActions => '快速动作';
+
+  @override
+  String get doNotDisturb => '不要烦恼';
+
+  @override
+  String get temporarilySilenceNotifications => '暂时停止所有通知';
+
+  @override
+  String get oneHour => '1小时';
+
+  @override
+  String get eightHours => '8小时';
+
+  @override
+  String get oneDay => '1天时间';
+
+  @override
+  String get startTime => '开始时间';
+
+  @override
+  String get endTime => '结束时间';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours => '允许在安静时间发出紧急警报';
+
+  @override
+  String get followingAlerts => '警报后';
+
+  @override
+  String activeCount(int count) {
+    return '_PLACEHOLDER_0_ 活动';
+  }
+
+  @override
+  String get unfollow => '未跟踪';
+
+  @override
+  String get unfollowAlert => '不跟随提醒';
 
   @override
   String get weatherClear => '清除';

@@ -380,7 +380,7 @@ class AppLocalizationsDa extends AppLocalizations {
   String get quietHoursDefaultTime => 'Standard stille timer';
 
   @override
-  String get emergencyOverride => 'Nødstyring';
+  String get emergencyOverride => 'Nødudgang';
 
   @override
   String get emergencyOverrideDesc => 'Tillad hurtig varsling i stille timer';
@@ -400,7 +400,9 @@ class AppLocalizationsDa extends AppLocalizations {
   String get dndDisabled => 'DND deaktiveret';
 
   @override
-  String get quietHoursActive => 'Stille timer aktive';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Aktiv _ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -446,10 +448,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get units => 'Enheder';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => 'Imperial';
 
   @override
-  String get unitsMetric => 'Metric (km, km / h)';
+  String get unitsMetric => 'Metric';
 
   @override
   String get privacyPolicy => 'Privacy Policy';
@@ -674,10 +676,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get timeFormat => 'Tidsformat';
 
   @override
-  String get timeFormat24Hour => '24 timer (14: 30)';
+  String get timeFormat24Hour => '24 timer';
 
   @override
-  String get timeFormat12Hour => '12-time (14: 30)';
+  String get timeFormat12Hour => '12- time';
 
   @override
   String get timeFormatDesc => 'Vis tid i 24- timers eller 12- timers format';
@@ -2562,7 +2564,53 @@ class AppLocalizationsDa extends AppLocalizations {
   String get chooseYourUsername => 'Vælg dit brugernavn';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'Flere navne';
+
+  @override
+  String get notificationSettings => 'Meddelelsesindstillinger';
+
+  @override
+  String get quickActions => 'Hurtige handlinger';
+
+  @override
+  String get doNotDisturb => 'Må ikke forstyrres';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'Midlertidigt stille alle meddelelser';
+
+  @override
+  String get oneHour => '1h';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => '1 dag';
+
+  @override
+  String get startTime => 'Starttidspunkt';
+
+  @override
+  String get endTime => 'Sluttidspunkt';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Tillad kritiske advarsler i stille timer';
+
+  @override
+  String get followingAlerts => 'Følgende indberetninger';
+
+  @override
+  String activeCount(int count) {
+    return '_ _ PLACEREPORT _ 0 _ _ active';
+  }
+
+  @override
+  String get unfollow => 'Afføl';
+
+  @override
+  String get unfollowAlert => 'Afføl alarm';
 
   @override
   String get weatherClear => 'Ryd';

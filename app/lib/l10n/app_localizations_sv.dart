@@ -380,7 +380,7 @@ class AppLocalizationsSv extends AppLocalizations {
   String get quietHoursDefaultTime => 'Standard tysta timmar';
 
   @override
-  String get emergencyOverride => 'Nödläge överskrider';
+  String get emergencyOverride => 'Nödöverskridande';
 
   @override
   String get emergencyOverrideDesc =>
@@ -401,7 +401,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get dndDisabled => 'DND inaktiverad';
 
   @override
-  String get quietHoursActive => 'Tyst timmar aktiv';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Aktiv $startTime - $endTime';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -447,10 +449,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get units => 'Enheter';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => 'Imperial';
 
   @override
-  String get unitsMetric => 'Metric (km, km/h)';
+  String get unitsMetric => 'Metric';
 
   @override
   String get privacyPolicy => 'Integritetspolicy';
@@ -674,10 +676,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get timeFormat => 'Tidsformat';
 
   @override
-  String get timeFormat24Hour => '24 timmar (14:30)';
+  String get timeFormat24Hour => '24 timmar';
 
   @override
-  String get timeFormat12Hour => '12 timmar (2:30 PM)';
+  String get timeFormat12Hour => '12 timmar';
 
   @override
   String get timeFormatDesc => 'Visa tid i 24-timmars eller 12-timmars format';
@@ -2554,7 +2556,53 @@ class AppLocalizationsSv extends AppLocalizations {
   String get chooseYourUsername => 'Välj ditt användarnamn';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'Fler namn';
+
+  @override
+  String get notificationSettings => 'Anmälningsinställningar';
+
+  @override
+  String get quickActions => 'Snabba åtgärder';
+
+  @override
+  String get doNotDisturb => 'Stör inte';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'Tillfälligt tysta alla meddelanden';
+
+  @override
+  String get oneHour => '1h';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => '1 dag';
+
+  @override
+  String get startTime => 'Starttid';
+
+  @override
+  String get endTime => 'Sluttid';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Tillåt kritiska varningar under tysta timmar';
+
+  @override
+  String get followingAlerts => 'Följ Alerts';
+
+  @override
+  String activeCount(int count) {
+    return '$count aktiva';
+  }
+
+  @override
+  String get unfollow => 'Sluta följa';
+
+  @override
+  String get unfollowAlert => 'Sluta följa Alert';
 
   @override
   String get weatherClear => 'Clear';

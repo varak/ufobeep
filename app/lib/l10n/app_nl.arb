@@ -210,7 +210,7 @@
   "dndUntil": "Niet storen tot",
   "dndEnabled": "DND ingeschakeld tot {time}",
   "dndDisabled": "DND uitgeschakeld",
-  "quietHoursActive": "Rustige uren actief",
+  "quietHoursActive": "Actief __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
   "quietHoursScheduled": "Rustige uren: __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
   "pushNotificationUfoAlert": "UFO Waarschuwing",
   "pushNotificationAnomalyAlert": "Anomaly Alert",
@@ -223,8 +223,8 @@
   "language": "Taal",
   "chooseLanguage": "Taal kiezen",
   "units": "Eenheden",
-  "unitsImperial": "Keizerlijk (mi, mph)",
-  "unitsMetric": "Metrisch (km, km/h)",
+  "unitsImperial": "Keizerlijk",
+  "unitsMetric": "Metrisch",
   "privacyPolicy": "Privacybeleid",
   "termsOfUse": "Gebruiksvoorwaarden",
   "errorNoLocation": "Locatie is niet beschikbaar. Probeer het nog eens buiten met helder uitzicht op de hemel.",
@@ -341,8 +341,8 @@
   "basicSettings": "Basisinstellingen",
   "appSettings": "Appinstellingen",
   "timeFormat": "Tijdformaat",
-  "timeFormat24Hour": "24 uur (14:30)",
-  "timeFormat12Hour": "12 uur (2.30 uur)",
+  "timeFormat24Hour": "24 uur",
+  "timeFormat12Hour": "12 uur",
   "timeFormatDesc": "Weergavetijd in 24-uurs- of 12-uursformaat",
   "alertRange": "Waarschuwingsbereik",
   "manageNotificationsDesc": "Abonnementeninstellingen beheren",
@@ -1095,6 +1095,41 @@
   "locationRequired": "Locatie vereist",
   "confirmingWitness": "Bevestigde getuige...",
   "chooseYourUsername": "Kies uw gebruikersnaam",
+  "moreNames": "Meer namen",
+  "notificationSettings": "Notificatieinstellingen",
+  "quickActions": "Snelle acties",
+  "doNotDisturb": "Niet storen",
+  "temporarilySilenceNotifications": "Alle meldingen tijdelijk stilleggen",
+  "oneHour": "1 uur",
+  "eightHours": "8 uur",
+  "oneDay": "1 dag",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "Begintijd",
+  "endTime": "Eindtijd",
+  "allowCriticalAlertsDuringQuietHours": "Kritieke waarschuwingen toestaan tijdens stille uren",
+  "followingAlerts": "Volgende waarschuwingen",
+  "activeCount": "{count}actief",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "Onvolgbaar",
+  "unfollowAlert": "Waarschuwing niet volgen",
   "weatherClear": "Wissen",
   "weatherClearSky": "heldere lucht",
   "rain": "Regen",

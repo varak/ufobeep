@@ -393,7 +393,9 @@ class AppLocalizationsHe extends AppLocalizations {
   String get dndDisabled => 'DND';
 
   @override
-  String get quietHoursActive => 'שעות שקט פעיל';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Active_PLACEHOLDER_0____${startTime}__________________________________________________________________';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -438,10 +440,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get units => 'יחידות';
 
   @override
-  String get unitsImperial => 'אימפריאל (מי, mph)';
+  String get unitsImperial => 'אימפריאל הקיסרי';
 
   @override
-  String get unitsMetric => 'Metric ( ק\"מ, ק\"מ)';
+  String get unitsMetric => 'Metric';
 
   @override
   String get privacyPolicy => 'מדיניות הפרטיות';
@@ -665,10 +667,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get timeFormat => 'עיצוב זמן';
 
   @override
-  String get timeFormat24Hour => '24 שעות (14:30)';
+  String get timeFormat24Hour => '24 שעות';
 
   @override
-  String get timeFormat12Hour => '12 שעות (2:30 ראש)';
+  String get timeFormat12Hour => '12 שעות';
 
   @override
   String get timeFormatDesc => 'מציג זמן בפורמט 24 שעות או 12 שעות';
@@ -2521,7 +2523,52 @@ class AppLocalizationsHe extends AppLocalizations {
   String get chooseYourUsername => 'בחר את שם המשתמש שלך';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'עוד שמות';
+
+  @override
+  String get notificationSettings => 'הגדרות Notification';
+
+  @override
+  String get quickActions => 'פעולות מהירות';
+
+  @override
+  String get doNotDisturb => 'אל תתבלבל';
+
+  @override
+  String get temporarilySilenceNotifications => 'להשתיק את כל ההודעות';
+
+  @override
+  String get oneHour => '1h';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => '1 יום';
+
+  @override
+  String get startTime => 'התחל זמן';
+
+  @override
+  String get endTime => 'סוף הזמן';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'לאפשר התראות קריטיות בשעות שקטות';
+
+  @override
+  String get followingAlerts => 'בעקבות התראות';
+
+  @override
+  String activeCount(int count) {
+    return 'PLACEHOLDER_0_ פעיל';
+  }
+
+  @override
+  String get unfollow => 'עקבו';
+
+  @override
+  String get unfollowAlert => 'תגית: Unfollow';
 
   @override
   String get weatherClear => 'Clear';

@@ -198,19 +198,19 @@
   "settingsTitle": "Configurações",
   "notifications": "Notificação",
   "enablePushNotifications": "Obter notificações para comentários futuros",
-  "quietHours": "Horas calmas",
+  "quietHours": "Horas de silêncio",
   "quietHoursDesc": "Alertas de silêncio entre as horas selecionadas.",
   "quietHoursEnabled": "Habilitar horas silenciosas",
   "quietHoursFrom": "De",
   "quietHoursUntil": "Até",
   "quietHoursDefaultTime": "Horas de silêncio padrão",
-  "emergencyOverride": "Sobreposição de emergência",
+  "emergencyOverride": "Substituição de Emergência",
   "emergencyOverrideDesc": "Permitir alertas urgentes durante horas silenciosas",
   "dndMode": "Não Perturbe",
   "dndUntil": "Não perturbe até",
   "dndEnabled": "DND ativado até {time}",
   "dndDisabled": "DND desabilitado",
-  "quietHoursActive": "Horas de silêncio activas",
+  "quietHoursActive": "Ativo {startTime} - {endTime}",
   "quietHoursScheduled": "Horas de silêncio: __PACEHOLDER_0__ __PACEHOLDER_1_",
   "pushNotificationUfoAlert": "UFO Alerta",
   "pushNotificationAnomalyAlert": "Alerta de Anomalias",
@@ -223,8 +223,8 @@
   "language": "Língua",
   "chooseLanguage": "Escolher idioma",
   "units": "Unidades",
-  "unitsImperial": "Imperial (mi, mph)",
-  "unitsMetric": "Metrico (km, km/h)",
+  "unitsImperial": "Imperial",
+  "unitsMetric": "Métrico",
   "privacyPolicy": "Política de Privacidade",
   "termsOfUse": "Termos de Utilização",
   "errorNoLocation": "Localização não disponível. Tente novamente fora com visão clara do céu.",
@@ -341,8 +341,8 @@
   "basicSettings": "Configuração Básica",
   "appSettings": "Configuração da Aplicação",
   "timeFormat": "Formato de Hora",
-  "timeFormat24Hour": "24 horas (14:30)",
-  "timeFormat12Hour": "12 horas (2h30)",
+  "timeFormat24Hour": "24 horas",
+  "timeFormat12Hour": "12 horas",
   "timeFormatDesc": "Tempo de exibição em formato 24 horas ou 12 horas",
   "alertRange": "Intervalo de Alerta",
   "manageNotificationsDesc": "Gerenciar as & configurações de assinaturas",
@@ -1095,6 +1095,41 @@
   "locationRequired": "Localização necessária",
   "confirmingWitness": "Confirmando testemunha...",
   "chooseYourUsername": "Escolha seu nome de usuário",
+  "moreNames": "Mais nomes",
+  "notificationSettings": "Configuração da Notificação",
+  "quickActions": "Acções Rápidas",
+  "doNotDisturb": "Não Perturbe",
+  "temporarilySilenceNotifications": "Silenciar temporariamente todas as notificações",
+  "oneHour": "1h",
+  "eightHours": "8h",
+  "oneDay": "1 dia",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "Hora de início",
+  "endTime": "Hora do fim",
+  "allowCriticalAlertsDuringQuietHours": "Permitir alertas críticos durante horas silenciosas",
+  "followingAlerts": "Seguir as Alertas",
+  "activeCount": "__PACEHOLDER_0__ ativo",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "Sem seguir",
+  "unfollowAlert": "Alerta de Não Seguir",
   "weatherClear": "Limpar",
   "weatherClearSky": "céu limpo",
   "rain": "Chuva",

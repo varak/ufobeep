@@ -783,7 +783,7 @@ abstract class AppLocalizations {
   /// No description provided for @quietHours.
   ///
   /// In en, this message translates to:
-  /// **'Quiet hours'**
+  /// **'Quiet Hours'**
   String get quietHours;
 
   /// No description provided for @quietHoursDesc.
@@ -819,7 +819,7 @@ abstract class AppLocalizations {
   /// No description provided for @emergencyOverride.
   ///
   /// In en, this message translates to:
-  /// **'Emergency override'**
+  /// **'Emergency Override'**
   String get emergencyOverride;
 
   /// No description provided for @emergencyOverrideDesc.
@@ -855,8 +855,8 @@ abstract class AppLocalizations {
   /// No description provided for @quietHoursActive.
   ///
   /// In en, this message translates to:
-  /// **'Quiet hours active'**
-  String get quietHoursActive;
+  /// **'Active {startTime} - {endTime}'**
+  String quietHoursActive(String startTime, String endTime);
 
   /// No description provided for @quietHoursScheduled.
   ///
@@ -4751,6 +4751,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More Names'**
   String get moreNames;
+
+  /// No description provided for @notificationSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification Settings'**
+  String get notificationSettings;
+
+  /// No description provided for @quickActions.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Actions'**
+  String get quickActions;
+
+  /// No description provided for @doNotDisturb.
+  ///
+  /// In en, this message translates to:
+  /// **'Do Not Disturb'**
+  String get doNotDisturb;
+
+  /// No description provided for @temporarilySilenceNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Temporarily silence all notifications'**
+  String get temporarilySilenceNotifications;
+
+  /// No description provided for @oneHour.
+  ///
+  /// In en, this message translates to:
+  /// **'1h'**
+  String get oneHour;
+
+  /// No description provided for @eightHours.
+  ///
+  /// In en, this message translates to:
+  /// **'8h'**
+  String get eightHours;
+
+  /// No description provided for @oneDay.
+  ///
+  /// In en, this message translates to:
+  /// **'1 day'**
+  String get oneDay;
+
+  /// No description provided for @startTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Time'**
+  String get startTime;
+
+  /// No description provided for @endTime.
+  ///
+  /// In en, this message translates to:
+  /// **'End Time'**
+  String get endTime;
+
+  /// No description provided for @allowCriticalAlertsDuringQuietHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow critical alerts during quiet hours'**
+  String get allowCriticalAlertsDuringQuietHours;
+
+  /// No description provided for @followingAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Following Alerts'**
+  String get followingAlerts;
+
+  /// No description provided for @activeCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} active'**
+  String activeCount(int count);
+
+  /// No description provided for @unfollow.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow'**
+  String get unfollow;
+
+  /// No description provided for @unfollowAlert.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfollow Alert'**
+  String get unfollowAlert;
 
   /// No description provided for @weatherClear.
   ///

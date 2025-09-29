@@ -357,7 +357,7 @@ class AppLocalizationsAr extends AppLocalizations {
       'الحصول على الإخطارات للتعليقات المستقبلية';
 
   @override
-  String get quietHours => 'ساعات هادئة';
+  String get quietHours => 'ساعة هادئة';
 
   @override
   String get quietHoursDesc => 'تنبيه الصمت بين ساعات مختارة.';
@@ -396,7 +396,9 @@ class AppLocalizationsAr extends AppLocalizations {
   String get dndDisabled => 'معوق';
 
   @override
-  String get quietHoursActive => 'ساعات هادئة';
+  String quietHoursActive(String startTime, String endTime) {
+    return '-';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -441,10 +443,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get units => 'الوحدات';
 
   @override
-  String get unitsImperial => 'امبراطورية (مي، م ف)';
+  String get unitsImperial => 'الإمبراطورية';
 
   @override
-  String get unitsMetric => 'Metric (km, km/h)';
+  String get unitsMetric => 'القياس';
 
   @override
   String get privacyPolicy => 'سياسة الخصوصية';
@@ -668,10 +670,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get timeFormat => 'الشكل الزمني';
 
   @override
-  String get timeFormat24Hour => '24 ساعة (14:30)';
+  String get timeFormat24Hour => '24 ساعة';
 
   @override
-  String get timeFormat12Hour => '12 ساعة (2:30 PM)';
+  String get timeFormat12Hour => '12 ساعة';
 
   @override
   String get timeFormatDesc => 'وقت العرض على مدار الساعة أو 12 ساعة';
@@ -2534,7 +2536,52 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chooseYourUsername => 'اختر اسم مستعملك';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'المزيد من الأسماء';
+
+  @override
+  String get notificationSettings => 'مجموعة الإخطارات';
+
+  @override
+  String get quickActions => 'الإجراءات السريعة';
+
+  @override
+  String get doNotDisturb => 'لا تغضب';
+
+  @override
+  String get temporarilySilenceNotifications => 'الصمت المؤقت لجميع الإخطارات';
+
+  @override
+  String get oneHour => '1ح';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => 'يوم واحد';
+
+  @override
+  String get startTime => 'بدء';
+
+  @override
+  String get endTime => 'نهاية الوقت';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'السماح بالإنذارات الحرجة خلال ساعات الهدوء';
+
+  @override
+  String get followingAlerts => 'بعد إنذار';
+
+  @override
+  String activeCount(int count) {
+    return '_BAR_ _BAR_ _BAR_';
+  }
+
+  @override
+  String get unfollow => 'Unfollow';
+
+  @override
+  String get unfollowAlert => 'إنذار غير متوفر';
 
   @override
   String get weatherClear => 'آمن';

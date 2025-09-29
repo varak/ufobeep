@@ -359,7 +359,7 @@ class AppLocalizationsHi extends AppLocalizations {
       'भविष्य की टिप्पणियों के लिए अधिसूचनाएं प्राप्त करें';
 
   @override
-  String get quietHours => 'चुप घंटे';
+  String get quietHours => 'घंटे';
 
   @override
   String get quietHoursDesc => 'चयनित घंटों के बीच मौन अलर्ट।.';
@@ -398,7 +398,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get dndDisabled => 'DND विकलांग';
 
   @override
-  String get quietHoursActive => 'शांत घंटे सक्रिय';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'सक्रिय ${startTime}_________________________________________________________________________________';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -444,10 +446,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get units => 'यूनिट';
 
   @override
-  String get unitsImperial => 'इंपीरियल (mi, mph)';
+  String get unitsImperial => 'इंपीरियल';
 
   @override
-  String get unitsMetric => 'मीट्रिक (किमी, km/h)';
+  String get unitsMetric => 'मीट्रिक';
 
   @override
   String get privacyPolicy => 'गोपनीयता नीति';
@@ -671,10 +673,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get timeFormat => 'समय स्वरूप';
 
   @override
-  String get timeFormat24Hour => '24 घंटे (14:30)';
+  String get timeFormat24Hour => '24 घंटे';
 
   @override
-  String get timeFormat12Hour => '12 घंटे (2:30 अपराह्न)';
+  String get timeFormat12Hour => '12 घंटे';
 
   @override
   String get timeFormatDesc =>
@@ -2554,7 +2556,53 @@ class AppLocalizationsHi extends AppLocalizations {
   String get chooseYourUsername => 'अपना यूज़र नाम चुनें';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'अधिक नाम';
+
+  @override
+  String get notificationSettings => 'अधिसूचना सेटिंग';
+
+  @override
+  String get quickActions => 'त्वरित कार्रवाई';
+
+  @override
+  String get doNotDisturb => 'Disturb';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'अस्थायी रूप से सभी सूचनाएं चुप्पी';
+
+  @override
+  String get oneHour => '1h';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => '1 दिन';
+
+  @override
+  String get startTime => 'प्रारंभ समय';
+
+  @override
+  String get endTime => 'समाप्ति समय';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'शांत घंटों के दौरान गंभीर अलर्ट की अनुमति दें';
+
+  @override
+  String get followingAlerts => 'चेतावनी';
+
+  @override
+  String activeCount(int count) {
+    return '0 _ 0 _ 0';
+  }
+
+  @override
+  String get unfollow => 'अनफ़ॉलो';
+
+  @override
+  String get unfollowAlert => 'अनफ़ॉलो अलर्ट';
 
   @override
   String get weatherClear => 'स्पष्ट';

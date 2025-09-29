@@ -390,7 +390,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get dndDisabled => 'DND 無効';
 
   @override
-  String get quietHoursActive => '活動的な静かな時間';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'アクティブ_PLACEHOLDER_0___________________________________________________________________________________________________________________________________________________________________';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -435,10 +437,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get units => 'ユニット';
 
   @override
-  String get unitsImperial => 'インペリアル(ミ, mph)';
+  String get unitsImperial => 'インペリアル';
 
   @override
-  String get unitsMetric => 'メートル(km/h)';
+  String get unitsMetric => 'メトリック';
 
   @override
   String get privacyPolicy => 'プライバシーポリシー';
@@ -658,10 +660,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get timeFormat => '時間フォーマット';
 
   @override
-  String get timeFormat24Hour => '24時間(14:30)';
+  String get timeFormat24Hour => '24時間';
 
   @override
-  String get timeFormat12Hour => '12時間(2:30 PM)';
+  String get timeFormat12Hour => '12時間';
 
   @override
   String get timeFormatDesc => '24時間または12時間のフォーマットの表示時間';
@@ -2479,7 +2481,51 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chooseYourUsername => 'ユーザー名を選択する';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'より多くの名前';
+
+  @override
+  String get notificationSettings => '通知設定';
+
+  @override
+  String get quickActions => 'クイックアクション';
+
+  @override
+  String get doNotDisturb => '蒸留しない';
+
+  @override
+  String get temporarilySilenceNotifications => 'すべての通知を一時的に沈黙させる';
+
+  @override
+  String get oneHour => '1時間';
+
+  @override
+  String get eightHours => '8時間';
+
+  @override
+  String get oneDay => '1 日';
+
+  @override
+  String get startTime => '開始時間';
+
+  @override
+  String get endTime => '終了時刻';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours => '静かな時間の間に重要なアラートを許可する';
+
+  @override
+  String get followingAlerts => 'アラートのフォロー';
+
+  @override
+  String activeCount(int count) {
+    return '$count アクティブ';
+  }
+
+  @override
+  String get unfollow => 'フォロー';
+
+  @override
+  String get unfollowAlert => 'フォロー解除アラート';
 
   @override
   String get weatherClear => 'クリア';

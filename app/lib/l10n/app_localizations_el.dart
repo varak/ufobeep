@@ -362,7 +362,7 @@ class AppLocalizationsEl extends AppLocalizations {
       'Λήψη κοινοποιήσεων για μελλοντικά σχόλια';
 
   @override
-  String get quietHours => 'Ώρες ησυχίας';
+  String get quietHours => 'Ήσυχες ώρες';
 
   @override
   String get quietHoursDesc => 'Συναγερμός σιωπής μεταξύ επιλεγμένων ωρών.';
@@ -380,7 +380,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get quietHoursDefaultTime => 'Προκαθορισμένες ώρες ησυχίας';
 
   @override
-  String get emergencyOverride => 'Παράκαμψη έκτακτης ανάγκης';
+  String get emergencyOverride => 'Αντικατάσταση έκτακτης ανάγκης';
 
   @override
   String get emergencyOverrideDesc =>
@@ -401,7 +401,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get dndDisabled => 'Απενεργοποίηση DND';
 
   @override
-  String get quietHoursActive => 'Ώρες ηρεμίας ενεργές';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Ενεργός __PACHOLDER_0____PACHOLDER_1_';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -447,10 +449,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get units => 'Μονάδες';
 
   @override
-  String get unitsImperial => 'Αυτοκρατορικό (mi, mph)';
+  String get unitsImperial => 'Αυτοκρατορικό';
 
   @override
-  String get unitsMetric => 'Μετρικό (km, km/h)';
+  String get unitsMetric => 'Μετρικό';
 
   @override
   String get privacyPolicy => 'Πολιτική απορρήτου';
@@ -679,10 +681,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get timeFormat => 'Μορφή χρόνου';
 
   @override
-  String get timeFormat24Hour => '24 ώρες (14:30)';
+  String get timeFormat24Hour => '24 ώρες';
 
   @override
-  String get timeFormat12Hour => '12 ώρες (2:30 μ.μ.)';
+  String get timeFormat12Hour => '12 ώρες';
 
   @override
   String get timeFormatDesc => 'Εμφάνιση ώρας σε 24ωρη ή 12ωρη μορφή';
@@ -2591,7 +2593,53 @@ class AppLocalizationsEl extends AppLocalizations {
   String get chooseYourUsername => 'Επιλέξτε το όνομα χρήστη σας';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'Περισσότερα ονόματα';
+
+  @override
+  String get notificationSettings => 'Settings ειδοποίησης';
+
+  @override
+  String get quickActions => 'Γρήγορη ενέργεια';
+
+  @override
+  String get doNotDisturb => 'Μην ενοχλείστε';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'Προσωρινά σιωπή όλες οι ειδοποιήσεις';
+
+  @override
+  String get oneHour => '1η';
+
+  @override
+  String get eightHours => '8η';
+
+  @override
+  String get oneDay => '1 ημέρα';
+
+  @override
+  String get startTime => 'Ώρα έναρξης';
+
+  @override
+  String get endTime => 'Ώρα τέλους';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Επίτρεψε κρίσιμες ειδοποιήσεις κατά τη διάρκεια ωρών ηρεμίας';
+
+  @override
+  String get followingAlerts => 'Μετά τις καταχωρίσεις';
+
+  @override
+  String activeCount(int count) {
+    return '$count ενεργό';
+  }
+
+  @override
+  String get unfollow => 'Ακολούθηση';
+
+  @override
+  String get unfollowAlert => 'Ακολούθα την ειδοποίηση';
 
   @override
   String get weatherClear => 'Καθαρισμός';

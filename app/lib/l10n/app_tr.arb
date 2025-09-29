@@ -198,19 +198,19 @@
   "settingsTitle": "Ayarlar",
   "notifications": "Bildirimler",
   "enablePushNotifications": "Gelecekteki yorumlar için bildirimleri alın",
-  "quietHours": "Sessiz saatler",
+  "quietHours": "Sessiz Saatler",
   "quietHoursDesc": "Seçilen saatler arasında sessizlik uyarıları.",
   "quietHoursEnabled": "Enable sessiz saatler",
   "quietHoursFrom": "From",
   "quietHoursUntil": "Olana kadar",
   "quietHoursDefaultTime": "Varsayılan sessiz saatler",
-  "emergencyOverride": "Acil durum",
+  "emergencyOverride": "Acil Durum Override",
   "emergencyOverrideDesc": "Sessiz saatler boyunca acil uyarılara izin verin",
   "dndMode": "Yapmayın",
   "dndUntil": "Ne kadar rahatsız etmeyin",
   "dndEnabled": "DND, {time}",
   "dndDisabled": "DND engelli",
-  "quietHoursActive": "Sessiz saatler aktif",
+  "quietHoursActive": "Aktif {endTime} - {startTime}",
   "quietHoursScheduled": "Sessiz saatler: {end} - {start}",
   "pushNotificationUfoAlert": "UFO UFO Uyarı",
   "pushNotificationAnomalyAlert": "Anomaly Alert",
@@ -223,8 +223,8 @@
   "language": "Dil Dili",
   "chooseLanguage": "Dil seçin",
   "units": "Birimler",
-  "unitsImperial": "İmparatorluk (mi, mph)",
-  "unitsMetric": "Top (km, km/h)",
+  "unitsImperial": "İmparatorluk",
+  "unitsMetric": "Metrik",
   "privacyPolicy": "Gizlilik Politikası",
   "termsOfUse": "Kullanım Şartları",
   "errorNoLocation": "Konum mevcut değil. Açık gökyüzü görünümü ile tekrar dışarı deneyin.",
@@ -341,8 +341,8 @@
   "basicSettings": "Temel Ayarlar",
   "appSettings": "App Ayarları",
   "timeFormat": "Zaman Biçimi",
-  "timeFormat24Hour": "24 saat (14:30)",
-  "timeFormat12Hour": "12 saat (2:30 PM)",
+  "timeFormat24Hour": "24 saat",
+  "timeFormat12Hour": "12 saat",
   "timeFormatDesc": "24 saat veya 12 saat içinde görüntü zamanı",
   "alertRange": "Alert Range",
   "manageNotificationsDesc": "Aboneliği ve ayarları yönetin",
@@ -1095,6 +1095,41 @@
   "locationRequired": "Konum Required",
   "confirmingWitness": "Tanıyın ...",
   "chooseYourUsername": "Kullanıcı adınızı seçin",
+  "moreNames": "More Names",
+  "notificationSettings": "Bildirim Ayarları",
+  "quickActions": "Hızlı Eylemler",
+  "doNotDisturb": "Yapmayın",
+  "temporarilySilenceNotifications": "Temporly tüm bildirimleri sessizlik",
+  "oneHour": "1h",
+  "eightHours": "8h",
+  "oneDay": "1 gün",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "Başlangıç Zaman Başlangıç",
+  "endTime": "Zaman Sonu",
+  "allowCriticalAlertsDuringQuietHours": "Sessiz saatler boyunca kritik uyarılara izin verin",
+  "followingAlerts": "Takip Uyarıları",
+  "activeCount": "{count} aktif",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "Takipsiz",
+  "unfollowAlert": "Unfollow Alert",
   "weatherClear": "Clear",
   "weatherClearSky": "net gökyüzü",
   "rain": "Rain",

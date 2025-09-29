@@ -204,13 +204,13 @@
   "quietHoursFrom": "Alkaen",
   "quietHoursUntil": "Asti",
   "quietHoursDefaultTime": "Oletus hiljaiset tunnit",
-  "emergencyOverride": "Hätäohitus",
+  "emergencyOverride": "Hätätila",
   "emergencyOverrideDesc": "Kiireellisten kuulutusten salliminen hiljaisina aikoina",
   "dndMode": "Älä häiritse",
   "dndUntil": "Älä häiritse ennen kuin",
   "dndEnabled": "DND on käytössä kunnes __PAIKKAHOLDER_0__",
   "dndDisabled": "DND ei käytössä",
-  "quietHoursActive": "Hiljaiset työajat",
+  "quietHoursActive": "Aktiivinen __PASSIHOLDER_0__ - __PASSIHOLDER_1__",
   "quietHoursScheduled": "Hiljaiset tunnit: __Placeholder_0__ - __Placeholder_1_",
   "pushNotificationUfoAlert": "UFO Varoitus",
   "pushNotificationAnomalyAlert": "Anomaliahälytys",
@@ -223,8 +223,8 @@
   "language": "Kieli",
   "chooseLanguage": "Valitse kieli",
   "units": "Yksikkö",
-  "unitsImperial": "Keisarillinen (mi,mph)",
-  "unitsMetric": "Metri (km, km/h)",
+  "unitsImperial": "Keisarillinen",
+  "unitsMetric": "Metrinen",
   "privacyPolicy": "Yksityisyyden suoja",
   "termsOfUse": "Käyttöehdot",
   "errorNoLocation": "Sijaintia ei ole saatavilla. Yritä uudelleen ulkona selkeä taivas.",
@@ -341,8 +341,8 @@
   "basicSettings": "Perusasetukset",
   "appSettings": "Sovelluksen asetukset",
   "timeFormat": "Aikamuoto",
-  "timeFormat24Hour": "24 tuntia (14:30)",
-  "timeFormat12Hour": "12 tuntia (2:30 PM)",
+  "timeFormat24Hour": "24 tuntia",
+  "timeFormat12Hour": "12 tuntia",
   "timeFormatDesc": "Näyttöaika 24 tunnin tai 12 tunnin muodossa",
   "alertRange": "Varoitusalue",
   "manageNotificationsDesc": "Hallitse tilauksia ja asetuksia",
@@ -1095,6 +1095,41 @@
   "locationRequired": "Sijainti vaaditaan",
   "confirmingWitness": "Vahvistan todistajan...",
   "chooseYourUsername": "Valitse käyttäjätunnus",
+  "moreNames": "Lisää nimiä",
+  "notificationSettings": "Ilmoitusasetukset",
+  "quickActions": "Nopeat toimet",
+  "doNotDisturb": "Älä häiritse",
+  "temporarilySilenceNotifications": "Väliaikaisesti vaienna kaikki ilmoitukset",
+  "oneHour": "1h",
+  "eightHours": "8h",
+  "oneDay": "1 vrk",
+  "@quietHoursActive": {
+    "placeholders": {
+      "startTime": {
+        "type": "String",
+        "example": "10:00 PM"
+      },
+      "endTime": {
+        "type": "String",
+        "example": "7:00 AM"
+      }
+    }
+  },
+  "startTime": "Aloitusaika",
+  "endTime": "Loppuaika",
+  "allowCriticalAlertsDuringQuietHours": "Salli kriittiset kuulutukset hiljaisina tunteina",
+  "followingAlerts": "Kuulutusten jälkeen",
+  "activeCount": "_Placeholder_0__ aktiivinen",
+  "@activeCount": {
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "3"
+      }
+    }
+  },
+  "unfollow": "Ei seuraa",
+  "unfollowAlert": "Noudata varoitusta",
   "weatherClear": "Tyhjennä",
   "weatherClearSky": "kirkas taivas",
   "rain": "Sade",

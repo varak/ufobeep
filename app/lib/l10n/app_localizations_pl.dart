@@ -380,7 +380,7 @@ class AppLocalizationsPl extends AppLocalizations {
   String get quietHoursDefaultTime => 'Domyślne godziny ciszy';
 
   @override
-  String get emergencyOverride => 'Niepotrzebne skreślić';
+  String get emergencyOverride => 'Nadwyżka awaryjna';
 
   @override
   String get emergencyOverrideDesc =>
@@ -401,7 +401,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get dndDisabled => 'Wyłączony DND';
 
   @override
-  String get quietHoursActive => 'Godziny ciszy aktywne';
+  String quietHoursActive(String startTime, String endTime) {
+    return 'Active _ _ PLACESECRET _ 0 _ _ _ - _ _ PLACESECRET _ 1 _ _';
+  }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
@@ -447,10 +449,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get units => 'Jednostki';
 
   @override
-  String get unitsImperial => 'Imperial (mi, mph)';
+  String get unitsImperial => 'Imperial';
 
   @override
-  String get unitsMetric => 'Metric (km, km / h)';
+  String get unitsMetric => 'Metric';
 
   @override
   String get privacyPolicy => 'Polityka prywatności';
@@ -676,10 +678,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get timeFormat => 'Format czasu';
 
   @override
-  String get timeFormat24Hour => '24 godziny (14: 30)';
+  String get timeFormat24Hour => '24 godziny';
 
   @override
-  String get timeFormat12Hour => '12 godzin (14: 30)';
+  String get timeFormat12Hour => '12 godzin';
 
   @override
   String get timeFormatDesc =>
@@ -2569,7 +2571,53 @@ class AppLocalizationsPl extends AppLocalizations {
   String get chooseYourUsername => 'Wybierz nazwę użytkownika';
 
   @override
-  String get moreNames => 'More Names';
+  String get moreNames => 'Więcej nazwisk';
+
+  @override
+  String get notificationSettings => 'Ustawienia powiadamiania';
+
+  @override
+  String get quickActions => 'Szybkie działania';
+
+  @override
+  String get doNotDisturb => 'Nie przeszkadzać';
+
+  @override
+  String get temporarilySilenceNotifications =>
+      'Tymczasowo uciszyć wszystkie powiadomienia';
+
+  @override
+  String get oneHour => '1h';
+
+  @override
+  String get eightHours => '8h';
+
+  @override
+  String get oneDay => '1 dzień';
+
+  @override
+  String get startTime => 'Czas rozpoczęcia';
+
+  @override
+  String get endTime => 'Czas zakończenia';
+
+  @override
+  String get allowCriticalAlertsDuringQuietHours =>
+      'Zezwolić na krytyczne ostrzeżenia w godzinach ciszy';
+
+  @override
+  String get followingAlerts => 'Wpisy';
+
+  @override
+  String activeCount(int count) {
+    return '_ _ PLACESECRET _ 0 _ _ active';
+  }
+
+  @override
+  String get unfollow => 'Unfollow';
+
+  @override
+  String get unfollowAlert => 'Nieprzestrzeganie ostrzeżenia';
 
   @override
   String get weatherClear => 'Czysto';
