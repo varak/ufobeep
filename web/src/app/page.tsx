@@ -255,8 +255,8 @@ export default function Home() {
                   Access UFOBeep&apos;s database through our MCP server for AI analysis and pattern recognition.
                 </p>
                 <div className="space-y-1 text-xs text-text-tertiary">
-                  <p><strong>Search endpoint:</strong> <code className="bg-dark-surface px-2 py-1 rounded">http://ufobeep.com:8000/mcp/search</code></p>
-                  <p><strong>Database stats:</strong> <code className="bg-dark-surface px-2 py-1 rounded">http://ufobeep.com:8000/mcp/stats</code></p>
+                  <p><strong>Search endpoint:</strong> <code className="bg-dark-surface px-2 py-1 rounded">https://ufobeep.com/api/mcp/search</code></p>
+                  <p><strong>Database stats:</strong> <code className="bg-dark-surface px-2 py-1 rounded">https://ufobeep.com/api/mcp/stats</code></p>
                 </div>
                 <a
                   href="https://github.com/varak/ufobeep/blob/main/docs/MCP_SERVER.md"

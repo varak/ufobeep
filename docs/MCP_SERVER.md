@@ -7,7 +7,7 @@ UFOBeep now provides a Model Context Protocol (MCP) server for AI systems to acc
 
 ### Base URL
 ```
-http://ufobeep.com:8000/mcp/
+https://ufobeep.com/api/mcp/
 ```
 
 ### 1. Get Database Statistics
@@ -91,7 +91,7 @@ GET /mcp/search?lat=36.2&lon=-115.2&radius=50&limit=20
           const endpoint = parsedUrl.pathname.replace('/mcp/', '');
           const query = parsedUrl.query;
 
-          let ufoUrl = `http://ufobeep.com:8000/mcp/${endpoint}`;
+          let ufoUrl = `https://ufobeep.com/api/mcp/${endpoint}`;
           if (Object.keys(query).length > 0) {
             ufoUrl += '?' + new URLSearchParams(query).toString();
           }
