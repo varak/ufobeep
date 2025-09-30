@@ -619,7 +619,33 @@ async def update_device(
                 """
                 
                 await conn.execute(query, *params)
-            
+
+                # Sync alert range and location to users table for proximity alerts
+                if 'preferences' in update_fields and update_fields['preferences']:
+                    prefs = update_fields['preferences']
+                    user_updates = []
+                    user_params = []
+                    user_param_idx = 1
+
+                    # Update alert_range_km if present
+                    if 'alertRangeKm' in prefs:
+                        user_updates.append(f"alert_range_km = ${user_param_idx}")
+                        user_params.append(prefs['alertRangeKm'])
+                        user_param_idx += 1
+                        print(f"📍 SYNC: Updating user alert_range_km to {prefs['alertRangeKm']}")
+
+                    if user_updates:
+                        # Get user_id for this device
+                        device_user = await conn.fetchval(
+                            "SELECT user_id FROM devices WHERE device_id = $1",
+                            device_id
+                        )
+                        if device_user:
+                            user_params.append(device_user)
+                            user_query = f"UPDATE users SET {', '.join(user_updates)} WHERE id = ${user_param_idx}"
+                            await conn.execute(user_query, *user_params)
+                            print(f"✅ SYNC: User {device_user} alert settings synchronized")
+
             # Fetch updated device record
             device_record = await conn.fetchrow(
                 """
