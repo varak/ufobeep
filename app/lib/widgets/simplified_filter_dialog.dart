@@ -7,6 +7,7 @@ import '../providers/alerts_provider.dart';
 import '../providers/user_preferences_provider.dart';
 import '../l10n/app_localizations.dart';
 import '../services/translation_service.dart';
+import '../services/api_client.dart';
 
 enum SourceFilter { both, ufobeepOnly, mufonOnly }
 enum SortOption { newest, nearest }
@@ -368,7 +369,7 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
     );
   }
 
-  void _applyFilters() {
+  Future<void> _applyFilters() async {
     // Convert simplified state back to AlertsFilter
     bool? showUfoBeepOnly;
     if (_sourceFilter == SourceFilter.ufobeepOnly) {

@@ -87,7 +87,7 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
         // Single filter button
         IconButton(
           icon: Icon(
-            Icons.tune,
+            Icons.settings,
             color: filter.hasActiveFilters
                 ? AppColors.brandPrimary
                 : AppColors.textSecondary,
