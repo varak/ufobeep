@@ -90,30 +90,31 @@ class _AlertActionsSectionState extends ConsumerState<AlertActionsSection> {
           ],
 
           if (widget.showAllActions) ...[
-            // Add Photos button (tertiary action)
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: widget.onAddPhotos,
-                icon: const Icon(Icons.add_photo_alternate, size: 18),
-                label: Text(AppLocalizations.of(context)!.addPhotosAndVideos),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.brandPrimary,
-                  side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+            // Add Photos button - only show for original creator
+            if (_isOriginalCreator()) ...[
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: widget.onAddPhotos,
+                  icon: const Icon(Icons.add_photo_alternate, size: 18),
+                  label: Text(AppLocalizations.of(context)!.addPhotosAndVideos),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.brandPrimary,
+                    side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
-            ),
-            
-            const SizedBox(height: 12),
-            
+              const SizedBox(height: 12),
+            ],
+
             // Report to MUFON button (quaternary action)
             SizedBox(
               width: double.infinity,
