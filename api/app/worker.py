@@ -416,19 +416,19 @@ async def trigger_alert_fanout(sighting_id: str, sighting):
         # Create sighting event from database sighting
         sighting_event = SightingEvent(
             sighting_id=sighting_id,
-            latitude=sighting.exact_latitude,
-            longitude=sighting.exact_longitude,
-            title=sighting.title,
-            description=sighting.description,
+            latitude=sighting['public_latitude'],
+            longitude=sighting['public_longitude'],
+            title=sighting['title'],
+            description=sighting['description'],
             shape=None,  # TODO: extract from enrichment data if available
             confidence_score=None,  # TODO: extract from enrichment data if available
-            created_at=sighting.created_at
+            created_at=sighting['created_at']
         )
-        
+
         # Get nearby users from database
         user_locations = await get_nearby_user_locations(
-            sighting.exact_latitude, 
-            sighting.exact_longitude
+            sighting['public_latitude'],
+            sighting['public_longitude']
         )
         
         # Get device registry from database
