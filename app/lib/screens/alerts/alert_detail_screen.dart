@@ -671,12 +671,12 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 SizedBox(height: 12),
                 Text(
-                  'UFOBeep is designed for real-time alerts - helping nearby witnesses connect instantly to verify what they\'re seeing right now.',
+                  AppLocalizations.of(context)!.ufobeepRealtimeExplanation,
                   style: TextStyle(color: AppColors.textSecondary),
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'For official investigation and scientific documentation, you can file formal reports with established research organizations.',
+                  AppLocalizations.of(context)!.formalReportingExplanation,
                   style: TextStyle(color: AppColors.textSecondary),
                 ),
                 SizedBox(height: 16),
@@ -690,19 +690,19 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 SizedBox(height: 12),
                 _buildReportingOrgLink(
-                  'MUFON (Mutual UFO Network)',
-                  'The world\'s largest UFO investigation organization with professional field investigators and scientific documentation.',
+                  AppLocalizations.of(context)!.mufonFullName,
+                  AppLocalizations.of(context)!.mufonDescription,
                   'https://mufon.com/cms-ifo-info/',
                 ),
                 SizedBox(height: 12),
                 _buildReportingOrgLink(
-                  'NUFORC (National UFO Reporting Center)',
-                  'Operating since 1974, NUFORC maintains a comprehensive public database of UFO sightings.',
+                  AppLocalizations.of(context)!.nuforcFullName,
+                  AppLocalizations.of(context)!.nuforcDescription,
                   'https://nuforc.org/file-a-report/',
                 ),
                 SizedBox(height: 16),
                 Text(
-                  'What to Expect',
+                  AppLocalizations.of(context)!.whatToExpect,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -711,12 +711,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  'Formal reports typically require:\n'
-                  '• Detailed time, date, and duration\n'
-                  '• Weather conditions and visibility\n'
-                  '• Complete witness testimony\n'
-                  '• Photos or video if available\n\n'
-                  'Organizations may follow up for additional details. Your report contributes to ongoing UFO research.',
+                  AppLocalizations.of(context)!.formalReportRequirements,
                   style: TextStyle(
                     color: AppColors.textSecondary,
                     fontSize: 13,

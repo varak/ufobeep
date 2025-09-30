@@ -1890,6 +1890,30 @@ abstract class AppLocalizations {
   /// **'Open MUFON Report'**
   String get openMufonReport;
 
+  /// No description provided for @howToFormallyReport.
+  ///
+  /// In en, this message translates to:
+  /// **'How to Formally Report'**
+  String get howToFormallyReport;
+
+  /// No description provided for @formalReportingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Formal UFO Reporting'**
+  String get formalReportingTitle;
+
+  /// No description provided for @ufobeepVsFormalReporting.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep vs Formal Reporting'**
+  String get ufobeepVsFormalReporting;
+
+  /// No description provided for @reportingOrganizations.
+  ///
+  /// In en, this message translates to:
+  /// **'Reporting Organizations'**
+  String get reportingOrganizations;
+
   /// No description provided for @confirmedWitness.
   ///
   /// In en, this message translates to:

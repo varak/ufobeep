@@ -942,6 +942,18 @@ class AppLocalizationsAr extends AppLocalizations {
   String get openMufonReport => 'مفتوح التقرير';
 
   @override
+  String get howToFormallyReport => 'How to Formally Report';
+
+  @override
+  String get formalReportingTitle => 'Formal UFO Reporting';
+
+  @override
+  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+
+  @override
+  String get reportingOrganizations => 'Reporting Organizations';
+
+  @override
   String get confirmedWitness => 'لقد أكدت هذا المشهد';
 
   @override

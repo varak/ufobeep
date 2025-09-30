@@ -930,6 +930,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get openMufonReport => 'MUFONを開く レポート';
 
   @override
+  String get howToFormallyReport => 'How to Formally Report';
+
+  @override
+  String get formalReportingTitle => 'Formal UFO Reporting';
+
+  @override
+  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+
+  @override
+  String get reportingOrganizations => 'Reporting Organizations';
+
+  @override
   String get confirmedWitness => 'この視線を確認しました';
 
   @override

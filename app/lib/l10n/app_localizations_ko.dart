@@ -931,6 +931,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get openMufonReport => 'MUFON 오픈 제품정보';
 
   @override
+  String get howToFormallyReport => 'How to Formally Report';
+
+  @override
+  String get formalReportingTitle => 'Formal UFO Reporting';
+
+  @override
+  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+
+  @override
+  String get reportingOrganizations => 'Reporting Organizations';
+
+  @override
   String get confirmedWitness => '이 광경을 확인';
 
   @override
