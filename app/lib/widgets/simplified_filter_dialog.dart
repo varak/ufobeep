@@ -399,20 +399,17 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
     ref.read(alertsFilterStateProvider.notifier).updateFilter(newFilter);
 
     // Save alert range to backend
-    try {
-      await ApiClient.dio.put('/users/me/alert-range', data: _pushRadiusKm);
-      debugPrint('✅ Alert range updated to $_pushRadiusKm km');
-    } catch (e) {
-      debugPrint('❌ Failed to update alert range: $e');
-      rethrow;
-    }
+    await ApiClient.dio.put('/users/me/alert-range', data: _pushRadiusKm);
+    debugPrint('✅ Alert range updated to $_pushRadiusKm km');
 
     // Force AlertsList provider to rebuild with new filter
     ref.invalidate(alertsListProvider);
 
-    debugPrint('🔧 DIALOG: Filter applied, user preferences updated, and AlertsList invalidated');
+    debugPrint('🔧 DIALOG: Filter applied and AlertsList invalidated');
 
-    Navigator.of(context).pop();
+    if (mounted) {
+      Navigator.of(context).pop();
+    }
   }
 
   Widget _buildTranslationCard(AppLocalizations l10n) {

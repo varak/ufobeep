@@ -467,6 +467,7 @@ async def get_nearby_user_locations(latitude: float, longitude: float):
                     lat,
                     lon,
                     alert_range_km,
+                    push_notifications,
                     distance_km
                 FROM (
                     SELECT
@@ -474,6 +475,7 @@ async def get_nearby_user_locations(latitude: float, longitude: float):
                         d.lat,
                         d.lon,
                         u.alert_range_km,
+                        u.push_notifications,
                         -- Calculate distance using Haversine formula
                         6371 * 2 * ASIN(SQRT(
                             POWER(SIN(RADIANS(d.lat - $1) / 2), 2) +
