@@ -569,8 +569,13 @@ async def update_device(
 
                 # 2) Snooze
                 if 'snooze_until' in update_fields:
+                    snooze_val = update_fields['snooze_until']
+                    # Parse ISO string to datetime if it's a string
+                    if isinstance(snooze_val, str):
+                        from dateutil import parser
+                        snooze_val = parser.isoparse(snooze_val)
                     set_clauses.append(f"snooze_until = ${param_idx}")
-                    params.append(update_fields['snooze_until'])
+                    params.append(snooze_val)
                     param_idx += 1
 
                 # 3) User preferences (direct JSONB update from Flutter)
