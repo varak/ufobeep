@@ -434,6 +434,8 @@
   "howToFormallyReport": "Hoe moet ik formeel verslag uitbrengen",
   "formalReportingTitle": "Formele UFO Rapportage",
   "ufobeepVsFormalReporting": "UFObeep vs Formal Reporting",
+  "versus": "vs",
+  "formalReporting": "Formele rapportage",
   "reportingOrganizations": "Rapportageorganisaties",
   "ufobeepRealtimeExplanation": "Ufobeep is ontworpen voor real-time waarschuwingen - het helpen van nabijgelegen getuigen direct verbinding te maken om te controleren wat ze nu zien.",
   "formalReportingExplanation": "Voor officieel onderzoek en wetenschappelijke documentatie kunt u formele rapporten indienen bij gevestigde onderzoeksorganisaties.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "Formele rapportage",
-  "versus": "vs",
 }

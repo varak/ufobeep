@@ -88,8 +88,10 @@ for lang in $LANGUAGES; do
             sed -i "s|\"$key\": \".*\"|\"$key\": \"$TRANSLATED\"|" "$ARB_FILE"
         else
             # Add new key to ARB file (before the last closing brace)
-            head -n -1 "$ARB_FILE" > "${ARB_FILE}.tmp"
-            echo "  \"$key\": \"$TRANSLATED\"," >> "${ARB_FILE}.tmp"
+            # Remove the trailing comma from the last line before closing brace, add comma, then add new key without comma
+            head -n -1 "$ARB_FILE" | sed '$ s/,$//' > "${ARB_FILE}.tmp"
+            echo "," >> "${ARB_FILE}.tmp"
+            echo "  \"$key\": \"$TRANSLATED\"" >> "${ARB_FILE}.tmp"
             echo "}" >> "${ARB_FILE}.tmp"
             mv "${ARB_FILE}.tmp" "$ARB_FILE"
         fi

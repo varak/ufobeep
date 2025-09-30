@@ -957,6 +957,12 @@ class AppLocalizationsCs extends AppLocalizations {
   String get ufobeepVsFormalReporting => 'UFOBeep vs Formální hlášení';
 
   @override
+  String get versus => 'vs';
+
+  @override
+  String get formalReporting => 'Formální vykazování';
+
+  @override
   String get reportingOrganizations => 'Zpravodajské organizace';
 
   @override

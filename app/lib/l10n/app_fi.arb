@@ -434,6 +434,8 @@
   "howToFormallyReport": "Muodollinen kertomus",
   "formalReportingTitle": "Muodollinen UFO Raportointi",
   "ufobeepVsFormalReporting": "UFOPäivä vs. virallinen raportointi",
+  "versus": "vs",
+  "formalReporting": "Muodollinen raportointi",
   "reportingOrganizations": "Raportointiorganisaatiot",
   "ufobeepRealtimeExplanation": "UFOBeep on suunniteltu reaaliaikaisiin hälytyksiin, - jotka auttavat läheisiä todistajia saamaan yhteyden heti - vahvistamaan näkemänsä.",
   "formalReportingExplanation": "Viralliseen tutkimukseen ja tieteelliseen dokumentaatioon voit tehdä virallisia raportteja vakiintuneille tutkimusorganisaatioille.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "Muodollinen raportointi",
-  "versus": "vs",
 }

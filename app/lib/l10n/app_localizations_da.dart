@@ -959,6 +959,12 @@ class AppLocalizationsDa extends AppLocalizations {
   String get ufobeepVsFormalReporting => 'UFOBeep vs formel rapportering';
 
   @override
+  String get versus => 'vs';
+
+  @override
+  String get formalReporting => 'Formel rapportering';
+
+  @override
   String get reportingOrganizations => 'Rapporteringsorganisationer';
 
   @override

@@ -939,6 +939,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ufobeepVsFormalReporting => 'UFOBEP vs 正式报告';
 
   @override
+  String get versus => '数字';
+
+  @override
+  String get formalReporting => '正式报告';
+
+  @override
   String get reportingOrganizations => '报告组织';
 
   @override

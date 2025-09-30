@@ -434,6 +434,8 @@
   "howToFormallyReport": "How to Formally Report",
   "formalReportingTitle": "نموذجي الإبلاغ",
   "ufobeepVsFormalReporting": "UFOBeep vs Formal Reporting",
+  "versus": "vs",
+  "formalReporting": "الإبلاغ الرسمي",
   "reportingOrganizations": "منظمات الإبلاغ",
   "ufobeepRealtimeExplanation": "(أوف بيب) مصممة للإنذارات في الوقت الحقيقي مساعدة الشهود المجاورين على التواصل الفوري للتحقق مما يرونه الآن.",
   "formalReportingExplanation": "بالنسبة للتحقيقات الرسمية والوثائق العلمية، يمكنك تقديم تقارير رسمية مع منظمات البحث المنشأة.",
@@ -1254,7 +1256,5 @@
         "example": "SW to NE"
       }
     }
-  },
-  "formalReporting": "الإبلاغ الرسمي",
-  "versus": "vs"
+  }
 }

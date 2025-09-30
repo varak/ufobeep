@@ -434,6 +434,8 @@
   "howToFormallyReport": "औपचारिक रूप से रिपोर्ट कैसे करें",
   "formalReportingTitle": "औपचारिक यूएफओ रिपोर्टिंग",
   "ufobeepVsFormalReporting": "UFOBeep बनाम औपचारिक रिपोर्टिंग",
+  "versus": "बनाम",
+  "formalReporting": "औपचारिक रिपोर्टिंग",
   "reportingOrganizations": "रिपोर्टिंग संगठन",
   "ufobeepRealtimeExplanation": "UFOBeep वास्तविक समय अलर्ट के लिए डिज़ाइन किया गया है - पास के गवाहों को यह सत्यापित करने के लिए तुरंत कनेक्ट करने में मदद करता है कि वे अभी क्या देख रहे हैं।.",
   "formalReportingExplanation": "आधिकारिक जांच और वैज्ञानिक प्रलेखन के लिए, आप स्थापित अनुसंधान संगठनों के साथ औपचारिक रिपोर्ट दायर कर सकते हैं।.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "औपचारिक रिपोर्टिंग",
-  "versus": "बनाम",
 }

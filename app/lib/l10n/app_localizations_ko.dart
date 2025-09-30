@@ -940,6 +940,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get ufobeepVsFormalReporting => 'UFOBeep 대 Formal 보고';
 
   @override
+  String get versus => '대시보드';
+
+  @override
+  String get formalReporting => 'Formal 보고';
+
+  @override
   String get reportingOrganizations => '회사연혁';
 
   @override

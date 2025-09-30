@@ -960,6 +960,12 @@ class AppLocalizationsNl extends AppLocalizations {
   String get ufobeepVsFormalReporting => 'UFObeep vs Formal Reporting';
 
   @override
+  String get versus => 'vs';
+
+  @override
+  String get formalReporting => 'Formele rapportage';
+
+  @override
   String get reportingOrganizations => 'Rapportageorganisaties';
 
   @override

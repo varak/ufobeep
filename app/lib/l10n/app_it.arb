@@ -434,6 +434,8 @@
   "howToFormallyReport": "Come Riferire la Lettera",
   "formalReportingTitle": "UFO formale Relazione",
   "ufobeepVsFormalReporting": "UFOBeep vs Rapporto formale",
+  "versus": "contro",
+  "formalReporting": "Rapporto formale",
   "reportingOrganizations": "Organizzazioni di reporting",
   "ufobeepRealtimeExplanation": "UFOBeep è progettato per gli avvisi in tempo reale - aiutando i testimoni vicini a connettersi istantaneamente per verificare cosa stanno vedendo in questo momento.",
   "formalReportingExplanation": "Per l'indagine ufficiale e la documentazione scientifica, è possibile presentare relazioni formali con organizzazioni di ricerca stabilite.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "Rapporto formale",
-  "versus": "contro",
 }

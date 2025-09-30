@@ -434,6 +434,8 @@
   "howToFormallyReport": "Hvordan skal man formelt rapportere",
   "formalReportingTitle": "Formel UFO Rapportering",
   "ufobeepVsFormalReporting": "UFOBeep vs formel rapportering",
+  "versus": "vs",
+  "formalReporting": "Formel rapportering",
   "reportingOrganizations": "Rapporteringsorganisationer",
   "ufobeepRealtimeExplanation": "UFOBeep er designet til real- time advarsler - hjælpe nærliggende vidner oprette forbindelse med det samme for at kontrollere, hvad de ser lige nu.",
   "formalReportingExplanation": "For officielle undersøgelser og videnskabelig dokumentation, kan du indsende formelle rapporter med etablerede forskningsorganisationer.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "Formel rapportering",
-  "versus": "vs",
 }

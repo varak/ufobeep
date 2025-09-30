@@ -434,6 +434,8 @@
   "howToFormallyReport": "Cómo informar formalmente",
   "formalReportingTitle": "OVNI formal Reporting",
   "ufobeepVsFormalReporting": "UFOBeep vs Formal Reporting",
+  "versus": "vs",
+  "formalReporting": "Formal Reporting",
   "reportingOrganizations": "Organizaciones informantes",
   "ufobeepRealtimeExplanation": "UFOBeep está diseñado para alertas en tiempo real - ayudando a testigos cercanos a conectarse al instante para verificar lo que están viendo ahora mismo.",
   "formalReportingExplanation": "Para la investigación oficial y la documentación científica, puede presentar informes oficiales con organizaciones de investigación establecidas.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "Formal Reporting",
-  "versus": "vs",
 }

@@ -948,6 +948,12 @@ class AppLocalizationsHe extends AppLocalizations {
   String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
 
   @override
+  String get versus => 'לעומת';
+
+  @override
+  String get formalReporting => 'דוח פורמלי';
+
+  @override
   String get reportingOrganizations => 'דיווח על ארגונים';
 
   @override

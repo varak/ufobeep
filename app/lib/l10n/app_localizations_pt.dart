@@ -963,6 +963,12 @@ class AppLocalizationsPt extends AppLocalizations {
   String get ufobeepVsFormalReporting => 'UFOBeep vs Relatório Formal';
 
   @override
+  String get versus => 'vs';
+
+  @override
+  String get formalReporting => 'Relatórios formais';
+
+  @override
   String get reportingOrganizations => 'Organizações de Informação';
 
   @override

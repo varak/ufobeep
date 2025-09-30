@@ -968,6 +968,12 @@ class AppLocalizationsRu extends AppLocalizations {
       'UFOBeep против официальной отчетности';
 
   @override
+  String get versus => 'vs';
+
+  @override
+  String get formalReporting => 'Формальный отчет';
+
+  @override
   String get reportingOrganizations => 'Отчитывающиеся организации';
 
   @override

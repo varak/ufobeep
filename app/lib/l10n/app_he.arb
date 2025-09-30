@@ -434,6 +434,8 @@
   "howToFormallyReport": "כיצד לדווח באופן פורמלי",
   "formalReportingTitle": "המונחים: UFO דיווח",
   "ufobeepVsFormalReporting": "UFOBeep vs Formal Reporting",
+  "versus": "לעומת",
+  "formalReporting": "דוח פורמלי",
   "reportingOrganizations": "דיווח על ארגונים",
   "ufobeepRealtimeExplanation": "עב\"מ ביפ מיועד לאזהרות בזמן אמת - עוזר לעדים הסמוכים להתחבר מיד כדי לאמת את מה שהם רואים כרגע.",
   "formalReportingExplanation": "עבור חקירה רשמית ותיעוד מדעי, באפשרותך להגיש דוחות רשמיים עם ארגוני מחקר מבוססים.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "דוח פורמלי",
-  "versus": "לעומת",
 }

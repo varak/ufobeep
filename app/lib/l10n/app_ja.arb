@@ -434,6 +434,8 @@
   "howToFormallyReport": "正式に報告する方法",
   "formalReportingTitle": "フォーマルUFO レポート",
   "ufobeepVsFormalReporting": "UFOBeep対フォーマルレポーティング",
+  "versus": "対比",
+  "formalReporting": "フォームレポーティング",
   "reportingOrganizations": "報告機関",
   "ufobeepRealtimeExplanation": "UFOBeepはリアルタイムのアラートのために設計されています。近くの目撃者が即座に接続して、彼らが今見ているかを確認します.",
   "formalReportingExplanation": "正式な調査と科学的な文書については、確立された研究機関と正式な報告書を提出することができます.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "フォームレポーティング",
-  "versus": "対比",
 }

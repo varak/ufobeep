@@ -434,6 +434,8 @@
   "howToFormallyReport": "如何正式报告",
   "formalReportingTitle": "正式的UFO组织 报告",
   "ufobeepVsFormalReporting": "UFOBEP vs 正式报告",
+  "versus": "数字",
+  "formalReporting": "正式报告",
   "reportingOrganizations": "报告组织",
   "ufobeepRealtimeExplanation": "UFOBEP是为实时警报而设计的 - 帮助附近的证人即时连接,以验证他们现在看到的.",
   "formalReportingExplanation": "对于官方调查和科学文献,可以向已经成立的研究组织提交正式报告.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "正式报告",
-  "versus": "数字",
 }

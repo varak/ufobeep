@@ -1908,6 +1908,18 @@ abstract class AppLocalizations {
   /// **'UFOBeep vs Formal Reporting'**
   String get ufobeepVsFormalReporting;
 
+  /// No description provided for @versus.
+  ///
+  /// In en, this message translates to:
+  /// **'vs'**
+  String get versus;
+
+  /// No description provided for @formalReporting.
+  ///
+  /// In en, this message translates to:
+  /// **'Formal Reporting'**
+  String get formalReporting;
+
   /// No description provided for @reportingOrganizations.
   ///
   /// In en, this message translates to:

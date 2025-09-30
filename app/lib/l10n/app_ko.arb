@@ -434,6 +434,8 @@
   "howToFormallyReport": "자주 묻는 질문",
   "formalReportingTitle": "모양 UFO 관련 기사",
   "ufobeepVsFormalReporting": "UFOBeep 대 Formal 보고",
+  "versus": "대시보드",
+  "formalReporting": "Formal 보고",
   "reportingOrganizations": "회사연혁",
   "ufobeepRealtimeExplanation": "UFOBeep은 실시간 알림을 위해 설계되었습니다 - 가까운 증인이 즉시 연결되도록 돕습니다.",
   "formalReportingExplanation": "공식 조사 및 과학 문서의 경우, 지정된 연구 기관과의 보고서를 제출할 수 있습니다.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "Formal 보고",
-  "versus": "대시보드",
 }

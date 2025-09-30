@@ -964,6 +964,12 @@ class AppLocalizationsEl extends AppLocalizations {
       'UFOBeep εναντίον της επίσημης αναφοράς';
 
   @override
+  String get versus => 'vs';
+
+  @override
+  String get formalReporting => 'Επίσημη έκθεση';
+
+  @override
   String get reportingOrganizations => 'Οργανισμοί αναφοράς';
 
   @override

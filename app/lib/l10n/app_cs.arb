@@ -434,6 +434,8 @@
   "howToFormallyReport": "Jak Formálně podat zprávu",
   "formalReportingTitle": "Formální UFO Podávání zpráv",
   "ufobeepVsFormalReporting": "UFOBeep vs Formální hlášení",
+  "versus": "vs",
+  "formalReporting": "Formální vykazování",
   "reportingOrganizations": "Zpravodajské organizace",
   "ufobeepRealtimeExplanation": "UFOBeep je určen pro upozornění v reálném čase - pomáhá blízkým svědkům okamžitě se připojit, aby ověřili, co právě vidí.",
   "formalReportingExplanation": "Pro oficiální vyšetřování a vědeckou dokumentaci můžete podat formální zprávy se zavedenými výzkumnými organizacemi.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "Formální vykazování",
-  "versus": "vs",
 }

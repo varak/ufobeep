@@ -434,6 +434,8 @@
   "howToFormallyReport": "Jak raport formalny",
   "formalReportingTitle": "Formalne UFO Sprawozdawczość",
   "ufobeepVsFormalReporting": "UFOBeep vs Formalna sprawozdawczość",
+  "versus": "vs",
+  "formalReporting": "Formalna sprawozdawczość",
   "reportingOrganizations": "Organizacje sprawozdawcze",
   "ufobeepRealtimeExplanation": "UFOBeep jest przeznaczony do alertów czasu rzeczywistego - pomaga pobliskim świadkom połączyć się natychmiast, aby sprawdzić, co widzą w tej chwili.",
   "formalReportingExplanation": "Do celów oficjalnego dochodzenia i dokumentacji naukowej, można składać oficjalne raporty z założonymi organizacjami badawczymi.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "Formalna sprawozdawczość",
-  "versus": "vs",
 }

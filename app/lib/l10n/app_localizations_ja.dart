@@ -939,6 +939,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get ufobeepVsFormalReporting => 'UFOBeep対フォーマルレポーティング';
 
   @override
+  String get versus => '対比';
+
+  @override
+  String get formalReporting => 'フォームレポーティング';
+
+  @override
   String get reportingOrganizations => '報告機関';
 
   @override

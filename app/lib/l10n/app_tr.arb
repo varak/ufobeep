@@ -434,6 +434,8 @@
   "howToFormallyReport": "Formally Report Nasıl",
   "formalReportingTitle": "Formal UFO Raporlama",
   "ufobeepVsFormalReporting": "UFOBeep vs Formal Reporting",
+  "versus": "vs",
+  "formalReporting": "Formal Raporlama",
   "reportingOrganizations": "Raporlama Organizasyonları",
   "ufobeepRealtimeExplanation": "UFOBeep gerçek zamanlı uyarılar için tasarlanmıştır - yakındaki tanıklara şu anda gördükleri şeyleri doğrulamak için anında bağlantı sağlar.",
   "formalReportingExplanation": "Resmi araştırma ve bilimsel belgeler için, yerleşik araştırma kuruluşları ile resmi raporlar gönderebilirsiniz.",
@@ -1255,6 +1257,4 @@
       }
     }
   }
-  "formalReporting": "Formal Raporlama",
-  "versus": "vs",
 }

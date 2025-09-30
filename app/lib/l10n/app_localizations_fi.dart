@@ -957,6 +957,12 @@ class AppLocalizationsFi extends AppLocalizations {
   String get ufobeepVsFormalReporting => 'UFOPäivä vs. virallinen raportointi';
 
   @override
+  String get versus => 'vs';
+
+  @override
+  String get formalReporting => 'Muodollinen raportointi';
+
+  @override
   String get reportingOrganizations => 'Raportointiorganisaatiot';
 
   @override
