@@ -115,13 +115,13 @@ class _AlertActionsSectionState extends ConsumerState<AlertActionsSection> {
               const SizedBox(height: 12),
             ],
 
-            // Report to MUFON button (quaternary action)
+            // Formal reporting button
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
                 onPressed: widget.onReportToMufon,
                 icon: const Icon(Icons.report_outlined, size: 18),
-                label: Text(AppLocalizations.of(context)!.howToReportToMufon),
+                label: Text(AppLocalizations.of(context)!.howToFormallyReport),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.brandPrimary,
                   side: const BorderSide(color: AppColors.brandPrimary, width: 1.5),

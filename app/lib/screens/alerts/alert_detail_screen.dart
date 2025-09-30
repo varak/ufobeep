@@ -493,7 +493,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                       // Refresh alert data when returning from attach screen
                       _refreshAlert();
                     },
-                    onReportToMufon: () => _showMufonReportDialog(),
+                    onReportToMufon: () => _showFormalReportingDialog(),
                     onWitnessConfirmed: (witnessCount) {
                       // Refresh witness status after confirmation
                       if (_currentUserDeviceId != null) {
@@ -643,7 +643,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
   }
 
 
-  void _showMufonReportDialog() {
+  void _showFormalReportingDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -653,7 +653,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             children: [
               const Icon(Icons.report_outlined, color: AppColors.brandPrimary),
               const SizedBox(width: 8),
-              Text(AppLocalizations.of(context)!.reportToMufon),
+              Text(AppLocalizations.of(context)!.formalReportingTitle),
             ],
           ),
           content: SingleChildScrollView(
@@ -662,7 +662,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'About UFOBeep & MUFON',
+                  AppLocalizations.of(context)!.ufobeepVsFormalReporting,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -671,17 +671,38 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 SizedBox(height: 12),
                 Text(
-                  'UFOBeep is designed for quick, real-time alerts to help witnesses connect and verify sightings instantly.',
+                  'UFOBeep is designed for real-time alerts - helping nearby witnesses connect instantly to verify what they\'re seeing right now.',
                   style: TextStyle(color: AppColors.textSecondary),
                 ),
-                SizedBox(height: 12),
+                SizedBox(height: 8),
                 Text(
-                  'MUFON (Mutual UFO Network) is the world\'s oldest and largest UFO investigation organization. They collect detailed scientific reports and conduct thorough investigations.',
+                  'For official investigation and scientific documentation, you can file formal reports with established research organizations.',
                   style: TextStyle(color: AppColors.textSecondary),
                 ),
                 SizedBox(height: 16),
                 Text(
-                  AppLocalizations.of(context)!.whyReportToMufon,
+                  AppLocalizations.of(context)!.reportingOrganizations,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                SizedBox(height: 12),
+                _buildReportingOrgLink(
+                  'MUFON (Mutual UFO Network)',
+                  'The world\'s largest UFO investigation organization with professional field investigators and scientific documentation.',
+                  'https://mufon.com/cms-ifo-info/',
+                ),
+                SizedBox(height: 12),
+                _buildReportingOrgLink(
+                  'NUFORC (National UFO Reporting Center)',
+                  'Operating since 1974, NUFORC maintains a comprehensive public database of UFO sightings.',
+                  'https://nuforc.org/file-a-report/',
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'What to Expect',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -690,20 +711,15 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 SizedBox(height: 8),
                 Text(
-                  '• Permanent scientific record\n'
-                  '• Professional investigation\n'
-                  '• Detailed witness testimony\n'
-                  '• Contributing to UFO research\n'
-                  '• Access to MUFON\'s global database',
-                  style: TextStyle(color: AppColors.textSecondary),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'The MUFON report form will ask for detailed information about your sighting including time, duration, weather conditions, and a full description.',
+                  'Formal reports typically require:\n'
+                  '• Detailed time, date, and duration\n'
+                  '• Weather conditions and visibility\n'
+                  '• Complete witness testimony\n'
+                  '• Photos or video if available\n\n'
+                  'Organizations may follow up for additional details. Your report contributes to ongoing UFO research.',
                   style: TextStyle(
-                    color: AppColors.textTertiary,
-                    fontSize: 12,
-                    fontStyle: FontStyle.italic,
+                    color: AppColors.textSecondary,
+                    fontSize: 13,
                   ),
                 ),
               ],
@@ -713,45 +729,73 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text(
-                AppLocalizations.of(context)!.cancel,
+                AppLocalizations.of(context)!.close,
                 style: const TextStyle(color: AppColors.textSecondary),
-              ),
-            ),
-            ElevatedButton.icon(
-              onPressed: () async {
-                Navigator.of(context).pop();
-                final Uri mufonUrl = Uri.parse('https://mufon.com/cms-ifo-info/');
-                try {
-                  await launchUrl(
-                    mufonUrl, 
-                    mode: LaunchMode.externalApplication,
-                    webViewConfiguration: const WebViewConfiguration(
-                      enableJavaScript: true,
-                      enableDomStorage: true,
-                    ),
-                  );
-                } catch (e) {
-                  if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text('Could not open MUFON website: $e'),
-                        backgroundColor: AppColors.semanticError,
-                        duration: const Duration(seconds: 4),
-                      ),
-                    );
-                  }
-                }
-              },
-              icon: const Icon(Icons.open_in_browser),
-              label: Text(AppLocalizations.of(context)!.openMufonReport),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.brandPrimary,
-                foregroundColor: Colors.black,
               ),
             ),
           ],
         );
       },
+    );
+  }
+
+  Widget _buildReportingOrgLink(String title, String description, String url) {
+    return InkWell(
+      onTap: () async {
+        final Uri uri = Uri.parse(url);
+        try {
+          await launchUrl(
+            uri,
+            mode: LaunchMode.externalApplication,
+          );
+        } catch (e) {
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Could not open link: $e'),
+                backgroundColor: AppColors.semanticError,
+              ),
+            );
+          }
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: AppColors.brandPrimary.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.brandPrimary.withValues(alpha: 0.3)),
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.open_in_new, size: 20, color: AppColors.brandPrimary),
+            SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.brandPrimary,
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(height: 4),
+                  Text(
+                    description,
+                    style: TextStyle(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
