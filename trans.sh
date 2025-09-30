@@ -45,33 +45,14 @@ for lang in $LANGUAGES; do
     # Find missing keys (in English but not in target language)
     MISSING_KEYS=$(comm -23 <(echo "$ENGLISH_KEYS") <(echo "$EXISTING_KEYS"))
 
-    # Also find keys with identical English values (bad translations)
-    BAD_KEYS=""
-    for key in $ENGLISH_KEYS; do
-        if echo "$EXISTING_KEYS" | grep -q "^$key$"; then
-            EN_VAL=$(grep -oP "\"$key\"\s*:\s*\"\K[^\"]*" "$ENGLISH_ARB" | head -1)
-            LANG_VAL=$(grep -oP "\"$key\"\s*:\s*\"\K[^\"]*" "$ARB_FILE" | head -1)
-
-            # If values are identical and key is not metadata, it needs re-translation
-            if [ "$EN_VAL" == "$LANG_VAL" ] && [[ ! $key == @* ]]; then
-                BAD_KEYS="$BAD_KEYS$key"$'\n'
-            fi
-        fi
-    done
-
-    # Combine missing and bad keys
-    ALL_KEYS=$(echo -e "$MISSING_KEYS\n$BAD_KEYS" | grep -v "^$" | sort -u)
-
-    if [ -z "$ALL_KEYS" ]; then
-        echo "✅ $lang: No new or bad translations"
+    if [ -z "$MISSING_KEYS" ]; then
+        echo "✅ $lang: No new keys to translate"
         continue
     fi
 
-    count=$(echo "$ALL_KEYS" | wc -l)
+    count=$(echo "$MISSING_KEYS" | wc -l)
     total_new=$((total_new + count))
-    echo "🔄 $lang: Found $count keys to translate (new or bad)"
-
-    MISSING_KEYS="$ALL_KEYS"
+    echo "🔄 $lang: Found $count new keys to translate"
 
     # Translate each missing key
     for key in $MISSING_KEYS; do

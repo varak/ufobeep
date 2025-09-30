@@ -662,7 +662,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)!.ufobeepVsFormalReporting,
+                  'UFOBeep ${AppLocalizations.of(context)!.versus} ${AppLocalizations.of(context)!.formalReporting}',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
