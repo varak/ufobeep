@@ -263,13 +263,22 @@ async def get_current_user(current_user = Depends(get_current_user_from_jwt)):
 
 @router.put("/me/alert-range")
 async def update_alert_range(
-    alert_range_km: float,
+    request: Request,
     current_user = Depends(get_current_user_from_jwt)
 ):
     """Update user's alert range for proximity notifications"""
     from app.services.database_service import get_db
 
+    # Get alert_range_km from request body (sent as raw float)
+    alert_range_km = await request.json()
+
     # Validate range
+    if not isinstance(alert_range_km, (int, float)):
+        raise HTTPException(
+            status_code=422,
+            detail="Alert range must be a number"
+        )
+
     if not (1 <= alert_range_km <= 10000):
         raise HTTPException(
             status_code=400,
@@ -280,7 +289,7 @@ async def update_alert_range(
     async with db.acquire() as conn:
         await conn.execute(
             "UPDATE users SET alert_range_km = $1 WHERE id = $2",
-            alert_range_km,
+            float(alert_range_km),
             current_user["id"]
         )
 
