@@ -73,7 +73,7 @@ export default function DeleteAccountPage() {
             </p>
             <a
               href="mailto:support@ufobeep.com?subject=Delete%20My%20Account"
-              className="inline-block bg-brand-primary hover:bg-brand-primary-light text-background-dark font-semibold px-6 py-3 rounded-lg transition-colors"
+              className="inline-block bg-brand-primary hover:bg-brand-primary-light text-black font-semibold px-6 py-3 rounded-lg transition-colors"
             >
               support@ufobeep.com
             </a>
