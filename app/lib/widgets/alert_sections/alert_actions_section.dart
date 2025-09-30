@@ -88,10 +88,8 @@ class _AlertActionsSectionState extends ConsumerState<AlertActionsSection> {
             _buildConfirmedStatus(),
             const SizedBox(height: 12),
           ],
-          
+
           if (widget.showAllActions) ...[
-            const SizedBox(height: 12),
-            
             // Add Photos button (tertiary action)
             SizedBox(
               width: double.infinity,
