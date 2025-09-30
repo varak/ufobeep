@@ -67,7 +67,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
   Future<void> _checkEnrichmentProgress() async {
     // Poll the beep API to check enrichment completion
     int attempts = 0;
-    const maxAttempts = 8; // 4 seconds max wait
+    const maxAttempts = 10; // 5 seconds max wait
 
     while (attempts < maxAttempts) {
       await Future.delayed(const Duration(milliseconds: 500));
@@ -236,25 +236,24 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
                   ),
                 ),
 
-              // Continue button after timeout
-              if (_showContinueButton) ...[
-                const SizedBox(height: 32),
-                ElevatedButton(
+              const SizedBox(height: 48),
+
+              // Continue button after timeout (appears below all processors)
+              if (_showContinueButton)
+                TextButton(
                   onPressed: () => widget.onComplete(),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.brandPrimary,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   ),
                   child: Text(
                     l10n.splashContinue,
                     style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: AppColors.brandPrimary,
+                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
-              ],
             ],
           ),
         ),
