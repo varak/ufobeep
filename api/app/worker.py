@@ -459,28 +459,29 @@ async def get_nearby_user_locations(latitude: float, longitude: float):
         async with pool.acquire() as db:
             logger.info(f"Querying nearby users for lat={latitude}, lon={longitude}")
             
-            # Query users with location and alert preferences
+            # Query devices with location and user alert preferences
             # Uses Haversine formula for distance calculation in SQL
             users = await db.fetch("""
-                SELECT 
-                    u.id as user_id,
-                    u.location,
+                SELECT
+                    d.user_id,
+                    d.lat,
+                    d.lon,
                     u.alert_range_km,
-                    u.push_notifications,
                     -- Calculate distance using Haversine formula
                     6371 * 2 * ASIN(SQRT(
-                        POWER(SIN(RADIANS(CAST(SPLIT_PART(u.location, ',', 1) AS FLOAT) - $1) / 2), 2) +
-                        COS(RADIANS($1)) * 
-                        COS(RADIANS(CAST(SPLIT_PART(u.location, ',', 1) AS FLOAT))) *
-                        POWER(SIN(RADIANS(CAST(SPLIT_PART(u.location, ',', 2) AS FLOAT) - $2) / 2), 2)
+                        POWER(SIN(RADIANS(d.lat - $1) / 2), 2) +
+                        COS(RADIANS($1)) *
+                        COS(RADIANS(d.lat)) *
+                        POWER(SIN(RADIANS(d.lon - $2) / 2), 2)
                     )) as distance_km
-                FROM users u 
-                WHERE u.is_active = true 
-                  AND u.push_notifications = true
-                  AND u.location IS NOT NULL
-                  AND u.location != ''
-                HAVING distance_km <= u.alert_range_km 
-                  AND distance_km <= 100  -- Max system limit
+                FROM devices d
+                JOIN users u ON d.user_id = u.id
+                WHERE u.is_active = true
+                  AND d.lat IS NOT NULL
+                  AND d.lon IS NOT NULL
+                  AND d.push_enabled = true
+                  AND u.alert_range_km IS NOT NULL
+                HAVING distance_km <= u.alert_range_km
                 ORDER BY distance_km ASC
                 LIMIT 1000
             """, latitude, longitude)
@@ -488,11 +489,10 @@ async def get_nearby_user_locations(latitude: float, longitude: float):
             user_locations = []
             for user in users:
                 try:
-                    # Parse location string "lat,lon" 
-                    if user['location'] and ',' in user['location']:
-                        lat_str, lon_str = user['location'].split(',', 1)
-                        user_lat = float(lat_str.strip())
-                        user_lon = float(lon_str.strip())
+                    # Use lat/lon from devices table
+                    if user['lat'] is not None and user['lon'] is not None:
+                        user_lat = float(user['lat'])
+                        user_lon = float(user['lon'])
                         
                         user_location = UserLocation(
                             user_id=str(user['user_id']),
