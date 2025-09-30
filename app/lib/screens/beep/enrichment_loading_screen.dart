@@ -67,7 +67,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
   Future<void> _checkEnrichmentProgress() async {
     // Poll the beep API to check enrichment completion
     int attempts = 0;
-    const maxAttempts = 20; // 10 seconds max wait
+    const maxAttempts = 8; // 4 seconds max wait
 
     while (attempts < maxAttempts) {
       await Future.delayed(const Duration(milliseconds: 500));
