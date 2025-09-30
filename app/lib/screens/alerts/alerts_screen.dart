@@ -7,7 +7,7 @@ import '../../models/alerts_filter.dart';
 import '../../models/user_preferences.dart';
 import '../../models/alert_enrichment.dart';
 import '../../services/visibility_service.dart';
-import '../../widgets/simplified_filter_dialog.dart';
+import 'alerts_settings_screen.dart';
 import '../../l10n/app_localizations.dart';
 import '../../widgets/alert_card.dart';
 import '../../widgets/alerts/visibility_indicator.dart';
@@ -93,9 +93,10 @@ class _AlertsScreenState extends ConsumerState<AlertsScreen> {
                 : AppColors.textSecondary,
           ),
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) => const SimplifiedFilterDialog(),
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const AlertsSettingsScreen(),
+              ),
             );
           },
           tooltip: 'Filters',
