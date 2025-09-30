@@ -463,25 +463,33 @@ async def get_nearby_user_locations(latitude: float, longitude: float):
             # Uses Haversine formula for distance calculation in SQL
             users = await db.fetch("""
                 SELECT
-                    d.user_id,
-                    d.lat,
-                    d.lon,
-                    u.alert_range_km,
-                    -- Calculate distance using Haversine formula
-                    6371 * 2 * ASIN(SQRT(
-                        POWER(SIN(RADIANS(d.lat - $1) / 2), 2) +
-                        COS(RADIANS($1)) *
-                        COS(RADIANS(d.lat)) *
-                        POWER(SIN(RADIANS(d.lon - $2) / 2), 2)
-                    )) as distance_km
-                FROM devices d
-                JOIN users u ON d.user_id = u.id
-                WHERE u.is_active = true
-                  AND d.lat IS NOT NULL
-                  AND d.lon IS NOT NULL
-                  AND d.push_enabled = true
-                  AND u.alert_range_km IS NOT NULL
-                HAVING distance_km <= u.alert_range_km
+                    user_id,
+                    lat,
+                    lon,
+                    alert_range_km,
+                    distance_km
+                FROM (
+                    SELECT
+                        d.user_id,
+                        d.lat,
+                        d.lon,
+                        u.alert_range_km,
+                        -- Calculate distance using Haversine formula
+                        6371 * 2 * ASIN(SQRT(
+                            POWER(SIN(RADIANS(d.lat - $1) / 2), 2) +
+                            COS(RADIANS($1)) *
+                            COS(RADIANS(d.lat)) *
+                            POWER(SIN(RADIANS(d.lon - $2) / 2), 2)
+                        )) as distance_km
+                    FROM devices d
+                    JOIN users u ON d.user_id = u.id
+                    WHERE u.is_active = true
+                      AND d.lat IS NOT NULL
+                      AND d.lon IS NOT NULL
+                      AND d.push_enabled = true
+                      AND u.alert_range_km IS NOT NULL
+                ) AS nearby
+                WHERE distance_km <= alert_range_km
                 ORDER BY distance_km ASC
                 LIMIT 1000
             """, latitude, longitude)
