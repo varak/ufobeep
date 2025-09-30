@@ -85,10 +85,17 @@ class UserPreferencesNotifier extends StateNotifier<UserPreferences?> {
       final prefsJson = jsonEncode(updatedPrefs.toJson());
       await _prefs.setString(_prefsKey, prefsJson);
       state = updatedPrefs;
-      
-      // Sync critical preferences (DND/snooze) to backend
-      await _syncToBackend(updatedPrefs);
-      
+
+      // Sync critical preferences (DND/snooze/language) to backend
+      try {
+        await _syncToBackend(updatedPrefs);
+        debugPrint('✅ Preferences synced to backend successfully');
+      } catch (syncError) {
+        debugPrint('⚠️ WARNING: Preferences saved locally but backend sync failed: $syncError');
+        debugPrint('⚠️ Push notifications may use old language/DND settings until sync succeeds');
+        // Continue - local preferences still work
+      }
+
       return true;
     } catch (e) {
       if (AppEnvironment.enableLogging) {
