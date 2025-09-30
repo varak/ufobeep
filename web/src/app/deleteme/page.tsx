@@ -78,16 +78,16 @@ export default function DeleteAccountPage() {
               support@ufobeep.com
             </a>
 
-            <p className="text-sm text-text-tertiary mt-4">
+            <p className="text-sm text-text-secondary mt-4">
               <strong>Include in your email:</strong>
             </p>
-            <ul className="text-sm text-text-tertiary space-y-1 mt-2">
+            <ul className="text-sm text-text-secondary space-y-1 mt-2">
               <li>• The email address associated with your account</li>
               <li>• Confirmation that you want to permanently delete your account</li>
               <li>• (Optional) Reason for leaving</li>
             </ul>
 
-            <p className="text-sm text-text-tertiary mt-4">
+            <p className="text-sm text-text-secondary mt-4">
               We will process your deletion request within <strong>30 days</strong> and send you a confirmation email when complete.
             </p>
           </div>
