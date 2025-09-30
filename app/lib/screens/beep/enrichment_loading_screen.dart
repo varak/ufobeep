@@ -35,6 +35,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
 
   double _overallProgress = 0.0;
   String _currentProcessor = 'weather';
+  bool _showContinueButton = false;
 
   @override
   void initState() {
@@ -103,8 +104,18 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
       }
     }
 
-    // Timeout - proceed anyway
-    widget.onComplete();
+    // Timeout - show continue button instead of auto-navigating
+    if (mounted) {
+      setState(() {
+        _showContinueButton = true;
+      });
+    }
+
+    // Wait 2 more seconds, then auto-proceed anyway
+    await Future.delayed(const Duration(seconds: 2));
+    if (mounted) {
+      widget.onComplete();
+    }
   }
 
   void _markProcessorComplete(String processorName) {
@@ -215,7 +226,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
               const SizedBox(height: 24),
 
               // Current processor indicator
-              if (_currentProcessor.isNotEmpty)
+              if (_currentProcessor.isNotEmpty && !_showContinueButton)
                 Text(
                   l10n.analyzing(_getProcessorDisplayName(_currentProcessor)),
                   style: const TextStyle(
@@ -224,6 +235,26 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
                     fontStyle: FontStyle.italic,
                   ),
                 ),
+
+              // Continue button after timeout
+              if (_showContinueButton) ...[
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: () => widget.onComplete(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.brandPrimary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                  ),
+                  child: Text(
+                    l10n.splashContinue,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ],
             ],
           ),
         ),
