@@ -453,8 +453,10 @@ async def get_nearby_user_locations(latitude: float, longitude: float):
     """Get users within alert range of a location using Haversine distance"""
     try:
         from app.workers.alert_fanout import UserLocation
-        
-        async with get_db_session() as db:
+        from app.services.database_service import get_database_pool
+
+        pool = await get_database_pool()
+        async with pool.acquire() as db:
             logger.info(f"Querying nearby users for lat={latitude}, lon={longitude}")
             
             # Query users with location and alert preferences
