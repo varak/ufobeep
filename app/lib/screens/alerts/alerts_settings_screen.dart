@@ -87,7 +87,7 @@ class _AlertsSettingsScreenState extends ConsumerState<AlertsSettingsScreen> {
       // Create new filter
       final newFilter = AlertsFilter(
         showUfoBeepOnly: showUfoBeepOnly,
-        sortBy: _sortByNewest ? AlertSortBy.createdAt : AlertSortBy.distance,
+        sortBy: _sortByNewest ? AlertSortBy.newest : AlertSortBy.distance,
       );
 
       // Save filter to state
