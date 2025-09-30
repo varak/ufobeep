@@ -54,6 +54,8 @@
   "shapeFireball": "πυρόμπαλα",
   "shapeFormation": "σχηματισμός",
   "shapeUnknown": "άγνωστο",
+  "ufobeepVsFormalReporting": "UFOBeep εναντίον της επίσημης αναφοράς",
+  "ufobeepRealtimeExplanation": "Το UFOBeep έχει σχεδιαστεί για ειδοποιήσεις σε πραγματικό χρόνο - βοηθώντας τους κοντινούς μάρτυρες να συνδεθούν άμεσα για να επιβεβαιώσουν τι βλέπουν αυτή τη στιγμή.",
   "alertFollowError": "Σφάλμα ενημέρωσης της κατάστασης",
   "ufobeepWitnesses": "Μάρτυρες",
   "ufobeepConfirmations": "Επιβεβαίωση",

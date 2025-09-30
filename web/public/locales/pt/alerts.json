@@ -54,6 +54,8 @@
   "shapeFireball": "bola de fogo",
   "shapeFormation": "formação",
   "shapeUnknown": "desconhecido",
+  "ufobeepVsFormalReporting": "UFOBeep vs Relatório Formal",
+  "ufobeepRealtimeExplanation": "O UFOBeep foi projetado para alertas em tempo real, ajudando testemunhas próximas a se conectar instantaneamente para verificar o que eles estão vendo agora.",
   "alertFollowError": "Erro ao atualizar o status da sequência",
   "ufobeepWitnesses": "Testemunhas",
   "ufobeepConfirmations": "Confirmações",

@@ -954,6 +954,35 @@ class AppLocalizationsNo extends AppLocalizations {
   String get reportingOrganizations => 'Reporting Organizations';
 
   @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep is designed for real-time alerts - helping nearby witnesses connect instantly to verify what they\'re seeing right now.';
+
+  @override
+  String get formalReportingExplanation =>
+      'For official investigation and scientific documentation, you can file formal reports with established research organizations.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'The world\'s largest UFO investigation organization with professional field investigators and scientific documentation.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (National UFO Reporting Center)';
+
+  @override
+  String get nuforcDescription =>
+      'Operating since 1974, NUFORC maintains a comprehensive public database of UFO sightings.';
+
+  @override
+  String get whatToExpect => 'What to Expect';
+
+  @override
+  String get formalReportRequirements =>
+      'Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research.';
+
+  @override
   String get confirmedWitness => 'You confirmed this sighting';
 
   @override
@@ -2666,7 +2695,7 @@ class AppLocalizationsNo extends AppLocalizations {
   String get translating => 'Translating...';
 
   @override
-  String get showOriginal => 'Vis original';
+  String get showOriginal => 'Vis originalen';
 
   @override
   String translateTo(String language) {

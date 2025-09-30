@@ -954,16 +954,46 @@ class AppLocalizationsPt extends AppLocalizations {
   String get openMufonReport => 'Abrir MUFON Relatório';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Como informar formalmente';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'UFO formal Relatórios';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOBeep vs Relatório Formal';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Organizações de Informação';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'O UFOBeep foi projetado para alertas em tempo real, ajudando testemunhas próximas a se conectar instantaneamente para verificar o que eles estão vendo agora.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Para investigação oficial e documentação científica, você pode apresentar relatórios formais com organizações de pesquisa estabelecidas.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'A maior organização mundial de investigação de OVNIs com investigadores de campo profissionais e documentação científica.';
+
+  @override
+  String get nuforcFullName =>
+      'NUFORC (Centro Nacional de Informação de OVNIs)';
+
+  @override
+  String get nuforcDescription =>
+      'Operando desde 1974, NUFORC mantém uma ampla base de dados pública de avistamentos de OVNIs.';
+
+  @override
+  String get whatToExpect => 'O que esperar';
+
+  @override
+  String get formalReportRequirements =>
+      'Os relatórios formais geralmente exigem:\n• Tempo, data e duração detalhados\n• Condições meteorológicas e visibilidade\n• Testemunho completo\n• Fotos ou vídeo se disponível\n\nAs organizações podem acompanhar para mais detalhes. O seu relatório contribui para a investigação de OVNIs em curso.';
 
   @override
   String get confirmedWitness => 'Confirmaste esta aparição';

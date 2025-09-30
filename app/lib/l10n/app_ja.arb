@@ -431,6 +431,18 @@
   "reportToMufon": "MUFONへの報告",
   "whyReportToMufon": "なぜMUFONへの報告?",
   "openMufonReport": "MUFONを開く レポート",
+  "howToFormallyReport": "正式に報告する方法",
+  "formalReportingTitle": "フォーマルUFO レポート",
+  "ufobeepVsFormalReporting": "UFOBeep対フォーマルレポーティング",
+  "reportingOrganizations": "報告機関",
+  "ufobeepRealtimeExplanation": "UFOBeepはリアルタイムのアラートのために設計されています。近くの目撃者が即座に接続して、彼らが今見ているかを確認します.",
+  "formalReportingExplanation": "正式な調査と科学的な文書については、確立された研究機関と正式な報告書を提出することができます.",
+  "mufonFullName": "MUFON (相互UFOネットワーク)",
+  "mufonDescription": "専門分野調査者および科学的文書の世界最大のUFO調査組織.",
+  "nuforcFullName": "NUFORC(国家UFO報告センター)",
+  "nuforcDescription": "NUFORCは、1974年から運用し、UFOの視線の総合パブリックデータベースを維持しています.",
+  "whatToExpect": "期待するもの",
+  "formalReportRequirements": "フォームレポートは通常必要です:\n・ 詳しい時間、日付および持続期間\n・ 気象条件および可視性\n•完全な証人証言\n・ 利用できる場合の写真かビデオ\n\n組織は、詳細については、フォローアップすることができます。 あなたのレポートは、進行中のUFO研究に貢献します.",
   "confirmedWitness": "この視線を確認しました",
   "witnessesHaveConfirmed": "{count} 人々はこの視線を確認しました",
   "@witnessesHaveConfirmed": {
@@ -1157,7 +1169,7 @@
   "checkingConnectivity": "接続チェック...",
   "gatheringDeviceInfo": "デバイス情報収集.",
   "translating": "翻訳する...",
-  "showOriginal": "原文を表示",
+  "showOriginal": "ショーオリジナル",
   "translateTo": "{language} への変換",
   "@translateTo": {
     "placeholders": {

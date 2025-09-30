@@ -54,6 +54,8 @@
   "shapeFireball": "サッカー",
   "shapeFormation": "フォーム",
   "shapeUnknown": "インフォメーション",
+  "ufobeepVsFormalReporting": "UFOBeep対フォーマルレポーティング",
+  "ufobeepRealtimeExplanation": "UFOBeepはリアルタイムのアラートのために設計されています。近くの目撃者が即座に接続して、彼らが今見ているかを確認します.",
   "alertFollowError": "エラー更新 ステータスをフォローする",
   "ufobeepWitnesses": "ウィッチネス",
   "ufobeepConfirmations": "確認事項",

@@ -54,6 +54,8 @@
   "shapeFireball": "fireball",
   "shapeFormation": "formasyon",
   "shapeUnknown": "bilinmeyen",
+  "ufobeepVsFormalReporting": "UFOBeep vs Formal Reporting",
+  "ufobeepRealtimeExplanation": "UFOBeep gerçek zamanlı uyarılar için tasarlanmıştır - yakındaki tanıklara şu anda gördükleri şeyleri doğrulamak için anında bağlantı sağlar.",
   "alertFollowError": "Hata Güncellemesi",
   "ufobeepWitnesses": "Tanık Şahitler",
   "ufobeepConfirmations": "Onaylamalar",

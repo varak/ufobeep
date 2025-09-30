@@ -1,5 +1,8 @@
 {
   "username": "Gebruikersnaam",
   "usernameUpdated": "Gebruikersnaam bijgewerkt",
-  "submitBeep": "Beep sturen"
+  "submitBeep": "Beep sturen",
+  "formalReportingTitle": "Formele UFO Rapportage",
+  "formalReportingExplanation": "Voor officieel onderzoek en wetenschappelijke documentatie kunt u formele rapporten indienen bij gevestigde onderzoeksorganisaties.",
+  "formalReportRequirements": "De formele verslagen vereisen doorgaans:\n• Gedetailleerde tijd, datum en duur\n• Weersomstandigheden en zichtbaarheid\n• Volledige getuigenverklaring\n• Foto's of video indien beschikbaar\n\nOrganisaties kunnen aanvullende details opvolgen. Uw rapport draagt bij aan het lopende UFO onderzoek."
 }

@@ -954,16 +954,45 @@ class AppLocalizationsEs extends AppLocalizations {
   String get openMufonReport => 'Open MUFON Informe';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Cómo informar formalmente';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'OVNI formal Reporting';
 
   @override
   String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Organizaciones informantes';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep está diseñado para alertas en tiempo real - ayudando a testigos cercanos a conectarse al instante para verificar lo que están viendo ahora mismo.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Para la investigación oficial y la documentación científica, puede presentar informes oficiales con organizaciones de investigación establecidas.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'La organización de investigación UFO más grande del mundo con investigadores profesionales de campo y documentación científica.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (National UFO Reporting Center)';
+
+  @override
+  String get nuforcDescription =>
+      'Desde 1974, NUFORC mantiene una amplia base de datos pública de avistamientos de OVNI.';
+
+  @override
+  String get whatToExpect => 'Qué esperar';
+
+  @override
+  String get formalReportRequirements =>
+      'Los informes formales suelen requerir:\n• Tiempo, fecha y duración detallados\n• Condiciones meteorológicas y visibilidad\n• Testigo completo\n• Fotos o vídeo si está disponible\n\nLas organizaciones pueden dar seguimiento a más detalles. Su informe contribuye a la investigación OVNI en curso.';
 
   @override
   String get confirmedWitness => 'Usted confirmó este avistamiento';
@@ -2693,7 +2722,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get translating => 'Traduciendo...';
 
   @override
-  String get showOriginal => 'Mostrar original';
+  String get showOriginal => 'Ver original';
 
   @override
   String translateTo(String language) {

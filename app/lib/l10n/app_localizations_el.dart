@@ -954,16 +954,46 @@ class AppLocalizationsEl extends AppLocalizations {
   String get openMufonReport => 'Άνοιγμα MUFON Έκθεση';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Πώς να αναφέρετε επίσημα';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'Επίσημη UFO Υποβολή εκθέσεων';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting =>
+      'UFOBeep εναντίον της επίσημης αναφοράς';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Οργανισμοί αναφοράς';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'Το UFOBeep έχει σχεδιαστεί για ειδοποιήσεις σε πραγματικό χρόνο - βοηθώντας τους κοντινούς μάρτυρες να συνδεθούν άμεσα για να επιβεβαιώσουν τι βλέπουν αυτή τη στιγμή.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Για επίσημη έρευνα και επιστημονική τεκμηρίωση, μπορείτε να καταθέσετε επίσημες αναφορές σε καθιερωμένους ερευνητικούς οργανισμούς.';
+
+  @override
+  String get mufonFullName => 'MUFON (Αμοιβαίο δίκτυο UFO)';
+
+  @override
+  String get mufonDescription =>
+      'Ο μεγαλύτερος οργανισμός έρευνας UFO στον κόσμο με επαγγελματίες ερευνητές πεδίου και επιστημονική τεκμηρίωση.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (Εθνικό Κέντρο Αναφοράς ΑΤΙΑ)';
+
+  @override
+  String get nuforcDescription =>
+      'Λειτουργεί από το 1974, NUFORC διατηρεί μια ολοκληρωμένη δημόσια βάση δεδομένων των UFO θεάσεις.';
+
+  @override
+  String get whatToExpect => 'Τι να Αναμένετε';
+
+  @override
+  String get formalReportRequirements =>
+      'Οι επίσημες εκθέσεις συνήθως απαιτούν:\n• Λεπτομερής χρόνος, ημερομηνία και διάρκεια\n• Καιρικές συνθήκες και ορατότητα\n• Πλήρης μαρτυρία μαρτύρων\n• Φωτογραφίες ή βίντεο εάν είναι διαθέσιμα\n\nΟι οργανισμοί μπορούν να παρακολουθούν για πρόσθετες λεπτομέρειες. Η αναφορά σας συμβάλλει στη συνεχή έρευνα UFO.';
 
   @override
   String get confirmedWitness => 'Επιβεβαίωσες αυτή την παρατήρηση';

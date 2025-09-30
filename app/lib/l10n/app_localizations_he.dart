@@ -939,16 +939,45 @@ class AppLocalizationsHe extends AppLocalizations {
   String get openMufonReport => 'פתוח MUFON דיווח';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'כיצד לדווח באופן פורמלי';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'המונחים: UFO דיווח';
 
   @override
   String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'דיווח על ארגונים';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'עב\"מ ביפ מיועד לאזהרות בזמן אמת - עוזר לעדים הסמוכים להתחבר מיד כדי לאמת את מה שהם רואים כרגע.';
+
+  @override
+  String get formalReportingExplanation =>
+      'עבור חקירה רשמית ותיעוד מדעי, באפשרותך להגיש דוחות רשמיים עם ארגוני מחקר מבוססים.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'ארגון החקירות עב\"מים הגדול בעולם עם חוקרי שדה מקצועיים ותיעוד מדעי.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (National UFO Reporting Center)';
+
+  @override
+  String get nuforcDescription =>
+      'מאז 1974, NUFORC שומרת על מסד נתונים ציבורי מקיף של ראיית עב\"מים.';
+
+  @override
+  String get whatToExpect => 'מה לצפות';
+
+  @override
+  String get formalReportRequirements =>
+      'דיווחים פורמליים בדרך כלל דורשים:\n• זמן מפורט, תאריך ומשך\n• מזג אוויר וחשיפה\nעדות שלמה\n• תמונות או וידאו אם זמין\n\nארגונים יכולים לעקוב אחר פרטים נוספים. הדו\"ח שלך תורם למחקר עב\"מים מתמשך.';
 
   @override
   String get confirmedWitness => 'אישרת את המראה הזה';

@@ -54,6 +54,8 @@
   "shapeFireball": "fireball",
   "shapeFormation": "powstawanie",
   "shapeUnknown": "nieznany",
+  "ufobeepVsFormalReporting": "UFOBeep vs Formalna sprawozdawczość",
+  "ufobeepRealtimeExplanation": "UFOBeep jest przeznaczony do alertów czasu rzeczywistego - pomaga pobliskim świadkom połączyć się natychmiast, aby sprawdzić, co widzą w tej chwili.",
   "alertFollowError": "Błąd podczas aktualizacji statusu folderu",
   "ufobeepWitnesses": "Świadkowie",
   "ufobeepConfirmations": "Potwierdzenia",

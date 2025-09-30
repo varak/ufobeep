@@ -1,5 +1,8 @@
 {
   "username": "ユーザ名",
   "usernameUpdated": "更新されたユーザー名",
-  "submitBeep": "ビープを送る"
+  "submitBeep": "ビープを送る",
+  "formalReportingTitle": "フォーマルUFO レポート",
+  "formalReportingExplanation": "正式な調査と科学的な文書については、確立された研究機関と正式な報告書を提出することができます.",
+  "formalReportRequirements": "フォームレポートは通常必要です:\n・ 詳しい時間、日付および持続期間\n・ 気象条件および可視性\n•完全な証人証言\n・ 利用できる場合の写真かビデオ\n\n組織は、詳細については、フォローアップすることができます。 あなたのレポートは、進行中のUFO研究に貢献します."
 }

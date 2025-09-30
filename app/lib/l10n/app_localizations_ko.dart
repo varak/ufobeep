@@ -931,16 +931,44 @@ class AppLocalizationsKo extends AppLocalizations {
   String get openMufonReport => 'MUFON 오픈 제품정보';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => '자주 묻는 질문';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => '모양 UFO 관련 기사';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOBeep 대 Formal 보고';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => '회사연혁';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep은 실시간 알림을 위해 설계되었습니다 - 가까운 증인이 즉시 연결되도록 돕습니다.';
+
+  @override
+  String get formalReportingExplanation =>
+      '공식 조사 및 과학 문서의 경우, 지정된 연구 기관과의 보고서를 제출할 수 있습니다.';
+
+  @override
+  String get mufonFullName => 'MUFON (실제 UFO 네트워크)';
+
+  @override
+  String get mufonDescription => '전문 분야 조사 및 과학 문서와 세계 최대의 UFO 조사 조직.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (국가 UFO 보고 센터)';
+
+  @override
+  String get nuforcDescription =>
+      '1974년부터 운영되는 NUFORC는 UFO 광경의 종합적인 공공 데이터베이스를 유지합니다.';
+
+  @override
+  String get whatToExpect => '기대하기';
+
+  @override
+  String get formalReportRequirements =>
+      'Formal 보고서는 일반적으로 요구합니다:\n· 상세 시간, 날짜 및 기간\n· 기상 조건 및 가시성\n• 완전한 증언\n· 사진 또는 비디오 사용 가능\n\n조직은 추가 세부 사항에 따라 할 수 있습니다. 보고서는 지속적인 UFO 연구에 기여합니다.';
 
   @override
   String get confirmedWitness => '이 광경을 확인';
@@ -2591,7 +2619,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get translating => '...에.';
 
   @override
-  String get showOriginal => '원본 보기';
+  String get showOriginal => '쇼 Original';
 
   @override
   String translateTo(String language) {

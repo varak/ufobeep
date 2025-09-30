@@ -431,6 +431,18 @@
   "reportToMufon": "MUFON'a Rapor",
   "whyReportToMufon": "Neden MUFON'a Rapor?",
   "openMufonReport": "Açık MUFON Rapor",
+  "howToFormallyReport": "Formally Report Nasıl",
+  "formalReportingTitle": "Formal UFO Raporlama",
+  "ufobeepVsFormalReporting": "UFOBeep vs Formal Reporting",
+  "reportingOrganizations": "Raporlama Organizasyonları",
+  "ufobeepRealtimeExplanation": "UFOBeep gerçek zamanlı uyarılar için tasarlanmıştır - yakındaki tanıklara şu anda gördükleri şeyleri doğrulamak için anında bağlantı sağlar.",
+  "formalReportingExplanation": "Resmi araştırma ve bilimsel belgeler için, yerleşik araştırma kuruluşları ile resmi raporlar gönderebilirsiniz.",
+  "mufonFullName": "MUFON (Mutual UFO Ağı)",
+  "mufonDescription": "Dünyanın en büyük UFO araştırma kuruluşu profesyonel alan araştırmacılar ve bilimsel belgelerle.",
+  "nuforcFullName": "NUFORC (Ulusal UFO Rapor Merkezi)",
+  "nuforcDescription": "1974'ten beri faaliyet gösteren NUFORC, UFO gözlemlerinin kapsamlı bir kamu veritabanını koruyor.",
+  "whatToExpect": "Ne Beklemek",
+  "formalReportRequirements": "Formal raporlar genellikle gerektirir:\n• • • Detaylı zaman, tarih ve süresi\n• • • Hava koşulları ve görünürlük\n• Tam tanık ifadesi\n• • • Fotoğraflar veya video mevcutsa\n\nOrganizasyonlar ek ayrıntılar için takip edebilir. Raporunuz devam eden UFO araştırmalarına katkıda bulunur.",
   "confirmedWitness": "Bu manzarayı doğruladın",
   "witnessesHaveConfirmed": "{count} insanlar bu görüşü doğruladı",
   "@witnessesHaveConfirmed": {
@@ -1157,7 +1169,7 @@
   "checkingConnectivity": "Bağlantıyı kontrol edin...",
   "gatheringDeviceInfo": "Gathering device info...",
   "translating": "Translating...",
-  "showOriginal": "Orijinali göster",
+  "showOriginal": "Orijinali Göster",
   "translateTo": "{language}",
   "@translateTo": {
     "placeholders": {

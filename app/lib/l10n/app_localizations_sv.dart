@@ -950,16 +950,45 @@ class AppLocalizationsSv extends AppLocalizations {
   String get openMufonReport => 'Open MUFON Rapport';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Hur man formellt rapporterar';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'Formell UFO Rapportering';
 
   @override
   String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Rapportera organisationer';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep är utformad för realtidsvarningar - hjälper närliggande vittnen att ansluta direkt för att verifiera vad de ser just nu.';
+
+  @override
+  String get formalReportingExplanation =>
+      'För officiell utredning och vetenskaplig dokumentation kan du lämna in formella rapporter med etablerade forskningsorganisationer.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'Världens största UFO utredningsorganisation med professionella fältutredare och vetenskaplig dokumentation.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (National UFO Reporting Center)';
+
+  @override
+  String get nuforcDescription =>
+      'NUFORC har sedan 1974 en omfattande offentlig databas över UFO-observationer.';
+
+  @override
+  String get whatToExpect => 'Vad man kan förvänta sig';
+
+  @override
+  String get formalReportRequirements =>
+      'Formella rapporter kräver vanligtvis:\n•• Detaljerad tid, datum och varaktighet\n•• Väderförhållanden och synlighet\n• Fullständig vittnesmål\n•• Bilder eller video om tillgängliga\n\nOrganisationer kan följa upp för ytterligare detaljer. Din rapport bidrar till pågående UFO-forskning.';
 
   @override
   String get confirmedWitness => 'Du bekräftade denna observation';

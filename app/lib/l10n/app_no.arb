@@ -431,6 +431,18 @@
   "reportToMufon": "Report to MUFON",
   "whyReportToMufon": "Why Report to MUFON?",
   "openMufonReport": "Open MUFON Report",
+  "howToFormallyReport": "How to Formally Report",
+  "formalReportingTitle": "Formal UFO Reporting",
+  "ufobeepVsFormalReporting": "UFOBeep vs Formal Reporting",
+  "reportingOrganizations": "Reporting Organizations",
+  "ufobeepRealtimeExplanation": "UFOBeep is designed for real-time alerts - helping nearby witnesses connect instantly to verify what they're seeing right now.",
+  "formalReportingExplanation": "For official investigation and scientific documentation, you can file formal reports with established research organizations.",
+  "mufonFullName": "MUFON (Mutual UFO Network)",
+  "mufonDescription": "The world's largest UFO investigation organization with professional field investigators and scientific documentation.",
+  "nuforcFullName": "NUFORC (National UFO Reporting Center)",
+  "nuforcDescription": "Operating since 1974, NUFORC maintains a comprehensive public database of UFO sightings.",
+  "whatToExpect": "What to Expect",
+  "formalReportRequirements": "Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research.",
   "confirmedWitness": "You confirmed this sighting",
   "witnessesHaveConfirmed": "{count} people have confirmed this sighting",
   "@witnessesHaveConfirmed": {
@@ -1157,7 +1169,7 @@
   "checkingConnectivity": "Checking connectivity...",
   "gatheringDeviceInfo": "Gathering device info...",
   "translating": "Translating...",
-  "showOriginal": "Vis original",
+  "showOriginal": "Vis originalen",
   "translateTo": "Translate to {language}",
   "@translateTo": {
     "placeholders": {

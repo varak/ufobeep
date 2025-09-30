@@ -952,16 +952,45 @@ class AppLocalizationsTr extends AppLocalizations {
   String get openMufonReport => 'Açık MUFON Rapor';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Formally Report Nasıl';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'Formal UFO Raporlama';
 
   @override
   String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Raporlama Organizasyonları';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep gerçek zamanlı uyarılar için tasarlanmıştır - yakındaki tanıklara şu anda gördükleri şeyleri doğrulamak için anında bağlantı sağlar.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Resmi araştırma ve bilimsel belgeler için, yerleşik araştırma kuruluşları ile resmi raporlar gönderebilirsiniz.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Ağı)';
+
+  @override
+  String get mufonDescription =>
+      'Dünyanın en büyük UFO araştırma kuruluşu profesyonel alan araştırmacılar ve bilimsel belgelerle.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (Ulusal UFO Rapor Merkezi)';
+
+  @override
+  String get nuforcDescription =>
+      '1974\'ten beri faaliyet gösteren NUFORC, UFO gözlemlerinin kapsamlı bir kamu veritabanını koruyor.';
+
+  @override
+  String get whatToExpect => 'Ne Beklemek';
+
+  @override
+  String get formalReportRequirements =>
+      'Formal raporlar genellikle gerektirir:\n• • • Detaylı zaman, tarih ve süresi\n• • • Hava koşulları ve görünürlük\n• Tam tanık ifadesi\n• • • Fotoğraflar veya video mevcutsa\n\nOrganizasyonlar ek ayrıntılar için takip edebilir. Raporunuz devam eden UFO araştırmalarına katkıda bulunur.';
 
   @override
   String get confirmedWitness => 'Bu manzarayı doğruladın';
@@ -2678,7 +2707,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get translating => 'Translating...';
 
   @override
-  String get showOriginal => 'Orijinali göster';
+  String get showOriginal => 'Orijinali Göster';
 
   @override
   String translateTo(String language) {

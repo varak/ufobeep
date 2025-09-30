@@ -954,16 +954,45 @@ class AppLocalizationsPl extends AppLocalizations {
   String get openMufonReport => 'Otwórz MUFON Sprawozdanie';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Jak raport formalny';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'Formalne UFO Sprawozdawczość';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOBeep vs Formalna sprawozdawczość';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Organizacje sprawozdawcze';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep jest przeznaczony do alertów czasu rzeczywistego - pomaga pobliskim świadkom połączyć się natychmiast, aby sprawdzić, co widzą w tej chwili.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Do celów oficjalnego dochodzenia i dokumentacji naukowej, można składać oficjalne raporty z założonymi organizacjami badawczymi.';
+
+  @override
+  String get mufonFullName => 'MUFON (Wzajemna Sieć UFO)';
+
+  @override
+  String get mufonDescription =>
+      'Największa na świecie organizacja dochodzenia UFO z profesjonalnymi badaczami polowymi i dokumentacją naukową.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (National UFO Reporting Center)';
+
+  @override
+  String get nuforcDescription =>
+      'Od 1974 roku NUFORC prowadzi kompleksową publiczną bazę danych o UFO.';
+
+  @override
+  String get whatToExpect => 'Czego oczekiwać';
+
+  @override
+  String get formalReportRequirements =>
+      'Formalne sprawozdania zazwyczaj wymagają:\n• Szczegółowy czas, data i czas trwania\n• Warunki pogodowe i widoczność\n• Kompletne zeznania świadków\n• Zdjęcia lub wideo, jeśli dostępne\n\nOrganizacje mogą śledzić dodatkowe szczegóły. Twój raport przyczynia się do badań UFO.';
 
   @override
   String get confirmedWitness => 'Potwierdziłeś to';

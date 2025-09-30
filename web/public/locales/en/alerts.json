@@ -54,6 +54,8 @@
   "shapeFireball": "fireball",
   "shapeFormation": "formation",
   "shapeUnknown": "unknown",
+  "ufobeepVsFormalReporting": "UFOBeep vs Formal Reporting",
+  "ufobeepRealtimeExplanation": "UFOBeep is designed for real-time alerts - helping nearby witnesses connect instantly to verify what they're seeing right now.",
   "alertFollowError": "Error updating follow status",
   "ufobeepWitnesses": "Witnesses",
   "ufobeepConfirmations": "Confirmations",

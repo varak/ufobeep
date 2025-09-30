@@ -1,5 +1,8 @@
 {
   "username": "Käyttäjätunnus",
   "usernameUpdated": "Käyttäjänimi päivitetty",
-  "submitBeep": "Lähetä viesti"
+  "submitBeep": "Lähetä viesti",
+  "formalReportingTitle": "Muodollinen UFO Raportointi",
+  "formalReportingExplanation": "Viralliseen tutkimukseen ja tieteelliseen dokumentaatioon voit tehdä virallisia raportteja vakiintuneille tutkimusorganisaatioille.",
+  "formalReportRequirements": "Muodollisissa raporteissa edellytetään tyypillisesti:\n• Yksityiskohtainen aika, päivämäärä ja kesto\n• Sääolosuhteet ja näkyvyys\n• Täydellinen todistajanlausunto\n• Valokuvat tai videot, jos saatavilla\n\nOrganisaatiot voivat pyytää lisätietoja. Raporttinne edistää käynnissä olevaa ufotutkimusta."
 }

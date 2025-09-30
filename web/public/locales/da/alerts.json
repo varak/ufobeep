@@ -54,6 +54,8 @@
   "shapeFireball": "ildkugle",
   "shapeFormation": "formation",
   "shapeUnknown": "ukendt",
+  "ufobeepVsFormalReporting": "UFOBeep vs formel rapportering",
+  "ufobeepRealtimeExplanation": "UFOBeep er designet til real- time advarsler - hjælpe nærliggende vidner oprette forbindelse med det samme for at kontrollere, hvad de ser lige nu.",
   "alertFollowError": "Fejl under opdatering af følg status",
   "ufobeepWitnesses": "Vidner",
   "ufobeepConfirmations": "Bekræfter",

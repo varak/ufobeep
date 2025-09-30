@@ -952,16 +952,45 @@ class AppLocalizationsDe extends AppLocalizations {
   String get openMufonReport => 'Open MUFON Bericht';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Wie man formal berichtet';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'Ehemaliger UFO Berichterstattung';
 
   @override
   String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Berichterstattungsorganisationen';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep ist für Echtzeit-Benachrichtigungen konzipiert - helfen in der Nähe Zeugen verbinden sofort zu überprüfen, was sie gerade sehen.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Für die amtliche Untersuchung und wissenschaftliche Dokumentation können Sie formale Berichte mit etablierten Forschungsorganisationen einreichen.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'Die weltweit größte UFO-Untersuchungsorganisation mit professionellen Feldermittlern und wissenschaftlichen Unterlagen.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (Nationales UFO Reporting Center)';
+
+  @override
+  String get nuforcDescription =>
+      'Seit 1974 betreibt NUFORC eine umfassende öffentliche Datenbank der UFO-Fähigkeiten.';
+
+  @override
+  String get whatToExpect => 'Was zu erwarten ist';
+
+  @override
+  String get formalReportRequirements =>
+      'Formale Berichte erfordern typischerweise:\n• Detaillierte Zeit, Datum und Dauer\n• Wetterbedingungen und Sichtbarkeit\n• Vollständige Zeugenaussagen\n• Fotos oder Video, wenn verfügbar\n\nOrganisationen können für weitere Details folgen. Ihr Bericht trägt zur laufenden UFO-Forschung bei.';
 
   @override
   String get confirmedWitness => 'Sie haben diese Sichtweise bestätigt';

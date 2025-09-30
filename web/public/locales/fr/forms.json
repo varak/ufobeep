@@ -1,5 +1,8 @@
 {
   "username": "Nom d'utilisateur",
   "usernameUpdated": "Nom d'utilisateur mis à jour",
-  "submitBeep": "Envoyer un bip"
+  "submitBeep": "Envoyer un bip",
+  "formalReportingTitle": "OVNI officiel Rapports",
+  "formalReportingExplanation": "Pour les recherches officielles et la documentation scientifique, vous pouvez déposer des rapports officiels auprès d'organismes de recherche établis.",
+  "formalReportRequirements": "Les rapports officiels exigent généralement:\n• Heure, date et durée détaillées\n• Conditions météorologiques et visibilité\n• Témoignage complet\n• Photos ou vidéos si disponibles\n\nLes organisations peuvent faire un suivi pour obtenir des renseignements supplémentaires. Votre rapport contribue à la recherche en cours sur les ovnis."
 }

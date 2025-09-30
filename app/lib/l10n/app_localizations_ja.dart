@@ -930,16 +930,44 @@ class AppLocalizationsJa extends AppLocalizations {
   String get openMufonReport => 'MUFONを開く レポート';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => '正式に報告する方法';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'フォーマルUFO レポート';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOBeep対フォーマルレポーティング';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => '報告機関';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeepはリアルタイムのアラートのために設計されています。近くの目撃者が即座に接続して、彼らが今見ているかを確認します.';
+
+  @override
+  String get formalReportingExplanation =>
+      '正式な調査と科学的な文書については、確立された研究機関と正式な報告書を提出することができます.';
+
+  @override
+  String get mufonFullName => 'MUFON (相互UFOネットワーク)';
+
+  @override
+  String get mufonDescription => '専門分野調査者および科学的文書の世界最大のUFO調査組織.';
+
+  @override
+  String get nuforcFullName => 'NUFORC(国家UFO報告センター)';
+
+  @override
+  String get nuforcDescription =>
+      'NUFORCは、1974年から運用し、UFOの視線の総合パブリックデータベースを維持しています.';
+
+  @override
+  String get whatToExpect => '期待するもの';
+
+  @override
+  String get formalReportRequirements =>
+      'フォームレポートは通常必要です:\n・ 詳しい時間、日付および持続期間\n・ 気象条件および可視性\n•完全な証人証言\n・ 利用できる場合の写真かビデオ\n\n組織は、詳細については、フォローアップすることができます。 あなたのレポートは、進行中のUFO研究に貢献します.';
 
   @override
   String get confirmedWitness => 'この視線を確認しました';
@@ -2589,7 +2617,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get translating => '翻訳する...';
 
   @override
-  String get showOriginal => '原文を表示';
+  String get showOriginal => 'ショーオリジナル';
 
   @override
   String translateTo(String language) {

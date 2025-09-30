@@ -1,5 +1,8 @@
 {
   "username": "Brugernavn",
   "usernameUpdated": "Brugernavn opdateret",
-  "submitBeep": "Send Beep"
+  "submitBeep": "Send Beep",
+  "formalReportingTitle": "Formel UFO Rapportering",
+  "formalReportingExplanation": "For officielle undersøgelser og videnskabelig dokumentation, kan du indsende formelle rapporter med etablerede forskningsorganisationer.",
+  "formalReportRequirements": "Formelle rapporter kræver typisk:\n• Detaljeret tid, dato og varighed\n• Vejrforhold og sigtbarhed\n• Fuldstændigt vidneudsagn\n• Billeder eller video, hvis de foreligger\n\nOrganisationer kan følge op på yderligere detaljer. Din rapport bidrager til igangværende UFO forskning."
 }

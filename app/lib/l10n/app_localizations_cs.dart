@@ -948,16 +948,45 @@ class AppLocalizationsCs extends AppLocalizations {
   String get openMufonReport => 'Open MUFON Zpráva';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Jak Formálně podat zprávu';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'Formální UFO Podávání zpráv';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOBeep vs Formální hlášení';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Zpravodajské organizace';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep je určen pro upozornění v reálném čase - pomáhá blízkým svědkům okamžitě se připojit, aby ověřili, co právě vidí.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Pro oficiální vyšetřování a vědeckou dokumentaci můžete podat formální zprávy se zavedenými výzkumnými organizacemi.';
+
+  @override
+  String get mufonFullName => 'MUFON (síť vzájemných UFO)';
+
+  @override
+  String get mufonDescription =>
+      'Největší světová organizace pro vyšetřování UFO s profesionálními terénními vyšetřovateli a vědeckou dokumentací.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (Národní centrum pro hlášení UFO)';
+
+  @override
+  String get nuforcDescription =>
+      'V provozu od roku 1974, NUFORC udržuje komplexní veřejnou databázi pozorování UFO.';
+
+  @override
+  String get whatToExpect => 'Co očekávat';
+
+  @override
+  String get formalReportRequirements =>
+      'Formální zprávy obvykle vyžadují:\n• Podrobná doba, datum a doba trvání\n• Podmínky a viditelnost počasí\n• Úplné svědectví svědka\n• Fotografie nebo video, pokud jsou k dispozici\n\nOrganizace mohou sledovat další podrobnosti. Vaše zpráva přispívá k probíhajícímu výzkumu UFO.';
 
   @override
   String get confirmedWitness => 'Potvrdil jste toto pozorování';

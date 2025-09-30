@@ -950,16 +950,45 @@ class AppLocalizationsDa extends AppLocalizations {
   String get openMufonReport => 'Åbne MUFON Rapport';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Hvordan skal man formelt rapportere';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'Formel UFO Rapportering';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOBeep vs formel rapportering';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Rapporteringsorganisationer';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep er designet til real- time advarsler - hjælpe nærliggende vidner oprette forbindelse med det samme for at kontrollere, hvad de ser lige nu.';
+
+  @override
+  String get formalReportingExplanation =>
+      'For officielle undersøgelser og videnskabelig dokumentation, kan du indsende formelle rapporter med etablerede forskningsorganisationer.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'Verdens største UFO undersøgelse organisation med professionelle felt efterforskere og videnskabelig dokumentation.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (National UFO Reporting Center)';
+
+  @override
+  String get nuforcDescription =>
+      'Opererer siden 1974, NUFORC opretholder en omfattende offentlig database over UFO observationer.';
+
+  @override
+  String get whatToExpect => 'Hvad at forvente';
+
+  @override
+  String get formalReportRequirements =>
+      'Formelle rapporter kræver typisk:\n• Detaljeret tid, dato og varighed\n• Vejrforhold og sigtbarhed\n• Fuldstændigt vidneudsagn\n• Billeder eller video, hvis de foreligger\n\nOrganisationer kan følge op på yderligere detaljer. Din rapport bidrager til igangværende UFO forskning.';
 
   @override
   String get confirmedWitness => 'Du bekræftede denne observation';

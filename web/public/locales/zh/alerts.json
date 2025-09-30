@@ -54,6 +54,8 @@
   "shapeFireball": "火球",
   "shapeFormation": "编队",
   "shapeUnknown": "不详",
+  "ufobeepVsFormalReporting": "UFOBEP vs 正式报告",
+  "ufobeepRealtimeExplanation": "UFOBEP是为实时警报而设计的 - 帮助附近的证人即时连接,以验证他们现在看到的.",
   "alertFollowError": "更新跟随状态出错",
   "ufobeepWitnesses": "证人",
   "ufobeepConfirmations": "确认",

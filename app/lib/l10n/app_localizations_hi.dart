@@ -947,16 +947,45 @@ class AppLocalizationsHi extends AppLocalizations {
   String get openMufonReport => 'ओपन MUFON रिपोर्ट';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'औपचारिक रूप से रिपोर्ट कैसे करें';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'औपचारिक यूएफओ रिपोर्टिंग';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOBeep बनाम औपचारिक रिपोर्टिंग';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'रिपोर्टिंग संगठन';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep वास्तविक समय अलर्ट के लिए डिज़ाइन किया गया है - पास के गवाहों को यह सत्यापित करने के लिए तुरंत कनेक्ट करने में मदद करता है कि वे अभी क्या देख रहे हैं।.';
+
+  @override
+  String get formalReportingExplanation =>
+      'आधिकारिक जांच और वैज्ञानिक प्रलेखन के लिए, आप स्थापित अनुसंधान संगठनों के साथ औपचारिक रिपोर्ट दायर कर सकते हैं।.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'पेशेवर फील्ड जांचकर्ताओं और वैज्ञानिक प्रलेखन के साथ दुनिया का सबसे बड़ा यूएफओ जांच संगठन।.';
+
+  @override
+  String get nuforcFullName => 'एनयूफोर्क (राष्ट्रीय यूएफओ रिपोर्टिंग सेंटर)';
+
+  @override
+  String get nuforcDescription =>
+      '1974 के बाद से ऑपरेटिंग, NUFORC UFO sightings के एक व्यापक सार्वजनिक डेटाबेस को बनाए रखता है।.';
+
+  @override
+  String get whatToExpect => 'क्या उम्मीद करना है';
+
+  @override
+  String get formalReportRequirements =>
+      'आम तौर पर औपचारिक रिपोर्ट की आवश्यकता होती है:\n• विस्तृत समय, तारीख और अवधि\n• मौसम की स्थिति और दृश्यता\n• पूर्ण गवाह गवाह गवाही\n• यदि उपलब्ध हो तो फोटो या वीडियो\n\nसंगठन अतिरिक्त विवरण के लिए अनुसरण कर सकते हैं। आपकी रिपोर्ट चल रहे यूएफओ अनुसंधान में योगदान देती है।.';
 
   @override
   String get confirmedWitness => 'आपने इस दर्शन की पुष्टि की';

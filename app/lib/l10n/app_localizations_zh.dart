@@ -930,16 +930,42 @@ class AppLocalizationsZh extends AppLocalizations {
   String get openMufonReport => '打开MUFON 报告';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => '如何正式报告';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => '正式的UFO组织 报告';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOBEP vs 正式报告';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => '报告组织';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBEP是为实时警报而设计的 - 帮助附近的证人即时连接,以验证他们现在看到的.';
+
+  @override
+  String get formalReportingExplanation => '对于官方调查和科学文献,可以向已经成立的研究组织提交正式报告.';
+
+  @override
+  String get mufonFullName => 'MUFON(通用UFO网络)';
+
+  @override
+  String get mufonDescription => '世界上最大的UFO调查组织,拥有专业的实地调查员和科学文献.';
+
+  @override
+  String get nuforcFullName => 'NUFOC(全国UFO报告中心)';
+
+  @override
+  String get nuforcDescription => '自1974年起运行,NUFORC维持一个UFO目击综合公共数据库.';
+
+  @override
+  String get whatToExpect => '期待什么';
+
+  @override
+  String get formalReportRequirements =>
+      '正式报告通常要求:\n• 支助 详细时间、日期和期限\n• 支助 天气条件和能见度\n• 完整的证人证词\n• 支助 照片或录像(如有)\n\n各组织可就其他细节采取后续行动。 你的报告有助于正在进行的UFO研究.';
 
   @override
   String get confirmedWitness => '你确认了这次目击';

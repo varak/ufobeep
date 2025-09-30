@@ -948,16 +948,45 @@ class AppLocalizationsFi extends AppLocalizations {
   String get openMufonReport => 'Avaa MUFON Kertomus';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Muodollinen kertomus';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'Muodollinen UFO Raportointi';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOPäivä vs. virallinen raportointi';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Raportointiorganisaatiot';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep on suunniteltu reaaliaikaisiin hälytyksiin, - jotka auttavat läheisiä todistajia saamaan yhteyden heti - vahvistamaan näkemänsä.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Viralliseen tutkimukseen ja tieteelliseen dokumentaatioon voit tehdä virallisia raportteja vakiintuneille tutkimusorganisaatioille.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'Maailman suurin UFO-tutkimusorganisaatio, jossa on alan ammattilaisia ja tieteellistä dokumentaatiota.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (kansallinen UFO-raportointikeskus)';
+
+  @override
+  String get nuforcDescription =>
+      'Toimii vuodesta 1974, NUFORC ylläpitää kattavaa julkista tietokantaa UFO havaintoja.';
+
+  @override
+  String get whatToExpect => 'Mitä odottaa';
+
+  @override
+  String get formalReportRequirements =>
+      'Muodollisissa raporteissa edellytetään tyypillisesti:\n• Yksityiskohtainen aika, päivämäärä ja kesto\n• Sääolosuhteet ja näkyvyys\n• Täydellinen todistajanlausunto\n• Valokuvat tai videot, jos saatavilla\n\nOrganisaatiot voivat pyytää lisätietoja. Raporttinne edistää käynnissä olevaa ufotutkimusta.';
 
   @override
   String get confirmedWitness => 'Varmistit tämän';

@@ -945,13 +945,42 @@ class AppLocalizationsAr extends AppLocalizations {
   String get howToFormallyReport => 'How to Formally Report';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'نموذجي الإبلاغ';
 
   @override
   String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'منظمات الإبلاغ';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      '(أوف بيب) مصممة للإنذارات في الوقت الحقيقي مساعدة الشهود المجاورين على التواصل الفوري للتحقق مما يرونه الآن.';
+
+  @override
+  String get formalReportingExplanation =>
+      'بالنسبة للتحقيقات الرسمية والوثائق العلمية، يمكنك تقديم تقارير رسمية مع منظمات البحث المنشأة.';
+
+  @override
+  String get mufonFullName => 'MUFON (Mutual UFO Network)';
+
+  @override
+  String get mufonDescription =>
+      'أكبر منظمة تحقيق في العالم مع محققين ميدانيين محترفين ووثائق علمية.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (National UFO Reporting Center)';
+
+  @override
+  String get nuforcDescription =>
+      'ومنذ عام ١٩٧٤، يحتفظ مكتب الأمم المتحدة في رواندا بقاعدة بيانات عامة شاملة لمشاهدات المنظمة.';
+
+  @override
+  String get whatToExpect => 'ماذا تتوقع';
+
+  @override
+  String get formalReportRequirements =>
+      'فالتقارير الرسمية تتطلب عادة ما يلي:\n• الوقت والتاريخ والمدة\n• ظروف الطقس والوضوح\n● شهادة الشهود الكاملة\n• الصور أو الفيديو إذا توافرت\n\nويجوز للمنظمات متابعة التفاصيل الإضافية. إن تقريركم يسهم في البحوث الجارية التي تجريها المنظمة.';
 
   @override
   String get confirmedWitness => 'لقد أكدت هذا المشهد';

@@ -54,6 +54,8 @@
   "shapeFireball": "огненный шар",
   "shapeFormation": "формирование",
   "shapeUnknown": "неизвестный",
+  "ufobeepVsFormalReporting": "UFOBeep против официальной отчетности",
+  "ufobeepRealtimeExplanation": "UFOBeep предназначен для оповещений в режиме реального времени, помогая соседним свидетелям мгновенно подключиться, чтобы проверить, что они видят прямо сейчас.",
   "alertFollowError": "Обновление ошибок Следуйте за статусом",
   "ufobeepWitnesses": "Свидетели",
   "ufobeepConfirmations": "Подтверждения",

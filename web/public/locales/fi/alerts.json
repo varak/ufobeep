@@ -54,6 +54,8 @@
   "shapeFireball": "tulipallo",
   "shapeFormation": "muodostuminen",
   "shapeUnknown": "tuntematon",
+  "ufobeepVsFormalReporting": "UFOPäivä vs. virallinen raportointi",
+  "ufobeepRealtimeExplanation": "UFOBeep on suunniteltu reaaliaikaisiin hälytyksiin, - jotka auttavat läheisiä todistajia saamaan yhteyden heti - vahvistamaan näkemänsä.",
   "alertFollowError": "Virhe seurauksen tilan päivittämisessä",
   "ufobeepWitnesses": "Todistajat",
   "ufobeepConfirmations": "Vahvistukset",

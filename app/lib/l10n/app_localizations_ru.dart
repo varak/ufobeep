@@ -958,16 +958,46 @@ class AppLocalizationsRu extends AppLocalizations {
   String get openMufonReport => 'Открыть MUFON Доклад';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Как формализовать отчет';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'Формальный НЛО Отчетность';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting =>
+      'UFOBeep против официальной отчетности';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Отчитывающиеся организации';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep предназначен для оповещений в режиме реального времени, помогая соседним свидетелям мгновенно подключиться, чтобы проверить, что они видят прямо сейчас.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Для официальной исследовательской и научной документации вы можете подать официальные отчеты в научно-исследовательские организации.';
+
+  @override
+  String get mufonFullName => 'MUFON (Взаимная сеть НЛО)';
+
+  @override
+  String get mufonDescription =>
+      'Крупнейшая в мире организация по расследованию НЛО с профессиональными полевыми исследователями и научной документацией.';
+
+  @override
+  String get nuforcFullName => 'NUFORC (Национальный центр отчетности об НЛО)';
+
+  @override
+  String get nuforcDescription =>
+      'Действуя с 1974 года, NUFORC ведет обширную публичную базу данных наблюдений НЛО.';
+
+  @override
+  String get whatToExpect => 'Чего ожидать';
+
+  @override
+  String get formalReportRequirements =>
+      'Формальные отчеты обычно требуют:\n• Подробное время, дата и продолжительность\n• Погодные условия и видимость\n• Полные свидетельские показания\n• Фото или видео, если есть\n\nОрганизации могут следить за дополнительной информацией. Ваш отчет способствует текущим исследованиям НЛО.';
 
   @override
   String get confirmedWitness => 'Вы подтвердили это наблюдение';
@@ -2699,7 +2729,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get translating => 'Переводить...';
 
   @override
-  String get showOriginal => 'Показать оригинал';
+  String get showOriginal => 'Шоу оригинальное';
 
   @override
   String translateTo(String language) {

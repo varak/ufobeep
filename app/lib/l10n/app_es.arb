@@ -431,6 +431,18 @@
   "reportToMufon": "Informe a MUFON",
   "whyReportToMufon": "¿Por qué reportarle a MUFON?",
   "openMufonReport": "Open MUFON Informe",
+  "howToFormallyReport": "Cómo informar formalmente",
+  "formalReportingTitle": "OVNI formal Reporting",
+  "ufobeepVsFormalReporting": "UFOBeep vs Formal Reporting",
+  "reportingOrganizations": "Organizaciones informantes",
+  "ufobeepRealtimeExplanation": "UFOBeep está diseñado para alertas en tiempo real - ayudando a testigos cercanos a conectarse al instante para verificar lo que están viendo ahora mismo.",
+  "formalReportingExplanation": "Para la investigación oficial y la documentación científica, puede presentar informes oficiales con organizaciones de investigación establecidas.",
+  "mufonFullName": "MUFON (Mutual UFO Network)",
+  "mufonDescription": "La organización de investigación UFO más grande del mundo con investigadores profesionales de campo y documentación científica.",
+  "nuforcFullName": "NUFORC (National UFO Reporting Center)",
+  "nuforcDescription": "Desde 1974, NUFORC mantiene una amplia base de datos pública de avistamientos de OVNI.",
+  "whatToExpect": "Qué esperar",
+  "formalReportRequirements": "Los informes formales suelen requerir:\n• Tiempo, fecha y duración detallados\n• Condiciones meteorológicas y visibilidad\n• Testigo completo\n• Fotos o vídeo si está disponible\n\nLas organizaciones pueden dar seguimiento a más detalles. Su informe contribuye a la investigación OVNI en curso.",
   "confirmedWitness": "Usted confirmó este avistamiento",
   "witnessesHaveConfirmed": "La gente ha confirmado este avistamiento",
   "@witnessesHaveConfirmed": {
@@ -1157,7 +1169,7 @@
   "checkingConnectivity": "Comprobando conectividad...",
   "gatheringDeviceInfo": "Reunión de información del dispositivo...",
   "translating": "Traduciendo...",
-  "showOriginal": "Mostrar original",
+  "showOriginal": "Ver original",
   "translateTo": "Traducir a {language}",
   "@translateTo": {
     "placeholders": {

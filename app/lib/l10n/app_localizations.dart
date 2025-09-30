@@ -1914,6 +1914,54 @@ abstract class AppLocalizations {
   /// **'Reporting Organizations'**
   String get reportingOrganizations;
 
+  /// No description provided for @ufobeepRealtimeExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'UFOBeep is designed for real-time alerts - helping nearby witnesses connect instantly to verify what they\'re seeing right now.'**
+  String get ufobeepRealtimeExplanation;
+
+  /// No description provided for @formalReportingExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'For official investigation and scientific documentation, you can file formal reports with established research organizations.'**
+  String get formalReportingExplanation;
+
+  /// No description provided for @mufonFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'MUFON (Mutual UFO Network)'**
+  String get mufonFullName;
+
+  /// No description provided for @mufonDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The world\'s largest UFO investigation organization with professional field investigators and scientific documentation.'**
+  String get mufonDescription;
+
+  /// No description provided for @nuforcFullName.
+  ///
+  /// In en, this message translates to:
+  /// **'NUFORC (National UFO Reporting Center)'**
+  String get nuforcFullName;
+
+  /// No description provided for @nuforcDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Operating since 1974, NUFORC maintains a comprehensive public database of UFO sightings.'**
+  String get nuforcDescription;
+
+  /// No description provided for @whatToExpect.
+  ///
+  /// In en, this message translates to:
+  /// **'What to Expect'**
+  String get whatToExpect;
+
+  /// No description provided for @formalReportRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research.'**
+  String get formalReportRequirements;
+
   /// No description provided for @confirmedWitness.
   ///
   /// In en, this message translates to:

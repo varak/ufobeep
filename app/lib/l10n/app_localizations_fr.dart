@@ -962,16 +962,46 @@ class AppLocalizationsFr extends AppLocalizations {
   String get openMufonReport => 'Ouvrir le MUFON Rapport annuel';
 
   @override
-  String get howToFormallyReport => 'How to Formally Report';
+  String get howToFormallyReport => 'Comment faire un rapport officiel';
 
   @override
-  String get formalReportingTitle => 'Formal UFO Reporting';
+  String get formalReportingTitle => 'OVNI officiel Rapports';
 
   @override
-  String get ufobeepVsFormalReporting => 'UFOBeep vs Formal Reporting';
+  String get ufobeepVsFormalReporting => 'UFOBeep vs rapport officiel';
 
   @override
-  String get reportingOrganizations => 'Reporting Organizations';
+  String get reportingOrganizations => 'Organisations déclarantes';
+
+  @override
+  String get ufobeepRealtimeExplanation =>
+      'UFOBeep est conçu pour les alertes en temps réel - aider les témoins voisins à se connecter instantanément pour vérifier ce qu\'ils voient en ce moment.';
+
+  @override
+  String get formalReportingExplanation =>
+      'Pour les recherches officielles et la documentation scientifique, vous pouvez déposer des rapports officiels auprès d\'organismes de recherche établis.';
+
+  @override
+  String get mufonFullName => 'MUFON (Réseau UFO mutuel)';
+
+  @override
+  String get mufonDescription =>
+      'La plus grande organisation d\'investigation ovni au monde avec des enquêteurs professionnels sur le terrain et de la documentation scientifique.';
+
+  @override
+  String get nuforcFullName =>
+      'NUFORC (Centre national de notification des ovnis)';
+
+  @override
+  String get nuforcDescription =>
+      'Fonctionnant depuis 1974, NUFORC tient une base de données publique exhaustive sur les observations d\'ovnis.';
+
+  @override
+  String get whatToExpect => 'À quoi s\'attendre';
+
+  @override
+  String get formalReportRequirements =>
+      'Les rapports officiels exigent généralement:\n• Heure, date et durée détaillées\n• Conditions météorologiques et visibilité\n• Témoignage complet\n• Photos ou vidéos si disponibles\n\nLes organisations peuvent faire un suivi pour obtenir des renseignements supplémentaires. Votre rapport contribue à la recherche en cours sur les ovnis.';
 
   @override
   String get confirmedWitness => 'Vous avez confirmé cette observation';
