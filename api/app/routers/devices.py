@@ -1091,8 +1091,19 @@ async def update_location(body: UpdateLocationIn, user_id: Optional[str] = Depen
                 """,
                 body.lat, body.lon, now, user_id
             )
-            
-            logger.info(f"Updated location for user {user_id}: lat={body.lat}, lon={body.lon}")
+
+            # Also update users.location for proximity alerts
+            location_string = f"{body.lat},{body.lon}"
+            await conn.execute(
+                """
+                UPDATE users
+                SET location = $1
+                WHERE id = $2
+                """,
+                location_string, user_id
+            )
+
+            logger.info(f"Updated location for user {user_id}: lat={body.lat}, lon={body.lon}, synced to users table")
         
         # Return 204 No Content on success
         return None
