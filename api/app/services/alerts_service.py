@@ -174,7 +174,7 @@ class AlertsService:
                        s.enrichment_data,
                        u.username as reporter_username, s.source,
                        COALESCE(s.occurred_at, s.created_at) as occurred_at, s.external_url, s.external_id,
-                       COALESCE(c.comment_count, 0) as comment_count, s.short_url
+                       s.original_language, COALESCE(c.comment_count, 0) as comment_count, s.short_url
                        {distance_select}
                 FROM sightings s
                 LEFT JOIN users u ON s.reporter_id = u.id::text
