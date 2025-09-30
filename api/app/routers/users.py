@@ -3,7 +3,7 @@ User Management API - MP13-1
 Handles user registration, username generation, and user profile management
 """
 
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, HTTPException, Depends, status, Request
 from fastapi.security import HTTPAuthorizationCredentials
 from pydantic import BaseModel, Field, validator
 from typing import Optional, List
