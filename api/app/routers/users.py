@@ -253,12 +253,38 @@ async def get_current_user(current_user = Depends(get_current_user_from_jwt)):
             "is_active": current_user["is_active"],
             "is_verified": current_user["is_verified"],
             "alert_range_km": current_user["alert_range_km"],
-            "units_metric": current_user["units_metric"], 
+            "units_metric": current_user["units_metric"],
             "preferred_language": current_user["preferred_language"],
             "created_at": current_user["created_at"].isoformat() if current_user["created_at"] else None,
             "last_login": current_user["last_login"].isoformat() if current_user["last_login"] else None
         }
     }
+
+
+@router.put("/me/alert-range")
+async def update_alert_range(
+    alert_range_km: float,
+    current_user = Depends(get_current_user_from_jwt)
+):
+    """Update user's alert range for proximity notifications"""
+    from app.services.database_service import get_db
+
+    # Validate range
+    if not (1 <= alert_range_km <= 10000):
+        raise HTTPException(
+            status_code=400,
+            detail="Alert range must be between 1 and 10000 km"
+        )
+
+    db = await get_db()
+    async with db.acquire() as conn:
+        await conn.execute(
+            "UPDATE users SET alert_range_km = $1 WHERE id = $2",
+            alert_range_km,
+            current_user["id"]
+        )
+
+    return {"success": True, "alert_range_km": alert_range_km}
 
 
 

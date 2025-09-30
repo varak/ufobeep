@@ -37,7 +37,6 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
     super.initState();
     // Initialize from current filter state
     final currentFilter = ref.read(alertsFilterStateProvider);
-    final userPrefs = ref.read(userPreferencesProvider);
 
     // Initialize source filter
     if (currentFilter.showUfoBeepOnly == true) {
@@ -53,13 +52,19 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
         ? SortOption.nearest
         : SortOption.newest;
 
-    // Read alert range from user preferences and populate text controller
-    if (userPrefs?.alertRangeKm == null) {
-      throw StateError('User preferences not loaded or alertRangeKm is null - this should not happen');
+    // Load alert range from backend
+    _loadAlertRange();
+  }
+
+  Future<void> _loadAlertRange() async {
+    final response = await ApiClient.dio.get('/users/me');
+    final alertRangeKm = response.data['user']['alert_range_km'] as num;
+    if (mounted) {
+      setState(() {
+        _pushRadiusKm = alertRangeKm.toDouble();
+        _rangeController.text = alertRangeKm.toInt().toString();
+      });
     }
-    final currentRadius = userPrefs!.alertRangeKm;
-    _pushRadiusKm = currentRadius;
-    _rangeController.text = currentRadius.toInt().toString();
   }
 
   @override
@@ -392,12 +397,13 @@ class _SimplifiedFilterDialogState extends ConsumerState<SimplifiedFilterDialog>
 
     ref.read(alertsFilterStateProvider.notifier).updateFilter(newFilter);
 
-    // Also update user preferences to sync with backend device table
-    final userPrefs = ref.read(userPreferencesProvider);
-    if (userPrefs != null) {
-      ref.read(userPreferencesProvider.notifier).updatePreferences(
-        userPrefs.copyWith(alertRangeKm: _pushRadiusKm)
-      );
+    // Save alert range to backend
+    try {
+      await ApiClient.dio.put('/users/me/alert-range', data: _pushRadiusKm);
+      debugPrint('✅ Alert range updated to $_pushRadiusKm km');
+    } catch (e) {
+      debugPrint('❌ Failed to update alert range: $e');
+      rethrow;
     }
 
     // Force AlertsList provider to rebuild with new filter
