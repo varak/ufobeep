@@ -73,6 +73,7 @@ async def submit_email_interest_form(
 
     except psycopg2.errors.UniqueViolation:
         # Email already exists
+        print(f"DEBUG: Duplicate email - {email} already in database")
         return JSONResponse(content={
             "success": True,
             "message": "You're already on our list! We'll notify you when the app launches."
