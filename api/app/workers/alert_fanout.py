@@ -11,9 +11,10 @@ from datetime import datetime, timedelta
 from dataclasses import dataclass
 
 try:
-    # Try to import the new FCM v1 service first
-    from app.services.push_service_v1 import push_service, PushTarget, PushProvider, NotificationType
+    # Use legacy push service (same as proximity_alert_service)
+    from app.services.push_service import send_to_token, get_firebase_client
     from app.config.environment import settings
+    USE_LEGACY_FCM = True
 except ImportError:
     try:
         # Fallback to legacy push service
@@ -164,20 +165,35 @@ class AlertFanoutWorker:
             
         # Create notification content
         notification_title, notification_body = self._create_notification_content(sighting)
-        
-        # Send push notifications
-        results = await push_service.send_sighting_alert(
-            sighting_id=sighting.sighting_id,
-            title=notification_title,
-            body=notification_body,
-            targets=push_targets,
-            distance_km=0.0,  # Will be calculated per target
-            additional_data={
-                "shape": sighting.shape,
-                "confidence_score": str(sighting.confidence_score) if sighting.confidence_score else None,
-                "timestamp": sighting.created_at.isoformat() if sighting.created_at else None
-            }
-        )
+
+        # Send push notifications using legacy FCM
+        total_sent = 0
+        total_failed = 0
+
+        for push_target in push_targets:
+            try:
+                success = await send_to_token(
+                    token=push_target.push_token,
+                    title=notification_title,
+                    body=notification_body,
+                    data={
+                        "type": "sighting_alert",
+                        "sighting_id": sighting.sighting_id,
+                        "click_action": "FLUTTER_NOTIFICATION_CLICK"
+                    }
+                )
+                if success:
+                    total_sent += 1
+                else:
+                    total_failed += 1
+            except Exception as e:
+                logger.error(f"Failed to send to {push_target.device_id}: {e}")
+                total_failed += 1
+
+        results = {
+            "total_sent": total_sent,
+            "total_failed": total_failed
+        }
         
         # Update rate limiting history
         self._update_alert_history(rate_limited_users, sighting.sighting_id)
