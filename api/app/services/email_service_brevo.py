@@ -313,47 +313,28 @@ def send_beta_signup_notification(name: str, email: str):
     """Send notification to admin when someone signs up for beta"""
     admin_email = "mike@ufobeep.com"
 
-    service = BrevoEmailService()
-    if not service.enabled:
-        logger.error("Brevo not configured - cannot send beta signup notification")
-        return
-
     try:
-        payload = {
-            "sender": {
-                "name": "UFOBeep Beta Signups",
-                "email": "alerts@ufobeep.com"
-            },
-            "to": [
-                {
-                    "email": admin_email,
-                    "name": "Mike"
-                }
-            ],
-            "subject": f"New Beta Signup: {name}",
-            "textContent": f"""
-New beta tester signup:
+        import smtplib
+        from email.mime.text import MIMEText
+
+        msg = MIMEText(f"""New beta tester signup:
 
 Name: {name}
 Email: {email}
 
 Add them to Google Play beta testing:
 https://play.google.com/console/developers/8112550256895026119/app/4972659321071169912/tracks/4699844989832644976
-""",
-            "htmlContent": f"""
-<h2>New Beta Tester Signup</h2>
-<p><strong>Name:</strong> {name}<br>
-<strong>Email:</strong> {email}</p>
-<p><a href="https://play.google.com/console/developers/8112550256895026119/app/4972659321071169912/tracks/4699844989832644976">Add them to Google Play beta testing</a></p>
-"""
-        }
+""")
 
-        response = requests.post(service.api_url, json=payload, headers=service.headers)
+        msg['Subject'] = f"New Beta Signup: {name}"
+        msg['From'] = "alerts@ufobeep.com"
+        msg['To'] = admin_email
 
-        if response.status_code == 201:
-            logger.info(f"Beta signup notification sent for {name} <{email}>")
-        else:
-            logger.error(f"Failed to send beta notification: {response.json()}")
+        s = smtplib.SMTP('localhost')
+        s.send_message(msg)
+        s.quit()
+
+        logger.info(f"Beta signup notification sent for {name} <{email}>")
 
     except Exception as e:
         logger.error(f"Failed to send beta signup notification: {e}")
