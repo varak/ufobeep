@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const adminKey = request.headers.get('X-Admin-Key')
@@ -15,7 +15,7 @@ export async function GET(
       return NextResponse.json({ error: 'Admin key required' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await context.params
 
     // Get format from query params (default to json)
     const { searchParams } = new URL(request.url)

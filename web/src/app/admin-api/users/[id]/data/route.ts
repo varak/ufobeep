@@ -4,7 +4,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_BASE || 'https://ufobeep.com'
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const adminKey = request.headers.get('X-Admin-Key')
@@ -12,7 +12,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Admin key required' }, { status: 401 })
     }
 
-    const { id } = params
+    const { id } = await context.params
 
     const backendUrl = `${API_BASE}/api/admin/users/${id}/data`
 

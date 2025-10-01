@@ -7,9 +7,9 @@ export const runtime = 'nodejs'
 // DELETE /api/beep/[id]/comments/[commentId] - Delete a comment
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string; commentId: string } }
+  context: { params: Promise<{ id: string; commentId: string }> }
 ) {
-  const { id, commentId } = params
+  const { id, commentId } = await context.params
 
   return proxyToBackendAPI(
     request,

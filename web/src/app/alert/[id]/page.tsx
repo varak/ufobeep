@@ -5,9 +5,10 @@ interface PageParams {
   id: string
 }
 
-export default async function ShortAlertRedirect({ params }: { params: PageParams }) {
+export default async function ShortAlertRedirect({ params }: { params: Promise<PageParams> }) {
   // Find alert by the 6-character ID
-  const alert = await findAlertByIdHash(params.id)
+  const resolvedParams = await params
+  const alert = await findAlertByIdHash(resolvedParams.id)
   
   if (!alert) {
     // If not found, redirect to main alerts page

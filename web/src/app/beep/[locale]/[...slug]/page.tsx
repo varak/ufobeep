@@ -1,15 +1,12 @@
-'use client'
-
 import { notFound } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useParams, useSearchParams, useRouter } from 'next/navigation'
+import { Metadata } from 'next'
 import { getAlertSlug } from '@/utils/slug'
-import { useClientTranslations } from '@/hooks/useClientTranslations'
 import { AlertTitleUtils } from '@/utils/alert-title-utils'
 import AlertHero from '@/components/alert-detail/AlertHero'
 import AlertDetails from '@/components/alert-detail/AlertDetails'
 import EnrichmentData from '@/components/alert-detail/EnrichmentData'
 import AlertComments from '@/components/AlertComments'
+import { getTranslations } from '@/utils/translations'
 
 interface PageParams {
   locale: string
@@ -62,8 +59,51 @@ interface Alert {
     filename?: string
   }>
   distance_km?: number
+  short_url?: string
+  occurred_at?: string
+  external_url?: string
+  external_id?: string
+  original_language?: string
 }
 
+// Server-side fetch function for beep data
+async function fetchBeepData(slug: string[]): Promise<Alert | null> {
+  try {
+    const fullSlug = slug.join('/')
+    // Extract the short ID - either the last part after splitting on '-', or the whole slug if it's just the short ID
+    let shortId
+    if (fullSlug.includes('-')) {
+      const slugParts = fullSlug.split('-')
+      shortId = slugParts[slugParts.length - 1]
+    } else {
+      // If there are no dashes, this is likely just the short ID
+      shortId = fullSlug
+    }
+
+    // Call backend API directly - supports both UUID and short URL automatically
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'}/beep/${shortId}`
+    const res = await fetch(apiUrl, {
+      cache: 'no-store', // Always get fresh data for OG tags
+      headers: {
+        'Accept': 'application/json',
+      }
+    })
+
+    if (!res.ok) {
+      return null
+    }
+
+    const data = await res.json()
+    if (data.success && data.data) {
+      return data.data
+    }
+
+    return null
+  } catch (error) {
+    console.error('Error fetching beep data:', error)
+    return null
+  }
+}
 
 function getEnrichedLocation(alert: Alert, t: any): string {
   // Try enrichment_data geocoding first (primary data source)
@@ -105,118 +145,102 @@ function getClassifiedTitle(alert: Alert, t: any): string {
   return AlertTitleUtils.getContextualTitle(alert, t)
 }
 
-export default function AlertDetailPage() {
-  const params = useParams()
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const [alert, setAlert] = useState<Alert | null>(null)
-  const [loading, setLoading] = useState(true)
-  // Detect locale with priority: localStorage → URL → browser → 'en'
-  const getEffectiveLocale = () => {
-    if (typeof window === 'undefined') {
-      return (params?.locale as string) || 'en'
+// Generate metadata for SEO and social media previews
+export async function generateMetadata({ params }: { params: Promise<PageParams> }): Promise<Metadata> {
+  const resolvedParams = await params
+  const slug = resolvedParams?.slug as string[]
+  if (!slug || slug.length === 0) {
+    return {
+      title: 'Beep Not Found',
     }
-    
-    // Check localStorage preference first
-    const storedLocale = localStorage.getItem('preferred-language')
-    if (storedLocale) {
-      const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
-      if (validLocales.includes(storedLocale)) return storedLocale
-    }
-    
-    // Fall back to URL locale
-    const urlLocale = (params?.locale as string)
-    if (urlLocale) return urlLocale
-    
-    // Final fallback to browser detection
-    const browserLang = navigator.language.split('-')[0].toLowerCase()
-    const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
-    return validLocales.includes(browserLang) ? browserLang : 'en'
   }
-  
-  const locale = getEffectiveLocale()
-  const { t } = useClientTranslations('common', locale)
-  
-  // Get openImage parameter for direct image linking
-  const openImageParam = searchParams.get('openImage')
-  const openImageIndex = openImageParam ? parseInt(openImageParam, 10) : undefined
-  
-  useEffect(() => {
-    async function fetchAlert() {
-      try {
-        const slug = params?.slug as string[]
-        if (!slug || slug.length === 0) {
-          // No slug provided - this should be handled by /beep/[locale]/page.tsx
-          // But if we get here, redirect to the locale listing page
-          return
-        }
-        
-        const fullSlug = slug.join('/')
-        // Extract the short ID - either the last part after splitting on '-', or the whole slug if it's just the short ID
-        let shortId
-        if (fullSlug.includes('-')) {
-          const slugParts = fullSlug.split('-')
-          shortId = slugParts[slugParts.length - 1]
-        } else {
-          // If there are no dashes, this is likely just the short ID
-          shortId = fullSlug
-        }
-        
-        // Search for beep by short URL in all beeps
-        let targetAlert = null
-        
-        try {
-          // Call backend API directly - supports both UUID and short URL automatically
-          const res = await fetch(`/api/beep/${shortId}`)
-          if (res.ok) {
-            const data = await res.json()
-            if (data.success && data.data) {
-              targetAlert = data.data
-            }
-          }
-        } catch (error) {
-          console.error('Error fetching beep by short URL:', error)
-        }
-        
-        if (targetAlert) {
-          setAlert(targetAlert)
-        }
-      } catch (error) {
-        console.error('Error fetching alert:', error)
-        setAlert(null)
-      } finally {
-        setLoading(false)
-      }
+
+  const alert = await fetchBeepData(slug)
+
+  if (!alert) {
+    return {
+      title: 'Beep Not Found',
     }
-    
-    fetchAlert()
-  }, [params])
-
-  // Scroll to top when page loads
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [])
-
-  // DISABLED: Client-side redirect causes flickering when classification loads
-  // The middleware already handles proper redirects from short URLs
-  // useEffect(() => {
-  //   // Canonical redirect logic disabled to prevent flickering
-  // }, [])
-  
-  if (loading) {
-    return (
-      <main className="min-h-screen py-8 px-4 md:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="text-6xl mb-6">🛸</div>
-          <p className="text-text-secondary">{t('loadingDetails')}</p>
-        </div>
-      </main>
-    )
   }
+
+  const locale = resolvedParams?.locale || 'en'
+  const t = await getTranslations(locale, 'common')
+
+  const title = getClassifiedTitle(alert, t)
+  const location = getEnrichedLocation(alert, t)
+  const date = new Date(alert.created_at).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+
+  const description = alert.description
+    ? alert.description.substring(0, 160)
+    : `UFO sighting reported in ${location} on ${date}`
+
+  // Get first media file for og:image
+  const ogImage = alert.media_files && alert.media_files.length > 0
+    ? (alert.media_files[0].web_url || alert.media_files[0].thumbnail_url || alert.media_files[0].url)
+    : '/og-image.png' // Fallback to default
+
+  // Build canonical URL using short URL if available
+  const shortId = alert.short_url || ''
+  const canonicalUrl = shortId
+    ? `https://ufobeep.com/${shortId}`
+    : `https://ufobeep.com/beep/${locale}/${slug.join('/')}`
+
+  return {
+    title: `${title} - ${location}`,
+    description,
+    openGraph: {
+      type: 'article',
+      url: canonicalUrl,
+      title: `${title} - ${location}`,
+      description,
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      siteName: 'UFOBeep',
+      locale: locale === 'en' ? 'en_US' : `${locale}_${locale.toUpperCase()}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} - ${location}`,
+      description,
+      images: [ogImage],
+    },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+  }
+}
+
+// Server Component (async)
+export default async function AlertDetailPage({ params, searchParams }: { params: Promise<PageParams>, searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+  const resolvedParams = await params
+  const resolvedSearchParams = await searchParams
+  const slug = resolvedParams?.slug as string[]
+  if (!slug || slug.length === 0) {
+    notFound()
+  }
+
+  const alert = await fetchBeepData(slug)
 
   if (!alert) {
     notFound()
   }
+
+  const locale = resolvedParams?.locale || 'en'
+  const t = await getTranslations(locale, 'common')
+
+  // Get openImage parameter for direct image linking
+  const openImageParam = resolvedSearchParams.openImage
+  const openImageIndex = openImageParam ? parseInt(openImageParam as string, 10) : undefined
 
   // Enhance the alert with classified title and enriched location for display
   const enhancedAlert = {
@@ -235,20 +259,20 @@ export default function AlertDetailPage() {
     <main className="min-h-screen py-8 px-4 md:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="mb-8">
-          <a 
+          <a
             href={`/beep/${locale}#alert-${enhancedAlert.id}`}
             className="text-brand-primary hover:text-brand-primary-light transition-colors mb-4 inline-block"
           >
             {t('backToBeeps')}
           </a>
         </div>
-        
+
         {/* Hero Section with Media Gallery */}
         <AlertHero alert={enhancedAlert} openImageIndex={openImageIndex} locale={locale} />
-        
+
         {/* Details Section */}
         <AlertDetails alert={enhancedAlert} locale={locale} />
-        
+
         {/* Enrichment Data */}
         <EnrichmentData alert={enhancedAlert} enrichment={enhancedAlert.enrichment_data} locale={locale} />
 
