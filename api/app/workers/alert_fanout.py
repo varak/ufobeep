@@ -91,7 +91,7 @@ class AlertFanoutWorker:
     """Worker for fanning out sighting alerts to nearby users"""
     
     def __init__(self):
-        self.max_fanout_distance_km = getattr(settings, 'max_fanout_distance_km', 100.0)
+        self.max_fanout_distance_km = getattr(settings, 'max_fanout_distance_km', 10000.0)
         self.min_fanout_distance_km = getattr(settings, 'min_fanout_distance_km', 0.1)
         self.max_targets_per_fanout = getattr(settings, 'max_targets_per_fanout', 1000)
         self.rate_limit_window_minutes = 60
