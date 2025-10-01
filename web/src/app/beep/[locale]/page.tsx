@@ -33,42 +33,48 @@ interface Alert {
 }
 
 interface BeepPageProps {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
 export default function BeepLocalePage({ params }: BeepPageProps) {
-  // This route handles /beep/[locale] for language-specific beep listings
-  const { locale: urlLocale } = params
+  // Extract locale from promise params
+  const [urlLocale, setUrlLocale] = useState<string>('en')
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
   const beepsPerPage = 20
-  
+
   // Valid locales - should match your supported languages
   const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
-  
-  if (!validLocales.includes(urlLocale)) {
-    notFound()
-  }
+
+  // Load params on mount
+  useEffect(() => {
+    params.then(p => {
+      if (!validLocales.includes(p.locale)) {
+        notFound()
+      }
+      setUrlLocale(p.locale)
+    })
+  }, [params])
 
   // Detect effective locale with priority: localStorage → URL → browser → 'en'
   const getEffectiveLocale = () => {
     if (typeof window === 'undefined') {
       return urlLocale
     }
-    
+
     // Check localStorage preference first
     const storedLocale = localStorage.getItem('preferred-language')
     if (storedLocale && validLocales.includes(storedLocale)) {
       return storedLocale
     }
-    
+
     // Fall back to URL locale
     return urlLocale
   }
-  
+
   const locale = getEffectiveLocale()
   const { t } = useClientTranslations('common', locale)
 

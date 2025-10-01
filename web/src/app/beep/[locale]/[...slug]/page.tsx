@@ -81,7 +81,8 @@ async function fetchBeepData(slug: string[]): Promise<Alert | null> {
     }
 
     // Call backend API directly - supports both UUID and short URL automatically
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000'}/beep/${shortId}`
+    // In SSR context, we need to use localhost to hit the local API server
+    const apiUrl = `http://localhost:8000/beep/${shortId}`
     const res = await fetch(apiUrl, {
       cache: 'no-store', // Always get fresh data for OG tags
       headers: {
