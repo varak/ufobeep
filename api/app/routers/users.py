@@ -267,7 +267,7 @@ async def update_alert_range(
     current_user = Depends(get_current_user_from_jwt)
 ):
     """Update user's alert range for proximity notifications"""
-    from app.services.database_service import get_db
+    from app.services.database_service import get_database_pool
 
     # Get alert_range_km from request body (sent as raw float)
     alert_range_km = await request.json()
@@ -285,7 +285,7 @@ async def update_alert_range(
             detail="Alert range must be between 1 and 10000 km"
         )
 
-    db = await get_db()
+    db = await get_database_pool()
     async with db.acquire() as conn:
         await conn.execute(
             "UPDATE users SET alert_range_km = $1 WHERE id = $2",
