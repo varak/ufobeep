@@ -529,12 +529,15 @@ async def get_nearby_user_locations(latitude: float, longitude: float):
 async def get_device_registry(user_ids: list):
     """Get device registry for a list of user IDs"""
     try:
+        from app.services.database_service import get_database_pool
+
         device_registry = {}
-        
+
         if not user_ids:
             return device_registry
-            
-        async with get_db_session() as db:
+
+        pool = await get_database_pool()
+        async with pool.acquire() as db:
             logger.info(f"Querying device registry for {len(user_ids)} users")
             
             # Query active devices for the users
