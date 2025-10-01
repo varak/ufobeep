@@ -27,10 +27,10 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
 
   Map<String, bool> _processorStatus = {
     'weather': false,
-    'celestial': false,
+    'geocoding': false,
     'aircraft_tracking': false,
     'satellites': false,
-    'geocoding': false,
+    'celestial': false,
   };
 
   double _overallProgress = 0.0;
