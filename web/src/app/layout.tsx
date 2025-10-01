@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     default: 'UFOBeep - Real-time UFO Sighting Alerts',
     template: '%s | UFOBeep'
   },
-  description: 'Get instant alerts when UFOs are spotted near you. See exactly where to look and when. Download the app and never miss a UFO sighting again.',
+  description: 'Get instant alerts when UFOs are spotted near you. Download the app and never miss a UFO sighting again.',
   keywords: ['UFO', 'UFO beep', 'UFO app', 'sightings', 'alerts', 'anomaly', 'UAP', 'MUFON', 'location tracking', 'proximity alerts', 'community', 'reports', 'OVNI', 'UFO Warnung', 'UFO alerte', 'avistamiento', 'alertas', 'multilingual'],
   authors: [{ name: 'UFOBeep Team' }],
   creator: 'UFOBeep',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: env.siteUrl,
     title: 'UFOBeep - Real-time UFO Sighting Alerts',
-    description: 'Get instant alerts when UFOs are spotted near you. See exactly where to look and when.',
+    description: 'Get instant alerts when UFOs are spotted near you. Download the app and never miss a UFO sighting again.',
     siteName: 'UFOBeep',
     images: [
       {
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'UFOBeep - Real-time UFO Sighting Alerts',
-    description: 'Get instant alerts when UFOs are spotted near you. Download the app and never miss a UFO sighting again.',
+    description: 'Get instant alerts when UFOs are spotted near you. Join our global community of skywatchers reporting real-time sightings.',
     images: ['/twitter-image.png'],
   },
   robots: {
