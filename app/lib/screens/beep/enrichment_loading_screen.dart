@@ -54,6 +54,11 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
       curve: Curves.easeInOut,
     ));
 
+    // Show continue button after 2 seconds (escape hatch if it hangs)
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) setState(() => _showContinueButton = true);
+    });
+
     // Start checking enrichment status
     _checkEnrichmentProgress();
   }
@@ -104,15 +109,7 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
       }
     }
 
-    // Timeout - show continue button instead of auto-navigating
-    if (mounted) {
-      setState(() {
-        _showContinueButton = true;
-      });
-    }
-
-    // Wait 2 more seconds, then auto-proceed anyway
-    await Future.delayed(const Duration(seconds: 2));
+    // Timeout after 5 seconds - auto-proceed
     if (mounted) {
       widget.onComplete();
     }
