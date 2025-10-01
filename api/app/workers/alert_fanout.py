@@ -303,8 +303,7 @@ class AlertFanoutWorker:
                             "alert_notifications": device.get("alert_notifications", True),
                             "chat_notifications": device.get("chat_notifications", True),
                             "system_notifications": device.get("system_notifications", True)
-                        },
-                        language=user_language
+                        }
                     )
                     
                     push_targets.append(push_target)
