@@ -204,22 +204,29 @@ class AlertFanoutWorker:
         user_locations: List[UserLocation]
     ) -> List[Tuple[UserLocation, float]]:
         """Find users within alert range of the sighting"""
-        
+
+        logger.info(f"_find_nearby_users: Checking {len(user_locations)} user locations against sighting at {sighting.latitude},{sighting.longitude}")
         nearby_users = []
         
         for user_location in user_locations:
             if not user_location.alert_notifications_enabled:
+                logger.info(f"  Skipping user {user_location.user_id}: notifications disabled")
                 continue
-                
+
             distance_km = self.calculate_distance_km(
                 sighting.latitude, sighting.longitude,
                 user_location.latitude, user_location.longitude
             )
-            
+
+            logger.info(f"  User {user_location.user_id}: distance={distance_km:.1f}km, range={user_location.alert_range_km}km")
+
             # Check if within user's preferred range and system limits
             if (self.min_fanout_distance_km <= distance_km <= self.max_fanout_distance_km and
                 distance_km <= user_location.alert_range_km):
                 nearby_users.append((user_location, distance_km))
+                logger.info(f"    ✅ MATCH: User {user_location.user_id} added to nearby list")
+            else:
+                logger.info(f"    ❌ FILTERED: distance={distance_km:.1f}, min={self.min_fanout_distance_km}, max={self.max_fanout_distance_km}, user_range={user_location.alert_range_km}")
                 
         # Sort by distance (closest first) and limit
         nearby_users.sort(key=lambda x: x[1])
