@@ -206,8 +206,9 @@ class AlertFanoutWorker:
         """Find users within alert range of the sighting"""
 
         logger.info(f"_find_nearby_users: Checking {len(user_locations)} user locations against sighting at {sighting.latitude},{sighting.longitude}")
+        logger.info(f"  user_locations type: {type(user_locations)}, content: {user_locations}")
         nearby_users = []
-        
+
         for user_location in user_locations:
             if not user_location.alert_notifications_enabled:
                 logger.info(f"  Skipping user {user_location.user_id}: notifications disabled")
