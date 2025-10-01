@@ -63,35 +63,44 @@ export default function DownloadPage() {
           </ul>
         </div>
 
-        {/* Download Options */}
-        <div className="text-center mb-8 space-y-4">
-          {/* Google Play Testing */}
-          <div>
-            <a
-              href="https://play.google.com/apps/testing/com.ufobeep"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-all transform hover:scale-105"
-            >
-              🏪 Join Google Play Testing
-            </a>
-            <p className="text-sm text-gray-400 mt-2">
-              Latest version • Automatic updates • Preferred method
+        {/* Closed Beta Notice */}
+        <div className="bg-yellow-900/30 border border-yellow-600/50 rounded-lg p-6 mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-yellow-400 text-center">
+            🔒 Closed Beta Testing
+          </h2>
+          <div className="text-gray-300 space-y-4">
+            <p className="text-center">
+              UFOBeep is currently in <strong>closed beta</strong> due to Google Play Store limitations.
+              We&apos;re accepting testers on a first-come basis until we reach our goal of a dozen active testers for 2 weeks.
             </p>
-          </div>
 
-          {/* Direct APK Download */}
-          <div>
-            <a
-              href="/downloads/ufobeep-alpha.apk"
-              className="inline-block bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-8 rounded-lg text-xl transition-all transform hover:scale-105"
-              download
-            >
-              📥 Download APK Directly
-            </a>
-            <p className="text-sm text-gray-400 mt-2">
-              Direct download • Manual updates • Backup option
-            </p>
+            <div className="bg-gray-800 rounded-lg p-6">
+              <h3 className="text-xl font-semibold mb-4 text-center text-green-400">Request Beta Access</h3>
+              <p className="text-center mb-6">
+                Provide your name and email below. We&apos;ll add you to the beta program and send you instructions to download the app from Google Play Testing.
+              </p>
+              <EmailNotifySignup />
+            </div>
+
+            <div className="text-center pt-4">
+              <p className="text-sm text-gray-400">
+                <strong>Already approved?</strong> Use the link below to access the beta:
+              </p>
+              <a
+                href="https://play.google.com/apps/testing/com.ufobeep"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-3 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
+              >
+                🏪 Google Play Testing (Approved Testers Only)
+              </a>
+            </div>
+
+            <div className="bg-blue-900/30 border border-blue-600/50 rounded-lg p-4 mt-6">
+              <p className="text-center text-sm text-blue-300">
+                <strong>Open Beta Coming Soon!</strong> Once we complete our closed beta phase, anyone will be able to download and install the app without prior approval.
+              </p>
+            </div>
           </div>
         </div>
 
@@ -196,17 +205,6 @@ export default function DownloadPage() {
         </div>
 
 
-        {/* Email Signup */}
-        <div className="bg-gray-800 rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-green-400 text-center">
-            📧 Get Notified When We Launch
-          </h2>
-          <p className="text-gray-300 text-center mb-6">
-            Want to know when UFOBeep hits the App Store and Google Play? 
-            Join our notification list for launch updates!
-          </p>
-          <EmailNotifySignup />
-        </div>
 
         {/* Footer */}
         <div className="text-center text-gray-400 text-sm">

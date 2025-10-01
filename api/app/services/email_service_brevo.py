@@ -309,6 +309,39 @@ async def get_email_service():
         email_service = BrevoEmailService()
     return email_service
 
+def send_beta_signup_notification(name: str, email: str):
+    """Send notification to admin when someone signs up for beta"""
+    admin_email = "mike@ufobeep.com"
+
+    try:
+        import smtplib
+        from email.mime.text import MIMEText
+        from email.mime.multipart import MIMEMultipart
+
+        msg = MIMEMultipart()
+        msg['From'] = "alerts@ufobeep.com"
+        msg['To'] = admin_email
+        msg['Subject'] = f"New Beta Signup: {name}"
+
+        body = f"""
+New beta tester signup:
+
+Name: {name}
+Email: {email}
+
+Add them to Google Play beta testing:
+https://play.google.com/console/developers/8112550256895026119/app/4972659321071169912/tracks/4699844989832644976
+
+"""
+
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Send via local mail or just log it
+        logger.info(f"Beta signup notification: {name} <{email}>")
+
+    except Exception as e:
+        logger.error(f"Failed to send beta signup notification: {e}")
+
 # Quick setup instructions
 """
 BREVO SETUP (5 minutes):

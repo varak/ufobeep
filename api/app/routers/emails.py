@@ -33,6 +33,7 @@ def get_db_connection():
 @router.post("/interest")
 async def submit_email_interest_form(
     email: str = Form(...),
+    name: str = Form(default=""),
     source: str = Form(default="app_download_page")
 ):
     """
@@ -41,29 +42,33 @@ async def submit_email_interest_form(
     try:
         conn = get_db_connection()
         cur = conn.cursor(cursor_factory=RealDictCursor)
-        
+
         # Try to insert the email
         cur.execute(
             """
-            INSERT INTO email_interests (email, source) 
-            VALUES (%s, %s) 
+            INSERT INTO email_interests (email, name, source)
+            VALUES (%s, %s, %s)
             RETURNING id
             """,
-            (email, source)
+            (email, name, source)
         )
-        
+
         result = cur.fetchone()
         conn.commit()
-        
+
         cur.close()
         conn.close()
-        
+
+        # Send notification email
+        from app.services.email_service_brevo import send_beta_signup_notification
+        send_beta_signup_notification(name or "Anonymous", email)
+
         return JSONResponse(content={
             "success": True,
             "message": "Thanks! We'll notify you when the app launches.",
             "id": result['id']
         })
-        
+
     except psycopg2.errors.UniqueViolation:
         # Email already exists
         return JSONResponse(content={

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 
 export default function EmailNotifySignup() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
@@ -23,8 +24,9 @@ export default function EmailNotifySignup() {
     try {
       // POST to FastAPI endpoint
       const formData = new FormData()
+      formData.append('name', name)
       formData.append('email', email)
-      formData.append('source', 'app_download_page')
+      formData.append('source', 'beta_signup')
       
       const response = await fetch('/api/emails/interest', {
         method: 'POST',
@@ -34,7 +36,8 @@ export default function EmailNotifySignup() {
       if (response.ok) {
         // Success - don't try to parse response, just show success
         setStatus('success')
-        setMessage('Thanks! We\'ll notify you when the UFOBeep app is ready for download.')
+        setMessage('Thanks! We\'ll add you to the beta program and send instructions to your email.')
+        setName('')
         setEmail('')
       } else {
         setStatus('error')
@@ -50,61 +53,53 @@ export default function EmailNotifySignup() {
   }
 
   return (
-    <section className="bg-dark-surface border border-dark-border rounded-lg p-8 text-center mb-12">
-      <div className="text-center mb-6">
-        <div className="text-4xl mb-4">🚧</div>
-        <h2 className="text-2xl font-semibold text-text-primary mb-4">Coming Soon</h2>
-        <p className="text-text-secondary mb-6">
-          The UFOBeep mobile app is currently in development. Sign up to be notified when it launches!
-        </p>
-      </div>
-
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email"
-          className="flex-1 bg-dark-background border border-dark-border rounded-lg px-4 py-3 text-text-primary placeholder-text-tertiary focus:outline-none focus:border-brand-primary"
-          disabled={isSubmitting}
-          required
-        />
-        <button
-          type="submit"
-          disabled={isSubmitting || !email}
-          className={`bg-brand-primary text-text-inverse px-6 py-3 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors whitespace-nowrap ${
-            isSubmitting || !email
-              ? 'opacity-50 cursor-not-allowed'
-              : ''
-          }`}
-        >
-          {isSubmitting ? (
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 border-2 border-text-inverse/30 border-t-text-inverse rounded-full animate-spin"></div>
-              <span>Saving...</span>
-            </div>
-          ) : (
-            'Notify Me'
-          )}
-        </button>
-
-      </form>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md mx-auto">
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Your name"
+        className="w-full bg-dark-background border border-dark-border rounded-lg px-4 py-3 text-text-primary placeholder-text-tertiary focus:outline-none focus:border-brand-primary"
+        disabled={isSubmitting}
+        required
+      />
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Your email"
+        className="w-full bg-dark-background border border-dark-border rounded-lg px-4 py-3 text-text-primary placeholder-text-tertiary focus:outline-none focus:border-brand-primary"
+        disabled={isSubmitting}
+        required
+      />
+      <button
+        type="submit"
+        disabled={isSubmitting || !email || !name}
+        className={`bg-brand-primary text-text-inverse px-6 py-3 rounded-lg font-semibold hover:bg-brand-primary-dark transition-colors ${
+          isSubmitting || !email || !name
+            ? 'opacity-50 cursor-not-allowed'
+            : ''
+        }`}
+      >
+        {isSubmitting ? (
+          <div className="flex items-center justify-center gap-2">
+            <div className="w-4 h-4 border-2 border-text-inverse/30 border-t-text-inverse rounded-full animate-spin"></div>
+            <span>Submitting...</span>
+          </div>
+        ) : (
+          'Request Beta Access'
+        )}
+      </button>
 
       {status !== 'idle' && (
-        <div className={`mt-4 p-3 rounded-lg text-center ${
-          status === 'success' 
-            ? 'bg-semantic-success/20 border border-semantic-success/30 text-semantic-success' 
+        <div className={`p-3 rounded-lg text-center ${
+          status === 'success'
+            ? 'bg-semantic-success/20 border border-semantic-success/30 text-semantic-success'
             : 'bg-semantic-error/20 border border-semantic-error/30 text-semantic-error'
         }`}>
           {message}
         </div>
       )}
-
-      <div className="text-center mt-6">
-        <p className="text-sm text-text-tertiary">
-          We&apos;ll only email you about the app launch. No spam, ever.
-        </p>
-      </div>
-    </section>
+    </form>
   )
 }
