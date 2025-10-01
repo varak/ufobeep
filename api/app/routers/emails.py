@@ -61,7 +61,7 @@ async def submit_email_interest_form(
 
         # Send notification email
         from app.services.email_service_brevo import send_beta_signup_notification
-        send_beta_signup_notification(name or "Anonymous", email)
+        await send_beta_signup_notification(name or "Anonymous", email)
 
         return JSONResponse(content={
             "success": True,
