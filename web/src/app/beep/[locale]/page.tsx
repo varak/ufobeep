@@ -1,7 +1,7 @@
 'use client'
 
 import { notFound } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { use, useState, useEffect } from 'react'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 import AlertCard from '@/components/AlertCard'
 
@@ -33,10 +33,13 @@ interface Alert {
 }
 
 interface BeepPageProps {
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }
 
 export default function BeepLocalePage({ params }: BeepPageProps) {
+  // Unwrap promise params using React's use() hook (Next.js 15)
+  const { locale: urlLocale } = use(params)
+
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
@@ -47,8 +50,6 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
   // Valid locales - should match your supported languages
   const validLocales = ['en', 'es', 'de', 'fr', 'pt', 'ru', 'ja', 'zh', 'it', 'ar', 'ko', 'tr', 'hi', 'pl', 'cs', 'nl', 'sv', 'da', 'no', 'fi', 'el', 'he']
 
-  // In Next.js 14, client components receive params as regular objects, not Promises
-  const urlLocale = params.locale
   if (!validLocales.includes(urlLocale)) {
     notFound()
   }
