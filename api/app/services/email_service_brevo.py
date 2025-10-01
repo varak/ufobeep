@@ -309,33 +309,26 @@ async def get_email_service():
         email_service = BrevoEmailService()
     return email_service
 
-def send_beta_signup_notification(name: str, email: str):
+async def send_beta_signup_notification(name: str, email: str):
     """Send notification to admin when someone signs up for beta"""
+    from app.services.email_service_postfix import email_service
+
     admin_email = "mike@ufobeep.com"
+    subject = f"New Beta Signup: {name}"
+
+    html_content = f"""
+    <h2>New Beta Tester Signup</h2>
+    <p><strong>Name:</strong> {name}<br>
+    <strong>Email:</strong> {email}</p>
+    <p><a href="https://play.google.com/console/developers/8112550256895026119/app/4972659321071169912/tracks/4699844989832644976">Add them to Google Play beta testing</a></p>
+    """
 
     try:
-        import smtplib
-        from email.mime.text import MIMEText
-
-        msg = MIMEText(f"""New beta tester signup:
-
-Name: {name}
-Email: {email}
-
-Add them to Google Play beta testing:
-https://play.google.com/console/developers/8112550256895026119/app/4972659321071169912/tracks/4699844989832644976
-""")
-
-        msg['Subject'] = f"New Beta Signup: {name}"
-        msg['From'] = "alerts@ufobeep.com"
-        msg['To'] = admin_email
-
-        s = smtplib.SMTP('localhost')
-        s.send_message(msg)
-        s.quit()
-
-        logger.info(f"Beta signup notification sent for {name} <{email}>")
-
+        result = await email_service.send_html_email(admin_email, subject, html_content)
+        if result:
+            logger.info(f"Beta signup notification sent for {name} <{email}>")
+        else:
+            logger.error(f"Failed to send beta notification for {name}")
     except Exception as e:
         logger.error(f"Failed to send beta signup notification: {e}")
 
