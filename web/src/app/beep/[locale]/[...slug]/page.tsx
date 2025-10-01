@@ -83,7 +83,6 @@ async function fetchBeepData(slug: string[]): Promise<Alert | null> {
     // Call backend API directly - supports both UUID and short URL automatically
     // In SSR context, use 127.0.0.1 explicitly to avoid IPv6 (::1) issues
     const apiUrl = `http://127.0.0.1:8000/beep/${shortId}`
-    console.log(`[SSR] Fetching beep data from: ${apiUrl}`)
     const res = await fetch(apiUrl, {
       cache: 'no-store', // Always get fresh data for OG tags
       headers: {
@@ -91,22 +90,15 @@ async function fetchBeepData(slug: string[]): Promise<Alert | null> {
       }
     })
 
-    console.log(`[SSR] API response status: ${res.status}`)
-
     if (!res.ok) {
-      console.error(`[SSR] API returned ${res.status} for ${shortId}`)
       return null
     }
 
     const data = await res.json()
-    console.log(`[SSR] API response success: ${data.success}`)
-
     if (data.success && data.data) {
-      console.log(`[SSR] Found beep: ${data.data.id}`)
       return data.data
     }
 
-    console.error(`[SSR] No data in API response for ${shortId}`)
     return null
   } catch (error) {
     console.error('[SSR] Error fetching beep data:', error)
