@@ -1441,7 +1441,7 @@ async def google_login(request: SocialLoginRequest):
 
 @router.post("/auth/firebase")
 async def firebase_auth(
-    request: SocialLoginRequest, 
+    request: SocialLoginRequest,
     firebase_user: FirebaseUser = RequiredAuth,
     pool: asyncpg.Pool = Depends(get_db)
 ):
@@ -1451,31 +1451,67 @@ async def firebase_auth(
     """
     try:
         async with pool.acquire() as conn:
-            # Check if user already exists by Firebase UID
-            user = await conn.fetchrow("""
-                SELECT id, username, email, firebase_uid, login_methods
-                FROM users 
-                WHERE firebase_uid = $1
-            """, firebase_user.uid)
-            
-            if user:
-                # Existing user - update last_active and device
-                await conn.execute("""
-                    UPDATE users 
-                    SET last_login_at = NOW()
-                    WHERE id = $1
-                """, user["id"])
-                
-                # Device tracking handled by devices service
-                
-                # Create JWT tokens for existing user
-                access_token = create_access_token(data={"sub": str(user["id"])})
-                refresh_token = create_refresh_token(data={"sub": str(user["id"])})
-                
-                return standard_auth_response(dict(user), access_token, refresh_token)
-                
-            else:
-                # New user - use centralized creation function
+            async with conn.transaction():
+                # Check if user already exists by Firebase UID
+                user = await conn.fetchrow("""
+                    SELECT id, username, email, firebase_uid, login_methods, email_verified, display_name
+                    FROM users
+                    WHERE firebase_uid = $1
+                    FOR UPDATE
+                """, firebase_user.uid)
+
+                if user:
+                    # Existing user found by firebase_uid - update last_active
+                    await conn.execute("""
+                        UPDATE users
+                        SET last_login_at = NOW()
+                        WHERE id = $1
+                    """, user["id"])
+
+                    # Create JWT tokens for existing user
+                    access_token = create_access_token(data={"sub": str(user["id"])})
+                    refresh_token = create_refresh_token(data={"sub": str(user["id"])})
+
+                    return standard_auth_response(dict(user), access_token, refresh_token)
+
+                # Not found by firebase_uid - check if user exists by email (magic link case)
+                if firebase_user.email:
+                    user_by_email = await conn.fetchrow("""
+                        SELECT id, username, email, firebase_uid, login_methods, email_verified, display_name
+                        FROM users
+                        WHERE LOWER(email) = LOWER($1)
+                        FOR UPDATE
+                    """, firebase_user.email)
+
+                    if user_by_email:
+                        # User exists with this email but no firebase_uid - link the account
+                        login_methods = user_by_email["login_methods"] if user_by_email["login_methods"] else ["magic_link"]
+                        if isinstance(login_methods, str):
+                            login_methods = json.loads(login_methods)
+
+                        if "firebase" not in login_methods:
+                            login_methods.append("firebase")
+
+                        # Update user with firebase_uid and login methods
+                        await conn.execute("""
+                            UPDATE users
+                            SET firebase_uid = $1, login_methods = $2, email_verified = TRUE, last_login_at = NOW()
+                            WHERE id = $3
+                        """, firebase_user.uid, json.dumps(login_methods), user_by_email["id"])
+
+                        # Create updated user dict for response
+                        user_data = dict(user_by_email)
+                        user_data["firebase_uid"] = firebase_user.uid
+                        user_data["login_methods"] = login_methods
+                        user_data["email_verified"] = True
+
+                        # Create JWT tokens
+                        access_token = create_access_token(data={"sub": str(user_data["id"])})
+                        refresh_token = create_refresh_token(data={"sub": str(user_data["id"])})
+
+                        return standard_auth_response(user_data, access_token, refresh_token)
+
+                # No existing user found - create new user
                 user_data = await _create_new_user(
                     pool=pool,
                     email=firebase_user.email or "",
@@ -1483,14 +1519,15 @@ async def firebase_auth(
                     login_methods=["firebase"],
                     preferred_login_method="firebase"
                 )
-                
+
                 # Create JWT tokens for new user
                 access_token = create_access_token(data={"sub": str(user_data["id"])})
                 refresh_token = create_refresh_token(data={"sub": str(user_data["id"])})
-                
+
                 return standard_auth_response(user_data, access_token, refresh_token)
-                
+
     except Exception as e:
+        logger.exception("Firebase authentication error")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Firebase authentication failed: {str(e)}"
