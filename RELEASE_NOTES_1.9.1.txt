@@ -1,0 +1,26 @@
+UFOBeep v1.9.1 - Authentication Fix
+
+RELEASE NOTES FOR PLAY STORE:
+
+What's New:
+• Fixed issue where users were logged out frequently
+• Improved authentication persistence
+• Better handling of app backgrounding and resuming
+• More reliable comment posting
+
+Bug Fixes:
+• Authentication tokens now refresh automatically when app resumes
+• Fixed token expiration causing unexpected logouts
+• Improved token refresh logic for better user experience
+
+Technical Details:
+- Tokens refresh proactively when app starts or resumes from background
+- Added lifecycle detection to handle app state changes
+- Fallback authentication recovery on network errors
+
+FILES TO UPLOAD:
+- App Bundle: build/app/outputs/bundle/release/app-release.aab (63.5MB)
+- Version: 1.9.1
+- Build Number: 351
+
+IMPORTANT: Users need to update through Play Store to get these fixes. The authentication improvements are in the app code itself, not server-side.

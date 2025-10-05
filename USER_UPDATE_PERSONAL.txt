@@ -1,0 +1,23 @@
+For Tara specifically (or personalized responses):
+
+---
+
+Hey Tara,
+
+Thanks for letting us know about the login issues! You were absolutely right - the app was being way too aggressive about expiring sessions.
+
+We just pushed version 1.9.1 to the Play Store that fixes this. The problem was the app wasn't properly refreshing authentication tokens when coming back from the background (which is like 99% of mobile app usage as you pointed out!).
+
+Now it:
+- Checks and refreshes tokens when you open the app
+- Refreshes them when switching back to UFOBeep
+- Keeps you logged in for weeks instead of hours
+- Actually works how a mobile app should work 😅
+
+You should be able to post comments and stay logged in without any issues now. The update should show up in your Play Store within the next few hours.
+
+Thanks for the honest feedback - it really helps make the app better for everyone!
+
+Let me know if you run into any other issues.
+
+Mike
