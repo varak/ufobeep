@@ -30,6 +30,8 @@ class AuthRepository with ChangeNotifier {
   String? _access;
   String? _refresh;
   bool _loaded = false;
+  DateTime? _tokenExpiresAt;
+  Timer? _refreshTimer;
 
   UserModel? get currentUser => _currentUser;
   bool get isReady => _isReady && !_isHydrating;
@@ -39,13 +41,65 @@ class AuthRepository with ChangeNotifier {
   Future<void> ensureLoaded() async {
     if (_loaded) return;
     print('[AuthRepo] ensureLoaded() - loading tokens from secure storage');
-    
+
     final tokenData = await _secureStorage.readTokens();
     _access = tokenData['access'];
     _refresh = tokenData['refresh'];
+    final expiryStr = tokenData['expires_at'];
+    if (expiryStr != null) {
+      _tokenExpiresAt = DateTime.tryParse(expiryStr);
+    }
     _loaded = true;
-    
+
     print('[AuthRepo] ensureLoaded() complete - access: ${_access != null}, refresh: ${_refresh != null}');
+
+    // Start proactive refresh if we have tokens
+    if (_access != null && _refresh != null) {
+      _scheduleProactiveRefresh();
+    }
+  }
+
+  /// Check if token needs refresh (within 30 minutes of expiry)
+  bool _needsProactiveRefresh() {
+    if (_tokenExpiresAt == null) return false;
+    final now = DateTime.now();
+    final timeUntilExpiry = _tokenExpiresAt!.difference(now);
+    // Refresh if less than 30 minutes remaining
+    return timeUntilExpiry.inMinutes < 30;
+  }
+
+  /// Schedule proactive token refresh
+  void _scheduleProactiveRefresh() {
+    _refreshTimer?.cancel();
+
+    if (_tokenExpiresAt == null || _refresh == null) return;
+
+    final now = DateTime.now();
+    final timeUntilRefresh = _tokenExpiresAt!.subtract(const Duration(minutes: 30)).difference(now);
+
+    if (timeUntilRefresh.isNegative || _needsProactiveRefresh()) {
+      // Need to refresh now
+      print('[AuthRepo] Token needs immediate refresh');
+      _performProactiveRefresh();
+    } else {
+      // Schedule refresh for later
+      print('[AuthRepo] Scheduling token refresh in ${timeUntilRefresh.inMinutes} minutes');
+      _refreshTimer = Timer(timeUntilRefresh, _performProactiveRefresh);
+    }
+  }
+
+  /// Perform proactive token refresh
+  Future<void> _performProactiveRefresh() async {
+    try {
+      print('[AuthRepo] Performing proactive token refresh');
+      await _refreshTokens();
+      print('[AuthRepo] Proactive token refresh successful');
+      // Schedule next refresh
+      _scheduleProactiveRefresh();
+    } catch (e) {
+      print('[AuthRepo] Proactive token refresh failed: $e');
+      // Will retry on next API call via interceptor
+    }
   }
 
   Future<void> loadSessionOnStartup() async {
@@ -100,27 +154,33 @@ class AuthRepository with ChangeNotifier {
   Future<void> setTokens({required String access, required String refresh}) async {
     print('[Auth] ========== TOKEN STORAGE START ==========');
     print('[Auth] Saving tokens: access(${access.length}), refresh(${refresh.length})');
-    
+
     try {
       // Update in-memory cache first
       _access = access;
       _refresh = refresh;
       _loaded = true;
-      
+      // Backend tokens expire in 24 hours, but we'll refresh proactively after 23.5 hours
+      _tokenExpiresAt = DateTime.now().add(const Duration(hours: 24));
+
       // Then persist to secure storage
       await _secureStorage.writeTokens(
         access: access,
         refresh: refresh,
-        expiresAt: DateTime.now().add(const Duration(hours: 1)),
+        expiresAt: _tokenExpiresAt,
       );
-      
+
       ApiClient.setBearer(access);
       print('[Auth] ✅ ApiClient bearer token updated');
       print('[Auth] ✅ In-memory cache updated');
-      
+      print('[Auth] ✅ Token expires at: ${_tokenExpiresAt?.toIso8601String()}');
+
+      // Schedule proactive refresh
+      _scheduleProactiveRefresh();
+
       // Trigger device registration now that we have auth token
       DeviceRegistrationManager().onAuthTokenAvailable(access);
-      
+
       print('[Auth] ========== TOKEN STORAGE SUCCESS ==========');
     } catch (e, stackTrace) {
       print('[Auth] ❌ CRITICAL: Token storage failed: $e');
@@ -199,19 +259,24 @@ class AuthRepository with ChangeNotifier {
   }
 
   Future<void> clearSession() async {
+    // Cancel refresh timer
+    _refreshTimer?.cancel();
+    _refreshTimer = null;
+
     // Clear in-memory cache
     _access = null;
     _refresh = null;
     _loaded = false;
-    
+    _tokenExpiresAt = null;
+
     // Clear secure storage
     await _secureStorage.clearTokens();
     ApiClient.clearBearer();
     _currentUser = null;
-    
+
     // Notify DeviceRegistrationManager that auth is cleared
     DeviceRegistrationManager().onAuthCleared();
-    
+
     print('[AuthRepo] clearSession() - cache and storage cleared');
     notifyListeners();
   }
@@ -230,10 +295,16 @@ class AuthRepository with ChangeNotifier {
   Future<void> _refreshTokens() async {
     final refresh = await getRefreshToken();
     if (refresh == null || refresh.isEmpty) throw Exception('No refresh token');
+
+    print('[AuthRepo] Refreshing tokens...');
     final res = await _dio.post('/auth/refresh', data: {'refresh': refresh});
-    final access = res.data['access'] as String?;
-    final newRefresh = res.data['refresh'] as String? ?? refresh;
+
+    final access = res.data['access'] ?? res.data['access_token'] as String?;
+    final newRefresh = res.data['refresh'] ?? res.data['refresh_token'] ?? refresh;
+
     if (access == null) throw Exception('No access token in refresh response');
+
+    print('[AuthRepo] Token refresh successful');
     await setTokens(access: access, refresh: newRefresh);
   }
 }

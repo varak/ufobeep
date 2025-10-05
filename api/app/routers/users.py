@@ -30,7 +30,7 @@ security = HTTPBearer(auto_error=False)
 
 
 # Standardized auth response format
-def standard_auth_response(user_data: dict, access_token: str, refresh_token: str, expires_in: int = 3600):
+def standard_auth_response(user_data: dict, access_token: str, refresh_token: str, expires_in: int = 86400):
     """
     Standard authentication response format for all auth methods
     Ensures consistency across Google, Apple, Firebase, and Magic Link auth
