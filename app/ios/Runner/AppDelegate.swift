@@ -1,6 +1,6 @@
-import Flutter
 import UIKit
 import AudioToolbox
+@_exported import Flutter
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {

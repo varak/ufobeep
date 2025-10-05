@@ -1,2 +1,4 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"
 #include "Generated.xcconfig"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$(FLUTTER_ROOT)/bin/cache/artifacts/engine/ios-release"
+SWIFT_INCLUDE_PATHS = $(inherited) "$(FLUTTER_ROOT)/bin/cache/artifacts/engine/ios-release"
