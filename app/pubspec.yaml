@@ -71,11 +71,11 @@ dependencies:
   json_annotation: ^4.9.0
   
   # Firebase Services
-  firebase_core: ^3.8.0
-  firebase_auth: ^5.3.1
-  cloud_firestore: ^5.5.0
-  firebase_messaging: ^15.1.4
-  firebase_analytics: ^11.3.3
+  firebase_core: ^3.15.2
+  firebase_auth: ^5.7.0
+  cloud_firestore: ^5.6.12
+  firebase_messaging: ^15.2.10
+  firebase_analytics: ^11.6.0
   package_info_plus: ^8.0.3
 
   
@@ -100,7 +100,7 @@ dependencies:
   collection: ^1.18.0
   
   # Alerts & vibration
-  flutter_local_notifications: ^17.2.4
+  flutter_local_notifications: ^17.2.4  # Keep at 17.x for now - 19.x may have breaking changes
   vibration: ^2.0.1
   
   # Anonymous ID generation
