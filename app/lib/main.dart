@@ -168,7 +168,7 @@ class UFOBeepApp extends ConsumerStatefulWidget {
   ConsumerState<UFOBeepApp> createState() => _UFOBeepAppState();
 }
 
-class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
+class _UFOBeepAppState extends ConsumerState<UFOBeepApp> with WidgetsBindingObserver {
   late final AuthService _auth;
   late final DeepLinkHandler _deepLinkHandler;
   late final AuthRepository _authRepo;
@@ -180,12 +180,15 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   @override
   void initState() {
     super.initState();
-    
+
+    // Add lifecycle observer to detect app resume
+    WidgetsBinding.instance.addObserver(this);
+
     _auth = AuthService(); // Use existing singleton
-    
+
     // ChatGPT's pattern: Initialize DeepLinkHandler BEFORE UI renders
     _deepLinkHandler = DeepLinkHandler();
-    
+
     // Start deep link listening immediately
     _deepLinkHandler.init();
     
@@ -221,11 +224,23 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> {
   
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _deepLinkHandler.dispose();
     if (_authListener != null) {
       _authRepo.removeListener(_authListener!);
     }
     super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    // When app comes back to foreground, check if tokens need refresh
+    if (state == AppLifecycleState.resumed) {
+      debugPrint('App resumed from background - checking token refresh');
+      AuthRepository().onAppResume();
+    }
   }
   
   void _setupShareIntentCallback() {

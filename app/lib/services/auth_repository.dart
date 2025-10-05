@@ -112,6 +112,17 @@ class AuthRepository with ChangeNotifier {
         _performSessionLoad(),
         Future.delayed(const Duration(seconds: 5), () => throw TimeoutException('Session load timeout', const Duration(seconds: 5))),
       ]);
+
+      // CRITICAL: Check if tokens need refresh when app starts/resumes
+      if (_access != null && _refresh != null && _needsProactiveRefresh()) {
+        print('[Bootstrap] Tokens need refresh on startup - refreshing now');
+        try {
+          await _refreshTokens();
+          print('[Bootstrap] Startup token refresh successful');
+        } catch (e) {
+          print('[Bootstrap] Startup token refresh failed: $e - will retry on first API call');
+        }
+      }
     } catch (e) {
       print('[Bootstrap] Session load failed: $e');
       if (e is TimeoutException) {
@@ -190,15 +201,42 @@ class AuthRepository with ChangeNotifier {
     }
   }
 
+  /// Check and refresh tokens when app resumes from background
+  Future<void> onAppResume() async {
+    if (_access != null && _refresh != null && _needsProactiveRefresh()) {
+      print('[AuthRepo] App resumed - tokens need refresh');
+      try {
+        await _refreshTokens();
+        print('[AuthRepo] App resume token refresh successful');
+      } catch (e) {
+        print('[AuthRepo] App resume token refresh failed: $e');
+        // Interceptor will handle on next API call
+      }
+    } else {
+      print('[AuthRepo] App resumed - tokens still valid');
+    }
+  }
+
   /// This is the key fix: read-through cache pattern
   Future<String?> getAccessToken() async {
     print('[AuthRepo] getAccessToken() - loaded: $_loaded, cached access: ${_access != null}');
-    
+
     if (!_loaded || (_access == null || _access!.isEmpty)) {
       print('[AuthRepo] getAccessToken() - cache miss, loading from storage');
       await ensureLoaded();
     }
-    
+
+    // Check if token needs refresh before returning it
+    if (_access != null && _refresh != null && _needsProactiveRefresh()) {
+      print('[AuthRepo] Token needs refresh before use');
+      try {
+        await _refreshTokens();
+      } catch (e) {
+        print('[AuthRepo] Pre-use token refresh failed: $e');
+        // Return existing token, interceptor will handle 401 if it's actually expired
+      }
+    }
+
     print('[AuthRepo] getAccessToken() - returning: ${_access != null ? "token(${_access!.length})" : "null"}');
     return _access;
   }
