@@ -32,6 +32,7 @@ google-services.json
 GoogleService-Info.plist
 service-account*.json
 app/secrets/
+env/
 
 # ---- UFOBeep secrets (do not commit) ----
 # Firebase Admin service account

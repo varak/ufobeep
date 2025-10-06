@@ -91,6 +91,7 @@
 		<string>location</string>
 		<string>background-processing</string>
 		<string>background-fetch</string>
+		<string>remote-notification</string>
 	</array>
 	
 	<!-- App Transport Security -->
@@ -133,6 +134,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>ufobeep</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.346511467728-l9lduhbslss7hop35uik8dii50ks9nmb</string>
 			</array>
 		</dict>
 	</array>

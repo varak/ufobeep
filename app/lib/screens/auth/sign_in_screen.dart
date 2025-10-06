@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   bool _isGoogleLoading = false;
+  bool _isAppleLoading = false;
   bool _isMagicLinkLoading = false;
   String? _errorMessage;
   String? _successMessage;
@@ -103,6 +105,57 @@ class _SignInScreenState extends State<SignInScreen> {
       if (mounted) {
         setState(() {
           _isGoogleLoading = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _handleAppleSignIn() async {
+    await UiFeedback.click();
+
+    try {
+      setState(() {
+        _isAppleLoading = true;
+        _errorMessage = null;
+      });
+
+      debugPrint('🍎 Starting Apple Sign-In...');
+      final result = await SocialAuthService().signInWithApple();
+
+      if (result.success) {
+        debugPrint('✅ Apple Sign-In successful');
+
+        if (result.username != null && result.username!.isNotEmpty) {
+          if (mounted) context.go('/');
+        } else {
+          if (mounted) context.go('/register');
+        }
+      } else {
+        debugPrint('❌ Apple Sign-In failed: ${result.error}');
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(result.error ?? 'Apple Sign-In failed'),
+              backgroundColor: AppColors.semanticError,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      debugPrint('❌ Apple Sign-In failed: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Apple Sign-In failed: $e'),
+            backgroundColor: AppColors.semanticError,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAppleLoading = false;
         });
       }
     }
@@ -271,7 +324,44 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 
                 const SizedBox(height: 32),
-                
+
+                // Apple Sign-In Button (iOS only)
+                if (Platform.isIOS) ...[
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton.icon(
+                      onPressed: _isAppleLoading ? null : _handleAppleSignIn,
+                      icon: _isAppleLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const Icon(Icons.apple, color: Colors.white, size: 24),
+                      label: Text(
+                        _isAppleLoading ? 'Signing in...' : 'Continue with Apple',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                ],
+
                 // Google Sign-In Button
                 SizedBox(
                   width: double.infinity,
