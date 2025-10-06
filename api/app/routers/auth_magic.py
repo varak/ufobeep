@@ -890,7 +890,7 @@ async def complete_magic_link_code(
         if is_mobile:
             # Mobile: Redirect to app custom scheme
             from fastapi.responses import RedirectResponse
-            custom_scheme_url = f"ufobeep://auth/magic?code={code}"
+            custom_scheme_url = f"ufobeep://auth/complete?code={code}"
             logger.info(f"MAGIC_CODE_GET: Redirecting mobile to app: {custom_scheme_url}")
             return RedirectResponse(url=custom_scheme_url, status_code=302)
         else:
@@ -964,7 +964,7 @@ async def complete_magic_link_code(
             Opening the app...
         </div>
         <div id="buttons" style="display: none;">
-            <a href="ufobeep://auth/magic?code={code}" class="manual-button">
+            <a href="ufobeep://auth/complete?code={code}" class="manual-button">
                 Open UFOBeep
             </a><br>
             <a href="https://ufobeep.com/downloads/ufobeep-latest.apk" class="manual-button download-btn">
@@ -984,7 +984,7 @@ async def complete_magic_link_code(
             
             // Try custom scheme first
             try {{
-                window.location.href = 'ufobeep://auth/magic?code={code}';
+                window.location.href = 'ufobeep://auth/complete?code={code}';
             }} catch (e) {{
                 console.log('Custom scheme failed:', e);
             }}
@@ -992,7 +992,7 @@ async def complete_magic_link_code(
             // Try Android Chrome intent fallback
             if (navigator.userAgent.includes('Android')) {{
                 try {{
-                    window.location.href = 'intent://auth/magic?code={code}#Intent;scheme=ufobeep;package=com.ufobeep;S.browser_fallback_url=https%3A%2F%2Fufobeep.com%2Fdownloads%2Fufobeep-latest.apk;end';
+                    window.location.href = 'intent://auth/complete?code={code}#Intent;scheme=ufobeep;package=com.ufobeep;S.browser_fallback_url=https%3A%2F%2Fufobeep.com%2Fdownloads%2Fufobeep-latest.apk;end';
                 }} catch (e) {{
                     console.log('Intent scheme failed:', e);
                 }}

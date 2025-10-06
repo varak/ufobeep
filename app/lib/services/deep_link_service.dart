@@ -357,8 +357,8 @@ class DeepLinkService {
 
     final action = pathSegments[0];
     print('🎬 Action: $action');
-    
-    if (action == 'complete') {
+
+    if (action == 'magic' || action == 'complete') {
       // Redirect to proper GoRouter route instead of handling auth here
       // This ensures consistent auth flow through the app's routing system
       print('🔄 DEEP LINK REDIRECT: Deep link redirecting to GoRouter /auth/magic route');
@@ -368,10 +368,10 @@ class DeepLinkService {
         path: '/auth/magic',
         queryParameters: queryParams,
       );
-      
+
       final routeString = uri.toString();
       print('🎯 Final route: $routeString');
-      
+
       _router!.go(routeString);
       print('✅ Redirect completed');
     } else {
