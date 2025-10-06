@@ -361,11 +361,11 @@ class DeepLinkService {
     if (action == 'complete') {
       // Redirect to proper GoRouter route instead of handling auth here
       // This ensures consistent auth flow through the app's routing system
-      print('🔄 DEEP LINK REDIRECT: Deep link redirecting to GoRouter /auth/complete route');
-      
+      print('🔄 DEEP LINK REDIRECT: Deep link redirecting to GoRouter /auth/magic route');
+
       // Build the route with query parameters
       final uri = Uri(
-        path: '/auth/complete',
+        path: '/auth/magic',
         queryParameters: queryParams,
       );
       
