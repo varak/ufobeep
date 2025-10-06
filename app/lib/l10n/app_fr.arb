@@ -37,7 +37,7 @@
   "alertsTitle": "Alertes à proximité",
   "noAlerts": "Pas encore d'alerte.",
   "pullToRefresh": "Tirer pour rafraîchir",
-  "alertDistance": "__PLACÉHOLDER_0__ loin",
+  "alertDistance": "{distance} loin",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Accorder un accès microphone pour la capture vidéo avec audio.",
   "openSettings": "Ouvrir les paramètres",
   "alertDetailTitle": "Détails de la vue",
-  "reportedBy": "Signalé par __PLACEHODER_0__",
+  "reportedBy": "Signalé par {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Rapporté __PLACEHODER_0__",
+  "reportedAt": "Rapporté {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "_PLACEHOLDER_0__",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -208,7 +208,7 @@
   "emergencyOverrideDesc": "Autoriser les alertes urgentes pendant les heures calmes",
   "dndMode": "Ne pas déranger",
   "dndUntil": "Ne pas déranger jusqu'à",
-  "dndEnabled": "Le MDN a activé jusqu'à __PLACEHODER_0__",
+  "dndEnabled": "Le MDN a activé jusqu'à {time}",
   "dndDisabled": "Personnes handicapées du MDN",
   "quietHoursActive": "Actif {endTime} - {startTime}",
   "quietHoursScheduled": "Heures calmes: {end}_{start}",
@@ -216,7 +216,7 @@
   "pushNotificationAnomalyAlert": "Alerte d'anomalie",
   "pushNotificationNearby": "À proximité",
   "pushNotificationInYourArea": "dans votre région. Appuyez sur pour voir les détails.",
-  "pushNotificationCommented": "__PLACEHODER_0__ commenté",
+  "pushNotificationCommented": "{username} commenté",
   "pushNotificationCommentedOn": "{beepTitle} commente {username}",
   "pushNotificationGeneric": "UFOBeep",
   "pushNotificationNewSighting": "Nouvelle observation à proximité",
@@ -254,7 +254,7 @@
       }
     }
   },
-  "timeHoursAgo": "_PLACEHOLDER_0__il y a des heures",
+  "timeHoursAgo": "{count} il y a des heures",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "OVNI profond Alerte",
   "notificationSightingUrgent": "URGENT UFOBeep UFO Alerte",
   "notificationSightingEmergency": "UFO EMERGENCE Alerte",
-  "notificationSightingBody": "{witnessText} près de _PLACEHOLDER_1__",
+  "notificationSightingBody": "{witnessText} près de {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -510,7 +510,7 @@
     }
   },
   "notificationWitnessText": "Nouvelles observations",
-  "notificationWitnessTextMultiple": "_PLACEHOLDER_0__ témoins",
+  "notificationWitnessTextMultiple": "{count} témoins",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -521,7 +521,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Rejet",
-  "notificationDistance": "__PLACÉHOLDER_0__ loin",
+  "notificationDistance": "{distance} loin",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -592,14 +592,14 @@
   "mufonEgg": "Œuf",
   "mufonOther": "Objet",
   "mufonUnknown": "Objet inconnu",
-  "mufonTitleFormat": "Rapport de MUFON __PLACEHODER_0__",
+  "mufonTitleFormat": "Rapport de MUFON {classification}",
   "nuforcAttribution": "NUFORC Rapport de base de données",
   "nuforcCaseNumber": "Dossier #",
   "nuforcGenericTitle": "NUFORC Rapport d'observation",
   "mediaImageNotFound": "Image introuvable",
   "mediaPlayVideo": "Lire la vidéo",
   "mediaViewImage": "Afficher l'image",
-  "mediaCount": "_PLACEHOLDER_0__ images",
+  "mediaCount": "{count} images",
   "mediaCountSingle": "1 image",
   "mediaMoreImages": "Plus",
   "errorNotFound": "Bip non trouvé",
@@ -745,7 +745,7 @@
       }
     }
   },
-  "hoursAgo": "_PLACEHOLDER_0__il y a des heures",
+  "hoursAgo": "{hours} il y a des heures",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -771,7 +771,7 @@
   "splashRetry": "Réessayer",
   "splashContinue": "Continuer",
   "splashInitializing": "Initialisation...",
-  "signInWelcome": "Bienvenue __PLACEHODER_0__!",
+  "signInWelcome": "Bienvenue {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "La connexion a échoué : _PLACEHOLDER_0__",
+  "signInFailed": "La connexion a échoué : {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -800,7 +800,7 @@
   "signInEmailDescription": "Nous vous enverrons un lien sécurisé pour vous connecter",
   "signInEmailAddress": "Adresse électronique",
   "signInEmailPlaceholder": "votre@email.com",
-  "signInTryAgainIn": "Essayez à nouveau dans __PLACEHODER_0_s",
+  "signInTryAgainIn": "Essayez à nouveau dans {seconds}s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "La vérification par courriel aide à sécuriser votre compte et permet la récupération de compte si vous perdez l'accès à votre appareil.",
   "phoneAuthFailedToSendCode": "Le code de vérification a échoué. Veuillez réessayer.",
   "phoneAuthInvalidCodeTryAgain": "Code de vérification non valide. Veuillez réessayer.",
-  "phoneAuthPhoneVerified": "Numéro de téléphone vérifié: _PLACEHOLDER_0__",
+  "phoneAuthPhoneVerified": "Numéro de téléphone vérifié: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -930,12 +930,12 @@
   "celestialMoonThin": "Lune visible - éclairage minimal",
   "celestialMoonHidden": "{phase} lune sous l'horizon - aucun éclairage lunaire",
   "celestialNoPlanets": "Aucune planète brillante visible qui pourrait être confondue avec les ovnis",
-  "celestialPlanetHigh": "{planet}____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "celestialPlanetHigh": "{planet} haut au-dessus ({altitude}°) - très visible",
   "celestialPlanetMedium": "{altitude} visible à {planet}° - peut être confondu avec un aéronef",
-  "celestialPlanetLow": "{planet} bas à l'horizon (_PLACEHOLDER_1__°)",
+  "celestialPlanetLow": "{planet} bas à l'horizon ({altitude}°)",
   "celestialNoStars": "Aucune étoile exceptionnellement brillante visible",
-  "celestialStarSingle": "{star}_____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
-  "celestialStarsMultiple": "{count}_____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "celestialStarSingle": "{star} proéminente à {altitude}°",
+  "celestialStarsMultiple": "{count} étoiles brillantes visibles - {names}",
   "celestialSummaryDaylight": "Conditions diurnes",
   "celestialSummaryDark": "Conditions du ciel sombre",
   "celestialSummaryMoonUp": "illumination de la lune présente",
@@ -943,7 +943,7 @@
   "celestialSummaryManyObjects": "{count} objets lumineux qui pourraient être confondus avec des ovnis",
   "celestialSummarySomeObjects": "Objet(s) lumineux visible(s)",
   "celestialSummaryFewObjects": "minimum d'objets lumineux dans le ciel",
-  "celestialSkySummary": "Conditions du ciel: _PLACEHOLDER_0__",
+  "celestialSkySummary": "Conditions du ciel: {conditions}",
   "planetVenus": "Vénus",
   "planetJupiter": "Jupiter",
   "planetSaturn": "Saturne",
@@ -968,11 +968,11 @@
   "moonPhaseThirdQuarter": "Troisième trimestre",
   "moonPhaseWaningCrescent": "Crescent Waning",
   "planetBelowHorizon": "{planet} sous l'horizon",
-  "planetHighOverheadProminent": "{planet}____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "planetHighOverheadProminent": "{planet} haut au-dessus ({altitude}°) - très visible",
   "planetMidSkyProminent": "{altitude} à {planet}° - en évidence",
   "planetMidSky": "{altitude} à {planet}°",
   "starVeryBright": "{altitude} très lumineux à {star}°",
-  "starProminent": "{star}_____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "starProminent": "{star} proéminente à {altitude}°",
   "starVisible": "{altitude} à {star}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
@@ -987,7 +987,7 @@
   "aircraftTracking": "Suivi des aéronefs",
   "satelliteAnalysis": "Analyse par satellite",
   "celestialAnalysis": "Analyse céleste",
-  "analyzing": "Analyser __PLACEHODER_0__...",
+  "analyzing": "Analyser {processor}...",
   "processorWeather": "conditions météorologiques",
   "processorLocation": "détails de l'emplacement",
   "processorAircraft": "avion à proximité",
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "Étoiles",
   "planetsLabel": "Planètes",
-  "moonWithPhase": "Lune (__PLACEHODER_0__)",
+  "moonWithPhase": "Lune ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1024,8 +1024,8 @@
   "noWeatherDescription": "Aucune description",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "Satellites ({count}_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
-  "sunWithDescription": "Soleil: __PLACEHODER_0__",
+  "satellitesVisibleNow": "Satellites ({count} visibles maintenant)",
+  "sunWithDescription": "Soleil: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "Lune : _PLACEHODER_0__",
+  "moonWithDescription": "Lune : {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1066,7 +1066,7 @@
       }
     }
   },
-  "maxElevation": "Hauteur maximale: _PLACEHOLDER_0__°",
+  "maxElevation": "Hauteur maximale: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "Ampleur: _PLACEHOLDER_0__",
+  "magnitude": "Ampleur: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {
@@ -1181,7 +1181,7 @@
       }
     }
   },
-  "translatedFrom": "Traduit de _PLACEHODER_0__",
+  "translatedFrom": "Traduit de {language}",
   "@translatedFrom": {
     "placeholders": {
       "language": {
@@ -1190,7 +1190,7 @@
       }
     }
   },
-  "translateContent": "Traduire le contenu vers _PLACEHODER_0__",
+  "translateContent": "Traduire le contenu vers {language}",
   "@translateContent": {
     "placeholders": {
       "language": {
