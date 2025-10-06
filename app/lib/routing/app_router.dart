@@ -90,13 +90,24 @@ GoRouter appRouter(AppRouterRef ref) {
       if (location.startsWith('https://ufobeep.com/api/auth/magic/complete/new')) {
         final uri = Uri.parse(location);
         final code = uri.queryParameters['code'];
-        
+
         if (code != null && code.isNotEmpty) {
           debugPrint('🔄 Redirecting HTTPS magic link to internal route with code: ${code.substring(0, 8)}...');
           return '/auth/magic?code=$code';
         }
       }
-      
+
+      // Handle custom scheme magic links (ufobeep://auth/complete or ufobeep://auth/magic)
+      if (location.startsWith('ufobeep://auth/complete') || location.startsWith('ufobeep://auth/magic')) {
+        final uri = Uri.parse(location);
+        final code = uri.queryParameters['code'];
+
+        if (code != null && code.isNotEmpty) {
+          debugPrint('🔄 Redirecting custom scheme magic link to internal route with code: ${code.substring(0, 8)}...');
+          return '/auth/magic?code=$code';
+        }
+      }
+
       return null; // No redirect needed
     },
     // Add error handling for unrecognized routes
