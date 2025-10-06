@@ -10,7 +10,6 @@ ALL_TOKENS_SQL_FOR_USERS = """
 SELECT DISTINCT d.push_token
 FROM devices d
 WHERE d.user_id = ANY($1::uuid[])
-  AND d.is_active = TRUE
   AND d.push_enabled = TRUE
   AND d.push_token IS NOT NULL
   AND d.token_status = 'valid'
@@ -35,7 +34,6 @@ TOKENS_FOR_USERS_EXCLUDE_DEVICE_SQL = """
 SELECT DISTINCT d.push_token
 FROM devices d
 WHERE d.user_id = ANY($1::uuid[])
-  AND d.is_active = TRUE
   AND d.push_enabled = TRUE
   AND d.push_token IS NOT NULL
   AND d.token_status = 'valid'
