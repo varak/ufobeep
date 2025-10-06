@@ -37,7 +37,7 @@
   "alertsTitle": "Wpisy w pobliżu",
   "noAlerts": "Żadnych alarmów w pobliżu.",
   "pullToRefresh": "Pociągnij, aby odświeżyć",
-  "alertDistance": "_ _ PLACESENT _ 0 _ _ away",
+  "alertDistance": "{distance} away",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Łożysko _ _ PLACESORA _ 0 _ _ °",
+  "alertDirection": "Łożysko {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Dostęp do mikrofonu Granta do nagrywania wideo z audio.",
   "openSettings": "Otwórz ustawienia",
   "alertDetailTitle": "Podglądanie szczegółów",
-  "reportedBy": "Zgłoszony przez _ _ PLACEScorter _ 0 _ _",
+  "reportedBy": "Zgłoszony przez {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Zgłoszony _ _ PLACEScorter _ 0 _ _",
+  "reportedAt": "Zgłoszony {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "_ _ PLACESENT _ 0 _ _",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Nakładanie na obiekt: _ _ PLACEScorter _ 0 _ _ °",
+  "bearingToObject": "Nakładanie na obiekt: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibracyjny kompas..",
   "openAROverlay": "Otworzyć nakładkę AR",
   "pushTitleAlertNearby": "Alarm UFO w pobliżu ciebie",
-  "pushBodyAlertNearby": "Zgłoszono nowe spostrzeżenie _ _ PLACEScorpiter _ 0 _ _ away.",
+  "pushBodyAlertNearby": "Zgłoszono nowe spostrzeżenie {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatura",
   "pushBodyWitness": "Użytkownik potwierdził, że widzi ten sam obiekt.",
   "weather": "Pogoda",
-  "cloudCover": "Pokrywa chmurowa: _ _ PLACESENT _ 0 _ _%",
+  "cloudCover": "Pokrywa chmurowa: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wiatr: _ _ PLACESORA _ 0 _ _ _ _ PLACESORA _ 1 _ _",
+  "wind": "Wiatr: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -208,16 +208,16 @@
   "emergencyOverrideDesc": "Należy zezwolić na pilne wpisy w godzinach ciszy",
   "dndMode": "Nie przeszkadzać",
   "dndUntil": "Nie należy przeszkadzać do czasu",
-  "dndEnabled": "DND włączone do _ _ PLACEScorter _ 0 _ _",
+  "dndEnabled": "DND włączone do {time}",
   "dndDisabled": "Wyłączony DND",
-  "quietHoursActive": "Active _ _ PLACESECRET _ 0 _ _ _ - _ _ PLACESECRET _ 1 _ _",
-  "quietHoursScheduled": "Godziny ciszy: _ _ PLACESECRET _ 0 _ _ _ - _ PLACESECRET _ 1 _ _",
+  "quietHoursActive": "Active {startTime} - {endTime}",
+  "quietHoursScheduled": "Godziny ciszy: {start} - {end}",
   "pushNotificationUfoAlert": "UFO Alarm",
   "pushNotificationAnomalyAlert": "Alert",
   "pushNotificationNearby": "Niedaleko",
   "pushNotificationInYourArea": "w twoim rejonie. Dotknij, aby zobaczyć szczegóły.",
-  "pushNotificationCommented": "_ _ PLACESENER _ 0 _ _ skomentowane",
-  "pushNotificationCommentedOn": "_ _ PLACESECRET _ 0 _ _ skomentował _ _ PLACESECRET _ 1 _ _",
+  "pushNotificationCommented": "{username} skomentowane",
+  "pushNotificationCommentedOn": "{username} skomentował {beepTitle}",
   "pushNotificationGeneric": "UFOBeep",
   "pushNotificationNewSighting": "Nowy widok w pobliżu",
   "language": "Język",
@@ -245,7 +245,7 @@
   "imageOnly": "Tylko obrazek",
   "mediaOnly": "Tylko media",
   "timeJustNow": "właśnie teraz",
-  "timeDaysAgo": "_ _ PLACESENT _ 0 _ _ dni temu",
+  "timeDaysAgo": "{count} dni temu",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -254,7 +254,7 @@
       }
     }
   },
-  "timeHoursAgo": "_ _ PLACESENT _ 0 _ _ godzin temu",
+  "timeHoursAgo": "{count} godzin temu",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -263,7 +263,7 @@
       }
     }
   },
-  "timeMinutesAgo": "_ _ PLACESENT _ 0 _ _ minutes temu",
+  "timeMinutesAgo": "{count} minutes temu",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -292,7 +292,7 @@
   "mufonCylinderSighting": "Raport z obserwacji cylindrów MUFON",
   "mufonBoomerangSighting": "MUFON Boomerang Sighting Report",
   "mufonStarlikeSighting": "MUFON Raport o widoczności gwiazd",
-  "mufonCaseDetailsTitle": "Przypadek MUFON # _ _ PLACEScorpiter _ 0 _ _ Szczegóły",
+  "mufonCaseDetailsTitle": "Przypadek MUFON #{caseNumber} Szczegóły",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -313,7 +313,7 @@
   "unknownLocation": "Nieznana lokalizacja",
   "locationUnknown": "Lokalizacja nieznana",
   "witnessesLabel": "Świadkowie",
-  "witnessesCountMessage": "_ _ PLACESENT _ 0 _ _ ludzie potwierdzili to spostrzeżenie",
+  "witnessesCountMessage": "{count} ludzie potwierdzili to spostrzeżenie",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -323,7 +323,7 @@
     }
   },
   "photoAnalysisTitle": "Analiza zdjęć",
-  "mediaItemsProcessed": "Analiza: _ _ PLACEScorter _ 0 _ _ media plik (y) przetworzony (y)",
+  "mediaItemsProcessed": "Analiza: {count} media plik (y) przetworzony (y)",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -446,7 +446,7 @@
   "whatToExpect": "Czego oczekiwać",
   "formalReportRequirements": "Formalne sprawozdania zazwyczaj wymagają:\n• Szczegółowy czas, data i czas trwania\n• Warunki pogodowe i widoczność\n• Kompletne zeznania świadków\n• Zdjęcia lub wideo, jeśli dostępne\n\nOrganizacje mogą śledzić dodatkowe szczegóły. Twój raport przyczynia się do badań UFO.",
   "confirmedWitness": "Potwierdziłeś to",
-  "witnessesHaveConfirmed": "_ _ PLACESENER _ 0 _ _ ludzie potwierdzili to spostrzeżenie",
+  "witnessesHaveConfirmed": "{count} ludzie potwierdzili to spostrzeżenie",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "UFO Alarm",
   "notificationSightingUrgent": "UFOBeep UFO Alarm",
   "notificationSightingEmergency": "ANALIZA UFOBeep UFO Alarm",
-  "notificationSightingBody": "_ _ PLACESECRET _ 0 _ _ near _ _ PLACESECRET _ 1 _ _",
+  "notificationSightingBody": "{witnessText} near {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -500,7 +500,7 @@
       }
     }
   },
-  "notificationCommentTitle": "_ _ PLACEScorter _ 0 _ _ skomentowane",
+  "notificationCommentTitle": "{username} skomentowane",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -510,7 +510,7 @@
     }
   },
   "notificationWitnessText": "Nowy widok",
-  "notificationWitnessTextMultiple": "_ _ PLACESENT _ 0 _ _ świadkowie",
+  "notificationWitnessTextMultiple": "{count} świadkowie",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -521,7 +521,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Rozejść się",
-  "notificationDistance": "_ _ PLACESENT _ 0 _ _ away",
+  "notificationDistance": "{distance} away",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -544,7 +544,7 @@
   "ufoSightingAlert": "UFO Ostrzeżenie",
   "previousPage": "Poprzedni",
   "nextPage": "Następny",
-  "pageOf": "Page _ _ PLACESECRET _ 0 _ _ of _ _ PLACESECRET _ 1 _ _ (_ _ PLACESECRET _ 2 _ _ total beeps)",
+  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)",
   "firstPage": "Najpierw",
   "lastPage": "Ostatni",
   "jumpToPage": "Przejdź do strony",
@@ -592,16 +592,16 @@
   "mufonEgg": "Jaja",
   "mufonOther": "Obiekt",
   "mufonUnknown": "Nieznany obiekt",
-  "mufonTitleFormat": "MUFON _ _ PLACESENT _ 0 _ _ Raport",
+  "mufonTitleFormat": "MUFON {classification} Raport",
   "nuforcAttribution": "NUFORC Sprawozdanie z bazy danych",
   "nuforcCaseNumber": "Case #",
   "nuforcGenericTitle": "NUFORC Sprawozdanie z obserwacji",
   "mediaImageNotFound": "Nie znaleziono obrazka",
   "mediaPlayVideo": "Zagraj w wideo",
   "mediaViewImage": "Wyświetl obrazek",
-  "mediaCount": "_ _ PLACESENT _ 0 _ _ Obrazy",
+  "mediaCount": "{count} Obrazy",
   "mediaCountSingle": "1 obraz",
-  "mediaMoreImages": "+ _ _ PLACESENT _ 0 _ _ more",
+  "mediaMoreImages": "+{count} more",
   "errorNotFound": "Beep nie znaleziono",
   "errorLoadError": "Nie udało się wczytać szczegółów sygnału",
   "shareYourThoughts": "Podziel się swoimi myślami na temat tego widzenia...",
@@ -737,7 +737,7 @@
   "locationTrackingEnabled": "Włączenie śledzenia lokalizacji tła",
   "locationTrackingDisabled": "Śledzenie lokalizacji tła wyłączone",
   "justNow": "Przed chwilą",
-  "minutesAgo": "_ _ PLACESENT _ 0 _ _ minutes temu",
+  "minutesAgo": "{minutes} minutes temu",
   "@minutesAgo": {
     "placeholders": {
       "minutes": {
@@ -745,7 +745,7 @@
       }
     }
   },
-  "hoursAgo": "_ _ PLACESENT _ 0 _ _ godzin temu",
+  "hoursAgo": "{hours} godzin temu",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -753,7 +753,7 @@
       }
     }
   },
-  "daysAgo": "_ _ PLACESENT _ 0 _ _ dni temu",
+  "daysAgo": "{days} dni temu",
   "@daysAgo": {
     "placeholders": {
       "days": {
@@ -771,7 +771,7 @@
   "splashRetry": "Retry",
   "splashContinue": "Kontynuuj",
   "splashInitializing": "Inicjowanie...",
-  "signInWelcome": "Powitanie _ _ PLACESENER _ 0 _ _!",
+  "signInWelcome": "Powitanie {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "Sygnał nie powiódł się: _ _ PLACESENT _ 0 _ _",
+  "signInFailed": "Sygnał nie powiódł się: {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -800,7 +800,7 @@
   "signInEmailDescription": "Wyślemy ci bezpieczne połączenie, aby się zalogować",
   "signInEmailAddress": "Adres e-mail",
   "signInEmailPlaceholder": "twój @ email.com",
-  "signInTryAgainIn": "Spróbuj ponownie w _ _ PLACEScorter _ 0 _ _ s",
+  "signInTryAgainIn": "Spróbuj ponownie w {seconds}s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "Weryfikacja poczty elektronicznej pomaga zabezpieczyć konto i umożliwia odzyskanie konta, jeśli stracisz dostęp do urządzenia.",
   "phoneAuthFailedToSendCode": "Nie udało się wysłać kodu weryfikacji. Proszę spróbować jeszcze raz.",
   "phoneAuthInvalidCodeTryAgain": "Nieprawidłowy kod weryfikacyjny. Proszę spróbować jeszcze raz.",
-  "phoneAuthPhoneVerified": "Numer telefonu zweryfikowany: _ _ PLACESENT _ 0 _ _",
+  "phoneAuthPhoneVerified": "Numer telefonu zweryfikowany: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -859,7 +859,7 @@
   "phoneAuthVerifyYourPhone": "Weryfikacja telefonu",
   "phoneAuthEnterVerificationCode": "Wprowadź weryfikację Kod",
   "phoneAuthAddPhoneForSecurity": "Dodaj swój numer telefonu do odzyskiwania i ochrony konta",
-  "phoneAuthEnterSixDigitCode": "Wprowadź 6-cyfrowy kod wysłany do _ _ PLACEScorped _ 0 _ _",
+  "phoneAuthEnterSixDigitCode": "Wprowadź 6-cyfrowy kod wysłany do {phoneNumber}",
   "@phoneAuthEnterSixDigitCode": {
     "placeholders": {
       "phoneNumber": {
@@ -934,16 +934,16 @@
   "celestialPlanetMedium": "{planet} widoczny na {altitude}° - może być mylony z samolotem",
   "celestialPlanetLow": "{planet} nisko nad horyzontem ({altitude}°)",
   "celestialNoStars": "Nie widać żadnych gwiazd",
-  "celestialStarSingle": "_ _ PLACEScorpiter _ 0 _ _ widoczna na _ _ PLACEScorpiter _ 1 _ _ °",
-  "celestialStarsMultiple": "_ _ PLACESECRET _ 0 _ _ jasne gwiazdy widoczne - _ _ PLACESECRET _ 1 _ _",
+  "celestialStarSingle": "{star} widoczna na {altitude}°",
+  "celestialStarsMultiple": "{count} jasne gwiazdy widoczne - {names}",
   "celestialSummaryDaylight": "Warunki światła dziennego",
   "celestialSummaryDark": "Warunki ciemnego nieba",
   "celestialSummaryMoonUp": "światło księżyca obecny",
   "celestialSummaryMoonDown": "brak oświetlenia księżyca",
-  "celestialSummaryManyObjects": "_ _ PLACESORM _ 0 _ _ jasne obiekty, które mogą być mylone z UFO",
-  "celestialSummarySomeObjects": "_ _ PLACEScorter _ 0 _ _ jasny (-e) obiekt (-y) widoczny (-e)",
+  "celestialSummaryManyObjects": "{count} jasne obiekty, które mogą być mylone z UFO",
+  "celestialSummarySomeObjects": "{count} jasny (-e) obiekt (-y) widoczny (-e)",
   "celestialSummaryFewObjects": "minimalne jasne obiekty na niebie",
-  "celestialSkySummary": "Warunki dotyczące nieba: _ _ PLACESENT _ 0 _ _",
+  "celestialSkySummary": "Warunki dotyczące nieba: {conditions}",
   "planetVenus": "Wenus",
   "planetJupiter": "Jowisz",
   "planetSaturn": "Saturn Przewodniczący",
@@ -967,19 +967,19 @@
   "moonPhaseWaningGibbous": "Wending Gibbous",
   "moonPhaseThirdQuarter": "Trzeci kwartał",
   "moonPhaseWaningCrescent": "Waning Crescent",
-  "planetBelowHorizon": "_ _ PLACESENER _ 0 _ _ poniżej horyzontu",
-  "planetHighOverheadProminent": "_ _ PLACESORM _ 0 _ _ wysokie koszty ogólne (_ _ PLACESORM _ 1 _ _ °) - bardzo znaczące",
-  "planetMidSkyProminent": "_ _ PLACESECRET _ 0 _ _ at _ _ PLACESECRET _ 1 _ _ ° - wybitny",
-  "planetMidSky": "_ _ PLACESECRET _ 0 _ _ _ at _ _ PLACESECRET _ 1 _ _ °",
-  "starVeryBright": "_ _ PLACESECRET _ 0 _ _ bardzo jasny na _ _ PLACESECRET _ 1 _ _ °",
-  "starProminent": "_ _ PLACEScorpiter _ 0 _ _ widoczna na _ _ PLACEScorpiter _ 1 _ _ °",
-  "starVisible": "_ _ PLACESECRET _ 0 _ _ _ at _ _ PLACESECRET _ 1 _ _ °",
+  "planetBelowHorizon": "{planet} poniżej horyzontu",
+  "planetHighOverheadProminent": "{planet} wysokie koszty ogólne ({altitude}°) - bardzo znaczące",
+  "planetMidSkyProminent": "{planet} at {altitude}° - wybitny",
+  "planetMidSky": "{planet} at {altitude}°",
+  "starVeryBright": "{star} bardzo jasny na {altitude}°",
+  "starProminent": "{star} widoczna na {altitude}°",
+  "starVisible": "{star} at {altitude}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
-  "satellitesVisibleMightExplain": "_ _ PLACESORM _ 0 _ _ satelity widoczne - może wyjaśnić widzenie",
-  "satellitesVisibleUnlikelyExplain": "_ _ PLACESORM _ 0 _ _ satelity widoczne - mało prawdopodobne, aby wyjaśnić widzenie",
+  "satellitesVisibleMightExplain": "{count} satelity widoczne - może wyjaśnić widzenie",
+  "satellitesVisibleUnlikelyExplain": "{count} satelitów widocznych - mało prawdopodobne aby wyjaśnić obserwację",
   "noSatellitesVisible": "Brak widocznych satelitów",
-  "aircraftDetectedInRadius": "_ _ PLACESORM _ 0 _ _ statek powietrzny wykryty w _ _ PLACESORM _ 1 _ _ km",
+  "aircraftDetectedInRadius": "{count} statek powietrzny wykryty w {radius}km",
   "processingAlert": "Przetwarzam alarm UFO...",
   "analyzingEnvironment": "Analiza warunków środowiskowych",
   "weatherAnalysis": "Analiza pogody",
@@ -987,7 +987,7 @@
   "aircraftTracking": "Śledzenie statków powietrznych",
   "satelliteAnalysis": "Analiza satelitarna",
   "celestialAnalysis": "Analiza Niebiańska",
-  "analyzing": "Analiza _ _ PLACEScorter _ 0 _ _...",
+  "analyzing": "Analiza {processor}...",
   "processorWeather": "warunki pogodowe",
   "processorLocation": "szczegóły dotyczące lokalizacji",
   "processorAircraft": "pobliskie statki powietrzne",
@@ -996,7 +996,7 @@
   "calculatingCelestialData": "Obliczanie danych niebiańskich...",
   "sunLabel": "Słońce",
   "moonLabel": "Księżyc",
-  "planetsVisible": "Planety: _ _ PLACEScorter _ 0 _ _ widoczne",
+  "planetsVisible": "Planety: {count} widoczne",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "Gwiazdy",
   "planetsLabel": "Planety",
-  "moonWithPhase": "Moon (_ _ PLACEScorter _ 0 _ _)",
+  "moonWithPhase": "Moon ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1024,8 +1024,8 @@
   "noWeatherDescription": "Brak opisu",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "Satelity (_ _ PLACEScorter _ 0 _ _ widoczne teraz)",
-  "sunWithDescription": "Sun: _ _ PLACEScorpiter _ 0 _ _",
+  "satellitesVisibleNow": "Satelity ({count} widoczne teraz)",
+  "sunWithDescription": "Sun: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "Moon: _ _ PLACESECRET _ 0 _ _",
+  "moonWithDescription": "Moon: {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1057,7 +1057,7 @@
   "unknownDirection": "nieznany kierunek",
   "brightStars": "Gwiazdy jasne",
   "satellites": "Satelity",
-  "seeAllSatellites": "Zobacz wszystkie _ _ PLACEScorter _ 0 _ _ satelity",
+  "seeAllSatellites": "Zobacz wszystkie {count} satelity",
   "@seeAllSatellites": {
     "placeholders": {
       "count": {
@@ -1066,7 +1066,7 @@
       }
     }
   },
-  "maxElevation": "Maksymalna wysokość: _ _ PLACESENT _ 0 _ _ °",
+  "maxElevation": "Maksymalna wysokość: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "Wielkości: _ _ PLACESENT _ 0 _ _",
+  "magnitude": "Wielkości: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {
@@ -1085,7 +1085,7 @@
     }
   },
   "unknownGeneric": "Nieznany",
-  "altitudeValue": "Wysokość bezwzględna _ 0 _ _ °",
+  "altitudeValue": "{degrees}° altitude",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1094,7 +1094,7 @@
       }
     }
   },
-  "azimuthValue": "_ _ PLACESENT _ 0 _ _ ° azymut",
+  "azimuthValue": "{degrees}° azymut",
   "@azimuthValue": {
     "placeholders": {
       "degrees": {
@@ -1133,7 +1133,7 @@
   "endTime": "Czas zakończenia",
   "allowCriticalAlertsDuringQuietHours": "Zezwolić na krytyczne ostrzeżenia w godzinach ciszy",
   "silenceNotificationsDuringSleepHours": "Powiadomienia o ciszy w godzinach snu",
-  "quietHoursActiveTimeRange": "Active _ _ PLACESECRET _ 0 _ _ _ - _ _ PLACESECRET _ 1 _ _",
+  "quietHoursActiveTimeRange": "Active {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1147,7 +1147,7 @@
     }
   },
   "followingAlerts": "Wpisy",
-  "activeCount": "_ _ PLACESECRET _ 0 _ _ active",
+  "activeCount": "{count} active",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1158,7 +1158,7 @@
   },
   "unfollow": "Unfollow",
   "unfollowAlert": "Nieprzestrzeganie ostrzeżenia",
-  "commentsCount": "_ _ PLACESENER _ 0 _ _ komentarze",
+  "commentsCount": "{count} komentarze",
   "photo": "Zdjęcie",
   "video": "Wideo",
   "initializationComplete": "Inicjalizacja zakończona!",
@@ -1181,7 +1181,7 @@
       }
     }
   },
-  "translatedFrom": "Tłumaczone z _ _ PLACEScorpiter _ 0 _ _",
+  "translatedFrom": "Tłumaczone z {language}",
   "@translatedFrom": {
     "placeholders": {
       "language": {
@@ -1190,7 +1190,7 @@
       }
     }
   },
-  "translateContent": "Przetłumacz zawartość na _ _ PLACEScorter _ 0 _ _",
+  "translateContent": "Przetłumacz zawartość na {language}",
   "@translateContent": {
     "placeholders": {
       "language": {
@@ -1221,7 +1221,7 @@
   "lightRain": "lekki deszcz",
   "moderateRain": "umiarkowany deszcz",
   "heavyRain": "intensywny deszcz",
-  "aircraftDetectedCurrentPositions": "_ _ PLACESORM _ 0 _ _ statek powietrzny wykryty w _ _ PLACESORM _ 1 _ _ km (aktualne pozycje)",
+  "aircraftDetectedCurrentPositions": "{count} samolotów wykrytych w promieniu {radius}km (aktualne pozycje)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1234,7 +1234,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "_ _ PLACESORM _ 0 _ _ dim satelity widoczne - mało prawdopodobne, aby wyjaśnić widzenie",
+  "dimSatellitesUnlikely": "{count} dim satelity widoczne - mało prawdopodobne, aby wyjaśnić widzenie",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {
@@ -1244,7 +1244,7 @@
     }
   },
   "mufonReportingDate": "MUFON Data sprawozdania",
-  "satelliteNameDirection": "_ _ PLACESECRET _ 0 _ _ _ - _ PLACESECRET _ 1 _ _",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {
