@@ -119,6 +119,8 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
               const SizedBox(height: 24),
               _buildAppSettings(userPreferences),
               const SizedBox(height: 24),
+              _buildPermissionsSection(),
+              const SizedBox(height: 24),
               _buildPrivacySection(),
               const SizedBox(height: 24),
             ],
