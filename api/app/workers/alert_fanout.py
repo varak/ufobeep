@@ -86,6 +86,7 @@ class SightingEvent:
     shape: Optional[str] = None
     confidence_score: Optional[float] = None
     created_at: datetime = None
+    reporter_device_id: Optional[str] = None  # Device that created this beep - exclude from notifications
 
 
 class AlertFanoutWorker:
@@ -132,8 +133,10 @@ class AlertFanoutWorker:
         device_registry: Dict[str, List[Dict[str, Any]]]
     ) -> Dict[str, Any]:
         """Process a new sighting and send alerts to nearby users"""
-        
+
         logger.info(f"Processing fanout for sighting {sighting.sighting_id}")
+        if sighting.reporter_device_id:
+            logger.info(f"Excluding reporter device {sighting.reporter_device_id} from notifications")
         
         # Find users within alert range
         nearby_users = self._find_nearby_users(sighting, user_locations)
@@ -151,8 +154,8 @@ class AlertFanoutWorker:
         rate_limited_users = self._apply_rate_limiting(nearby_users)
         logger.info(f"After rate limiting: {len(rate_limited_users)} users")
         
-        # Get push targets for users
-        push_targets = self._get_push_targets(rate_limited_users, device_registry)
+        # Get push targets for users (excluding reporter's device)
+        push_targets = self._get_push_targets(rate_limited_users, device_registry, sighting.reporter_device_id)
         logger.info(f"Found {len(push_targets)} push targets")
         
         if not push_targets:
@@ -282,17 +285,23 @@ class AlertFanoutWorker:
     def _get_push_targets(
         self,
         nearby_users: List[Tuple[UserLocation, float]],
-        device_registry: Dict[str, List[Dict[str, Any]]]
+        device_registry: Dict[str, List[Dict[str, Any]]],
+        reporter_device_id: Optional[str] = None
     ) -> List[PushTarget]:
-        """Convert nearby users to push targets"""
-        
+        """Convert nearby users to push targets, excluding reporter's device"""
+
         push_targets = []
-        
+
         for user_location, distance in nearby_users:
             user_id = user_location.user_id
             user_devices = device_registry.get(user_id, [])
-            
+
             for device in user_devices:
+                # Skip the device that created this beep
+                if reporter_device_id and device.get("device_id") == reporter_device_id:
+                    logger.info(f"Skipping reporter device {reporter_device_id}")
+                    continue
+
                 # Send to all devices with push tokens enabled, regardless of is_active status
                 if (device.get("push_enabled", False) and
                     device.get("push_token") and

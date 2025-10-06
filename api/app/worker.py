@@ -410,9 +410,21 @@ async def trigger_alert_fanout(sighting_id: str, sighting):
     """Trigger alert fanout for newly enriched sightings"""
     try:
         from app.workers.alert_fanout import alert_fanout_worker, SightingEvent
-        
+        import json
+
         logger.info(f"Triggering alert fanout for sighting {sighting_id}")
-        
+
+        # Extract reporter device ID from sensor_data to exclude from notifications
+        reporter_device_id = None
+        if sighting.get('sensor_data'):
+            try:
+                sensor_data = json.loads(sighting['sensor_data']) if isinstance(sighting['sensor_data'], str) else sighting['sensor_data']
+                reporter_device_id = sensor_data.get('device_id')
+                if reporter_device_id:
+                    logger.info(f"Reporter device ID: {reporter_device_id} - will be excluded from notifications")
+            except Exception as e:
+                logger.warning(f"Could not extract device_id from sensor_data: {e}")
+
         # Create sighting event from database sighting
         sighting_event = SightingEvent(
             sighting_id=sighting_id,
@@ -422,7 +434,8 @@ async def trigger_alert_fanout(sighting_id: str, sighting):
             description=sighting['description'],
             shape=None,  # TODO: extract from enrichment data if available
             confidence_score=None,  # TODO: extract from enrichment data if available
-            created_at=sighting['created_at']
+            created_at=sighting['created_at'],
+            reporter_device_id=reporter_device_id
         )
 
         # Get nearby users from database
