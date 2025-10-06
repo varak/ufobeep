@@ -577,10 +577,18 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
             apns=messaging.APNSConfig(
                 payload=messaging.APNSPayload(
                     aps=messaging.Aps(
+                        alert=messaging.ApsAlert(
+                            title=title,
+                            body=body
+                        ),
                         sound="default",
                         badge=1
                     )
-                )
+                ),
+                headers={
+                    'apns-priority': '10',  # High priority
+                    'apns-push-type': 'alert'
+                }
             )
         )
         
