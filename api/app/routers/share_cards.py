@@ -20,7 +20,7 @@ class MCPShareResponse(BaseModel):
     message: str
 
 @router.get("/alerts/{aid}.png")
-def og_alert_card(aid: int):
+def og_alert_card(aid: str):
     W, H = 1200, 630
     img = Image.new("RGB", (W, H), (10, 14, 22))
     draw = ImageDraw.Draw(img)
