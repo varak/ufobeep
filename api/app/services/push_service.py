@@ -578,8 +578,7 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
                 payload=messaging.APNSPayload(
                     aps=messaging.Aps(
                         sound="default",
-                        badge=1,
-                        content_available=True
+                        badge=1
                     )
                 )
             )
