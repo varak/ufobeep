@@ -9,6 +9,7 @@ import '../config/environment.dart' as env;
 import '../models/api_models.dart';
 import 'sensor_service.dart';
 import 'auth_repository.dart';
+import 'keychain_service.dart';
 
 /// Device platform enumeration
 enum DevicePlatform {
@@ -194,14 +195,35 @@ class DeviceService {
 
   /// Get or generate device ID
   Future<String> getDeviceId() async {
-    final prefs = await SharedPreferences.getInstance();
-    String? deviceId = prefs.getString(_deviceIdKey);
+    // First, try to get from Keychain (persists across installs)
+    String? deviceId = await KeychainService.getDeviceId();
 
-    if (deviceId == null) {
-      // Generate new device ID based on platform-specific info
-      deviceId = await _generateDeviceId();
+    if (deviceId != null) {
+      print('Device ID retrieved from Keychain: $deviceId');
+      // Also save to SharedPreferences for faster access
+      final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_deviceIdKey, deviceId);
+      return deviceId;
     }
+
+    // Fallback to SharedPreferences (for existing installations)
+    final prefs = await SharedPreferences.getInstance();
+    deviceId = prefs.getString(_deviceIdKey);
+
+    if (deviceId != null) {
+      print('Device ID retrieved from SharedPreferences, saving to Keychain');
+      // Save to Keychain for future persistence
+      await KeychainService.saveDeviceId(deviceId);
+      return deviceId;
+    }
+
+    // Generate new device ID if none exists
+    deviceId = await _generateDeviceId();
+    print('Generated new device ID: $deviceId');
+
+    // Save to both Keychain (persistent) and SharedPreferences (fast access)
+    await KeychainService.saveDeviceId(deviceId);
+    await prefs.setString(_deviceIdKey, deviceId);
 
     return deviceId;
   }

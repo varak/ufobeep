@@ -470,7 +470,7 @@ async def get_nearby_user_locations(latitude: float, longitude: float):
                     push_notifications,
                     distance_km
                 FROM (
-                    SELECT
+                    SELECT DISTINCT ON (d.user_id)
                         d.user_id,
                         d.lat,
                         d.lon,
@@ -490,6 +490,7 @@ async def get_nearby_user_locations(latitude: float, longitude: float):
                       AND d.lon IS NOT NULL
                       AND d.push_enabled = true
                       AND u.alert_range_km IS NOT NULL
+                    ORDER BY d.user_id, d.last_seen DESC NULLS LAST
                 ) AS nearby
                 WHERE distance_km <= alert_range_km
                 ORDER BY distance_km ASC

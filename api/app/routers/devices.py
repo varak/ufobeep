@@ -285,10 +285,10 @@ async def register_device(
             else:
                 # Get existing device ID for response
                 device_record_id = await conn.fetchval(
-                    "SELECT id FROM devices WHERE device_id = $1",
-                    request.device_id
+                    "SELECT id FROM devices WHERE device_id = $1 AND user_id = $2",
+                    request.device_id, user_id
                 )
-                logger.info(f"Updated existing device {request.device_id}")
+                logger.info(f"Updated existing device {request.device_id} for user {user_id}")
             
             # Create response
             mock_device = DeviceResponse(
