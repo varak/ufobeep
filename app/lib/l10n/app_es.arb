@@ -37,7 +37,7 @@
   "alertsTitle": "Alertas cercanas",
   "noAlerts": "Todavía no hay alertas cerca.",
   "pullToRefresh": "Tire para refrescar",
-  "alertDistance": "{distance}__ de distancia",
+  "alertDistance": "{distance} de distancia",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Rodamiento {bearing}_°",
+  "alertDirection": "Rodamiento {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Rodamiento de objeto: {bearing}_°",
+  "bearingToObject": "Rodamiento de objeto: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Calibrando la brújula..",
   "openAROverlay": "Open AR overlay",
   "pushTitleAlertNearby": "OVNI alerta cerca de usted",
-  "pushBodyAlertNearby": "Se informó de un nuevo avistamiento {distance}_.",
+  "pushBodyAlertNearby": "Se informó de un nuevo avistamiento {distance}.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatura",
   "pushBodyWitness": "Un usuario confirmó que ven el mismo objeto.",
   "weather": "El tiempo",
-  "cloudCover": "Cubierta en la nube: {percent}_%",
+  "cloudCover": "Cubierta en la nube: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Viento:",
+  "wind": "Viento: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -210,14 +210,14 @@
   "dndUntil": "No molestar hasta",
   "dndEnabled": "DND habilitado hasta {time}",
   "dndDisabled": "DND discapacitados",
-  "quietHoursActive": "Active {endTime} {startTime}",
+  "quietHoursActive": "Active {startTime} - {endTime}",
   "quietHoursScheduled": "Horas de silencio: {start} - {end}",
   "pushNotificationUfoAlert": "OVNI Alerta",
   "pushNotificationAnomalyAlert": "Alerta de anomalía",
   "pushNotificationNearby": "Cerca",
   "pushNotificationInYourArea": "en su área. Pulse para ver detalles.",
-  "pushNotificationCommented": "{username}_ comentado",
-  "pushNotificationCommentedOn": "{beepTitle}_ comentado {username}",
+  "pushNotificationCommented": "{username} comentado",
+  "pushNotificationCommentedOn": "{username} comentado sobre {beepTitle}",
   "pushNotificationGeneric": "UFOBeep",
   "pushNotificationNewSighting": "Nuevo avistamiento cerca",
   "language": "Idioma",
@@ -292,7 +292,7 @@
   "mufonCylinderSighting": "MUFON Cylinder Sighting Report",
   "mufonBoomerangSighting": "MUFON Boomerang Sighting Report",
   "mufonStarlikeSighting": "MUFON Starlike Sighting Report",
-  "mufonCaseDetailsTitle": "Caso MUFON #__PLACEHOLDER_0_",
+  "mufonCaseDetailsTitle": "Caso MUFON #{caseNumber} Detalles",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -323,7 +323,7 @@
     }
   },
   "photoAnalysisTitle": "Análisis de fotos",
-  "mediaItemsProcessed": "Análisis: {count}_______ archivo(s) media processed",
+  "mediaItemsProcessed": "Análisis: {count} archivo(s) procesados",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "UFOBeep UFO Alerta",
   "notificationSightingUrgent": "OVNI OVNIENTE OVNIENTE Alerta",
   "notificationSightingEmergency": "OVNI OVNIO DE OVNITO Alerta",
-  "notificationSightingBody": "{witnessText}_ Cerca de {locationName}",
+  "notificationSightingBody": "{witnessText} cerca de {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -500,7 +500,7 @@
       }
     }
   },
-  "notificationCommentTitle": "💬 {username}_ comentado",
+  "notificationCommentTitle": "💬 {username} comentado",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -510,7 +510,7 @@
     }
   },
   "notificationWitnessText": "Nuevo avistamiento",
-  "notificationWitnessTextMultiple": "testigos",
+  "notificationWitnessTextMultiple": "{count} testigos",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -521,7 +521,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Desestimación",
-  "notificationDistance": "{distance}__ de distancia",
+  "notificationDistance": "{distance} de distancia",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -544,7 +544,7 @@
   "ufoSightingAlert": "OVNI Alerta de visión",
   "previousPage": "Anterior",
   "nextPage": "Siguiente",
-  "pageOf": "Página {currentPage}_ de {totalPages}_ (_________ total beeps)",
+  "pageOf": "Página {currentPage} de {totalPages} ({totalCount} total beeps)",
   "firstPage": "Primera",
   "lastPage": "Último",
   "jumpToPage": "Saltar a página",
@@ -592,16 +592,16 @@
   "mufonEgg": "Egg",
   "mufonOther": "Objeto",
   "mufonUnknown": "Objeto desconocido",
-  "mufonTitleFormat": "MUFON {classification}",
+  "mufonTitleFormat": "MUFON {classification} Informe",
   "nuforcAttribution": "NUFORC Informe de base de datos",
   "nuforcCaseNumber": "Caso",
   "nuforcGenericTitle": "NUFORC Informe de control",
   "mediaImageNotFound": "Imagen no encontrada",
   "mediaPlayVideo": "Jugar vídeo",
   "mediaViewImage": "Ver imagen",
-  "mediaCount": "{count}_ imágenes",
+  "mediaCount": "{count} imágenes",
   "mediaCountSingle": "1 imagen",
-  "mediaMoreImages": "+{count}_ more",
+  "mediaMoreImages": "+{count} más",
   "errorNotFound": "Beep no encontrada",
   "errorLoadError": "Failed to load beep details",
   "shareYourThoughts": "Comparte tus pensamientos sobre este avistamiento...",
@@ -771,7 +771,7 @@
   "splashRetry": "Retry",
   "splashContinue": "Continuar",
   "splashInitializing": "Iniciando...",
-  "signInWelcome": "Bienvenido {username}_!",
+  "signInWelcome": "Bienvenido {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -800,7 +800,7 @@
   "signInEmailDescription": "Te enviaremos un enlace seguro para iniciar sesión",
   "signInEmailAddress": "Dirección de correo electrónico",
   "signInEmailPlaceholder": "su@email.com",
-  "signInTryAgainIn": "Prueba de nuevo en {seconds}_s",
+  "signInTryAgainIn": "Prueba de nuevo en {seconds}s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -925,23 +925,23 @@
   "celestialSunDaylight": "El sol está levantado - las condiciones de la luz del día pueden afectar la visibilidad del avistamiento",
   "celestialSunTwilight": "Twilight conditions - algo de visibilidad pero más oscuro que la luz del día",
   "celestialSunDark": "Condiciones oscuras - óptimas para observar objetos en el cielo",
-  "celestialMoonBright": "Bright {phase} luna visible - puede iluminar o ocultar otros objetos",
+  "celestialMoonBright": "{phase} luna brillante visible - puede iluminar o ocultar otros objetos",
   "celestialMoonModerate": "{phase} luna visible - condiciones de iluminación moderadas",
-  "celestialMoonThin": "Thin {phase} luna visible - iluminación mínima",
+  "celestialMoonThin": "{phase} luna delgada visible - iluminación mínima",
   "celestialMoonHidden": "{phase} luna debajo del horizonte - ninguna iluminación lunar",
   "celestialNoPlanets": "No hay planetas brillantes visibles que puedan confundirse con ovnis",
-  "celestialPlanetHigh": "{altitude}_ alta overhead ({planet}_ °) - muy prominente",
-  "celestialPlanetMedium": "{altitude}_ visible at {planet}__° - podría confundirse con aviones",
-  "celestialPlanetLow": "{altitude} bajo en horizonte ({planet}_°)",
+  "celestialPlanetHigh": "{planet} alta sobre la cabeza ({altitude}°) - muy prominente",
+  "celestialPlanetMedium": "{planet} visible a {altitude}° - podría confundirse con aviones",
+  "celestialPlanetLow": "{planet} bajo en horizonte ({altitude}°)",
   "celestialNoStars": "No hay estrellas inusualmente brillantes visibles",
-  "celestialStarSingle": "{altitude}_ prominente en {star}_nivel",
-  "celestialStarsMultiple": "{names} estrellas brillantes visibles - {count}",
+  "celestialStarSingle": "{star} prominente a {altitude}° de altitud",
+  "celestialStarsMultiple": "{count} estrellas brillantes visibles - {names}",
   "celestialSummaryDaylight": "Condiciones del día",
   "celestialSummaryDark": "Condiciones del cielo oscuro",
   "celestialSummaryMoonUp": "luna iluminada presente",
   "celestialSummaryMoonDown": "sin iluminación de luna",
   "celestialSummaryManyObjects": "{count} objetos brillantes que podrían confundirse con OVNIS",
-  "celestialSummarySomeObjects": "{count}_ objeto(s) brillante visible",
+  "celestialSummarySomeObjects": "{count} objeto(s) brillante visible",
   "celestialSummaryFewObjects": "objetos brillantes mínimos en el cielo",
   "celestialSkySummary": "Condiciones del cielo: {conditions}",
   "planetVenus": "Venus",
@@ -967,17 +967,17 @@
   "moonPhaseWaningGibbous": "Waning Gibbous",
   "moonPhaseThirdQuarter": "Tercer trimestre",
   "moonPhaseWaningCrescent": "Waning Crescent",
-  "planetBelowHorizon": "{planet}_ debajo del horizonte",
-  "planetHighOverheadProminent": "{altitude}_ alta overhead ({planet}_ °) - muy prominente",
-  "planetMidSkyProminent": "{altitude}_ {planet}_° - prominente",
-  "planetMidSky": "{altitude}_ {planet}_°",
-  "starVeryBright": "{altitude} muy brillante en {star}_ °",
-  "starProminent": "{altitude}_ prominente en {star}_nivel",
-  "starVisible": "{altitude}_ {star}_°",
+  "planetBelowHorizon": "{planet} debajo del horizonte",
+  "planetHighOverheadProminent": "{planet} alta sobre la cabeza ({altitude}°) - muy prominente",
+  "planetMidSkyProminent": "{planet} a {altitude}° - prominente",
+  "planetMidSky": "{planet} a {altitude}°",
+  "starVeryBright": "{star} muy brillante a {altitude}°",
+  "starProminent": "{star} prominente a {altitude}° de altitud",
+  "starVisible": "{star} a {altitude}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
-  "satellitesVisibleMightExplain": "{count}_ satélites visibles - podría explicar el avistamiento",
-  "satellitesVisibleUnlikelyExplain": "{count}_ satélites visibles - poco probable que explique el avistamiento",
+  "satellitesVisibleMightExplain": "{count} satélites visibles - podría explicar el avistamiento",
+  "satellitesVisibleUnlikelyExplain": "{count} satélites visibles - poco probable que explique el avistamiento",
   "noSatellitesVisible": "No hay satélites visibles",
   "aircraftDetectedInRadius": "{count} aeronaves detectadas dentro de {radius}km",
   "processingAlert": "Procesando alerta OVNI...",
@@ -987,7 +987,7 @@
   "aircraftTracking": "Aircraft Tracking",
   "satelliteAnalysis": "Análisis por satélite",
   "celestialAnalysis": "Análisis Celestial",
-  "analyzing": "Analyzing {processor}_...",
+  "analyzing": "Analizando {processor}...",
   "processorWeather": "condiciones meteorológicas",
   "processorLocation": "ubicación detalles",
   "processorAircraft": "aviones cercanos",
@@ -996,7 +996,7 @@
   "calculatingCelestialData": "Calculando datos celestiales...",
   "sunLabel": "Sol",
   "moonLabel": "Luna",
-  "planetsVisible": "Planetas: {count} visible",
+  "planetsVisible": "Planetas: {count} visibles",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1024,8 +1024,8 @@
   "noWeatherDescription": "Sin descripción",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "Satélites ({count}_ visible ahora)",
-  "sunWithDescription": "Sol:",
+  "satellitesVisibleNow": "Satélites ({count} visibles ahora)",
+  "sunWithDescription": "Sol: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "Moon:",
+  "moonWithDescription": "Luna: {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1057,7 +1057,7 @@
   "unknownDirection": "dirección desconocida",
   "brightStars": "Estrellas brillantes",
   "satellites": "Satélites",
-  "seeAllSatellites": "Ver todos los satélites {count}",
+  "seeAllSatellites": "Ver todos los {count} satélites",
   "@seeAllSatellites": {
     "placeholders": {
       "count": {
@@ -1066,7 +1066,7 @@
       }
     }
   },
-  "maxElevation": "Altura máxima: {degrees}_°",
+  "maxElevation": "Altura máxima: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1085,7 +1085,7 @@
     }
   },
   "unknownGeneric": "Desconocida",
-  "altitudeValue": "{degrees}_nivel",
+  "altitudeValue": "{degrees}° altitud",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1094,7 +1094,7 @@
       }
     }
   },
-  "azimuthValue": "{degrees}_ ° azimuth",
+  "azimuthValue": "{degrees}° azimut",
   "@azimuthValue": {
     "placeholders": {
       "degrees": {
@@ -1158,7 +1158,7 @@
   },
   "unfollow": "Unfollow",
   "unfollowAlert": "Unfollow Alert",
-  "commentsCount": "{count}_ comentarios",
+  "commentsCount": "{count} comentarios",
   "photo": "Foto",
   "video": "Video",
   "initializationComplete": "¡La inicialización completa!",
@@ -1234,7 +1234,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "{count}_ satélites dim visibles - poco probable que explique el avistamiento",
+  "dimSatellitesUnlikely": "{count} satélites tenues visibles - poco probable que explique el avistamiento",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {
