@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wind: {speed} {unit}_",
+  "wind": "Wind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -210,14 +210,14 @@
   "dndUntil": "Nicht stören, bis",
   "dndEnabled": "DND aktiviert bis {time}",
   "dndDisabled": "DND deaktiviert",
-  "quietHoursActive": "Aktiv {endTime} {startTime}_",
-  "quietHoursScheduled": "Ruhezeiten: {end} {start}_",
+  "quietHoursActive": "Aktiv {startTime} - {endTime}",
+  "quietHoursScheduled": "Ruhezeiten: {start} - {end}",
   "pushNotificationUfoAlert": "UFO Alarmstufe",
   "pushNotificationAnomalyAlert": "Anomaly Alert",
   "pushNotificationNearby": "In der Nähe",
   "pushNotificationInYourArea": "in deiner Umgebung. Tippen Sie auf Details zu sehen.",
   "pushNotificationCommented": "{username} hat einen Kommentar hinterlassen",
-  "pushNotificationCommentedOn": "{beepTitle} kommentiert auf {username}_",
+  "pushNotificationCommentedOn": "{username} kommentiert auf {beepTitle}",
   "pushNotificationGeneric": "UFOBeep",
   "pushNotificationNewSighting": "Neue Sicht in der Nähe",
   "language": "Sprache",
@@ -930,12 +930,12 @@
   "celestialMoonThin": "Dünner {phase} Mond sichtbar - minimale Beleuchtung",
   "celestialMoonHidden": "{phase} Mond unter dem Horizont - keine Mondbeleuchtung",
   "celestialNoPlanets": "Keine hellen Planeten sichtbar, die für UFOs falsch sein könnten",
-  "celestialPlanetHigh": "{altitude} high overhead ({planet}°) - sehr prominent",
-  "celestialPlanetMedium": "{altitude} sichtbar bei {planet}° - könnte für Flugzeuge falsch sein",
+  "celestialPlanetHigh": "{planet} high overhead ({altitude}°) - sehr prominent",
+  "celestialPlanetMedium": "{planet} sichtbar bei {altitude}° - könnte für Flugzeuge falsch sein",
   "celestialPlanetLow": "{planet} tief am Horizont ({altitude}°)",
   "celestialNoStars": "Keine ungewöhnlich hellen Sterne sichtbar",
   "celestialStarSingle": "{star} prominent in {altitude}° Höhe",
-  "celestialStarsMultiple": "{names} helle Sterne sichtbar - {count}__",
+  "celestialStarsMultiple": "{count} helle Sterne sichtbar - {names}",
   "celestialSummaryDaylight": "Tageslichtbedingungen",
   "celestialSummaryDark": "Dark Sky Bedingungen",
   "celestialSummaryMoonUp": "mondbeleuchtung vorhanden",
@@ -968,12 +968,12 @@
   "moonPhaseThirdQuarter": "Drittes Quartal",
   "moonPhaseWaningCrescent": "Auf der Suche nach",
   "planetBelowHorizon": "{planet} unter dem Horizont",
-  "planetHighOverheadProminent": "{altitude} high overhead ({planet}°) - sehr prominent",
-  "planetMidSkyProminent": "{altitude} bei {planet}° - prominent",
-  "planetMidSky": "{altitude} bei {planet}°",
+  "planetHighOverheadProminent": "{planet} high overhead ({altitude}°) - sehr prominent",
+  "planetMidSkyProminent": "{planet} bei {altitude}° - prominent",
+  "planetMidSky": "{planet} bei {altitude}°",
   "starVeryBright": "{star} sehr hell in {altitude}°",
   "starProminent": "{star} prominent in {altitude}° Höhe",
-  "starVisible": "{altitude} bei {star}°",
+  "starVisible": "{star} bei {altitude}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
   "satellitesVisibleMightExplain": "{count} Satelliten sichtbar - könnte Sichtungen erklären",
@@ -1133,7 +1133,7 @@
   "endTime": "Endzeit",
   "allowCriticalAlertsDuringQuietHours": "Erlauben Sie kritische Warnungen während der ruhigen Stunden",
   "silenceNotificationsDuringSleepHours": "Stille Meldungen während der Schlafzeiten",
-  "quietHoursActiveTimeRange": "Aktiv {endTime} {startTime}_",
+  "quietHoursActiveTimeRange": "Aktiv {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1221,7 +1221,7 @@
   "lightRain": "lichtregen",
   "moderateRain": "mäßiger regen",
   "heavyRain": "starker regen",
-  "aircraftDetectedCurrentPositions": "{radius} Flugzeug innerhalb {count}km (aktuelle Positionen)",
+  "aircraftDetectedCurrentPositions": "{count} Flugzeug innerhalb {radius}km (aktuelle Positionen)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1244,7 +1244,7 @@
     }
   },
   "mufonReportingDate": "MUFON Datum",
-  "satelliteNameDirection": "{name} {direction}_",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {
