@@ -179,10 +179,8 @@ export async function generateMetadata({ params }: { params: Promise<PageParams>
     ? alert.description.substring(0, 160)
     : `UFO sighting reported in ${location} on ${date}`
 
-  // Get first media file for og:image
-  const ogImage = alert.media_files && alert.media_files.length > 0
-    ? (alert.media_files[0].web_url || alert.media_files[0].thumbnail_url || alert.media_files[0].url)
-    : '/og-image.png' // Fallback to default
+  // Use generated share card image for og:image (always available)
+  const ogImage = `https://ufobeep.com/api/og/alerts/${alert.id}.png`
 
   // Build canonical URL using short URL if available
   const shortId = alert.short_url || ''
