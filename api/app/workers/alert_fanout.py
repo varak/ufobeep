@@ -293,8 +293,8 @@ class AlertFanoutWorker:
             user_devices = device_registry.get(user_id, [])
             
             for device in user_devices:
-                if (device.get("is_active", False) and 
-                    device.get("push_enabled", False) and
+                # Send to all devices with push tokens enabled, regardless of is_active status
+                if (device.get("push_enabled", False) and
                     device.get("push_token") and
                     device.get("alert_notifications", True)):
                     

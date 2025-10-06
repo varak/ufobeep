@@ -543,7 +543,7 @@ async def get_device_registry(user_ids: list):
             # Query active devices for the users
             placeholders = ','.join([f'${i+1}' for i in range(len(user_ids))])
             devices = await db.fetch(f"""
-                SELECT 
+                SELECT
                     user_id,
                     id,
                     device_id,
@@ -558,7 +558,6 @@ async def get_device_registry(user_ids: list):
                     is_active
                 FROM devices
                 WHERE user_id = ANY(ARRAY[{placeholders}]::UUID[])
-                  AND is_active = true
                   AND push_enabled = true
                   AND push_token IS NOT NULL
                   AND push_token != ''
