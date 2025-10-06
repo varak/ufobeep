@@ -10,6 +10,21 @@ import requests
 import os
 from datetime import datetime
 
+# US state name to abbreviation mapping
+US_STATE_ABBREV = {
+    'Alabama': 'AL', 'Alaska': 'AK', 'Arizona': 'AZ', 'Arkansas': 'AR', 'California': 'CA',
+    'Colorado': 'CO', 'Connecticut': 'CT', 'Delaware': 'DE', 'Florida': 'FL', 'Georgia': 'GA',
+    'Hawaii': 'HI', 'Idaho': 'ID', 'Illinois': 'IL', 'Indiana': 'IN', 'Iowa': 'IA',
+    'Kansas': 'KS', 'Kentucky': 'KY', 'Louisiana': 'LA', 'Maine': 'ME', 'Maryland': 'MD',
+    'Massachusetts': 'MA', 'Michigan': 'MI', 'Minnesota': 'MN', 'Mississippi': 'MS', 'Missouri': 'MO',
+    'Montana': 'MT', 'Nebraska': 'NE', 'Nevada': 'NV', 'New Hampshire': 'NH', 'New Jersey': 'NJ',
+    'New Mexico': 'NM', 'New York': 'NY', 'North Carolina': 'NC', 'North Dakota': 'ND', 'Ohio': 'OH',
+    'Oklahoma': 'OK', 'Oregon': 'OR', 'Pennsylvania': 'PA', 'Rhode Island': 'RI', 'South Carolina': 'SC',
+    'South Dakota': 'SD', 'Tennessee': 'TN', 'Texas': 'TX', 'Utah': 'UT', 'Vermont': 'VT',
+    'Virginia': 'VA', 'Washington': 'WA', 'West Virginia': 'WV', 'Wisconsin': 'WI', 'Wyoming': 'WY',
+    'District of Columbia': 'DC', 'Puerto Rico': 'PR'
+}
+
 def parse_args():
     parser = argparse.ArgumentParser(description='Reverse geocode coordinates to location name')
     parser.add_argument('--lat', type=float, required=True, help='Latitude')
@@ -56,9 +71,10 @@ def reverse_geocode(latitude: float, longitude: float) -> dict:
 
         # Format location name based on country
         if country == 'US' and state:
-            # For US locations, use "City, State" format
-            location_name = f"{city}, {state}" if city else state
-            formatted_address = f"{city}, {state}, United States" if city else f"{state}, United States"
+            # For US locations, use "City, ST" format with state abbreviation
+            state_abbrev = US_STATE_ABBREV.get(state, state)  # Fallback to full name if not in map
+            location_name = f"{city}, {state_abbrev}" if city else state_abbrev
+            formatted_address = f"{city}, {state_abbrev}" if city else state_abbrev
         elif city and country:
             # For international locations, use "City, Country" format
             location_name = f"{city}, {country}"
