@@ -93,7 +93,7 @@ class AlertFanoutWorker:
     
     def __init__(self):
         self.max_fanout_distance_km = getattr(settings, 'max_fanout_distance_km', 10000.0)
-        self.min_fanout_distance_km = getattr(settings, 'min_fanout_distance_km', 0.1)
+        self.min_fanout_distance_km = getattr(settings, 'min_fanout_distance_km', 0.0)  # Allow same-location alerts (was 0.1)
         self.max_targets_per_fanout = getattr(settings, 'max_targets_per_fanout', 1000)
         self.rate_limit_window_minutes = 60
         self.user_alert_history = {}  # In production, use Redis or database
