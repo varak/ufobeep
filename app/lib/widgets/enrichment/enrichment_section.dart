@@ -954,8 +954,8 @@ class CelestialCardFromJson extends StatelessWidget {
               const SizedBox(height: 6),
             ],
 
-            // Moon info
-            if (moonData != null) ...[
+            // Moon info - only show if visible above horizon
+            if (moonData != null && (moonData['is_visible'] == true || (moonData['altitude'] as double? ?? -90) > 0)) ...[
               _buildCelestialExplanation(
                 context,
                 'Moon',

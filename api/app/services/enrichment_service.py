@@ -972,6 +972,33 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
                 except Exception:
                     pass  # Skip errors for individual satellites
 
+        # Check visual satellites (non-ISS, non-Starlink bright satellites)
+        if tle_data.get('visual'):
+            for sat_info in tle_data['visual'][:50]:  # Check top 50 visual satellites
+                try:
+                    # Skip ISS and Starlink (already processed above)
+                    if any(keyword in sat_info['name'].upper() for keyword in ['ISS', 'STARLINK']):
+                        continue
+
+                    from skyfield.api import EarthSatellite
+                    satellite = EarthSatellite(sat_info['line1'], sat_info['line2'], sat_info['name'], ts)
+                    topocentric = (satellite - observer).at(t_exact)
+                    alt, az, distance = topocentric.altaz()
+
+                    if alt.degrees > 0:
+                        brightness = self._estimate_satellite_brightness(
+                            sat_info['name'], distance.km, alt.degrees
+                        )
+                        satellites.append({
+                            "name": sat_info['name'],
+                            "altitude": round(alt.degrees, 1),
+                            "azimuth": round(az.degrees, 1),
+                            "brightness_magnitude": brightness,
+                            "is_bright": brightness is not None and brightness < 3.0
+                        })
+                except Exception:
+                    pass  # Skip errors for individual satellites
+
         # Sort by brightness
         satellites.sort(key=lambda x: x.get('brightness_magnitude', 10))
 
