@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Ветер: {speed}{unit}",
+  "wind": "Ветер: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -210,14 +210,14 @@
   "dndUntil": "Не беспокоить, пока",
   "dndEnabled": "DND включен до {time}",
   "dndDisabled": "DND отключен",
-  "quietHoursActive": "Активный{endTime} -{startTime}",
+  "quietHoursActive": "Активный {startTime} - {endTime}",
   "quietHoursScheduled": "Тихие часы: {end} - {start}",
   "pushNotificationUfoAlert": "НЛО Предупреждение",
   "pushNotificationAnomalyAlert": "Предупреждение об аномалиях",
   "pushNotificationNearby": "Рядом",
   "pushNotificationInYourArea": "в вашем районе. Нажмите, чтобы просмотреть детали.",
   "pushNotificationCommented": "{username} прокомментировал",
-  "pushNotificationCommentedOn": "{beepTitle} прокомментировал {username}",
+  "pushNotificationCommentedOn": "{username} прокомментировал {beepTitle}",
   "pushNotificationGeneric": "НЛО Бип",
   "pushNotificationNewSighting": "Новый взгляд рядом",
   "language": "Язык языка",
@@ -245,7 +245,7 @@
   "imageOnly": "Только изображение",
   "mediaOnly": "Только СМИ",
   "timeJustNow": "только сейчас",
-  "timeDaysAgo": "___________________",
+  "timeDaysAgo": "{count} дней назад",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -254,7 +254,7 @@
       }
     }
   },
-  "timeHoursAgo": "____________________________",
+  "timeHoursAgo": "{count} часов назад",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -263,7 +263,7 @@
       }
     }
   },
-  "timeMinutesAgo": "____________________________",
+  "timeMinutesAgo": "{count} минут назад",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -313,7 +313,7 @@
   "unknownLocation": "Неизвестное местоположение",
   "locationUnknown": "Местонахождение неизвестно",
   "witnessesLabel": "Свидетели",
-  "witnessesCountMessage": "_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "witnessesCountMessage": "{count} человек подтвердили это наблюдение",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -446,7 +446,7 @@
   "whatToExpect": "Чего ожидать",
   "formalReportRequirements": "Формальные отчеты обычно требуют:\n• Подробное время, дата и продолжительность\n• Погодные условия и видимость\n• Полные свидетельские показания\n• Фото или видео, если есть\n\nОрганизации могут следить за дополнительной информацией. Ваш отчет способствует текущим исследованиям НЛО.",
   "confirmedWitness": "Вы подтвердили это наблюдение",
-  "witnessesHaveConfirmed": "_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "witnessesHaveConfirmed": "{count} человек подтвердили это наблюдение",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -544,7 +544,7 @@
   "ufoSightingAlert": "НЛО Сигнал тревоги",
   "previousPage": "Предыдущий",
   "nextPage": "Следующий",
-  "pageOf": "Страница {currentPage}_{totalPages} ({totalCount} полные звуковые сигналы)",
+  "pageOf": "Страница {currentPage} из {totalPages} ({totalCount} полные звуковые сигналы)",
   "firstPage": "Первый",
   "lastPage": "Последний",
   "jumpToPage": "Перейти на страницу",
@@ -592,7 +592,7 @@
   "mufonEgg": "Яйцо",
   "mufonOther": "Объект",
   "mufonUnknown": "Неизвестный объект",
-  "mufonTitleFormat": "MUFON{classification} Report",
+  "mufonTitleFormat": "MUFON {classification} Report",
   "nuforcAttribution": "НУФОРК Отчет о базе данных",
   "nuforcCaseNumber": "Дело #",
   "nuforcGenericTitle": "НУФОРК Обзорный доклад",
@@ -737,7 +737,7 @@
   "locationTrackingEnabled": "Фоновое отслеживание местоположения включено",
   "locationTrackingDisabled": "Фоновое отслеживание местоположения отключено",
   "justNow": "Только сейчас",
-  "minutesAgo": "____________________________",
+  "minutesAgo": "{minutes} минут назад",
   "@minutesAgo": {
     "placeholders": {
       "minutes": {
@@ -745,7 +745,7 @@
       }
     }
   },
-  "hoursAgo": "____________________________",
+  "hoursAgo": "{hours} часов назад",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -753,7 +753,7 @@
       }
     }
   },
-  "daysAgo": "___________________",
+  "daysAgo": "{days} дней назад",
   "@daysAgo": {
     "placeholders": {
       "days": {
@@ -771,7 +771,7 @@
   "splashRetry": "Повторять",
   "splashContinue": "Продолжать",
   "splashInitializing": "Инициировать...",
-  "signInWelcome": "Добро пожаловать ________!",
+  "signInWelcome": "Добро пожаловать {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -930,12 +930,12 @@
   "celestialMoonThin": "Тонкая {phase} Луна видимая - минимальное освещение",
   "celestialMoonHidden": "Луна под горизонтом - нет лунного освещения",
   "celestialNoPlanets": "Нет ярких планет, которые можно было бы принять за НЛО",
-  "celestialPlanetHigh": "{altitude} высокие накладные расходы ({planet}°)",
-  "celestialPlanetMedium": "{altitude} видимый на {planet}° - может быть ошибочно принят за самолет",
-  "celestialPlanetLow": "{altitude} low on horizon ({planet}°)",
+  "celestialPlanetHigh": "{planet} высокие накладные расходы ({altitude}°)",
+  "celestialPlanetMedium": "{planet} видимый на {altitude}° - может быть ошибочно принят за самолет",
+  "celestialPlanetLow": "{planet} низко на горизонте ({altitude}°)",
   "celestialNoStars": "Не видно необычно ярких звезд",
-  "celestialStarSingle": "{altitude} видно на высоте {star}°",
-  "celestialStarsMultiple": "{names} яркие звезды - {count}",
+  "celestialStarSingle": "{star} видно на высоте {altitude}°",
+  "celestialStarsMultiple": "{count} яркие звезды - {names}",
   "celestialSummaryDaylight": "Условия дневного света",
   "celestialSummaryDark": "Темное небо условия",
   "celestialSummaryMoonUp": "лунное освещение",
@@ -968,18 +968,18 @@
   "moonPhaseThirdQuarter": "Третий квартал",
   "moonPhaseWaningCrescent": "Убывающий полумесяц",
   "planetBelowHorizon": "{planet} ниже горизонта",
-  "planetHighOverheadProminent": "{altitude} высокие накладные расходы ({planet}°)",
-  "planetMidSkyProminent": "{altitude} на {planet}° - видный",
-  "planetMidSky": "{altitude} в {planet}°",
-  "starVeryBright": "{altitude} очень яркий на {star}°",
-  "starProminent": "{altitude} видно на высоте {star}°",
-  "starVisible": "{altitude} в {star}°",
+  "planetHighOverheadProminent": "{planet} высокие накладные расходы ({altitude}°)",
+  "planetMidSkyProminent": "{planet} на {altitude}° - видный",
+  "planetMidSky": "{planet} на {altitude}°",
+  "starVeryBright": "{star} очень яркий на {altitude}°",
+  "starProminent": "{star} видимая на высоте {altitude}°",
+  "starVisible": "{star} на {altitude}°",
   "altitudeShort": "Альт",
   "magnitudeShort": "Магия",
   "satellitesVisibleMightExplain": "{count} видимые спутники - может объяснить наблюдение",
   "satellitesVisibleUnlikelyExplain": "{count} видимые спутники - вряд ли можно объяснить наблюдение",
   "noSatellitesVisible": "Спутников не видно",
-  "aircraftDetectedInRadius": "{radius} самолет обнаружен в {count}km",
+  "aircraftDetectedInRadius": "{count} самолет обнаружен в {radius}km",
   "processingAlert": "Обработка сигналов НЛО...",
   "analyzingEnvironment": "Анализ экологических условий",
   "weatherAnalysis": "Анализ погоды",
@@ -987,7 +987,7 @@
   "aircraftTracking": "Отслеживание самолетов",
   "satelliteAnalysis": "Спутниковый анализ",
   "celestialAnalysis": "Небесный анализ",
-  "analyzing": "Проанализировав ___________.",
+  "analyzing": "Анализ {processor}...",
   "processorWeather": "погодные условия",
   "processorLocation": "подробнее о местоположении",
   "processorAircraft": "близлежащие самолеты",
@@ -1133,7 +1133,7 @@
   "endTime": "Время конца",
   "allowCriticalAlertsDuringQuietHours": "Разрешить критические оповещения в тихие часы",
   "silenceNotificationsDuringSleepHours": "Уведомления о молчании во время сна",
-  "quietHoursActiveTimeRange": "Активный{endTime} -{startTime}",
+  "quietHoursActiveTimeRange": "Активный {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1221,7 +1221,7 @@
   "lightRain": "легкий дождь",
   "moderateRain": "умеренный дождь",
   "heavyRain": "сильный дождь",
-  "aircraftDetectedCurrentPositions": "{radius} самолет обнаружен в пределах {count}km (текущие позиции)",
+  "aircraftDetectedCurrentPositions": "{count} самолет обнаружен в пределах {radius}km (текущие позиции)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {

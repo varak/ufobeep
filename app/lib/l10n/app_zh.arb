@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "夹着... PLACEHOLDER_0..",
+  "alertDirection": "夹着{bearing}..",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "允许麦克风进入 视频捕捉带音频.",
   "openSettings": "打开设置",
   "alertDetailTitle": "查看细节",
-  "reportedBy": "由_PLACEHOLDER_0___报导",
+  "reportedBy": "由{username}报导",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "报告_PLACEHOLDER_0__",
+  "reportedAt": "报告{timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "持械反对:_PLACEHOLDER_0_____________________",
+  "bearingToObject": "持械反对:{bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "试点模式",
   "compassStandardDescription": "基本航向和导航",
   "compassPilotDescription": "带有ETA和矢量的高级导航",
-  "pointingTo": "指向  _PLACEHOLDER_0__ (英语)",
+  "pointingTo": "指向{direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -208,16 +208,16 @@
   "emergencyOverrideDesc": "允许静时紧急报警",
   "dndMode": "不要烦恼",
   "dndUntil": "不要打扰到这里",
-  "dndEnabled": "DND 启用至 __ PLACEHOLDER_ 0___",
+  "dndEnabled": "DND 启用至{time}",
   "dndDisabled": "DND 已禁用",
-  "quietHoursActive": "活动_PLACEHOLDER_0__{startTime}",
+  "quietHoursActive": "活动{startTime} - {endTime}",
   "quietHoursScheduled": "安静时间: (原始内容存档于2017-09-01) (中文(中国大陆) )",
   "pushNotificationUfoAlert": "不明飞行物 警报",
   "pushNotificationAnomalyAlert": "异常警报",
   "pushNotificationNearby": "临近",
   "pushNotificationInYourArea": "在你的区域。 点击查看细节.",
-  "pushNotificationCommented": "– PLACEHOLDER_0_ 评论",
-  "pushNotificationCommentedOn": "–PLACEHOLDER_0__评论_PLACEHOLDER_1_",
+  "pushNotificationCommented": "{username}评论",
+  "pushNotificationCommentedOn": "{username}评论{beepTitle}",
   "pushNotificationGeneric": "打开",
   "pushNotificationNewSighting": "附近新出现",
   "language": "语言",
@@ -323,7 +323,7 @@
     }
   },
   "photoAnalysisTitle": "照片分析",
-  "mediaItemsProcessed": "分析:_PLACEHOLDER_0_媒体文件已处理",
+  "mediaItemsProcessed": "分析:{count}媒体文件已处理",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -468,7 +468,7 @@
   "premiumAccessWitnesses": "在可见范围内确认的证人",
   "comingSoon": "快来了",
   "directionDistanceTitle": "方向距离( D)",
-  "mufonCaseTitle": "毛里求斯 案件QQPLACEHOLDER_0___",
+  "mufonCaseTitle": "毛里求斯 案件#{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "不明飞行物 警报",
   "notificationSightingUrgent": "紧急UFO 警报",
   "notificationSightingEmergency": "紧急UFO 警报",
-  "notificationSightingBody": "靠近... PLACEHOLDER_0_ 靠近... PLACEHOLDER_ 1_",
+  "notificationSightingBody": "{witnessText}靠近{locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -500,7 +500,7 @@
       }
     }
   },
-  "notificationCommentTitle": "~PLACEHOLDER_0_评论",
+  "notificationCommentTitle": "{username}评论",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -599,7 +599,7 @@
   "mediaImageNotFound": "未找到图像",
   "mediaPlayVideo": "播放视频",
   "mediaViewImage": "查看图像",
-  "mediaCount": "_PLACEHOLDER_0_图像",
+  "mediaCount": "{count}图像",
   "mediaCountSingle": "1 张图像",
   "mediaMoreImages": "再来一点",
   "errorNotFound": "未找到哔声",
@@ -800,7 +800,7 @@
   "signInEmailDescription": "我们会给你一个安全的链接 来注册",
   "signInEmailAddress": "电子邮件地址",
   "signInEmailPlaceholder": "请检查date=中的日期值 (帮助) your@email.com",
-  "signInTryAgainIn": "在 _PLACEHOLDER_0_s中再次尝试",
+  "signInTryAgainIn": "在{seconds}s中再次尝试",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -859,7 +859,7 @@
   "phoneAuthVerifyYourPhone": "校验您的手机",
   "phoneAuthEnterVerificationCode": "输入校验 代码",
   "phoneAuthAddPhoneForSecurity": "添加您的电话号码用于账户恢复和安全",
-  "phoneAuthEnterSixDigitCode": "输入发送到 _PLACEHOLDER_0__的6位数代码",
+  "phoneAuthEnterSixDigitCode": "输入发送到{phoneNumber}的6位数代码",
   "@phoneAuthEnterSixDigitCode": {
     "placeholders": {
       "phoneNumber": {
@@ -925,23 +925,23 @@
   "celestialSunDaylight": "太阳升起 -- -- 日光条件可能影响可见度",
   "celestialSunTwilight": "暮色的条件 - 一些能见度但比日光更暗",
   "celestialSunDark": "黑暗条件 - 在天空中观测天体的最佳条件",
-  "celestialMoonBright": "明亮的  _PLACEHOLDER_ 0_ 月亮可见 - 可能照亮或模糊其他物体",
+  "celestialMoonBright": "明亮的{phase}月亮可见 - 可能照亮或模糊其他物体",
   "celestialMoonModerate": "月亮可见度 - 中等照明条件",
   "celestialMoonThin": "细小的月亮可见度最小",
-  "celestialMoonHidden": "- PLACEHOLDER_0__ 地平线以下的月亮 - 没有月光",
+  "celestialMoonHidden": "{phase}地平线以下的月亮 - 没有月光",
   "celestialNoPlanets": "没有可以被误认为UFO的明亮行星",
-  "celestialPlanetHigh": "- PLACEHOLDER_0__ 高管理(__PLACEHOLDER_1+) - 非常突出",
-  "celestialPlanetMedium": "—— PLACEHOLDER_0_ 可见于_PLACEHOLDER_1_ ——可能误认为飞机",
-  "celestialPlanetLow": "- PLACEHOLDER_0_ 低地平线(_PLACEHOLDER_1_+)",
+  "celestialPlanetHigh": "{planet}高管理({altitude}°) - 非常突出",
+  "celestialPlanetMedium": "{planet}可见于{altitude}° - 可能误认为飞机",
+  "celestialPlanetLow": "{planet}低地平线({altitude}°)",
   "celestialNoStars": "没有异常亮的星星可见",
   "celestialStarSingle": "位置: 高度: 高度: 高度: 高度: 高度:",
-  "celestialStarsMultiple": "- PLACEHOLDER_0_ 明亮的恒星可见 - _PLACEHOLDER_1_",
+  "celestialStarsMultiple": "{count}明亮的恒星可见 - {names}",
   "celestialSummaryDaylight": "日光条件",
   "celestialSummaryDark": "黑暗的天空条件",
   "celestialSummaryMoonUp": "月亮照现",
   "celestialSummaryMoonDown": "没有月光",
-  "celestialSummaryManyObjects": "_PLACEHOLDER_0_ 与UFO相混淆的亮天体",
-  "celestialSummarySomeObjects": "_PLACEHOLDER_ 0_ 亮物体可见",
+  "celestialSummaryManyObjects": "{count}与UFO相混淆的亮天体",
+  "celestialSummarySomeObjects": "{count}亮物体可见",
   "celestialSummaryFewObjects": "天空中最小亮度对象",
   "celestialSkySummary": "天空条件 : – 地点/地点/地点/地点/地点/地点",
   "planetVenus": "金星",
@@ -967,19 +967,19 @@
   "moonPhaseWaningGibbous": "瓦宁・吉布斯",
   "moonPhaseThirdQuarter": "第三季度",
   "moonPhaseWaningCrescent": "万灵新月",
-  "planetBelowHorizon": "地平线以下的 PLACEHOLDER_ 0__",
-  "planetHighOverheadProminent": "- PLACEHOLDER_0__ 高管理(__PLACEHOLDER_1+) - 非常突出",
-  "planetMidSkyProminent": "- PLACEHOLDER_0_ at ^ PLACEHOLDER_ 1_ - 显著位置",
+  "planetBelowHorizon": "{planet}地平线以下",
+  "planetHighOverheadProminent": "{planet}高管理({altitude}°) - 非常突出",
+  "planetMidSkyProminent": "{planet}在{altitude}° - 显著位置",
   "planetMidSky": "地点:",
   "starVeryBright": "时非常亮",
   "starProminent": "位置: 高度: 高度: 高度: 高度: 高度:",
   "starVisible": "地点:",
   "altitudeShort": "备选案文",
   "magnitudeShort": "马格",
-  "satellitesVisibleMightExplain": "——PLACEHOLDER_0_ 可见的卫星 - 可以解释目击",
-  "satellitesVisibleUnlikelyExplain": "* PLACEHOLDER_0_ 卫星可见- 不太可能解释目击",
+  "satellitesVisibleMightExplain": "{count}可见的卫星 - 可以解释目击",
+  "satellitesVisibleUnlikelyExplain": "{count}卫星可见 - 不太可能解释目击",
   "noSatellitesVisible": "没有可见的卫星",
-  "aircraftDetectedInRadius": "在_PLACEHOLDER_0_公里范围内探测到的飞机",
+  "aircraftDetectedInRadius": "在{radius}公里范围内探测到{count}飞机",
   "processingAlert": "正在处理 UFO 提醒...",
   "analyzingEnvironment": "分析环境状况",
   "weatherAnalysis": "天气分析",
@@ -987,7 +987,7 @@
   "aircraftTracking": "飞机跟踪",
   "satelliteAnalysis": "卫星分析",
   "celestialAnalysis": "天体分析",
-  "analyzing": "分析_PLACEHOLDER_0_......",
+  "analyzing": "分析{processor}...",
   "processorWeather": "天气状况",
   "processorLocation": "地点细节",
   "processorAircraft": "附近飞机",
@@ -996,7 +996,7 @@
   "calculatingCelestialData": "计算天体数据...",
   "sunLabel": "太阳",
   "moonLabel": "月亮",
-  "planetsVisible": "行星:_PLACEHOLDER_0_可见",
+  "planetsVisible": "行星:{count}可见",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "恒星数",
   "planetsLabel": "行星",
-  "moonWithPhase": "月球( __ PLACEHOLDER_ 0__)",
+  "moonWithPhase": "月球({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1025,7 +1025,7 @@
   "altitudeAbbrev": "备选案文",
   "azimuthAbbrev": "阿兹",
   "satellitesVisibleNow": "卫星({count}现在可见)",
-  "sunWithDescription": "太阳:_PLACEHOLDER_0_",
+  "sunWithDescription": "太阳:{description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "月球: ~ PLACEHOLDER_0_ 月球主题 月球主题",
+  "moonWithDescription": "月球:{description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1057,7 +1057,7 @@
   "unknownDirection": "未知的方向",
   "brightStars": "闪亮的恒星",
   "satellites": "卫星",
-  "seeAllSatellites": "见所有_PLACEHOLDER_0_ 卫星",
+  "seeAllSatellites": "见所有{count}卫星",
   "@seeAllSatellites": {
     "placeholders": {
       "count": {
@@ -1133,7 +1133,7 @@
   "endTime": "结束时间",
   "allowCriticalAlertsDuringQuietHours": "允许在安静时间发出紧急警报",
   "silenceNotificationsDuringSleepHours": "睡眠时间的沉默通知",
-  "quietHoursActiveTimeRange": "活动_PLACEHOLDER_0__{startTime}",
+  "quietHoursActiveTimeRange": "活动{startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1147,7 +1147,7 @@
     }
   },
   "followingAlerts": "警报后",
-  "activeCount": "_PLACEHOLDER_0_ 活动",
+  "activeCount": "{count}活动",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1158,7 +1158,7 @@
   },
   "unfollow": "未跟踪",
   "unfollowAlert": "不跟随提醒",
-  "commentsCount": "– PLACEHOLDER_ 0_ 注释",
+  "commentsCount": "{count}注释",
   "photo": "图片",
   "video": "视频",
   "initializationComplete": "启动完毕!",
@@ -1181,7 +1181,7 @@
       }
     }
   },
-  "translatedFrom": "翻译自_PLACEHOLDER_0__",
+  "translatedFrom": "翻译自{language}",
   "@translatedFrom": {
     "placeholders": {
       "language": {
@@ -1190,7 +1190,7 @@
       }
     }
   },
-  "translateContent": "将内容翻译为_PLACEHOLDER_0__",
+  "translateContent": "将内容翻译为{language}",
   "@translateContent": {
     "placeholders": {
       "language": {
@@ -1221,7 +1221,7 @@
   "lightRain": "轻雨",
   "moderateRain": "中等雨量",
   "heavyRain": "暴风雨",
-  "aircraftDetectedCurrentPositions": "在_PLACEHOLDER_0_km(现有位置)内探测到的飞机",
+  "aircraftDetectedCurrentPositions": "在{radius}km(现有位置)内探测到{count}飞机",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1234,7 +1234,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "* PLACEHOLDER_0_ 显微卫星 - 不太可能解释目击",
+  "dimSatellitesUnlikely": "{count}显微卫星 - 不太可能解释目击",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {

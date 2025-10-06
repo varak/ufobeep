@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "軸受け_PLACEHOLDER_0__°",
+  "alertDirection": "軸受け {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "オブジェクトへのベアリング:_PLACEHOLDER_0__°",
+  "bearingToObject": "オブジェクトへのベアリング: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "キャリブレーションコンパス..",
   "openAROverlay": "AR オーバーレイを開く",
   "pushTitleAlertNearby": "あなたの近くにUFOアラート",
-  "pushBodyAlertNearby": "新たな視力が報告されました_PLACEHOLDER_0__ 離れて.",
+  "pushBodyAlertNearby": "新たな視力が報告されました {distance} 離れて.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "風:_PLACEHOLDER_0______{unit}_",
+  "wind": "風: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -210,14 +210,14 @@
   "dndUntil": "邪魔しないでください",
   "dndEnabled": "DND が {time} まで有効",
   "dndDisabled": "DND 無効",
-  "quietHoursActive": "アクティブ_PLACEHOLDER_0___________________________________________________________________________________________________________________________________________________________________",
+  "quietHoursActive": "アクティブ {startTime} - {endTime}",
   "quietHoursScheduled": "静かな時間: {start}_________________________________________________________________________________________________________________________________________________________________________________",
   "pushNotificationUfoAlert": "ユーチューブ アラート",
   "pushNotificationAnomalyAlert": "異常アラート",
   "pushNotificationNearby": "アクセス",
   "pushNotificationInYourArea": "エリア内 タップすると詳細が表示されます.",
   "pushNotificationCommented": "{username}_コメント",
-  "pushNotificationCommentedOn": "{username}_ にコメント _PLACEHOLDER_1___",
+  "pushNotificationCommentedOn": "{username} にコメント {beepTitle}",
   "pushNotificationGeneric": "UFOビープ",
   "pushNotificationNewSighting": "近辺の新景気",
   "language": "用語集",
@@ -500,7 +500,7 @@
       }
     }
   },
-  "notificationCommentTitle": "💬_PLACEHOLDER_0__コメント",
+  "notificationCommentTitle": "💬 {username} コメント",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -771,7 +771,7 @@
   "splashRetry": "リトリート",
   "splashContinue": "お問い合わせ",
   "splashInitializing": "初期化...",
-  "signInWelcome": "ようこそ_PLACEHOLDER_0__!",
+  "signInWelcome": "ようこそ {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -925,7 +925,7 @@
   "celestialSunDaylight": "太陽がアップ - 日光条件は視認性に影響を与える可能性があります",
   "celestialSunTwilight": "Twilight条件 - 一部の可視性が、日光よりも暗い",
   "celestialSunDark": "暗い条件 - 空のオブジェクトを観察するための最適",
-  "celestialMoonBright": "明るい_PLACEHOLDER_0_月表示 - 他のオブジェクトを照らすか、または妨害する可能性があります",
+  "celestialMoonBright": "明るい {phase} 月表示 - 他のオブジェクトを照らすか、または妨害する可能性があります",
   "celestialMoonModerate": "{phase} moon visible - 中程度の照明条件",
   "celestialMoonThin": "薄い{phase}の月が見える - 最小限の照明",
   "celestialMoonHidden": "{phase} 月下の地平線 - 月の照明なし",
@@ -979,7 +979,7 @@
   "satellitesVisibleMightExplain": "{count} 可視衛星 - 視線を説明するかもしれない",
   "satellitesVisibleUnlikelyExplain": "{count} 見える衛星 - 視線を説明するのとは異なり",
   "noSatellitesVisible": "衛星表示なし",
-  "aircraftDetectedInRadius": "{count}__ 航空機は_PLACEHOLDER_1___km以内に検出",
+  "aircraftDetectedInRadius": "{count} 航空機は {radius}km以内に検出",
   "processingAlert": "UFOアラートの処理.",
   "analyzingEnvironment": "環境条件の分析",
   "weatherAnalysis": "気象分析",
@@ -996,7 +996,7 @@
   "calculatingCelestialData": "履歴データの計算...",
   "sunLabel": "日曜日",
   "moonLabel": "ムーン",
-  "planetsVisible": "惑星:_PLACEHOLDER_0___ 可視",
+  "planetsVisible": "惑星: {count} 可視",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1133,7 +1133,7 @@
   "endTime": "終了時刻",
   "allowCriticalAlertsDuringQuietHours": "静かな時間の間に重要なアラートを許可する",
   "silenceNotificationsDuringSleepHours": "睡眠時間中の沈黙通知",
-  "quietHoursActiveTimeRange": "アクティブ_PLACEHOLDER_0___________________________________________________________________________________________________________________________________________________________________",
+  "quietHoursActiveTimeRange": "アクティブ {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {

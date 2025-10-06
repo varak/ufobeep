@@ -37,7 +37,7 @@
   "alertsTitle": "Avvisi nelle vicinanze",
   "noAlerts": "Non ci sono ancora avvisi nelle vicinanze.",
   "pullToRefresh": "Tirare a rinfrescare",
-  "alertDistance": "Traduzione:",
+  "alertDistance": "{distance} di distanza",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "#",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -211,13 +211,13 @@
   "dndEnabled": "DND abilitato fino a {time}",
   "dndDisabled": "DISOCCUPATI",
   "quietHoursActive": "Attivo {endTime} {startTime}",
-  "quietHoursScheduled": "Ore tranquille: Traduzione:",
+  "quietHoursScheduled": "Ore tranquille: {start} - {end}",
   "pushNotificationUfoAlert": "UFO Avviso",
   "pushNotificationAnomalyAlert": "Allarme Anomalia",
   "pushNotificationNearby": "Nelle vicinanze",
   "pushNotificationInYourArea": "nella tua zona. Tocca per visualizzare i dettagli.",
   "pushNotificationCommented": "{username} ha commentato",
-  "pushNotificationCommentedOn": "{beepTitle} ha commentato su {username}",
+  "pushNotificationCommentedOn": "{username} ha commentato su {beepTitle}",
   "pushNotificationGeneric": "UFOBeep",
   "pushNotificationNewSighting": "Nuovi avvistamenti nelle vicinanze",
   "language": "Lingua",
@@ -313,7 +313,7 @@
   "unknownLocation": "Location sconosciuta",
   "locationUnknown": "Ubicazione Sconosciuto",
   "witnessesLabel": "Testimoni",
-  "witnessesCountMessage": "La gente ha confermato questo avvistamento",
+  "witnessesCountMessage": "{count} persone hanno confermato questo avvistamento",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -413,7 +413,7 @@
   "shapeBullet": "proiettile",
   "shapeSaturn": "saturno",
   "shapeStarlike": "stella",
-  "shapeBlimp": "#",
+  "shapeBlimp": "blimp",
   "shapeFireball": "fuoco palla",
   "shapeFormation": "formazione",
   "shapeUnknown": "sconosciuto",
@@ -446,7 +446,7 @@
   "whatToExpect": "Cosa aspettarsi",
   "formalReportRequirements": "I rapporti formali richiedono tipicamente:\n• Ora, data e durata\n• Condizioni meteo e visibilità\n• Testimonianza completa\n• Foto o video se disponibili\n\nLe organizzazioni possono seguire per ulteriori dettagli. Il tuo rapporto contribuisce alla continua ricerca UFO.",
   "confirmedWitness": "Hai confermato questo avvistamento",
-  "witnessesHaveConfirmed": "La gente ha confermato questo avvistamento",
+  "witnessesHaveConfirmed": "{count} persone hanno confermato questo avvistamento",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -468,7 +468,7 @@
   "premiumAccessWitnesses": "Testimoni confermati all'interno della gamma di visibilità",
   "comingSoon": "Arrivo presto",
   "directionDistanceTitle": "Direzione & Distanza",
-  "mufonCaseTitle": "MUFON Caso #_PLACEHOLDER_0__",
+  "mufonCaseTitle": "MUFON Caso #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "UFOBeep UFO Avviso",
   "notificationSightingUrgent": "⚠️ URGENT UFOBeep UFO Avviso",
   "notificationSightingEmergency": "🚨 EMERGENCENZA UFOBeep UFO Avviso",
-  "notificationSightingBody": "{witnessText} vicino {locationName}_",
+  "notificationSightingBody": "{witnessText} vicino {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -521,7 +521,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Oggetto",
-  "notificationDistance": "Traduzione:",
+  "notificationDistance": "{distance} di distanza",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -544,7 +544,7 @@
   "ufoSightingAlert": "UFO Avviso di tenuta",
   "previousPage": "Precedente",
   "nextPage": "Il prossimo",
-  "pageOf": "Pagina {currentPage} di {totalPages}_ (_PLACEHOLDER_2___ total beeps)",
+  "pageOf": "Pagina {currentPage} di {totalPages} ({totalCount} total beeps)",
   "firstPage": "Primo",
   "lastPage": "Ultimo",
   "jumpToPage": "Vai alla pagina",
@@ -771,7 +771,7 @@
   "splashRetry": "Retry",
   "splashContinue": "Continua",
   "splashInitializing": "Inizializzazione...",
-  "signInWelcome": "Benvenuto!",
+  "signInWelcome": "Benvenuto {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "Iscrizione fallita: #",
+  "signInFailed": "Iscrizione fallita: {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "La verifica e-mail aiuta a proteggere il tuo account e consente il ripristino dell'account se si perde l'accesso al dispositivo.",
   "phoneAuthFailedToSendCode": "Non ha inviato il codice di verifica. Per favore riprovate.",
   "phoneAuthInvalidCodeTryAgain": "Codice di verifica non valido. Per favore riprovate.",
-  "phoneAuthPhoneVerified": "Numero di telefono verificato: #",
+  "phoneAuthPhoneVerified": "Numero di telefono verificato: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -930,11 +930,11 @@
   "celestialMoonThin": "Thin {phase}luce visibile - illuminazione minima",
   "celestialMoonHidden": "{phase} luna sotto orizzonte - nessuna illuminazione lunare",
   "celestialNoPlanets": "Nessun pianeta luminoso visibile che potrebbe essere sbagliato per UFOs",
-  "celestialPlanetHigh": "{planet} high overhead (_PLACEHOLDER_1__°) - molto prominente",
-  "celestialPlanetMedium": "{altitude} visibile a {planet}° - potrebbero essere scambiati per aerei",
-  "celestialPlanetLow": "{planet} basso all'orizzonte (_PLACEHOLDER_1__°)",
+  "celestialPlanetHigh": "{planet} high overhead ({altitude}°) - molto prominente",
+  "celestialPlanetMedium": "{planet} visibile a {altitude}° - potrebbero essere scambiati per aerei",
+  "celestialPlanetLow": "{planet} basso all'orizzonte ({altitude}°)",
   "celestialNoStars": "Nessuna stella insolitamente luminosa visibile",
-  "celestialStarSingle": "{altitude} prominente a {star}° altitudine",
+  "celestialStarSingle": "{star} prominente a {altitude}° altitudine",
   "celestialStarsMultiple": "{names} stelle luminose visibili - {count}",
   "celestialSummaryDaylight": "Condizioni diurne",
   "celestialSummaryDark": "Condizioni del cielo scuro",
@@ -943,7 +943,7 @@
   "celestialSummaryManyObjects": "{count} oggetti luminosi che potrebbero essere confusi con gli UFO",
   "celestialSummarySomeObjects": "{count} oggetti luminosi visibili",
   "celestialSummaryFewObjects": "oggetti luminosi minimi in cielo",
-  "celestialSkySummary": "Condizioni Sky: #",
+  "celestialSkySummary": "Condizioni Sky: {conditions}",
   "planetVenus": "Venere",
   "planetJupiter": "Giove",
   "planetSaturn": "Saturno",
@@ -968,18 +968,18 @@
   "moonPhaseThirdQuarter": "Terzo trimestre",
   "moonPhaseWaningCrescent": "Crescente della vita",
   "planetBelowHorizon": "{planet} sotto orizzonte",
-  "planetHighOverheadProminent": "{planet} high overhead (_PLACEHOLDER_1__°) - molto prominente",
-  "planetMidSkyProminent": "{altitude}_ a {planet}° - prominente",
-  "planetMidSky": "{altitude}_ {planet}",
-  "starVeryBright": "{altitude} molto luminoso a {star}°",
-  "starProminent": "{altitude} prominente a {star}° altitudine",
-  "starVisible": "{altitude}_ {star}",
+  "planetHighOverheadProminent": "{planet} high overhead ({altitude}°) - molto prominente",
+  "planetMidSkyProminent": "{planet} a {altitude}° - prominente",
+  "planetMidSky": "{planet} a {altitude}°",
+  "starVeryBright": "{star} molto luminoso a {altitude}°",
+  "starProminent": "{star} prominente a {altitude}° altitudine",
+  "starVisible": "{star} a {altitude}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
   "satellitesVisibleMightExplain": "{count} satelliti visibili - potrebbe spiegare avvistamento",
   "satellitesVisibleUnlikelyExplain": "{count} satelliti visibili - improbabile spiegare avvistamento",
   "noSatellitesVisible": "Nessun satellite visibile",
-  "aircraftDetectedInRadius": "{radius}_ aeromobili rilevati in {count}km",
+  "aircraftDetectedInRadius": "{count} aeromobili rilevati in {radius}km",
   "processingAlert": "Lavorazione UFO Alert...",
   "analyzingEnvironment": "Analisi delle condizioni ambientali",
   "weatherAnalysis": "Analisi del tempo",
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "Stelle",
   "planetsLabel": "Pianeti",
-  "moonWithPhase": "Luna (_PLACEHOLDER_0__)",
+  "moonWithPhase": "Luna ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1024,8 +1024,8 @@
   "noWeatherDescription": "Nessuna descrizione",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "Satelliti (_PLACEHOLDER_0__ visibili ora)",
-  "sunWithDescription": "Sole:",
+  "satellitesVisibleNow": "Satelliti ({count} visibili ora)",
+  "sunWithDescription": "Sole: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "Luna:",
+  "moonWithDescription": "Luna: {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1066,7 +1066,7 @@
       }
     }
   },
-  "maxElevation": "Elevazione massima: #",
+  "maxElevation": "Elevazione massima: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "Magnitudine: #",
+  "magnitude": "Magnitudine: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {
@@ -1221,7 +1221,7 @@
   "lightRain": "pioggia leggera",
   "moderateRain": "pioggia moderata",
   "heavyRain": "pioggia pesante",
-  "aircraftDetectedCurrentPositions": "Aerei rilevati entro {raggio}km (posizioni attuali)",
+  "aircraftDetectedCurrentPositions": "{count} aerei rilevati entro {radius}km (posizioni attuali)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1244,7 +1244,7 @@
     }
   },
   "mufonReportingDate": "MUFON Data di segnalazione",
-  "satelliteNameDirection": "TRADUZIONE:",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {
