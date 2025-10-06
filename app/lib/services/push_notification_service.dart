@@ -248,17 +248,15 @@ class PushNotificationService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('🔔 FOREGROUND FCM: Received message ${message.messageId}');
       print('🔔 FOREGROUND FCM: App is in foreground - must manually show notification');
-      
-      // For foreground notifications, show via bootstrap service first
+
+      // For foreground notifications, show via bootstrap service
       _showForegroundNotification(message);
 
-      // Don't trigger duplicate notifications for foreground messages
-      final notificationType = message.data['type'] ?? 'general';
-      if (notificationType == 'comment') {
-        _handleCommentNotification(message, showNotification: false);
-      } else {
-        _handleMessage(message, isBackground: false);
-      }
+      // Don't call _handleMessage for foreground messages to avoid duplicate notifications
+      // The notification is already shown above via _showForegroundNotification
+      // We only need to handle navigation/data updates when the notification is tapped
+      // (which is handled by onMessageOpenedApp)
+      print('🔔 FOREGROUND FCM: Notification shown, skipping _handleMessage to prevent duplicates');
     });
 
     // Handle messages when app is in background but not terminated
