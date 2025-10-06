@@ -1,6 +1,9 @@
 #!/bin/bash
 # Smart Translation - Only translate NEW keys
 # Compares English ARB with other languages and translates missing keys only
+# Usage: ./trans.sh [language]
+# Example: ./trans.sh fr  (translates French only)
+#          ./trans.sh     (translates all languages)
 
 set -e
 
@@ -22,8 +25,14 @@ if [ ! -f "$ENGLISH_ARB" ]; then
     exit 1
 fi
 
-# Language codes
-LANGUAGES="es de fr pt it ru ja zh ar nl pl cs tr ko hi sv da no fi el he"
+# Language codes - use command line arg if provided, otherwise all languages
+if [ -n "$1" ]; then
+    LANGUAGES="$1"
+    echo "📝 Translating single language: $1"
+else
+    LANGUAGES="es de fr pt it ru ja zh ar nl pl cs tr ko hi sv da no fi el he"
+    echo "📝 Translating all languages"
+fi
 
 echo "📖 Reading English ARB keys..."
 # Extract all keys from English ARB (skip @metadata keys)
