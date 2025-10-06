@@ -485,7 +485,17 @@ class _UFOBeepAppState extends ConsumerState<UFOBeepApp> with WidgetsBindingObse
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       routerConfig: router,
-      
+
+      // Platform-specific text scaling - iOS text appears larger by default
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(
+            textScaleFactor: Platform.isIOS ? 0.9 : 1.0,
+          ),
+          child: child!,
+        );
+      },
+
       // Internationalization
       locale: currentLocale,
       supportedLocales: AppLocalizations.supportedLocales,

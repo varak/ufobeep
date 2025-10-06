@@ -99,19 +99,20 @@ class AlertCard extends ConsumerWidget {
         ),
         if (_getLocationName(alert).isNotEmpty) ...[
           const SizedBox(height: 4),
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Flexible(
-                child: Text(
-                  _getLocationName(alert),
-                  style: const TextStyle(
-                    color: AppColors.textSecondary,
-                    fontSize: 15,
-                  ),
+              Text(
+                _getLocationName(alert),
+                style: const TextStyle(
+                  color: AppColors.textSecondary,
+                  fontSize: 15,
                 ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
               if (alert.distance != null && alert.distance! >= 0 && showDistance) ...[
-                const SizedBox(width: 8),
+                const SizedBox(height: 2),
                 Text(
                   UnitConversion.formatDistance(alert.distance! * 1000, units),
                   style: const TextStyle(
