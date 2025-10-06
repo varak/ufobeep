@@ -442,28 +442,33 @@ class CelestialCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Sun and Moon
+            // Sun and Moon - only show if visible
             Row(
               children: [
-                Expanded(
-                  child: _CelestialObject(
-                    icon: Icons.wb_sunny,
-                    name: AppLocalizations.of(context)!.sunLabel,
-                    altitude: celestial.sun.altitudeFormatted,
-                    azimuth: celestial.sun.azimuthFormatted,
-                    isVisible: celestial.sun.isVisible,
+                // Sun - show if visible or in twilight
+                if (celestial.sun.isVisible || celestial.sun.altitude > -18)
+                  Expanded(
+                    child: _CelestialObject(
+                      icon: Icons.wb_sunny,
+                      name: AppLocalizations.of(context)!.sunLabel,
+                      altitude: celestial.sun.altitudeFormatted,
+                      azimuth: celestial.sun.azimuthFormatted,
+                      isVisible: celestial.sun.isVisible,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: _CelestialObject(
-                    icon: Icons.nights_stay,
-                    name: 'Moon (${celestial.moon.phaseName})',
-                    altitude: celestial.moon.altitudeFormatted,
-                    azimuth: celestial.moon.azimuthFormatted,
-                    isVisible: celestial.moon.isVisible,
+                if (celestial.sun.isVisible || celestial.sun.altitude > -18)
+                  const SizedBox(width: 16),
+                // Moon - only show if visible above horizon
+                if (celestial.moon.isVisible && celestial.moon.altitude > 0)
+                  Expanded(
+                    child: _CelestialObject(
+                      icon: Icons.nights_stay,
+                      name: 'Moon (${celestial.moon.phaseName})',
+                      altitude: celestial.moon.altitudeFormatted,
+                      azimuth: celestial.moon.azimuthFormatted,
+                      isVisible: celestial.moon.isVisible,
+                    ),
                   ),
-                ),
               ],
             ),
 
