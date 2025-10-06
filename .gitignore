@@ -50,3 +50,4 @@ api/feeds/.secrets
 logs/
 backups/
 *.g.dart
+hip_main.dat
