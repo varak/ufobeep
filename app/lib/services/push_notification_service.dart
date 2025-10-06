@@ -252,20 +252,32 @@ class PushNotificationService {
       // For foreground notifications, show via bootstrap service
       _showForegroundNotification(message);
 
-      // Don't call _handleMessage for foreground messages to avoid duplicate notifications
-      // The notification is already shown above via _showForegroundNotification
-      // We only need to handle navigation/data updates when the notification is tapped
-      // (which is handled by onMessageOpenedApp)
-      print('🔔 FOREGROUND FCM: Notification shown, skipping _handleMessage to prevent duplicates');
+      // Store the message data for later navigation when notification is tapped
+      // but DON'T show another notification (would be duplicate)
+      final notificationType = message.data['type'] ?? 'general';
+      if (notificationType == 'comment') {
+        // Comments need special handling for navigation
+        _handleCommentNotification(message, showNotification: false);
+      }
+      // For sighting alerts, the notification tap will be handled by the local notification's
+      // onDidReceiveNotificationResponse callback which has the data stored
     });
 
     // Handle messages when app is in background but not terminated
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('App opened from background message: ${message.messageId}');
-      // Only handle navigation, don't trigger _handleMessage to avoid double processing
+      // Handle navigation for all notification types when tapped from background
       final notificationType = message.data['type'] ?? 'general';
-      if (notificationType == 'comment') {
-        _handleCommentNotification(message, showNotification: true);
+
+      if (notificationType == 'sighting_alert') {
+        // Navigate to the sighting
+        final sightingId = message.data['sighting_id'];
+        if (sightingId != null) {
+          print('Navigating to sighting: $sightingId');
+          _navigationService.go('/beep/$sightingId');
+        }
+      } else if (notificationType == 'comment') {
+        _handleCommentNotification(message, showNotification: false);
       }
     });
 
