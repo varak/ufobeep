@@ -325,12 +325,12 @@ class SocialAuthService {
           print('APPLE AUTH: Device registration nudged');
         }
         
-        // Safe access to nested user data
+        // Safe access to nested user data (match Google Sign-In logic)
         final userMap = _asJsonMap(data['user']);
-        final userId = userMap['user_id'] as String?;
+        final userId = userMap['id'] as String?;  // Use 'id' not 'user_id'
         final username = userMap['username'] as String?;
-        
-        if (userId != null && username != null) {
+
+        if (userId != null && username != null && username.isNotEmpty) {
           // Store user info locally
           await _storeUserInfo(
             userId: userId,
