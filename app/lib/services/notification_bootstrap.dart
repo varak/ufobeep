@@ -162,12 +162,21 @@ class NotificationBootstrap {
         iOS: iosDetails,
       );
 
+      // Create proper navigation payload from data
+      String? payload;
+      if (data != null) {
+        final sightingId = data['sighting_id'];
+        if (sightingId != null) {
+          payload = 'ufobeep://beep/$sightingId';
+        }
+      }
+
       await _localNotifications.show(
         DateTime.now().millisecondsSinceEpoch.remainder(100000),
         title,
         body,
         details,
-        payload: data?.toString(),
+        payload: payload,
       );
 
       print('🔔 BOOTSTRAP: Local notification shown - Title: "$title", Body: "$body"');
