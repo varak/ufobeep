@@ -601,15 +601,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
       final NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
-      await flutterLocalNotificationsPlugin.show(
-        sightingId.hashCode,
-        title,
-        body,
-        notificationDetails,
-        payload: 'ufobeep://beep/$sightingId', // Deep link payload for navigation
-      );
-
-      debugPrint('🔔 BACKGROUND: Showed sighting notification - $title: $body');
+      // Only show local notification on Android - iOS displays FCM notifications natively
+      // This prevents duplicate notifications on iOS
+      if (Platform.isAndroid) {
+        await flutterLocalNotificationsPlugin.show(
+          sightingId.hashCode,
+          title,
+          body,
+          notificationDetails,
+          payload: 'ufobeep://beep/$sightingId', // Deep link payload for navigation
+        );
+        debugPrint('🔔 BACKGROUND: Showed sighting notification - $title: $body');
+      } else {
+        debugPrint('🔔 BACKGROUND (iOS): FCM handles notification display');
+      }
 
     } else if (notificationType == 'comment') {
       final title = message.notification?.title ?? '💬 New Comment';
@@ -632,15 +637,20 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
       final NotificationDetails notificationDetails = NotificationDetails(android: androidDetails);
 
-      await flutterLocalNotificationsPlugin.show(
-        (sightingId?.hashCode ?? 0) + 1000, // Different ID from alert notifications
-        title,
-        body,
-        notificationDetails,
-        payload: sightingId != null ? 'ufobeep://beep/$sightingId?focusComment=true' : null, // Deep link to beep detail page with comment focus
-      );
-
-      debugPrint('🔔 BACKGROUND: Showed comment notification - $title: $body');
+      // Only show local notification on Android - iOS displays FCM notifications natively
+      // This prevents duplicate notifications on iOS
+      if (Platform.isAndroid) {
+        await flutterLocalNotificationsPlugin.show(
+          (sightingId?.hashCode ?? 0) + 1000, // Different ID from alert notifications
+          title,
+          body,
+          notificationDetails,
+          payload: sightingId != null ? 'ufobeep://beep/$sightingId?focusComment=true' : null, // Deep link to beep detail page with comment focus
+        );
+        debugPrint('🔔 BACKGROUND: Showed comment notification - $title: $body');
+      } else {
+        debugPrint('🔔 BACKGROUND (iOS): FCM handles notification display');
+      }
     }
 
     // Initialize sound service for background processing
