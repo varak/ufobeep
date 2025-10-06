@@ -193,23 +193,10 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
             has_pending_media = request.get('has_media', False)
             print(f"Debug: has_pending_media={has_pending_media}, alert_id={alert_id}")
 
-            if not has_pending_media:
-                print(f"Debug: Attempting to send proximity alerts for {alert_id}")
-                try:
-                    # Use consistent import approach
-                    from services.proximity_alert_service import get_proximity_alert_service
-                    proximity_service = get_proximity_alert_service(db_pool)
-                    print(f"Debug: Proximity service initialized, calling send_proximity_alerts")
-                    alert_result = await proximity_service.send_proximity_alerts(
-                        jittered_location["lat"], jittered_location["lng"], alert_id, device_id
-                    )
-                    print(f"Debug: Proximity alerts completed: {alert_result}")
-                except Exception as e:
-                    print(f"Warning: Failed to send proximity alerts: {e}")
-                    alert_result = {"total_alerts_sent": 0, "message": "Alerts failed"}
-            else:
-                print(f"Debug: Media pending, deferring proximity alerts")
-                alert_result = {"total_alerts_sent": 0, "alerts_deferred": True}
+            # DISABLED: Old proximity alert system - now using enrichment-based fanout
+            # Notifications are sent by alert_fanout_worker after enrichment completes
+            # This prevents duplicate notifications (one from old system, one from new)
+            alert_result = {"total_alerts_sent": 0, "message": "Using enrichment-based alerts"}
         else:
             print(f"Debug: MUFON import - skipping proximity alerts")
             alert_result = {"total_alerts_sent": 0, "message": "MUFON imports don't send alerts"}
@@ -869,20 +856,16 @@ async def send_alert_beep(alert_id: str, request: dict):
         latitude = location['latitude']
         longitude = location['longitude']
         
-        # Trigger proximity alerts
-        print(f"Debug: Sending beep alerts for {alert_id} from device {device_id}")
-        from services.proximity_alert_service import get_proximity_alert_service
-        
-        proximity_service = get_proximity_alert_service(db_pool)
-        alert_result = await proximity_service.send_proximity_alerts(
-            latitude, longitude, alert_id, device_id
-        )
-        print(f"Debug: Beep proximity alerts sent: {alert_result}")
-        
+        # DISABLED: Old proximity alert system - now using enrichment-based fanout
+        # Notifications are sent by alert_fanout_worker after enrichment completes
+        # This endpoint was called after media upload but is no longer needed
+        # since enrichment happens automatically on beep creation
+        print(f"Debug: Beep {alert_id} - using enrichment-based alerts (old proximity system disabled)")
+
         return {
             "success": True,
-            "data": alert_result,
-            "message": f"Beep sent to {alert_result.get('total_alerts_sent', 0)} nearby devices"
+            "data": {"total_alerts_sent": 0, "message": "Using enrichment-based alerts"},
+            "message": "Alert will be sent after enrichment completes"
         }
         
     except HTTPException:
