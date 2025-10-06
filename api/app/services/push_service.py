@@ -573,6 +573,15 @@ async def send_to_token(token: str, data: dict, title=None, body=None):
                     priority="high"  # Explicit high priority for Android 15
                 ),
                 data={k: str(v) for k, v in data.items()}
+            ),
+            apns=messaging.APNSConfig(
+                payload=messaging.APNSPayload(
+                    aps=messaging.Aps(
+                        sound="default",
+                        badge=1,
+                        content_available=True
+                    )
+                )
             )
         )
         
