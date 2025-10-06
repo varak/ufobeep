@@ -157,6 +157,21 @@ def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
     else:
         twilight = "night"
 
+    # Calculate moon phase name based on illumination percentage
+    # Note: This is a simplified classification - full waxing/waning determination
+    # would require tracking the phase angle over time
+    illumination_pct = k * 100.0
+    if illumination_pct < 5:
+        phase_name = "New Moon"
+    elif illumination_pct < 45:
+        phase_name = "Crescent"
+    elif illumination_pct < 55:
+        phase_name = "Quarter"
+    elif illumination_pct < 95:
+        phase_name = "Gibbous"
+    else:
+        phase_name = "Full Moon"
+
     return {
         "sun": {
             "altitude": float(sun_alt.degrees),
@@ -167,7 +182,8 @@ def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
             "altitude": float(moon_alt.degrees),
             "azimuth": float(moon_az.degrees),
             "is_visible": float(moon_alt.degrees) > 0,
-            "illumination_pct": k * 100.0,
+            "illumination": illumination_pct,
+            "phase": phase_name,
         },
         "visible_planets": planets,
         "bright_stars_visible": bright_stars,
