@@ -179,10 +179,10 @@ export async function generateMetadata({ params }: { params: Promise<PageParams>
     ? alert.description.substring(0, 160)
     : `UFO sighting reported in ${location} on ${date}`
 
-  // Use actual media file for og:image if available, fallback to share card
+  // Only use actual media file for og:image - no fake generated images
   const ogImage = alert.media_files && alert.media_files.length > 0
     ? (alert.media_files[0].web_url || alert.media_files[0].thumbnail_url || alert.media_files[0].url)
-    : `https://ufobeep.com/api/og/alerts/${alert.id}.png`
+    : undefined
 
   // Build canonical URL using short URL if available
   const shortId = alert.short_url || ''
@@ -198,22 +198,24 @@ export async function generateMetadata({ params }: { params: Promise<PageParams>
       url: canonicalUrl,
       title: `${title} - ${location}`,
       description,
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      ...(ogImage ? {
+        images: [
+          {
+            url: ogImage,
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
+      } : {}),
       siteName: 'UFOBeep',
       locale: locale === 'en' ? 'en_US' : `${locale}_${locale.toUpperCase()}`,
     },
     twitter: {
-      card: 'summary_large_image',
+      card: ogImage ? 'summary_large_image' : 'summary',
       title: `${title} - ${location}`,
       description,
-      images: [ogImage],
+      ...(ogImage ? { images: [ogImage] } : {}),
     },
     alternates: {
       canonical: canonicalUrl,
