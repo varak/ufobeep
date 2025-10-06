@@ -143,7 +143,7 @@
   "compassPilotMode": "Mode pilote",
   "compassStandardDescription": "Intitulé de base et navigation",
   "compassPilotDescription": "Navigation avancée avec ETA et vectoring",
-  "pointingTo": "Pointage vers _PLACEHODER_0__",
+  "pointingTo": "Pointage vers {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -467,8 +467,8 @@
   "premiumAccessCreators": "Les créateurs d'alerte",
   "premiumAccessWitnesses": "Témoins confirmés à portée de visibilité",
   "comingSoon": "Bientôt",
-  "directionDistanceTitle": "Direction & Distance",
-  "mufonCaseTitle": "MUFON Cas #__PLACEHODER_0__",
+  "directionDistanceTitle": "Direction et distance",
+  "mufonCaseTitle": "MUFON Cas #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -1172,7 +1172,7 @@
   "gatheringDeviceInfo": "Recueillir des informations sur l'appareil...",
   "translating": "Traduire...",
   "showOriginal": "Afficher l'original",
-  "translateTo": "Traduire à _PLACEHODER_0__",
+  "translateTo": "Traduire en {language}",
   "@translateTo": {
     "placeholders": {
       "language": {

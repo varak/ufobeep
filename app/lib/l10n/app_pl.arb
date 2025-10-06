@@ -143,7 +143,7 @@
   "compassPilotMode": "Tryb pilota",
   "compassStandardDescription": "Nagłówek i nawigacja",
   "compassPilotDescription": "Zaawansowana nawigacja z ETA i wektoring",
-  "pointingTo": "Wskazywanie na _ _ PLACEScorpiter _ 0 _ _",
+  "pointingTo": "Wskazując na {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -468,7 +468,7 @@
   "premiumAccessWitnesses": "Potwierdzeni świadkowie w zasięgu widoczności",
   "comingSoon": "Wkrótce",
   "directionDistanceTitle": "Kierunek i odległość",
-  "mufonCaseTitle": "MUFON Przypadek # _ _ PLACESENER _ 0 _ _",
+  "mufonCaseTitle": "MUFON Sprawa #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -925,14 +925,14 @@
   "celestialSunDaylight": "Słońce wschodzi - warunki dnia mogą wpływać na widoczność",
   "celestialSunTwilight": "Twilight warunki - niektóre widoczność, ale ciemniejsze niż światło dzienne",
   "celestialSunDark": "Ciemne warunki - optymalne do obserwacji obiektów na niebie",
-  "celestialMoonBright": "Jasny _ _ PLACESORM _ 0 _ _ księżyc widoczny - może oświetlić lub zasłonić inne obiekty",
-  "celestialMoonModerate": "_ _ PLACESENER _ 0 _ _ widzialny księżyc - umiarkowane warunki oświetlenia",
-  "celestialMoonThin": "Widoczne cienkie _ _ PLACEStore _ 0 _ _ moon - minimalne oświetlenie",
-  "celestialMoonHidden": "_ _ PLACESENER _ 0 _ _ księżyc poniżej horyzontu - brak oświetlenia Księżyca",
+  "celestialMoonBright": "Jasny księżyc {phase} widoczny - może oświetlić lub zasłonić inne obiekty",
+  "celestialMoonModerate": "Księżyc {phase} widoczny - umiarkowane warunki oświetlenia",
+  "celestialMoonThin": "Cienki księżyc {phase} widoczny - minimalne oświetlenie",
+  "celestialMoonHidden": "Księżyc {phase} poniżej horyzontu - brak oświetlenia",
   "celestialNoPlanets": "Żadnych jasnych planet, które mogłyby być mylone z UFO",
-  "celestialPlanetHigh": "_ _ PLACESORM _ 0 _ _ wysokie koszty ogólne (_ _ PLACESORM _ 1 _ _ °) - bardzo znaczące",
-  "celestialPlanetMedium": "_ _ PLACESORM _ 0 _ _ widoczny na _ _ PLACESORM _ 1 _ _ ° - może być mylony z samolotem",
-  "celestialPlanetLow": "_ _ PLACESECRET _ 0 _ _ low on horizon (_ _ PLACESECRET _ 1 _ _ °)",
+  "celestialPlanetHigh": "{planet} wysoko nad głową ({altitude}°) - bardzo widoczny",
+  "celestialPlanetMedium": "{planet} widoczny na {altitude}° - może być mylony z samolotem",
+  "celestialPlanetLow": "{planet} nisko nad horyzontem ({altitude}°)",
   "celestialNoStars": "Nie widać żadnych gwiazd",
   "celestialStarSingle": "_ _ PLACEScorpiter _ 0 _ _ widoczna na _ _ PLACEScorpiter _ 1 _ _ °",
   "celestialStarsMultiple": "_ _ PLACESECRET _ 0 _ _ jasne gwiazdy widoczne - _ _ PLACESECRET _ 1 _ _",
@@ -1172,7 +1172,7 @@
   "gatheringDeviceInfo": "Zbieranie informacji o urządzeniu...",
   "translating": "Tłumaczę...",
   "showOriginal": "Pokaż oryginał",
-  "translateTo": "Przetłumacz na _ _ PLACEScorter _ 0 _ _",
+  "translateTo": "Przetłumacz na {language}",
   "@translateTo": {
     "placeholders": {
       "language": {
