@@ -182,23 +182,24 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
         print(f"Debug: has_pending_media={has_pending_media}, alert_id={alert_id}")
         
         if not has_pending_media:
-            print(f"Debug: Attempting to send proximity alerts for {alert_id}")
-            try:
-                # Use consistent import approach
-                from services.proximity_alert_service import get_proximity_alert_service
-                proximity_service = get_proximity_alert_service(db_pool)
-                print(f"Debug: Proximity service initialized, calling send_proximity_alerts")
-                alert_result = await proximity_service.send_proximity_alerts(
-                    jittered_location["lat"], jittered_location["lng"], alert_id, device_id
-                )
-                print(f"Debug: Proximity alerts completed: {alert_result}")
-            except Exception as e:
-                print(f"Warning: Failed to send proximity alerts: {e}")
-                alert_result = {"total_alerts_sent": 0, "message": "Alerts failed"}
-        else:
-            print(f"Debug: Media pending, deferring proximity alerts")
-            alert_result = {"total_alerts_sent": 0, "alerts_deferred": True}
-        
+            # DISABLED: Old proximity alert system - now using enrichment-based fanout
+            # Notifications are sent by alert_fanout_worker after enrichment completes
+            # This prevents duplicate notifications (one from old system, one from new)
+            print(f"Debug: Using enrichment-based alert fanout (old proximity system disabled)")
+            alert_result = {"total_alerts_sent": 0, "message": "Using enrichment-based alerts"}
+
+        # Run enrichment synchronously for the new alert
+        try:
+            from app.worker import enrich_sighting
+            logger.info(f"Starting enrichment for alert {alert_id}")
+            success = await enrich_sighting(alert_id)
+            if success:
+                logger.info(f"✅ Successfully enriched alert {alert_id}")
+            else:
+                logger.error(f"❌ Failed to enrich alert {alert_id}")
+        except Exception as e:
+            logger.error(f"Failed to enrich alert {alert_id}: {e}")
+
         # Don't close the pool - it's shared across the service
         
         # Format response like original /beep/anonymous for compatibility
