@@ -31,9 +31,11 @@ def og_alert_card(aid: str):
         font_small = ImageFont.truetype("DejaVuSans.ttf", 36)
     except:
         font_big = ImageFont.load_default(); font_small = ImageFont.load_default()
-    tw, th = draw.textsize(title, font=font_big)
+    bbox = draw.textbbox((0, 0), title, font=font_big)
+    tw, th = bbox[2] - bbox[0], bbox[3] - bbox[1]
     draw.text(((W - tw)//2, H//3 - th//2), title, fill=(220,240,255), font=font_big)
-    sw, sh = draw.textsize(subtitle, font=font_small)
+    bbox = draw.textbbox((0, 0), subtitle, font=font_small)
+    sw, sh = bbox[2] - bbox[0], bbox[3] - bbox[1]
     draw.text(((W - sw)//2, H//3 + th), subtitle, fill=(160,175,190), font=font_small)
     ts = datetime.datetime.utcnow().strftime("Generated %Y-%m-%d %H:%M UTC")
     draw.text((40, H - 60), ts, fill=(120,130,145), font=font_small)
