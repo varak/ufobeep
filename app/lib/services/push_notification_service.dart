@@ -274,7 +274,7 @@ class PushNotificationService {
         final sightingId = message.data['sighting_id'];
         if (sightingId != null) {
           print('Navigating to sighting: $sightingId');
-          _navigationService.go('/beep/$sightingId');
+          navigateToAlert(sightingId);
         }
       } else if (notificationType == 'comment') {
         _handleCommentNotification(message, showNotification: false);
