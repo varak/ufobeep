@@ -120,7 +120,6 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                               ],
                             );
                           },
-                          ),
                         ),
                       );
                     },
@@ -178,7 +177,6 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                           ],
                         );
                       },
-                      ),
                     ),
                   );
                 }),
