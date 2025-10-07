@@ -2414,43 +2414,43 @@ class AppLocalizationsHi extends AppLocalizations {
   String get magnitudeShort => 'मग';
 
   @override
-  String get airlineLabel => 'Airline';
+  String get airlineLabel => 'एयरलाइन';
 
   @override
-  String get speedLabel => 'Speed';
+  String get speedLabel => 'गति';
 
   @override
-  String get headingLabel => 'Heading';
+  String get headingLabel => 'दिशा';
 
   @override
-  String get ownerLabel => 'Owner';
+  String get ownerLabel => 'मालिक';
 
   @override
-  String get launchedLabel => 'Launched';
+  String get launchedLabel => 'लॉन्च किया';
 
   @override
   String get noradIdLabel => 'NORAD ID';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'प्रकार';
 
   @override
-  String get azimuthLabel => 'Azimuth';
+  String get azimuthLabel => 'अज़ीमुथ';
 
   @override
-  String get visibilityLabel => 'Visibility';
+  String get visibilityLabel => 'दृश्यता';
 
   @override
-  String get satelliteType => 'Satellite';
+  String get satelliteType => 'उपग्रह';
 
   @override
-  String get rocketBodyType => 'Rocket Body';
+  String get rocketBodyType => 'रॉकेट बॉडी';
 
   @override
-  String get debrisType => 'Debris';
+  String get debrisType => 'मलबा';
 
   @override
-  String get nakedEyeVisible => 'Naked eye visible';
+  String get nakedEyeVisible => 'नंगी आंखों से दिखाई देता है';
 
   @override
   String satellitesVisibleMightExplain(Object count) {

@@ -2418,43 +2418,43 @@ class AppLocalizationsCs extends AppLocalizations {
   String get magnitudeShort => 'Mag';
 
   @override
-  String get airlineLabel => 'Airline';
+  String get airlineLabel => 'Letecká společnost';
 
   @override
-  String get speedLabel => 'Speed';
+  String get speedLabel => 'Rychlost';
 
   @override
-  String get headingLabel => 'Heading';
+  String get headingLabel => 'Kurz';
 
   @override
-  String get ownerLabel => 'Owner';
+  String get ownerLabel => 'Vlastník';
 
   @override
-  String get launchedLabel => 'Launched';
+  String get launchedLabel => 'Vypuštěn';
 
   @override
   String get noradIdLabel => 'NORAD ID';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'Typ';
 
   @override
-  String get azimuthLabel => 'Azimuth';
+  String get azimuthLabel => 'Azimut';
 
   @override
-  String get visibilityLabel => 'Visibility';
+  String get visibilityLabel => 'Viditelnost';
 
   @override
-  String get satelliteType => 'Satellite';
+  String get satelliteType => 'Satelit';
 
   @override
-  String get rocketBodyType => 'Rocket Body';
+  String get rocketBodyType => 'Tělo rakety';
 
   @override
-  String get debrisType => 'Debris';
+  String get debrisType => 'Úlomky';
 
   @override
-  String get nakedEyeVisible => 'Naked eye visible';
+  String get nakedEyeVisible => 'Viditelný pouhým okem';
 
   @override
   String satellitesVisibleMightExplain(Object count) {

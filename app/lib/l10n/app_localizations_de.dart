@@ -2432,43 +2432,43 @@ class AppLocalizationsDe extends AppLocalizations {
   String get magnitudeShort => 'Mag';
 
   @override
-  String get airlineLabel => 'Airline';
+  String get airlineLabel => 'Fluggesellschaft';
 
   @override
-  String get speedLabel => 'Speed';
+  String get speedLabel => 'Geschwindigkeit';
 
   @override
-  String get headingLabel => 'Heading';
+  String get headingLabel => 'Kurs';
 
   @override
-  String get ownerLabel => 'Owner';
+  String get ownerLabel => 'Eigentümer';
 
   @override
-  String get launchedLabel => 'Launched';
+  String get launchedLabel => 'Gestartet';
 
   @override
-  String get noradIdLabel => 'NORAD ID';
+  String get noradIdLabel => 'NORAD-ID';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'Typ';
 
   @override
-  String get azimuthLabel => 'Azimuth';
+  String get azimuthLabel => 'Azimut';
 
   @override
-  String get visibilityLabel => 'Visibility';
+  String get visibilityLabel => 'Sichtbarkeit';
 
   @override
-  String get satelliteType => 'Satellite';
+  String get satelliteType => 'Satellit';
 
   @override
-  String get rocketBodyType => 'Rocket Body';
+  String get rocketBodyType => 'Raketenkörper';
 
   @override
-  String get debrisType => 'Debris';
+  String get debrisType => 'Trümmer';
 
   @override
-  String get nakedEyeVisible => 'Naked eye visible';
+  String get nakedEyeVisible => 'Mit bloßem Auge sichtbar';
 
   @override
   String satellitesVisibleMightExplain(Object count) {

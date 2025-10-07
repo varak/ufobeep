@@ -2446,43 +2446,43 @@ class AppLocalizationsRu extends AppLocalizations {
   String get magnitudeShort => 'Магия';
 
   @override
-  String get airlineLabel => 'Airline';
+  String get airlineLabel => 'Авиакомпания';
 
   @override
-  String get speedLabel => 'Speed';
+  String get speedLabel => 'Скорость';
 
   @override
-  String get headingLabel => 'Heading';
+  String get headingLabel => 'Курс';
 
   @override
-  String get ownerLabel => 'Owner';
+  String get ownerLabel => 'Владелец';
 
   @override
-  String get launchedLabel => 'Launched';
+  String get launchedLabel => 'Запущен';
 
   @override
-  String get noradIdLabel => 'NORAD ID';
+  String get noradIdLabel => 'ID NORAD';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'Тип';
 
   @override
-  String get azimuthLabel => 'Azimuth';
+  String get azimuthLabel => 'Азимут';
 
   @override
-  String get visibilityLabel => 'Visibility';
+  String get visibilityLabel => 'Видимость';
 
   @override
-  String get satelliteType => 'Satellite';
+  String get satelliteType => 'Спутник';
 
   @override
-  String get rocketBodyType => 'Rocket Body';
+  String get rocketBodyType => 'Корпус ракеты';
 
   @override
-  String get debrisType => 'Debris';
+  String get debrisType => 'Обломки';
 
   @override
-  String get nakedEyeVisible => 'Naked eye visible';
+  String get nakedEyeVisible => 'Видимый невооруженным глазом';
 
   @override
   String satellitesVisibleMightExplain(Object count) {

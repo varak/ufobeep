@@ -2425,19 +2425,19 @@ class AppLocalizationsNl extends AppLocalizations {
   String get magnitudeShort => 'Mag';
 
   @override
-  String get airlineLabel => 'Airline';
+  String get airlineLabel => 'Luchtvaartmaatschappij';
 
   @override
-  String get speedLabel => 'Speed';
+  String get speedLabel => 'Snelheid';
 
   @override
-  String get headingLabel => 'Heading';
+  String get headingLabel => 'Koers';
 
   @override
-  String get ownerLabel => 'Owner';
+  String get ownerLabel => 'Eigenaar';
 
   @override
-  String get launchedLabel => 'Launched';
+  String get launchedLabel => 'Gelanceerd';
 
   @override
   String get noradIdLabel => 'NORAD ID';
@@ -2446,22 +2446,22 @@ class AppLocalizationsNl extends AppLocalizations {
   String get typeLabel => 'Type';
 
   @override
-  String get azimuthLabel => 'Azimuth';
+  String get azimuthLabel => 'Azimut';
 
   @override
-  String get visibilityLabel => 'Visibility';
+  String get visibilityLabel => 'Zichtbaarheid';
 
   @override
-  String get satelliteType => 'Satellite';
+  String get satelliteType => 'Satelliet';
 
   @override
-  String get rocketBodyType => 'Rocket Body';
+  String get rocketBodyType => 'Raketlichaam';
 
   @override
-  String get debrisType => 'Debris';
+  String get debrisType => 'Puin';
 
   @override
-  String get nakedEyeVisible => 'Naked eye visible';
+  String get nakedEyeVisible => 'Zichtbaar met het blote oog';
 
   @override
   String satellitesVisibleMightExplain(Object count) {

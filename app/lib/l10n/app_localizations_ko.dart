@@ -2342,43 +2342,43 @@ class AppLocalizationsKo extends AppLocalizations {
   String get magnitudeShort => '사이트맵';
 
   @override
-  String get airlineLabel => 'Airline';
+  String get airlineLabel => '항공사';
 
   @override
-  String get speedLabel => 'Speed';
+  String get speedLabel => '속도';
 
   @override
-  String get headingLabel => 'Heading';
+  String get headingLabel => '방향';
 
   @override
-  String get ownerLabel => 'Owner';
+  String get ownerLabel => '소유자';
 
   @override
-  String get launchedLabel => 'Launched';
+  String get launchedLabel => '발사됨';
 
   @override
   String get noradIdLabel => 'NORAD ID';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => '유형';
 
   @override
-  String get azimuthLabel => 'Azimuth';
+  String get azimuthLabel => '방위각';
 
   @override
-  String get visibilityLabel => 'Visibility';
+  String get visibilityLabel => '가시성';
 
   @override
-  String get satelliteType => 'Satellite';
+  String get satelliteType => '위성';
 
   @override
-  String get rocketBodyType => 'Rocket Body';
+  String get rocketBodyType => '로켓 본체';
 
   @override
-  String get debrisType => 'Debris';
+  String get debrisType => '파편';
 
   @override
-  String get nakedEyeVisible => 'Naked eye visible';
+  String get nakedEyeVisible => '육안으로 보임';
 
   @override
   String satellitesVisibleMightExplain(Object count) {

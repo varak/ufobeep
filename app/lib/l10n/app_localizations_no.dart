@@ -2413,19 +2413,19 @@ class AppLocalizationsNo extends AppLocalizations {
   String get magnitudeShort => 'Mag';
 
   @override
-  String get airlineLabel => 'Airline';
+  String get airlineLabel => 'Flyselskap';
 
   @override
-  String get speedLabel => 'Speed';
+  String get speedLabel => 'Hastighet';
 
   @override
-  String get headingLabel => 'Heading';
+  String get headingLabel => 'Kurs';
 
   @override
-  String get ownerLabel => 'Owner';
+  String get ownerLabel => 'Eier';
 
   @override
-  String get launchedLabel => 'Launched';
+  String get launchedLabel => 'Lansert';
 
   @override
   String get noradIdLabel => 'NORAD ID';
@@ -2434,22 +2434,22 @@ class AppLocalizationsNo extends AppLocalizations {
   String get typeLabel => 'Type';
 
   @override
-  String get azimuthLabel => 'Azimuth';
+  String get azimuthLabel => 'Asimut';
 
   @override
-  String get visibilityLabel => 'Visibility';
+  String get visibilityLabel => 'Synlighet';
 
   @override
-  String get satelliteType => 'Satellite';
+  String get satelliteType => 'Satellitt';
 
   @override
-  String get rocketBodyType => 'Rocket Body';
+  String get rocketBodyType => 'Rakettkropp';
 
   @override
-  String get debrisType => 'Debris';
+  String get debrisType => 'Rusk';
 
   @override
-  String get nakedEyeVisible => 'Naked eye visible';
+  String get nakedEyeVisible => 'Synlig med det blotte øye';
 
   @override
   String satellitesVisibleMightExplain(Object count) {

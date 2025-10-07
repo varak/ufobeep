@@ -2340,43 +2340,43 @@ class AppLocalizationsJa extends AppLocalizations {
   String get magnitudeShort => 'ツイート';
 
   @override
-  String get airlineLabel => 'Airline';
+  String get airlineLabel => '航空会社';
 
   @override
-  String get speedLabel => 'Speed';
+  String get speedLabel => '速度';
 
   @override
-  String get headingLabel => 'Heading';
+  String get headingLabel => '進路';
 
   @override
-  String get ownerLabel => 'Owner';
+  String get ownerLabel => '所有者';
 
   @override
-  String get launchedLabel => 'Launched';
+  String get launchedLabel => '打ち上げ';
 
   @override
   String get noradIdLabel => 'NORAD ID';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => 'タイプ';
 
   @override
-  String get azimuthLabel => 'Azimuth';
+  String get azimuthLabel => '方位角';
 
   @override
-  String get visibilityLabel => 'Visibility';
+  String get visibilityLabel => '可視性';
 
   @override
-  String get satelliteType => 'Satellite';
+  String get satelliteType => '衛星';
 
   @override
-  String get rocketBodyType => 'Rocket Body';
+  String get rocketBodyType => 'ロケット本体';
 
   @override
-  String get debrisType => 'Debris';
+  String get debrisType => '破片';
 
   @override
-  String get nakedEyeVisible => 'Naked eye visible';
+  String get nakedEyeVisible => '肉眼で見える';
 
   @override
   String satellitesVisibleMightExplain(Object count) {

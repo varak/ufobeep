@@ -2326,43 +2326,43 @@ class AppLocalizationsZh extends AppLocalizations {
   String get magnitudeShort => '马格';
 
   @override
-  String get airlineLabel => 'Airline';
+  String get airlineLabel => '航空公司';
 
   @override
-  String get speedLabel => 'Speed';
+  String get speedLabel => '速度';
 
   @override
-  String get headingLabel => 'Heading';
+  String get headingLabel => '航向';
 
   @override
-  String get ownerLabel => 'Owner';
+  String get ownerLabel => '所有者';
 
   @override
-  String get launchedLabel => 'Launched';
+  String get launchedLabel => '发射';
 
   @override
   String get noradIdLabel => 'NORAD ID';
 
   @override
-  String get typeLabel => 'Type';
+  String get typeLabel => '类型';
 
   @override
-  String get azimuthLabel => 'Azimuth';
+  String get azimuthLabel => '方位角';
 
   @override
-  String get visibilityLabel => 'Visibility';
+  String get visibilityLabel => '可见性';
 
   @override
-  String get satelliteType => 'Satellite';
+  String get satelliteType => '卫星';
 
   @override
-  String get rocketBodyType => 'Rocket Body';
+  String get rocketBodyType => '火箭体';
 
   @override
-  String get debrisType => 'Debris';
+  String get debrisType => '碎片';
 
   @override
-  String get nakedEyeVisible => 'Naked eye visible';
+  String get nakedEyeVisible => '肉眼可见';
 
   @override
   String satellitesVisibleMightExplain(Object count) {
