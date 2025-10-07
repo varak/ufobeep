@@ -37,7 +37,7 @@
   "alertsTitle": "Κοντινές ειδοποιήσεις",
   "noAlerts": "Δεν υπάρχουν ειδοποιήσεις ακόμα κοντά.",
   "pullToRefresh": "Τραβήξτε για ανανέωση",
-  "alertDistance": "__PACHOLDER_0_ μακριά",
+  "alertDistance": "{distance} μακριά",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Άνεμος: {speed}_PLACEHOLDER_1_",
+  "wind": "Άνεμος: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -210,8 +210,8 @@
   "dndUntil": "Μην ενοχλείστε μέχρι",
   "dndEnabled": "DND ενεργοποιημένο μέχρι {time}",
   "dndDisabled": "Απενεργοποίηση DND",
-  "quietHoursActive": "Ενεργός __PACHOLDER_0____PACHOLDER_1_",
-  "quietHoursScheduled": "Ώρες ησυχίας: _________________________",
+  "quietHoursActive": "Ενεργός {startTime} - {endTime}",
+  "quietHoursScheduled": "Ώρες ησυχίας: {start} - {end}",
   "pushNotificationUfoAlert": "ΑΤΙΑ Συναγερμός",
   "pushNotificationAnomalyAlert": "Ανωμαλία",
   "pushNotificationNearby": "Κοντά",
@@ -245,7 +245,7 @@
   "imageOnly": "Μόνο εικόνα",
   "mediaOnly": "Μόνο μέσα ενημέρωσης",
   "timeJustNow": "μόλις τώρα",
-  "timeDaysAgo": "__PACHOLDER_0_ ημέρες πριν",
+  "timeDaysAgo": "{count} ημέρες πριν",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -292,7 +292,7 @@
   "mufonCylinderSighting": "Έκθεση παρατήρησης κυλίνδρων MUFON",
   "mufonBoomerangSighting": "Έκθεση παρατήρησης MUFON Boomerang",
   "mufonStarlikeSighting": "ΜΟΥΦΟΝ Starlike Sighting Αναφορά",
-  "mufonCaseDetailsTitle": "Υπόθεση MUFON #__PLACEHOLDER_0_ Λεπτομέρειες",
+  "mufonCaseDetailsTitle": "Υπόθεση MUFON #{caseNumber} Λεπτομέρειες",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "UFOBeep UFO Συναγερμός",
   "notificationSightingUrgent": "⚠️ URGENT UFOBeep UFO Συναγερμός",
   "notificationSightingEmergency": "🚨 Έκτακτη UFOBeep UFO Συναγερμός",
-  "notificationSightingBody": "__PLACHOLDER_0___PLACHOLDER_1_",
+  "notificationSightingBody": "{witnessText} near {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -521,7 +521,7 @@
   },
   "notificationActionSnooze": "Σνούζ 1 ώρα",
   "notificationActionDismiss": "Ελεύθεροι",
-  "notificationDistance": "__PACHOLDER_0_ μακριά",
+  "notificationDistance": "{distance} μακριά",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -592,7 +592,7 @@
   "mufonEgg": "Αυγά",
   "mufonOther": "Αντικείμενο",
   "mufonUnknown": "Άγνωστο αντικείμενο",
-  "mufonTitleFormat": "Έκθεση MUFON __PLACEHOLDER_0_",
+  "mufonTitleFormat": "Έκθεση MUFON {classification}",
   "nuforcAttribution": "ΝΟΥΦΟΡΚ Έκθεση βάσης δεδομένων",
   "nuforcCaseNumber": "Υπόθεση #",
   "nuforcGenericTitle": "ΝΟΥΦΟΡΚ Έκθεση παρατήρησης",
@@ -601,7 +601,7 @@
   "mediaViewImage": "Προβολή εικόνας",
   "mediaCount": "{count} εικόνες",
   "mediaCountSingle": "1 εικόνα",
-  "mediaMoreImages": "+___PLACHOLDER_0_ more",
+  "mediaMoreImages": "+{count} more",
   "errorNotFound": "Το σήμα δεν βρέθηκε",
   "errorLoadError": "Αποτυχία φόρτωσης λεπτομερειών ηχητικού σήματος",
   "shareYourThoughts": "Μοιραστείτε τις σκέψεις σας για αυτή την εμφάνιση...",
@@ -753,7 +753,7 @@
       }
     }
   },
-  "daysAgo": "__PACHOLDER_0_ ημέρες πριν",
+  "daysAgo": "{days} ημέρες πριν",
   "@daysAgo": {
     "placeholders": {
       "days": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "Αποτυχία σύνδεσης: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "signInFailed": "Αποτυχία σύνδεσης: {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -800,7 +800,7 @@
   "signInEmailDescription": "Θα σου στείλουμε έναν ασφαλή σύνδεσμο για να υπογράψεις",
   "signInEmailAddress": "Διεύθυνση ηλεκτρονικού ταχυδρομείου",
   "signInEmailPlaceholder": "your@email.com",
-  "signInTryAgainIn": "Δοκιμάστε ξανά σε __PACHOLDER_0_s",
+  "signInTryAgainIn": "Δοκιμάστε ξανά σε {seconds}s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "Η επαλήθευση ηλεκτρονικού ταχυδρομείου βοηθά στην εξασφάλιση του λογαριασμού σας και επιτρέπει την ανάκτηση λογαριασμού αν χάσετε την πρόσβαση στη συσκευή σας.",
   "phoneAuthFailedToSendCode": "Αποτυχία αποστολής κωδικού επαλήθευσης. Παρακαλώ προσπαθήστε ξανά.",
   "phoneAuthInvalidCodeTryAgain": "Μη έγκυρος κωδικός επαλήθευσης. Παρακαλώ προσπαθήστε ξανά.",
-  "phoneAuthPhoneVerified": "Επαλήθευση αριθμού τηλεφώνου: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "phoneAuthPhoneVerified": "Επαλήθευση αριθμού τηλεφώνου: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -943,7 +943,7 @@
   "celestialSummaryManyObjects": "{count} φωτεινά αντικείμενα που θα μπορούσαν να συγχέονται με UFO",
   "celestialSummarySomeObjects": "{count} φωτεινά αντικείμενα ορατά",
   "celestialSummaryFewObjects": "ελάχιστα φωτεινά αντικείμενα στον ουρανό",
-  "celestialSkySummary": "Συνθήκες ουρανού: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "celestialSkySummary": "Συνθήκες ουρανού: {conditions}",
   "planetVenus": "Αφροδίτη",
   "planetJupiter": "Δίας",
   "planetSaturn": "Κρόνος",
@@ -970,10 +970,10 @@
   "planetBelowHorizon": "{planet} κάτω από τον ορίζοντα",
   "planetHighOverheadProminent": "{planet} ψηλά πάνω από το κεφάλι ({altitude}°) - πολύ εμφανές",
   "planetMidSkyProminent": "{planet} σε {altitude}° - εμφανές",
-  "planetMidSky": "__PLACHOLDER_0___PLACHOLDER_1_°",
+  "planetMidSky": "{planet} at {altitude}°",
   "starVeryBright": "{star} πολύ φωτεινό σε {altitude}°",
   "starProminent": "{star} εμφανές σε {altitude}° υψόμετρο",
-  "starVisible": "__PLACHOLDER_0___PLACHOLDER_1_°",
+  "starVisible": "{star} at {altitude}°",
   "altitudeShort": "Άλτ",
   "magnitudeShort": "Μαγ",
   "satellitesVisibleMightExplain": "{count} δορυφόροι ορατοί - μπορεί να εξηγήσει την παρατήρηση",
@@ -1025,7 +1025,7 @@
   "altitudeAbbrev": "Άλτ",
   "azimuthAbbrev": "Αζ",
   "satellitesVisibleNow": "Δορυφόροι ({count} ορατοί τώρα)",
-  "sunWithDescription": "Ήλιος: ___PACHOLDER_0__",
+  "sunWithDescription": "Ήλιος: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "Φεγγάρι: ___PACHOLDER_0__",
+  "moonWithDescription": "Φεγγάρι: {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "Μέγεθος: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "magnitude": "Μέγεθος: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {
@@ -1133,7 +1133,7 @@
   "endTime": "Ώρα τέλους",
   "allowCriticalAlertsDuringQuietHours": "Επίτρεψε κρίσιμες ειδοποιήσεις κατά τη διάρκεια ωρών ηρεμίας",
   "silenceNotificationsDuringSleepHours": "Ειδοποιήσεις σιωπής κατά τις ώρες ύπνου",
-  "quietHoursActiveTimeRange": "Ενεργός __PACHOLDER_0____PACHOLDER_1_",
+  "quietHoursActiveTimeRange": "Ενεργός {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1244,7 +1244,7 @@
     }
   },
   "mufonReportingDate": "ΜΟΥΦΟΝ Ημερομηνία αναφοράς",
-  "satelliteNameDirection": "_________________________",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {
