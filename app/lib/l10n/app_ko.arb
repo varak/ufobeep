@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "₢ 킹",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "로그인 실패: ₢ 킹",
+  "signInFailed": "로그인 실패: {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "이메일 확인은 계정 보안을 돕고 기기에 액세스하는 경우 계정 복구를 활성화합니다.",
   "phoneAuthFailedToSendCode": "인증 코드를 보낼 실패. 다시 시도하십시오.",
   "phoneAuthInvalidCodeTryAgain": "잘못된 인증 코드. 다시 시도하십시오.",
-  "phoneAuthPhoneVerified": "전화 번호 확인: ₢ 킹",
+  "phoneAuthPhoneVerified": "전화 번호 확인: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -943,7 +943,7 @@
   "celestialSummaryManyObjects": "{count} UFO와 혼동 될 수있는 밝은 개체",
   "celestialSummarySomeObjects": "{count} 밝은 객체(s) 가",
   "celestialSummaryFewObjects": "하늘의 최소 밝은 물체",
-  "celestialSkySummary": "하늘 조건: ₢ 킹",
+  "celestialSkySummary": "하늘 조건: {conditions}",
   "planetVenus": "주 메뉴",
   "planetJupiter": "모리셔스",
   "planetSaturn": "인기 카테고리",
@@ -1066,7 +1066,7 @@
       }
     }
   },
-  "maxElevation": "최대 고도: ₢ 킹",
+  "maxElevation": "최대 고도: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "경도: ₢ 킹",
+  "magnitude": "경도: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {

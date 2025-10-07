@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "__PLAATSHOLDER_0__°",
+  "alertDirection": "Richting {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Gerapporteerd __PLAATSHOLDER_0__",
+  "reportedAt": "Gerapporteerd {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "__PLAATSHOLDER_0___",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Richting naar object: __PLAATSHOLDER_0__°",
+  "bearingToObject": "Richting naar object: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatuur",
   "pushBodyWitness": "Een gebruiker bevestigde dat ze hetzelfde object zien.",
   "weather": "Weer",
-  "cloudCover": "Cloud cover: __PLAATSHOLDER_0___%",
+  "cloudCover": "Wolkenbedekking: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Wind: __PLAATSHOLDER_0__ __PLAATSHOLDER_1__",
+  "wind": "Wind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -210,14 +210,14 @@
   "dndUntil": "Niet storen tot",
   "dndEnabled": "DND ingeschakeld tot {time}",
   "dndDisabled": "DND uitgeschakeld",
-  "quietHoursActive": "Actief __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
-  "quietHoursScheduled": "Rustige uren: __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
+  "quietHoursActive": "Actief {startTime} - {endTime}",
+  "quietHoursScheduled": "Rustige uren: {start} - {end}",
   "pushNotificationUfoAlert": "UFO Waarschuwing",
   "pushNotificationAnomalyAlert": "Anomaly Alert",
   "pushNotificationNearby": "In de buurt",
   "pushNotificationInYourArea": "in uw gebied. Tik op details weergeven.",
   "pushNotificationCommented": "{username}commentaar",
-  "pushNotificationCommentedOn": "__PLAATSHOLDER_0__ commentaar op __PLAATSHOLDER_1__",
+  "pushNotificationCommentedOn": "{username} commentaar op {beepTitle}",
   "pushNotificationGeneric": "UFOBEEP",
   "pushNotificationNewSighting": "Nieuwe waarnemingen in de buurt",
   "language": "Taal",
@@ -245,7 +245,7 @@
   "imageOnly": "Alleen afbeelding",
   "mediaOnly": "Alleen media",
   "timeJustNow": "net",
-  "timeDaysAgo": "__PLAATSHOLDER_0__ dagen geleden",
+  "timeDaysAgo": "{count} dagen geleden",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -254,7 +254,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PLAATSHOLDER_0___ uren geleden",
+  "timeHoursAgo": "{count} uren geleden",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -263,7 +263,7 @@
       }
     }
   },
-  "timeMinutesAgo": "__PLAATSHOLDER_0___ minuten geleden",
+  "timeMinutesAgo": "{count} minuten geleden",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -292,7 +292,7 @@
   "mufonCylinderSighting": "MUFON-cilinderzichtrapport",
   "mufonBoomerangSighting": "MUFON Boomerang Sighting Report",
   "mufonStarlikeSighting": "MUFON Starlike Sighting Report",
-  "mufonCaseDetailsTitle": "MUFON-geval #__PLAATSHOLDER_0_ Details",
+  "mufonCaseDetailsTitle": "MUFON-geval #{caseNumber} Details",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -313,7 +313,7 @@
   "unknownLocation": "Onbekende locatie",
   "locationUnknown": "Locatie onbekend",
   "witnessesLabel": "Getuigen",
-  "witnessesCountMessage": "De mensen hebben deze waarneming bevestigd",
+  "witnessesCountMessage": "{count} mensen hebben deze waarneming bevestigd",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -323,7 +323,7 @@
     }
   },
   "photoAnalysisTitle": "Fotoanalyse",
-  "mediaItemsProcessed": "Analyse: __PLAATSHOLDER_0__ mediabestand(s) verwerkt",
+  "mediaItemsProcessed": "Analyse: {count} mediabestand(s) verwerkt",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -446,7 +446,7 @@
   "whatToExpect": "Wat te verwachten",
   "formalReportRequirements": "De formele verslagen vereisen doorgaans:\n• Gedetailleerde tijd, datum en duur\n• Weersomstandigheden en zichtbaarheid\n• Volledige getuigenverklaring\n• Foto's of video indien beschikbaar\n\nOrganisaties kunnen aanvullende details opvolgen. Uw rapport draagt bij aan het lopende UFO onderzoek.",
   "confirmedWitness": "Je hebt deze waarneming bevestigd",
-  "witnessesHaveConfirmed": "Mensen hebben deze waarneming bevestigd",
+  "witnessesHaveConfirmed": "{count} mensen hebben deze waarneming bevestigd",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -468,7 +468,7 @@
   "premiumAccessWitnesses": "Bevestigde getuigen binnen zichtbereik",
   "comingSoon": "Binnenkort",
   "directionDistanceTitle": "Richting en afstand",
-  "mufonCaseTitle": "MUFON Zaak #__PLAATSHOLDER_0__",
+  "mufonCaseTitle": "MUFON Zaak #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "UFOPEEP UFO Waarschuwing",
   "notificationSightingUrgent": "UFO UFO UFO Waarschuwing",
   "notificationSightingEmergency": "Ufobeep UFO Waarschuwing",
-  "notificationSightingBody": "__PLAATSHOLDER_0__ in de buurt __PLAATSHOLDER_1__",
+  "notificationSightingBody": "{witnessText} in de buurt {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -510,7 +510,7 @@
     }
   },
   "notificationWitnessText": "Nieuwe waarneming",
-  "notificationWitnessTextMultiple": "Getuigen",
+  "notificationWitnessTextMultiple": "{count} getuigen",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -544,7 +544,7 @@
   "ufoSightingAlert": "UFO Waarnemingsalarm",
   "previousPage": "Vorige",
   "nextPage": "Volgende",
-  "pageOf": "Pagina __PLAATSHOLDER_0__ van __PLAATSHOLDER_1__ (__PLAATSHOLDER_2__ totale piepers)",
+  "pageOf": "Pagina {currentPage} van {totalPages} ({totalCount} totale piepers)",
   "firstPage": "Eerste",
   "lastPage": "Laatste",
   "jumpToPage": "Naar pagina springen",
@@ -592,7 +592,7 @@
   "mufonEgg": "Eieren",
   "mufonOther": "Object",
   "mufonUnknown": "Onbekend object",
-  "mufonTitleFormat": "MUFON __PLAATSHOLDER_0__ Verslag",
+  "mufonTitleFormat": "MUFON {classification} Verslag",
   "nuforcAttribution": "NUFORC Databaserapport",
   "nuforcCaseNumber": "Zaak #",
   "nuforcGenericTitle": "NUFORC Waarnemingsrapport",
@@ -737,7 +737,7 @@
   "locationTrackingEnabled": "Achtergrondlocatie traceren ingeschakeld",
   "locationTrackingDisabled": "Achtergrondlocatie volgen uitgeschakeld",
   "justNow": "Net",
-  "minutesAgo": "__PLAATSHOLDER_0___ minuten geleden",
+  "minutesAgo": "{minutes} minuten geleden",
   "@minutesAgo": {
     "placeholders": {
       "minutes": {
@@ -745,7 +745,7 @@
       }
     }
   },
-  "hoursAgo": "__PLAATSHOLDER_0___ uren geleden",
+  "hoursAgo": "{hours} uren geleden",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -753,7 +753,7 @@
       }
     }
   },
-  "daysAgo": "__PLAATSHOLDER_0__ dagen geleden",
+  "daysAgo": "{days} dagen geleden",
   "@daysAgo": {
     "placeholders": {
       "days": {
@@ -771,7 +771,7 @@
   "splashRetry": "Opnieuw proberen",
   "splashContinue": "Doorgaan",
   "splashInitializing": "Initialiseren...",
-  "signInWelcome": "Welkom!",
+  "signInWelcome": "Welkom {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "Aanmelden mislukt: __PLAATSHOLDER_0___",
+  "signInFailed": "Aanmelden mislukt: {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "E-mailverificatie helpt uw account veilig te stellen en maakt accountherstel mogelijk als u de toegang tot uw apparaat verliest.",
   "phoneAuthFailedToSendCode": "Kon verificatiecode niet versturen. Probeer het nog eens.",
   "phoneAuthInvalidCodeTryAgain": "Ongeldige verificatiecode. Probeer het nog eens.",
-  "phoneAuthPhoneVerified": "Telefoonnummer geverifieerd: __PLAATSHOLDER_0___",
+  "phoneAuthPhoneVerified": "Telefoonnummer geverifieerd: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -925,25 +925,25 @@
   "celestialSunDaylight": "Zon is op - daglicht omstandigheden kunnen het zicht van de waarneming beïnvloeden",
   "celestialSunTwilight": "Twilight omstandigheden - sommige zichtbaarheid maar donkerder dan daglicht",
   "celestialSunDark": "Donkere omstandigheden - optimaal voor het observeren van objecten in de lucht",
-  "celestialMoonBright": "Helder __PLAATSHOLDER_0__ maan zichtbaar - kan verlichten of obscure andere objecten",
-  "celestialMoonModerate": "__PLAATSHOLDER_0___ maan zichtbaar - matige lichtomstandigheden",
-  "celestialMoonThin": "Dun __PLAATSHOLDER_0__ maan zichtbaar - minimale verlichting",
-  "celestialMoonHidden": "__PLAATSHOLDER_0___ maan onder de horizon - geen maanverlichting",
+  "celestialMoonBright": "Helder {phase} maan zichtbaar - kan verlichten of obscure andere objecten",
+  "celestialMoonModerate": "{phase} maan zichtbaar - matige lichtomstandigheden",
+  "celestialMoonThin": "Dun {phase} maan zichtbaar - minimale verlichting",
+  "celestialMoonHidden": "{phase} maan onder de horizon - geen maanverlichting",
   "celestialNoPlanets": "Geen heldere planeten zichtbaar die kunnen worden verward met UFO's",
-  "celestialPlanetHigh": "__PLAATSHOLDER_0___ hoge overhead (__PLAATSHOLDER_1__°) - zeer prominent",
-  "celestialPlanetMedium": "__PLAATSHOLDER_0___ zichtbaar op __PLAATSHOLDER_1___° - kan worden verward met vliegtuigen",
-  "celestialPlanetLow": "__PLAATSHOLDER_0___ laag aan de horizon (__PLAATSHOLDER_1__°)",
+  "celestialPlanetHigh": "{planet} hoge overhead ({altitude}°) - zeer prominent",
+  "celestialPlanetMedium": "{planet} zichtbaar op {altitude}° - kan worden verward met vliegtuigen",
+  "celestialPlanetLow": "{planet} laag aan de horizon ({altitude}°)",
   "celestialNoStars": "Geen ongewoon heldere sterren zichtbaar",
-  "celestialStarSingle": "__PLAATSHOLDER_0___ prominent op __PLAATSHOLDER_1__° hoogte",
-  "celestialStarsMultiple": "__PLAATSHOLDER_0___ heldere sterren zichtbaar - __PLAATSHOLDER_1__",
+  "celestialStarSingle": "{star} prominent op {altitude}° hoogte",
+  "celestialStarsMultiple": "{count} heldere sterren zichtbaar - {names}",
   "celestialSummaryDaylight": "Daglichtomstandigheden",
   "celestialSummaryDark": "Donkere hemelomstandigheden",
   "celestialSummaryMoonUp": "maanverlichting aanwezig",
   "celestialSummaryMoonDown": "geen maanverlichting",
-  "celestialSummaryManyObjects": "__PLAATSHOLDER_0___ heldere objecten die kunnen worden verward met UFO's",
-  "celestialSummarySomeObjects": "__PLAATSHOLDER_0___ helder object(s) zichtbaar",
+  "celestialSummaryManyObjects": "{count} heldere objecten die kunnen worden verward met UFO's",
+  "celestialSummarySomeObjects": "{count} helder object(s) zichtbaar",
   "celestialSummaryFewObjects": "minimale heldere objecten in de lucht",
-  "celestialSkySummary": "Luchtomstandigheden: __PLAATSHOLDER_0___",
+  "celestialSkySummary": "Luchtomstandigheden: {conditions}",
   "planetVenus": "Venus",
   "planetJupiter": "Jupiter",
   "planetSaturn": "Saturnus",
@@ -967,19 +967,19 @@
   "moonPhaseWaningGibbous": "Wandelende Gibbous",
   "moonPhaseThirdQuarter": "Derde kwartaal",
   "moonPhaseWaningCrescent": "Wanning Crescent",
-  "planetBelowHorizon": "__PLAATSHOLDER_0___ onder de horizon",
-  "planetHighOverheadProminent": "__PLAATSHOLDER_0___ hoge overhead (__PLAATSHOLDER_1__°) - zeer prominent",
-  "planetMidSkyProminent": "__PLAATSHOLDER_0___ op __PLAATSHOLDER_1__° - prominent",
-  "planetMidSky": "__PLAATSHOLDER_0__ op __PLAATSHOLDER_1__°",
-  "starVeryBright": "__PLAATSHOLDER_0___ zeer helder op __PLAATSHOLDER_1__°",
-  "starProminent": "__PLAATSHOLDER_0___ prominent op __PLAATSHOLDER_1__° hoogte",
-  "starVisible": "__PLAATSHOLDER_0__ op __PLAATSHOLDER_1__°",
+  "planetBelowHorizon": "{planet} onder de horizon",
+  "planetHighOverheadProminent": "{planet} hoge overhead ({altitude}°) - zeer prominent",
+  "planetMidSkyProminent": "{planet} op {altitude}° - prominent",
+  "planetMidSky": "{planet} op {altitude}°",
+  "starVeryBright": "{star} zeer helder op {altitude}°",
+  "starProminent": "{star} prominent op {altitude}° hoogte",
+  "starVisible": "{star} op {altitude}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
-  "satellitesVisibleMightExplain": "Satellieten zichtbaar - kan het waarnemen verklaren",
-  "satellitesVisibleUnlikelyExplain": "Satellieten zichtbaar - waarschijnlijk niet te verklaren",
+  "satellitesVisibleMightExplain": "{count} satellieten zichtbaar - kan het waarnemen verklaren",
+  "satellitesVisibleUnlikelyExplain": "{count} satellieten zichtbaar - waarschijnlijk niet te verklaren",
   "noSatellitesVisible": "Geen satellieten zichtbaar",
-  "aircraftDetectedInRadius": "__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km",
+  "aircraftDetectedInRadius": "{count} luchtvaartuig gedetecteerd binnen {radius}km",
   "processingAlert": "UFO-alarm wordt verwerkt...",
   "analyzingEnvironment": "Analyse van milieuomstandigheden",
   "weatherAnalysis": "Weeranalyse",
@@ -987,7 +987,7 @@
   "aircraftTracking": "Tracking van luchtvaartuigen",
   "satelliteAnalysis": "Satellietanalyse",
   "celestialAnalysis": "Galactische analyse",
-  "analyzing": "Analyseren __PLAATSHOLDER_0___...",
+  "analyzing": "Analyseren {processor}...",
   "processorWeather": "weersomstandigheden",
   "processorLocation": "locatiegegevens",
   "processorAircraft": "nabijgelegen vliegtuigen",
@@ -996,7 +996,7 @@
   "calculatingCelestialData": "Berekenen van hemelse gegevens...",
   "sunLabel": "Zon",
   "moonLabel": "Maan",
-  "planetsVisible": "Planeten: __PLAATSHOLDER_0__ zichtbaar",
+  "planetsVisible": "Planeten: {count} zichtbaar",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "Sterren",
   "planetsLabel": "Planeten",
-  "moonWithPhase": "Maan (__PLAATSHOLDER_0__)",
+  "moonWithPhase": "Maan ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1024,8 +1024,8 @@
   "noWeatherDescription": "Geen beschrijving",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "Satellieten (__PLAATSHOLDER_0__ nu zichtbaar)",
-  "sunWithDescription": "Zon: __PLAATSHOLDER_0__",
+  "satellitesVisibleNow": "Satellieten ({count} nu zichtbaar)",
+  "sunWithDescription": "Zon: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "Maan: __PLAATSHOLDER_0__",
+  "moonWithDescription": "Maan: {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1057,7 +1057,7 @@
   "unknownDirection": "onbekende richting",
   "brightStars": "Heldere sterren",
   "satellites": "Satellieten",
-  "seeAllSatellites": "Zie alle __PLAATSHOLDER_0__satellieten",
+  "seeAllSatellites": "Zie alle {count} satellieten",
   "@seeAllSatellites": {
     "placeholders": {
       "count": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "Hoogte: __PLAATSHOLDER_0___",
+  "magnitude": "Magnitude: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {
@@ -1085,7 +1085,7 @@
     }
   },
   "unknownGeneric": "Onbekend",
-  "altitudeValue": "__PLAATSHOLDER_0__° hoogte",
+  "altitudeValue": "{degrees}° hoogte",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1094,7 +1094,7 @@
       }
     }
   },
-  "azimuthValue": "__PLAATSHOLDER_0__° azimut",
+  "azimuthValue": "{degrees}° azimut",
   "@azimuthValue": {
     "placeholders": {
       "degrees": {
@@ -1133,7 +1133,7 @@
   "endTime": "Eindtijd",
   "allowCriticalAlertsDuringQuietHours": "Kritieke waarschuwingen toestaan tijdens stille uren",
   "silenceNotificationsDuringSleepHours": "Stiltemeldingen tijdens slaapuren",
-  "quietHoursActiveTimeRange": "Actief __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
+  "quietHoursActiveTimeRange": "Actief {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1147,7 +1147,7 @@
     }
   },
   "followingAlerts": "Volgende waarschuwingen",
-  "activeCount": "{count}actief",
+  "activeCount": "{count} actief",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1158,7 +1158,7 @@
   },
   "unfollow": "Onvolgbaar",
   "unfollowAlert": "Waarschuwing niet volgen",
-  "commentsCount": "__PLAATSHOLDER_0___commentaren",
+  "commentsCount": "{count} commentaren",
   "photo": "Foto",
   "video": "Video",
   "initializationComplete": "Initialisatie voltooid!",
@@ -1221,7 +1221,7 @@
   "lightRain": "lichte regen",
   "moderateRain": "matige regen",
   "heavyRain": "zware regenval",
-  "aircraftDetectedCurrentPositions": "__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km (huidige posities)",
+  "aircraftDetectedCurrentPositions": "{count} luchtvaartuig gedetecteerd binnen {radius}km (huidige posities)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1234,7 +1234,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "Dim satellieten zichtbaar - waarschijnlijk niet te verklaren",
+  "dimSatellitesUnlikely": "{count} dim satellieten zichtbaar - waarschijnlijk niet te verklaren",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {
@@ -1244,7 +1244,7 @@
     }
   },
   "mufonReportingDate": "MUFON Rapportagedatum",
-  "satelliteNameDirection": "__PLAATSHOLDER_0__ - __PLAATSHOLDER_1__",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {

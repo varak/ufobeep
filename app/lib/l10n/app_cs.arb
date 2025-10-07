@@ -37,7 +37,7 @@
   "alertsTitle": "Blízké výstrahy",
   "noAlerts": "Zatím žádné varování.",
   "pullToRefresh": "Zatáhněte za obnovení",
-  "alertDistance": "_ _ PLACETETERER _ 0 _ _ away",
+  "alertDistance": "{distance} away",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Ložisko _ _ PLACETETELER _ 0 _ _ °",
+  "alertDirection": "Ložisko {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Grant mikrofon přístup pro záznam videa s audio.",
   "openSettings": "Otevřít nastavení",
   "alertDetailTitle": "Detaily pozorování",
-  "reportedBy": "Reported by _ _ PLACETIER _ 0 _ _",
+  "reportedBy": "Reported by {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Hlášený _ _ PLACETETERER _ 0 _ _",
+  "reportedAt": "Hlášený {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "_ _ PLACETETERER _ 0 _ _",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Režim pilota",
   "compassStandardDescription": "Základní název a navigace",
   "compassPilotDescription": "Pokročilá navigace s ETA a vektorováním",
-  "pointingTo": "Ukazuje na _ _ PLACETETERER _ 0 _ _",
+  "pointingTo": "Ukazuje na {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrační kompas..",
   "openAROverlay": "Otevřené překrytí AR",
   "pushTitleAlertNearby": "Pozor UFO blízko vás",
-  "pushBodyAlertNearby": "Bylo hlášeno nové pozorování _ _ PLACETETERER _ 0 _ _ away.",
+  "pushBodyAlertNearby": "Bylo hlášeno nové pozorování {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Teplota",
   "pushBodyWitness": "Uživatel potvrdil, že vidí stejný objekt.",
   "weather": "Počasí",
-  "cloudCover": "Cloud cover: _ _ PLACETETERER _ 0 _ _%",
+  "cloudCover": "Cloud cover: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vítr: _ _ PLACETETELER _ 0 _ _ _ _ PLACETETELER _ 1 _ _",
+  "wind": "Vítr: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -208,16 +208,16 @@
   "emergencyOverrideDesc": "Povolit urgentní upozornění během klidných hodin",
   "dndMode": "Nerušit",
   "dndUntil": "Nepřerušujte, dokud",
-  "dndEnabled": "DND povoleno do _ _ PLACETETELER _ 0 _ _",
+  "dndEnabled": "DND povoleno do {time}",
   "dndDisabled": "DND vypnuto",
-  "quietHoursActive": "Active _ _ PLACETIER _ 0 _ - _ _ PLACETIER _ 1 _ _",
-  "quietHoursScheduled": "Tiché hodiny: _ _ PLACETIER _ 0 _ _ - _ _ PLACETIER _ 1 _ _",
+  "quietHoursActive": "Active {startTime} - {endTime}",
+  "quietHoursScheduled": "Tiché hodiny: {start} - {end}",
   "pushNotificationUfoAlert": "UFO Varování",
   "pushNotificationAnomalyAlert": "Anomální poplach",
   "pushNotificationNearby": "Blízko",
   "pushNotificationInYourArea": "ve vaší oblasti. Klepněte na možnost Zobrazit detaily.",
-  "pushNotificationCommented": "_ _ PLACETETERER _ 0 _ _ komentáře",
-  "pushNotificationCommentedOn": "_ _ PLACETIER _ 0 _ _ komentuje _ _ PLACETIER _ 1 _ _",
+  "pushNotificationCommented": "{username} komentáře",
+  "pushNotificationCommentedOn": "{username} komentuje {beepTitle}",
   "pushNotificationGeneric": "UFOBEep",
   "pushNotificationNewSighting": "Nové pozorování v blízkosti",
   "language": "Jazyk",
@@ -292,7 +292,7 @@
   "mufonCylinderSighting": "Zpráva o pozorování válce MUFON",
   "mufonBoomerangSighting": "Zpráva MUFON Boomerang o pozorování",
   "mufonStarlikeSighting": "MUFON Starlike Fighting Report",
-  "mufonCaseDetailsTitle": "Případ MUFON # _ _ PLACETETELER _ 0 _ _ Podrobnosti",
+  "mufonCaseDetailsTitle": "Případ MUFON #{caseNumber} Podrobnosti",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -313,7 +313,7 @@
   "unknownLocation": "Neznámé umístění",
   "locationUnknown": "Umístění není známo",
   "witnessesLabel": "Svědci",
-  "witnessesCountMessage": "_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování",
+  "witnessesCountMessage": "{count} lidé potvrdili toto pozorování",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -323,7 +323,7 @@
     }
   },
   "photoAnalysisTitle": "Analýza fotografií",
-  "mediaItemsProcessed": "Analýza: _ _ PLACETELER _ 0 _ _ media soubor (y) zpracován",
+  "mediaItemsProcessed": "Analýza: {count} media soubor (y) zpracován",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -446,7 +446,7 @@
   "whatToExpect": "Co očekávat",
   "formalReportRequirements": "Formální zprávy obvykle vyžadují:\n• Podrobná doba, datum a doba trvání\n• Podmínky a viditelnost počasí\n• Úplné svědectví svědka\n• Fotografie nebo video, pokud jsou k dispozici\n\nOrganizace mohou sledovat další podrobnosti. Vaše zpráva přispívá k probíhajícímu výzkumu UFO.",
   "confirmedWitness": "Potvrdil jste toto pozorování",
-  "witnessesHaveConfirmed": "_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování",
+  "witnessesHaveConfirmed": "{count} lidé potvrdili toto pozorování",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -468,7 +468,7 @@
   "premiumAccessWitnesses": "Potvrzení svědci v dosahu viditelnosti",
   "comingSoon": "Už brzy",
   "directionDistanceTitle": "Směr a vzdálenost",
-  "mufonCaseTitle": "MUFON Případ # _ _ PLACETIER _ 0 _ _",
+  "mufonCaseTitle": "MUFON Případ #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "UFOBeep UFO Varování",
   "notificationSightingUrgent": "Name Varování",
   "notificationSightingEmergency": "UFO Varování",
-  "notificationSightingBody": "_ _ PLACETIER _ 0 _ _ near _ _ PLACETIER _ 1 _ _",
+  "notificationSightingBody": "{witnessText} near {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -500,7 +500,7 @@
       }
     }
   },
-  "notificationCommentTitle": "PLACETELER _ 0 _ _ komentáře",
+  "notificationCommentTitle": "{username} komentáře",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -510,7 +510,7 @@
     }
   },
   "notificationWitnessText": "Nové pozorování",
-  "notificationWitnessTextMultiple": "_ _ PLACETETELER _ 0 _ _ svědci",
+  "notificationWitnessTextMultiple": "{count} svědci",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -521,7 +521,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Rozpustit",
-  "notificationDistance": "_ _ PLACETETERER _ 0 _ _ away",
+  "notificationDistance": "{distance} away",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -544,7 +544,7 @@
   "ufoSightingAlert": "UFO Upozornění na pozorování",
   "previousPage": "Předchozí",
   "nextPage": "Další",
-  "pageOf": "Page _ _ PLACETIER _ 0 _ _ _ _ PLACETIER _ 1 _ _ (_ _ PLACETIER _ 2 _ _ celkem pípnutí)",
+  "pageOf": "Page {currentPage} {totalPages} ({totalCount} celkem pípnutí)",
   "firstPage": "První",
   "lastPage": "Poslední",
   "jumpToPage": "Přejít na stránku",
@@ -592,16 +592,16 @@
   "mufonEgg": "Vejce",
   "mufonOther": "Předmět",
   "mufonUnknown": "Neznámý objekt",
-  "mufonTitleFormat": "MUFON _ _ PLACETETELER _ 0 _ _ Zpráva",
+  "mufonTitleFormat": "MUFON {classification} Zpráva",
   "nuforcAttribution": "NUFORC Databázová zpráva",
   "nuforcCaseNumber": "Případ #",
   "nuforcGenericTitle": "NUFORC Zpráva o pozorování",
   "mediaImageNotFound": "Obrázek nenalezen",
   "mediaPlayVideo": "Přehrát video",
   "mediaViewImage": "Zobrazit obrázek",
-  "mediaCount": "_ _ PLACETETELER _ 0 _ _ obrázky",
+  "mediaCount": "{count} obrázky",
   "mediaCountSingle": "1 obrázek",
-  "mediaMoreImages": "+ _ _ PLACETETELER _ 0 _ _ více",
+  "mediaMoreImages": "+{count} více",
   "errorNotFound": "Píp nenalezen",
   "errorLoadError": "Nepodařilo se načíst detaily pípnutí",
   "shareYourThoughts": "Podělte se o své myšlenky o tomto pozorování...",
@@ -737,7 +737,7 @@
   "locationTrackingEnabled": "Sledování polohy pozadí povoleno",
   "locationTrackingDisabled": "Sledování polohy pozadí zakázáno",
   "justNow": "Právě teď",
-  "minutesAgo": "Před pár minutami",
+  "minutesAgo": "{minutes} Před pár minutami",
   "@minutesAgo": {
     "placeholders": {
       "minutes": {
@@ -745,7 +745,7 @@
       }
     }
   },
-  "hoursAgo": "Před pár hodinami",
+  "hoursAgo": "{hours} Před pár hodinami",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -753,7 +753,7 @@
       }
     }
   },
-  "daysAgo": "Před pár dny",
+  "daysAgo": "{days} Před pár dny",
   "@daysAgo": {
     "placeholders": {
       "days": {
@@ -771,7 +771,7 @@
   "splashRetry": "Znovu",
   "splashContinue": "Pokračovat",
   "splashInitializing": "Inicializace...",
-  "signInWelcome": "Vítejte!",
+  "signInWelcome": "Vítejte {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "Sign- in selhalo: _ _ PLACETETERER _ 0 _ _",
+  "signInFailed": "Sign- in selhalo: {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -800,7 +800,7 @@
   "signInEmailDescription": "Pošleme vám zabezpečené spojení",
   "signInEmailAddress": "E-mailová adresa",
   "signInEmailPlaceholder": "your @ email.com",
-  "signInTryAgainIn": "Zkuste to znovu v _ _ PLACETETELER _ 0 _ _ s",
+  "signInTryAgainIn": "Zkuste to znovu v {seconds} s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "Ověření e-mailu pomáhá zabezpečit váš účet a umožňuje obnovení účtu, pokud ztratíte přístup ke svému zařízení.",
   "phoneAuthFailedToSendCode": "Nepodařilo se odeslat ověřovací kód. Prosím, zkuste to znovu.",
   "phoneAuthInvalidCodeTryAgain": "Neplatný ověřovací kód. Prosím, zkuste to znovu.",
-  "phoneAuthPhoneVerified": "Číslo telefonu ověřeno: _ _ PLACETETERER _ 0 _ _",
+  "phoneAuthPhoneVerified": "Číslo telefonu ověřeno: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -859,7 +859,7 @@
   "phoneAuthVerifyYourPhone": "Ověřte svůj telefon",
   "phoneAuthEnterVerificationCode": "Zadejte ověření Kód",
   "phoneAuthAddPhoneForSecurity": "Přidat své telefonní číslo pro obnovení účtu a zabezpečení",
-  "phoneAuthEnterSixDigitCode": "Zadejte 6místný kód odeslaný na _ _ PLACETETIER _ 0 _ _",
+  "phoneAuthEnterSixDigitCode": "Zadejte 6místný kód odeslaný na {phoneNumber}",
   "@phoneAuthEnterSixDigitCode": {
     "placeholders": {
       "phoneNumber": {
@@ -925,25 +925,25 @@
   "celestialSunDaylight": "Slunce je nahoře - denní podmínky mohou ovlivnit viditelnost pozorování",
   "celestialSunTwilight": "Twilight podmínky - některá viditelnost, ale tmavší než denní světlo",
   "celestialSunDark": "Tmavé podmínky - optimální pro pozorování objektů na obloze",
-  "celestialMoonBright": "Bright _ _ PLACETETERER _ 0 _ _ měsíc viditelný - může osvětlit nebo zakrýt jiné objekty",
-  "celestialMoonModerate": "_ _ PLACETETELER _ 0 _ _ měsíc viditelný - mírné světelné podmínky",
-  "celestialMoonThin": "Tenký _ _ PLACETETELER _ 0 _ _ měsíc viditelný - minimální osvětlení",
-  "celestialMoonHidden": "_ _ PLACETETERER _ 0 _ _ měsíc pod horizontem - žádné měsíční osvětlení",
+  "celestialMoonBright": "Bright {phase} měsíc viditelný - může osvětlit nebo zakrýt jiné objekty",
+  "celestialMoonModerate": "{phase} měsíc viditelný - mírné světelné podmínky",
+  "celestialMoonThin": "Tenký {phase} měsíc viditelný - minimální osvětlení",
+  "celestialMoonHidden": "{phase} měsíc pod horizontem - žádné měsíční osvětlení",
   "celestialNoPlanets": "Žádné jasné planety viditelné, které by mohly být zaměněny za UFO",
-  "celestialPlanetHigh": "_ _ PLACETETIER _ 0 _ _ vysoký režijní náklady (_ _ PLACETIER _ 1 _ _ °) - velmi prominentní",
-  "celestialPlanetMedium": "_ _ PLACETIER _ 0 _ _ viditelný v _ _ PLACETIER _ 1 _ _ ° - může být zaměněn za letadlo",
-  "celestialPlanetLow": "_ _ PLACETIER _ 0 _ _ low on obzor (_ _ PLACETIER _ 1 _ _ °)",
+  "celestialPlanetHigh": "{planet} vysoký režijní náklady ({altitude}°) - velmi prominentní",
+  "celestialPlanetMedium": "{planet} viditelný v {altitude}° - může být zaměněn za letadlo",
+  "celestialPlanetLow": "{planet} low on obzor ({altitude}°)",
   "celestialNoStars": "Žádné neobvykle jasné hvězdy viditelné",
-  "celestialStarSingle": "_ _ PLACETIER _ 0 _ _ prominentní v _ _ PLACETIER _ 1 _ _ ° nadmořská výška",
-  "celestialStarsMultiple": "_ _ PLACETIER _ 0 _ _ jasné hvězdy viditelné - _ _ PLACETIER _ 1 _ _",
+  "celestialStarSingle": "{star} prominentní v {altitude}° nadmořská výška",
+  "celestialStarsMultiple": "{count} jasné hvězdy viditelné - {names}",
   "celestialSummaryDaylight": "Podmínky denního světla",
   "celestialSummaryDark": "Podmínky temné oblohy",
   "celestialSummaryMoonUp": "přítomné měsíční osvětlení",
   "celestialSummaryMoonDown": "žádné měsíční osvětlení",
-  "celestialSummaryManyObjects": "_ _ PLACETETELER _ 0 _ _ jasné objekty, které by mohly být zaměněny s UFO",
-  "celestialSummarySomeObjects": "_ _ PLACETETERER _ 0 _ _ jasný objekt (y) viditelný",
+  "celestialSummaryManyObjects": "{count} jasné objekty, které by mohly být zaměněny s UFO",
+  "celestialSummarySomeObjects": "{count} jasný objekt (y) viditelný",
   "celestialSummaryFewObjects": "minimální jasné objekty na obloze",
-  "celestialSkySummary": "Sky podmínky: _ _ PLACETETERER _ 0 _ _",
+  "celestialSkySummary": "Sky podmínky: {conditions}",
   "planetVenus": "Venus",
   "planetJupiter": "Jupiter",
   "planetSaturn": "Saturn",
@@ -967,19 +967,19 @@
   "moonPhaseWaningGibbous": "Zatracení Gibbous",
   "moonPhaseThirdQuarter": "Třetí čtvrtletí",
   "moonPhaseWaningCrescent": "Zapadající půlměsíc",
-  "planetBelowHorizon": "_ _ PLACETETERER _ 0 _ _ pod horizontem",
-  "planetHighOverheadProminent": "_ _ PLACETETIER _ 0 _ _ vysoký režijní náklady (_ _ PLACETIER _ 1 _ _ °) - velmi prominentní",
-  "planetMidSkyProminent": "_ _ PLACETIER _ 0 _ _ at _ _ PLACETIER _ 1 _ _ ° - prominentní",
-  "planetMidSky": "_ _ PLACETIER _ 0 _ _ at _ _ PLACETIER _ 1 _ _ °",
-  "starVeryBright": "_ _ PLACETIER _ 0 _ _ velmi jasný na _ _ PLACETIER _ 1 _ _ °",
-  "starProminent": "_ _ PLACETIER _ 0 _ _ prominentní v _ _ PLACETIER _ 1 _ _ ° nadmořská výška",
-  "starVisible": "_ _ PLACETIER _ 0 _ _ at _ _ PLACETIER _ 1 _ _ °",
+  "planetBelowHorizon": "{planet} pod horizontem",
+  "planetHighOverheadProminent": "{planet} vysoký režijní náklady ({altitude}°) - velmi prominentní",
+  "planetMidSkyProminent": "{planet} at {altitude}° - prominentní",
+  "planetMidSky": "{planet} at {altitude}°",
+  "starVeryBright": "{star} velmi jasný na {altitude}°",
+  "starProminent": "{star} prominentní v {altitude}° nadmořská výška",
+  "starVisible": "{star} at {altitude}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
-  "satellitesVisibleMightExplain": "_ _ PLACETETERER _ 0 _ _ satelity viditelné - může vysvětlit pozorování",
-  "satellitesVisibleUnlikelyExplain": "_ _ PLACETETERER _ 0 _ _ satelity viditelné - pravděpodobně nevysvětluje pozorování",
+  "satellitesVisibleMightExplain": "{count} satelity viditelné - může vysvětlit pozorování",
+  "satellitesVisibleUnlikelyExplain": "{count} satelity viditelné - pravděpodobně nevysvětluje pozorování",
   "noSatellitesVisible": "Žádné viditelné družice",
-  "aircraftDetectedInRadius": "_ _ PLACETETELER _ 0 _ _ zjištěná letadla _ _ PLACETETELER _ 1 _ _ km",
+  "aircraftDetectedInRadius": "{count} zjištěná letadla {radius} km",
   "processingAlert": "Zpracování UFO...",
   "analyzingEnvironment": "Analýza podmínek prostředí",
   "weatherAnalysis": "Analýza počasí",
@@ -987,7 +987,7 @@
   "aircraftTracking": "Sledování letadel",
   "satelliteAnalysis": "Satelitní analýza",
   "celestialAnalysis": "Nebeská analýza",
-  "analyzing": "Analyzuji _ _ PLACETETELER _ 0 _ _...",
+  "analyzing": "Analyzuji {processor}...",
   "processorWeather": "povětrnostní podmínky",
   "processorLocation": "údaje o umístění",
   "processorAircraft": "v blízkosti letadla",
@@ -996,7 +996,7 @@
   "calculatingCelestialData": "Vypočítávám nebeská data...",
   "sunLabel": "Slunce",
   "moonLabel": "Měsíc",
-  "planetsVisible": "Planety: _ _ PLACETETELER _ 0 _ _ viditelný",
+  "planetsVisible": "Planety: {count} viditelný",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "Hvězdy",
   "planetsLabel": "Planety",
-  "moonWithPhase": "Měsíční (_ _ PLACETETELER _ 0 _ _)",
+  "moonWithPhase": "Měsíční ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1024,8 +1024,8 @@
   "noWeatherDescription": "Bez popisu",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "Satelity (_ _ PLACETETELER _ 0 _ _ viditelné nyní)",
-  "sunWithDescription": "Sun: _ _ PLACETETELER _ 0 _ _",
+  "satellitesVisibleNow": "Satelity ({count} viditelné nyní)",
+  "sunWithDescription": "Sun: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "Měsíc: _ _ PLACETETELER _ 0 _ _",
+  "moonWithDescription": "Měsíc: {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1057,7 +1057,7 @@
   "unknownDirection": "neznámý směr",
   "brightStars": "Světlé hvězdy",
   "satellites": "Satelity",
-  "seeAllSatellites": "Viz všechny _ _ PLACETETELER _ 0 _ _ satelity",
+  "seeAllSatellites": "Viz všechny {count} satelity",
   "@seeAllSatellites": {
     "placeholders": {
       "count": {
@@ -1066,7 +1066,7 @@
       }
     }
   },
-  "maxElevation": "Maximální výška: _ _ PLACETETERER _ 0 _ _ °",
+  "maxElevation": "Maximální výška: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "Velikost: _ _ PLACETETERER _ 0 _ _",
+  "magnitude": "Velikost: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {
@@ -1085,7 +1085,7 @@
     }
   },
   "unknownGeneric": "Neznámé",
-  "altitudeValue": "_ _ PLACETETERER _ 0 _ _ ° nadmořská výška",
+  "altitudeValue": "{degrees}° nadmořská výška",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1094,7 +1094,7 @@
       }
     }
   },
-  "azimuthValue": "_ _ PLACETETELER _ 0 _ _ ° azimut",
+  "azimuthValue": "{degrees}° azimut",
   "@azimuthValue": {
     "placeholders": {
       "degrees": {
@@ -1133,7 +1133,7 @@
   "endTime": "Čas ukončení",
   "allowCriticalAlertsDuringQuietHours": "Povolit kritické výstrahy během klidných hodin",
   "silenceNotificationsDuringSleepHours": "Oznámení o mlčení během spánku",
-  "quietHoursActiveTimeRange": "Active _ _ PLACETIER _ 0 _ - _ _ PLACETIER _ 1 _ _",
+  "quietHoursActiveTimeRange": "Active {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1147,7 +1147,7 @@
     }
   },
   "followingAlerts": "Následující záznamy",
-  "activeCount": "_ _ PLACETETERER _ 0 _ _ active",
+  "activeCount": "{count} active",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1158,7 +1158,7 @@
   },
   "unfollow": "Nesledovat",
   "unfollowAlert": "Poplach bez sledování",
-  "commentsCount": "_ _ PLACETETERER _ 0 _ _ komentáře",
+  "commentsCount": "{count} komentáře",
   "photo": "Fotografie",
   "video": "Video",
   "initializationComplete": "Inicializace dokončena!",
@@ -1172,7 +1172,7 @@
   "gatheringDeviceInfo": "Informace o shromažďovacím zařízení...",
   "translating": "Překládám...",
   "showOriginal": "Zobrazit originál",
-  "translateTo": "Translate to _ _ PLACETETERER _ 0 _ _",
+  "translateTo": "Translate to {language}",
   "@translateTo": {
     "placeholders": {
       "language": {
@@ -1181,7 +1181,7 @@
       }
     }
   },
-  "translatedFrom": "Přeloženo z _ _ PLACETETERER _ 0 _ _",
+  "translatedFrom": "Přeloženo z {language}",
   "@translatedFrom": {
     "placeholders": {
       "language": {
@@ -1190,7 +1190,7 @@
       }
     }
   },
-  "translateContent": "Přeložit obsah do _ _ PLACETETELER _ 0 _ _",
+  "translateContent": "Přeložit obsah do {language}",
   "@translateContent": {
     "placeholders": {
       "language": {
@@ -1221,7 +1221,7 @@
   "lightRain": "lehký déšť",
   "moderateRain": "střední déšť",
   "heavyRain": "těžký déšť",
-  "aircraftDetectedCurrentPositions": "_ _ PLACETETERER _ 0 _ _ zjištěná letadla v _ _ PLACETELER _ 1 _ _ km (aktuální polohy)",
+  "aircraftDetectedCurrentPositions": "{count} zjištěná letadla v {radius} km (aktuální polohy)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1234,7 +1234,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "_ _ PLACETETERER _ 0 _ _ dim satelity viditelné - pravděpodobně nevysvětluje pozorování",
+  "dimSatellitesUnlikely": "{count} dim satelity viditelné - pravděpodobně nevysvětluje pozorování",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {
@@ -1244,7 +1244,7 @@
     }
   },
   "mufonReportingDate": "MUFON Datum podání zprávy",
-  "satelliteNameDirection": "_ _ PLACETIER _ 0 _ _ - _ _ PLACETIER _ 1 _ _",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {

@@ -89,7 +89,7 @@
   "microphonePermissionBody": "الحصول على الميكروفون للحصول على الفيديو بالصوت.",
   "openSettings": "Open Settings",
   "alertDetailTitle": "تفاصيل النظر",
-  "reportedBy": "Reported by __PLACEHOLDER_0",
+  "reportedBy": "Reported by {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Reported_PLACEHOLDER_0",
+  "reportedAt": "Reported {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -208,7 +208,7 @@
   "emergencyOverrideDesc": "السماح بالتنبيهات العاجلة خلال ساعات الهدوء",
   "dndMode": "لا تغضب",
   "dndUntil": "لا تزعج حتى",
-  "dndEnabled": "DND enabled until __PLACEHOLDER_0",
+  "dndEnabled": "DND enabled until {time}",
   "dndDisabled": "معوق",
   "quietHoursActive": "-",
   "quietHoursScheduled": "ساعات هادئة _",
@@ -292,7 +292,7 @@
   "mufonCylinderSighting": "MUFON Cylinder Sighting Report",
   "mufonBoomerangSighting": "MFON Boomerang Sighting Report",
   "mufonStarlikeSighting": "MUFON Starlike Sighting Report",
-  "mufonCaseDetailsTitle": "MUFON Case #_PLACEHOLDER_0_تفاصيل",
+  "mufonCaseDetailsTitle": "MUFON Case #{caseNumber} تفاصيل",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -500,7 +500,7 @@
       }
     }
   },
-  "notificationCommentTitle": "💬 __PLACEHOLDER_0 علق",
+  "notificationCommentTitle": "💬 {username} علق",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -592,7 +592,7 @@
   "mufonEgg": "البيض",
   "mufonOther": "اعتراض",
   "mufonUnknown": "غير معروف",
-  "mufonTitleFormat": "MUFON __PLACEHOLDER_0",
+  "mufonTitleFormat": "MUFON {classification}",
   "nuforcAttribution": "NUFORC تقرير قاعدة البيانات",
   "nuforcCaseNumber": "القضية",
   "nuforcGenericTitle": "NUFORC Sighting Report",
@@ -926,13 +926,13 @@
   "celestialSunTwilight": "ظروف توايلايت بعض الوضوح ولكن أكثر ظلما من ضوء النهار",
   "celestialSunDark": "الظروف المظلمة - أمثل لمراقبة الأجسام في السماء",
   "celestialMoonBright": "? Bright",
-  "celestialMoonModerate": "_PLACEHOLDER_0_قمر مرئي - ظروف إضاءة متوسطة",
+  "celestialMoonModerate": "{phase} قمر مرئي - ظروف إضاءة متوسطة",
   "celestialMoonThin": "...",
   "celestialMoonHidden": "_BAR_",
   "celestialNoPlanets": "لا توجد كواكب مشرقة مرئية يمكن أن تكون مُخطئة بالنسبة للأجسام الطائرة",
   "celestialPlanetHigh": "{altitude}__ مرتفعات ({planet}°) -",
   "celestialPlanetMedium": "{planet} مرئي عند {altitude} ° - يمكن أن يخطئ في الطائرات",
-  "celestialPlanetLow": "{planet} منخفض على الأفق (_PLACEHOLDER_1_°)",
+  "celestialPlanetLow": "{planet} منخفض على الأفق ({altitude}°)",
   "celestialNoStars": "لا نجوم مشرقة بشكل غير عادي مرئية",
   "celestialStarSingle": "_BAR_",
   "celestialStarsMultiple": "_BAR_ _BAR_",
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "النجوم",
   "planetsLabel": "Planets",
-  "moonWithPhase": "مون (_PLACEHOLDER_0__)",
+  "moonWithPhase": "مون ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1024,7 +1024,7 @@
   "noWeatherDescription": "لا وصف",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "السواتل (_PLACEHOLDER_0__ مرئية الآن)",
+  "satellitesVisibleNow": "السواتل ({count} مرئية الآن)",
   "sunWithDescription": "شمس:",
   "@sunWithDescription": {
     "placeholders": {
@@ -1172,7 +1172,7 @@
   "gatheringDeviceInfo": "جمع المعلومات عن الجهاز.",
   "translating": "ترجمة...",
   "showOriginal": "العرض الأصلي",
-  "translateTo": "Translate to __PLACEHOLDER_0",
+  "translateTo": "Translate to {language}",
   "@translateTo": {
     "placeholders": {
       "language": {
@@ -1181,7 +1181,7 @@
       }
     }
   },
-  "translatedFrom": "Translated from __PLACEHOLDER_0",
+  "translatedFrom": "Translated from {language}",
   "@translatedFrom": {
     "placeholders": {
       "language": {
@@ -1190,7 +1190,7 @@
       }
     }
   },
-  "translateContent": "Translate content to __PLACEHOLDER_0",
+  "translateContent": "Translate content to {language}",
   "@translateContent": {
     "placeholders": {
       "language": {
