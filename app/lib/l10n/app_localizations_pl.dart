@@ -121,12 +121,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '_ _ PLACESENT _ 0 _ _ away';
+    return '$distance away';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Łożysko _ _ PLACESORA _ 0 _ _ °';
+    return 'Łożysko $bearing°';
   }
 
   @override
@@ -219,22 +219,22 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Zgłoszony przez _ _ PLACEScorter _ 0 _ _';
+    return 'Zgłoszony przez $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Zgłoszony _ _ PLACEScorter _ 0 _ _';
+    return 'Zgłoszony $timeAgo';
   }
 
   @override
   String distanceAway(String distance) {
-    return '_ _ PLACESENT _ 0 _ _';
+    return '$distance';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Nakładanie na obiekt: _ _ PLACEScorter _ 0 _ _ °';
+    return 'Nakładanie na obiekt: $bearing°';
   }
 
   @override
@@ -296,7 +296,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Wskazywanie na _ _ PLACEScorpiter _ 0 _ _';
+    return 'Wskazując na $direction';
   }
 
   @override
@@ -310,7 +310,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Zgłoszono nowe spostrzeżenie _ _ PLACEScorpiter _ 0 _ _ away.';
+    return 'Zgłoszono nowe spostrzeżenie $distance away.';
   }
 
   @override
@@ -334,12 +334,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Pokrywa chmurowa: _ _ PLACESENT _ 0 _ _%';
+    return 'Pokrywa chmurowa: $percent%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wiatr: _ _ PLACESORA _ 0 _ _ _ _ PLACESORA _ 1 _ _';
+    return 'Wiatr: $speed $unit';
   }
 
   @override
@@ -394,7 +394,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND włączone do _ _ PLACEScorter _ 0 _ _';
+    return 'DND włączone do $time';
   }
 
   @override
@@ -402,12 +402,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Active _ _ PLACESECRET _ 0 _ _ _ - _ _ PLACESECRET _ 1 _ _';
+    return 'Active $startTime - $endTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Godziny ciszy: _ _ PLACESECRET _ 0 _ _ _ - _ PLACESECRET _ 1 _ _';
+    return 'Godziny ciszy: $start - $end';
   }
 
   @override
@@ -425,12 +425,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String pushNotificationCommented(Object username) {
-    return '_ _ PLACESENER _ 0 _ _ skomentowane';
+    return '$username skomentowane';
   }
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '_ _ PLACESECRET _ 0 _ _ skomentował _ _ PLACESECRET _ 1 _ _';
+    return '$username skomentował $beepTitle';
   }
 
   @override
@@ -522,17 +522,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '_ _ PLACESENT _ 0 _ _ dni temu';
+    return '$count dni temu';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '_ _ PLACESENT _ 0 _ _ godzin temu';
+    return '$count godzin temu';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '_ _ PLACESENT _ 0 _ _ minutes temu';
+    return '$count minutes temu';
   }
 
   @override
@@ -598,7 +598,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'Przypadek MUFON # _ _ PLACEScorpiter _ 0 _ _ Szczegóły';
+    return 'Przypadek MUFON #$caseNumber Szczegóły';
   }
 
   @override
@@ -639,7 +639,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '_ _ PLACESENT _ 0 _ _ ludzie potwierdzili to spostrzeżenie';
+    return '$count ludzie potwierdzili to spostrzeżenie';
   }
 
   @override
@@ -647,7 +647,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analiza: _ _ PLACEScorter _ 0 _ _ media plik (y) przetworzony (y)';
+    return 'Analiza: $count media plik (y) przetworzony (y)';
   }
 
   @override
@@ -1005,7 +1005,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '_ _ PLACESENER _ 0 _ _ ludzie potwierdzili to spostrzeżenie';
+    return '$count ludzie potwierdzili to spostrzeżenie';
   }
 
   @override
@@ -1051,7 +1051,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Przypadek # _ _ PLACESENER _ 0 _ _';
+    return 'MUFON Sprawa #$caseNumber';
   }
 
   @override
@@ -1090,12 +1090,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '_ _ PLACESECRET _ 0 _ _ near _ _ PLACESECRET _ 1 _ _';
+    return '$witnessText near $locationName';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '_ _ PLACEScorter _ 0 _ _ skomentowane';
+    return '$username skomentowane';
   }
 
   @override
@@ -1103,7 +1103,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '_ _ PLACESENT _ 0 _ _ świadkowie';
+    return '$count świadkowie';
   }
 
   @override
@@ -1114,7 +1114,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '_ _ PLACESENT _ 0 _ _ away';
+    return '$distance away';
   }
 
   @override
@@ -1163,7 +1163,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Page _ _ PLACESECRET _ 0 _ _ of _ _ PLACESECRET _ 1 _ _ (_ _ PLACESECRET _ 2 _ _ total beeps)';
+    return 'Page $currentPage of $totalPages ($totalCount total beeps)';
   }
 
   @override
@@ -1311,7 +1311,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON _ _ PLACESENT _ 0 _ _ Raport';
+    return 'MUFON $classification Raport';
   }
 
   @override
@@ -1334,7 +1334,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '_ _ PLACESENT _ 0 _ _ Obrazy';
+    return '$count Obrazy';
   }
 
   @override
@@ -1342,7 +1342,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+ _ _ PLACESENT _ 0 _ _ more';
+    return '+$count more';
   }
 
   @override
@@ -1770,17 +1770,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String minutesAgo(int minutes) {
-    return '_ _ PLACESENT _ 0 _ _ minutes temu';
+    return '$minutes minutes temu';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '_ _ PLACESENT _ 0 _ _ godzin temu';
+    return '$hours godzin temu';
   }
 
   @override
   String daysAgo(int days) {
-    return '_ _ PLACESENT _ 0 _ _ dni temu';
+    return '$days dni temu';
   }
 
   @override
@@ -1817,12 +1817,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String signInWelcome(String username) {
-    return 'Powitanie _ _ PLACESENER _ 0 _ _!';
+    return 'Powitanie $username!';
   }
 
   @override
   String signInFailed(String error) {
-    return 'Sygnał nie powiódł się: _ _ PLACESENT _ 0 _ _';
+    return 'Sygnał nie powiódł się: $error';
   }
 
   @override
@@ -1871,7 +1871,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Spróbuj ponownie w _ _ PLACEScorter _ 0 _ _ s';
+    return 'Spróbuj ponownie w ${seconds}s';
   }
 
   @override
@@ -1980,7 +1980,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return 'Numer telefonu zweryfikowany: _ _ PLACESENT _ 0 _ _';
+    return 'Numer telefonu zweryfikowany: $phoneNumber';
   }
 
   @override
@@ -2037,7 +2037,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return 'Wprowadź 6-cyfrowy kod wysłany do _ _ PLACEScorped _ 0 _ _';
+    return 'Wprowadź 6-cyfrowy kod wysłany do $phoneNumber';
   }
 
   @override
@@ -2238,22 +2238,22 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Jasny _ _ PLACESORM _ 0 _ _ księżyc widoczny - może oświetlić lub zasłonić inne obiekty';
+    return 'Jasny księżyc $phase widoczny - może oświetlić lub zasłonić inne obiekty';
   }
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '_ _ PLACESENER _ 0 _ _ widzialny księżyc - umiarkowane warunki oświetlenia';
+    return 'Księżyc $phase widoczny - umiarkowane warunki oświetlenia';
   }
 
   @override
   String celestialMoonThin(Object phase) {
-    return 'Widoczne cienkie _ _ PLACEStore _ 0 _ _ moon - minimalne oświetlenie';
+    return 'Cienki księżyc $phase widoczny - minimalne oświetlenie';
   }
 
   @override
   String celestialMoonHidden(Object phase) {
-    return '_ _ PLACESENER _ 0 _ _ księżyc poniżej horyzontu - brak oświetlenia Księżyca';
+    return 'Księżyc $phase poniżej horyzontu - brak oświetlenia';
   }
 
   @override
@@ -2262,17 +2262,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '_ _ PLACESORM _ 0 _ _ wysokie koszty ogólne (_ _ PLACESORM _ 1 _ _ °) - bardzo znaczące';
+    return '$planet wysoko nad głową ($altitude°) - bardzo widoczny';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '_ _ PLACESORM _ 0 _ _ widoczny na _ _ PLACESORM _ 1 _ _ ° - może być mylony z samolotem';
+    return '$planet widoczny na $altitude° - może być mylony z samolotem';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '_ _ PLACESECRET _ 0 _ _ low on horizon (_ _ PLACESECRET _ 1 _ _ °)';
+    return '$planet nisko nad horyzontem ($altitude°)';
   }
 
   @override
@@ -2280,12 +2280,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '_ _ PLACEScorpiter _ 0 _ _ widoczna na _ _ PLACEScorpiter _ 1 _ _ °';
+    return '$star widoczna na $altitude°';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '_ _ PLACESECRET _ 0 _ _ jasne gwiazdy widoczne - _ _ PLACESECRET _ 1 _ _';
+    return '$count jasne gwiazdy widoczne - $names';
   }
 
   @override
@@ -2302,12 +2302,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return '_ _ PLACESORM _ 0 _ _ jasne obiekty, które mogą być mylone z UFO';
+    return '$count jasne obiekty, które mogą być mylone z UFO';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return '_ _ PLACEScorter _ 0 _ _ jasny (-e) obiekt (-y) widoczny (-e)';
+    return '$count jasny (-e) obiekt (-y) widoczny (-e)';
   }
 
   @override
@@ -2315,7 +2315,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String celestialSkySummary(Object conditions) {
-    return 'Warunki dotyczące nieba: _ _ PLACESENT _ 0 _ _';
+    return 'Warunki dotyczące nieba: $conditions';
   }
 
   @override
@@ -2389,37 +2389,37 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '_ _ PLACESENER _ 0 _ _ poniżej horyzontu';
+    return '$planet poniżej horyzontu';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '_ _ PLACESORM _ 0 _ _ wysokie koszty ogólne (_ _ PLACESORM _ 1 _ _ °) - bardzo znaczące';
+    return '$planet wysokie koszty ogólne ($altitude°) - bardzo znaczące';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '_ _ PLACESECRET _ 0 _ _ at _ _ PLACESECRET _ 1 _ _ ° - wybitny';
+    return '$planet at $altitude° - wybitny';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '_ _ PLACESECRET _ 0 _ _ _ at _ _ PLACESECRET _ 1 _ _ °';
+    return '$planet at $altitude°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '_ _ PLACESECRET _ 0 _ _ bardzo jasny na _ _ PLACESECRET _ 1 _ _ °';
+    return '$star bardzo jasny na $altitude°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '_ _ PLACEScorpiter _ 0 _ _ widoczna na _ _ PLACEScorpiter _ 1 _ _ °';
+    return '$star widoczna na $altitude°';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '_ _ PLACESECRET _ 0 _ _ _ at _ _ PLACESECRET _ 1 _ _ °';
+    return '$star at $altitude°';
   }
 
   @override
@@ -2430,12 +2430,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '_ _ PLACESORM _ 0 _ _ satelity widoczne - może wyjaśnić widzenie';
+    return '$count satelity widoczne - może wyjaśnić widzenie';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '_ _ PLACESORM _ 0 _ _ satelity widoczne - mało prawdopodobne, aby wyjaśnić widzenie';
+    return '$count satelitów widocznych - mało prawdopodobne aby wyjaśnić obserwację';
   }
 
   @override
@@ -2443,7 +2443,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '_ _ PLACESORM _ 0 _ _ statek powietrzny wykryty w _ _ PLACESORM _ 1 _ _ km';
+    return '$count statek powietrzny wykryty w ${radius}km';
   }
 
   @override
@@ -2469,7 +2469,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String analyzing(Object processor) {
-    return 'Analiza _ _ PLACEScorter _ 0 _ _...';
+    return 'Analiza $processor...';
   }
 
   @override
@@ -2498,7 +2498,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return 'Planety: _ _ PLACEScorter _ 0 _ _ widoczne';
+    return 'Planety: $count widoczne';
   }
 
   @override
@@ -2509,7 +2509,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'Moon (_ _ PLACEScorter _ 0 _ _)';
+    return 'Moon ($phase)';
   }
 
   @override
@@ -2540,17 +2540,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String satellitesVisibleNow(int count) {
-    return 'Satelity (_ _ PLACEScorter _ 0 _ _ widoczne teraz)';
+    return 'Satelity ($count widoczne teraz)';
   }
 
   @override
   String sunWithDescription(String description) {
-    return 'Sun: _ _ PLACEScorpiter _ 0 _ _';
+    return 'Sun: $description';
   }
 
   @override
   String moonWithDescription(String description) {
-    return 'Moon: _ _ PLACESECRET _ 0 _ _';
+    return 'Moon: $description';
   }
 
   @override
@@ -2573,17 +2573,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String seeAllSatellites(int count) {
-    return 'Zobacz wszystkie _ _ PLACEScorter _ 0 _ _ satelity';
+    return 'Zobacz wszystkie $count satelity';
   }
 
   @override
   String maxElevation(String degrees) {
-    return 'Maksymalna wysokość: _ _ PLACESENT _ 0 _ _ °';
+    return 'Maksymalna wysokość: $degrees°';
   }
 
   @override
   String magnitude(String value) {
-    return 'Wielkości: _ _ PLACESENT _ 0 _ _';
+    return 'Wielkości: $value';
   }
 
   @override
@@ -2591,12 +2591,12 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String altitudeValue(String degrees) {
-    return 'Wysokość bezwzględna _ 0 _ _ °';
+    return '$degrees° altitude';
   }
 
   @override
   String azimuthValue(String degrees) {
-    return '_ _ PLACESENT _ 0 _ _ ° azymut';
+    return '$degrees° azymut';
   }
 
   @override
@@ -2658,7 +2658,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return 'Active _ _ PLACESECRET _ 0 _ _ _ - _ _ PLACESECRET _ 1 _ _';
+    return 'Active $startTime - $endTime';
   }
 
   @override
@@ -2666,7 +2666,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String activeCount(int count) {
-    return '_ _ PLACESECRET _ 0 _ _ active';
+    return '$count active';
   }
 
   @override
@@ -2677,7 +2677,7 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '_ _ PLACESENER _ 0 _ _ komentarze';
+    return '$count komentarze';
   }
 
   @override
@@ -2722,17 +2722,17 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String translateTo(String language) {
-    return 'Przetłumacz na _ _ PLACEScorter _ 0 _ _';
+    return 'Przetłumacz na $language';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Tłumaczone z _ _ PLACEScorpiter _ 0 _ _';
+    return 'Tłumaczone z $language';
   }
 
   @override
   String translateContent(String language) {
-    return 'Przetłumacz zawartość na _ _ PLACEScorter _ 0 _ _';
+    return 'Przetłumacz zawartość na $language';
   }
 
   @override
@@ -2778,17 +2778,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get heavyRain => 'intensywny deszcz';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '_ _ PLACESORM _ 0 _ _ statek powietrzny wykryty w _ _ PLACESORM _ 1 _ _ km (aktualne pozycje)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count samolotów wykrytych w promieniu ${radius}km (aktualne pozycje)';
   }
 
   @override
   String dimSatellitesUnlikely(int count) {
-    return '_ _ PLACESORM _ 0 _ _ dim satelity widoczne - mało prawdopodobne, aby wyjaśnić widzenie';
+    return '$count dim satelity widoczne - mało prawdopodobne, aby wyjaśnić widzenie';
   }
 
   @override
@@ -2796,6 +2792,6 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return '_ _ PLACESECRET _ 0 _ _ _ - _ PLACESECRET _ 1 _ _';
+    return '$name - $direction';
   }
 }

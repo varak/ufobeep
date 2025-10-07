@@ -37,7 +37,7 @@
   "alertsTitle": "I nærheden",
   "noAlerts": "Ingen advarsler i nærheden endnu.",
   "pullToRefresh": "Træk for at opdatere",
-  "alertDistance": "_ _ PLACEREPORT _ 0 _ _ væk",
+  "alertDistance": "{distance} væk",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Leje _ _ PLACEREPER _ 0 _ _ °",
+  "alertDirection": "Leje {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Grant mikrofon adgang til videooptagelse med lyd.",
   "openSettings": "Åbn indstillinger",
   "alertDetailTitle": "Observationsdetaljer",
-  "reportedBy": "Rapporteret af _ _ PLACEREPER _ 0 _ _",
+  "reportedBy": "Rapporteret af {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Rapporteret _ _ PLACEREPORT _ 0 _ _",
+  "reportedAt": "Rapporteret {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "_ _ PLACEREPORT _ 0 _ _",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Leje til objekt: _ _ _ PLACEREPER _ 0 _ _ °",
+  "bearingToObject": "Leje til objekt: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilottilstand",
   "compassStandardDescription": "Overskrift og navigation",
   "compassPilotDescription": "Avanceret navigation med ETA og vektoring",
-  "pointingTo": "At pege på _ _ PLACEREPORT _ 0 _ _",
+  "pointingTo": "At pege på {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibrerende kompas..",
   "openAROverlay": "Åbne AR-overlay",
   "pushTitleAlertNearby": "UFO alarm nær dig",
-  "pushBodyAlertNearby": "En ny observation blev rapporteret _ _ PLACEREPER _ 0 _ _ away.",
+  "pushBodyAlertNearby": "En ny observation blev rapporteret {distance} away.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Temperatur",
   "pushBodyWitness": "En bruger bekræftede, at de ser det samme objekt.",
   "weather": "Vejret",
-  "cloudCover": "Skydække: _ _ PLACEREPORT _ 0 _ _%",
+  "cloudCover": "Skydække: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Vind: _ _ PLACEREPORT _ 0 _ _ _ _ PLACEREPORT _ 1 _ _",
+  "wind": "Vind: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -208,16 +208,16 @@
   "emergencyOverrideDesc": "Tillad hurtig varsling i stille timer",
   "dndMode": "Må ikke forstyrres",
   "dndUntil": "Må ikke forstyrres før",
-  "dndEnabled": "DND aktiveret indtil _ _ PLACEREPER _ 0 _ _",
+  "dndEnabled": "DND aktiveret indtil {time}",
   "dndDisabled": "DND deaktiveret",
-  "quietHoursActive": "Aktiv _ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _",
-  "quietHoursScheduled": "Stille timer: _ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _",
+  "quietHoursActive": "Aktiv {startTime} - {endTime}",
+  "quietHoursScheduled": "Stille timer: {start} - {end}",
   "pushNotificationUfoAlert": "UFO Indberetning",
   "pushNotificationAnomalyAlert": "Anomali alarm",
   "pushNotificationNearby": "I nærheden",
   "pushNotificationInYourArea": "i dit område. Tryk på for at se detaljer.",
-  "pushNotificationCommented": "_ _ PLACEREPER _ 0 _ _ kommenterede",
-  "pushNotificationCommentedOn": "_ _ PLACEREPORT _ 0 _ _ kommenteret _ _ PLACEREPORT _ 1 _ _",
+  "pushNotificationCommented": "{username} kommenterede",
+  "pushNotificationCommentedOn": "{username} kommenteret {beepTitle}",
   "pushNotificationGeneric": "UFOBeep",
   "pushNotificationNewSighting": "Ny observation i nærheden",
   "language": "Sprog",
@@ -245,7 +245,7 @@
   "imageOnly": "Kun billede",
   "mediaOnly": "Kun medier",
   "timeJustNow": "lige nu",
-  "timeDaysAgo": "_ _ PLACEREPORT _ 0 _ _ dage siden",
+  "timeDaysAgo": "{count} dage siden",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -254,7 +254,7 @@
       }
     }
   },
-  "timeHoursAgo": "_ _ PLACEREPORT _ 0 _ _ timer siden",
+  "timeHoursAgo": "{count} timer siden",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -263,7 +263,7 @@
       }
     }
   },
-  "timeMinutesAgo": "_ _ PLACEREPER _ 0 _ _ minutter siden",
+  "timeMinutesAgo": "{count} minutter siden",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -292,7 +292,7 @@
   "mufonCylinderSighting": "MUFON Cylinder Sightingrapport",
   "mufonBoomerangSighting": "MUFON Boomerang Sightingrapport",
   "mufonStarlikeSighting": "MUFON Starlike Sighting Report",
-  "mufonCaseDetailsTitle": "MUFON sag # _ _ PLACEREPER _ 0 _ _ Detaljer",
+  "mufonCaseDetailsTitle": "MUFON sag #{caseNumber} Detaljer",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -313,7 +313,7 @@
   "unknownLocation": "Ukendt placering",
   "locationUnknown": "Sted ukendt",
   "witnessesLabel": "Vidner",
-  "witnessesCountMessage": "_ _ PLACEREPORT _ 0 _ _ folk bekræftede denne observation",
+  "witnessesCountMessage": "{count} folk bekræftede denne observation",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -323,7 +323,7 @@
     }
   },
   "photoAnalysisTitle": "Fotoanalyse",
-  "mediaItemsProcessed": "Analyse: _ _ PLACEREPORT _ 0 _ _ mediefil (r) behandlet",
+  "mediaItemsProcessed": "Analyse: {count} mediefil (r) behandlet",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -446,7 +446,7 @@
   "whatToExpect": "Hvad at forvente",
   "formalReportRequirements": "Formelle rapporter kræver typisk:\n• Detaljeret tid, dato og varighed\n• Vejrforhold og sigtbarhed\n• Fuldstændigt vidneudsagn\n• Billeder eller video, hvis de foreligger\n\nOrganisationer kan følge op på yderligere detaljer. Din rapport bidrager til igangværende UFO forskning.",
   "confirmedWitness": "Du bekræftede denne observation",
-  "witnessesHaveConfirmed": "_ _ PLACEREPORT _ 0 _ _ folk har bekræftet denne observation",
+  "witnessesHaveConfirmed": "{count} folk har bekræftet denne observation",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -468,7 +468,7 @@
   "premiumAccessWitnesses": "Bekræftede vidner inden for sigtbarhed",
   "comingSoon": "Kommer snart",
   "directionDistanceTitle": "Kørselsretning og afstand",
-  "mufonCaseTitle": "MUFON Case # _ _ PLACEREPER _ 0 _ _",
+  "mufonCaseTitle": "MUFON Case #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "UFOBeep UFO Indberetning",
   "notificationSightingUrgent": "STOR UFO Indberetning",
   "notificationSightingEmergency": "UFO FOR NØDSITUATIONER Indberetning",
-  "notificationSightingBody": "_ _ PLACEREPORT _ 0 _ _ nær _ _ PLACEREPORT _ 1 _ _",
+  "notificationSightingBody": "{witnessText} nær {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -500,7 +500,7 @@
       }
     }
   },
-  "notificationCommentTitle": "_ _ PLACEREPER _ 0 _ _ kommenterede",
+  "notificationCommentTitle": "💬 {username} kommenterede",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -510,7 +510,7 @@
     }
   },
   "notificationWitnessText": "Ny observation",
-  "notificationWitnessTextMultiple": "- Vidner",
+  "notificationWitnessTextMultiple": "{count} vidner",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -521,7 +521,7 @@
   },
   "notificationActionSnooze": "Snooze 1h",
   "notificationActionDismiss": "Frafald",
-  "notificationDistance": "_ _ PLACEREPORT _ 0 _ _ væk",
+  "notificationDistance": "{distance} væk",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -544,7 +544,7 @@
   "ufoSightingAlert": "UFO Observationsadvarsel",
   "previousPage": "Forrige",
   "nextPage": "Næste",
-  "pageOf": "Side _ _ PLACEREPORT _ 0 _ af _ _ PLACEREPORT _ 1 _ _ (_ _ PLACEREPORT _ 2 _ _ i alt bip)",
+  "pageOf": "Side {currentPage} af {totalPages} ({totalCount} i alt bip)",
   "firstPage": "Første",
   "lastPage": "Sidste",
   "jumpToPage": "Spring til side",
@@ -592,16 +592,16 @@
   "mufonEgg": "Æg",
   "mufonOther": "Objekt",
   "mufonUnknown": "Ukendt objekt",
-  "mufonTitleFormat": "MUFON _ _ PLACEREPORT _ 0 _ _ Rapport",
+  "mufonTitleFormat": "MUFON {classification} Rapport",
   "nuforcAttribution": "NUFORC Databaserapport",
   "nuforcCaseNumber": "Case #",
   "nuforcGenericTitle": "NUFORC Observationsrapport",
   "mediaImageNotFound": "Billede ikke fundet",
   "mediaPlayVideo": "Afspil video",
   "mediaViewImage": "Vis billede",
-  "mediaCount": "_ _ PLACEREPORT _ 0 _ _ billeder",
+  "mediaCount": "{count} billeder",
   "mediaCountSingle": "1 billede",
-  "mediaMoreImages": "+ _ _ PLACEREPORT _ 0 _ _ mere",
+  "mediaMoreImages": "+{count} mere",
   "errorNotFound": "Bip ikke fundet",
   "errorLoadError": "Kunne ikke indlæse bip detaljer",
   "shareYourThoughts": "Del dine tanker om denne observation...",
@@ -737,7 +737,7 @@
   "locationTrackingEnabled": "Sporing af baggrundsplacering aktiveret",
   "locationTrackingDisabled": "Baggrundslokaliseringssporing deaktiveret",
   "justNow": "Lige nu",
-  "minutesAgo": "_ _ PLACEREPER _ 0 _ _ minutter siden",
+  "minutesAgo": "{minutes} minutter siden",
   "@minutesAgo": {
     "placeholders": {
       "minutes": {
@@ -745,7 +745,7 @@
       }
     }
   },
-  "hoursAgo": "_ _ PLACEREPORT _ 0 _ _ timer siden",
+  "hoursAgo": "{hours} timer siden",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -753,7 +753,7 @@
       }
     }
   },
-  "daysAgo": "_ _ PLACEREPORT _ 0 _ _ dage siden",
+  "daysAgo": "{days} dage siden",
   "@daysAgo": {
     "placeholders": {
       "days": {
@@ -771,7 +771,7 @@
   "splashRetry": "Prøv igen",
   "splashContinue": "Fortsæt",
   "splashInitializing": "Initialisering...",
-  "signInWelcome": "Velkommen!",
+  "signInWelcome": "Velkommen {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "Signal- in mislykkedes: _ _ PLACEREPORT _ 0 _ _",
+  "signInFailed": "Signal- in mislykkedes: {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -800,7 +800,7 @@
   "signInEmailDescription": "Vi sender dig et sikkert link",
   "signInEmailAddress": "E- mail- adresse",
   "signInEmailPlaceholder": "din @ email.com",
-  "signInTryAgainIn": "Prøv igen i _ _ PLACEREPER _ 0 _ _ s",
+  "signInTryAgainIn": "Prøv igen i {seconds}s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "Email-verifikation hjælper med at sikre din konto og gør det muligt konto opsving, hvis du mister adgang til din enhed.",
   "phoneAuthFailedToSendCode": "Kunne ikke sende verifikationskode. Prøv igen.",
   "phoneAuthInvalidCodeTryAgain": "Ugyldig verifikationskode. Prøv igen.",
-  "phoneAuthPhoneVerified": "Bekræftet telefonnummer: _ _ PLACEREPORT _ 0 _ _",
+  "phoneAuthPhoneVerified": "Bekræftet telefonnummer: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -859,7 +859,7 @@
   "phoneAuthVerifyYourPhone": "Verificér din telefon",
   "phoneAuthEnterVerificationCode": "Indtast verifikation Kode",
   "phoneAuthAddPhoneForSecurity": "Tilføj dit telefonnummer til konto opsving og sikkerhed",
-  "phoneAuthEnterSixDigitCode": "Indtast den 6cifrede kode sendt til _ _ PLACEREPER _ 0 _ _ _",
+  "phoneAuthEnterSixDigitCode": "Indtast den 6cifrede kode sendt til {phoneNumber}",
   "@phoneAuthEnterSixDigitCode": {
     "placeholders": {
       "phoneNumber": {
@@ -925,25 +925,25 @@
   "celestialSunDaylight": "Solen står op - dagslys kan påvirke sigtbarheden",
   "celestialSunTwilight": "Twilight betingelser - nogle synlighed, men mørkere end dagslys",
   "celestialSunDark": "Mørke forhold - optimal til observation af objekter i himlen",
-  "celestialMoonBright": "Bright _ _ PLACEREPER _ 0 _ _ moon synlige - kan belyse eller skjule andre objekter",
-  "celestialMoonModerate": "_ _ PLACEREPORT _ 0 _ _ månen synlig - moderate lysforhold",
-  "celestialMoonThin": "Tynd _ _ PLACEREPORT _ 0 _ _ moon synlig - minimal belysning",
-  "celestialMoonHidden": "_ _ PLACEREPORT _ 0 _ _ månen under horisonten - ingen månebelysning",
+  "celestialMoonBright": "Bright {phase} moon synlige - kan belyse eller skjule andre objekter",
+  "celestialMoonModerate": "{phase} månen synlig - moderate lysforhold",
+  "celestialMoonThin": "Tynd {phase} moon synlig - minimal belysning",
+  "celestialMoonHidden": "{phase} månen under horisonten - ingen månebelysning",
   "celestialNoPlanets": "Ingen lyse planeter synlige, der kunne forveksles med ufoer",
-  "celestialPlanetHigh": "_ _ PLACEREPORT _ 0 _ _ high overhead (_ _ PLACEREPORT _ 1 _ _ °) - meget fremtrædende",
-  "celestialPlanetMedium": "_ _ PLACEREPORT _ 0 _ _ synlig på _ _ PLACEREPORT _ 1 _ _ ° - kunne forveksles med fly",
-  "celestialPlanetLow": "_ _ PLACEREPORT _ 0 _ _ lav i horisonten (_ _ PLACEREPORT _ 1 _ _ °)",
+  "celestialPlanetHigh": "{planet} high overhead ({altitude}°) - meget fremtrædende",
+  "celestialPlanetMedium": "{planet} synlig på {altitude}° - kunne forveksles med fly",
+  "celestialPlanetLow": "{planet} lav i horisonten ({altitude}°)",
   "celestialNoStars": "Ingen usædvanligt lyse stjerner synlige",
-  "celestialStarSingle": "_ _ PLACEREPORT _ 0 _ _ fremtrædende på _ _ PLACEREPORT _ 1 _ _ _ ° højde",
-  "celestialStarsMultiple": "_ _ PLACEREPORT _ 0 _ _ lyse stjerner synlige - _ _ PLACEREPORT _ 1 _ _",
+  "celestialStarSingle": "{star} fremtrædende på {altitude}° højde",
+  "celestialStarsMultiple": "{count} lyse stjerner synlige - {names}",
   "celestialSummaryDaylight": "Dagslys betingelser",
   "celestialSummaryDark": "Mørke himmelforhold",
   "celestialSummaryMoonUp": "månebelysning til stede",
   "celestialSummaryMoonDown": "ingen månebelysning",
-  "celestialSummaryManyObjects": "_ _ PLACEREPORT _ 0 _ _ lyse objekter, der kan forveksles med UFO 'er",
-  "celestialSummarySomeObjects": "_ _ PLACEREPORT _ 0 _ _ bright objekt (er) synlige",
+  "celestialSummaryManyObjects": "{count} lyse objekter, der kan forveksles med UFO 'er",
+  "celestialSummarySomeObjects": "{count} bright objekt (er) synlige",
   "celestialSummaryFewObjects": "minimal lyse objekter i himlen",
-  "celestialSkySummary": "Luftforhold: _ _ PLACEREPORT _ 0 _ _",
+  "celestialSkySummary": "Luftforhold: {conditions}",
   "planetVenus": "Venus",
   "planetJupiter": "Jupiter",
   "planetSaturn": "Saturn",
@@ -967,19 +967,19 @@
   "moonPhaseWaningGibbous": "Wening Gibbous",
   "moonPhaseThirdQuarter": "Tredje kvartal",
   "moonPhaseWaningCrescent": "Wening Crescent",
-  "planetBelowHorizon": "_ _ PLACEREPORT _ 0 _ _ under horisont",
-  "planetHighOverheadProminent": "_ _ PLACEREPORT _ 0 _ _ high overhead (_ _ PLACEREPORT _ 1 _ _ °) - meget fremtrædende",
-  "planetMidSkyProminent": "_ _ PLACEREPORT _ 0 _ _ at _ _ PLACEREPORT _ 1 _ _ ° - fremtrædende",
-  "planetMidSky": "_ _ PLACEREPORT _ 0 _ _ at _ _ PLACEREPORT _ 1 _ _ °",
-  "starVeryBright": "_ _ PLACEREPORT _ 0 _ _ meget lys på _ _ PLACEREPORT _ 1 _ _ °",
-  "starProminent": "_ _ PLACEREPORT _ 0 _ _ fremtrædende på _ _ PLACEREPORT _ 1 _ _ _ ° højde",
-  "starVisible": "_ _ PLACEREPORT _ 0 _ _ at _ _ PLACEREPORT _ 1 _ _ °",
+  "planetBelowHorizon": "{planet} under horisont",
+  "planetHighOverheadProminent": "{planet} high overhead ({altitude}°) - meget fremtrædende",
+  "planetMidSkyProminent": "{planet} at {altitude}° - fremtrædende",
+  "planetMidSky": "{planet} at {altitude}°",
+  "starVeryBright": "{star} meget lys på {altitude}°",
+  "starProminent": "{star} fremtrædende på {altitude}° højde",
+  "starVisible": "{star} at {altitude}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
-  "satellitesVisibleMightExplain": "_ _ PLACEREPER _ 0 _ _ satellitter synlige - kan forklare observation",
-  "satellitesVisibleUnlikelyExplain": "_ _ PLACEREPORT _ 0 _ _ satellitter synlige - usandsynligt at forklare observation",
+  "satellitesVisibleMightExplain": "{count} satellitter synlige - kan forklare observation",
+  "satellitesVisibleUnlikelyExplain": "{count} satellitter synlige - usandsynligt at forklare observation",
   "noSatellitesVisible": "Ingen satellitter synlige",
-  "aircraftDetectedInRadius": "_ _ PLACEREPORT _ 0 _ _ luftfartøjer opdaget inden _ _ PLACEREPORT _ 1 _ _ km",
+  "aircraftDetectedInRadius": "{count} luftfartøjer opdaget inden {radius}km",
   "processingAlert": "Behandling af UFO alarm...",
   "analyzingEnvironment": "Analyse af miljøforhold",
   "weatherAnalysis": "Vejranalyse",
@@ -987,7 +987,7 @@
   "aircraftTracking": "Flysporing",
   "satelliteAnalysis": "Satellitanalyse",
   "celestialAnalysis": "Himmelsk analyse",
-  "analyzing": "Analyse _ _ PLACEREPORT _ 0 _ _...",
+  "analyzing": "Analyse {processor}...",
   "processorWeather": "vejrforhold",
   "processorLocation": "lokaliseringsoplysninger",
   "processorAircraft": "flyvemaskiner i nærheden",
@@ -996,7 +996,7 @@
   "calculatingCelestialData": "Beregning af himmelsk data...",
   "sunLabel": "Sol",
   "moonLabel": "Måne",
-  "planetsVisible": "Planeter: _ _ PLACEREPORT _ 0 _ _ visible",
+  "planetsVisible": "Planeter: {count} visible",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "Stjerner",
   "planetsLabel": "Planeter",
-  "moonWithPhase": "Måne (_ _ PLACEREPER _ 0 _ _)",
+  "moonWithPhase": "Måne ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1024,8 +1024,8 @@
   "noWeatherDescription": "Ingen beskrivelse",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "Satellitter (_ _ PLACEREPER _ 0 _ _ synlige nu)",
-  "sunWithDescription": "Sun: _ _ PLACEREPER _ 0 _ _",
+  "satellitesVisibleNow": "Satellitter ({count} synlige nu)",
+  "sunWithDescription": "Sun: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "Måne: _ _ PLACEREPORT _ 0 _ _",
+  "moonWithDescription": "Måne: {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1057,7 +1057,7 @@
   "unknownDirection": "ukendt retning",
   "brightStars": "Lyse stjerner",
   "satellites": "Satellitter",
-  "seeAllSatellites": "Se alle _ _ PLACEREPORT _ 0 _ _ satellitter",
+  "seeAllSatellites": "Se alle {count} satellitter",
   "@seeAllSatellites": {
     "placeholders": {
       "count": {
@@ -1066,7 +1066,7 @@
       }
     }
   },
-  "maxElevation": "Maks. højde: _ _ PLACEREPORT _ 0 _ _ °",
+  "maxElevation": "Maks. højde: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "Størrelse: _ _ PLACEREPORT _ 0 _ _",
+  "magnitude": "Størrelse: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {
@@ -1085,7 +1085,7 @@
     }
   },
   "unknownGeneric": "Ukendt",
-  "altitudeValue": "_ _ PLACEREPORT _ 0 _ _ _ ° højde",
+  "altitudeValue": "{degrees}° højde",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1094,7 +1094,7 @@
       }
     }
   },
-  "azimuthValue": "_ _ PLACEREPORT _ 0 _ _ _ ° azimuth",
+  "azimuthValue": "{degrees}° azimuth",
   "@azimuthValue": {
     "placeholders": {
       "degrees": {
@@ -1133,7 +1133,7 @@
   "endTime": "Sluttidspunkt",
   "allowCriticalAlertsDuringQuietHours": "Tillad kritiske advarsler i stille timer",
   "silenceNotificationsDuringSleepHours": "Tavshedsanmeldelser under søvntid",
-  "quietHoursActiveTimeRange": "Aktiv _ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _",
+  "quietHoursActiveTimeRange": "Aktiv {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1147,7 +1147,7 @@
     }
   },
   "followingAlerts": "Følgende indberetninger",
-  "activeCount": "_ _ PLACEREPORT _ 0 _ _ active",
+  "activeCount": "{count} active",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1158,7 +1158,7 @@
   },
   "unfollow": "Afføl",
   "unfollowAlert": "Afføl alarm",
-  "commentsCount": "_ _ PLACEREPER _ 0 _ _ kommentarer",
+  "commentsCount": "{count} kommentarer",
   "photo": "Foto",
   "video": "Video",
   "initializationComplete": "Initialisering fuldført!",
@@ -1172,7 +1172,7 @@
   "gatheringDeviceInfo": "Indsamling af enhedsinformation...",
   "translating": "Oversætter...",
   "showOriginal": "Vis original",
-  "translateTo": "Oversæt til _ _ PLACEREPER _ 0 _ _",
+  "translateTo": "Oversæt til {language}",
   "@translateTo": {
     "placeholders": {
       "language": {
@@ -1181,7 +1181,7 @@
       }
     }
   },
-  "translatedFrom": "Oversat fra _ _ PLACEREPORT _ 0 _ _",
+  "translatedFrom": "Oversat fra {language}",
   "@translatedFrom": {
     "placeholders": {
       "language": {
@@ -1190,7 +1190,7 @@
       }
     }
   },
-  "translateContent": "Oversæt indhold til _ _ PLACEREPER _ 0 _ _",
+  "translateContent": "Oversæt indhold til {language}",
   "@translateContent": {
     "placeholders": {
       "language": {
@@ -1221,7 +1221,7 @@
   "lightRain": "let regn",
   "moderateRain": "moderat regn",
   "heavyRain": "kraftig regn",
-  "aircraftDetectedCurrentPositions": "_ _ PLACEREPORT _ 0 _ _ luftfartøj opdaget inden _ _ PLACEREPORT _ 1 _ _ km (nuværende positioner)",
+  "aircraftDetectedCurrentPositions": "{count} luftfartøj opdaget inden {radius}km (nuværende positioner)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1234,7 +1234,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "_ _ PLACEREPER _ 0 _ _ dim satellitter synlige - usandsynligt at forklare observation",
+  "dimSatellitesUnlikely": "{count} dim satellitter synlige - usandsynligt at forklare observation",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {
@@ -1244,7 +1244,7 @@
     }
   },
   "mufonReportingDate": "MUFON Rapporteringsdato",
-  "satelliteNameDirection": "_ _ PLACEREPORT _ 0 _ - _ _ PLACEREPORT _ 1 _ _",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {

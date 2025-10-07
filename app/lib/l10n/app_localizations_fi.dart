@@ -121,12 +121,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '_Placeholder_0_ pois';
+    return '$distance pois';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Suunta __PAIKKAHOLDER_0_°';
+    return 'Suunta $bearing°';
   }
 
   @override
@@ -217,22 +217,22 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Ilmoittanut __PAIKKAHOLDER_0__';
+    return 'Ilmoittanut $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Raportoitu __PAIKKAHOLDER_0___';
+    return 'Raportoitu $timeAgo';
   }
 
   @override
   String distanceAway(String distance) {
-    return '__PAIKKAHOLDER_0___';
+    return '$distance';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Kohde: __PAIKKAHOLDER_0_°';
+    return 'Kohde: $bearing°';
   }
 
   @override
@@ -294,7 +294,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Osoitetaan __PAIKKAHOLDER_0__';
+    return 'Osoitetaan $direction';
   }
 
   @override
@@ -308,7 +308,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Uusi havainto raportoitiin __PASSIHOLDER_0_ pois.';
+    return 'Uusi havainto raportoitiin $distance pois.';
   }
 
   @override
@@ -331,12 +331,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Pilvipeite: __Placeholder_0__%';
+    return 'Pilvipeite: $percent%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Tuuli: __PAIKKAHOLDER_0____PAIKKAHOLDER_1__';
+    return 'Tuuli: $speed $unit';
   }
 
   @override
@@ -392,7 +392,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND on käytössä kunnes __PAIKKAHOLDER_0__';
+    return 'DND on käytössä kunnes $time';
   }
 
   @override
@@ -400,12 +400,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Aktiivinen __PASSIHOLDER_0__ - __PASSIHOLDER_1__';
+    return 'Aktiivinen $startTime - $endTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Hiljaiset tunnit: __Placeholder_0__ - __Placeholder_1_';
+    return 'Hiljaiset tunnit: $start - $end';
   }
 
   @override
@@ -423,12 +423,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String pushNotificationCommented(Object username) {
-    return '__Placeholder_0__ kommentoi';
+    return '$username kommentoi';
   }
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '__PASSIHOLDER_0__ kommentoi __PASSIHOLDER_1__';
+    return '$username kommentoi $beepTitle';
   }
 
   @override
@@ -519,17 +519,17 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '_Placeholder_0__ päivää sitten';
+    return '$count päivää sitten';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '__PASSIHOLDER_0__ tunteja sitten';
+    return '$count tunteja sitten';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '_Placeholder_0__ minuuttia sitten';
+    return '$count minuuttia sitten';
   }
 
   @override
@@ -596,7 +596,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON-tapaus #__Placeholder_0_ Yksityiskohdat';
+    return 'MUFON-tapaus #$caseNumber Yksityiskohdat';
   }
 
   @override
@@ -637,7 +637,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '_Placeholder_0_ ihmiset vahvistivat tämän havainnon';
+    return '$count ihmiset vahvistivat tämän havainnon';
   }
 
   @override
@@ -645,7 +645,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analyysi: __PAIKKAHOLDER_0__ mediatiedosto [s] käsitelty';
+    return 'Analyysi: $count mediatiedosto [s] käsitelty';
   }
 
   @override
@@ -999,7 +999,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '_Placeholder_0_ ihmiset ovat vahvistaneet tämän havainnon';
+    return '$count ihmiset ovat vahvistaneet tämän havainnon';
   }
 
   @override
@@ -1045,7 +1045,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Asia #__Placeholder_0___';
+    return 'MUFON Asia #$caseNumber';
   }
 
   @override
@@ -1084,7 +1084,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '__PASSIHOLDER_0___ lähellä __PASSIHOLDER_1_';
+    return '$witnessText lähellä $locationName';
   }
 
   @override
@@ -1097,7 +1097,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '_Placeholder_0__ silminnäkijät';
+    return '$count silminnäkijät';
   }
 
   @override
@@ -1108,7 +1108,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '_Placeholder_0_ pois';
+    return '$distance pois';
   }
 
   @override
@@ -1157,7 +1157,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Sivu __PASSIHOLDER_0__ of _PASSIHOLDER_1__ (__PASSIHOLDER_2_ total piips)';
+    return 'Sivu $currentPage of $totalPages ($totalCount total piips)';
   }
 
   @override
@@ -1305,7 +1305,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON__Placeholder_0_report';
+    return 'MUFON $classification Report';
   }
 
   @override
@@ -1328,7 +1328,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '_Placeholder_0_vedokset';
+    return '$count vedokset';
   }
 
   @override
@@ -1336,7 +1336,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+__PASSIHOLDER_0_ lisää';
+    return '+$count lisää';
   }
 
   @override
@@ -1761,17 +1761,17 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String minutesAgo(int minutes) {
-    return '_Placeholder_0__ minuuttia sitten';
+    return '$minutes minuuttia sitten';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '__PASSIHOLDER_0__ tunteja sitten';
+    return '$hours tunteja sitten';
   }
 
   @override
   String daysAgo(int days) {
-    return '_Placeholder_0__ päivää sitten';
+    return '$days päivää sitten';
   }
 
   @override
@@ -1806,12 +1806,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String signInWelcome(String username) {
-    return 'Tervetuloa __PAIKKAHOLDER_0__!';
+    return 'Tervetuloa $username!';
   }
 
   @override
   String signInFailed(String error) {
-    return 'Kirjautuminen epäonnistui: __PAIKKAHOLDER_0___';
+    return 'Kirjautuminen epäonnistui: $error';
   }
 
   @override
@@ -1858,7 +1858,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Yritä uudelleen __PAIKKAHOLDER_0_s';
+    return 'Yritä uudelleen ${seconds}s';
   }
 
   @override
@@ -1966,7 +1966,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return 'Puhelinnumero vahvistettu: __PAIKKAHOLDER_0___';
+    return 'Puhelinnumero vahvistettu: $phoneNumber';
   }
 
   @override
@@ -2023,7 +2023,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return 'Anna 6-numeroinen koodi, joka on lähetetty osoitteeseen __Placeholder_0__';
+    return 'Anna 6-numeroinen koodi, joka on lähetetty osoitteeseen $phoneNumber';
   }
 
   @override
@@ -2223,22 +2223,22 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Kirkas __PAIKKAHOLDER_0__ kuu näkyvissä - voi valaisea tai hämärtää muita esineitä';
+    return 'Kirkas $phase kuu näkyvissä - voi valaisea tai hämärtää muita esineitä';
   }
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '__PAIKKAHOLDER_0__ kuu näkyvissä - kohtuulliset valaistusolosuhteet';
+    return '$phase kuu näkyvissä - kohtuulliset valaistusolosuhteet';
   }
 
   @override
   String celestialMoonThin(Object phase) {
-    return 'Ohut __PAIKKAHOLDER_0__ kuu näkyvissä - minimaalinen valaistus';
+    return 'Ohut $phase kuu näkyvissä - minimaalinen valaistus';
   }
 
   @override
   String celestialMoonHidden(Object phase) {
-    return '__Placeholder_0__ kuu horisontin alla - ei kuun valaistus';
+    return '$phase kuu horisontin alla - ei kuun valaistus';
   }
 
   @override
@@ -2247,17 +2247,17 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '__PASSIHOLDER_0__ korkea yläpuolella (__PASSIHOLDER_1_°) - erittäin näkyvä';
+    return '$planet korkea yläpuolella ($altitude°) - erittäin näkyvä';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '__PASSIHOLDER_0__ näkyvissä __PASSIHOLDER_1_° - voidaan sekoittaa ilma-aluksiin';
+    return '$planet näkyvissä $altitude° - voidaan sekoittaa ilma-aluksiin';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '__PASSIHOLDER_0__ alhainen horisontissa (__PASSIHOLDER_1_°)';
+    return '$planet alhainen horisontissa ($altitude°)';
   }
 
   @override
@@ -2265,12 +2265,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '__PASSIHOLDER_0__ näkyvä __PASSIHOLDER_1__° korkeus';
+    return '$star näkyvä $altitude° korkeus';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '__PAIKKAHOLDER_0__ kirkkaat tähdet näkyvissä - _PlaceHOLDER_1_';
+    return '$count kirkkaat tähdet näkyvissä - $names';
   }
 
   @override
@@ -2287,12 +2287,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return '__Placeholder_0__ kirkkaat objektit, jotka voidaan sekoittaa UFOihin';
+    return '$count kirkkaat objektit, jotka voidaan sekoittaa UFOihin';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return '__Placeholder_0__ kirkas objekti [s] näkyvissä';
+    return '$count kirkas objekti [s] näkyvissä';
   }
 
   @override
@@ -2301,7 +2301,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String celestialSkySummary(Object conditions) {
-    return 'Lento-olosuhteet: __PAIKKAHOLDER_0___';
+    return 'Lento-olosuhteet: $conditions';
   }
 
   @override
@@ -2376,37 +2376,37 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '__PAIKKAHOLDER_0__ horisontin alapuolella';
+    return '$planet horisontin alapuolella';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '__PASSIHOLDER_0__ korkea yläpuolella (__PASSIHOLDER_1_°) - erittäin näkyvä';
+    return '$planet korkea yläpuolella ($altitude°) - erittäin näkyvä';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '__PASSIHOLDER_0__ at __PASSIHOLDER_1_° - näkyvä';
+    return '$planet at $altitude° - näkyvä';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '__PASSIHOLDER_0__ at _PlaceHOLDER_1_°';
+    return '$planet at $altitude°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '__PASSIHOLDER_0__ erittäin kirkas __PASSIHOLDER_1_°';
+    return '$star erittäin kirkas $altitude°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '__PASSIHOLDER_0__ näkyvä __PASSIHOLDER_1__° korkeus';
+    return '$star näkyvä $altitude° korkeus';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '__PASSIHOLDER_0__ at _PlaceHOLDER_1_°';
+    return '$star at $altitude°';
   }
 
   @override
@@ -2417,12 +2417,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '_Placeholder_0_ satelliitit näkyvät - saattaa selittää havaintoja';
+    return '$count satelliitit näkyvät - saattaa selittää havaintoja';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '_Placeholder_0__ satelliitit näkyvissä - tuskin selittää havaintoja';
+    return '$count satelliitit näkyvissä - tuskin selittää havaintoja';
   }
 
   @override
@@ -2430,7 +2430,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '__PASSIHOLDER_0___-ilma-alus havaittu __PASSIHOLDER_1_km';
+    return '$count-ilma-alus havaittu ${radius}km';
   }
 
   @override
@@ -2456,7 +2456,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String analyzing(Object processor) {
-    return 'Analysoidaan __PASSIHOLDER_0__...';
+    return 'Analysoidaan $processor...';
   }
 
   @override
@@ -2485,7 +2485,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return 'Planeetat: __PAIKKAHOLDER_0_ näkyvissä';
+    return 'Planeetat: $count näkyvissä';
   }
 
   @override
@@ -2496,7 +2496,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'Kuu (___PASSIHOLDER_0__)';
+    return 'Kuu ($phase)';
   }
 
   @override
@@ -2527,17 +2527,17 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String satellitesVisibleNow(int count) {
-    return 'Satelliitit (__Placeholder_0_ näkyvät nyt)';
+    return 'Satelliitit ($count näkyvät nyt)';
   }
 
   @override
   String sunWithDescription(String description) {
-    return 'Aurinko: __PAIKKAHOLDER_0___';
+    return 'Aurinko: $description';
   }
 
   @override
   String moonWithDescription(String description) {
-    return 'Kuu: __PAIKKAHOLDER_0__';
+    return 'Kuu: $description';
   }
 
   @override
@@ -2560,17 +2560,17 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String seeAllSatellites(int count) {
-    return 'Katso kaikki __PAIKKAHOLDER_0_ satelliitit';
+    return 'Katso kaikki $count satelliitit';
   }
 
   @override
   String maxElevation(String degrees) {
-    return 'Suurin korkeus merenpinnasta: _Placeholder_0__°';
+    return 'Suurin korkeus merenpinnasta: $degrees°';
   }
 
   @override
   String magnitude(String value) {
-    return 'Merkitys: __PAIKKAHOLDER_0___';
+    return 'Merkitys: $value';
   }
 
   @override
@@ -2578,12 +2578,12 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String altitudeValue(String degrees) {
-    return '_Placeholder_0__° korkeus';
+    return '$degrees° korkeus';
   }
 
   @override
   String azimuthValue(String degrees) {
-    return '__Placeholder_0_° azimuth';
+    return '$degrees° azimuth';
   }
 
   @override
@@ -2645,7 +2645,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return 'Aktiivinen __PASSIHOLDER_0__ - __PASSIHOLDER_1__';
+    return 'Aktiivinen $startTime - $endTime';
   }
 
   @override
@@ -2653,7 +2653,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String activeCount(int count) {
-    return '_Placeholder_0__ aktiivinen';
+    return '$count aktiivinen';
   }
 
   @override
@@ -2664,7 +2664,7 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '__Placeholder_0__ comments';
+    return '$count comments';
   }
 
   @override
@@ -2708,17 +2708,17 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String translateTo(String language) {
-    return 'Käännä __PAIKKAHOLDER_0___';
+    return 'Käännä $language';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Käännetty __PASSIHOLDER_0__';
+    return 'Käännetty $language';
   }
 
   @override
   String translateContent(String language) {
-    return 'Käännä sisältö __PAIKKAHOLDER_0__';
+    return 'Käännä sisältö $language';
   }
 
   @override
@@ -2764,17 +2764,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get heavyRain => 'rankkasade';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '__PASSIHOLDER_0__-ilma-alus havaittu __PASSIHOLDER_1_km (nykyiset paikat)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count-ilma-alus havaittu ${radius}km (nykyiset paikat)';
   }
 
   @override
   String dimSatellitesUnlikely(int count) {
-    return '__PlaceHolder_0__himmennyssatelliitit näkyvissä - ei todennäköisesti selitä havaintoja';
+    return '$count himmennyssatelliitit näkyvissä - ei todennäköisesti selitä havaintoja';
   }
 
   @override

@@ -121,12 +121,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '_ _ PLACETETERER _ 0 _ _ away';
+    return '$distance away';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'Ložisko _ _ PLACETETELER _ 0 _ _ °';
+    return 'Ložisko $bearing°';
   }
 
   @override
@@ -219,17 +219,17 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Reported by _ _ PLACETIER _ 0 _ _';
+    return 'Reported by $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Hlášený _ _ PLACETETERER _ 0 _ _';
+    return 'Hlášený $timeAgo';
   }
 
   @override
   String distanceAway(String distance) {
-    return '_ _ PLACETETERER _ 0 _ _';
+    return '$distance';
   }
 
   @override
@@ -296,7 +296,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Ukazuje na _ _ PLACETETERER _ 0 _ _';
+    return 'Ukazuje na $direction';
   }
 
   @override
@@ -310,7 +310,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'Bylo hlášeno nové pozorování _ _ PLACETETERER _ 0 _ _ away.';
+    return 'Bylo hlášeno nové pozorování $distance away.';
   }
 
   @override
@@ -333,12 +333,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: _ _ PLACETETERER _ 0 _ _%';
+    return 'Cloud cover: $percent%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Vítr: _ _ PLACETETELER _ 0 _ _ _ _ PLACETETELER _ 1 _ _';
+    return 'Vítr: $speed $unit';
   }
 
   @override
@@ -392,7 +392,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND povoleno do _ _ PLACETETELER _ 0 _ _';
+    return 'DND povoleno do $time';
   }
 
   @override
@@ -400,12 +400,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Active _ _ PLACETIER _ 0 _ - _ _ PLACETIER _ 1 _ _';
+    return 'Active $startTime - $endTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Tiché hodiny: _ _ PLACETIER _ 0 _ _ - _ _ PLACETIER _ 1 _ _';
+    return 'Tiché hodiny: $start - $end';
   }
 
   @override
@@ -423,12 +423,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String pushNotificationCommented(Object username) {
-    return '_ _ PLACETETERER _ 0 _ _ komentáře';
+    return '$username komentáře';
   }
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '_ _ PLACETIER _ 0 _ _ komentuje _ _ PLACETIER _ 1 _ _';
+    return '$username komentuje $beepTitle';
   }
 
   @override
@@ -594,7 +594,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'Případ MUFON # _ _ PLACETETELER _ 0 _ _ Podrobnosti';
+    return 'Případ MUFON #$caseNumber Podrobnosti';
   }
 
   @override
@@ -635,7 +635,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování';
+    return '$count lidé potvrdili toto pozorování';
   }
 
   @override
@@ -643,7 +643,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analýza: _ _ PLACETELER _ 0 _ _ media soubor (y) zpracován';
+    return 'Analýza: $count media soubor (y) zpracován';
   }
 
   @override
@@ -999,7 +999,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '_ _ PLACETETERER _ 0 _ _ lidé potvrdili toto pozorování';
+    return '$count lidé potvrdili toto pozorování';
   }
 
   @override
@@ -1045,7 +1045,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Případ # _ _ PLACETIER _ 0 _ _';
+    return 'MUFON Případ #$caseNumber';
   }
 
   @override
@@ -1084,12 +1084,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '_ _ PLACETIER _ 0 _ _ near _ _ PLACETIER _ 1 _ _';
+    return '$witnessText near $locationName';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return 'PLACETELER _ 0 _ _ komentáře';
+    return '$username komentáře';
   }
 
   @override
@@ -1097,7 +1097,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return '_ _ PLACETETELER _ 0 _ _ svědci';
+    return '$count svědci';
   }
 
   @override
@@ -1108,7 +1108,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '_ _ PLACETETERER _ 0 _ _ away';
+    return '$distance away';
   }
 
   @override
@@ -1157,7 +1157,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Page _ _ PLACETIER _ 0 _ _ _ _ PLACETIER _ 1 _ _ (_ _ PLACETIER _ 2 _ _ celkem pípnutí)';
+    return 'Page $currentPage $totalPages ($totalCount celkem pípnutí)';
   }
 
   @override
@@ -1305,7 +1305,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON _ _ PLACETETELER _ 0 _ _ Zpráva';
+    return 'MUFON $classification Zpráva';
   }
 
   @override
@@ -1328,7 +1328,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '_ _ PLACETETELER _ 0 _ _ obrázky';
+    return '$count obrázky';
   }
 
   @override
@@ -1336,7 +1336,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+ _ _ PLACETETELER _ 0 _ _ více';
+    return '+$count více';
   }
 
   @override
@@ -1763,17 +1763,17 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String minutesAgo(int minutes) {
-    return 'Před pár minutami';
+    return '$minutes Před pár minutami';
   }
 
   @override
   String hoursAgo(int hours) {
-    return 'Před pár hodinami';
+    return '$hours Před pár hodinami';
   }
 
   @override
   String daysAgo(int days) {
-    return 'Před pár dny';
+    return '$days Před pár dny';
   }
 
   @override
@@ -1809,12 +1809,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String signInWelcome(String username) {
-    return 'Vítejte!';
+    return 'Vítejte $username!';
   }
 
   @override
   String signInFailed(String error) {
-    return 'Sign- in selhalo: _ _ PLACETETERER _ 0 _ _';
+    return 'Sign- in selhalo: $error';
   }
 
   @override
@@ -1862,7 +1862,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Zkuste to znovu v _ _ PLACETETELER _ 0 _ _ s';
+    return 'Zkuste to znovu v $seconds s';
   }
 
   @override
@@ -1970,7 +1970,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return 'Číslo telefonu ověřeno: _ _ PLACETETERER _ 0 _ _';
+    return 'Číslo telefonu ověřeno: $phoneNumber';
   }
 
   @override
@@ -2027,7 +2027,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return 'Zadejte 6místný kód odeslaný na _ _ PLACETETIER _ 0 _ _';
+    return 'Zadejte 6místný kód odeslaný na $phoneNumber';
   }
 
   @override
@@ -2227,22 +2227,22 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Bright _ _ PLACETETERER _ 0 _ _ měsíc viditelný - může osvětlit nebo zakrýt jiné objekty';
+    return 'Bright $phase měsíc viditelný - může osvětlit nebo zakrýt jiné objekty';
   }
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '_ _ PLACETETELER _ 0 _ _ měsíc viditelný - mírné světelné podmínky';
+    return '$phase měsíc viditelný - mírné světelné podmínky';
   }
 
   @override
   String celestialMoonThin(Object phase) {
-    return 'Tenký _ _ PLACETETELER _ 0 _ _ měsíc viditelný - minimální osvětlení';
+    return 'Tenký $phase měsíc viditelný - minimální osvětlení';
   }
 
   @override
   String celestialMoonHidden(Object phase) {
-    return '_ _ PLACETETERER _ 0 _ _ měsíc pod horizontem - žádné měsíční osvětlení';
+    return '$phase měsíc pod horizontem - žádné měsíční osvětlení';
   }
 
   @override
@@ -2251,17 +2251,17 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '_ _ PLACETETIER _ 0 _ _ vysoký režijní náklady (_ _ PLACETIER _ 1 _ _ °) - velmi prominentní';
+    return '$planet vysoký režijní náklady ($altitude°) - velmi prominentní';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '_ _ PLACETIER _ 0 _ _ viditelný v _ _ PLACETIER _ 1 _ _ ° - může být zaměněn za letadlo';
+    return '$planet viditelný v $altitude° - může být zaměněn za letadlo';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '_ _ PLACETIER _ 0 _ _ low on obzor (_ _ PLACETIER _ 1 _ _ °)';
+    return '$planet low on obzor ($altitude°)';
   }
 
   @override
@@ -2269,12 +2269,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '_ _ PLACETIER _ 0 _ _ prominentní v _ _ PLACETIER _ 1 _ _ ° nadmořská výška';
+    return '$star prominentní v $altitude° nadmořská výška';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '_ _ PLACETIER _ 0 _ _ jasné hvězdy viditelné - _ _ PLACETIER _ 1 _ _';
+    return '$count jasné hvězdy viditelné - $names';
   }
 
   @override
@@ -2291,12 +2291,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return '_ _ PLACETETELER _ 0 _ _ jasné objekty, které by mohly být zaměněny s UFO';
+    return '$count jasné objekty, které by mohly být zaměněny s UFO';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return '_ _ PLACETETERER _ 0 _ _ jasný objekt (y) viditelný';
+    return '$count jasný objekt (y) viditelný';
   }
 
   @override
@@ -2304,7 +2304,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String celestialSkySummary(Object conditions) {
-    return 'Sky podmínky: _ _ PLACETETERER _ 0 _ _';
+    return 'Sky podmínky: $conditions';
   }
 
   @override
@@ -2378,37 +2378,37 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '_ _ PLACETETERER _ 0 _ _ pod horizontem';
+    return '$planet pod horizontem';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '_ _ PLACETETIER _ 0 _ _ vysoký režijní náklady (_ _ PLACETIER _ 1 _ _ °) - velmi prominentní';
+    return '$planet vysoký režijní náklady ($altitude°) - velmi prominentní';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '_ _ PLACETIER _ 0 _ _ at _ _ PLACETIER _ 1 _ _ ° - prominentní';
+    return '$planet at $altitude° - prominentní';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '_ _ PLACETIER _ 0 _ _ at _ _ PLACETIER _ 1 _ _ °';
+    return '$planet at $altitude°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '_ _ PLACETIER _ 0 _ _ velmi jasný na _ _ PLACETIER _ 1 _ _ °';
+    return '$star velmi jasný na $altitude°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '_ _ PLACETIER _ 0 _ _ prominentní v _ _ PLACETIER _ 1 _ _ ° nadmořská výška';
+    return '$star prominentní v $altitude° nadmořská výška';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '_ _ PLACETIER _ 0 _ _ at _ _ PLACETIER _ 1 _ _ °';
+    return '$star at $altitude°';
   }
 
   @override
@@ -2419,12 +2419,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '_ _ PLACETETERER _ 0 _ _ satelity viditelné - může vysvětlit pozorování';
+    return '$count satelity viditelné - může vysvětlit pozorování';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '_ _ PLACETETERER _ 0 _ _ satelity viditelné - pravděpodobně nevysvětluje pozorování';
+    return '$count satelity viditelné - pravděpodobně nevysvětluje pozorování';
   }
 
   @override
@@ -2432,7 +2432,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '_ _ PLACETETELER _ 0 _ _ zjištěná letadla _ _ PLACETETELER _ 1 _ _ km';
+    return '$count zjištěná letadla $radius km';
   }
 
   @override
@@ -2458,7 +2458,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String analyzing(Object processor) {
-    return 'Analyzuji _ _ PLACETETELER _ 0 _ _...';
+    return 'Analyzuji $processor...';
   }
 
   @override
@@ -2487,7 +2487,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return 'Planety: _ _ PLACETETELER _ 0 _ _ viditelný';
+    return 'Planety: $count viditelný';
   }
 
   @override
@@ -2498,7 +2498,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'Měsíční (_ _ PLACETETELER _ 0 _ _)';
+    return 'Měsíční ($phase)';
   }
 
   @override
@@ -2529,17 +2529,17 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String satellitesVisibleNow(int count) {
-    return 'Satelity (_ _ PLACETETELER _ 0 _ _ viditelné nyní)';
+    return 'Satelity ($count viditelné nyní)';
   }
 
   @override
   String sunWithDescription(String description) {
-    return 'Sun: _ _ PLACETETELER _ 0 _ _';
+    return 'Sun: $description';
   }
 
   @override
   String moonWithDescription(String description) {
-    return 'Měsíc: _ _ PLACETETELER _ 0 _ _';
+    return 'Měsíc: $description';
   }
 
   @override
@@ -2562,17 +2562,17 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String seeAllSatellites(int count) {
-    return 'Viz všechny _ _ PLACETETELER _ 0 _ _ satelity';
+    return 'Viz všechny $count satelity';
   }
 
   @override
   String maxElevation(String degrees) {
-    return 'Maximální výška: _ _ PLACETETERER _ 0 _ _ °';
+    return 'Maximální výška: $degrees°';
   }
 
   @override
   String magnitude(String value) {
-    return 'Velikost: _ _ PLACETETERER _ 0 _ _';
+    return 'Velikost: $value';
   }
 
   @override
@@ -2580,12 +2580,12 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String altitudeValue(String degrees) {
-    return '_ _ PLACETETERER _ 0 _ _ ° nadmořská výška';
+    return '$degrees° nadmořská výška';
   }
 
   @override
   String azimuthValue(String degrees) {
-    return '_ _ PLACETETELER _ 0 _ _ ° azimut';
+    return '$degrees° azimut';
   }
 
   @override
@@ -2647,7 +2647,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return 'Active _ _ PLACETIER _ 0 _ - _ _ PLACETIER _ 1 _ _';
+    return 'Active $startTime - $endTime';
   }
 
   @override
@@ -2655,7 +2655,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String activeCount(int count) {
-    return '_ _ PLACETETERER _ 0 _ _ active';
+    return '$count active';
   }
 
   @override
@@ -2666,7 +2666,7 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '_ _ PLACETETERER _ 0 _ _ komentáře';
+    return '$count komentáře';
   }
 
   @override
@@ -2710,17 +2710,17 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String translateTo(String language) {
-    return 'Translate to _ _ PLACETETERER _ 0 _ _';
+    return 'Translate to $language';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Přeloženo z _ _ PLACETETERER _ 0 _ _';
+    return 'Přeloženo z $language';
   }
 
   @override
   String translateContent(String language) {
-    return 'Přeložit obsah do _ _ PLACETETELER _ 0 _ _';
+    return 'Přeložit obsah do $language';
   }
 
   @override
@@ -2766,17 +2766,13 @@ class AppLocalizationsCs extends AppLocalizations {
   String get heavyRain => 'těžký déšť';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '_ _ PLACETETERER _ 0 _ _ zjištěná letadla v _ _ PLACETELER _ 1 _ _ km (aktuální polohy)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count zjištěná letadla v $radius km (aktuální polohy)';
   }
 
   @override
   String dimSatellitesUnlikely(int count) {
-    return '_ _ PLACETETERER _ 0 _ _ dim satelity viditelné - pravděpodobně nevysvětluje pozorování';
+    return '$count dim satelity viditelné - pravděpodobně nevysvětluje pozorování';
   }
 
   @override
@@ -2784,6 +2780,6 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return '_ _ PLACETIER _ 0 _ _ - _ _ PLACETIER _ 1 _ _';
+    return '$name - $direction';
   }
 }

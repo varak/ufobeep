@@ -339,7 +339,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String wind(num speed, String unit) {
-    return 'Ветер: $speed$unit';
+    return 'Ветер: $speed $unit';
   }
 
   @override
@@ -402,7 +402,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Активный$endTime -$startTime';
+    return 'Активный $startTime - $endTime';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$beepTitle прокомментировал $username';
+    return '$username прокомментировал $beepTitle';
   }
 
   @override
@@ -522,17 +522,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '___________________';
+    return '$count дней назад';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '____________________________';
+    return '$count часов назад';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '____________________________';
+    return '$count минут назад';
   }
 
   @override
@@ -644,7 +644,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return '$count человек подтвердили это наблюдение';
   }
 
   @override
@@ -1010,7 +1010,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return '$count человек подтвердили это наблюдение';
   }
 
   @override
@@ -1172,7 +1172,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Страница ${currentPage}_$totalPages ($totalCount полные звуковые сигналы)';
+    return 'Страница $currentPage из $totalPages ($totalCount полные звуковые сигналы)';
   }
 
   @override
@@ -1320,7 +1320,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON$classification Report';
+    return 'MUFON $classification Report';
   }
 
   @override
@@ -1785,17 +1785,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String minutesAgo(int minutes) {
-    return '____________________________';
+    return '$minutes минут назад';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '____________________________';
+    return '$hours часов назад';
   }
 
   @override
   String daysAgo(int days) {
-    return '___________________';
+    return '$days дней назад';
   }
 
   @override
@@ -1832,7 +1832,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String signInWelcome(String username) {
-    return 'Добро пожаловать ________!';
+    return 'Добро пожаловать $username!';
   }
 
   @override
@@ -2279,17 +2279,17 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '$altitude высокие накладные расходы ($planet°)';
+    return '$planet высокие накладные расходы ($altitude°)';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '$altitude видимый на $planet° - может быть ошибочно принят за самолет';
+    return '$planet видимый на $altitude° - может быть ошибочно принят за самолет';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$altitude low on horizon ($planet°)';
+    return '$planet низко на горизонте ($altitude°)';
   }
 
   @override
@@ -2297,12 +2297,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '$altitude видно на высоте $star°';
+    return '$star видно на высоте $altitude°';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$names яркие звезды - $count';
+    return '$count яркие звезды - $names';
   }
 
   @override
@@ -2411,32 +2411,32 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$altitude высокие накладные расходы ($planet°)';
+    return '$planet высокие накладные расходы ($altitude°)';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '$altitude на $planet° - видный';
+    return '$planet на $altitude° - видный';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '$altitude в $planet°';
+    return '$planet на $altitude°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '$altitude очень яркий на $star°';
+    return '$star очень яркий на $altitude°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '$altitude видно на высоте $star°';
+    return '$star видимая на высоте $altitude°';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '$altitude в $star°';
+    return '$star на $altitude°';
   }
 
   @override
@@ -2460,7 +2460,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '$radius самолет обнаружен в ${count}km';
+    return '$count самолет обнаружен в ${radius}km';
   }
 
   @override
@@ -2486,7 +2486,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String analyzing(Object processor) {
-    return 'Проанализировав ___________.';
+    return 'Анализ $processor...';
   }
 
   @override
@@ -2675,7 +2675,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return 'Активный$endTime -$startTime';
+    return 'Активный $startTime - $endTime';
   }
 
   @override
@@ -2795,12 +2795,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get heavyRain => 'сильный дождь';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '$radius самолет обнаружен в пределах ${count}km (текущие позиции)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count самолет обнаружен в пределах ${radius}km (текущие позиции)';
   }
 
   @override

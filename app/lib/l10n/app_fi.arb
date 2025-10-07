@@ -37,7 +37,7 @@
   "alertsTitle": "Lähellä olevat hälytykset",
   "noAlerts": "Lähellä ei ole vielä hälytystä.",
   "pullToRefresh": "Vedä virkistääksesi",
-  "alertDistance": "_Placeholder_0_ pois",
+  "alertDistance": "{distance} pois",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "Suunta __PAIKKAHOLDER_0_°",
+  "alertDirection": "Suunta {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "Antakaa mikrofonin pääsy videon kaappaamiseen audiolla.",
   "openSettings": "Avaa asetukset",
   "alertDetailTitle": "Näytön yksityiskohdat",
-  "reportedBy": "Ilmoittanut __PAIKKAHOLDER_0__",
+  "reportedBy": "Ilmoittanut {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "Raportoitu __PAIKKAHOLDER_0___",
+  "reportedAt": "Raportoitu {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "__PAIKKAHOLDER_0___",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "Kohde: __PAIKKAHOLDER_0_°",
+  "bearingToObject": "Kohde: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "Pilottitila",
   "compassStandardDescription": "Perusotsikko ja navigointi",
   "compassPilotDescription": "Edistynyt navigointi ETA:n ja vektoroinnin avulla",
-  "pointingTo": "Osoitetaan __PAIKKAHOLDER_0__",
+  "pointingTo": "Osoitetaan {direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "Kalibroidaan kompassia..",
   "openAROverlay": "Avaa AR-overlay",
   "pushTitleAlertNearby": "UFO hälytys lähelläsi",
-  "pushBodyAlertNearby": "Uusi havainto raportoitiin __PASSIHOLDER_0_ pois.",
+  "pushBodyAlertNearby": "Uusi havainto raportoitiin {distance} pois.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "Lämpötila",
   "pushBodyWitness": "Käyttäjä vahvisti nähneensä saman esineen.",
   "weather": "Sää",
-  "cloudCover": "Pilvipeite: __Placeholder_0__%",
+  "cloudCover": "Pilvipeite: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "Tuuli: __PAIKKAHOLDER_0____PAIKKAHOLDER_1__",
+  "wind": "Tuuli: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -208,16 +208,16 @@
   "emergencyOverrideDesc": "Kiireellisten kuulutusten salliminen hiljaisina aikoina",
   "dndMode": "Älä häiritse",
   "dndUntil": "Älä häiritse ennen kuin",
-  "dndEnabled": "DND on käytössä kunnes __PAIKKAHOLDER_0__",
+  "dndEnabled": "DND on käytössä kunnes {time}",
   "dndDisabled": "DND ei käytössä",
-  "quietHoursActive": "Aktiivinen __PASSIHOLDER_0__ - __PASSIHOLDER_1__",
-  "quietHoursScheduled": "Hiljaiset tunnit: __Placeholder_0__ - __Placeholder_1_",
+  "quietHoursActive": "Aktiivinen {startTime} - {endTime}",
+  "quietHoursScheduled": "Hiljaiset tunnit: {start} - {end}",
   "pushNotificationUfoAlert": "UFO Varoitus",
   "pushNotificationAnomalyAlert": "Anomaliahälytys",
   "pushNotificationNearby": "Lähellä",
   "pushNotificationInYourArea": "sinun alueellasi. Napauta nähdäksesi yksityiskohdat.",
-  "pushNotificationCommented": "__Placeholder_0__ kommentoi",
-  "pushNotificationCommentedOn": "__PASSIHOLDER_0__ kommentoi __PASSIHOLDER_1__",
+  "pushNotificationCommented": "{username} kommentoi",
+  "pushNotificationCommentedOn": "{username} kommentoi {beepTitle}",
   "pushNotificationGeneric": "UFO- piippi",
   "pushNotificationNewSighting": "Uusi havainto lähellä",
   "language": "Kieli",
@@ -245,7 +245,7 @@
   "imageOnly": "Vain kuva",
   "mediaOnly": "Vain media",
   "timeJustNow": "juuri nyt",
-  "timeDaysAgo": "_Placeholder_0__ päivää sitten",
+  "timeDaysAgo": "{count} päivää sitten",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -254,7 +254,7 @@
       }
     }
   },
-  "timeHoursAgo": "__PASSIHOLDER_0__ tunteja sitten",
+  "timeHoursAgo": "{count} tunteja sitten",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -263,7 +263,7 @@
       }
     }
   },
-  "timeMinutesAgo": "_Placeholder_0__ minuuttia sitten",
+  "timeMinutesAgo": "{count} minuuttia sitten",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -292,7 +292,7 @@
   "mufonCylinderSighting": "MUFON-sylinterin havainnointiraportti",
   "mufonBoomerangSighting": "MUFON Boomerang Sighting Report",
   "mufonStarlikeSighting": "MUFON Tähtien näkyvyysraportti",
-  "mufonCaseDetailsTitle": "MUFON-tapaus #__Placeholder_0_ Yksityiskohdat",
+  "mufonCaseDetailsTitle": "MUFON-tapaus #{caseNumber} Yksityiskohdat",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -313,7 +313,7 @@
   "unknownLocation": "Tuntematon sijainti",
   "locationUnknown": "Sijainti tuntematon",
   "witnessesLabel": "Todistajat",
-  "witnessesCountMessage": "_Placeholder_0_ ihmiset vahvistivat tämän havainnon",
+  "witnessesCountMessage": "{count} ihmiset vahvistivat tämän havainnon",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -323,7 +323,7 @@
     }
   },
   "photoAnalysisTitle": "Valokuva-analyysi",
-  "mediaItemsProcessed": "Analyysi: __PAIKKAHOLDER_0__ mediatiedosto [s] käsitelty",
+  "mediaItemsProcessed": "Analyysi: {count} mediatiedosto [s] käsitelty",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -446,7 +446,7 @@
   "whatToExpect": "Mitä odottaa",
   "formalReportRequirements": "Muodollisissa raporteissa edellytetään tyypillisesti:\n• Yksityiskohtainen aika, päivämäärä ja kesto\n• Sääolosuhteet ja näkyvyys\n• Täydellinen todistajanlausunto\n• Valokuvat tai videot, jos saatavilla\n\nOrganisaatiot voivat pyytää lisätietoja. Raporttinne edistää käynnissä olevaa ufotutkimusta.",
   "confirmedWitness": "Varmistit tämän",
-  "witnessesHaveConfirmed": "_Placeholder_0_ ihmiset ovat vahvistaneet tämän havainnon",
+  "witnessesHaveConfirmed": "{count} ihmiset ovat vahvistaneet tämän havainnon",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -468,7 +468,7 @@
   "premiumAccessWitnesses": "Vahvistetut todistajat näkyvyysalueella",
   "comingSoon": "Tulossa pian",
   "directionDistanceTitle": "Suunta ja etäisyys",
-  "mufonCaseTitle": "MUFON Asia #__Placeholder_0___",
+  "mufonCaseTitle": "MUFON Asia #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "UFOBeep UFO Varoitus",
   "notificationSightingUrgent": "KIIREELLINEN UFO Varoitus",
   "notificationSightingEmergency": "Varoitus",
-  "notificationSightingBody": "__PASSIHOLDER_0___ lähellä __PASSIHOLDER_1_",
+  "notificationSightingBody": "{witnessText} lähellä {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -510,7 +510,7 @@
     }
   },
   "notificationWitnessText": "Uusi havainto",
-  "notificationWitnessTextMultiple": "_Placeholder_0__ silminnäkijät",
+  "notificationWitnessTextMultiple": "{count} silminnäkijät",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -521,7 +521,7 @@
   },
   "notificationActionSnooze": "Torkut 1h",
   "notificationActionDismiss": "Poistu",
-  "notificationDistance": "_Placeholder_0_ pois",
+  "notificationDistance": "{distance} pois",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -544,7 +544,7 @@
   "ufoSightingAlert": "UFO Havaintovaroitus",
   "previousPage": "Edellinen",
   "nextPage": "Seuraava",
-  "pageOf": "Sivu __PASSIHOLDER_0__ of _PASSIHOLDER_1__ (__PASSIHOLDER_2_ total piips)",
+  "pageOf": "Sivu {currentPage} of {totalPages} ({totalCount} total piips)",
   "firstPage": "Ensimmäinen",
   "lastPage": "Viimeinen",
   "jumpToPage": "Siirry sivulle",
@@ -592,16 +592,16 @@
   "mufonEgg": "Munat",
   "mufonOther": "Kohde",
   "mufonUnknown": "Tuntematon objekti",
-  "mufonTitleFormat": "MUFON__Placeholder_0_report",
+  "mufonTitleFormat": "MUFON {classification} Report",
   "nuforcAttribution": "NUFORC Tietokantaraportti",
   "nuforcCaseNumber": "Asia #",
   "nuforcGenericTitle": "NUFORC Havaintoraportti",
   "mediaImageNotFound": "Kuvaa ei löytynyt",
   "mediaPlayVideo": "Toista video",
   "mediaViewImage": "Näytä kuva",
-  "mediaCount": "_Placeholder_0_vedokset",
+  "mediaCount": "{count} vedokset",
   "mediaCountSingle": "1 kuva",
-  "mediaMoreImages": "+__PASSIHOLDER_0_ lisää",
+  "mediaMoreImages": "+{count} lisää",
   "errorNotFound": "Piip ei löytynyt",
   "errorLoadError": "Piippauksen yksityiskohtia ei voitu ladata",
   "shareYourThoughts": "Jaa ajatuksesi tästä havainnosta...",
@@ -737,7 +737,7 @@
   "locationTrackingEnabled": "Taustan sijainnin seuranta käytössä",
   "locationTrackingDisabled": "Taustan sijainnin seuranta pois käytöstä",
   "justNow": "Juuri nyt",
-  "minutesAgo": "_Placeholder_0__ minuuttia sitten",
+  "minutesAgo": "{minutes} minuuttia sitten",
   "@minutesAgo": {
     "placeholders": {
       "minutes": {
@@ -745,7 +745,7 @@
       }
     }
   },
-  "hoursAgo": "__PASSIHOLDER_0__ tunteja sitten",
+  "hoursAgo": "{hours} tunteja sitten",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -753,7 +753,7 @@
       }
     }
   },
-  "daysAgo": "_Placeholder_0__ päivää sitten",
+  "daysAgo": "{days} päivää sitten",
   "@daysAgo": {
     "placeholders": {
       "days": {
@@ -771,7 +771,7 @@
   "splashRetry": "Uudelleen",
   "splashContinue": "Jatka",
   "splashInitializing": "Alustetaan...",
-  "signInWelcome": "Tervetuloa __PAIKKAHOLDER_0__!",
+  "signInWelcome": "Tervetuloa {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "Kirjautuminen epäonnistui: __PAIKKAHOLDER_0___",
+  "signInFailed": "Kirjautuminen epäonnistui: {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -800,7 +800,7 @@
   "signInEmailDescription": "Lähetämme sinulle turvallisen linkin",
   "signInEmailAddress": "Sähköpostiosoite",
   "signInEmailPlaceholder": "your@email.com",
-  "signInTryAgainIn": "Yritä uudelleen __PAIKKAHOLDER_0_s",
+  "signInTryAgainIn": "Yritä uudelleen {seconds}s",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "Sähköpostin varmistus auttaa turvaamaan tilisi ja mahdollistaa tilin palautuksen, jos menetät pääsyn laitteeseen.",
   "phoneAuthFailedToSendCode": "Tarkastuskoodia ei voitu lähettää. Yritä uudestaan.",
   "phoneAuthInvalidCodeTryAgain": "Virheellinen tarkastuskoodi. Yritä uudestaan.",
-  "phoneAuthPhoneVerified": "Puhelinnumero vahvistettu: __PAIKKAHOLDER_0___",
+  "phoneAuthPhoneVerified": "Puhelinnumero vahvistettu: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -859,7 +859,7 @@
   "phoneAuthVerifyYourPhone": "Tarkista puhelin",
   "phoneAuthEnterVerificationCode": "Syötä tarkistus Koodi",
   "phoneAuthAddPhoneForSecurity": "Lisää puhelinnumerosi tilin palautukseen ja tietoturvaan",
-  "phoneAuthEnterSixDigitCode": "Anna 6-numeroinen koodi, joka on lähetetty osoitteeseen __Placeholder_0__",
+  "phoneAuthEnterSixDigitCode": "Anna 6-numeroinen koodi, joka on lähetetty osoitteeseen {phoneNumber}",
   "@phoneAuthEnterSixDigitCode": {
     "placeholders": {
       "phoneNumber": {
@@ -925,25 +925,25 @@
   "celestialSunDaylight": "Aurinko nousee - päivänvalo-olosuhteet voivat vaikuttaa näkemiseen",
   "celestialSunTwilight": "Hämärät olosuhteet - näkyvyyttä, mutta pimeämpi kuin päivänvalo",
   "celestialSunDark": "Tummat olosuhteet - optimaalinen objektien tarkkailuun taivaalla",
-  "celestialMoonBright": "Kirkas __PAIKKAHOLDER_0__ kuu näkyvissä - voi valaisea tai hämärtää muita esineitä",
-  "celestialMoonModerate": "__PAIKKAHOLDER_0__ kuu näkyvissä - kohtuulliset valaistusolosuhteet",
-  "celestialMoonThin": "Ohut __PAIKKAHOLDER_0__ kuu näkyvissä - minimaalinen valaistus",
-  "celestialMoonHidden": "__Placeholder_0__ kuu horisontin alla - ei kuun valaistus",
+  "celestialMoonBright": "Kirkas {phase} kuu näkyvissä - voi valaisea tai hämärtää muita esineitä",
+  "celestialMoonModerate": "{phase} kuu näkyvissä - kohtuulliset valaistusolosuhteet",
+  "celestialMoonThin": "Ohut {phase} kuu näkyvissä - minimaalinen valaistus",
+  "celestialMoonHidden": "{phase} kuu horisontin alla - ei kuun valaistus",
   "celestialNoPlanets": "Ei näkyviä kirkkaita planeettoja, joita voisi luulla UFOiksi",
-  "celestialPlanetHigh": "__PASSIHOLDER_0__ korkea yläpuolella (__PASSIHOLDER_1_°) - erittäin näkyvä",
-  "celestialPlanetMedium": "__PASSIHOLDER_0__ näkyvissä __PASSIHOLDER_1_° - voidaan sekoittaa ilma-aluksiin",
-  "celestialPlanetLow": "__PASSIHOLDER_0__ alhainen horisontissa (__PASSIHOLDER_1_°)",
+  "celestialPlanetHigh": "{planet} korkea yläpuolella ({altitude}°) - erittäin näkyvä",
+  "celestialPlanetMedium": "{planet} näkyvissä {altitude}° - voidaan sekoittaa ilma-aluksiin",
+  "celestialPlanetLow": "{planet} alhainen horisontissa ({altitude}°)",
   "celestialNoStars": "Ei epätavallisen kirkkaita tähtiä näkyvissä",
-  "celestialStarSingle": "__PASSIHOLDER_0__ näkyvä __PASSIHOLDER_1__° korkeus",
-  "celestialStarsMultiple": "__PAIKKAHOLDER_0__ kirkkaat tähdet näkyvissä - _PlaceHOLDER_1_",
+  "celestialStarSingle": "{star} näkyvä {altitude}° korkeus",
+  "celestialStarsMultiple": "{count} kirkkaat tähdet näkyvissä - {names}",
   "celestialSummaryDaylight": "Päivänvalo-olosuhteet",
   "celestialSummaryDark": "Pimeän taivaan olosuhteet",
   "celestialSummaryMoonUp": "kuun valaistus läsnä",
   "celestialSummaryMoonDown": "ei kuun valaistusta",
-  "celestialSummaryManyObjects": "__Placeholder_0__ kirkkaat objektit, jotka voidaan sekoittaa UFOihin",
-  "celestialSummarySomeObjects": "__Placeholder_0__ kirkas objekti [s] näkyvissä",
+  "celestialSummaryManyObjects": "{count} kirkkaat objektit, jotka voidaan sekoittaa UFOihin",
+  "celestialSummarySomeObjects": "{count} kirkas objekti [s] näkyvissä",
   "celestialSummaryFewObjects": "minimaalinen kirkas esineitä taivaalla",
-  "celestialSkySummary": "Lento-olosuhteet: __PAIKKAHOLDER_0___",
+  "celestialSkySummary": "Lento-olosuhteet: {conditions}",
   "planetVenus": "Venus",
   "planetJupiter": "Jupiter",
   "planetSaturn": "Saturnus",
@@ -967,19 +967,19 @@
   "moonPhaseWaningGibbous": "Waning Gibbous",
   "moonPhaseThirdQuarter": "Kolmas neljännes",
   "moonPhaseWaningCrescent": "Waning Crescent",
-  "planetBelowHorizon": "__PAIKKAHOLDER_0__ horisontin alapuolella",
-  "planetHighOverheadProminent": "__PASSIHOLDER_0__ korkea yläpuolella (__PASSIHOLDER_1_°) - erittäin näkyvä",
-  "planetMidSkyProminent": "__PASSIHOLDER_0__ at __PASSIHOLDER_1_° - näkyvä",
-  "planetMidSky": "__PASSIHOLDER_0__ at _PlaceHOLDER_1_°",
-  "starVeryBright": "__PASSIHOLDER_0__ erittäin kirkas __PASSIHOLDER_1_°",
-  "starProminent": "__PASSIHOLDER_0__ näkyvä __PASSIHOLDER_1__° korkeus",
-  "starVisible": "__PASSIHOLDER_0__ at _PlaceHOLDER_1_°",
+  "planetBelowHorizon": "{planet} horisontin alapuolella",
+  "planetHighOverheadProminent": "{planet} korkea yläpuolella ({altitude}°) - erittäin näkyvä",
+  "planetMidSkyProminent": "{planet} at {altitude}° - näkyvä",
+  "planetMidSky": "{planet} at {altitude}°",
+  "starVeryBright": "{star} erittäin kirkas {altitude}°",
+  "starProminent": "{star} näkyvä {altitude}° korkeus",
+  "starVisible": "{star} at {altitude}°",
   "altitudeShort": "Alt",
   "magnitudeShort": "Mag",
-  "satellitesVisibleMightExplain": "_Placeholder_0_ satelliitit näkyvät - saattaa selittää havaintoja",
-  "satellitesVisibleUnlikelyExplain": "_Placeholder_0__ satelliitit näkyvissä - tuskin selittää havaintoja",
+  "satellitesVisibleMightExplain": "{count} satelliitit näkyvät - saattaa selittää havaintoja",
+  "satellitesVisibleUnlikelyExplain": "{count} satelliitit näkyvissä - tuskin selittää havaintoja",
   "noSatellitesVisible": "Ei satelliitteja näkyvissä",
-  "aircraftDetectedInRadius": "__PASSIHOLDER_0___-ilma-alus havaittu __PASSIHOLDER_1_km",
+  "aircraftDetectedInRadius": "{count}-ilma-alus havaittu {radius}km",
   "processingAlert": "Käsittely UFO-hälytys...",
   "analyzingEnvironment": "Ympäristöolosuhteiden analysointi",
   "weatherAnalysis": "Sääanalyysi",
@@ -987,7 +987,7 @@
   "aircraftTracking": "Ilma-alusten seuranta",
   "satelliteAnalysis": "Satelliittianalyysi",
   "celestialAnalysis": "Taivaallinen analyysi",
-  "analyzing": "Analysoidaan __PASSIHOLDER_0__...",
+  "analyzing": "Analysoidaan {processor}...",
   "processorWeather": "sääolosuhteet",
   "processorLocation": "sijaintitiedot",
   "processorAircraft": "lähilentokoneet",
@@ -996,7 +996,7 @@
   "calculatingCelestialData": "Lasketaan taivaallisia tietoja...",
   "sunLabel": "Su",
   "moonLabel": "Kuu",
-  "planetsVisible": "Planeetat: __PAIKKAHOLDER_0_ näkyvissä",
+  "planetsVisible": "Planeetat: {count} näkyvissä",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "Tähdet",
   "planetsLabel": "Planeetat",
-  "moonWithPhase": "Kuu (___PASSIHOLDER_0__)",
+  "moonWithPhase": "Kuu ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1024,8 +1024,8 @@
   "noWeatherDescription": "Ei kuvausta",
   "altitudeAbbrev": "Alt",
   "azimuthAbbrev": "Az",
-  "satellitesVisibleNow": "Satelliitit (__Placeholder_0_ näkyvät nyt)",
-  "sunWithDescription": "Aurinko: __PAIKKAHOLDER_0___",
+  "satellitesVisibleNow": "Satelliitit ({count} näkyvät nyt)",
+  "sunWithDescription": "Aurinko: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "Kuu: __PAIKKAHOLDER_0__",
+  "moonWithDescription": "Kuu: {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1057,7 +1057,7 @@
   "unknownDirection": "tuntematon suunta",
   "brightStars": "Kirkkaat tähdet",
   "satellites": "Satelliitit",
-  "seeAllSatellites": "Katso kaikki __PAIKKAHOLDER_0_ satelliitit",
+  "seeAllSatellites": "Katso kaikki {count} satelliitit",
   "@seeAllSatellites": {
     "placeholders": {
       "count": {
@@ -1066,7 +1066,7 @@
       }
     }
   },
-  "maxElevation": "Suurin korkeus merenpinnasta: _Placeholder_0__°",
+  "maxElevation": "Suurin korkeus merenpinnasta: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "Merkitys: __PAIKKAHOLDER_0___",
+  "magnitude": "Merkitys: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {
@@ -1085,7 +1085,7 @@
     }
   },
   "unknownGeneric": "Tuntematon",
-  "altitudeValue": "_Placeholder_0__° korkeus",
+  "altitudeValue": "{degrees}° korkeus",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1094,7 +1094,7 @@
       }
     }
   },
-  "azimuthValue": "__Placeholder_0_° azimuth",
+  "azimuthValue": "{degrees}° azimuth",
   "@azimuthValue": {
     "placeholders": {
       "degrees": {
@@ -1133,7 +1133,7 @@
   "endTime": "Loppuaika",
   "allowCriticalAlertsDuringQuietHours": "Salli kriittiset kuulutukset hiljaisina tunteina",
   "silenceNotificationsDuringSleepHours": "Hiljaisuusilmoitukset nukkumistuntien aikana",
-  "quietHoursActiveTimeRange": "Aktiivinen __PASSIHOLDER_0__ - __PASSIHOLDER_1__",
+  "quietHoursActiveTimeRange": "Aktiivinen {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1147,7 +1147,7 @@
     }
   },
   "followingAlerts": "Kuulutusten jälkeen",
-  "activeCount": "_Placeholder_0__ aktiivinen",
+  "activeCount": "{count} aktiivinen",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1158,7 +1158,7 @@
   },
   "unfollow": "Ei seuraa",
   "unfollowAlert": "Noudata varoitusta",
-  "commentsCount": "__Placeholder_0__ comments",
+  "commentsCount": "{count} comments",
   "photo": "Valokuva",
   "video": "Video",
   "initializationComplete": "Alustus valmis!",
@@ -1172,7 +1172,7 @@
   "gatheringDeviceInfo": "Keräyslaitteen tiedot...",
   "translating": "Käännetään...",
   "showOriginal": "Näytä alkuperäinen",
-  "translateTo": "Käännä __PAIKKAHOLDER_0___",
+  "translateTo": "Käännä {language}",
   "@translateTo": {
     "placeholders": {
       "language": {
@@ -1181,7 +1181,7 @@
       }
     }
   },
-  "translatedFrom": "Käännetty __PASSIHOLDER_0__",
+  "translatedFrom": "Käännetty {language}",
   "@translatedFrom": {
     "placeholders": {
       "language": {
@@ -1190,7 +1190,7 @@
       }
     }
   },
-  "translateContent": "Käännä sisältö __PAIKKAHOLDER_0__",
+  "translateContent": "Käännä sisältö {language}",
   "@translateContent": {
     "placeholders": {
       "language": {
@@ -1221,7 +1221,7 @@
   "lightRain": "kevyt sade",
   "moderateRain": "kohtalainen sade",
   "heavyRain": "rankkasade",
-  "aircraftDetectedCurrentPositions": "__PASSIHOLDER_0__-ilma-alus havaittu __PASSIHOLDER_1_km (nykyiset paikat)",
+  "aircraftDetectedCurrentPositions": "{count}-ilma-alus havaittu {radius}km (nykyiset paikat)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1234,7 +1234,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "__PlaceHolder_0__himmennyssatelliitit näkyvissä - ei todennäköisesti selitä havaintoja",
+  "dimSatellitesUnlikely": "{count} himmennyssatelliitit näkyvissä - ei todennäköisesti selitä havaintoja",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {

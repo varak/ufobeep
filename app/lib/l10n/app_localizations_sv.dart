@@ -218,12 +218,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Rapporterad av ${username}__';
+    return 'Rapporterad av $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Rapporterad ${timeAgo}__';
+    return 'Rapporterad $timeAgo';
   }
 
   @override
@@ -296,7 +296,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'Peka på ${direction}___';
+    return 'Peka på $direction';
   }
 
   @override
@@ -339,7 +339,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String wind(num speed, String unit) {
-    return 'Vind: ${speed}_${unit}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Vind: $speed $unit';
   }
 
   @override
@@ -394,7 +394,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND aktiverad till ${time}__';
+    return 'DND aktiverad till $time';
   }
 
   @override
@@ -407,7 +407,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Tyst timmar: $end ${start}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Tyst timmar: $start - $end';
   }
 
   @override
@@ -430,7 +430,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '$beepTitle kommenterade ${username}_';
+    return '$username kommenterade $beepTitle';
   }
 
   @override
@@ -526,7 +526,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String timeHoursAgo(int count) {
-    return '${count}_ för några timmar sedan';
+    return '$count för några timmar sedan';
   }
 
   @override
@@ -596,7 +596,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Case #_PLACEHOLDER_0_ Detaljer';
+    return 'MUFON Case #$caseNumber Detaljer';
   }
 
   @override
@@ -1047,7 +1047,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'Mufonen Fall #_PLACEHOLDER_0__';
+    return 'Mufonen Fall #$caseNumber';
   }
 
   @override
@@ -1158,7 +1158,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Page $currentPage av ${totalPages}_ (_PLACEHOLDER_2_______________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Page $currentPage av $totalPages ($totalCount totala beeps)';
   }
 
   @override
@@ -1328,7 +1328,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '${count}_ bilder';
+    return '$count bilder';
   }
 
   @override
@@ -1336,7 +1336,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+_PLACEHOLDER_0_ mer';
+    return '+$count mer';
   }
 
   @override
@@ -1766,7 +1766,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String hoursAgo(int hours) {
-    return '${hours}_ för några timmar sedan';
+    return '$hours för några timmar sedan';
   }
 
   @override
@@ -2024,7 +2024,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return 'Ange den 6-siffriga koden som skickats till ${phoneNumber}____________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Ange den 6-siffriga koden som skickats till $phoneNumber';
   }
 
   @override
@@ -2247,7 +2247,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '$planet hög overhead (_PLACEHOLDER_1_°) - mycket framträdande';
+    return '$planet hög overhead ($altitude°) - mycket framträdande';
   }
 
   @override
@@ -2270,7 +2270,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '$names ljusa stjärnor synliga – ${count}________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return '$count ljusa stjärnor synliga - $names';
   }
 
   @override
@@ -2379,7 +2379,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '$planet hög overhead (_PLACEHOLDER_1_°) - mycket framträdande';
+    return '$planet hög overhead ($altitude°) - mycket framträdande';
   }
 
   @override
@@ -2494,7 +2494,7 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'Månen (_PLACEHOLDER_0__)';
+    return 'Månen ($phase)';
   }
 
   @override
@@ -2530,12 +2530,12 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String sunWithDescription(String description) {
-    return 'Solen: ${description}________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Solen: $description';
   }
 
   @override
   String moonWithDescription(String description) {
-    return 'Månen: ${description}__';
+    return 'Månen: $description';
   }
 
   @override
@@ -2706,17 +2706,17 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String translateTo(String language) {
-    return 'Översätt till ${language}___';
+    return 'Översätt till $language';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Översatt från ${language}___';
+    return 'Översatt från $language';
   }
 
   @override
   String translateContent(String language) {
-    return 'Översätt innehåll till ${language}___';
+    return 'Översätt innehåll till $language';
   }
 
   @override
@@ -2762,17 +2762,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String get heavyRain => 'tungt regn';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '$count flygplan upptäckta inom ${radius}km (aktuella positioner)';
   }
 
   @override
   String dimSatellitesUnlikely(int count) {
-    return '${count}_ dim satelliter synliga - osannolikt att förklara observationer';
+    return '$count dim satelliter synliga - osannolikt att förklara observationer';
   }
 
   @override
@@ -2780,6 +2776,6 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return '$name ${direction}______________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return '$name - $direction';
   }
 }

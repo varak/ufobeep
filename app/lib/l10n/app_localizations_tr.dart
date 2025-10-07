@@ -2773,11 +2773,7 @@ class AppLocalizationsTr extends AppLocalizations {
   String get heavyRain => 'ağır yağmur yağmur';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '$radius uçakları, ${count}km (şimdiki pozisyonlar) içinde tespit edildi';
   }
 

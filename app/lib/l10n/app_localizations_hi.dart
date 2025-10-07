@@ -218,7 +218,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'द्वारा रिपोर्ट किया गया _PLACEHOLDER_0_';
+    return 'द्वारा रिपोर्ट किया गया $username';
   }
 
   @override
@@ -593,7 +593,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Case #_PLACEHOLDER_0__ Details';
+    return 'MUFON Case #$caseNumber Details';
   }
 
   @override
@@ -1333,7 +1333,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+_PLACEHOLDER_0_______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return '+$count more';
   }
 
   @override
@@ -2247,7 +2247,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '${planet}_ उच्च ओवरहेड (_PLACEHOLDER_1_°) - बहुत प्रमुख';
+    return '$planet उच्च ओवरहेड ($altitude°) - बहुत प्रमुख';
   }
 
   @override
@@ -2379,7 +2379,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '${planet}_ उच्च ओवरहेड (_PLACEHOLDER_1_°) - बहुत प्रमुख';
+    return '$planet उच्च ओवरहेड ($altitude°) - बहुत प्रमुख';
   }
 
   @override
@@ -2494,7 +2494,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'चंद्र (_PLACEHOLDER_0___)';
+    return 'चंद्र ($phase)';
   }
 
   @override
@@ -2525,7 +2525,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String satellitesVisibleNow(int count) {
-    return 'उपग्रह (_PLACEHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'उपग्रह ($count दृश्यमान)';
   }
 
   @override
@@ -2762,11 +2762,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get heavyRain => 'भारी बारिश';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '$count $radiusकिमी (वर्तमान स्थिति) के भीतर पाया गया विमान';
   }
 

@@ -126,7 +126,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String alertDirection(int bearing) {
-    return '__PLAATSHOLDER_0__°';
+    return 'Richting $bearing°';
   }
 
   @override
@@ -224,17 +224,17 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Gerapporteerd __PLAATSHOLDER_0__';
+    return 'Gerapporteerd $timeAgo';
   }
 
   @override
   String distanceAway(String distance) {
-    return '__PLAATSHOLDER_0___';
+    return '$distance';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'Richting naar object: __PLAATSHOLDER_0__°';
+    return 'Richting naar object: $bearing°';
   }
 
   @override
@@ -335,12 +335,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'Cloud cover: __PLAATSHOLDER_0___%';
+    return 'Wolkenbedekking: $percent%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'Wind: __PLAATSHOLDER_0__ __PLAATSHOLDER_1__';
+    return 'Wind: $speed $unit';
   }
 
   @override
@@ -403,12 +403,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Actief __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__';
+    return 'Actief $startTime - $endTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Rustige uren: __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__';
+    return 'Rustige uren: $start - $end';
   }
 
   @override
@@ -431,7 +431,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '__PLAATSHOLDER_0__ commentaar op __PLAATSHOLDER_1__';
+    return '$username commentaar op $beepTitle';
   }
 
   @override
@@ -522,17 +522,17 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '__PLAATSHOLDER_0__ dagen geleden';
+    return '$count dagen geleden';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return '__PLAATSHOLDER_0___ uren geleden';
+    return '$count uren geleden';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return '__PLAATSHOLDER_0___ minuten geleden';
+    return '$count minuten geleden';
   }
 
   @override
@@ -598,7 +598,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON-geval #__PLAATSHOLDER_0_ Details';
+    return 'MUFON-geval #$caseNumber Details';
   }
 
   @override
@@ -639,7 +639,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return 'De mensen hebben deze waarneming bevestigd';
+    return '$count mensen hebben deze waarneming bevestigd';
   }
 
   @override
@@ -647,7 +647,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'Analyse: __PLAATSHOLDER_0__ mediabestand(s) verwerkt';
+    return 'Analyse: $count mediabestand(s) verwerkt';
   }
 
   @override
@@ -1002,7 +1002,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return 'Mensen hebben deze waarneming bevestigd';
+    return '$count mensen hebben deze waarneming bevestigd';
   }
 
   @override
@@ -1047,7 +1047,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON Zaak #__PLAATSHOLDER_0__';
+    return 'MUFON Zaak #$caseNumber';
   }
 
   @override
@@ -1086,7 +1086,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '__PLAATSHOLDER_0__ in de buurt __PLAATSHOLDER_1__';
+    return '$witnessText in de buurt $locationName';
   }
 
   @override
@@ -1099,7 +1099,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'Getuigen';
+    return '$count getuigen';
   }
 
   @override
@@ -1159,7 +1159,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'Pagina __PLAATSHOLDER_0__ van __PLAATSHOLDER_1__ (__PLAATSHOLDER_2__ totale piepers)';
+    return 'Pagina $currentPage van $totalPages ($totalCount totale piepers)';
   }
 
   @override
@@ -1307,7 +1307,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON __PLAATSHOLDER_0__ Verslag';
+    return 'MUFON $classification Verslag';
   }
 
   @override
@@ -1770,17 +1770,17 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String minutesAgo(int minutes) {
-    return '__PLAATSHOLDER_0___ minuten geleden';
+    return '$minutes minuten geleden';
   }
 
   @override
   String hoursAgo(int hours) {
-    return '__PLAATSHOLDER_0___ uren geleden';
+    return '$hours uren geleden';
   }
 
   @override
   String daysAgo(int days) {
-    return '__PLAATSHOLDER_0__ dagen geleden';
+    return '$days dagen geleden';
   }
 
   @override
@@ -1816,12 +1816,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String signInWelcome(String username) {
-    return 'Welkom!';
+    return 'Welkom $username!';
   }
 
   @override
   String signInFailed(String error) {
-    return 'Aanmelden mislukt: __PLAATSHOLDER_0___';
+    return 'Aanmelden mislukt: $error';
   }
 
   @override
@@ -1975,7 +1975,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return 'Telefoonnummer geverifieerd: __PLAATSHOLDER_0___';
+    return 'Telefoonnummer geverifieerd: $phoneNumber';
   }
 
   @override
@@ -2233,22 +2233,22 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Helder __PLAATSHOLDER_0__ maan zichtbaar - kan verlichten of obscure andere objecten';
+    return 'Helder $phase maan zichtbaar - kan verlichten of obscure andere objecten';
   }
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '__PLAATSHOLDER_0___ maan zichtbaar - matige lichtomstandigheden';
+    return '$phase maan zichtbaar - matige lichtomstandigheden';
   }
 
   @override
   String celestialMoonThin(Object phase) {
-    return 'Dun __PLAATSHOLDER_0__ maan zichtbaar - minimale verlichting';
+    return 'Dun $phase maan zichtbaar - minimale verlichting';
   }
 
   @override
   String celestialMoonHidden(Object phase) {
-    return '__PLAATSHOLDER_0___ maan onder de horizon - geen maanverlichting';
+    return '$phase maan onder de horizon - geen maanverlichting';
   }
 
   @override
@@ -2257,17 +2257,17 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '__PLAATSHOLDER_0___ hoge overhead (__PLAATSHOLDER_1__°) - zeer prominent';
+    return '$planet hoge overhead ($altitude°) - zeer prominent';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '__PLAATSHOLDER_0___ zichtbaar op __PLAATSHOLDER_1___° - kan worden verward met vliegtuigen';
+    return '$planet zichtbaar op $altitude° - kan worden verward met vliegtuigen';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '__PLAATSHOLDER_0___ laag aan de horizon (__PLAATSHOLDER_1__°)';
+    return '$planet laag aan de horizon ($altitude°)';
   }
 
   @override
@@ -2275,12 +2275,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String celestialStarSingle(Object altitude, Object star) {
-    return '__PLAATSHOLDER_0___ prominent op __PLAATSHOLDER_1__° hoogte';
+    return '$star prominent op $altitude° hoogte';
   }
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '__PLAATSHOLDER_0___ heldere sterren zichtbaar - __PLAATSHOLDER_1__';
+    return '$count heldere sterren zichtbaar - $names';
   }
 
   @override
@@ -2297,12 +2297,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return '__PLAATSHOLDER_0___ heldere objecten die kunnen worden verward met UFO\'s';
+    return '$count heldere objecten die kunnen worden verward met UFO\'s';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return '__PLAATSHOLDER_0___ helder object(s) zichtbaar';
+    return '$count helder object(s) zichtbaar';
   }
 
   @override
@@ -2311,7 +2311,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String celestialSkySummary(Object conditions) {
-    return 'Luchtomstandigheden: __PLAATSHOLDER_0___';
+    return 'Luchtomstandigheden: $conditions';
   }
 
   @override
@@ -2385,37 +2385,37 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '__PLAATSHOLDER_0___ onder de horizon';
+    return '$planet onder de horizon';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '__PLAATSHOLDER_0___ hoge overhead (__PLAATSHOLDER_1__°) - zeer prominent';
+    return '$planet hoge overhead ($altitude°) - zeer prominent';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '__PLAATSHOLDER_0___ op __PLAATSHOLDER_1__° - prominent';
+    return '$planet op $altitude° - prominent';
   }
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '__PLAATSHOLDER_0__ op __PLAATSHOLDER_1__°';
+    return '$planet op $altitude°';
   }
 
   @override
   String starVeryBright(Object altitude, Object star) {
-    return '__PLAATSHOLDER_0___ zeer helder op __PLAATSHOLDER_1__°';
+    return '$star zeer helder op $altitude°';
   }
 
   @override
   String starProminent(Object altitude, Object star) {
-    return '__PLAATSHOLDER_0___ prominent op __PLAATSHOLDER_1__° hoogte';
+    return '$star prominent op $altitude° hoogte';
   }
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '__PLAATSHOLDER_0__ op __PLAATSHOLDER_1__°';
+    return '$star op $altitude°';
   }
 
   @override
@@ -2426,12 +2426,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return 'Satellieten zichtbaar - kan het waarnemen verklaren';
+    return '$count satellieten zichtbaar - kan het waarnemen verklaren';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return 'Satellieten zichtbaar - waarschijnlijk niet te verklaren';
+    return '$count satellieten zichtbaar - waarschijnlijk niet te verklaren';
   }
 
   @override
@@ -2439,7 +2439,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km';
+    return '$count luchtvaartuig gedetecteerd binnen ${radius}km';
   }
 
   @override
@@ -2465,7 +2465,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String analyzing(Object processor) {
-    return 'Analyseren __PLAATSHOLDER_0___...';
+    return 'Analyseren $processor...';
   }
 
   @override
@@ -2494,7 +2494,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return 'Planeten: __PLAATSHOLDER_0__ zichtbaar';
+    return 'Planeten: $count zichtbaar';
   }
 
   @override
@@ -2505,7 +2505,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'Maan (__PLAATSHOLDER_0__)';
+    return 'Maan ($phase)';
   }
 
   @override
@@ -2536,17 +2536,17 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String satellitesVisibleNow(int count) {
-    return 'Satellieten (__PLAATSHOLDER_0__ nu zichtbaar)';
+    return 'Satellieten ($count nu zichtbaar)';
   }
 
   @override
   String sunWithDescription(String description) {
-    return 'Zon: __PLAATSHOLDER_0__';
+    return 'Zon: $description';
   }
 
   @override
   String moonWithDescription(String description) {
-    return 'Maan: __PLAATSHOLDER_0__';
+    return 'Maan: $description';
   }
 
   @override
@@ -2569,7 +2569,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String seeAllSatellites(int count) {
-    return 'Zie alle __PLAATSHOLDER_0__satellieten';
+    return 'Zie alle $count satellieten';
   }
 
   @override
@@ -2579,7 +2579,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String magnitude(String value) {
-    return 'Hoogte: __PLAATSHOLDER_0___';
+    return 'Magnitude: $value';
   }
 
   @override
@@ -2587,12 +2587,12 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String altitudeValue(String degrees) {
-    return '__PLAATSHOLDER_0__° hoogte';
+    return '$degrees° hoogte';
   }
 
   @override
   String azimuthValue(String degrees) {
-    return '__PLAATSHOLDER_0__° azimut';
+    return '$degrees° azimut';
   }
 
   @override
@@ -2654,7 +2654,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return 'Actief __PLAATSHOLDER_0__ - __PLAATSHOLDER_1__';
+    return 'Actief $startTime - $endTime';
   }
 
   @override
@@ -2662,7 +2662,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String activeCount(int count) {
-    return '${count}actief';
+    return '$count actief';
   }
 
   @override
@@ -2673,7 +2673,7 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '__PLAATSHOLDER_0___commentaren';
+    return '$count commentaren';
   }
 
   @override
@@ -2774,17 +2774,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get heavyRain => 'zware regenval';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '__PLAATSHOLDER_0___ luchtvaartuig gedetecteerd binnen __PLAATSHOLDER_1__km (huidige posities)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count luchtvaartuig gedetecteerd binnen ${radius}km (huidige posities)';
   }
 
   @override
   String dimSatellitesUnlikely(int count) {
-    return 'Dim satellieten zichtbaar - waarschijnlijk niet te verklaren';
+    return '$count dim satellieten zichtbaar - waarschijnlijk niet te verklaren';
   }
 
   @override
@@ -2792,6 +2788,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return '__PLAATSHOLDER_0__ - __PLAATSHOLDER_1__';
+    return '$name - $direction';
   }
 }

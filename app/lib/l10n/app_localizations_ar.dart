@@ -217,12 +217,12 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'Reported by __PLACEHOLDER_0';
+    return 'Reported by $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'Reported_PLACEHOLDER_0';
+    return 'Reported $timeAgo';
   }
 
   @override
@@ -389,7 +389,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND enabled until __PLACEHOLDER_0';
+    return 'DND enabled until $time';
   }
 
   @override
@@ -590,7 +590,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Case #_PLACEHOLDER_0_تفاصيل';
+    return 'MUFON Case #$caseNumber تفاصيل';
   }
 
   @override
@@ -1080,7 +1080,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬 __PLACEHOLDER_0 علق';
+    return '💬 $username علق';
   }
 
   @override
@@ -1294,7 +1294,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON __PLACEHOLDER_0';
+    return 'MUFON $classification';
   }
 
   @override
@@ -2208,7 +2208,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String celestialMoonModerate(Object phase) {
-    return '_PLACEHOLDER_0_قمر مرئي - ظروف إضاءة متوسطة';
+    return '$phase قمر مرئي - ظروف إضاءة متوسطة';
   }
 
   @override
@@ -2237,7 +2237,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '$planet منخفض على الأفق (_PLACEHOLDER_1_°)';
+    return '$planet منخفض على الأفق ($altitude°)';
   }
 
   @override
@@ -2475,7 +2475,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'مون (_PLACEHOLDER_0__)';
+    return 'مون ($phase)';
   }
 
   @override
@@ -2505,7 +2505,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String satellitesVisibleNow(int count) {
-    return 'السواتل (_PLACEHOLDER_0__ مرئية الآن)';
+    return 'السواتل ($count مرئية الآن)';
   }
 
   @override
@@ -2685,17 +2685,17 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String translateTo(String language) {
-    return 'Translate to __PLACEHOLDER_0';
+    return 'Translate to $language';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'Translated from __PLACEHOLDER_0';
+    return 'Translated from $language';
   }
 
   @override
   String translateContent(String language) {
-    return 'Translate content to __PLACEHOLDER_0';
+    return 'Translate content to $language';
   }
 
   @override
@@ -2741,11 +2741,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get heavyRain => 'الأمطار الغزيرة';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '$count تم اكتشاف الطائرات ضمن $radius كم (المواقع الحالية)';
   }
 

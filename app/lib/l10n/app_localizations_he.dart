@@ -121,12 +121,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return 'שם הסרטון: PLACEHOLDER_0_Out_';
+    return '$distance משם';
   }
 
   @override
   String alertDirection(int bearing) {
-    return 'תגית: PLACEHOLDER_0_ °';
+    return 'כיוון $bearing°';
   }
 
   @override
@@ -217,22 +217,22 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return 'תגית: PLACEHOLDER_0_____';
+    return 'דווח על ידי $username';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return 'תגית: PLACEHOLDER_0______';
+    return 'דווח $timeAgo';
   }
 
   @override
   String distanceAway(String distance) {
-    return 'שם הסרטון: PLACEHOLDER_0______';
+    return '$distance';
   }
 
   @override
   String bearingToObject(int bearing) {
-    return 'תגית:_PLACEHOLDER_0_ °';
+    return 'כיוון לאובייקט: $bearing°';
   }
 
   @override
@@ -291,7 +291,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return 'תגית: PLACEHOLDER_0_________';
+    return 'מצביע ל-$direction';
   }
 
   @override
@@ -305,7 +305,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return 'מראה חדש דווח -_PLACEHOLDER_0____.';
+    return 'מראה חדש דווח במרחק $distance.';
   }
 
   @override
@@ -328,12 +328,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String cloudCover(int percent) {
-    return 'כיסוי ענן: PLACEHOLDER_0_%';
+    return 'כיסוי ענן: $percent%';
   }
 
   @override
   String wind(num speed, String unit) {
-    return 'רוח:_PLACEHOLDER_0___${unit}_____________________________________________________';
+    return 'רוח: $speed $unit';
   }
 
   @override
@@ -386,7 +386,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND זמין עד_PLACEHOLDER_0___________________';
+    return 'DND זמין עד $time';
   }
 
   @override
@@ -394,12 +394,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Active_PLACEHOLDER_0____${startTime}__________________________________________________________________';
+    return 'פעיל $startTime - $endTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'שעות שקטות: שם הסרטון: PLACEHOLDER__0_____${start}______________________________________________________________________________';
+    return 'שעות שקטות: $start - $end';
   }
 
   @override
@@ -416,12 +416,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String pushNotificationCommented(Object username) {
-    return 'שם הסרטון: PLACEHOLDER_0_';
+    return '$username הגיב';
   }
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return 'PL_PLACEHOLDER_0___ commented${username}_____________________________________________________________________________________';
+    return '$username הגיב על $beepTitle';
   }
 
   @override
@@ -512,17 +512,17 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return 'שם הסרטון: PLACEHOLDER_0__Day ago';
+    return 'לפני $count ימים';
   }
 
   @override
   String timeHoursAgo(int count) {
-    return 'שם הסרטון: PLACEHOLDER_0___Times ago';
+    return 'לפני $count שעות';
   }
 
   @override
   String timeMinutesAgo(int count) {
-    return 'שם הסרטון: PLACEHOLDER_0___Times ago';
+    return 'לפני $count דקות';
   }
 
   @override
@@ -587,7 +587,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'MUFON Case #_PLACEHOLDER_0__פרטים';
+    return 'MUFON מקרה #$caseNumber פרטים';
   }
 
   @override
@@ -628,7 +628,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String witnessesCountMessage(int count) {
-    return '_PLACEHOLDER_0__ אנשים אישרו את המראה הזה';
+    return '$count אנשים אישרו את המראה הזה';
   }
 
   @override
@@ -636,7 +636,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return 'ניתוח:_PLACEHOLDER_0___קובץ מדיה(s) מעובד';
+    return 'ניתוח: $count קובץ מדיה מעובד';
   }
 
   @override
@@ -990,7 +990,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String witnessesHaveConfirmed(int count) {
-    return '_PLACEHOLDER_0__ אנשים אישרו את המראה הזה';
+    return '$count אנשים אישרו את המראה הזה';
   }
 
   @override
@@ -1034,7 +1034,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return 'MUFON מקרה #${caseNumber}____________________________________';
+    return 'MUFON מקרה #$caseNumber';
   }
 
   @override
@@ -1071,12 +1071,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return 'שם הסרטון: PLACEHOLDER_0___b_${locationName}__________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return '$witnessText ליד $locationName';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬_PLACEHOLDER_0_ commented';
+    return '💬 $username הגיב';
   }
 
   @override
@@ -1084,7 +1084,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String notificationWitnessTextMultiple(int count) {
-    return 'שם הסרטון: PLACEHOLDER_0_ Witness';
+    return '$count עדים';
   }
 
   @override
@@ -1095,7 +1095,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return 'שם הסרטון: PLACEHOLDER_0_Out_';
+    return '$distance משם';
   }
 
   @override
@@ -1144,7 +1144,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String pageOf(Object currentPage, Object totalCount, Object totalPages) {
-    return 'דף הבית > PLACEHOLDER_0____${totalPages}______________________________________${totalCount}_ Total beeps)';
+    return 'דף $currentPage מתוך $totalPages (סה\"כ $totalCount ביפים)';
   }
 
   @override
@@ -1290,7 +1290,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'MUFON_PLACEHOLDER_0_ Report';
+    return 'MUFON $classification דוח';
   }
 
   @override
@@ -1313,7 +1313,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return 'PLACEHOLDER_0_תמונות';
+    return '$count תמונות';
   }
 
   @override
@@ -1321,7 +1321,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+_${count}__________________________________________________';
+    return '+$count נוספות';
   }
 
   @override
@@ -1740,17 +1740,17 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String minutesAgo(int minutes) {
-    return 'שם הסרטון: PLACEHOLDER_0___Times ago';
+    return 'לפני $minutes דקות';
   }
 
   @override
   String hoursAgo(int hours) {
-    return 'שם הסרטון: PLACEHOLDER_0___Times ago';
+    return 'לפני $hours שעות';
   }
 
   @override
   String daysAgo(int days) {
-    return 'שם הסרטון: PLACEHOLDER_0__Day ago';
+    return 'לפני $days ימים';
   }
 
   @override
@@ -1785,12 +1785,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String signInWelcome(String username) {
-    return 'ברוכים הבאים - PLACEHOLDER_0__!';
+    return 'ברוכים הבאים $username!';
   }
 
   @override
   String signInFailed(String error) {
-    return 'סימן-אין נכשל: שם הסרטון: PLACEHOLDER_0______';
+    return 'כניסה נכשלה: $error';
   }
 
   @override
@@ -1835,7 +1835,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'נסה שוב ב-_PLACEHOLDER_0_s';
+    return 'נסה שוב בעוד $seconds שניות';
   }
 
   @override
@@ -1941,7 +1941,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return 'מספר טלפון מאומת: שם הסרטון: PLACEHOLDER_0______';
+    return 'מספר טלפון מאומת: $phoneNumber';
   }
 
   @override
@@ -1992,7 +1992,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return 'היכנס לקוד 6 הספרות שנשלח ל-_PLACEHOLDER_0______________________________';
+    return 'היכנס לקוד 6 הספרות שנשלח ל-$phoneNumber';
   }
 
   @override
@@ -2190,22 +2190,22 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return 'Bright_PLACEHOLDER_0__הירח גלוי - עשוי להאיר או לטשטש חפצים אחרים';
+    return 'ירח $phase בהיר גלוי - עשוי להאיר או לטשטש חפצים אחרים';
   }
 
   @override
   String celestialMoonModerate(Object phase) {
-    return 'PLACEHOLDER_0__ירח גלוי - תנאי תאורה בינוניים';
+    return 'ירח $phase גלוי - תנאי תאורה בינוניים';
   }
 
   @override
   String celestialMoonThin(Object phase) {
-    return 'T_PLACEHOLDER_0__ הירח גלוי - תאורה מינימלית';
+    return 'ירח $phase דק גלוי - תאורה מינימלית';
   }
 
   @override
   String celestialMoonHidden(Object phase) {
-    return 'PLACEHOLDER_0_ירח מתחת לאופק - אין תאורה ירחית';
+    return 'ירח $phase מתחת לאופק - אין תאורה ירחית';
   }
 
   @override
@@ -2214,12 +2214,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '_PLACEHOLDER_0__High Overhead (_$planet °)';
+    return '$planet גבוה מעל הראש ($altitude°) - בולט מאוד';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '_PLACEHOLDER_0___ גלוי ב-_PLACEHOLDER_1__ ° - יכול להיות שגוי עבור מטוסים';
+    return '$planet גלוי ב-$altitude° - יכול להיות מזוהה בטעות כמטוס';
   }
 
   @override
@@ -2237,7 +2237,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return 'PLACEHOLDER_0__ בהיר כוכבים גלויים לעין -_PLACEHOLDER_1_____________________________________________________________________';
+    return '$count כוכבים בהירים גלויים - $names';
   }
 
   @override
@@ -2254,12 +2254,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return '_PLACEHOLDER_0__ אובייקטים בהירים שיכולים להיות מבולבלים עם עב\"מים';
+    return '$count אובייקטים בהירים שיכולים להתבלבל עם עב\"מים';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return 'PL_PLACEHOLDER_0__0__אובייקטים בהירים (s)';
+    return '$count אובייקטים בהירים';
   }
 
   @override
@@ -2267,7 +2267,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String celestialSkySummary(Object conditions) {
-    return 'תנאי השמיים: שם הסרטון: PLACEHOLDER_0______';
+    return 'תנאי השמיים: $conditions';
   }
 
   @override
@@ -2341,12 +2341,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '<PLACEHOLDER_0__ מתחת לאופק';
+    return '$planet מתחת לאופק';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '_PLACEHOLDER_0__High Overhead (_$planet °)';
+    return '$planet גבוה מעל הראש ($altitude°) - בולט מאוד';
   }
 
   @override
@@ -2382,12 +2382,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return 'PLACEHOLDER_0_לוויינים גלויים - עשויים להסביר את הראייה';
+    return '$count לוויינים גלויים - עשויים להסביר את הראייה';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return 'PLACEHOLDER_0_לוויינים גלויים - לא סביר להסביר את הראייה';
+    return '$count לוויינים גלויים - לא סביר להסביר את הראייה';
   }
 
   @override
@@ -2395,7 +2395,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '* PLACEHOLDER_0__ מטוסים שזוהו בתוך _PLACEHOLDER_1_ ק\"מ';
+    return '$count מטוסים שזוהו בתוך $radius ק\"מ';
   }
 
   @override
@@ -2421,7 +2421,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String analyzing(Object processor) {
-    return 'ניתוח - PLACEHOLDER_0____.';
+    return 'מנתח $processor...';
   }
 
   @override
@@ -2450,7 +2450,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return 'Planets:_PLACEHOLDER_0_ גלוי';
+    return 'כוכבי לכת: $count גלויים';
   }
 
   @override
@@ -2461,7 +2461,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return 'מון (_PLACEHOLDER_0_______________)';
+    return 'ירח ($phase)';
   }
 
   @override
@@ -2492,17 +2492,17 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String satellitesVisibleNow(int count) {
-    return 'לוויינים (_PLACEHOLDER_0__ גלויים עכשיו)';
+    return 'לוויינים ($count גלויים כעת)';
   }
 
   @override
   String sunWithDescription(String description) {
-    return 'שם הסרטון: PLACEHOLDER_0__________';
+    return 'שמש: $description';
   }
 
   @override
   String moonWithDescription(String description) {
-    return 'שם הסרטון: PLACEHOLDER_0_____';
+    return 'ירח: $description';
   }
 
   @override
@@ -2525,17 +2525,17 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String seeAllSatellites(int count) {
-    return 'שם הסרטון: PLACEHOLDER_0_לוויינים';
+    return 'צפה בכל $count הלוויינים';
   }
 
   @override
   String maxElevation(String degrees) {
-    return 'גובה מקס: PLACEHOLDER_0_ °_';
+    return 'גובה מקסימלי: $degrees°';
   }
 
   @override
   String magnitude(String value) {
-    return 'כבוד: שם הסרטון: PLACEHOLDER_0______';
+    return 'עוצמה: $value';
   }
 
   @override
@@ -2543,12 +2543,12 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String altitudeValue(String degrees) {
-    return 'PL_PLACEHOLDER_0_גבהים';
+    return 'גובה $degrees°';
   }
 
   @override
   String azimuthValue(String degrees) {
-    return 'שם הסרטון: PLACEHOLDER_0_ ° Azimuth';
+    return 'אזימוט $degrees°';
   }
 
   @override
@@ -2608,7 +2608,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return 'Active_PLACEHOLDER_0____${startTime}__________________________________________________________________';
+    return 'פעיל $startTime - $endTime';
   }
 
   @override
@@ -2616,7 +2616,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String activeCount(int count) {
-    return 'PLACEHOLDER_0_ פעיל';
+    return '$count פעיל';
   }
 
   @override
@@ -2627,7 +2627,7 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '<PLACEHOLDER_0__הערות';
+    return '$count הערות';
   }
 
   @override
@@ -2671,17 +2671,17 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String translateTo(String language) {
-    return 'תרגום לעברית עבור: PLACEHOLDER_0____';
+    return 'תרגם ל-$language';
   }
 
   @override
   String translatedFrom(String language) {
-    return 'תורגם מ -_PLACEHOLDER_0_______________';
+    return 'תורגם מ-$language';
   }
 
   @override
   String translateContent(String language) {
-    return 'תרגום התוכן ל-_PLACEHOLDER_0__________';
+    return 'תרגם תוכן ל-$language';
   }
 
   @override
@@ -2727,17 +2727,13 @@ class AppLocalizationsHe extends AppLocalizations {
   String get heavyRain => 'גשם כבד';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return 'PLACEHOLDER_0___ מטוסים שזוהו בתוך _PLACEHOLDER_1___ ק\"מ (מיקומים נוכחיים)';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '$count מטוסים שזוהו בתוך $radius ק\"מ (מיקומים נוכחיים)';
   }
 
   @override
   String dimSatellitesUnlikely(int count) {
-    return 'PLACEHOLDER_0__ dim לוויינים גלויים - לא סביר להסביר את הראייה';
+    return '$count לוויינים עמומים גלויים - לא סביר להסביר את הראייה';
   }
 
   @override
@@ -2745,6 +2741,6 @@ class AppLocalizationsHe extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return 'שם הסרטון: PLACEHOLDER__0_____${direction}______________________________________________________________________________';
+    return '$name - $direction';
   }
 }

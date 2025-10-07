@@ -126,7 +126,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String alertDirection(int bearing) {
-    return '軸受け_PLACEHOLDER_0__°';
+    return '軸受け $bearing°';
   }
 
   @override
@@ -229,7 +229,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return 'オブジェクトへのベアリング:_PLACEHOLDER_0__°';
+    return 'オブジェクトへのベアリング: $bearing°';
   }
 
   @override
@@ -302,7 +302,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String pushBodyAlertNearby(String distance) {
-    return '新たな視力が報告されました_PLACEHOLDER_0__ 離れて.';
+    return '新たな視力が報告されました $distance 離れて.';
   }
 
   @override
@@ -330,7 +330,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String wind(num speed, String unit) {
-    return '風:_PLACEHOLDER_0______${unit}_';
+    return '風: $speed $unit';
   }
 
   @override
@@ -391,7 +391,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'アクティブ_PLACEHOLDER_0___________________________________________________________________________________________________________________________________________________________________';
+    return 'アクティブ $startTime - $endTime';
   }
 
   @override
@@ -418,7 +418,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '${username}_ にコメント _PLACEHOLDER_1___';
+    return '$username にコメント $beepTitle';
   }
 
   @override
@@ -1065,7 +1065,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String notificationCommentTitle(String username) {
-    return '💬_PLACEHOLDER_0__コメント';
+    return '💬 $username コメント';
   }
 
   @override
@@ -1768,7 +1768,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String signInWelcome(String username) {
-    return 'ようこそ_PLACEHOLDER_0__!';
+    return 'ようこそ $username!';
   }
 
   @override
@@ -2150,7 +2150,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return '明るい_PLACEHOLDER_0_月表示 - 他のオブジェクトを照らすか、または妨害する可能性があります';
+    return '明るい $phase 月表示 - 他のオブジェクトを照らすか、または妨害する可能性があります';
   }
 
   @override
@@ -2354,7 +2354,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '${count}__ 航空機は_PLACEHOLDER_1___km以内に検出';
+    return '$count 航空機は ${radius}km以内に検出';
   }
 
   @override
@@ -2409,7 +2409,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return '惑星:_PLACEHOLDER_0___ 可視';
+    return '惑星: $count 可視';
   }
 
   @override
@@ -2564,7 +2564,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return 'アクティブ_PLACEHOLDER_0___________________________________________________________________________________________________________________________________________________________________';
+    return 'アクティブ $startTime - $endTime';
   }
 
   @override
@@ -2683,11 +2683,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get heavyRain => '豪雨';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '${count}_________km(現在の位置)内の航空機が検出される';
   }
 

@@ -224,7 +224,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return '₢ 킹';
+    return '$distance';
   }
 
   @override
@@ -1775,7 +1775,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String signInFailed(String error) {
-    return '로그인 실패: ₢ 킹';
+    return '로그인 실패: $error';
   }
 
   @override
@@ -1915,7 +1915,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return '전화 번호 확인: ₢ 킹';
+    return '전화 번호 확인: $phoneNumber';
   }
 
   @override
@@ -2228,7 +2228,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String celestialSkySummary(Object conditions) {
-    return '하늘 조건: ₢ 킹';
+    return '하늘 조건: $conditions';
   }
 
   @override
@@ -2489,12 +2489,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String maxElevation(String degrees) {
-    return '최대 고도: ₢ 킹';
+    return '최대 고도: $degrees°';
   }
 
   @override
   String magnitude(String value) {
-    return '경도: ₢ 킹';
+    return '경도: $value';
   }
 
   @override
@@ -2685,11 +2685,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get heavyRain => '무거운 비';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '$radius 항공기는 ${count}km (현재 위치)에서 감지';
   }
 

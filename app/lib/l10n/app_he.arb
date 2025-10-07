@@ -37,7 +37,7 @@
   "alertsTitle": "התראות בקרבת מקום",
   "noAlerts": "עדיין לא אזהרות.",
   "pullToRefresh": "למשוך כדי לרענן",
-  "alertDistance": "שם הסרטון: PLACEHOLDER_0_Out_",
+  "alertDistance": "{distance} משם",
   "@alertDistance": {
     "placeholders": {
       "distance": {
@@ -46,7 +46,7 @@
       }
     }
   },
-  "alertDirection": "תגית: PLACEHOLDER_0_ °",
+  "alertDirection": "כיוון {bearing}°",
   "@alertDirection": {
     "placeholders": {
       "bearing": {
@@ -89,7 +89,7 @@
   "microphonePermissionBody": "גישה מיקרופון עבור וידאו לכידת עם אודיו.",
   "openSettings": "הגדרות פתוחות",
   "alertDetailTitle": "פרטים",
-  "reportedBy": "תגית: PLACEHOLDER_0_____",
+  "reportedBy": "דווח על ידי {username}",
   "@reportedBy": {
     "placeholders": {
       "username": {
@@ -98,7 +98,7 @@
       }
     }
   },
-  "reportedAt": "תגית: PLACEHOLDER_0______",
+  "reportedAt": "דווח {timeAgo}",
   "@reportedAt": {
     "placeholders": {
       "timeAgo": {
@@ -107,7 +107,7 @@
       }
     }
   },
-  "distanceAway": "שם הסרטון: PLACEHOLDER_0______",
+  "distanceAway": "{distance}",
   "@distanceAway": {
     "placeholders": {
       "distance": {
@@ -116,7 +116,7 @@
       }
     }
   },
-  "bearingToObject": "תגית:_PLACEHOLDER_0_ °",
+  "bearingToObject": "כיוון לאובייקט: {bearing}°",
   "@bearingToObject": {
     "placeholders": {
       "bearing": {
@@ -143,7 +143,7 @@
   "compassPilotMode": "מצב טייס",
   "compassStandardDescription": "כותרות בסיסיות וניווט",
   "compassPilotDescription": "ניווט מתקדם עם ETA וקטורינג",
-  "pointingTo": "תגית: PLACEHOLDER_0_________",
+  "pointingTo": "מצביע ל-{direction}",
   "@pointingTo": {
     "placeholders": {
       "direction": {
@@ -155,7 +155,7 @@
   "calibratingCompass": "מצפן קצר..",
   "openAROverlay": "פתח את AR Overlay",
   "pushTitleAlertNearby": "אזהרות עב\"מ קרוב אליך",
-  "pushBodyAlertNearby": "מראה חדש דווח -_PLACEHOLDER_0____.",
+  "pushBodyAlertNearby": "מראה חדש דווח במרחק {distance}.",
   "@pushBodyAlertNearby": {
     "placeholders": {
       "distance": {
@@ -170,7 +170,7 @@
   "temperature": "טמפרטורה",
   "pushBodyWitness": "משתמש אישר שהוא רואה את אותו האובייקט.",
   "weather": "מזג אוויר",
-  "cloudCover": "כיסוי ענן: PLACEHOLDER_0_%",
+  "cloudCover": "כיסוי ענן: {percent}%",
   "@cloudCover": {
     "placeholders": {
       "percent": {
@@ -179,7 +179,7 @@
       }
     }
   },
-  "wind": "רוח:_PLACEHOLDER_0___{unit}_____________________________________________________",
+  "wind": "רוח: {speed} {unit}",
   "@wind": {
     "placeholders": {
       "speed": {
@@ -208,16 +208,16 @@
   "emergencyOverrideDesc": "לאפשר התראה דחופה בשעות שקטות",
   "dndMode": "אל תתבלבל",
   "dndUntil": "אל תפריע עד",
-  "dndEnabled": "DND זמין עד_PLACEHOLDER_0___________________",
+  "dndEnabled": "DND זמין עד {time}",
   "dndDisabled": "DND",
-  "quietHoursActive": "Active_PLACEHOLDER_0____{startTime}__________________________________________________________________",
-  "quietHoursScheduled": "שעות שקטות: שם הסרטון: PLACEHOLDER__0_____{start}______________________________________________________________________________",
+  "quietHoursActive": "פעיל {startTime} - {endTime}",
+  "quietHoursScheduled": "שעות שקטות: {start} - {end}",
   "pushNotificationUfoAlert": "עב\"ם התראה",
   "pushNotificationAnomalyAlert": "אזהרה אנונימית",
   "pushNotificationNearby": "בקרבת מקום",
   "pushNotificationInYourArea": "באזור שלך. הקש כדי להציג פרטים.",
-  "pushNotificationCommented": "שם הסרטון: PLACEHOLDER_0_",
-  "pushNotificationCommentedOn": "PL_PLACEHOLDER_0___ commented{username}_____________________________________________________________________________________",
+  "pushNotificationCommented": "{username} הגיב",
+  "pushNotificationCommentedOn": "{username} הגיב על {beepTitle}",
   "pushNotificationGeneric": "עב\"ם",
   "pushNotificationNewSighting": "מראה חדש סמוך",
   "language": "שפה",
@@ -245,7 +245,7 @@
   "imageOnly": "צילום בלבד",
   "mediaOnly": "רק מדיה",
   "timeJustNow": "רק עכשיו",
-  "timeDaysAgo": "שם הסרטון: PLACEHOLDER_0__Day ago",
+  "timeDaysAgo": "לפני {count} ימים",
   "@timeDaysAgo": {
     "placeholders": {
       "count": {
@@ -254,7 +254,7 @@
       }
     }
   },
-  "timeHoursAgo": "שם הסרטון: PLACEHOLDER_0___Times ago",
+  "timeHoursAgo": "לפני {count} שעות",
   "@timeHoursAgo": {
     "placeholders": {
       "count": {
@@ -263,7 +263,7 @@
       }
     }
   },
-  "timeMinutesAgo": "שם הסרטון: PLACEHOLDER_0___Times ago",
+  "timeMinutesAgo": "לפני {count} דקות",
   "@timeMinutesAgo": {
     "placeholders": {
       "count": {
@@ -292,7 +292,7 @@
   "mufonCylinderSighting": "MUFON Cylinder Sighting Report",
   "mufonBoomerangSighting": "MUFON בומרנג Sighting Report",
   "mufonStarlikeSighting": "MUFON תגית: Sighting Report",
-  "mufonCaseDetailsTitle": "MUFON Case #_PLACEHOLDER_0__פרטים",
+  "mufonCaseDetailsTitle": "MUFON מקרה #{caseNumber} פרטים",
   "@mufonCaseDetailsTitle": {
     "placeholders": {
       "caseNumber": {
@@ -313,7 +313,7 @@
   "unknownLocation": "מיקום לא ידוע",
   "locationUnknown": "מיקום לא ידוע",
   "witnessesLabel": "עדים",
-  "witnessesCountMessage": "_PLACEHOLDER_0__ אנשים אישרו את המראה הזה",
+  "witnessesCountMessage": "{count} אנשים אישרו את המראה הזה",
   "@witnessesCountMessage": {
     "placeholders": {
       "count": {
@@ -323,7 +323,7 @@
     }
   },
   "photoAnalysisTitle": "Photo Analysis",
-  "mediaItemsProcessed": "ניתוח:_PLACEHOLDER_0___קובץ מדיה(s) מעובד",
+  "mediaItemsProcessed": "ניתוח: {count} קובץ מדיה מעובד",
   "@mediaItemsProcessed": {
     "placeholders": {
       "count": {
@@ -446,7 +446,7 @@
   "whatToExpect": "מה לצפות",
   "formalReportRequirements": "דיווחים פורמליים בדרך כלל דורשים:\n• זמן מפורט, תאריך ומשך\n• מזג אוויר וחשיפה\nעדות שלמה\n• תמונות או וידאו אם זמין\n\nארגונים יכולים לעקוב אחר פרטים נוספים. הדו\"ח שלך תורם למחקר עב\"מים מתמשך.",
   "confirmedWitness": "אישרת את המראה הזה",
-  "witnessesHaveConfirmed": "_PLACEHOLDER_0__ אנשים אישרו את המראה הזה",
+  "witnessesHaveConfirmed": "{count} אנשים אישרו את המראה הזה",
   "@witnessesHaveConfirmed": {
     "placeholders": {
       "count": {
@@ -468,7 +468,7 @@
   "premiumAccessWitnesses": "עדים בולטים בטווח הנראות",
   "comingSoon": "בקרוב",
   "directionDistanceTitle": "המונחים & Distance",
-  "mufonCaseTitle": "MUFON מקרה #{caseNumber}____________________________________",
+  "mufonCaseTitle": "MUFON מקרה #{caseNumber}",
   "@mufonCaseTitle": {
     "placeholders": {
       "caseNumber": {
@@ -487,7 +487,7 @@
   "notificationSightingTitle": "עב\"ם התראה",
   "notificationSightingUrgent": "המונחים: URGENTBeep UFO התראה",
   "notificationSightingEmergency": "תגית: EMERGCY UFOBeep UFO התראה",
-  "notificationSightingBody": "שם הסרטון: PLACEHOLDER_0___b_{locationName}__________________________________________________________________________________________________________________________________________________________________________________________________________________________",
+  "notificationSightingBody": "{witnessText} ליד {locationName}",
   "@notificationSightingBody": {
     "placeholders": {
       "witnessText": {
@@ -500,7 +500,7 @@
       }
     }
   },
-  "notificationCommentTitle": "💬_PLACEHOLDER_0_ commented",
+  "notificationCommentTitle": "💬 {username} הגיב",
   "@notificationCommentTitle": {
     "placeholders": {
       "username": {
@@ -510,7 +510,7 @@
     }
   },
   "notificationWitnessText": "מראה חדש",
-  "notificationWitnessTextMultiple": "שם הסרטון: PLACEHOLDER_0_ Witness",
+  "notificationWitnessTextMultiple": "{count} עדים",
   "@notificationWitnessTextMultiple": {
     "placeholders": {
       "count": {
@@ -521,7 +521,7 @@
   },
   "notificationActionSnooze": "סנוזה 1h",
   "notificationActionDismiss": "משמעת",
-  "notificationDistance": "שם הסרטון: PLACEHOLDER_0_Out_",
+  "notificationDistance": "{distance} משם",
   "@notificationDistance": {
     "placeholders": {
       "distance": {
@@ -544,7 +544,7 @@
   "ufoSightingAlert": "עב\"ם אזהרה",
   "previousPage": "הקודם",
   "nextPage": "הבא",
-  "pageOf": "דף הבית > PLACEHOLDER_0____{totalPages}______________________________________{totalCount}_ Total beeps)",
+  "pageOf": "דף {currentPage} מתוך {totalPages} (סה\"כ {totalCount} ביפים)",
   "firstPage": "הראשון",
   "lastPage": "אחרון",
   "jumpToPage": "לקפוץ לדף",
@@ -592,16 +592,16 @@
   "mufonEgg": "ביצים",
   "mufonOther": "אובייקטים",
   "mufonUnknown": "אובייקטים לא ידועים",
-  "mufonTitleFormat": "MUFON_PLACEHOLDER_0_ Report",
+  "mufonTitleFormat": "MUFON {classification} דוח",
   "nuforcAttribution": "NUFORC דוח מסד נתונים",
   "nuforcCaseNumber": "מקרה #",
   "nuforcGenericTitle": "NUFORC דיווח Sighting",
   "mediaImageNotFound": "תמונה לא נמצאה",
   "mediaPlayVideo": "Play וידאו",
   "mediaViewImage": "View Image",
-  "mediaCount": "PLACEHOLDER_0_תמונות",
+  "mediaCount": "{count} תמונות",
   "mediaCountSingle": "תמונה 1",
-  "mediaMoreImages": "+_{count}__________________________________________________",
+  "mediaMoreImages": "+{count} נוספות",
   "errorNotFound": "לא נמצא",
   "errorLoadError": "נכשל לטעון פרטים",
   "shareYourThoughts": "שתפו את המחשבות שלכם על המראה הזה...",
@@ -737,7 +737,7 @@
   "locationTrackingEnabled": "מיקום רקע מאפשר",
   "locationTrackingDisabled": "מיקום רקע מעקב עם מוגבלויות",
   "justNow": "רק עכשיו",
-  "minutesAgo": "שם הסרטון: PLACEHOLDER_0___Times ago",
+  "minutesAgo": "לפני {minutes} דקות",
   "@minutesAgo": {
     "placeholders": {
       "minutes": {
@@ -745,7 +745,7 @@
       }
     }
   },
-  "hoursAgo": "שם הסרטון: PLACEHOLDER_0___Times ago",
+  "hoursAgo": "לפני {hours} שעות",
   "@hoursAgo": {
     "placeholders": {
       "hours": {
@@ -753,7 +753,7 @@
       }
     }
   },
-  "daysAgo": "שם הסרטון: PLACEHOLDER_0__Day ago",
+  "daysAgo": "לפני {days} ימים",
   "@daysAgo": {
     "placeholders": {
       "days": {
@@ -771,7 +771,7 @@
   "splashRetry": "Retry",
   "splashContinue": "המשך",
   "splashInitializing": "תחילת...",
-  "signInWelcome": "ברוכים הבאים - PLACEHOLDER_0__!",
+  "signInWelcome": "ברוכים הבאים {username}!",
   "@signInWelcome": {
     "placeholders": {
       "username": {
@@ -779,7 +779,7 @@
       }
     }
   },
-  "signInFailed": "סימן-אין נכשל: שם הסרטון: PLACEHOLDER_0______",
+  "signInFailed": "כניסה נכשלה: {error}",
   "@signInFailed": {
     "placeholders": {
       "error": {
@@ -800,7 +800,7 @@
   "signInEmailDescription": "אנו נשלח לך קישור מאובטח כדי להיכנס",
   "signInEmailAddress": "כתובת דואר אלקטרוני",
   "signInEmailPlaceholder": "כתובת: mail.com",
-  "signInTryAgainIn": "נסה שוב ב-_PLACEHOLDER_0_s",
+  "signInTryAgainIn": "נסה שוב בעוד {seconds} שניות",
   "@signInTryAgainIn": {
     "placeholders": {
       "seconds": {
@@ -837,7 +837,7 @@
   "emailAuthSecurityNotice": "אימות דואר אלקטרוני מסייע לאבטח את החשבון שלך ומאפשר שחזור חשבון אם אתה מאבד גישה למכשיר שלך.",
   "phoneAuthFailedToSendCode": "נכשל לשלוח קוד אימות. אנא נסה שוב.",
   "phoneAuthInvalidCodeTryAgain": "קוד אימות לא חוקי אנא נסה שוב.",
-  "phoneAuthPhoneVerified": "מספר טלפון מאומת: שם הסרטון: PLACEHOLDER_0______",
+  "phoneAuthPhoneVerified": "מספר טלפון מאומת: {phoneNumber}",
   "@phoneAuthPhoneVerified": {
     "placeholders": {
       "phoneNumber": {
@@ -859,7 +859,7 @@
   "phoneAuthVerifyYourPhone": "בדוק את הטלפון שלך",
   "phoneAuthEnterVerificationCode": "Enter Verification קודקוד",
   "phoneAuthAddPhoneForSecurity": "הוסף את מספר הטלפון שלך לשיקום חשבון ואבטחה",
-  "phoneAuthEnterSixDigitCode": "היכנס לקוד 6 הספרות שנשלח ל-_PLACEHOLDER_0______________________________",
+  "phoneAuthEnterSixDigitCode": "היכנס לקוד 6 הספרות שנשלח ל-{phoneNumber}",
   "@phoneAuthEnterSixDigitCode": {
     "placeholders": {
       "phoneNumber": {
@@ -925,25 +925,25 @@
   "celestialSunDaylight": "השמש עולה - תנאי אור יום עלולים להשפיע על הראייה",
   "celestialSunTwilight": "תנאי דמדומים - חשיפה מסוימת אך כהה יותר מאשר אור היום",
   "celestialSunDark": "תנאים אפלים – אופטימליים להתבוננות בחפצים בשמים",
-  "celestialMoonBright": "Bright_PLACEHOLDER_0__הירח גלוי - עשוי להאיר או לטשטש חפצים אחרים",
-  "celestialMoonModerate": "PLACEHOLDER_0__ירח גלוי - תנאי תאורה בינוניים",
-  "celestialMoonThin": "T_PLACEHOLDER_0__ הירח גלוי - תאורה מינימלית",
-  "celestialMoonHidden": "PLACEHOLDER_0_ירח מתחת לאופק - אין תאורה ירחית",
+  "celestialMoonBright": "ירח {phase} בהיר גלוי - עשוי להאיר או לטשטש חפצים אחרים",
+  "celestialMoonModerate": "ירח {phase} גלוי - תנאי תאורה בינוניים",
+  "celestialMoonThin": "ירח {phase} דק גלוי - תאורה מינימלית",
+  "celestialMoonHidden": "ירח {phase} מתחת לאופק - אין תאורה ירחית",
   "celestialNoPlanets": "אין כוכבי לכת בהירים שיכולים לטעות עבור עב\"מים",
-  "celestialPlanetHigh": "_PLACEHOLDER_0__High Overhead (_{planet} °)",
-  "celestialPlanetMedium": "_PLACEHOLDER_0___ גלוי ב-_PLACEHOLDER_1__ ° - יכול להיות שגוי עבור מטוסים",
+  "celestialPlanetHigh": "{planet} גבוה מעל הראש ({altitude}°) - בולט מאוד",
+  "celestialPlanetMedium": "{planet} גלוי ב-{altitude}° - יכול להיות מזוהה בטעות כמטוס",
   "celestialPlanetLow": "{planet} נמוך באופק ({altitude}°)",
   "celestialNoStars": "אין כוכבים בהירים במיוחד",
   "celestialStarSingle": "{star} בולט בגובה {altitude}°",
-  "celestialStarsMultiple": "PLACEHOLDER_0__ בהיר כוכבים גלויים לעין -_PLACEHOLDER_1_____________________________________________________________________",
+  "celestialStarsMultiple": "{count} כוכבים בהירים גלויים - {names}",
   "celestialSummaryDaylight": "תנאי תאורה",
   "celestialSummaryDark": "תנאי השמיים האפלים",
   "celestialSummaryMoonUp": "הירח מציג",
   "celestialSummaryMoonDown": "הירח לא מאיר",
-  "celestialSummaryManyObjects": "_PLACEHOLDER_0__ אובייקטים בהירים שיכולים להיות מבולבלים עם עב\"מים",
-  "celestialSummarySomeObjects": "PL_PLACEHOLDER_0__0__אובייקטים בהירים (s)",
+  "celestialSummaryManyObjects": "{count} אובייקטים בהירים שיכולים להתבלבל עם עב\"מים",
+  "celestialSummarySomeObjects": "{count} אובייקטים בהירים",
   "celestialSummaryFewObjects": "חפצים בהירים מינימליים בשמים",
-  "celestialSkySummary": "תנאי השמיים: שם הסרטון: PLACEHOLDER_0______",
+  "celestialSkySummary": "תנאי השמיים: {conditions}",
   "planetVenus": "ונוס",
   "planetJupiter": "צדק",
   "planetSaturn": "שבתאי",
@@ -967,8 +967,8 @@
   "moonPhaseWaningGibbous": "וואן גיבס",
   "moonPhaseThirdQuarter": "הרובע השלישי",
   "moonPhaseWaningCrescent": "סאהר",
-  "planetBelowHorizon": "<PLACEHOLDER_0__ מתחת לאופק",
-  "planetHighOverheadProminent": "_PLACEHOLDER_0__High Overhead (_{planet} °)",
+  "planetBelowHorizon": "{planet} מתחת לאופק",
+  "planetHighOverheadProminent": "{planet} גבוה מעל הראש ({altitude}°) - בולט מאוד",
   "planetMidSkyProminent": "{planet} ב- {altitude}° - בולט",
   "planetMidSky": "{planet} ב- {altitude}°",
   "starVeryBright": "{star} בהיר מאוד ב-{altitude}°",
@@ -976,10 +976,10 @@
   "starVisible": "{star} ב- {altitude}°",
   "altitudeShort": "אליט",
   "magnitudeShort": "מגדל",
-  "satellitesVisibleMightExplain": "PLACEHOLDER_0_לוויינים גלויים - עשויים להסביר את הראייה",
-  "satellitesVisibleUnlikelyExplain": "PLACEHOLDER_0_לוויינים גלויים - לא סביר להסביר את הראייה",
+  "satellitesVisibleMightExplain": "{count} לוויינים גלויים - עשויים להסביר את הראייה",
+  "satellitesVisibleUnlikelyExplain": "{count} לוויינים גלויים - לא סביר להסביר את הראייה",
   "noSatellitesVisible": "אין לוויינים גלויים",
-  "aircraftDetectedInRadius": "* PLACEHOLDER_0__ מטוסים שזוהו בתוך _PLACEHOLDER_1_ ק\"מ",
+  "aircraftDetectedInRadius": "{count} מטוסים שזוהו בתוך {radius} ק\"מ",
   "processingAlert": "המונחים:.",
   "analyzingEnvironment": "ניתוח תנאים סביבתיים",
   "weatherAnalysis": "ניתוח מזג אוויר",
@@ -987,7 +987,7 @@
   "aircraftTracking": "מעקב מטוסים",
   "satelliteAnalysis": "ניתוח לווין",
   "celestialAnalysis": "ניתוח",
-  "analyzing": "ניתוח - PLACEHOLDER_0____.",
+  "analyzing": "מנתח {processor}...",
   "processorWeather": "תנאי מזג אוויר",
   "processorLocation": "פרטי מיקום",
   "processorAircraft": "מטוס סמוך",
@@ -996,7 +996,7 @@
   "calculatingCelestialData": "חישוב נתונים שמימיים...",
   "sunLabel": "השמש",
   "moonLabel": "הירח",
-  "planetsVisible": "Planets:_PLACEHOLDER_0_ גלוי",
+  "planetsVisible": "כוכבי לכת: {count} גלויים",
   "@planetsVisible": {
     "placeholders": {
       "count": {
@@ -1007,7 +1007,7 @@
   },
   "starsLabel": "כוכבים",
   "planetsLabel": "כוכבי לכת",
-  "moonWithPhase": "מון (_PLACEHOLDER_0_______________)",
+  "moonWithPhase": "ירח ({phase})",
   "@moonWithPhase": {
     "placeholders": {
       "phase": {
@@ -1024,8 +1024,8 @@
   "noWeatherDescription": "אין תיאור",
   "altitudeAbbrev": "אליט",
   "azimuthAbbrev": "אזאז",
-  "satellitesVisibleNow": "לוויינים (_PLACEHOLDER_0__ גלויים עכשיו)",
-  "sunWithDescription": "שם הסרטון: PLACEHOLDER_0__________",
+  "satellitesVisibleNow": "לוויינים ({count} גלויים כעת)",
+  "sunWithDescription": "שמש: {description}",
   "@sunWithDescription": {
     "placeholders": {
       "description": {
@@ -1034,7 +1034,7 @@
       }
     }
   },
-  "moonWithDescription": "שם הסרטון: PLACEHOLDER_0_____",
+  "moonWithDescription": "ירח: {description}",
   "@moonWithDescription": {
     "placeholders": {
       "description": {
@@ -1057,7 +1057,7 @@
   "unknownDirection": "כיוון לא ידוע",
   "brightStars": "כוכבים בהירים",
   "satellites": "לוויינים",
-  "seeAllSatellites": "שם הסרטון: PLACEHOLDER_0_לוויינים",
+  "seeAllSatellites": "צפה בכל {count} הלוויינים",
   "@seeAllSatellites": {
     "placeholders": {
       "count": {
@@ -1066,7 +1066,7 @@
       }
     }
   },
-  "maxElevation": "גובה מקס: PLACEHOLDER_0_ °_",
+  "maxElevation": "גובה מקסימלי: {degrees}°",
   "@maxElevation": {
     "placeholders": {
       "degrees": {
@@ -1075,7 +1075,7 @@
       }
     }
   },
-  "magnitude": "כבוד: שם הסרטון: PLACEHOLDER_0______",
+  "magnitude": "עוצמה: {value}",
   "@magnitude": {
     "placeholders": {
       "value": {
@@ -1085,7 +1085,7 @@
     }
   },
   "unknownGeneric": "לא ידוע",
-  "altitudeValue": "PL_PLACEHOLDER_0_גבהים",
+  "altitudeValue": "גובה {degrees}°",
   "@altitudeValue": {
     "placeholders": {
       "degrees": {
@@ -1094,7 +1094,7 @@
       }
     }
   },
-  "azimuthValue": "שם הסרטון: PLACEHOLDER_0_ ° Azimuth",
+  "azimuthValue": "אזימוט {degrees}°",
   "@azimuthValue": {
     "placeholders": {
       "degrees": {
@@ -1133,7 +1133,7 @@
   "endTime": "סוף הזמן",
   "allowCriticalAlertsDuringQuietHours": "לאפשר התראות קריטיות בשעות שקטות",
   "silenceNotificationsDuringSleepHours": "הודעות שתיקה בשעות השינה",
-  "quietHoursActiveTimeRange": "Active_PLACEHOLDER_0____{startTime}__________________________________________________________________",
+  "quietHoursActiveTimeRange": "פעיל {startTime} - {endTime}",
   "@quietHoursActiveTimeRange": {
     "placeholders": {
       "startTime": {
@@ -1147,7 +1147,7 @@
     }
   },
   "followingAlerts": "בעקבות התראות",
-  "activeCount": "PLACEHOLDER_0_ פעיל",
+  "activeCount": "{count} פעיל",
   "@activeCount": {
     "placeholders": {
       "count": {
@@ -1158,7 +1158,7 @@
   },
   "unfollow": "עקבו",
   "unfollowAlert": "תגית: Unfollow",
-  "commentsCount": "<PLACEHOLDER_0__הערות",
+  "commentsCount": "{count} הערות",
   "photo": "צילום תמונה",
   "video": "וידאו",
   "initializationComplete": "העדיפות המלאה!",
@@ -1172,7 +1172,7 @@
   "gatheringDeviceInfo": "איסוף מידע של המכשיר...",
   "translating": "תרגום...",
   "showOriginal": "הצג מקורי",
-  "translateTo": "תרגום לעברית עבור: PLACEHOLDER_0____",
+  "translateTo": "תרגם ל-{language}",
   "@translateTo": {
     "placeholders": {
       "language": {
@@ -1181,7 +1181,7 @@
       }
     }
   },
-  "translatedFrom": "תורגם מ -_PLACEHOLDER_0_______________",
+  "translatedFrom": "תורגם מ-{language}",
   "@translatedFrom": {
     "placeholders": {
       "language": {
@@ -1190,7 +1190,7 @@
       }
     }
   },
-  "translateContent": "תרגום התוכן ל-_PLACEHOLDER_0__________",
+  "translateContent": "תרגם תוכן ל-{language}",
   "@translateContent": {
     "placeholders": {
       "language": {
@@ -1221,7 +1221,7 @@
   "lightRain": "גשם בהיר",
   "moderateRain": "גשם בינוני",
   "heavyRain": "גשם כבד",
-  "aircraftDetectedCurrentPositions": "PLACEHOLDER_0___ מטוסים שזוהו בתוך _PLACEHOLDER_1___ ק\"מ (מיקומים נוכחיים)",
+  "aircraftDetectedCurrentPositions": "{count} מטוסים שזוהו בתוך {radius} ק\"מ (מיקומים נוכחיים)",
   "@aircraftDetectedCurrentPositions": {
     "placeholders": {
       "count": {
@@ -1234,7 +1234,7 @@
       }
     }
   },
-  "dimSatellitesUnlikely": "PLACEHOLDER_0__ dim לוויינים גלויים - לא סביר להסביר את הראייה",
+  "dimSatellitesUnlikely": "{count} לוויינים עמומים גלויים - לא סביר להסביר את הראייה",
   "@dimSatellitesUnlikely": {
     "placeholders": {
       "count": {
@@ -1244,7 +1244,7 @@
     }
   },
   "mufonReportingDate": "MUFON דיווח על תאריך",
-  "satelliteNameDirection": "שם הסרטון: PLACEHOLDER__0_____{direction}______________________________________________________________________________",
+  "satelliteNameDirection": "{name} - {direction}",
   "@satelliteNameDirection": {
     "placeholders": {
       "name": {

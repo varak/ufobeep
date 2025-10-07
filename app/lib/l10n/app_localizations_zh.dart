@@ -126,7 +126,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String alertDirection(int bearing) {
-    return '夹着... PLACEHOLDER_0..';
+    return '夹着$bearing..';
   }
 
   @override
@@ -214,12 +214,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String reportedBy(String username) {
-    return '由_PLACEHOLDER_0___报导';
+    return '由$username报导';
   }
 
   @override
   String reportedAt(String timeAgo) {
-    return '报告_PLACEHOLDER_0__';
+    return '报告$timeAgo';
   }
 
   @override
@@ -229,7 +229,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String bearingToObject(int bearing) {
-    return '持械反对:_PLACEHOLDER_0_____________________';
+    return '持械反对:$bearing°';
   }
 
   @override
@@ -288,7 +288,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String pointingTo(String direction) {
-    return '指向  _PLACEHOLDER_0__ (英语)';
+    return '指向$direction';
   }
 
   @override
@@ -383,7 +383,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String dndEnabled(Object time) {
-    return 'DND 启用至 __ PLACEHOLDER_ 0___';
+    return 'DND 启用至$time';
   }
 
   @override
@@ -391,7 +391,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return '活动_PLACEHOLDER_0__$startTime';
+    return '活动$startTime - $endTime';
   }
 
   @override
@@ -413,12 +413,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String pushNotificationCommented(Object username) {
-    return '– PLACEHOLDER_0_ 评论';
+    return '$username评论';
   }
 
   @override
   String pushNotificationCommentedOn(Object beepTitle, Object username) {
-    return '–PLACEHOLDER_0__评论_PLACEHOLDER_1_';
+    return '$username评论$beepTitle';
   }
 
   @override
@@ -629,7 +629,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mediaItemsProcessed(int count) {
-    return '分析:_PLACEHOLDER_0_媒体文件已处理';
+    return '分析:$count媒体文件已处理';
   }
 
   @override
@@ -1022,7 +1022,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mufonCaseTitle(String caseNumber) {
-    return '毛里求斯 案件QQPLACEHOLDER_0___';
+    return '毛里求斯 案件#$caseNumber';
   }
 
   @override
@@ -1057,12 +1057,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '靠近... PLACEHOLDER_0_ 靠近... PLACEHOLDER_ 1_';
+    return '$witnessText靠近$locationName';
   }
 
   @override
   String notificationCommentTitle(String username) {
-    return '~PLACEHOLDER_0_评论';
+    return '$username评论';
   }
 
   @override
@@ -1298,7 +1298,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String mediaCount(Object count) {
-    return '_PLACEHOLDER_0_图像';
+    return '$count图像';
   }
 
   @override
@@ -1814,7 +1814,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return '在 _PLACEHOLDER_0_s中再次尝试';
+    return '在${seconds}s中再次尝试';
   }
 
   @override
@@ -1955,7 +1955,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String phoneAuthEnterSixDigitCode(String phoneNumber) {
-    return '输入发送到 _PLACEHOLDER_0__的6位数代码';
+    return '输入发送到$phoneNumber的6位数代码';
   }
 
   @override
@@ -2136,7 +2136,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String celestialMoonBright(Object phase) {
-    return '明亮的  _PLACEHOLDER_ 0_ 月亮可见 - 可能照亮或模糊其他物体';
+    return '明亮的$phase月亮可见 - 可能照亮或模糊其他物体';
   }
 
   @override
@@ -2151,7 +2151,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String celestialMoonHidden(Object phase) {
-    return '- PLACEHOLDER_0__ 地平线以下的月亮 - 没有月光';
+    return '$phase地平线以下的月亮 - 没有月光';
   }
 
   @override
@@ -2159,17 +2159,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String celestialPlanetHigh(Object altitude, Object planet) {
-    return '- PLACEHOLDER_0__ 高管理(__PLACEHOLDER_1+) - 非常突出';
+    return '$planet高管理($altitude°) - 非常突出';
   }
 
   @override
   String celestialPlanetMedium(Object altitude, Object planet) {
-    return '—— PLACEHOLDER_0_ 可见于_PLACEHOLDER_1_ ——可能误认为飞机';
+    return '$planet可见于$altitude° - 可能误认为飞机';
   }
 
   @override
   String celestialPlanetLow(Object altitude, Object planet) {
-    return '- PLACEHOLDER_0_ 低地平线(_PLACEHOLDER_1_+)';
+    return '$planet低地平线($altitude°)';
   }
 
   @override
@@ -2182,7 +2182,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String celestialStarsMultiple(Object count, Object names) {
-    return '- PLACEHOLDER_0_ 明亮的恒星可见 - _PLACEHOLDER_1_';
+    return '$count明亮的恒星可见 - $names';
   }
 
   @override
@@ -2199,12 +2199,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String celestialSummaryManyObjects(Object count) {
-    return '_PLACEHOLDER_0_ 与UFO相混淆的亮天体';
+    return '$count与UFO相混淆的亮天体';
   }
 
   @override
   String celestialSummarySomeObjects(Object count) {
-    return '_PLACEHOLDER_ 0_ 亮物体可见';
+    return '$count亮物体可见';
   }
 
   @override
@@ -2286,17 +2286,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String planetBelowHorizon(Object planet) {
-    return '地平线以下的 PLACEHOLDER_ 0__';
+    return '$planet地平线以下';
   }
 
   @override
   String planetHighOverheadProminent(Object altitude, Object planet) {
-    return '- PLACEHOLDER_0__ 高管理(__PLACEHOLDER_1+) - 非常突出';
+    return '$planet高管理($altitude°) - 非常突出';
   }
 
   @override
   String planetMidSkyProminent(Object altitude, Object planet) {
-    return '- PLACEHOLDER_0_ at ^ PLACEHOLDER_ 1_ - 显著位置';
+    return '$planet在$altitude° - 显著位置';
   }
 
   @override
@@ -2327,12 +2327,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String satellitesVisibleMightExplain(Object count) {
-    return '——PLACEHOLDER_0_ 可见的卫星 - 可以解释目击';
+    return '$count可见的卫星 - 可以解释目击';
   }
 
   @override
   String satellitesVisibleUnlikelyExplain(Object count) {
-    return '* PLACEHOLDER_0_ 卫星可见- 不太可能解释目击';
+    return '$count卫星可见 - 不太可能解释目击';
   }
 
   @override
@@ -2340,7 +2340,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String aircraftDetectedInRadius(Object count, Object radius) {
-    return '在_PLACEHOLDER_0_公里范围内探测到的飞机';
+    return '在$radius公里范围内探测到$count飞机';
   }
 
   @override
@@ -2366,7 +2366,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String analyzing(Object processor) {
-    return '分析_PLACEHOLDER_0_......';
+    return '分析$processor...';
   }
 
   @override
@@ -2395,7 +2395,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String planetsVisible(int count) {
-    return '行星:_PLACEHOLDER_0_可见';
+    return '行星:$count可见';
   }
 
   @override
@@ -2406,7 +2406,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String moonWithPhase(String phase) {
-    return '月球( __ PLACEHOLDER_ 0__)';
+    return '月球($phase)';
   }
 
   @override
@@ -2440,12 +2440,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String sunWithDescription(String description) {
-    return '太阳:_PLACEHOLDER_0_';
+    return '太阳:$description';
   }
 
   @override
   String moonWithDescription(String description) {
-    return '月球: ~ PLACEHOLDER_0_ 月球主题 月球主题';
+    return '月球:$description';
   }
 
   @override
@@ -2468,7 +2468,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String seeAllSatellites(int count) {
-    return '见所有_PLACEHOLDER_0_ 卫星';
+    return '见所有$count卫星';
   }
 
   @override
@@ -2550,7 +2550,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return '活动_PLACEHOLDER_0__$startTime';
+    return '活动$startTime - $endTime';
   }
 
   @override
@@ -2558,7 +2558,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String activeCount(int count) {
-    return '_PLACEHOLDER_0_ 活动';
+    return '$count活动';
   }
 
   @override
@@ -2569,7 +2569,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String commentsCount(int count) {
-    return '– PLACEHOLDER_ 0_ 注释';
+    return '$count注释';
   }
 
   @override
@@ -2618,12 +2618,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String translatedFrom(String language) {
-    return '翻译自_PLACEHOLDER_0__';
+    return '翻译自$language';
   }
 
   @override
   String translateContent(String language) {
-    return '将内容翻译为_PLACEHOLDER_0__';
+    return '将内容翻译为$language';
   }
 
   @override
@@ -2669,17 +2669,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get heavyRain => '暴风雨';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
-    return '在_PLACEHOLDER_0_km(现有位置)内探测到的飞机';
+  String aircraftDetectedCurrentPositions(int count, String radius) {
+    return '在${radius}km(现有位置)内探测到$count飞机';
   }
 
   @override
   String dimSatellitesUnlikely(int count) {
-    return '* PLACEHOLDER_0_ 显微卫星 - 不太可能解释目击';
+    return '$count显微卫星 - 不太可能解释目击';
   }
 
   @override

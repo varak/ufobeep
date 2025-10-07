@@ -122,7 +122,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String alertDistance(String distance) {
-    return '__PACHOLDER_0_ μακριά';
+    return '$distance μακριά';
   }
 
   @override
@@ -229,7 +229,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String distanceAway(String distance) {
-    return '___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return '$distance';
   }
 
   @override
@@ -339,7 +339,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String wind(num speed, String unit) {
-    return 'Άνεμος: ${speed}_PLACEHOLDER_1_';
+    return 'Άνεμος: $speed $unit';
   }
 
   @override
@@ -402,12 +402,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String quietHoursActive(String startTime, String endTime) {
-    return 'Ενεργός __PACHOLDER_0____PACHOLDER_1_';
+    return 'Ενεργός $startTime - $endTime';
   }
 
   @override
   String quietHoursScheduled(Object end, Object start) {
-    return 'Ώρες ησυχίας: _________________________';
+    return 'Ώρες ησυχίας: $start - $end';
   }
 
   @override
@@ -524,7 +524,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String timeDaysAgo(int count) {
-    return '__PACHOLDER_0_ ημέρες πριν';
+    return '$count ημέρες πριν';
   }
 
   @override
@@ -600,7 +600,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mufonCaseDetailsTitle(String caseNumber) {
-    return 'Υπόθεση MUFON #__PLACEHOLDER_0_ Λεπτομέρειες';
+    return 'Υπόθεση MUFON #$caseNumber Λεπτομέρειες';
   }
 
   @override
@@ -1093,7 +1093,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String notificationSightingBody(String witnessText, String locationName) {
-    return '__PLACHOLDER_0___PLACHOLDER_1_';
+    return '$witnessText near $locationName';
   }
 
   @override
@@ -1117,7 +1117,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String notificationDistance(String distance) {
-    return '__PACHOLDER_0_ μακριά';
+    return '$distance μακριά';
   }
 
   @override
@@ -1313,7 +1313,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mufonTitleFormat(Object classification) {
-    return 'Έκθεση MUFON __PLACEHOLDER_0_';
+    return 'Έκθεση MUFON $classification';
   }
 
   @override
@@ -1344,7 +1344,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String mediaMoreImages(Object count) {
-    return '+___PLACHOLDER_0_ more';
+    return '+$count more';
   }
 
   @override
@@ -1791,7 +1791,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String daysAgo(int days) {
-    return '__PACHOLDER_0_ ημέρες πριν';
+    return '$days ημέρες πριν';
   }
 
   @override
@@ -1833,7 +1833,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String signInFailed(String error) {
-    return 'Αποτυχία σύνδεσης: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Αποτυχία σύνδεσης: $error';
   }
 
   @override
@@ -1883,7 +1883,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String signInTryAgainIn(int seconds) {
-    return 'Δοκιμάστε ξανά σε __PACHOLDER_0_s';
+    return 'Δοκιμάστε ξανά σε ${seconds}s';
   }
 
   @override
@@ -1995,7 +1995,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String phoneAuthPhoneVerified(String phoneNumber) {
-    return 'Επαλήθευση αριθμού τηλεφώνου: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Επαλήθευση αριθμού τηλεφώνου: $phoneNumber';
   }
 
   @override
@@ -2337,7 +2337,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String celestialSkySummary(Object conditions) {
-    return 'Συνθήκες ουρανού: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Συνθήκες ουρανού: $conditions';
   }
 
   @override
@@ -2426,7 +2426,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String planetMidSky(Object altitude, Object planet) {
-    return '__PLACHOLDER_0___PLACHOLDER_1_°';
+    return '$planet at $altitude°';
   }
 
   @override
@@ -2441,7 +2441,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String starVisible(Object altitude, Object star) {
-    return '__PLACHOLDER_0___PLACHOLDER_1_°';
+    return '$star at $altitude°';
   }
 
   @override
@@ -2567,12 +2567,12 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String sunWithDescription(String description) {
-    return 'Ήλιος: ___PACHOLDER_0__';
+    return 'Ήλιος: $description';
   }
 
   @override
   String moonWithDescription(String description) {
-    return 'Φεγγάρι: ___PACHOLDER_0__';
+    return 'Φεγγάρι: $description';
   }
 
   @override
@@ -2605,7 +2605,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String magnitude(String value) {
-    return 'Μέγεθος: ___PACHOLDER_0______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________';
+    return 'Μέγεθος: $value';
   }
 
   @override
@@ -2681,7 +2681,7 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String quietHoursActiveTimeRange(String startTime, String endTime) {
-    return 'Ενεργός __PACHOLDER_0____PACHOLDER_1_';
+    return 'Ενεργός $startTime - $endTime';
   }
 
   @override
@@ -2800,11 +2800,7 @@ class AppLocalizationsEl extends AppLocalizations {
   String get heavyRain => 'βαριά βροχή';
 
   @override
-  String aircraftDetectedCurrentPositions(
-    int count,
-    String radius,
-    Object raggio,
-  ) {
+  String aircraftDetectedCurrentPositions(int count, String radius) {
     return '$count αεροσκάφος που εντοπίστηκε εντός ${radius}km (τρέχουσες θέσεις)';
   }
 
@@ -2818,6 +2814,6 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String satelliteNameDirection(String name, String direction) {
-    return '_________________________';
+    return '$name - $direction';
   }
 }
