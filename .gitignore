@@ -51,3 +51,5 @@ logs/
 backups/
 *.g.dart
 hip_main.dat
+api/data/*.csv
+api/data/*.dat

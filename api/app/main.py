@@ -370,6 +370,14 @@ async def lifespan(app: FastAPI):
             print(f"❌ Notification system initialization failed: {e}")
             import traceback
             print(f"Full traceback: {traceback.format_exc()}")
+
+        # Initialize catalog service for satellite/airline metadata
+        try:
+            from app.services.catalog_service import catalog_service
+            catalog_service.initialize()
+            print("✅ Catalog service initialized")
+        except Exception as e:
+            print(f"❌ Catalog service initialization failed: {e}")
     except Exception as e:
         print(f"Database initialization failed: {e}")
     

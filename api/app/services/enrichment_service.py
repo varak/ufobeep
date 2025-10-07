@@ -939,14 +939,18 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
                         brightness = self._estimate_satellite_brightness(
                             sat_info['name'], distance.km, alt.degrees
                         )
-                        satellites.append({
+                        norad_id = self._extract_norad_id(satellite)
+                        sat_obj = {
                             "name": sat_info['name'],
-                            "norad_id": self._extract_norad_id(satellite),
+                            "norad_id": norad_id,
                             "altitude": round(alt.degrees, 1),
                             "azimuth": round(az.degrees, 1),
                             "brightness_magnitude": brightness,
                             "is_bright": brightness is not None and brightness < 3.0
-                        })
+                        }
+                        # Add SATCAT metadata
+                        self._enrich_satellite_metadata(sat_obj, norad_id)
+                        satellites.append(sat_obj)
                 except Exception as e:
                     logger.debug(f"Error checking ISS at moment: {e}")
 
@@ -963,14 +967,18 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
                         brightness = self._estimate_satellite_brightness(
                             sat_info['name'], distance.km, alt.degrees
                         )
-                        satellites.append({
+                        norad_id = self._extract_norad_id(satellite)
+                        sat_obj = {
                             "name": sat_info['name'],
-                            "norad_id": self._extract_norad_id(satellite),
+                            "norad_id": norad_id,
                             "altitude": round(alt.degrees, 1),
                             "azimuth": round(az.degrees, 1),
                             "brightness_magnitude": brightness,
                             "is_bright": brightness is not None and brightness < 3.0
-                        })
+                        }
+                        # Add SATCAT metadata
+                        self._enrich_satellite_metadata(sat_obj, norad_id)
+                        satellites.append(sat_obj)
                 except Exception:
                     pass  # Skip errors for individual satellites
 
@@ -991,14 +999,18 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
                         brightness = self._estimate_satellite_brightness(
                             sat_info['name'], distance.km, alt.degrees
                         )
-                        satellites.append({
+                        norad_id = self._extract_norad_id(satellite)
+                        sat_obj = {
                             "name": sat_info['name'],
-                            "norad_id": self._extract_norad_id(satellite),
+                            "norad_id": norad_id,
                             "altitude": round(alt.degrees, 1),
                             "azimuth": round(az.degrees, 1),
                             "brightness_magnitude": brightness,
                             "is_bright": brightness is not None and brightness < 3.0
-                        })
+                        }
+                        # Add SATCAT metadata
+                        self._enrich_satellite_metadata(sat_obj, norad_id)
+                        satellites.append(sat_obj)
                 except Exception:
                     pass  # Skip errors for individual satellites
 
@@ -1177,7 +1189,22 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
             return int(line1)
         except:
             return None
-    
+
+    def _enrich_satellite_metadata(self, sat_obj: dict, norad_id: Optional[int]):
+        """Add SATCAT metadata to satellite object"""
+        if not norad_id:
+            return
+
+        try:
+            from app.services.catalog_service import catalog_service
+            catalog_info = catalog_service.get_satellite_info(norad_id)
+            if catalog_info:
+                sat_obj["owner"] = catalog_info.get("country")
+                sat_obj["launch_date"] = catalog_info.get("launch_date")
+                sat_obj["object_type"] = catalog_info.get("object_type")
+        except Exception as e:
+            logger.debug(f"Could not enrich satellite metadata: {e}")
+
     def _calculate_direction(self, start_az: float, end_az: float) -> str:
         """Calculate general direction of satellite pass"""
         directions = [
@@ -1556,8 +1583,20 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                     if distance_km > 50:  # Skip if too far
                         continue
                     
+                    callsign = (state[1] or "").strip()
+
+                    # Lookup airline name
+                    airline_name = None
+                    if callsign:
+                        try:
+                            from app.services.catalog_service import catalog_service
+                            airline_name = catalog_service.get_airline_name(callsign)
+                        except:
+                            pass
+
                     aircraft.append({
-                        "callsign": (state[1] or "").strip(),
+                        "callsign": callsign,
+                        "airline": airline_name,
                         "distance_km": round(distance_km, 1),
                         "altitude_ft": round(state[7] * 3.28084) if state[7] else None,
                         "speed_knots": round(state[9] * 1.944) if state[9] else None,
