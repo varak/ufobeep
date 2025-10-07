@@ -81,9 +81,20 @@ export default function AircraftTrackingCard({ aircraftData, locale = 'en' }: Ai
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-brand-primary">
-                        {aircraft.callsign || t('unknown')}
-                      </span>
+                      {aircraft.callsign ? (
+                        <a
+                          href={`https://flightaware.com/live/flight/${aircraft.callsign}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-brand-primary hover:text-blue-400 hover:underline transition-colors"
+                        >
+                          {aircraft.callsign}
+                        </a>
+                      ) : (
+                        <span className="font-medium text-brand-primary">
+                          {t('unknown')}
+                        </span>
+                      )}
                       <span className="text-xs text-text-tertiary bg-dark-surface px-2 py-1 rounded">
                         {aircraft.country}
                       </span>

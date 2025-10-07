@@ -86,9 +86,14 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
                   }`}>
                     {isBright ? '☀️' : '🛰️'}
                   </span>
-                  <span className="font-medium text-text-primary text-sm">
+                  <a
+                    href={`https://www.google.com/search?q=${encodeURIComponent(name + ' satellite')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-brand-primary hover:text-blue-400 hover:underline transition-colors text-sm"
+                  >
                     {name}
-                  </span>
+                  </a>
                 </div>
                 {direction && (
                   <span className="text-xs text-text-tertiary bg-dark-surface px-2 py-1 rounded">
@@ -97,6 +102,12 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
                 )}
               </div>
               <div className="text-xs text-text-secondary flex items-center gap-3">
+                {altitude != null && (
+                  <span className="flex items-center gap-1">
+                    <span className="text-text-tertiary">Alt:</span>
+                    <span className="text-text-primary">{altitude.toFixed(1)}°</span>
+                  </span>
+                )}
                 {magnitude != null && (
                   <span>Magnitude: {magnitude}</span>
                 )}
