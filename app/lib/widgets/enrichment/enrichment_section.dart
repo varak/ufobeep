@@ -1611,8 +1611,22 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
       onTap: () {
         showModalBottomSheet(
           context: context,
-          backgroundColor: AppColors.darkBackground,
+          backgroundColor: Colors.transparent,
           builder: (context) => Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.brandPrimary.withOpacity(0.1),
+                  AppColors.darkBackground,
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
             padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
