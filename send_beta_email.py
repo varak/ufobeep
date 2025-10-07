@@ -13,7 +13,7 @@ def send_beta_notification(to_email: str):
 
     from_email = "support@ufobeep.com"
     from_name = "UFOBeep"
-    subject = "🛸 UFOBeep Beta Access - Download Now!"
+    subject = "🛸 UFOBeep Beta - Smart Analysis That Pulls Real-Time Data"
 
     html_body = """
     <!DOCTYPE html>
@@ -75,14 +75,40 @@ def send_beta_notification(to_email: str):
                 margin-bottom: 20px;
                 font-size: 24px;
             }
+            h3 {
+                color: #333;
+                margin-top: 30px;
+                font-size: 20px;
+            }
             p {
                 color: #555;
                 line-height: 1.6;
                 font-size: 16px;
             }
+            ul {
+                color: #555;
+                line-height: 1.8;
+            }
+            li {
+                margin-bottom: 8px;
+            }
             .info-box {
                 background: #f8f9fa;
                 border-left: 4px solid #00ff88;
+                padding: 15px;
+                margin: 20px 0;
+                border-radius: 4px;
+            }
+            .feature-box {
+                background: #f8f9fa;
+                border-left: 4px solid #007bff;
+                padding: 12px 15px;
+                margin: 10px 0;
+                border-radius: 4px;
+            }
+            .highlight-box {
+                background: #fff3cd;
+                border-left: 4px solid #ffc107;
                 padding: 15px;
                 margin: 20px 0;
                 border-radius: 4px;
@@ -96,7 +122,7 @@ def send_beta_notification(to_email: str):
             </div>
             <div class="content">
                 <h2>Welcome to the UFOBeep Beta!</h2>
-                <p>You're receiving this email because you're on our beta tester list. Your Google Play beta access is now active!</p>
+                <p>You're on the list! Your Google Play beta access is now active.</p>
 
                 <center>
                     <a href="https://play.google.com/apps/testing/com.ufobeep" class="button">
@@ -104,27 +130,53 @@ def send_beta_notification(to_email: str):
                     </a>
                 </center>
 
-                <div class="info-box">
-                    <p style="margin: 0;"><strong>Direct Link:</strong></p>
-                    <p style="margin: 5px 0 0 0; font-size: 14px;">
-                        <a href="https://play.google.com/apps/testing/com.ufobeep" style="color: #007bff;">
-                            https://play.google.com/apps/testing/com.ufobeep
-                        </a>
-                    </p>
+                <h3>🔬 What Makes UFOBeep Different</h3>
+
+                <p>Every single sighting you report automatically captures <strong>real-time environmental data</strong> at that exact moment:</p>
+
+                <div class="feature-box">
+                    <p style="margin: 5px 0;"><strong>☁️ Weather Conditions</strong> - Temperature, visibility, cloud cover, and wind speed</p>
                 </div>
 
-                <h3 style="color: #333; margin-top: 30px;">📱 iOS Version</h3>
+                <div class="feature-box">
+                    <p style="margin: 5px 0;"><strong>🌙 Celestial Positions</strong> - Sun, moon, planets, and bright stars visible at that moment</p>
+                </div>
+
+                <div class="feature-box">
+                    <p style="margin: 5px 0;"><strong>✈️ Aircraft Tracking</strong> - All planes within 50km with real-time positions, altitude, and flight numbers</p>
+                </div>
+
+                <div class="feature-box">
+                    <p style="margin: 5px 0;"><strong>🛰️ Satellite Data</strong> - Every satellite visible overhead at that precise moment, including brightness and trajectory</p>
+                </div>
+
+                <h3>🧪 Help Us Test!</h3>
+
+                <p>We need your help testing these features:</p>
+
+                <ul>
+                    <li><strong>Create a test "beep"</strong> - Take a photo of the sky and submit a sighting to see the automatic analysis in action</li>
+                    <li><strong>Browse other sightings</strong> - Tap on alerts to see the environmental data we capture</li>
+                    <li><strong>Leave comments</strong> - Try commenting on sightings to test real-time chat</li>
+                    <li><strong>Check the enrichment data</strong> - See how we identify planes, satellites, and celestial objects automatically</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p style="margin: 0;"><strong>🎯 Beta Focus:</strong> We especially want feedback on the automatic enrichment data - does it help you understand what you're seeing? Is anything confusing?</p>
+                </div>
+
+                <h3>📱 iOS Version</h3>
                 <p>
-                    The iOS version is currently under review by Apple and should be available for testing tomorrow.
-                    We'll send you more information as soon as it's approved.
+                    The iOS/macOS version is currently under review by Apple and should be available for testing tomorrow.
+                    We'll send more information as soon as it's approved.
                 </p>
 
                 <p style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
-                    Thank you for being an early tester! Your feedback will help shape the future of UFOBeep.
+                    Thank you for being an early tester! Your feedback will help us build the best UFO tracking platform.
                 </p>
 
                 <p style="color: #888; font-size: 14px;">
-                    Questions? Reply to this email or contact us at support@ufobeep.com
+                    Questions? Reply to this email or contact support@ufobeep.com
                 </p>
             </div>
             <div class="footer">
@@ -139,18 +191,33 @@ def send_beta_notification(to_email: str):
     text_body = """
     Welcome to the UFOBeep Beta!
 
-    You're receiving this email because you're on our beta tester list.
+    You're on the list! Your Google Play beta access is now active.
 
-    Download the Android beta here:
-    https://play.google.com/apps/testing/com.ufobeep
+    Download: https://play.google.com/apps/testing/com.ufobeep
+
+    What Makes UFOBeep Different:
+
+    Every sighting you report automatically captures real-time environmental data:
+    - Weather Conditions: Temperature, visibility, cloud cover, wind speed
+    - Celestial Positions: Sun, moon, planets, and bright stars at that moment
+    - Aircraft Tracking: All planes within 50km with positions, altitude, flight numbers
+    - Satellite Data: Every satellite overhead at that moment with brightness and trajectory
+
+    Help Us Test:
+    - Create a test beep and see automatic analysis
+    - Browse sightings and check the environmental data
+    - Leave comments to test real-time chat
+    - Review the enrichment data (planes, satellites, celestial objects)
+
+    Beta Focus: We especially want feedback on the automatic enrichment data!
 
     iOS Version:
-    The iOS version is currently under review by Apple and should be available for testing tomorrow.
-    We'll send you more information as soon as it's approved.
+    The iOS/macOS version is under review by Apple and should be available tomorrow.
+    We'll send more info as soon as it's approved.
 
     Thank you for being an early tester!
 
-    Questions? Contact us at support@ufobeep.com
+    Questions? Contact support@ufobeep.com
 
     - The UFOBeep Team
     """
