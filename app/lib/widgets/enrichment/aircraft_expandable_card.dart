@@ -238,7 +238,8 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                         );
                       },
                     ),
-                  );
+                  ),
+                );
                 }),
               if (aircraft.length > 4)
                 GestureDetector(
