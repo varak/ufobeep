@@ -11,7 +11,6 @@ import 'aircraft_expandable_card.dart';
 import '../../services/astronomical_translation_service.dart';
 import 'celestial_description_helpers.dart';
 import 'unified_celestial_card.dart';
-import '../webview_overlay.dart';
 
 class EnrichmentSection extends ConsumerWidget {
   const EnrichmentSection({
@@ -1600,22 +1599,14 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
   Widget _buildSatelliteItem(Map<String, dynamic> sat) {
     final name = sat['name'] ?? 'Unknown Satellite';
     final noradId = sat['norad_id'] as int?;
+    final owner = sat['owner'] as String?;
+    final launchDate = sat['launch_date'] as String?;
+    final objectType = sat['object_type'] as String?;
     final brightness = sat['brightness_magnitude'] as double?;
-    final altitude = sat['altitude'] as double? ?? 0.0;
+    final altitude = sat['altitude'] as double?? 0.0;
     final isBright = sat['is_bright'] as bool? ?? false;
 
-    // Build Heavens-Above URL
-    final satelliteUrl = noradId != null
-        ? 'https://www.heavens-above.com/SatInfo.aspx?satid=$noradId'
-        : 'https://www.heavens-above.com/SearchResults.aspx?searchstring=${Uri.encodeComponent(name)}';
-
-    return GestureDetector(
-      onTap: () async {
-        if (context.mounted) {
-          await WebViewOverlay.show(context, satelliteUrl, title: name);
-        }
-      },
-      child: Container(
+    return Container(
         margin: const EdgeInsets.only(bottom: 6),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
@@ -1625,31 +1616,59 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
             color: isBright ? AppColors.warning : AppColors.darkBorder,
           ),
         ),
-        child: Row(
-        children: [
-          Text(
-            isBright ? '🛰️' : '🛰️',
-            style: TextStyle(fontSize: 12),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              name,
-              style: const TextStyle(
-                color: AppColors.textPrimary,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Main row: icon, name, stats
+            Row(
+              children: [
+                Text(
+                  isBright ? '🛰️' : '🛰️',
+                  style: TextStyle(fontSize: 12),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    name,
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Text(
+                  '${altitude.toStringAsFixed(1)}° ${AppLocalizations.of(context)!.altitudeShort}${brightness != null ? " • ${brightness.toStringAsFixed(1)} ${AppLocalizations.of(context)!.magnitudeShort}" : ""}',
+                  style: TextStyle(
+                    color: isBright ? AppColors.warning : AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+            // Enriched metadata row
+            if (owner != null || objectType != null || launchDate != null) ...[
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  const SizedBox(width: 20), // Align with name
+                  Expanded(
+                    child: Text(
+                      [
+                        if (owner != null) owner,
+                        if (objectType != null) objectType == 'PAY' ? 'Satellite' : objectType == 'R/B' ? 'Rocket' : 'Debris',
+                        if (launchDate != null) DateTime.tryParse(launchDate)?.year.toString(),
+                      ].where((e) => e != null).join(' • '),
+                      style: const TextStyle(
+                        color: AppColors.textTertiary,
+                        fontSize: 11,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ),
-          Text(
-            '${altitude.toStringAsFixed(1)}° ${AppLocalizations.of(context)!.altitudeShort}${brightness != null ? " • ${brightness.toStringAsFixed(1)} ${AppLocalizations.of(context)!.magnitudeShort}" : ""}',
-            style: TextStyle(
-              color: isBright ? AppColors.warning : AppColors.textSecondary,
-              fontSize: 12,
-            ),
-          ),
-        ],
+            ],
+          ],
         ),
       ),
     );

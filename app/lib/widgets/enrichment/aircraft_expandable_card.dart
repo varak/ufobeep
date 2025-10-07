@@ -6,7 +6,6 @@ import '../../utils/unit_conversion.dart';
 import '../../l10n/app_localizations.dart';
 import '../glass_card.dart';
 import '../../services/astronomical_translation_service.dart';
-import '../webview_overlay.dart';
 
 class AircraftExpandableCard extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -73,21 +72,11 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                     itemBuilder: (context, index) {
                       final a = aircraft[index];
                       final callsign = a['callsign'] ?? '';
+                      final airline = a['airline'] as String?;
                       final distance = a['distance_km']?.toDouble() ?? 0.0;
                       final altitude = a['altitude_ft'];
 
-                      // Build FlightAware URL
-                      final aircraftUrl = callsign.isNotEmpty
-                          ? 'https://flightaware.com/live/flight/$callsign'
-                          : null;
-
-                      return GestureDetector(
-                        onTap: aircraftUrl != null ? () async {
-                          if (context.mounted) {
-                            await WebViewOverlay.show(context, aircraftUrl, title: callsign);
-                          }
-                        } : null,
-                        child: Container(
+                      return Container(
                           margin: const EdgeInsets.only(bottom: 6),
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
@@ -141,21 +130,11 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                 // For collapsed view or small lists, use the original Column approach
                 ...aircraft.take(isExpanded ? aircraft.length : 4).map((a) {
                   final callsign = a['callsign'] ?? '';
+                  final airline = a['airline'] as String?;
                   final distance = a['distance_km']?.toDouble() ?? 0.0;
                   final altitude = a['altitude_ft'];
 
-                  // Build FlightAware URL
-                  final aircraftUrl = callsign.isNotEmpty
-                      ? 'https://flightaware.com/live/flight/$callsign'
-                      : null;
-
-                  return GestureDetector(
-                    onTap: aircraftUrl != null ? () async {
-                      if (context.mounted) {
-                        await WebViewOverlay.show(context, aircraftUrl, title: callsign);
-                      }
-                    } : null,
-                    child: Container(
+                  return Container(
                       margin: const EdgeInsets.only(bottom: 6),
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(

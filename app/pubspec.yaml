@@ -86,9 +86,6 @@ dependencies:
   # URL Launcher
   url_launcher: ^6.3.1
 
-  # In-app WebView for satellite/aircraft tracking
-  flutter_inappwebview: ^6.1.5
-
   # Native Sharing
   share_plus: ^10.1.2
   
