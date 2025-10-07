@@ -75,8 +75,42 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                       final airline = a['airline'] as String?;
                       final distance = a['distance_km']?.toDouble() ?? 0.0;
                       final altitude = a['altitude_ft'];
+                      final speed = a['speed_knots'];
+                      final heading = a['heading'];
+                      final country = a['country'] ?? '';
 
-                      return Container(
+                      return GestureDetector(
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            backgroundColor: AppColors.darkBackground,
+                            builder: (context) => Container(
+                              padding: const EdgeInsets.all(24),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    callsign.isEmpty ? 'Unknown Aircraft' : callsign,
+                                    style: const TextStyle(
+                                      color: AppColors.textPrimary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  if (airline != null) _buildAircraftInfoRow('Airline', airline),
+                                  _buildAircraftInfoRow('Distance', '${distance.toStringAsFixed(1)} km'),
+                                  if (altitude != null) _buildAircraftInfoRow('Altitude', '${altitude}ft'),
+                                  if (speed != null) _buildAircraftInfoRow('Speed', '${speed} knots'),
+                                  if (heading != null) _buildAircraftInfoRow('Heading', '${heading}°'),
+                                  if (country.isNotEmpty) _buildAircraftInfoRow('Country', country),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                        child: Container(
                           margin: const EdgeInsets.only(bottom: 6),
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
@@ -92,19 +126,15 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
 
                             return Row(
                               children: [
-                                Row(
-                                  children: [
-                                    Text('✈️', style: TextStyle(fontSize: 12)),
-                                    SizedBox(width: 4),
-                                    Text(
-                                      aircraftName,
-                                      style: const TextStyle(
-                                        color: AppColors.textPrimary,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500
-                                      ),
-                                    ),
-                                  ],
+                                Text('✈️', style: TextStyle(fontSize: 12)),
+                                SizedBox(width: 4),
+                                Text(
+                                  aircraftName,
+                                  style: const TextStyle(
+                                    color: AppColors.textPrimary,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500
+                                  ),
                                 ),
                                 const SizedBox(width: 8),
                                 Expanded(
@@ -132,8 +162,42 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                   final airline = a['airline'] as String?;
                   final distance = a['distance_km']?.toDouble() ?? 0.0;
                   final altitude = a['altitude_ft'];
+                  final speed = a['speed_knots'];
+                  final heading = a['heading'];
+                  final country = a['country'] ?? '';
 
-                  return Container(
+                  return GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        backgroundColor: AppColors.darkBackground,
+                        builder: (context) => Container(
+                          padding: const EdgeInsets.all(24),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                callsign.isEmpty ? 'Unknown Aircraft' : callsign,
+                                style: const TextStyle(
+                                  color: AppColors.textPrimary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              if (airline != null) _buildAircraftInfoRow('Airline', airline),
+                              _buildAircraftInfoRow('Distance', '${distance.toStringAsFixed(1)} km'),
+                              if (altitude != null) _buildAircraftInfoRow('Altitude', '${altitude}ft'),
+                              if (speed != null) _buildAircraftInfoRow('Speed', '${speed} knots'),
+                              if (heading != null) _buildAircraftInfoRow('Heading', '${heading}°'),
+                              if (country.isNotEmpty) _buildAircraftInfoRow('Country', country),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
                       margin: const EdgeInsets.only(bottom: 6),
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
@@ -149,19 +213,15 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
 
                         return Row(
                           children: [
-                            Row(
-                              children: [
-                                Text('✈️', style: TextStyle(fontSize: 12)),
-                                SizedBox(width: 4),
-                                Text(
-                                  aircraftName,
-                                  style: const TextStyle(
-                                    color: AppColors.textPrimary,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500
-                                  ),
-                                ),
-                              ],
+                            Text('✈️', style: TextStyle(fontSize: 12)),
+                            SizedBox(width: 4),
+                            Text(
+                              aircraftName,
+                              style: const TextStyle(
+                                color: AppColors.textPrimary,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500
+                              ),
                             ),
                             const SizedBox(width: 8),
                             Expanded(
@@ -215,6 +275,36 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
             ],
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildAircraftInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

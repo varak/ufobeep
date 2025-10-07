@@ -1604,70 +1604,107 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
     final objectType = sat['object_type'] as String?;
     final brightness = sat['brightness_magnitude'] as double?;
     final altitude = sat['altitude'] as double? ?? 0.0;
+    final azimuth = sat['azimuth'] as double?;
     final isBright = sat['is_bright'] as bool? ?? false;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-          color: isBright ? AppColors.warning : AppColors.darkBorder,
-        ),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Main row: icon, name, stats
-          Row(
-            children: [
-              Text(
-                isBright ? '🛰️' : '🛰️',
-                style: TextStyle(fontSize: 12),
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
+    return GestureDetector(
+      onTap: () {
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: AppColors.darkBackground,
+          builder: (context) => Container(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
                   name,
                   style: const TextStyle(
                     color: AppColors.textPrimary,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-              Text(
-                '${altitude.toStringAsFixed(1)}° ${AppLocalizations.of(context)!.altitudeShort}${brightness != null ? " • ${brightness.toStringAsFixed(1)} ${AppLocalizations.of(context)!.magnitudeShort}" : ""}',
-                style: TextStyle(
-                  color: isBright ? AppColors.warning : AppColors.textSecondary,
-                  fontSize: 12,
-                ),
-              ),
-            ],
-          ),
-          // Enriched metadata row
-          if (owner != null || objectType != null || launchDate != null) ...[
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                const SizedBox(width: 20), // Align with name
-                Expanded(
-                  child: Text(
-                    [
-                      if (owner != null) owner,
-                      if (objectType != null) objectType == 'PAY' ? 'Satellite' : objectType == 'R/B' ? 'Rocket' : 'Debris',
-                      if (launchDate != null) DateTime.tryParse(launchDate)?.year.toString(),
-                    ].where((e) => e != null).join(' • '),
-                    style: const TextStyle(
-                      color: AppColors.textTertiary,
-                      fontSize: 11,
-                    ),
-                  ),
-                ),
+                const SizedBox(height: 16),
+                if (owner != null) _buildInfoRow('Owner', owner),
+                if (objectType != null) _buildInfoRow('Type', objectType == 'PAY' ? 'Satellite' : objectType == 'R/B' ? 'Rocket Body' : 'Debris'),
+                if (launchDate != null) _buildInfoRow('Launched', launchDate),
+                if (noradId != null) _buildInfoRow('NORAD ID', noradId.toString()),
+                _buildInfoRow('Altitude', '${altitude.toStringAsFixed(1)}°'),
+                if (azimuth != null) _buildInfoRow('Azimuth', '${azimuth.toStringAsFixed(0)}°'),
+                if (brightness != null) _buildInfoRow('Magnitude', brightness.toStringAsFixed(1)),
+                if (isBright) _buildInfoRow('Visibility', 'Naked eye visible'),
               ],
             ),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.darkSurface,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: isBright ? AppColors.warning : AppColors.darkBorder,
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(
+              isBright ? '🛰️' : '🛰️',
+              style: TextStyle(fontSize: 12),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                name,
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+            Text(
+              '${altitude.toStringAsFixed(1)}° ${AppLocalizations.of(context)!.altitudeShort}${brightness != null ? " • ${brightness.toStringAsFixed(1)} ${AppLocalizations.of(context)!.magnitudeShort}" : ""}',
+              style: TextStyle(
+                color: isBright ? AppColors.warning : AppColors.textSecondary,
+                fontSize: 12,
+              ),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 100,
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
         ],
       ),
     );
