@@ -4512,6 +4512,84 @@ abstract class AppLocalizations {
   /// **'Mag'**
   String get magnitudeShort;
 
+  /// No description provided for @airlineLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Airline'**
+  String get airlineLabel;
+
+  /// No description provided for @speedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed'**
+  String get speedLabel;
+
+  /// No description provided for @headingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Heading'**
+  String get headingLabel;
+
+  /// No description provided for @ownerLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Owner'**
+  String get ownerLabel;
+
+  /// No description provided for @launchedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Launched'**
+  String get launchedLabel;
+
+  /// No description provided for @noradIdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'NORAD ID'**
+  String get noradIdLabel;
+
+  /// No description provided for @typeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get typeLabel;
+
+  /// No description provided for @azimuthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Azimuth'**
+  String get azimuthLabel;
+
+  /// No description provided for @visibilityLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Visibility'**
+  String get visibilityLabel;
+
+  /// No description provided for @satelliteType.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellite'**
+  String get satelliteType;
+
+  /// No description provided for @rocketBodyType.
+  ///
+  /// In en, this message translates to:
+  /// **'Rocket Body'**
+  String get rocketBodyType;
+
+  /// No description provided for @debrisType.
+  ///
+  /// In en, this message translates to:
+  /// **'Debris'**
+  String get debrisType;
+
+  /// No description provided for @nakedEyeVisible.
+  ///
+  /// In en, this message translates to:
+  /// **'Naked eye visible'**
+  String get nakedEyeVisible;
+
   /// No description provided for @satellitesVisibleMightExplain.
   ///
   /// In en, this message translates to:

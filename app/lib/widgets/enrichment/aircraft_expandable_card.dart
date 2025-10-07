@@ -86,7 +86,14 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                             backgroundColor: Colors.transparent,
                             builder: (context) => Container(
                               decoration: BoxDecoration(
-                                color: AppColors.brandPrimary,
+                                gradient: LinearGradient(
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  colors: [
+                                    AppColors.nightSkyMiddle,
+                                    AppColors.nightSkyBottom,
+                                  ],
+                                ),
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
@@ -106,12 +113,12 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                                     ),
                                   ),
                                   const SizedBox(height: 16),
-                                  if (airline != null) _buildAircraftInfoRow('Airline', airline),
-                                  _buildAircraftInfoRow('Distance', '${distance.toStringAsFixed(1)} km'),
-                                  if (altitude != null) _buildAircraftInfoRow('Altitude', '${altitude}ft'),
-                                  if (speed != null) _buildAircraftInfoRow('Speed', '${speed} knots'),
-                                  if (heading != null) _buildAircraftInfoRow('Heading', '${heading}°'),
-                                  if (country.isNotEmpty) _buildAircraftInfoRow('Country', country),
+                                  if (airline != null) _buildAircraftInfoRow(AppLocalizations.of(context)!.airlineLabel, airline),
+                                  _buildAircraftInfoRow(AppLocalizations.of(context)!.distanceLabel, '${distance.toStringAsFixed(1)} km'),
+                                  if (altitude != null) _buildAircraftInfoRow(AppLocalizations.of(context)!.altitudeShort, '${altitude}ft'),
+                                  if (speed != null) _buildAircraftInfoRow(AppLocalizations.of(context)!.speedLabel, '${speed} knots'),
+                                  if (heading != null) _buildAircraftInfoRow(AppLocalizations.of(context)!.headingLabel, '${heading}°'),
+                                  if (country.isNotEmpty) _buildAircraftInfoRow(AppLocalizations.of(context)!.country, country),
                                 ],
                               ),
                             ),
@@ -181,7 +188,14 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                         backgroundColor: Colors.transparent,
                         builder: (context) => Container(
                           decoration: BoxDecoration(
-                            color: AppColors.brandPrimary,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                AppColors.nightSkyMiddle,
+                                AppColors.nightSkyBottom,
+                              ],
+                            ),
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20),
@@ -201,12 +215,12 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                                 ),
                               ),
                               const SizedBox(height: 16),
-                              if (airline != null) _buildAircraftInfoRow('Airline', airline),
-                              _buildAircraftInfoRow('Distance', '${distance.toStringAsFixed(1)} km'),
-                              if (altitude != null) _buildAircraftInfoRow('Altitude', '${altitude}ft'),
-                              if (speed != null) _buildAircraftInfoRow('Speed', '${speed} knots'),
-                              if (heading != null) _buildAircraftInfoRow('Heading', '${heading}°'),
-                              if (country.isNotEmpty) _buildAircraftInfoRow('Country', country),
+                              if (airline != null) _buildAircraftInfoRow(AppLocalizations.of(context)!.airlineLabel, airline),
+                              _buildAircraftInfoRow(AppLocalizations.of(context)!.distanceLabel, '${distance.toStringAsFixed(1)} km'),
+                              if (altitude != null) _buildAircraftInfoRow(AppLocalizations.of(context)!.altitudeShort, '${altitude}ft'),
+                              if (speed != null) _buildAircraftInfoRow(AppLocalizations.of(context)!.speedLabel, '${speed} knots'),
+                              if (heading != null) _buildAircraftInfoRow(AppLocalizations.of(context)!.headingLabel, '${heading}°'),
+                              if (country.isNotEmpty) _buildAircraftInfoRow(AppLocalizations.of(context)!.country, country),
                             ],
                           ),
                         ),

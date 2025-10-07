@@ -1614,7 +1614,14 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
           backgroundColor: Colors.transparent,
           builder: (context) => Container(
             decoration: BoxDecoration(
-              color: AppColors.brandPrimary,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  AppColors.nightSkyMiddle,
+                  AppColors.nightSkyBottom,
+                ],
+              ),
               borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(20),
                 topRight: Radius.circular(20),
@@ -1634,14 +1641,14 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                if (owner != null) _buildInfoRow('Owner', owner),
-                if (objectType != null) _buildInfoRow('Type', objectType == 'PAY' ? 'Satellite' : objectType == 'R/B' ? 'Rocket Body' : 'Debris'),
-                if (launchDate != null) _buildInfoRow('Launched', launchDate),
-                if (noradId != null) _buildInfoRow('NORAD ID', noradId.toString()),
-                _buildInfoRow('Altitude', '${altitude.toStringAsFixed(1)}°'),
-                if (azimuth != null) _buildInfoRow('Azimuth', '${azimuth.toStringAsFixed(0)}°'),
-                if (brightness != null) _buildInfoRow('Magnitude', brightness.toStringAsFixed(1)),
-                if (isBright) _buildInfoRow('Visibility', 'Naked eye visible'),
+                if (owner != null) _buildInfoRow(AppLocalizations.of(context)!.ownerLabel, owner),
+                if (objectType != null) _buildInfoRow(AppLocalizations.of(context)!.typeLabel, objectType == 'PAY' ? AppLocalizations.of(context)!.satelliteType : objectType == 'R/B' ? AppLocalizations.of(context)!.rocketBodyType : AppLocalizations.of(context)!.debrisType),
+                if (launchDate != null) _buildInfoRow(AppLocalizations.of(context)!.launchedLabel, launchDate),
+                if (noradId != null) _buildInfoRow(AppLocalizations.of(context)!.noradIdLabel, noradId.toString()),
+                _buildInfoRow(AppLocalizations.of(context)!.altitudeShort, '${altitude.toStringAsFixed(1)}°'),
+                if (azimuth != null) _buildInfoRow(AppLocalizations.of(context)!.azimuthLabel, '${azimuth.toStringAsFixed(0)}°'),
+                if (brightness != null) _buildInfoRow(AppLocalizations.of(context)!.magnitudeShort, brightness.toStringAsFixed(1)),
+                if (isBright) _buildInfoRow(AppLocalizations.of(context)!.visibilityLabel, AppLocalizations.of(context)!.nakedEyeVisible),
               ],
             ),
           ),

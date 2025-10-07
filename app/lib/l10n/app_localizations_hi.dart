@@ -2414,6 +2414,45 @@ class AppLocalizationsHi extends AppLocalizations {
   String get magnitudeShort => 'मग';
 
   @override
+  String get airlineLabel => 'Airline';
+
+  @override
+  String get speedLabel => 'Speed';
+
+  @override
+  String get headingLabel => 'Heading';
+
+  @override
+  String get ownerLabel => 'Owner';
+
+  @override
+  String get launchedLabel => 'Launched';
+
+  @override
+  String get noradIdLabel => 'NORAD ID';
+
+  @override
+  String get typeLabel => 'Type';
+
+  @override
+  String get azimuthLabel => 'Azimuth';
+
+  @override
+  String get visibilityLabel => 'Visibility';
+
+  @override
+  String get satelliteType => 'Satellite';
+
+  @override
+  String get rocketBodyType => 'Rocket Body';
+
+  @override
+  String get debrisType => 'Debris';
+
+  @override
+  String get nakedEyeVisible => 'Naked eye visible';
+
+  @override
   String satellitesVisibleMightExplain(Object count) {
     return '${count}0__ उपग्रह दृश्यमान - दृष्टि की व्याख्या कर सकते हैं';
   }
