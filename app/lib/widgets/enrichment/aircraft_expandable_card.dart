@@ -86,14 +86,7 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                             backgroundColor: Colors.transparent,
                             builder: (context) => Container(
                               decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [
-                                    AppColors.brandPrimary.withOpacity(0.1),
-                                    AppColors.darkBackground,
-                                  ],
-                                ),
+                                color: AppColors.brandPrimary,
                                 borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20),
@@ -188,14 +181,7 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                         backgroundColor: Colors.transparent,
                         builder: (context) => Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                AppColors.brandPrimary.withOpacity(0.1),
-                                AppColors.darkBackground,
-                              ],
-                            ),
+                            color: AppColors.brandPrimary,
                             borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(20),
                               topRight: Radius.circular(20),
