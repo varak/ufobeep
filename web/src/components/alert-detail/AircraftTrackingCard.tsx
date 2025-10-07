@@ -5,6 +5,7 @@ import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface Aircraft {
   callsign: string
+  airline?: string | null
   distance_km: number
   altitude_ft: number | null
   speed_knots: number | null
@@ -80,36 +81,34 @@ export default function AircraftTrackingCard({ aircraftData, locale = 'en' }: Ai
               <div key={index} className="bg-dark-surface border border-dark-border rounded-lg p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <div className="flex items-center gap-2">
-                      {aircraft.callsign ? (
-                        <a
-                          href={`https://flightaware.com/live/flight/${aircraft.callsign}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-medium text-brand-primary hover:text-blue-400 hover:underline transition-colors"
-                        >
-                          {aircraft.callsign}
-                        </a>
-                      ) : (
-                        <span className="font-medium text-brand-primary">
-                          {t('unknown')}
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="font-medium text-brand-primary">
+                        {aircraft.callsign || t('unknown')}
+                      </span>
+                      {aircraft.country && (
+                        <span className="text-xs text-text-tertiary bg-dark-surface px-2 py-1 rounded">
+                          {aircraft.country}
                         </span>
                       )}
-                      <span className="text-xs text-text-tertiary bg-dark-surface px-2 py-1 rounded">
-                        {aircraft.country}
-                      </span>
                     </div>
-                    
-                    <div className="flex items-center gap-4 mt-1 text-sm text-text-secondary">
-                      <span>{aircraft.distance_km}km away</span>
+
+                    {/* Airline info if available */}
+                    {aircraft.airline && (
+                      <div className="text-xs text-text-tertiary mb-1">
+                        {aircraft.airline}
+                      </div>
+                    )}
+
+                    <div className="flex items-center gap-3 text-xs text-text-secondary">
+                      <span>{aircraft.distance_km}km</span>
                       {aircraft.altitude_ft && (
                         <span>{aircraft.altitude_ft.toLocaleString()}ft</span>
                       )}
                       {aircraft.speed_knots && (
                         <span>{aircraft.speed_knots}kts</span>
                       )}
-                      {aircraft.heading && (
-                        <span>{aircraft.heading}°</span>
+                      {aircraft.heading != null && (
+                        <span>Hdg: {aircraft.heading}°</span>
                       )}
                     </div>
                   </div>

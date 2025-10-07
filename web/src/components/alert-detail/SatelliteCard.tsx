@@ -6,6 +6,9 @@ import { useClientTranslations } from '@/hooks/useClientTranslations'
 interface SatellitePass {
   name: string
   norad_id?: number
+  owner?: string
+  launch_date?: string
+  object_type?: string
   brightness_magnitude: number
   altitude: number
   is_bright: boolean
@@ -62,6 +65,9 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
         {displaySatellites.map((satellite, index) => {
           const name = satellite.name || 'Satellite'
           const noradId = satellite.norad_id
+          const owner = satellite.owner
+          const launchDate = satellite.launch_date
+          const objectType = satellite.object_type
           const magnitude = satellite.brightness_magnitude
           const altitude = satellite.altitude
           const isBright = satellite.is_bright
@@ -71,6 +77,11 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
           const satelliteUrl = noradId
             ? `https://www.heavens-above.com/SatInfo.aspx?satid=${noradId}`
             : `https://www.heavens-above.com/SearchResults.aspx?searchstring=${encodeURIComponent(name)}`
+
+          // Build readable type
+          const typeLabel = objectType === 'PAY' ? 'Satellite' :
+                           objectType === 'R/B' ? 'Rocket' :
+                           objectType === 'DEB' ? 'Debris' : 'Object'
 
           // Skip satellites with no useful data
           if (!name || name === 'Unknown Satellite') {
@@ -93,14 +104,9 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
                   }`}>
                     {isBright ? '☀️' : '🛰️'}
                   </span>
-                  <a
-                    href={satelliteUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-medium text-brand-primary hover:text-blue-400 hover:underline transition-colors text-sm"
-                  >
+                  <span className="font-medium text-brand-primary text-sm">
                     {name}
-                  </a>
+                  </span>
                 </div>
                 {direction && (
                   <span className="text-xs text-text-tertiary bg-dark-surface px-2 py-1 rounded">
@@ -108,6 +114,15 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
                   </span>
                 )}
               </div>
+              {/* Enriched metadata row */}
+              {(owner || launchDate || objectType) && (
+                <div className="text-xs text-text-tertiary flex items-center gap-2 mb-1">
+                  {owner && <span>{owner}</span>}
+                  {objectType && <span>• {typeLabel}</span>}
+                  {launchDate && <span>• {new Date(launchDate).getFullYear()}</span>}
+                </div>
+              )}
+
               <div className="text-xs text-text-secondary flex items-center gap-3">
                 {altitude != null && (
                   <span className="flex items-center gap-1">
@@ -116,13 +131,10 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
                   </span>
                 )}
                 {magnitude != null && (
-                  <span>Magnitude: {magnitude}</span>
-                )}
-                {altitude != null && (
-                  <span>Altitude: {altitude.toFixed(0)}km</span>
+                  <span>Mag: {magnitude.toFixed(1)}</span>
                 )}
                 {isBright && (
-                  <span className="text-yellow-400 font-medium">Bright</span>
+                  <span className="text-yellow-400 font-medium">Visible</span>
                 )}
               </div>
             </div>
