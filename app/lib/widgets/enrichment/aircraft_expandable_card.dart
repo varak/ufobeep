@@ -6,6 +6,7 @@ import '../../utils/unit_conversion.dart';
 import '../../l10n/app_localizations.dart';
 import '../glass_card.dart';
 import '../../services/astronomical_translation_service.dart';
+import '../webview_overlay.dart';
 
 class AircraftExpandableCard extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -75,15 +76,26 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                       final distance = a['distance_km']?.toDouble() ?? 0.0;
                       final altitude = a['altitude_ft'];
 
-                      return Container(
-                        margin: const EdgeInsets.only(bottom: 6),
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: AppColors.darkSurface,
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: AppColors.darkBorder),
-                        ),
-                        child: Consumer(
+                      // Build FlightAware URL
+                      final aircraftUrl = callsign.isNotEmpty
+                          ? 'https://flightaware.com/live/flight/$callsign'
+                          : null;
+
+                      return GestureDetector(
+                        onTap: aircraftUrl != null ? () async {
+                          if (context.mounted) {
+                            await WebViewOverlay.show(context, aircraftUrl, title: callsign);
+                          }
+                        } : null,
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 6),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: AppColors.darkSurface,
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: AppColors.darkBorder),
+                          ),
+                          child: Consumer(
                           builder: (context, ref, child) {
                             final userPrefs = ref.watch(userPreferencesProvider);
                             final units = userPrefs?.units ?? 'metric';
@@ -119,6 +131,7 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                               ],
                             );
                           },
+                          ),
                         ),
                       );
                     },
@@ -131,15 +144,26 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                   final distance = a['distance_km']?.toDouble() ?? 0.0;
                   final altitude = a['altitude_ft'];
 
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 6),
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                    decoration: BoxDecoration(
-                      color: AppColors.darkSurface,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: AppColors.darkBorder),
-                    ),
-                    child: Consumer(
+                  // Build FlightAware URL
+                  final aircraftUrl = callsign.isNotEmpty
+                      ? 'https://flightaware.com/live/flight/$callsign'
+                      : null;
+
+                  return GestureDetector(
+                    onTap: aircraftUrl != null ? () async {
+                      if (context.mounted) {
+                        await WebViewOverlay.show(context, aircraftUrl, title: callsign);
+                      }
+                    } : null,
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: AppColors.darkSurface,
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: AppColors.darkBorder),
+                      ),
+                      child: Consumer(
                       builder: (context, ref, child) {
                         final userPrefs = ref.watch(userPreferencesProvider);
                         final units = userPrefs?.units ?? 'metric';
@@ -175,6 +199,7 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                           ],
                         );
                       },
+                      ),
                     ),
                   );
                 }),

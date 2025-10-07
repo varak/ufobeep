@@ -11,6 +11,7 @@ import 'aircraft_expandable_card.dart';
 import '../../services/astronomical_translation_service.dart';
 import 'celestial_description_helpers.dart';
 import 'unified_celestial_card.dart';
+import '../webview_overlay.dart';
 
 class EnrichmentSection extends ConsumerWidget {
   const EnrichmentSection({
@@ -1598,21 +1599,33 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
 
   Widget _buildSatelliteItem(Map<String, dynamic> sat) {
     final name = sat['name'] ?? 'Unknown Satellite';
+    final noradId = sat['norad_id'] as int?;
     final brightness = sat['brightness_magnitude'] as double?;
     final altitude = sat['altitude'] as double? ?? 0.0;
     final isBright = sat['is_bright'] as bool? ?? false;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 6),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppColors.darkSurface,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(
-          color: isBright ? AppColors.warning : AppColors.darkBorder,
+    // Build Heavens-Above URL
+    final satelliteUrl = noradId != null
+        ? 'https://www.heavens-above.com/SatInfo.aspx?satid=$noradId'
+        : 'https://www.heavens-above.com/SearchResults.aspx?searchstring=${Uri.encodeComponent(name)}';
+
+    return GestureDetector(
+      onTap: () async {
+        if (context.mounted) {
+          await WebViewOverlay.show(context, satelliteUrl, title: name);
+        }
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.darkSurface,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: isBright ? AppColors.warning : AppColors.darkBorder,
+          ),
         ),
-      ),
-      child: Row(
+        child: Row(
         children: [
           Text(
             isBright ? '🛰️' : '🛰️',
@@ -1637,6 +1650,7 @@ class _SatelliteExpandableCardState extends State<SatelliteExpandableCard> {
             ),
           ),
         ],
+        ),
       ),
     );
   }
