@@ -197,8 +197,8 @@ export default function Home() {
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">🔬</div>
               <h3 className="text-lg font-semibold mb-2 text-brand-primary">Smart Enrichment</h3>
               <p className="text-text-secondary">
-                Automatic weather, celestial, aircraft, and satellite data enrichment 
-                plus premium imagery from BlackSky and SkyFi.
+                Every sighting automatically captures real-time environmental data: exact weather conditions,
+                celestial positions, nearby aircraft, and satellites visible overhead at that precise moment.
               </p>
             </div>
           </div>
