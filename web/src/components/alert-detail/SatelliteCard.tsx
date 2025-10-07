@@ -98,7 +98,6 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium text-brand-primary hover:text-blue-400 hover:underline transition-colors text-sm"
-                    title={noradId ? `View ${name} orbital details on Heavens-Above` : `Search for ${name} on Heavens-Above`}
                   >
                     {name}
                   </a>
