@@ -1,14 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import EmailNotifySignup from '@/components/EmailNotifySignup';
 
 export default function DownloadPage() {
-  const [showInstructions, setShowInstructions] = useState(false);
-  
-  const latestVersion = "v1.9.0+350";
-  const releaseDate = "October 1, 2025";
-  const apkSize = "229 MB";
+  const latestVersion = "v1.9.1+368";
+  const releaseDate = "October 7, 2025";
+  const apkSize = "73 MB";
   
   return (
     <div className="min-h-screen bg-gray-900 text-white">
@@ -42,25 +39,6 @@ export default function DownloadPage() {
               <p>🔧 Type: APK (Direct Install)</p>
             </div>
           </div>
-        </div>
-
-        {/* What's New */}
-        <div className="bg-gray-800 rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-green-400">
-            🚀 What&apos;s New
-          </h2>
-          <ul className="space-y-2 text-gray-300">
-            <li>🆕 <strong>Smart Location Tracking:</strong> Battery-efficient geofencing for accurate proximity alerts (&lt;3% battery drain)</li>
-            <li>🆕 <strong>Full Internationalization:</strong> Automatic device language detection - app appears in your phone&apos;s language</li>
-            <li>🆕 <strong>Privacy & Data Controls:</strong> GDPR-compliant data export/deletion and transparent location tracking settings</li>
-            <li>🆕 <strong>Fixed Magic Link Authentication:</strong> Seamless email sign-in without navigation errors</li>
-            <li>✅ <strong>22 Languages:</strong> Splash screen, sign-in, and auth flows in native languages (Spanish, German, French, etc.)</li>
-            <li>✅ <strong>App Store Ready:</strong> Working privacy policy and terms of service links</li>
-            <li>✅ <strong>Real-time Alerts:</strong> Instant notifications when UFOs spotted nearby</li>
-            <li>✅ <strong>Compass Navigation:</strong> Point phone to find exact UFO location</li>
-            <li>✅ <strong>Community Comments:</strong> Real-time discussion with WebSocket updates</li>
-            <li>✅ <strong>MUFON Integration:</strong> Professional UFO reports with case numbers and classifications</li>
-          </ul>
         </div>
 
         {/* Closed Beta Notice */}
@@ -104,79 +82,29 @@ export default function DownloadPage() {
           </div>
         </div>
 
-        {/* Installation Instructions */}
+        {/* How to Join Beta */}
         <div className="bg-gray-800 rounded-lg p-6 mb-8">
-          <div 
-            className="flex items-center justify-between cursor-pointer"
-            onClick={() => setShowInstructions(!showInstructions)}
-          >
-            <h2 className="text-2xl font-semibold text-green-400">
-              📱 Installation Instructions
-            </h2>
-            <span className="text-2xl">
-              {showInstructions ? '−' : '+'}
-            </span>
-          </div>
-          
-          {showInstructions && (
-            <div className="mt-6 space-y-6">
-              {/* Step 1 */}
-              <div className="border-l-4 border-green-500 pl-4">
-                <h3 className="font-semibold text-lg mb-2">
-                  Step 1: Enable Installation from Unknown Sources
-                </h3>
-                <p className="text-gray-300 mb-2">
-                  Android blocks APK installations by default for security. You need to enable it:
-                </p>
-                <ol className="list-decimal list-inside space-y-1 text-gray-400">
-                  <li>Open <strong>Settings</strong> on your Android device</li>
-                  <li>Go to <strong>Security</strong> or <strong>Privacy</strong></li>
-                  <li>Find <strong>&quot;Install unknown apps&quot;</strong> or <strong>&quot;Unknown sources&quot;</strong></li>
-                  <li>Enable for your browser (Chrome, Firefox, etc.)</li>
-                </ol>
-              </div>
-
-              {/* Step 2 */}
-              <div className="border-l-4 border-green-500 pl-4">
-                <h3 className="font-semibold text-lg mb-2">
-                  Step 2: Download the APK
-                </h3>
-                <p className="text-gray-300 mb-2">
-                  Click the download button above. The APK will download to your Downloads folder.
-                </p>
-                <p className="text-yellow-400 text-sm">
-                  ⚠️ If Chrome warns about the file, tap &quot;Download anyway&quot;
-                </p>
-              </div>
-
-              {/* Step 3 */}
-              <div className="border-l-4 border-green-500 pl-4">
-                <h3 className="font-semibold text-lg mb-2">
-                  Step 3: Install the APK
-                </h3>
-                <ol className="list-decimal list-inside space-y-1 text-gray-400">
-                  <li>Open your <strong>Downloads</strong> folder</li>
-                  <li>Tap on <strong>ufobeep-alpha.apk</strong></li>
-                  <li>Tap <strong>&quot;Install&quot;</strong> when prompted</li>
-                  <li>Wait for installation to complete</li>
-                  <li>Tap <strong>&quot;Open&quot;</strong> to launch UFOBeep!</li>
-                </ol>
-              </div>
-
-              {/* Troubleshooting */}
-              <div className="bg-yellow-900/20 border border-yellow-600/50 rounded-lg p-4">
-                <h3 className="font-semibold text-yellow-400 mb-2">
-                  🔧 Troubleshooting
-                </h3>
-                <ul className="space-y-1 text-gray-300 text-sm">
-                  <li>• <strong>&quot;App not installed&quot;:</strong> Uninstall old version first</li>
-                  <li>• <strong>&quot;Parse error&quot;:</strong> Your Android version might be too old (need 5.0+)</li>
-                  <li>• <strong>Can&apos;t find file:</strong> Check your Downloads folder or notification panel</li>
-                  <li>• <strong>Security warning:</strong> This is normal for APKs - we&apos;re not on Play Store yet</li>
-                </ul>
-              </div>
+          <h2 className="text-2xl font-semibold mb-4 text-green-400">
+            📱 How to Join the Beta
+          </h2>
+          <div className="space-y-4 text-gray-300">
+            <div className="border-l-4 border-green-500 pl-4">
+              <h3 className="font-semibold text-lg mb-2">Step 1: Request Access</h3>
+              <p>Fill out the beta request form above with your name and email.</p>
             </div>
-          )}
+            <div className="border-l-4 border-green-500 pl-4">
+              <h3 className="font-semibold text-lg mb-2">Step 2: Wait for Approval</h3>
+              <p>We&apos;ll review your request and send you an approval email (usually within 24 hours).</p>
+            </div>
+            <div className="border-l-4 border-green-500 pl-4">
+              <h3 className="font-semibold text-lg mb-2">Step 3: Join on Google Play</h3>
+              <p>Once approved, click the Google Play Testing link above to join the beta program.</p>
+            </div>
+            <div className="border-l-4 border-green-500 pl-4">
+              <h3 className="font-semibold text-lg mb-2">Step 4: Download &amp; Install</h3>
+              <p>After joining, download UFOBeep from the Google Play Store just like any other app!</p>
+            </div>
+          </div>
         </div>
 
         {/* Permissions */}
@@ -205,6 +133,24 @@ export default function DownloadPage() {
         </div>
 
 
+
+        {/* Mac Version Notice */}
+        <div className="bg-blue-900/30 border border-blue-600/50 rounded-lg p-6 mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-blue-400 text-center">
+            🍎 macOS Version
+          </h2>
+          <p className="text-center text-gray-300 mb-6">
+            The macOS version of UFOBeep is currently under review by Apple.
+            It will be available on the Mac App Store as soon as it receives approval.
+          </p>
+          <div className="bg-gray-800 rounded-lg p-6">
+            <h3 className="text-xl font-semibold mb-4 text-center text-blue-400">Get Notified When Available</h3>
+            <p className="text-center mb-6 text-gray-300">
+              Add your email below and we&apos;ll notify you as soon as the Mac version is approved and available for download.
+            </p>
+            <EmailNotifySignup />
+          </div>
+        </div>
 
         {/* Footer */}
         <div className="text-center text-gray-400 text-sm">
