@@ -5,6 +5,7 @@ import { useClientTranslations } from '@/hooks/useClientTranslations'
 
 interface SatellitePass {
   name: string
+  norad_id?: number
   brightness_magnitude: number
   altitude: number
   is_bright: boolean
@@ -60,10 +61,16 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
       <div className="space-y-2">
         {displaySatellites.map((satellite, index) => {
           const name = satellite.name || 'Satellite'
+          const noradId = satellite.norad_id
           const magnitude = satellite.brightness_magnitude
           const altitude = satellite.altitude
           const isBright = satellite.is_bright
           const direction = satellite.direction
+
+          // Build satellite tracker URL
+          const satelliteUrl = noradId
+            ? `https://www.heavens-above.com/SatInfo.aspx?satid=${noradId}`
+            : `https://www.heavens-above.com/SearchResults.aspx?searchstring=${encodeURIComponent(name)}`
 
           // Skip satellites with no useful data
           if (!name || name === 'Unknown Satellite') {
@@ -87,10 +94,11 @@ export default function SatelliteCard({ satellites, locale = 'en' }: SatelliteCa
                     {isBright ? '☀️' : '🛰️'}
                   </span>
                   <a
-                    href={`https://www.google.com/search?q=${encodeURIComponent(name + ' satellite')}`}
+                    href={satelliteUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-medium text-brand-primary hover:text-blue-400 hover:underline transition-colors text-sm"
+                    title={noradId ? `View ${name} orbital details on Heavens-Above` : `Search for ${name} on Heavens-Above`}
                   >
                     {name}
                   </a>

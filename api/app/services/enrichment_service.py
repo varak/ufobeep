@@ -941,6 +941,7 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
                         )
                         satellites.append({
                             "name": sat_info['name'],
+                            "norad_id": self._extract_norad_id(satellite),
                             "altitude": round(alt.degrees, 1),
                             "azimuth": round(az.degrees, 1),
                             "brightness_magnitude": brightness,
@@ -964,6 +965,7 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
                         )
                         satellites.append({
                             "name": sat_info['name'],
+                            "norad_id": self._extract_norad_id(satellite),
                             "altitude": round(alt.degrees, 1),
                             "azimuth": round(az.degrees, 1),
                             "brightness_magnitude": brightness,
@@ -991,6 +993,7 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
                         )
                         satellites.append({
                             "name": sat_info['name'],
+                            "norad_id": self._extract_norad_id(satellite),
                             "altitude": round(alt.degrees, 1),
                             "azimuth": round(az.degrees, 1),
                             "brightness_magnitude": brightness,
