@@ -16,7 +16,7 @@ export default function DownloadPage() {
             🛸 Download UFOBeep
           </h1>
           <p className="text-xl text-gray-300">
-            Real-time UFO sighting alerts for Android
+            Real-time UFO sighting alerts for Android & iOS
           </p>
         </div>
 
@@ -134,19 +134,44 @@ export default function DownloadPage() {
 
 
 
-        {/* Mac Version Notice */}
+        {/* iOS TestFlight */}
         <div className="bg-blue-900/30 border border-blue-600/50 rounded-lg p-6 mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-blue-400 text-center">
-            🍎 macOS Version
+            🍎 iOS Beta (TestFlight)
           </h2>
           <p className="text-center text-gray-300 mb-6">
-            The macOS version of UFOBeep is currently under review by Apple.
+            The iOS version is now available for testing on TestFlight! Download it on your iPhone or iPad.
+          </p>
+          <center>
+            <a
+              href="https://testflight.apple.com/join/jJvBaWSa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
+            >
+              📱 Join iOS Beta on TestFlight
+            </a>
+          </center>
+          <div className="bg-gray-800 rounded-lg p-4 mt-6">
+            <p className="text-center text-sm text-gray-400">
+              <strong>Note:</strong> TestFlight requires iOS 13.0 or later. You&apos;ll need the TestFlight app from the App Store.
+            </p>
+          </div>
+        </div>
+
+        {/* Mac Version Notice */}
+        <div className="bg-purple-900/30 border border-purple-600/50 rounded-lg p-6 mb-8">
+          <h2 className="text-2xl font-semibold mb-4 text-purple-400 text-center">
+            💻 macOS Version
+          </h2>
+          <p className="text-center text-gray-300 mb-6">
+            The macOS version is currently under review by Apple.
             It will be available on the Mac App Store as soon as it receives approval.
           </p>
           <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-center text-blue-400">Get Notified When Available</h3>
+            <h3 className="text-xl font-semibold mb-4 text-center text-purple-400">Get Notified When Available</h3>
             <p className="text-center mb-6 text-gray-300">
-              Add your email below and we&apos;ll notify you as soon as the Mac version is approved and available for download.
+              Add your email below and we&apos;ll notify you as soon as the Mac version is approved.
             </p>
             <EmailNotifySignup />
           </div>
