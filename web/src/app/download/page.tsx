@@ -28,16 +28,36 @@ export default function DownloadPage() {
               {latestVersion}
             </span>
           </div>
-          
-          <div className="grid md:grid-cols-2 gap-4 text-gray-300">
+
+          <div className="grid md:grid-cols-2 gap-4 text-gray-300 mb-6">
             <div>
               <p>📅 Release Date: {releaseDate}</p>
               <p>📦 File Size: {apkSize}</p>
             </div>
             <div>
-              <p>📱 Requires: Android 5.0+</p>
-              <p>🔧 Type: APK (Direct Install)</p>
+              <p>📱 Requires: Android 5.0+ / iOS 13.0+</p>
+              <p>🔧 Type: Beta Release</p>
             </div>
+          </div>
+
+          {/* Download Buttons */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <a
+              href="https://play.google.com/apps/testing/com.ufobeep"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
+            >
+              🤖 Android Beta (Google Play)
+            </a>
+            <a
+              href="https://testflight.apple.com/join/jJvBaWSa"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
+            >
+              🍎 iOS Beta (TestFlight)
+            </a>
           </div>
         </div>
 
