@@ -169,6 +169,9 @@ class DeepLinkService {
       case 'profile':
         await _handleProfileLink(pathSegments, queryParams);
         break;
+      case 'share':
+        await _handleShareLink(pathSegments, queryParams);
+        break;
       default:
         print('Unknown UFOBeep host: $host');
         _router!.go('/');
@@ -386,6 +389,72 @@ class DeepLinkService {
     Map<String, String> queryParams,
   ) async {
     _router!.go('/profile');
+  }
+
+  /// Handle share extension deep links (ufobeep://share/media?type=image)
+  Future<void> _handleShareLink(
+    List<String> pathSegments,
+    Map<String, String> queryParams,
+  ) async {
+    print('📤 SHARE EXTENSION LINK DETECTED');
+    print('   Path: $pathSegments');
+    print('   Params: $queryParams');
+
+    if (pathSegments.isEmpty || pathSegments[0] != 'media') {
+      print('⚠️  Invalid share link, navigating to home');
+      _router!.go('/');
+      return;
+    }
+
+    final mediaType = queryParams['type'] ?? 'image';
+    print('   Media type: $mediaType');
+
+    // Read shared media from App Groups
+    final sharedMedia = await _readSharedMedia();
+
+    if (sharedMedia != null) {
+      print('✅ Got shared media: ${sharedMedia['url']}');
+      // Navigate to beep screen with shared media
+      // The beep screen will check for pending shared media on load
+      _router!.go('/beep/new?fromShare=true');
+    } else {
+      print('❌ No shared media found');
+      _router!.go('/beep/new');
+    }
+  }
+
+  /// Read shared media from App Groups container (iOS only)
+  Future<Map<String, dynamic>?> _readSharedMedia() async {
+    if (!Platform.isIOS) return null;
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final appGroupPrefs = await SharedPreferences.getInstance();
+
+      // Check for shared media in App Groups
+      // Note: This is a simplified version - actual implementation would use
+      // NSUserDefaults with suite name "group.com.ufobeep.app"
+      final mediaUrl = prefs.getString('shareExtensionMediaUrl');
+      final mediaType = prefs.getString('shareExtensionMediaType');
+      final timestamp = prefs.getDouble('shareExtensionTimestamp');
+
+      if (mediaUrl != null) {
+        // Clear the shared data
+        await prefs.remove('shareExtensionMediaUrl');
+        await prefs.remove('shareExtensionMediaType');
+        await prefs.remove('shareExtensionTimestamp');
+
+        return {
+          'url': mediaUrl,
+          'type': mediaType ?? 'image',
+          'timestamp': timestamp ?? DateTime.now().millisecondsSinceEpoch / 1000,
+        };
+      }
+    } catch (e) {
+      print('Error reading shared media: $e');
+    }
+
+    return null;
   }
 
 
