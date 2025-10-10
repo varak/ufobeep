@@ -19,6 +19,7 @@ from app.services.username_service import UsernameGenerator
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/auth/magic", tags=["magic-link-auth"])
+auth_router = APIRouter(prefix="/auth", tags=["auth"])
 
 
 def _generate_unique_username(db: Session) -> str:
@@ -1154,4 +1155,80 @@ async def exchange_magic_code(
         raise HTTPException(
             status_code=500,
             detail="Token exchange failed. Please try again."
+        )
+
+
+# ============= TOKEN REFRESH ENDPOINT =============
+# Separate router for /auth/refresh endpoint (not /auth/magic/refresh)
+
+class RefreshTokenRequest(BaseModel):
+    refresh: str
+
+
+@auth_router.post("/refresh")
+async def refresh_access_token(
+    request: RefreshTokenRequest,
+    http_request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    Refresh access token using a valid refresh token.
+    Returns a new access token and optionally a new refresh token.
+    """
+    try:
+        from app.core.auth import verify_access_token, create_access_token, create_refresh_token
+        from jose import JWTError
+
+        ip_address = get_client_ip(http_request)
+        logger.info(f"[REFRESH] Token refresh requested from IP: {ip_address}")
+
+        # Verify the refresh token
+        try:
+            payload = verify_access_token(request.refresh)
+            user_id = payload.get("sub")
+            token_type = payload.get("type")
+
+            if not user_id:
+                logger.warning(f"[REFRESH] Missing user_id in token, IP={ip_address}")
+                raise HTTPException(status_code=401, detail="Invalid refresh token")
+
+            # Verify it's a refresh token (not an access token)
+            if token_type != "refresh":
+                logger.warning(f"[REFRESH] Wrong token type: {token_type}, IP={ip_address}")
+                raise HTTPException(status_code=401, detail="Invalid token type")
+
+        except JWTError as e:
+            logger.warning(f"[REFRESH] JWT verification failed: {str(e)}, IP={ip_address}")
+            raise HTTPException(status_code=401, detail="Invalid or expired refresh token")
+
+        # Verify user still exists and is active
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user:
+            logger.warning(f"[REFRESH] User not found: {user_id}, IP={ip_address}")
+            raise HTTPException(status_code=401, detail="User not found")
+
+        if not user.is_active:
+            logger.warning(f"[REFRESH] User inactive: {user_id}, IP={ip_address}")
+            raise HTTPException(status_code=401, detail="User account is inactive")
+
+        # Create new tokens
+        new_access_token = create_access_token(data={"sub": str(user.id)})
+        new_refresh_token = create_refresh_token(data={"sub": str(user.id)})
+
+        logger.info(f"[REFRESH] SUCCESS - user_id={user.id}, IP={ip_address}")
+
+        # Return new tokens in the format the client expects
+        return {
+            "access": new_access_token,
+            "refresh": new_refresh_token,
+            "expires_in": settings.jwt_expiration_hours * 3600,  # Convert hours to seconds
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"[REFRESH] ERROR - {str(e)}, IP={ip_address}")
+        raise HTTPException(
+            status_code=500,
+            detail="Token refresh failed. Please sign in again."
         )

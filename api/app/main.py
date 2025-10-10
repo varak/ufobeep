@@ -540,6 +540,8 @@ app.include_router(users.router)
 app.include_router(firebase_users.router)
 # Include magic link authentication router
 app.include_router(auth_magic.router)
+# Include auth refresh router
+app.include_router(auth_magic.auth_router)
 # Include MP16 routers for comments and share cards
 app.include_router(comments.router)
 app.include_router(share_cards.router)
