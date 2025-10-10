@@ -59,31 +59,36 @@ class AuthRepository with ChangeNotifier {
     }
   }
 
-  /// Check if token needs refresh (within 30 minutes of expiry)
+  /// Check if access token needs refresh (within 30 minutes of expiry)
+  /// Note: We track access token expiry (24h) not refresh token (10 years)
   bool _needsProactiveRefresh() {
     if (_tokenExpiresAt == null) return false;
     final now = DateTime.now();
     final timeUntilExpiry = _tokenExpiresAt!.difference(now);
-    // Refresh if less than 30 minutes remaining
+    // Refresh access token if less than 30 minutes remaining
+    // (refresh token lasts 10 years so never expires in practice)
     return timeUntilExpiry.inMinutes < 30;
   }
 
-  /// Schedule proactive token refresh
+  /// Schedule proactive access token refresh
+  /// Access tokens expire every 24 hours, refresh tokens last 10 years
   void _scheduleProactiveRefresh() {
     _refreshTimer?.cancel();
 
     if (_tokenExpiresAt == null || _refresh == null) return;
 
     final now = DateTime.now();
+    // Refresh 30 minutes before access token expires (every ~23.5 hours)
     final timeUntilRefresh = _tokenExpiresAt!.subtract(const Duration(minutes: 30)).difference(now);
 
     if (timeUntilRefresh.isNegative || _needsProactiveRefresh()) {
       // Need to refresh now
-      print('[AuthRepo] Token needs immediate refresh');
+      print('[AuthRepo] Access token needs immediate refresh');
       _performProactiveRefresh();
     } else {
       // Schedule refresh for later
-      print('[AuthRepo] Scheduling token refresh in ${timeUntilRefresh.inMinutes} minutes');
+      final hours = timeUntilRefresh.inHours;
+      print('[AuthRepo] Scheduling access token refresh in ${hours}h ${timeUntilRefresh.inMinutes % 60}m');
       _refreshTimer = Timer(timeUntilRefresh, _performProactiveRefresh);
     }
   }
@@ -171,7 +176,8 @@ class AuthRepository with ChangeNotifier {
       _access = access;
       _refresh = refresh;
       _loaded = true;
-      // Backend tokens expire in 24 hours, but we'll refresh proactively after 23.5 hours
+      // Access tokens expire in 24 hours (auto-refreshed using 10-year refresh token)
+      // Track access token expiry for proactive refresh scheduling
       _tokenExpiresAt = DateTime.now().add(const Duration(hours: 24));
 
       // Then persist to secure storage

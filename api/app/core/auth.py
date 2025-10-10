@@ -33,14 +33,14 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
 
 
 def create_refresh_token(data: dict, expires_delta: timedelta = None) -> str:
-    """Create JWT refresh token with longer expiration"""
+    """Create JWT refresh token with effectively infinite expiration (10 years)"""
     to_encode = data.copy()
     to_encode.update({"type": "refresh"})  # Mark as refresh token
-    
+
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now(timezone.utc) + timedelta(days=7)  # 7 days for refresh tokens
+        expire = datetime.now(timezone.utc) + timedelta(days=3650)  # 10 years - effectively infinite
     
     to_encode.update({"exp": expire})
     

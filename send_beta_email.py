@@ -252,5 +252,50 @@ def send_beta_notification(to_email: str):
         return False
 
 if __name__ == "__main__":
-    # Send test email to mike@emke.com
-    send_beta_notification("mike@emke.com")
+    import psycopg2
+
+    # Connect to database and get all real signups (exclude test emails)
+    try:
+        conn = psycopg2.connect(
+            host="localhost",
+            database="ufobeep_db",
+            user="ufobeep_user",
+            password="ufopostpass"
+        )
+        cur = conn.cursor()
+
+        # Get all emails, excluding obvious test entries
+        cur.execute("""
+            SELECT DISTINCT email
+            FROM email_interests
+            WHERE email IS NOT NULL
+            AND email NOT LIKE 'test%@%'
+            AND email != 'stephania.predovic@theaccessuk.org'
+            ORDER BY email
+        """)
+
+        emails = [row[0] for row in cur.fetchall()]
+
+        print(f"Found {len(emails)} real beta signups")
+        print("Sending emails...\n")
+
+        success_count = 0
+        fail_count = 0
+
+        for email in emails:
+            print(f"Sending to {email}...", end=" ")
+            if send_beta_notification(email):
+                success_count += 1
+            else:
+                fail_count += 1
+
+        print(f"\n{'='*50}")
+        print(f"✅ Successfully sent: {success_count}")
+        print(f"❌ Failed: {fail_count}")
+        print(f"{'='*50}")
+
+        cur.close()
+        conn.close()
+
+    except Exception as e:
+        print(f"Database error: {e}")
