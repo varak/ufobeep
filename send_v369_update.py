@@ -235,11 +235,12 @@ if __name__ == "__main__":
         )
         cur = conn.cursor()
 
-        # Get all emails from email_interests - TEST MODE: mike@emke.com only
+        # Get all emails from email_interests
         cur.execute("""
             SELECT DISTINCT email
             FROM email_interests
-            WHERE email = 'mike@emke.com'
+            WHERE email IS NOT NULL
+            AND email NOT LIKE 'test%@%'
             ORDER BY email
         """)
 
