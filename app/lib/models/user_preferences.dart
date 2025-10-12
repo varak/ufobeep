@@ -68,6 +68,7 @@ class UserPreferences {
   final bool allowEmergencyOverride; // Allow emergency alerts during quiet hours
   final DateTime? dndUntil; // Do Not Disturb until this time (null = DND off)
   final bool use24HourTime; // Use 24-hour time format (true) or 12-hour with AM/PM (false)
+  final String? sortBy; // Preferred sorting: 'newest', 'oldest', 'distance' (null = default to newest)
   final DateTime? lastUpdated;
 
   const UserPreferences({
@@ -91,6 +92,7 @@ class UserPreferences {
     this.allowEmergencyOverride = true,
     this.dndUntil,
     this.use24HourTime = true,
+    this.sortBy,
     this.lastUpdated,
   });
 
@@ -119,6 +121,7 @@ class UserPreferences {
     bool allowEmergencyOverride = true,
     DateTime? dndUntil,
     bool? use24HourTime,
+    String? sortBy,
     DateTime? lastUpdated,
   }) {
     final (defaultQuietStart, defaultQuietEnd) = _getDefaultQuietHoursForLanguage(language);
@@ -144,6 +147,7 @@ class UserPreferences {
       allowEmergencyOverride: allowEmergencyOverride,
       dndUntil: dndUntil,
       use24HourTime: use24HourTime ?? getDefault24HourForLanguage(language),
+      sortBy: sortBy,
       lastUpdated: lastUpdated,
     );
   }
@@ -171,6 +175,7 @@ class UserPreferences {
     bool? allowEmergencyOverride,
     Object? dndUntil = _undefinedValue,
     bool? use24HourTime,
+    String? sortBy,
     Object? lastUpdated = _undefinedValue,
   }) {
     return UserPreferences(
@@ -194,6 +199,7 @@ class UserPreferences {
       allowEmergencyOverride: allowEmergencyOverride ?? this.allowEmergencyOverride,
       dndUntil: dndUntil == _undefinedValue ? this.dndUntil : dndUntil as DateTime?,
       use24HourTime: use24HourTime ?? this.use24HourTime,
+      sortBy: sortBy ?? this.sortBy,
       lastUpdated: lastUpdated == _undefinedValue ? this.lastUpdated : lastUpdated as DateTime?,
     );
   }

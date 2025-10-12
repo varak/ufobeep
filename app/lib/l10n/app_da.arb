@@ -1269,5 +1269,9 @@
         "example": "SW to NE"
       }
     }
-  }
+  },
+  "cameraPermissionDenied": "Kameratilladelse nægtet. Aktiver kameraadgang i Indstillinger for at tage billeder og videoer.",
+  "cameraNotAvailable": "Kamera er ikke tilgængeligt på denne enhed.",
+  "cameraError": "Kamerafejl",
+  "pleaseTryAgain": "Prøv venligst igen"
 }

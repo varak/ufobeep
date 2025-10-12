@@ -1269,5 +1269,9 @@
         "example": "SW to NE"
       }
     }
-  }
+  },
+  "cameraPermissionDenied": "Permissão de câmera negada. Por favor, ative o acesso à câmera nas Configurações para capturar fotos e vídeos.",
+  "cameraNotAvailable": "A câmera não está disponível neste dispositivo.",
+  "cameraError": "Erro de câmera",
+  "pleaseTryAgain": "Por favor, tente novamente"
 }

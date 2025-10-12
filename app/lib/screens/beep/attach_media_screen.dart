@@ -161,9 +161,24 @@ class _AttachMediaScreenState extends ConsumerState<AttachMediaScreen> {
         debugPrint('📎 ATTACH: Added ${isVideo ? 'video' : 'photo'} - ${mediaFile.path}');
       }
     } catch (e) {
+      final l10n = AppLocalizations.of(context)!;
+      String friendlyMessage;
+
+      // Parse error and provide user-friendly message
+      final errorStr = e.toString().toLowerCase();
+      if (errorStr.contains('camera_access_denied') || errorStr.contains('permission')) {
+        friendlyMessage = l10n.cameraPermissionDenied;
+      } else if (errorStr.contains('camera not available') || errorStr.contains('no camera')) {
+        friendlyMessage = l10n.cameraNotAvailable;
+      } else {
+        friendlyMessage = '${l10n.cameraError}: ${l10n.pleaseTryAgain}';
+      }
+
       setState(() {
-        _errorMessage = 'Camera error: $e';
+        _errorMessage = friendlyMessage;
       });
+
+      debugPrint('📎 ATTACH: Camera error - $e');
     }
   }
 

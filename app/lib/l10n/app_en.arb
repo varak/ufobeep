@@ -1269,5 +1269,9 @@
         "example": "SW to NE"
       }
     }
-  }
+  },
+  "cameraPermissionDenied": "Camera permission denied. Please enable camera access in Settings to capture photos and videos.",
+  "cameraNotAvailable": "Camera is not available on this device.",
+  "cameraError": "Camera error",
+  "pleaseTryAgain": "Please try again"
 }

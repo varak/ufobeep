@@ -1269,5 +1269,9 @@
         "example": "SW to NE"
       }
     }
-  }
+  },
+  "cameraPermissionDenied": "相机权限被拒绝。请在设置中启用相机访问以拍摄照片和视频。",
+  "cameraNotAvailable": "此设备上没有相机。",
+  "cameraError": "相机错误",
+  "pleaseTryAgain": "请再试一次"
 }

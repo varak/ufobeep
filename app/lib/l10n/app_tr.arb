@@ -1269,5 +1269,9 @@
         "example": "SW to NE"
       }
     }
-  }
+  },
+  "cameraPermissionDenied": "Kamera izni reddedildi. Fotoğraf ve video çekmek için lütfen Ayarlar'da kamera erişimini etkinleştirin.",
+  "cameraNotAvailable": "Bu cihazda kamera kullanılamıyor.",
+  "cameraError": "Kamera hatası",
+  "pleaseTryAgain": "Lütfen tekrar deneyin"
 }

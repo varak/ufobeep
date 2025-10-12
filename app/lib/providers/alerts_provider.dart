@@ -3,6 +3,7 @@ import '../models/alerts_filter.dart';
 import '../services/api_client.dart';
 import '../services/permission_service.dart';
 import 'package:flutter/foundation.dart';
+import 'user_preferences_provider.dart';
 
 part 'alerts_provider.g.dart';
 
@@ -849,8 +850,37 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
 class AlertsFilterState extends _$AlertsFilterState {
   @override
   AlertsFilter build() {
-    // Start with default filter - will be overridden by user selections
-    return const AlertsFilter();
+    // Load sorting preference from user preferences
+    final userPrefs = ref.read(userPreferencesProvider);
+    final sortBy = _parseSortBy(userPrefs?.sortBy);
+
+    // Start with default filter but apply saved sorting preference
+    return AlertsFilter(sortBy: sortBy);
+  }
+
+  AlertSortBy _parseSortBy(String? sortByString) {
+    switch (sortByString) {
+      case 'distance':
+        return AlertSortBy.distance;
+      case 'oldest':
+        return AlertSortBy.oldest;
+      case 'newest':
+      default:
+        return AlertSortBy.newest;
+    }
+  }
+
+  String _sortByToString(AlertSortBy sortBy) {
+    switch (sortBy) {
+      case AlertSortBy.distance:
+        return 'distance';
+      case AlertSortBy.oldest:
+        return 'oldest';
+      case AlertSortBy.newest:
+        return 'newest';
+      default:
+        return 'newest';
+    }
   }
 
   void updateFilter(AlertsFilter filter) {
@@ -892,6 +922,15 @@ class AlertsFilterState extends _$AlertsFilterState {
       sortBy: sortBy,
       ascending: ascending ?? state.ascending,
     );
+
+    // Persist sorting preference to user preferences
+    final userPrefsNotifier = ref.read(userPreferencesProvider.notifier);
+    final currentPrefs = ref.read(userPreferencesProvider);
+    if (currentPrefs != null) {
+      userPrefsNotifier.updatePreferences(
+        currentPrefs.copyWith(sortBy: _sortByToString(sortBy)),
+      );
+    }
   }
 }
 

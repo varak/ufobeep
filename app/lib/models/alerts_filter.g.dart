@@ -14,6 +14,7 @@ AlertsFilter _$AlertsFilterFromJson(Map<String, dynamic> json) => AlertsFilter(
   maxAgeHours: (json['maxAgeHours'] as num?)?.toInt(),
   verifiedOnly: json['verifiedOnly'] as bool?,
   showUfoBeepOnly: json['showUfoBeepOnly'] as bool?,
+  alertRangeKm: (json['alertRangeKm'] as num?)?.toDouble(),
   sortBy:
       $enumDecodeNullable(_$AlertSortByEnumMap, json['sortBy']) ??
       AlertSortBy.newest,
@@ -27,6 +28,7 @@ Map<String, dynamic> _$AlertsFilterToJson(AlertsFilter instance) =>
       'maxAgeHours': instance.maxAgeHours,
       'verifiedOnly': instance.verifiedOnly,
       'showUfoBeepOnly': instance.showUfoBeepOnly,
+      'alertRangeKm': instance.alertRangeKm,
       'sortBy': _$AlertSortByEnumMap[instance.sortBy]!,
       'ascending': instance.ascending,
     };

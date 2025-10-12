@@ -6,43 +6,42 @@ part of 'user_preferences.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>
-    UserPreferences(
-      displayName: json['displayName'] as String?,
-      email: json['email'] as String?,
-      language: json['language'] as String? ?? 'en',
-      alertRangeKm: (json['alertRangeKm'] as num?)?.toDouble() ?? 10.0,
-      enableArCompass: json['enableArCompass'] as bool? ?? true,
-      enablePilotMode: json['enablePilotMode'] as bool? ?? false,
-      alertCategories:
-          (json['alertCategories'] as List<dynamic>?)
-              ?.map((e) => e as String)
-              .toList() ??
-          const ['ufo', 'anomaly', 'aircraft'],
-      units: json['units'] as String? ?? 'metric',
-      darkMode: json['darkMode'] as bool? ?? true,
-      useWeatherVisibility: json['useWeatherVisibility'] as bool? ?? true,
-      enableVisibilityFilters: json['enableVisibilityFilters'] as bool? ?? true,
-      locationPrivacy:
-          $enumDecodeNullable(
-            _$LocationPrivacyEnumMap,
-            json['locationPrivacy'],
-          ) ??
-          LocationPrivacy.jittered,
-      mediaOnlyAlerts: json['mediaOnlyAlerts'] as bool?,
-      ignoreAnonymousBeeps: json['ignoreAnonymousBeeps'] as bool?,
-      quietHoursEnabled: json['quietHoursEnabled'] as bool? ?? false,
-      quietHoursStart: (json['quietHoursStart'] as num?)?.toInt() ?? 22,
-      quietHoursEnd: (json['quietHoursEnd'] as num?)?.toInt() ?? 7,
-      allowEmergencyOverride: json['allowEmergencyOverride'] as bool? ?? true,
-      dndUntil: json['dndUntil'] == null
-          ? null
-          : DateTime.parse(json['dndUntil'] as String),
-      use24HourTime: json['use24HourTime'] as bool? ?? true,
-      lastUpdated: json['lastUpdated'] == null
-          ? null
-          : DateTime.parse(json['lastUpdated'] as String),
-    );
+UserPreferences _$UserPreferencesFromJson(
+  Map<String, dynamic> json,
+) => UserPreferences(
+  displayName: json['displayName'] as String?,
+  email: json['email'] as String?,
+  language: json['language'] as String? ?? 'en',
+  alertRangeKm: (json['alertRangeKm'] as num?)?.toDouble() ?? 10.0,
+  enableArCompass: json['enableArCompass'] as bool? ?? true,
+  enablePilotMode: json['enablePilotMode'] as bool? ?? false,
+  alertCategories:
+      (json['alertCategories'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList() ??
+      const ['ufo', 'anomaly', 'aircraft'],
+  units: json['units'] as String? ?? 'metric',
+  darkMode: json['darkMode'] as bool? ?? true,
+  useWeatherVisibility: json['useWeatherVisibility'] as bool? ?? true,
+  enableVisibilityFilters: json['enableVisibilityFilters'] as bool? ?? false,
+  locationPrivacy:
+      $enumDecodeNullable(_$LocationPrivacyEnumMap, json['locationPrivacy']) ??
+      LocationPrivacy.jittered,
+  mediaOnlyAlerts: json['mediaOnlyAlerts'] as bool?,
+  ignoreAnonymousBeeps: json['ignoreAnonymousBeeps'] as bool?,
+  quietHoursEnabled: json['quietHoursEnabled'] as bool? ?? false,
+  quietHoursStart: (json['quietHoursStart'] as num?)?.toInt() ?? 22,
+  quietHoursEnd: (json['quietHoursEnd'] as num?)?.toInt() ?? 7,
+  allowEmergencyOverride: json['allowEmergencyOverride'] as bool? ?? true,
+  dndUntil: json['dndUntil'] == null
+      ? null
+      : DateTime.parse(json['dndUntil'] as String),
+  use24HourTime: json['use24HourTime'] as bool? ?? true,
+  sortBy: json['sortBy'] as String?,
+  lastUpdated: json['lastUpdated'] == null
+      ? null
+      : DateTime.parse(json['lastUpdated'] as String),
+);
 
 Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
     <String, dynamic>{
@@ -66,6 +65,7 @@ Map<String, dynamic> _$UserPreferencesToJson(UserPreferences instance) =>
       'allowEmergencyOverride': instance.allowEmergencyOverride,
       'dndUntil': instance.dndUntil?.toIso8601String(),
       'use24HourTime': instance.use24HourTime,
+      'sortBy': instance.sortBy,
       'lastUpdated': instance.lastUpdated?.toIso8601String(),
     };
 

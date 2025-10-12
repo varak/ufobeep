@@ -143,7 +143,7 @@ class _AlertByIdProviderElement extends AutoDisposeFutureProviderElement<Alert?>
   String get alertId => (origin as AlertByIdProvider).alertId;
 }
 
-String _$filteredAlertsHash() => r'98d05713a39e304108a962432a8c2096bff812b7';
+String _$filteredAlertsHash() => r'42f404edf536896cbd52526979435b048e017d94';
 
 /// See also [filteredAlerts].
 @ProviderFor(filteredAlerts)
@@ -355,7 +355,7 @@ class _NearbyAlertsProviderElement
   String? get minAlertLevel => (origin as NearbyAlertsProvider).minAlertLevel;
 }
 
-String _$alertsListHash() => r'cca99bc1e82b1598cb919e2361de5a298b60ce72';
+String _$alertsListHash() => r'80f45df9f9e0754c51d97f393eebcd37767e1977';
 
 /// See also [AlertsList].
 @ProviderFor(AlertsList)
@@ -371,7 +371,7 @@ final alertsListProvider =
     );
 
 typedef _$AlertsList = AutoDisposeAsyncNotifier<AlertsListData>;
-String _$alertsFilterStateHash() => r'add126697452659f6b5daf5bcac55122bd2d26d3';
+String _$alertsFilterStateHash() => r'b71353578a28d9ca06f9a69b45539326510eaf3d';
 
 /// See also [AlertsFilterState].
 @ProviderFor(AlertsFilterState)

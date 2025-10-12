@@ -1269,5 +1269,9 @@
         "example": "SW to NE"
       }
     }
-  }
+  },
+  "cameraPermissionDenied": "הרשאת המצלמה נדחתה. אנא הפעל גישה למצלמה בהגדרות כדי לצלם תמונות וסרטונים.",
+  "cameraNotAvailable": "המצלמה אינה זמינה במכשיר זה.",
+  "cameraError": "שגיאת מצלמה",
+  "pleaseTryAgain": "בבקשה נסה שוב"
 }
