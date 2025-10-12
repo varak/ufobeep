@@ -109,7 +109,7 @@ async def enrich_sighting(sighting_id: str) -> bool:
             sighting = await conn.fetchrow("""
                 SELECT id, title, description, category, sensor_data,
                        public_latitude, public_longitude, public_latitude as exact_latitude, public_longitude as exact_longitude,
-                       created_at, enrichment_data
+                       created_at, enrichment_data, source
                 FROM sightings WHERE id = $1
             """, UUID(sighting_id))
 
@@ -222,11 +222,15 @@ async def enrich_sighting(sighting_id: str) -> bool:
             total_worker_time = int((datetime.utcnow() - worker_start_time).total_seconds() * 1000)
             logger.info(f"🎉 WORKER ENRICHMENT FINISHED: Sighting {sighting_id} - {success_count}/{total_count} processors succeeded - Total worker time: {total_worker_time}ms")
             
-            # Trigger alert fanout for nearby users
+            # Trigger alert fanout for nearby users (skip MUFON imports)
             if success_count > 0:
-                logger.info(f"🚨 WORKER ENRICHMENT: Triggering alert fanout for sighting {sighting_id}")
-                await trigger_alert_fanout(sighting_id, sighting)
-                logger.info(f"✅ WORKER ENRICHMENT: Alert fanout completed for sighting {sighting_id}")
+                # Skip proximity alerts for MUFON cases (historical data)
+                if sighting.get('source') == 'mufon':
+                    logger.info(f"⏭️  WORKER ENRICHMENT: Skipping alert fanout for MUFON case {sighting_id} (historical data)")
+                else:
+                    logger.info(f"🚨 WORKER ENRICHMENT: Triggering alert fanout for sighting {sighting_id}")
+                    await trigger_alert_fanout(sighting_id, sighting)
+                    logger.info(f"✅ WORKER ENRICHMENT: Alert fanout completed for sighting {sighting_id}")
             else:
                 logger.warning(f"⚠️  WORKER ENRICHMENT: No successful processors for sighting {sighting_id} - skipping alert fanout")
             
