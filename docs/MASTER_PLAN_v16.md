@@ -1,8 +1,8 @@
 # MASTER_PLAN_v17 — App Store Readiness (Current Status)
 
 **Current Status: Major Features Complete + App Store Preparation**
-**Date Updated:** September 22, 2025
-**Current Build:** v1.0.0-beta.8+206
+**Date Updated:** October 16, 2025
+**Current Build:** v1.9.2+374
 
 **Completed Major Initiatives:**
 - ✅ **Movement Detection Sprint Phase 1** - Battery-efficient geofencing location tracking
@@ -12,6 +12,26 @@
 - ✅ **Core Feature Completion** - Multi-media, comments, follows, push notifications
 
 **Next Priority: Google Play Store Submission**
+
+## 🚨 **Recent Updates (October 2025)**
+- ✅ **Sorting Preference Persistence** - Alert sorting (Newest/Nearest) now persists across app sessions and navigation
+  - Fixed: `updateFilter()` and `setSorting()` both save to SharedPreferences
+  - Uses `ref.watch()` for reactive preference updates when navigating between screens
+  - Build 374 - Fully tested and working
+- ✅ **Privacy Policy Update** - Updated for App Store compliance
+  - Added Google Sign-In data collection disclosures
+  - Device information collection documentation
+  - Analytics & error tracking (Google Analytics, Firebase, Sentry)
+  - Cookies and tracking technologies section
+  - Enhanced GDPR rights documentation
+- ✅ **Admin Beep Distribution Tool** - Track who received beep notifications
+  - View sender details (reporter, location, timestamp)
+  - See recipient list with username, device, platform, distance
+  - Real-time delivery tracking via `user_engagement` table
+  - Available at `/admin/beep-distribution`
+- ✅ **Alert Delivery Logging** - FCM notifications now logged to database
+  - `alert_fanout` worker logs all successful deliveries
+  - Enables beep distribution analytics and debugging
 
 ## 🎯 **Current Development Status**
 - ✅ **Sprint A**: Multi-Media Alerts - COMPLETED
