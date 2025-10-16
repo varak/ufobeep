@@ -851,22 +851,16 @@ Future<Alert?> alertById(AlertByIdRef ref, String alertId) async {
 class AlertsFilterState extends _$AlertsFilterState {
   @override
   AlertsFilter build() {
-    // Load sorting preference from user preferences
-    final userPrefs = ref.read(userPreferencesProvider);
+    debugPrint('🏗️  AlertsFilterState.build() CALLED');
+
+    // Watch (not read!) user preferences so we rebuild when they change
+    final userPrefs = ref.watch(userPreferencesProvider);
     final sortBy = _parseSortBy(userPrefs?.sortBy);
 
-    debugPrint('🔧 AlertsFilterState.build() - Loaded sortBy from prefs: ${userPrefs?.sortBy} -> $sortBy');
+    debugPrint('📖 Loaded preferences: sortBy=${userPrefs?.sortBy} -> $sortBy');
+    debugPrint('📦 Full prefs: ${userPrefs?.toJson()}');
 
-    // Listen to preference changes and update sortBy when it changes
-    ref.listen(userPreferencesProvider, (previous, next) {
-      if (previous?.sortBy != next?.sortBy) {
-        final newSortBy = _parseSortBy(next?.sortBy);
-        debugPrint('🔄 Preferences changed - updating sortBy: ${next?.sortBy} -> $newSortBy');
-        state = state.copyWith(sortBy: newSortBy);
-      }
-    });
-
-    // Start with default filter but apply saved sorting preference
+    // Build and return filter with saved sort preference
     return AlertsFilter(sortBy: sortBy);
   }
 
@@ -929,32 +923,44 @@ class AlertsFilterState extends _$AlertsFilterState {
     state = state.copyWith(showUfoBeepOnly: ufoBeepOnly);
   }
 
-  void setSorting(AlertSortBy sortBy, {bool? ascending}) {
+  void setSorting(AlertSortBy sortBy, {bool? ascending}) async {
+    debugPrint('🎯 setSorting() called with: ${_sortByToString(sortBy)}');
+
     state = state.copyWith(
       sortBy: sortBy,
       ascending: ascending ?? state.ascending,
     );
+    debugPrint('✅ AlertsFilterState updated to: ${_sortByToString(sortBy)}');
 
     // Persist sorting preference to user preferences
     final userPrefsNotifier = ref.read(userPreferencesProvider.notifier);
     final currentPrefs = ref.read(userPreferencesProvider);
 
+    debugPrint('📦 Current preferences: ${currentPrefs?.toJson()}');
+
     // Always save - create default prefs if none exist yet
     if (currentPrefs != null) {
-      userPrefsNotifier.updatePreferences(
+      debugPrint('💾 Saving sortBy to existing preferences...');
+      final success = await userPrefsNotifier.updatePreferences(
         currentPrefs.copyWith(sortBy: _sortByToString(sortBy)),
       );
+      debugPrint(success ? '✅ Preferences saved successfully' : '❌ Failed to save preferences');
     } else {
       // User preferences not loaded yet - create minimal prefs with just sortBy
       debugPrint('⚠️ User preferences not loaded yet, creating with sortBy=${_sortByToString(sortBy)}');
-      userPrefsNotifier.updatePreferences(
+      final success = await userPrefsNotifier.updatePreferences(
         UserPreferences(
           language: 'en',
           alertRangeKm: 100.0,
           sortBy: _sortByToString(sortBy),
         ),
       );
+      debugPrint(success ? '✅ Default preferences created with sortBy' : '❌ Failed to create preferences');
     }
+
+    // Verify it was saved
+    final verifyPrefs = ref.read(userPreferencesProvider);
+    debugPrint('🔍 Verification - sortBy in prefs is now: ${verifyPrefs?.sortBy}');
   }
 }
 
