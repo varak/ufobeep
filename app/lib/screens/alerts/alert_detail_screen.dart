@@ -1012,7 +1012,7 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
 
       return Column(
         children: [
-          ...comments.map((comment) => _buildCommentItem(comment)).toList(),
+          ...comments.asMap().entries.map((entry) => _buildCommentItem(entry.value, entry.key)).toList(),
           const SizedBox(height: 16),
           const Divider(color: AppColors.darkBorder, thickness: 1),
           const SizedBox(height: 16),
@@ -1024,9 +1024,13 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     return const SizedBox(height: 8);
   }
 
-  Widget _buildCommentItem(Comment comment) {
+  Widget _buildCommentItem(Comment comment, int index) {
     final timeAgo = _formatCommentTime(context, comment.createdAt);
-    final canDelete = _currentUserDeviceId != null && comment.userId == _currentUserDeviceId;
+
+    // Hide delete for first comment if you're the beep creator (that's the beep description)
+    final isFirstComment = index == 0;
+    final isOwnComment = _currentUserDeviceId != null && comment.userId == _currentUserDeviceId;
+    final canDelete = isOwnComment && !isFirstComment;  // Can delete your own comments EXCEPT the first one
 
     // Create or get a GlobalKey for this comment
     final commentId = comment.id.toString();
