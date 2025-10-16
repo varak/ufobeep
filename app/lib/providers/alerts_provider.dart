@@ -855,6 +855,17 @@ class AlertsFilterState extends _$AlertsFilterState {
     final userPrefs = ref.read(userPreferencesProvider);
     final sortBy = _parseSortBy(userPrefs?.sortBy);
 
+    debugPrint('🔧 AlertsFilterState.build() - Loaded sortBy from prefs: ${userPrefs?.sortBy} -> $sortBy');
+
+    // Listen to preference changes and update sortBy when it changes
+    ref.listen(userPreferencesProvider, (previous, next) {
+      if (previous?.sortBy != next?.sortBy) {
+        final newSortBy = _parseSortBy(next?.sortBy);
+        debugPrint('🔄 Preferences changed - updating sortBy: ${next?.sortBy} -> $newSortBy');
+        state = state.copyWith(sortBy: newSortBy);
+      }
+    });
+
     // Start with default filter but apply saved sorting preference
     return AlertsFilter(sortBy: sortBy);
   }
