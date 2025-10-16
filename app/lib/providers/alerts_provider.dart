@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../models/alerts_filter.dart';
+import '../models/user_preferences.dart';
 import '../services/api_client.dart';
 import '../services/permission_service.dart';
 import 'package:flutter/foundation.dart';
@@ -926,9 +927,21 @@ class AlertsFilterState extends _$AlertsFilterState {
     // Persist sorting preference to user preferences
     final userPrefsNotifier = ref.read(userPreferencesProvider.notifier);
     final currentPrefs = ref.read(userPreferencesProvider);
+
+    // Always save - create default prefs if none exist yet
     if (currentPrefs != null) {
       userPrefsNotifier.updatePreferences(
         currentPrefs.copyWith(sortBy: _sortByToString(sortBy)),
+      );
+    } else {
+      // User preferences not loaded yet - create minimal prefs with just sortBy
+      debugPrint('⚠️ User preferences not loaded yet, creating with sortBy=${_sortByToString(sortBy)}');
+      userPrefsNotifier.updatePreferences(
+        UserPreferences(
+          language: 'en',
+          alertRangeKm: 100.0,
+          sortBy: _sortByToString(sortBy),
+        ),
       );
     }
   }
