@@ -889,8 +889,29 @@ class AlertsFilterState extends _$AlertsFilterState {
     }
   }
 
-  void updateFilter(AlertsFilter filter) {
+  void updateFilter(AlertsFilter filter) async {
+    debugPrint('🔄 updateFilter() called');
     state = filter;
+
+    // Save sortBy preference if it changed
+    final userPrefsNotifier = ref.read(userPreferencesProvider.notifier);
+    final currentPrefs = ref.read(userPreferencesProvider);
+
+    if (currentPrefs != null && currentPrefs.sortBy != _sortByToString(filter.sortBy)) {
+      debugPrint('💾 updateFilter: Saving new sortBy=${_sortByToString(filter.sortBy)}');
+      await userPrefsNotifier.updatePreferences(
+        currentPrefs.copyWith(sortBy: _sortByToString(filter.sortBy)),
+      );
+    } else if (currentPrefs == null) {
+      debugPrint('💾 updateFilter: Creating preferences with sortBy=${_sortByToString(filter.sortBy)}');
+      await userPrefsNotifier.updatePreferences(
+        UserPreferences(
+          language: 'en',
+          alertRangeKm: 100.0,
+          sortBy: _sortByToString(filter.sortBy),
+        ),
+      );
+    }
   }
 
   void resetFilter() {
