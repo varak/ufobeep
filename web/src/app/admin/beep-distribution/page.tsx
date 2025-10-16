@@ -162,7 +162,7 @@ export default function BeepDistributionPage() {
               onKeyPress={(e) => e.key === 'Enter' && searchBeep()}
             />
             <button
-              onClick={searchBeep}
+              onClick={() => searchBeep()}
               disabled={loading}
               className="bg-green-600 hover:bg-green-700 px-6 py-3 rounded font-semibold disabled:bg-gray-600"
             >
