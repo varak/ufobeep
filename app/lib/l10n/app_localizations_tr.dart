@@ -2828,4 +2828,17 @@ class AppLocalizationsTr extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Kamera izni reddedildi. Fotoğraf ve video çekmek için lütfen Ayarlar\'da kamera erişimini etkinleştirin.';
+
+  @override
+  String get cameraNotAvailable => 'Bu cihazda kamera kullanılamıyor.';
+
+  @override
+  String get cameraError => 'Kamera hatası';
+
+  @override
+  String get pleaseTryAgain => 'Lütfen tekrar deneyin';
 }

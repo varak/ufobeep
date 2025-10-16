@@ -2738,4 +2738,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '${name}_________________________________________________________________________________________________________________________________________________________________________________';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'カメラの許可が拒否されました。写真やビデオを撮影するには、設定でカメラアクセスを有効にしてください。';
+
+  @override
+  String get cameraNotAvailable => 'このデバイスではカメラが利用できません。';
+
+  @override
+  String get cameraError => 'カメラエラー';
+
+  @override
+  String get pleaseTryAgain => 'もう一度お試しください';
 }

@@ -5219,6 +5219,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{name} - {direction}'**
   String satelliteNameDirection(String name, String direction);
+
+  /// No description provided for @cameraPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera permission denied. Please enable camera access in Settings to capture photos and videos.'**
+  String get cameraPermissionDenied;
+
+  /// No description provided for @cameraNotAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera is not available on this device.'**
+  String get cameraNotAvailable;
+
+  /// No description provided for @cameraError.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera error'**
+  String get cameraError;
+
+  /// No description provided for @pleaseTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again'**
+  String get pleaseTryAgain;
 }
 
 class _AppLocalizationsDelegate

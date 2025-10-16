@@ -2821,4 +2821,17 @@ class AppLocalizationsCs extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Oprávnění kamery odepřeno. Povolte přístup k fotoaparátu v Nastavení pro zachycení fotografií a videí.';
+
+  @override
+  String get cameraNotAvailable => 'Kamera není na tomto zařízení k dispozici.';
+
+  @override
+  String get cameraError => 'Chyba kamery';
+
+  @override
+  String get pleaseTryAgain => 'Zkuste to prosím znovu';
 }

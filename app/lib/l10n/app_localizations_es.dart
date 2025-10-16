@@ -2843,4 +2843,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Permiso de cámara denegado. Por favor habilite el acceso a la cámara en Configuración para capturar fotos y videos.';
+
+  @override
+  String get cameraNotAvailable =>
+      'La cámara no está disponible en este dispositivo.';
+
+  @override
+  String get cameraError => 'Error de cámara';
+
+  @override
+  String get pleaseTryAgain => 'Por favor, inténtalo de nuevo';
 }

@@ -81,7 +81,7 @@ def verify_admin_password(credentials: HTTPBasicCredentials = Depends(security))
     """Verify admin password"""
     is_correct_username = secrets.compare_digest(credentials.username, "admin")
     is_correct_password = secrets.compare_digest(credentials.password, ADMIN_PASSWORD)
-    
+
     if not (is_correct_username and is_correct_password):
         raise HTTPException(
             status_code=401,
@@ -89,6 +89,16 @@ def verify_admin_password(credentials: HTTPBasicCredentials = Depends(security))
             headers={"WWW-Authenticate": "Basic"},
         )
     return credentials.username
+
+def verify_admin_key(request: Request):
+    """Verify admin key from X-Admin-Key header (for web frontend)"""
+    admin_key = request.headers.get("X-Admin-Key")
+    if not admin_key or admin_key != "ufobeep_admin_2025":
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid or missing admin key"
+        )
+    return True
 @router.get("/", response_class=HTMLResponse)
 async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
     """Admin dashboard - refactored with service layer"""
@@ -1471,6 +1481,195 @@ async def get_engagement_summary(
                 "alerts_sent_24h": 0,
                 "engagement_rate": 0
             }
+        }
+
+@router.get("/beep-distribution/{beep_id}/json")
+async def beep_distribution_json(beep_id: str, request: Request):
+    """Get beep distribution data as JSON for Next.js admin"""
+    try:
+        # Check admin key from header
+        admin_key = request.headers.get('X-Admin-Key')
+        if admin_key != 'ufobeep_admin_2025':
+            raise HTTPException(status_code=401, detail="Invalid admin key")
+
+        from app.main import db_pool
+
+        async with db_pool.acquire() as conn:
+            # Get beep details and who sent it
+            beep_info = await conn.fetchrow("""
+                SELECT
+                    s.id,
+                    s.title,
+                    s.description,
+                    s.created_at,
+                    s.source,
+                    s.reporter_id,
+                    s.short_url,
+                    u.username as reporter_username,
+                    u.email as reporter_email,
+                    s.public_latitude,
+                    s.public_longitude
+                FROM sightings s
+                LEFT JOIN users u ON s.reporter_id = u.id
+                WHERE s.id = $1
+            """, beep_id)
+
+            if not beep_info:
+                raise HTTPException(status_code=404, detail="Beep not found")
+
+            # Get list of devices/users who received this beep
+            recipients = await conn.fetch("""
+                SELECT
+                    ue.device_id,
+                    ue.timestamp as received_at,
+                    d.device_name,
+                    d.platform,
+                    d.lat as device_lat,
+                    d.lon as device_lon,
+                    u.username,
+                    u.email
+                FROM user_engagement ue
+                LEFT JOIN devices d ON ue.device_id = d.device_id
+                LEFT JOIN users u ON d.user_id = u.id
+                WHERE ue.sighting_id = $1
+                  AND ue.event_type = 'alert_sent'
+                ORDER BY ue.timestamp DESC
+            """, beep_id)
+
+            # Calculate distances
+            recipients_data = []
+            for r in recipients:
+                distance_km = None
+                if r['device_lat'] and r['device_lon'] and beep_info['public_latitude'] and beep_info['public_longitude']:
+                    import math
+                    lat1 = math.radians(beep_info['public_latitude'])
+                    lon1 = math.radians(beep_info['public_longitude'])
+                    lat2 = math.radians(r['device_lat'])
+                    lon2 = math.radians(r['device_lon'])
+                    dlat = lat2 - lat1
+                    dlon = lon2 - lon1
+                    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+                    c = 2 * math.asin(math.sqrt(a))
+                    distance_km = 6371 * c
+
+                recipients_data.append({
+                    'device_id': r['device_id'],
+                    'received_at': r['received_at'].isoformat(),
+                    'device_name': r['device_name'],
+                    'platform': r['platform'],
+                    'device_lat': r['device_lat'],
+                    'device_lon': r['device_lon'],
+                    'username': r['username'],
+                    'email': r['email'],
+                    'distance_km': distance_km
+                })
+
+            return {
+                'success': True,
+                'beep_info': dict(beep_info),
+                'recipients': recipients_data,
+                'total_recipients': len(recipients_data),
+                'unique_users': len(set(r['username'] for r in recipients_data if r['username'])),
+                'unique_devices': len(set(r['device_id'] for r in recipients_data))
+            }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to load beep distribution: {str(e)}")
+
+@router.get("/beep-distribution/{beep_id}/json")
+async def beep_distribution_json(beep_id: str, request: Request, _auth: bool = Depends(verify_admin_key)):
+    """JSON API for beep distribution (for web frontend)"""
+    try:
+        from app.main import db_pool
+
+        async with db_pool.acquire() as conn:
+            # Get beep details and who sent it
+            beep_info = await conn.fetchrow("""
+                SELECT
+                    s.id,
+                    s.title,
+                    s.description,
+                    s.created_at,
+                    s.source,
+                    s.reporter_id,
+                    s.short_url,
+                    u.username as reporter_username,
+                    u.email as reporter_email,
+                    s.public_latitude,
+                    s.public_longitude
+                FROM sightings s
+                LEFT JOIN users u ON s.reporter_id = u.id
+                WHERE s.id = $1
+            """, beep_id)
+
+            if not beep_info:
+                return {
+                    "success": False,
+                    "error": "Beep not found"
+                }
+
+            # Get list of devices/users who received this beep
+            recipients = await conn.fetch("""
+                SELECT
+                    ue.device_id,
+                    ue.timestamp as received_at,
+                    d.device_name,
+                    d.platform,
+                    d.lat as device_lat,
+                    d.lon as device_lon,
+                    u.username,
+                    u.email
+                FROM user_engagement ue
+                LEFT JOIN devices d ON ue.device_id = d.device_id
+                LEFT JOIN users u ON d.user_id = u.id
+                WHERE ue.sighting_id = $1
+                  AND ue.event_type = 'alert_sent'
+                ORDER BY ue.timestamp DESC
+            """, beep_id)
+
+            # Calculate distances
+            recipients_list = []
+            for r in recipients:
+                distance_km = None
+                if r['device_lat'] and r['device_lon'] and beep_info['public_latitude'] and beep_info['public_longitude']:
+                    import math
+                    lat1 = math.radians(beep_info['public_latitude'])
+                    lon1 = math.radians(beep_info['public_longitude'])
+                    lat2 = math.radians(r['device_lat'])
+                    lon2 = math.radians(r['device_lon'])
+                    dlat = lat2 - lat1
+                    dlon = lon2 - lon1
+                    a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+                    c = 2 * math.asin(math.sqrt(a))
+                    distance_km = 6371 * c
+
+                recipients_list.append({
+                    "device_id": r['device_id'],
+                    "received_at": r['received_at'].isoformat(),
+                    "device_name": r['device_name'],
+                    "platform": r['platform'],
+                    "device_lat": r['device_lat'],
+                    "device_lon": r['device_lon'],
+                    "username": r['username'],
+                    "email": r['email'],
+                    "distance_km": distance_km
+                })
+
+            return {
+                "success": True,
+                "beep_info": dict(beep_info),
+                "recipients": recipients_list,
+                "total_recipients": len(recipients_list),
+                "unique_users": len(set(r['username'] for r in recipients_list if r['username'])),
+                "unique_devices": len(set(r['device_id'] for r in recipients_list))
+            }
+
+    except Exception as e:
+        return {
+            "success": False,
+            "error": str(e)
         }
 
 @router.get("/beep-distribution/{beep_id}", response_class=HTMLResponse)

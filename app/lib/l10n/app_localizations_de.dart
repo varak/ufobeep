@@ -2835,4 +2835,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Kameraberechtigung verweigert. Bitte aktivieren Sie den Kamerazugriff in den Einstellungen, um Fotos und Videos aufzunehmen.';
+
+  @override
+  String get cameraNotAvailable =>
+      'Kamera ist auf diesem Gerät nicht verfügbar.';
+
+  @override
+  String get cameraError => 'Kamerafehler';
+
+  @override
+  String get pleaseTryAgain => 'Bitte versuchen Sie es erneut';
 }

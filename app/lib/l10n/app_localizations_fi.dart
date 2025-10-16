@@ -2819,4 +2819,18 @@ class AppLocalizationsFi extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Kameralupa evätty. Ota kameran käyttö käyttöön asetuksissa ottaaksesi kuvia ja videoita.';
+
+  @override
+  String get cameraNotAvailable =>
+      'Kamera ei ole käytettävissä tässä laitteessa.';
+
+  @override
+  String get cameraError => 'Kameravirhe';
+
+  @override
+  String get pleaseTryAgain => 'Yritä uudelleen';
 }

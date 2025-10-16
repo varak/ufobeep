@@ -2817,4 +2817,17 @@ class AppLocalizationsHi extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'कैमरा अनुमति अस्वीकृत। फोटो और वीडियो कैप्चर करने के लिए कृपया सेटिंग में कैमरा एक्सेस सक्षम करें।';
+
+  @override
+  String get cameraNotAvailable => 'इस डिवाइस पर कैमरा उपलब्ध नहीं है।';
+
+  @override
+  String get cameraError => 'कैमरा त्रुटि';
+
+  @override
+  String get pleaseTryAgain => 'कृपया पुन: प्रयास करें';
 }

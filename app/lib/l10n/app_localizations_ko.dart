@@ -2740,4 +2740,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      '카메라 권한이 거부되었습니다. 사진과 동영상을 촬영하려면 설정에서 카메라 액세스를 활성화하세요.';
+
+  @override
+  String get cameraNotAvailable => '이 기기에서 카메라를 사용할 수 없습니다.';
+
+  @override
+  String get cameraError => '카메라 오류';
+
+  @override
+  String get pleaseTryAgain => '다시 시도해주세요';
 }

@@ -2815,4 +2815,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Camera permission denied. Please enable camera access in Settings to capture photos and videos.';
+
+  @override
+  String get cameraNotAvailable => 'Camera is not available on this device.';
+
+  @override
+  String get cameraError => 'Camera error';
+
+  @override
+  String get pleaseTryAgain => 'Please try again';
 }

@@ -2829,4 +2829,18 @@ class AppLocalizationsNl extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Cameratoestemming geweigerd. Schakel cameratoegang in Instellingen in om foto\'s en video\'s vast te leggen.';
+
+  @override
+  String get cameraNotAvailable =>
+      'Camera is niet beschikbaar op dit apparaat.';
+
+  @override
+  String get cameraError => 'Camerafout';
+
+  @override
+  String get pleaseTryAgain => 'Probeer het opnieuw';
 }

@@ -2825,4 +2825,18 @@ class AppLocalizationsDa extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Kameratilladelse nægtet. Aktiver kameraadgang i Indstillinger for at tage billeder og videoer.';
+
+  @override
+  String get cameraNotAvailable =>
+      'Kamera er ikke tilgængeligt på denne enhed.';
+
+  @override
+  String get cameraError => 'Kamerafejl';
+
+  @override
+  String get pleaseTryAgain => 'Prøv venligst igen';
 }

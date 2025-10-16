@@ -2836,4 +2836,18 @@ class AppLocalizationsIt extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Autorizzazione della fotocamera negata. Si prega di abilitare l\'accesso alla fotocamera nelle Impostazioni per catturare foto e video.';
+
+  @override
+  String get cameraNotAvailable =>
+      'La fotocamera non è disponibile su questo dispositivo.';
+
+  @override
+  String get cameraError => 'Errore della fotocamera';
+
+  @override
+  String get pleaseTryAgain => 'Per favore riprova';
 }

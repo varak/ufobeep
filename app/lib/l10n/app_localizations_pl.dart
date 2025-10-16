@@ -2833,4 +2833,18 @@ class AppLocalizationsPl extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Odmowa dostępu do kamery. Włącz dostęp do kamery w Ustawieniach, aby robić zdjęcia i filmy.';
+
+  @override
+  String get cameraNotAvailable =>
+      'Kamera nie jest dostępna na tym urządzeniu.';
+
+  @override
+  String get cameraError => 'Błąd kamery';
+
+  @override
+  String get pleaseTryAgain => 'Spróbuj ponownie';
 }

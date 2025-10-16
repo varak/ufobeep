@@ -2724,4 +2724,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '(原始内容存档于2017-09-01) (中文(中国大陆) )';
   }
+
+  @override
+  String get cameraPermissionDenied => '相机权限被拒绝。请在设置中启用相机访问以拍摄照片和视频。';
+
+  @override
+  String get cameraNotAvailable => '此设备上没有相机。';
+
+  @override
+  String get cameraError => '相机错误';
+
+  @override
+  String get pleaseTryAgain => '请再试一次';
 }

@@ -2817,4 +2817,18 @@ class AppLocalizationsSv extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Kameratillstånd nekas. Aktivera kameraåtkomst i Inställningar för att ta bilder och videor.';
+
+  @override
+  String get cameraNotAvailable =>
+      'Kameran är inte tillgänglig på denna enhet.';
+
+  @override
+  String get cameraError => 'Kamerafel';
+
+  @override
+  String get pleaseTryAgain => 'Försök igen';
 }

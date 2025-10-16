@@ -2850,4 +2850,17 @@ class AppLocalizationsRu extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Разрешение камеры отклонено. Пожалуйста, включите доступ к камере в Настройках для съемки фотографий и видео.';
+
+  @override
+  String get cameraNotAvailable => 'Камера недоступна на этом устройстве.';
+
+  @override
+  String get cameraError => 'Ошибка камеры';
+
+  @override
+  String get pleaseTryAgain => 'Пожалуйста, попробуйте еще раз';
 }

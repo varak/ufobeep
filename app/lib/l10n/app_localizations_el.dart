@@ -2855,4 +2855,18 @@ class AppLocalizationsEl extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'Η άδεια κάμερας αρνήθηκε. Ενεργοποιήστε την πρόσβαση κάμερας στις Ρυθμίσεις για να τραβήξετε φωτογραφίες και βίντεο.';
+
+  @override
+  String get cameraNotAvailable =>
+      'Η κάμερα δεν είναι διαθέσιμη σε αυτή τη συσκευή.';
+
+  @override
+  String get cameraError => 'Σφάλμα κάμερας';
+
+  @override
+  String get pleaseTryAgain => 'ΠΑΡΑΚΑΛΩ προσπαθησε ξανα';
 }

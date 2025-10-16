@@ -213,7 +213,15 @@ export default function AdminUsersPage() {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-4">🛸 UFOBeep User Management</h1>
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-3xl font-bold">🛸 UFOBeep User Management</h1>
+            <Link
+              href="/admin/beep-distribution"
+              className="bg-purple-600 hover:bg-purple-700 px-4 py-2 rounded font-semibold"
+            >
+              📡 Beep Distribution
+            </Link>
+          </div>
           <div className="flex gap-4 items-center">
             <input
               type="text"

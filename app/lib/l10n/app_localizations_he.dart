@@ -2782,4 +2782,17 @@ class AppLocalizationsHe extends AppLocalizations {
   String satelliteNameDirection(String name, String direction) {
     return '$name - $direction';
   }
+
+  @override
+  String get cameraPermissionDenied =>
+      'הרשאת המצלמה נדחתה. אנא הפעל גישה למצלמה בהגדרות כדי לצלם תמונות וסרטונים.';
+
+  @override
+  String get cameraNotAvailable => 'המצלמה אינה זמינה במכשיר זה.';
+
+  @override
+  String get cameraError => 'שגיאת מצלמה';
+
+  @override
+  String get pleaseTryAgain => 'בבקשה נסה שוב';
 }
