@@ -169,9 +169,22 @@ class AlertFanoutWorker:
         # Create notification content
         notification_title, notification_body = self._create_notification_content(sighting)
 
-        # Send push notifications using legacy FCM
+        # Send push notifications using legacy FCM and log to user_engagement
         total_sent = 0
         total_failed = 0
+
+        # Get metrics service for logging
+        try:
+            from app.services.metrics_service import get_metrics_service, EngagementType
+            from app.services.database_service import get_database_pool
+            from uuid import UUID
+
+            db_pool = await get_database_pool()
+            metrics_service = get_metrics_service(db_pool)
+            has_metrics = True
+        except Exception as e:
+            logger.warning(f"Could not initialize metrics service: {e}")
+            has_metrics = False
 
         for push_target in push_targets:
             try:
@@ -187,6 +200,17 @@ class AlertFanoutWorker:
                 )
                 if success:
                     total_sent += 1
+                    # Log alert_sent event to user_engagement
+                    if has_metrics:
+                        try:
+                            await metrics_service.log_engagement(
+                                push_target.device_id,
+                                EngagementType.ALERT_SENT,
+                                UUID(sighting.sighting_id) if sighting.sighting_id else None,
+                                UUID(push_target.user_id) if push_target.user_id else None
+                            )
+                        except Exception as log_err:
+                            logger.warning(f"Failed to log alert_sent for {push_target.device_id}: {log_err}")
                 else:
                     total_failed += 1
             except Exception as e:

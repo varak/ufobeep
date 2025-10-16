@@ -120,7 +120,11 @@ async def admin_dashboard(credentials: str = Depends(verify_admin_password)):
         <table style="width: 100%; border-collapse: collapse;">
         <tr style="background: #f5f5f5;"><th>ID</th><th>Title</th><th>Location</th><th>Created</th></tr>
         </table>
-        <p><a href="/admin/sightings">View All Sightings</a> | <a href="/admin/system">System Status</a></p>
+        <p>
+            <a href="/admin/sightings">View All Sightings</a> |
+            <a href="/admin/beep-distribution">🛸 Beep Distribution</a> |
+            <a href="/admin/system">System Status</a>
+        </p>
         </body></html>
         """)
     except Exception as e:
@@ -1468,6 +1472,311 @@ async def get_engagement_summary(
                 "engagement_rate": 0
             }
         }
+
+@router.get("/beep-distribution/{beep_id}", response_class=HTMLResponse)
+async def beep_distribution_page(beep_id: str, credentials: str = Depends(verify_admin_password)):
+    """Show who sent a beep and who received it"""
+    try:
+        from app.main import db_pool
+
+        async with db_pool.acquire() as conn:
+            # Get beep details and who sent it
+            beep_info = await conn.fetchrow("""
+                SELECT
+                    s.id,
+                    s.title,
+                    s.description,
+                    s.created_at,
+                    s.source,
+                    s.reporter_id,
+                    s.short_url,
+                    u.username as reporter_username,
+                    u.email as reporter_email,
+                    s.public_latitude,
+                    s.public_longitude
+                FROM sightings s
+                LEFT JOIN users u ON s.reporter_id = u.id
+                WHERE s.id = $1
+            """, beep_id)
+
+            if not beep_info:
+                return HTMLResponse(f"""
+                    <html><body style="font-family: Arial; padding: 20px;">
+                        <h1>Beep Not Found</h1>
+                        <p>Beep ID {beep_id} not found</p>
+                        <p><a href="/admin">&larr; Back to Admin</a></p>
+                    </body></html>
+                """, status_code=404)
+
+            # Get list of devices/users who received this beep
+            recipients = await conn.fetch("""
+                SELECT
+                    ue.device_id,
+                    ue.timestamp as received_at,
+                    d.device_name,
+                    d.platform,
+                    d.lat as device_lat,
+                    d.lon as device_lon,
+                    u.username,
+                    u.email
+                FROM user_engagement ue
+                LEFT JOIN devices d ON ue.device_id = d.device_id
+                LEFT JOIN users u ON d.user_id = u.id
+                WHERE ue.sighting_id = $1
+                  AND ue.event_type = 'alert_sent'
+                ORDER BY ue.timestamp DESC
+            """, beep_id)
+
+            # Build recipients HTML table
+            recipients_html = ""
+            if recipients:
+                for r in recipients:
+                    distance = "N/A"
+                    if r['device_lat'] and r['device_lon'] and beep_info['public_latitude'] and beep_info['public_longitude']:
+                        import math
+                        lat1 = math.radians(beep_info['public_latitude'])
+                        lon1 = math.radians(beep_info['public_longitude'])
+                        lat2 = math.radians(r['device_lat'])
+                        lon2 = math.radians(r['device_lon'])
+                        dlat = lat2 - lat1
+                        dlon = lon2 - lon1
+                        a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+                        c = 2 * math.asin(math.sqrt(a))
+                        distance = f"{(6371 * c):.1f} km"
+
+                    recipients_html += f"""
+                        <tr>
+                            <td>{r['username'] or 'Unknown'}</td>
+                            <td>{r['email'] or 'N/A'}</td>
+                            <td>{r['device_id'][:8]}...</td>
+                            <td>{r['device_name'] or 'Unknown'}</td>
+                            <td>{r['platform'] or 'Unknown'}</td>
+                            <td>{distance}</td>
+                            <td>{r['received_at'].strftime('%Y-%m-%d %H:%M:%S')}</td>
+                        </tr>
+                    """
+            else:
+                recipients_html = '<tr><td colspan="7" style="text-align: center; color: #888;">No delivery records found (check Firebase logs)</td></tr>'
+
+            return HTMLResponse(f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Beep Distribution - {beep_info['title']}</title>
+                <style>
+                    body {{ font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }}
+                    .container {{ max-width: 1400px; margin: 0 auto; }}
+                    .header {{ background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; }}
+                    .header h1 {{ margin: 0 0 10px 0; color: #00ff88; }}
+                    .back-link {{ color: #00ff88; text-decoration: none; }}
+                    .back-link:hover {{ text-decoration: underline; }}
+                    .section {{ background: #2d2d2d; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+                    .section h2 {{ color: #00ff88; margin-top: 0; }}
+                    .info-grid {{ display: grid; grid-template-columns: 200px 1fr; gap: 10px; margin: 15px 0; }}
+                    .info-label {{ color: #888; }}
+                    .info-value {{ color: #e0e0e0; }}
+                    table {{ width: 100%; border-collapse: collapse; }}
+                    th, td {{ padding: 12px; text-align: left; border-bottom: 1px solid #444; }}
+                    th {{ background: #333; color: #00ff88; }}
+                    tr:hover {{ background: #333; }}
+                    .stats {{ display: flex; gap: 20px; margin: 20px 0; }}
+                    .stat-card {{ background: #333; padding: 15px 20px; border-radius: 6px; flex: 1; text-align: center; }}
+                    .stat-number {{ font-size: 24px; font-weight: bold; color: #00ff88; }}
+                    .stat-label {{ color: #888; font-size: 12px; margin-top: 5px; }}
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <a href="/admin" class="back-link">&larr; Back to Admin Dashboard</a>
+                        <h1>🛸 Beep Distribution Report</h1>
+                        <p style="color: #888;">View who sent this beep and who received it</p>
+                    </div>
+
+                    <div class="section">
+                        <h2>📡 Beep Information</h2>
+                        <div class="info-grid">
+                            <div class="info-label">Beep ID:</div>
+                            <div class="info-value">{beep_info['id']}</div>
+
+                            <div class="info-label">Title:</div>
+                            <div class="info-value">{beep_info['title'] or 'Untitled'}</div>
+
+                            <div class="info-label">Description:</div>
+                            <div class="info-value">{beep_info['description'] or 'No description'}</div>
+
+                            <div class="info-label">Created:</div>
+                            <div class="info-value">{beep_info['created_at'].strftime('%Y-%m-%d %H:%M:%S UTC')}</div>
+
+                            <div class="info-label">Source:</div>
+                            <div class="info-value">{beep_info['source'] or 'UFOBeep'}</div>
+
+                            <div class="info-label">Short URL:</div>
+                            <div class="info-value">
+                                <a href="https://ufobeep.com/{beep_info['short_url']}" target="_blank" style="color: #00ff88;">
+                                    https://ufobeep.com/{beep_info['short_url']}
+                                </a>
+                            </div>
+
+                            <div class="info-label">Reporter:</div>
+                            <div class="info-value">
+                                {beep_info['reporter_username'] or 'Anonymous'}
+                                {f"({beep_info['reporter_email']})" if beep_info['reporter_email'] else ''}
+                            </div>
+
+                            <div class="info-label">Location:</div>
+                            <div class="info-value">
+                                {f"{beep_info['public_latitude']:.4f}, {beep_info['public_longitude']:.4f}" if beep_info['public_latitude'] else 'Not available'}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-number">{len(recipients)}</div>
+                            <div class="stat-label">Total Recipients</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">{len(set(r['username'] for r in recipients if r['username']))}</div>
+                            <div class="stat-label">Unique Users</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">{len(set(r['device_id'] for r in recipients))}</div>
+                            <div class="stat-label">Unique Devices</div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <h2>👥 Recipients Who Received This Beep</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Device ID</th>
+                                    <th>Device</th>
+                                    <th>Platform</th>
+                                    <th>Distance</th>
+                                    <th>Received At</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {recipients_html}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="section">
+                        <h2>💡 Next Steps</h2>
+                        <ul style="color: #bbb;">
+                            <li>Check Firebase Console for detailed FCM delivery logs</li>
+                            <li>View engagement metrics at <a href="/admin/engagement/summary" style="color: #00ff88;">/admin/engagement/summary</a></li>
+                            <li>Check witness confirmations on the beep detail page</li>
+                        </ul>
+                    </div>
+                </div>
+            </body>
+            </html>
+            """)
+
+    except Exception as e:
+        return HTMLResponse(f"""
+            <html><body style="font-family: Arial; padding: 20px;">
+                <h1>Error</h1>
+                <p>Failed to load beep distribution: {str(e)}</p>
+                <p><a href="/admin">&larr; Back to Admin</a></p>
+            </body></html>
+        """, status_code=500)
+
+@router.get("/beep-distribution", response_class=HTMLResponse)
+async def beep_distribution_search_page(credentials: str = Depends(verify_admin_password)):
+    """Search page for beep distribution"""
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Beep Distribution Lookup</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
+            .container { max-width: 800px; margin: 0 auto; }
+            .header { background: #2d2d2d; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+            .header h1 { margin: 0 0 10px 0; color: #00ff88; }
+            .back-link { color: #00ff88; text-decoration: none; }
+            .back-link:hover { text-decoration: underline; }
+            .search-box { background: #2d2d2d; padding: 30px; border-radius: 8px; margin: 20px 0; }
+            input { width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #444; color: #e0e0e0; border-radius: 4px; font-size: 16px; }
+            button { background: #00ff88; color: #000; border: none; padding: 12px 24px; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; font-size: 16px; }
+            button:hover { background: #00cc70; }
+            .recent { background: #2d2d2d; padding: 20px; border-radius: 8px; }
+            .recent h3 { color: #00ff88; margin-top: 0; }
+            .beep-item { background: #333; padding: 12px; margin: 8px 0; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
+            .beep-item:hover { background: #444; }
+            .beep-link { color: #00ff88; text-decoration: none; }
+            .beep-link:hover { text-decoration: underline; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <a href="/admin" class="back-link">&larr; Back to Admin Dashboard</a>
+                <h1>🔍 Beep Distribution Lookup</h1>
+                <p style="color: #888;">Enter a beep/sighting ID to see who sent it and who received it</p>
+            </div>
+
+            <div class="search-box">
+                <h3 style="color: #00ff88; margin-top: 0;">Search by Beep ID</h3>
+                <input type="text" id="beepId" placeholder="Enter beep ID (UUID or short URL)" />
+                <button onclick="searchBeep()">🔍 View Distribution</button>
+            </div>
+
+            <div class="recent" id="recentBeeps">
+                <h3>📋 Recent Beeps</h3>
+                <p style="color: #888;">Loading...</p>
+            </div>
+        </div>
+
+        <script>
+            async function searchBeep() {
+                const beepId = document.getElementById('beepId').value.trim();
+                if (!beepId) {
+                    alert('Please enter a beep ID');
+                    return;
+                }
+                window.location.href = `/admin/beep-distribution/${beepId}`;
+            }
+
+            async function loadRecentBeeps() {
+                try {
+                    const response = await fetch('/beep?limit=10');
+                    const data = await response.json();
+
+                    if (data.success && data.data && data.data.alerts) {
+                        const beeps = data.data.alerts;
+                        const html = beeps.map(beep => `
+                            <div class="beep-item">
+                                <div>
+                                    <div style="font-weight: bold;">${beep.title || 'Untitled'}</div>
+                                    <div style="font-size: 12px; color: #888;">${new Date(beep.created_at).toLocaleString()}</div>
+                                </div>
+                                <a href="/admin/beep-distribution/${beep.id}" class="beep-link">View Distribution →</a>
+                            </div>
+                        `).join('');
+                        document.getElementById('recentBeeps').innerHTML = '<h3>📋 Recent Beeps</h3>' + html;
+                    }
+                } catch (error) {
+                    document.getElementById('recentBeeps').innerHTML = '<p style="color: #ff4444;">Error loading recent beeps</p>';
+                }
+            }
+
+            document.getElementById('beepId').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') searchBeep();
+            });
+
+            loadRecentBeeps();
+        </script>
+    </body>
+    </html>
+    """
 
 @router.get("/engagement/metrics", response_class=HTMLResponse)
 async def admin_engagement_metrics_page(credentials: str = Depends(verify_admin_password)):

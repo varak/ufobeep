@@ -31,7 +31,7 @@ export default function PrivacyPage() {
             Privacy Policy
           </h1>
           <p className="text-lg text-text-secondary mb-6">
-            Last updated: January 15, 2024
+            Last updated: October 16, 2025
           </p>
           
           <div className="bg-brand-primary bg-opacity-10 border border-brand-primary border-opacity-20 rounded-lg p-6">
@@ -86,7 +86,7 @@ export default function PrivacyPage() {
               </ul>
             </div>
 
-            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6 mb-6">
               <h3 className="text-xl font-medium text-brand-primary mb-3">Account Information</h3>
               <ul className="text-text-secondary space-y-2">
                 <li>• Email address (optional, for notifications only)</li>
@@ -94,6 +94,93 @@ export default function PrivacyPage() {
                 <li>• App preferences and settings</li>
                 <li>• Push notification tokens</li>
               </ul>
+            </div>
+
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6 mb-6">
+              <h3 className="text-xl font-medium text-brand-primary mb-3">Google Sign-In Data</h3>
+              <p className="text-text-secondary mb-3">
+                When you sign in with Google, we receive and store:
+              </p>
+              <ul className="text-text-secondary space-y-2">
+                <li>• <strong>Email Address:</strong> Used for account identification and notifications</li>
+                <li>• <strong>Profile Name:</strong> Displayed as your username unless you change it</li>
+                <li>• <strong>Profile Photo:</strong> Optional display picture for your account</li>
+                <li>• <strong>Google Account ID:</strong> Unique identifier for linking your Google account</li>
+              </ul>
+              <p className="text-text-secondary text-sm mt-3">
+                We only access this information with your explicit permission through Google&apos;s authentication flow.
+                You can disconnect your Google account at any time through your account settings.
+              </p>
+            </div>
+
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6 mb-6">
+              <h3 className="text-xl font-medium text-brand-primary mb-3">Device Information</h3>
+              <p className="text-text-secondary mb-3">
+                To provide support and optimize app performance, we collect technical information about your device:
+              </p>
+              <ul className="text-text-secondary space-y-2">
+                <li>• <strong>Device Model:</strong> Phone or tablet model (e.g., &quot;Pixel 9a&quot;, &quot;iPhone 14 Pro&quot;)</li>
+                <li>• <strong>Manufacturer:</strong> Device maker (e.g., Google, Apple, Samsung)</li>
+                <li>• <strong>Operating System:</strong> OS version (e.g., &quot;Android 14&quot;, &quot;iOS 17.1&quot;)</li>
+                <li>• <strong>App Version:</strong> UFOBeep version you&apos;re running</li>
+                <li>• <strong>Screen Resolution:</strong> Display dimensions for UI optimization</li>
+                <li>• <strong>Device Memory:</strong> RAM capacity for performance tuning</li>
+                <li>• <strong>Available Storage:</strong> Free storage space for media uploads</li>
+                <li>• <strong>Network Type:</strong> Connection type (WiFi, 5G, 4G) for debugging</li>
+                <li>• <strong>Language Preference:</strong> Device language for automatic localization</li>
+                <li>• <strong>Timezone:</strong> Local timezone for accurate timestamp display</li>
+                <li>• <strong>Battery Optimization Status:</strong> Android power management settings</li>
+                <li>• <strong>Location Permission Type:</strong> Whether location is &quot;Always&quot;, &quot;While in Use&quot;, or denied</li>
+              </ul>
+              <p className="text-text-secondary text-sm mt-3">
+                This information helps us troubleshoot issues, optimize performance for different devices,
+                and ensure the app works correctly on your specific device configuration.
+              </p>
+            </div>
+
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+              <h3 className="text-xl font-medium text-brand-primary mb-3">Analytics & Error Tracking</h3>
+              <p className="text-text-secondary mb-3">
+                We use industry-standard analytics tools to improve the app:
+              </p>
+              <ul className="text-text-secondary space-y-2">
+                <li>• <strong>Google Analytics:</strong> Website traffic, user acquisition sources, and feature usage</li>
+                <li>• <strong>Firebase Analytics:</strong> Mobile app usage patterns, screen views, and user flows</li>
+                <li>• <strong>Sentry Error Tracking:</strong> Crash reports, error logs, and performance monitoring</li>
+              </ul>
+              <p className="text-text-secondary text-sm mt-3">
+                All analytics data is aggregated and anonymized. We use this information to identify bugs,
+                improve performance, and understand which features are most valuable to users. You can opt out
+                of analytics in your device settings.
+              </p>
+            </div>
+          </section>
+
+          <section className="mb-8">
+            <h2 className="text-2xl font-semibold text-text-primary mb-4">Cookies and Tracking Technologies</h2>
+
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+              <p className="text-text-secondary mb-4">
+                Our website uses cookies and similar technologies:
+              </p>
+              <ul className="text-text-secondary space-y-3">
+                <li>
+                  • <strong>Essential Cookies:</strong> Required for website functionality, authentication,
+                  and security. These cannot be disabled.
+                </li>
+                <li>
+                  • <strong>Analytics Cookies:</strong> Google Analytics tracks page views, session duration,
+                  and navigation patterns to help us improve the website experience.
+                </li>
+                <li>
+                  • <strong>No Advertising Cookies:</strong> We do not use cookies for advertising or
+                  third-party marketing purposes.
+                </li>
+              </ul>
+              <p className="text-text-secondary text-sm mt-3">
+                You can control cookie preferences through your browser settings. Note that disabling cookies
+                may affect website functionality.
+              </p>
             </div>
           </section>
 
@@ -134,7 +221,7 @@ export default function PrivacyPage() {
               </p>
             </div>
 
-            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6 mb-6">
               <h3 className="text-xl font-medium text-brand-primary mb-3">We May Share Data When:</h3>
               <ul className="text-text-secondary space-y-2">
                 <li>• <strong>Legal Requirements:</strong> Complying with valid legal process</li>
@@ -142,6 +229,23 @@ export default function PrivacyPage() {
                 <li>• <strong>Service Providers:</strong> Third-party services that help us operate (with data processing agreements)</li>
                 <li>• <strong>Business Transfer:</strong> In case of merger or acquisition (users will be notified)</li>
               </ul>
+            </div>
+
+            <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
+              <h3 className="text-xl font-medium text-brand-primary mb-3">Third-Party Service Providers</h3>
+              <p className="text-text-secondary mb-3">
+                We work with trusted service providers who process data on our behalf:
+              </p>
+              <ul className="text-text-secondary space-y-2">
+                <li>• <strong>Google (Firebase, Analytics):</strong> Authentication, analytics, and push notifications</li>
+                <li>• <strong>Sentry:</strong> Error tracking and performance monitoring</li>
+                <li>• <strong>Cloud Infrastructure:</strong> Hosting and data storage providers</li>
+              </ul>
+              <p className="text-text-secondary text-sm mt-3">
+                All third-party providers are required to maintain appropriate security measures and
+                use data only for the purposes we specify. We carefully vet all service providers for
+                GDPR compliance and data protection standards.
+              </p>
             </div>
           </section>
 
@@ -203,21 +307,43 @@ export default function PrivacyPage() {
                 <h3 className="text-lg font-medium text-brand-primary mb-3">Access & Control</h3>
                 <ul className="text-text-secondary text-sm space-y-1">
                   <li>• View all data we have about you</li>
-                  <li>• Export your sighting reports</li>
+                  <li>• Export your sighting reports and account data</li>
                   <li>• Delete individual reports</li>
                   <li>• Adjust privacy settings</li>
+                  <li>• Disconnect Google Sign-In</li>
+                  <li>• Opt out of analytics (device settings)</li>
                 </ul>
               </div>
-              
+
               <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
                 <h3 className="text-lg font-medium text-brand-primary mb-3">Account Deletion</h3>
                 <ul className="text-text-secondary text-sm space-y-1">
                   <li>• Permanently delete your account</li>
                   <li>• Remove personal information</li>
+                  <li>• Delete device information</li>
+                  <li>• Remove Google Sign-In connection</li>
                   <li>• Anonymous reports remain public</li>
                   <li>• Comments on reports remain public</li>
                 </ul>
               </div>
+            </div>
+
+            <div className="bg-semantic-info bg-opacity-10 border border-semantic-info border-opacity-20 rounded-lg p-6 mt-6">
+              <h3 className="text-lg font-semibold text-semantic-info mb-2">GDPR Rights</h3>
+              <p className="text-text-secondary text-sm mb-3">
+                If you&apos;re in the European Economic Area, you have additional rights under GDPR:
+              </p>
+              <ul className="text-text-secondary text-sm space-y-1">
+                <li>• <strong>Right to Access:</strong> Request a copy of all your personal data</li>
+                <li>• <strong>Right to Rectification:</strong> Correct inaccurate personal data</li>
+                <li>• <strong>Right to Erasure:</strong> Request deletion of your personal data</li>
+                <li>• <strong>Right to Portability:</strong> Receive your data in a machine-readable format</li>
+                <li>• <strong>Right to Object:</strong> Object to processing of your personal data</li>
+                <li>• <strong>Right to Restrict:</strong> Request restriction of processing</li>
+              </ul>
+              <p className="text-text-secondary text-sm mt-3">
+                To exercise any of these rights, contact us at support@ufobeep.com
+              </p>
             </div>
           </section>
 
@@ -255,8 +381,12 @@ export default function PrivacyPage() {
               <ul className="text-text-secondary space-y-3">
                 <li>• <strong>Sighting Reports:</strong> Retained indefinitely for research and community benefit</li>
                 <li>• <strong>Account Data:</strong> Deleted within 30 days of account closure</li>
-                <li>• <strong>Location Data:</strong> Precise coordinates discarded after jittering (within 24 hours)</li>
-                <li>• <strong>Analytics Data:</strong> Aggregated and anonymized, retained for 2 years maximum</li>
+                <li>• <strong>Location Data:</strong> Current location only; precise coordinates discarded after jittering (within 24 hours)</li>
+                <li>• <strong>Device Information:</strong> Updated when app version changes; deleted with account closure</li>
+                <li>• <strong>Google Sign-In Data:</strong> Email and profile stored until account deletion or disconnect</li>
+                <li>• <strong>Analytics Data:</strong> Aggregated and anonymized, retained for 26 months (Google/Firebase standard)</li>
+                <li>• <strong>Error Logs:</strong> Sentry crash reports retained for 90 days</li>
+                <li>• <strong>Cookies:</strong> Website cookies expire after 13 months (analytics) or session end (essential)</li>
               </ul>
             </div>
           </section>
