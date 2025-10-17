@@ -30,7 +30,7 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
 
     @property
     def timeout_seconds(self) -> int:
-        return 3
+        return 6  # Increased for OpenSky API reliability
 
     async def is_available(self) -> bool:
         return True  # Basic tracking always available
