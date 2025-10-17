@@ -1,6 +1,9 @@
 import UIKit
 import AudioToolbox
 import UserNotifications
+import AVFoundation
+import CoreLocation
+import Photos
 @_exported import Flutter
 
 @main
@@ -35,14 +38,14 @@ import UserNotifications
 
     // Setup UI SFX channel for native sound feedback
     let controller = window?.rootViewController as! FlutterViewController
-    let channel = FlutterMethodChannel(name: "ui_sfx", binaryMessenger: controller.binaryMessenger)
-    
+    let sfxChannel = FlutterMethodChannel(name: "ui_sfx", binaryMessenger: controller.binaryMessenger)
+
     // Load ui_click sound from resources
     if let soundURL = Bundle.main.url(forResource: "ui_click", withExtension: "wav") {
       AudioServicesCreateSystemSoundID(soundURL as CFURL, &clickSoundID)
     }
-    
-    channel.setMethodCallHandler { [weak self] (call, result) in
+
+    sfxChannel.setMethodCallHandler { [weak self] (call, result) in
       switch call.method {
       case "warm":
         // iOS doesn't need warm-up like Android/Moto devices
@@ -54,6 +57,50 @@ import UserNotifications
         }
         result(true)
       default:
+        result(FlutterMethodNotImplemented)
+      }
+    }
+
+    // Setup permissions channel for accurate iOS permission checking
+    let permissionsChannel = FlutterMethodChannel(name: "ios_permissions", binaryMessenger: controller.binaryMessenger)
+    permissionsChannel.setMethodCallHandler { (call, result) in
+      if call.method == "checkPermission" {
+        guard let args = call.arguments as? [String: Any],
+              let type = args["type"] as? String else {
+          result(FlutterError(code: "INVALID_ARGS", message: "Missing permission type", details: nil))
+          return
+        }
+
+        switch type {
+        case "location":
+          let status = CLLocationManager.authorizationStatus()
+          result(status == .authorizedAlways || status == .authorizedWhenInUse)
+
+        case "camera":
+          let status = AVCaptureDevice.authorizationStatus(for: .video)
+          result(status == .authorized)
+
+        case "photos":
+          let status = PHPhotoLibrary.authorizationStatus()
+          if #available(iOS 14, *) {
+            result(status == .authorized || status == .limited)
+          } else {
+            result(status == .authorized)
+          }
+
+        case "notification":
+          if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().getNotificationSettings { settings in
+              result(settings.authorizationStatus == .authorized)
+            }
+          } else {
+            result(UIApplication.shared.isRegisteredForRemoteNotifications)
+          }
+
+        default:
+          result(FlutterError(code: "UNKNOWN_TYPE", message: "Unknown permission type: \(type)", details: nil))
+        }
+      } else {
         result(FlutterMethodNotImplemented)
       }
     }

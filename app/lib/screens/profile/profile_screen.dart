@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../services/auth_repository.dart';
 import '../../services/api_client.dart';
 import '../../services/device_service.dart';
+import '../../services/ios_permissions_service.dart';
 import '../../models/user_model.dart';
 import '../../models/user_preferences.dart';
 import '../../providers/user_preferences_provider.dart';
@@ -25,20 +27,32 @@ class ProfileScreen extends ConsumerStatefulWidget {
   ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends ConsumerState<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> with WidgetsBindingObserver {
   late final AuthRepository _auth;
   final _scrollController = ScrollController();
   bool _showAdminAccess = false;
   int _adminTapCount = 0;
   String _appVersion = '0.1.0';
   String _buildNumber = '';
+  int _permissionsKey = 0; // Key to force permission tiles to rebuild
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _auth = AuthRepository();
     _auth.addListener(_onAuthChange);
     _loadAppVersion();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // User returned from Settings - refresh permissions
+      setState(() {
+        _permissionsKey++;
+      });
+    }
   }
   
   Future<void> _loadAppVersion() async {
@@ -54,6 +68,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _auth.removeListener(_onAuthChange);
     _scrollController.dispose();
     super.dispose();
@@ -399,9 +414,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
             const SizedBox(height: 16),
             GlassCard(
               child: Column(
+                key: ValueKey(_permissionsKey), // Force rebuild when key changes
                 children: permissions.map((permission) {
-                  return FutureBuilder<PermissionStatus>(
-                    future: permission.status,
+                  return FutureBuilder<bool>(
+                    future: _checkPermissionStatus(permission),
                     builder: (context, statusSnapshot) {
                       if (!statusSnapshot.hasData) {
                         return const SizedBox.shrink();
@@ -423,12 +439,52 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       Permission.location,
       Permission.camera,
       Permission.notification,
-      Permission.photos, // Modern replacement for deprecated storage permission
+      Permission.photos,
     ];
   }
-  
-  Widget _buildPermissionTile(Permission permission, PermissionStatus status) {
-    final isGranted = status == PermissionStatus.granted;
+
+  /// Check permission status - uses native iOS checking on iOS, permission_handler on Android
+  Future<bool> _checkPermissionStatus(Permission permission) async {
+    if (Platform.isIOS) {
+      // Use native iOS permission checking for accurate status
+      String permissionType;
+      switch (permission) {
+        case Permission.location:
+        case Permission.locationAlways:
+        case Permission.locationWhenInUse:
+          permissionType = 'location';
+          break;
+        case Permission.camera:
+          permissionType = 'camera';
+          break;
+        case Permission.photos:
+          permissionType = 'photos';
+          break;
+        case Permission.notification:
+          permissionType = 'notification';
+          break;
+        default:
+          // Fallback to permission_handler for unknown types
+          final status = await permission.status;
+          return status == PermissionStatus.granted;
+      }
+
+      try {
+        return await IosPermissionsService.checkPermissionStatus(permissionType);
+      } catch (e) {
+        print('Error checking iOS permission: $e');
+        // Fallback to permission_handler
+        final status = await permission.status;
+        return status == PermissionStatus.granted;
+      }
+    } else {
+      // Android: use permission_handler
+      final status = await permission.status;
+      return status == PermissionStatus.granted;
+    }
+  }
+
+  Widget _buildPermissionTile(Permission permission, bool isGranted) {
     
     return ListTile(
       leading: Icon(
@@ -447,12 +503,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
           color: isGranted ? AppColors.brandPrimary : AppColors.textSecondary,
         ),
       ),
-      trailing: isGranted 
+      trailing: isGranted
         ? const Icon(Icons.check, color: AppColors.brandPrimary)
         : TextButton(
             onPressed: () async {
-              await permission.request();
-              setState(() {}); // Refresh the UI
+              await openAppSettings();
             },
             child: Text(AppLocalizations.of(context)!.permissionGrant),
           ),
