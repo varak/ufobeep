@@ -87,10 +87,7 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
         logger.info(f"🌌 SKYFIELD: Calculating for timestamp {context.timestamp}")
 
         # Import here to avoid startup delays
-        import subprocess
         import json
-
-        # Use the dedicated celestial calculation script
         import os
 
         # Determine correct working directory and Python path
@@ -113,36 +110,52 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
         logger.info(f"🌌 SKYFIELD: Running command: {' '.join(cmd)} in {cwd}")
 
         try:
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=5,
+            # Use async subprocess to avoid blocking event loop
+            process = await asyncio.create_subprocess_exec(
+                *cmd,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
                 cwd=cwd
             )
 
-            logger.info(f"🌌 SKYFIELD: Return code: {result.returncode}")
-            logger.info(f"🌌 SKYFIELD: Stdout: {result.stdout[:200]}...")
-            logger.info(f"🌌 SKYFIELD: Stderr: {result.stderr}")
+            # Wait for completion with timeout
+            try:
+                stdout, stderr = await asyncio.wait_for(
+                    process.communicate(),
+                    timeout=5.0
+                )
+                stdout_text = stdout.decode('utf-8')
+                stderr_text = stderr.decode('utf-8')
+                returncode = process.returncode
+            except asyncio.TimeoutError:
+                # Kill the process if it times out
+                try:
+                    process.kill()
+                    await process.wait()
+                except:
+                    pass
+                logger.error(f"🌌 SKYFIELD: Calculation timed out after 5 seconds")
+                raise Exception("Celestial calculation timed out")
 
-            if result.returncode != 0:
-                logger.error(f"🌌 SKYFIELD: Calculation failed - {result.stderr}")
-                raise Exception(f"Celestial calculation failed: {result.stderr}")
+            logger.info(f"🌌 SKYFIELD: Return code: {returncode}")
+            logger.info(f"🌌 SKYFIELD: Stdout: {stdout_text[:200]}...")
+            logger.info(f"🌌 SKYFIELD: Stderr: {stderr_text}")
 
-            if not result.stdout.strip():
+            if returncode != 0:
+                logger.error(f"🌌 SKYFIELD: Calculation failed - {stderr_text}")
+                raise Exception(f"Celestial calculation failed: {stderr_text}")
+
+            if not stdout_text.strip():
                 logger.error(f"🌌 SKYFIELD: Empty output received")
                 raise Exception("Celestial calculation returned empty output")
 
             # Parse JSON result
-            celestial_data = json.loads(result.stdout)
+            celestial_data = json.loads(stdout_text)
             logger.info(f"🌌 SKYFIELD: Raw calculation successful")
 
             # Transform to our structured format
             return self._transform_to_structured_format(celestial_data, context)
 
-        except subprocess.TimeoutExpired:
-            logger.error(f"🌌 SKYFIELD: Calculation timed out after 5 seconds")
-            raise Exception("Celestial calculation timed out")
         except json.JSONDecodeError as e:
             logger.error(f"🌌 SKYFIELD: Invalid JSON response: {e}")
             raise Exception(f"Invalid celestial calculation response: {e}")
