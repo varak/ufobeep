@@ -236,19 +236,6 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
                 ],
               ),
 
-              const SizedBox(height: 24),
-
-              // Current processor indicator
-              if (_currentProcessor.isNotEmpty && !_showContinueButton)
-                Text(
-                  l10n.analyzing(_getProcessorDisplayName(_currentProcessor)),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: AppColors.brandPrimary,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-
               const SizedBox(height: 48),
 
               // Continue button after timeout (appears below all processors)
@@ -276,7 +263,8 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
   }
 
   Widget _buildProcessorItem(String processorName, String displayName, bool isComplete) {
-    final isActive = _currentProcessor == processorName && !isComplete;
+    // All processors are active (loading) until complete - parallel processing
+    final isActive = !isComplete;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
@@ -291,22 +279,15 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
                     size: 20,
                     key: ValueKey('complete'),
                   )
-                : isActive
-                    ? SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
-                        ),
-                        key: ValueKey('loading'),
-                      )
-                    : Icon(
-                        Icons.radio_button_unchecked,
-                        color: AppColors.textTertiary,
-                        size: 20,
-                        key: ValueKey('waiting'),
-                      ),
+                : SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.brandPrimary),
+                    ),
+                    key: ValueKey('loading'),
+                  ),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -316,10 +297,8 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
                 fontSize: 16,
                 color: isComplete
                     ? AppColors.success
-                    : isActive
-                        ? AppColors.brandPrimary
-                        : AppColors.textSecondary,
-                fontWeight: isActive ? FontWeight.w500 : FontWeight.normal,
+                    : AppColors.brandPrimary,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
