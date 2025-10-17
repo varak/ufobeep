@@ -30,7 +30,7 @@ class SatelliteEnrichmentProcessor(EnrichmentProcessor):
 
     @property
     def timeout_seconds(self) -> int:
-        return 3
+        return 15  # TLE downloads can be slow
 
     async def is_available(self) -> bool:
         return True  # No API keys required for public TLE data
