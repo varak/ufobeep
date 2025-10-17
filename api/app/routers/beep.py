@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Header
+from fastapi import APIRouter, HTTPException, UploadFile, File, Form, Header, BackgroundTasks
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field
 from app.services.alerts_service import AlertsService
@@ -137,7 +137,7 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
 
 # Alert endpoints
 @router.post("")
-async def create_alert(request: dict, idempotency_key: Optional[str] = Header(None, alias="Idempotency-Key")):
+async def create_alert(request: dict, background_tasks: BackgroundTasks, idempotency_key: Optional[str] = Header(None, alias="Idempotency-Key")):
     """
     Create new alert with idempotency support for Sprint A Multi-Media Alerts.
     
@@ -203,17 +203,10 @@ async def create_alert(request: dict, idempotency_key: Optional[str] = Header(No
         
         # Don't close the pool - it's shared across the service
         
-        # Run enrichment synchronously for the new beep
-        try:
-            from app.worker import enrich_sighting
-            logger.info(f"Starting enrichment for beep {alert_id}")
-            success = await enrich_sighting(alert_id)
-            if success:
-                logger.info(f"✅ Successfully enriched beep {alert_id}")
-            else:
-                logger.error(f"❌ Failed to enrich beep {alert_id}")
-        except Exception as e:
-            logger.error(f"Failed to enrich beep {alert_id}: {e}")
+        # Schedule enrichment as background task (runs after response sent)
+        from app.worker import enrich_sighting
+        background_tasks.add_task(enrich_sighting, alert_id)
+        logger.info(f"✅ Enrichment scheduled as background task for {alert_id}")
 
         # Get the created alert to include short_url in response
         alert = await alerts_service.get_alert_by_id(alert_id)
