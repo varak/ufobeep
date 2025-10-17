@@ -31,8 +31,9 @@ def generate_short_url(sighting_id: str) -> Optional[str]:
             return None
         
         # Call the Node.js script with the sighting ID
+        # Use full path to node for systemd service compatibility
         result = subprocess.run(
-            ["node", shared_script, sighting_id],
+            ["/usr/bin/node", shared_script, sighting_id],
             capture_output=True,
             text=True,
             timeout=5  # 5 second timeout
