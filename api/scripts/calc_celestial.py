@@ -35,9 +35,10 @@ def parse_args() -> argparse.Namespace:
 
 def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
     import sys
-    print(f"CELESTIAL DEBUG: Called with timestamp: {when}", file=sys.stderr)
-    print(f"CELESTIAL DEBUG: Location: {lat}, {lon}", file=sys.stderr)
-    print(f"CELESTIAL DEBUG: Current UTC: {datetime.utcnow()}", file=sys.stderr)
+    # Debug logging disabled - causes excessive journald writes
+    # print(f"CELESTIAL DEBUG: Called with timestamp: {when}", file=sys.stderr)
+    # print(f"CELESTIAL DEBUG: Location: {lat}, {lon}", file=sys.stderr)
+    # print(f"CELESTIAL DEBUG: Current UTC: {datetime.utcnow()}", file=sys.stderr)
 
     from skyfield.api import load, wgs84
     from skyfield import almanac
@@ -89,60 +90,9 @@ def compute_with_skyfield(lat: float, lon: float, when: datetime) -> dict:
         except Exception as e:
             print(f"Error calculating {planet_name}: {e}", file=sys.stderr)
 
-    # Calculate bright stars using skyfield's star catalog
+    # Star calculations DISABLED - loading 53MB Hipparcos catalog takes 8-9 seconds
+    # Sun/moon/planets provide sufficient celestial context without the delay
     bright_stars = []
-    try:
-        from skyfield.data import hipparcos
-        from skyfield.api import Star
-
-        # Load Hipparcos star catalog
-        with load.open(hipparcos.URL) as f:
-            df = hipparcos.load_dataframe(f)
-
-        # Map of brightest stars with proper names
-        bright_stars_map = {
-            11767: "Polaris", 32349: "Sirius", 30438: "Canopus", 69673: "Arcturus",
-            71683: "Vega", 24436: "Capella", 37279: "Rigel", 37826: "Procyon",
-            21421: "Aldebaran", 25336: "Betelgeuse", 113368: "Antares", 102098: "Deneb",
-            91262: "Altair", 80763: "Spica", 87833: "Shaula", 85927: "Pollux",
-            62956: "Regulus", 46390: "Castor", 68702: "Dubhe", 95947: "Nunki"
-        }
-
-        # Filter to only very bright stars (magnitude < 1.5) that people can actually see
-        bright_catalog = df[df['magnitude'] < 1.5]
-
-        for hip_id, star_data in bright_catalog.iterrows():
-            try:
-                # Skip stars without proper names
-                if hip_id not in bright_stars_map:
-                    continue
-
-                # Create star object from catalog data
-                star = Star(
-                    ra_hours=star_data['ra_hours'],
-                    dec_degrees=star_data['dec_degrees']
-                )
-
-                # Calculate position for observer
-                astrometric = observer.at(t).observe(star)
-                apparent = astrometric.apparent()
-                alt, az, distance = apparent.altaz()
-
-                # Only include stars well above horizon that are actually visible
-                if alt.degrees > 15:
-                    bright_stars.append({
-                        "name": bright_stars_map[hip_id],
-                        "altitude": float(alt.degrees),
-                        "azimuth": float(az.degrees),
-                        "magnitude": float(star_data['magnitude'])
-                    })
-
-            except Exception as e:
-                print(f"Error calculating star HIP {hip_id}: {e}", file=sys.stderr)
-                continue
-
-    except Exception as e:
-        print(f"Star catalog loading failed: {e}", file=sys.stderr)
 
     # Simple twilight classification
     sun_alt_deg = float(sun_alt.degrees)
@@ -240,10 +190,6 @@ def main():
         method = "simplified"
 
     import json
-    print(f"\nMethod: {method}", file=sys.stderr)
-    print("Input:", {"lat": args.lat, "lon": args.lon, "time": when.isoformat()}, file=sys.stderr)
-    print("Result:", file=sys.stderr)
-
     # Output clean JSON to stdout for subprocess consumption
     print(json.dumps(data))
 
