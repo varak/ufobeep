@@ -1121,6 +1121,11 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
               height: 56,
               child: OutlinedButton(
                 onPressed: !_isSubmitting ? () async {
+                  // Set loading state IMMEDIATELY for instant visual feedback
+                  setState(() {
+                    _isSubmitting = true;
+                    _errorMessage = null;
+                  });
                   await UiFeedback.click();
                   debugPrint('🚀 BUTTON PRESSED: _isSubmitting=$_isSubmitting, mediaFiles=${_mediaFiles.length}');
                   _submitBeep();
