@@ -23,11 +23,22 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
   Widget build(BuildContext context) {
     final aircraft = widget.data['aircraft'] as List? ?? [];
     final total = widget.data['total'] as int? ?? 0;
-    final summary = AstronomicalTranslationService.translateAircraftSummary(
-      total,
-      widget.data['detection_radius_km']?.toDouble(),
-      AppLocalizations.of(context)!
-    );
+    final apiSummary = widget.data['summary'] as String? ?? '';
+
+    // Check if service is down/unavailable by looking for error keywords in API summary
+    final isServiceDown = apiSummary.toLowerCase().contains('unavailable') ||
+                          apiSummary.toLowerCase().contains('failed') ||
+                          apiSummary.toLowerCase().contains('error') ||
+                          apiSummary.toLowerCase().contains('rate limited') ||
+                          apiSummary.toLowerCase().contains('authentication');
+
+    final summary = isServiceDown
+        ? AppLocalizations.of(context)!.aircraftTrackingUnavailable
+        : AstronomicalTranslationService.translateAircraftSummary(
+            total,
+            widget.data['detection_radius_km']?.toDouble(),
+            AppLocalizations.of(context)!
+          );
 
     return GlassCard(
       child: Padding(
@@ -44,19 +55,29 @@ class _AircraftExpandableCardState extends State<AircraftExpandableCard> {
                   style: const TextStyle(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.w600),
                 ),
                 const Spacer(),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: AppColors.brandPrimary.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.brandPrimary),
-                  ),
-                  child: Text('$total', style: TextStyle(color: AppColors.brandPrimary, fontSize: 12, fontWeight: FontWeight.bold)),
-                ),
+                if (!isServiceDown)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.brandPrimary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppColors.brandPrimary),
+                    ),
+                    child: Text('$total', style: TextStyle(color: AppColors.brandPrimary, fontSize: 12, fontWeight: FontWeight.bold)),
+                  )
+                else
+                  Icon(Icons.cloud_off, size: 16, color: AppColors.warning),
               ],
             ),
             const SizedBox(height: 12),
-            Text(summary, style: const TextStyle(color: AppColors.textSecondary, fontSize: 14)),
+            Text(
+              summary,
+              style: TextStyle(
+                color: isServiceDown ? AppColors.warning : AppColors.textSecondary,
+                fontSize: 14,
+                fontStyle: isServiceDown ? FontStyle.italic : FontStyle.normal,
+              ),
+            ),
             if (aircraft.isNotEmpty) ...[
               const SizedBox(height: 12),
               // If expanded and have many aircraft, use a constrained scrollable container

@@ -456,6 +456,7 @@
     }
   },
   "aircraftTrackingTitle": "Aircraft Tracking",
+  "aircraftTrackingUnavailable": "Aircraft tracking temporarily unavailable",
   "weatherConditionsTitle": "Weather Conditions",
   "noSatellitePasses": "No visible satellite passes found",
   "contentAnalysisTitle": "Content Analysis",
