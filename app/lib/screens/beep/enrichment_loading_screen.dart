@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../l10n/app_localizations.dart';
 import '../../theme/app_theme.dart';
 import '../../services/sound_service.dart';
+import '../../services/api_client.dart';
 import '../../widgets/glass_card.dart';
 
 class EnrichmentLoadingScreen extends ConsumerStatefulWidget {
@@ -70,47 +71,62 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
   }
 
   Future<void> _checkEnrichmentProgress() async {
-    // Poll the beep API to check enrichment completion
+    // Poll the actual beep API to check real enrichment completion
     int attempts = 0;
-    const maxAttempts = 10; // 5 seconds max wait
+    const maxAttempts = 30; // 15 seconds max wait (500ms per attempt)
 
     while (attempts < maxAttempts) {
       await Future.delayed(const Duration(milliseconds: 500));
       attempts++;
 
       try {
-        // Simulate progressive completion for demo
-        // In production, would check actual API for enrichment status
-        if (attempts >= 2 && !_processorStatus['weather']!) {
+        // Fetch actual beep data from API
+        final beepData = await ApiClient.instance.getAlertDetails(widget.beepId);
+        final enrichment = beepData['enrichment_data'] as Map<String, dynamic>? ?? {};
+
+        // Check which processors have completed by looking at actual data
+        final hasWeather = enrichment['weather'] != null;
+        final hasGeocoding = enrichment['geocoding'] != null;
+        final hasAircraft = enrichment['aircraft_tracking'] != null;
+        final hasSatellites = enrichment['satellites'] != null;
+        final hasCelestial = enrichment['celestial'] != null &&
+                            enrichment['celestial']['processing'] != true;
+
+        // Update status for completed processors
+        if (hasWeather && !_processorStatus['weather']!) {
           _markProcessorComplete('weather');
         }
-        if (attempts >= 4 && !_processorStatus['geocoding']!) {
+        if (hasGeocoding && !_processorStatus['geocoding']!) {
           _markProcessorComplete('geocoding');
         }
-        if (attempts >= 6 && !_processorStatus['aircraft_tracking']!) {
+        if (hasAircraft && !_processorStatus['aircraft_tracking']!) {
           _markProcessorComplete('aircraft_tracking');
         }
-        if (attempts >= 8 && !_processorStatus['satellites']!) {
+        if (hasSatellites && !_processorStatus['satellites']!) {
           _markProcessorComplete('satellites');
         }
-        if (attempts >= 10 && !_processorStatus['celestial']!) {
+        if (hasCelestial && !_processorStatus['celestial']!) {
           _markProcessorComplete('celestial');
         }
 
-        // Check if all processors completed
+        // Check if all critical processors completed (weather + geocoding minimum)
+        final criticalComplete = hasWeather && hasGeocoding;
         final allComplete = _processorStatus.values.every((status) => status);
-        if (allComplete) {
-          // await SoundService.I.play(AlertSound.normal);
+
+        if (allComplete || (criticalComplete && attempts >= 20)) {
+          // All done or critical data ready and waited long enough
           widget.onComplete();
           return;
         }
       } catch (e) {
         debugPrint('Error checking enrichment progress: $e');
+        // Continue polling even if request fails
       }
     }
 
-    // Timeout after 5 seconds - auto-proceed
+    // Timeout after 15 seconds - show beep anyway
     if (mounted) {
+      debugPrint('Enrichment polling timeout - showing beep with partial data');
       widget.onComplete();
     }
   }

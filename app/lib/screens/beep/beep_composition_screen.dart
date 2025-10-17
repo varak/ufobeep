@@ -562,17 +562,15 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       // Set current user to ensure auth state is correct before navigation
       final appState = ref.read(appStateProvider.notifier);
       appState.setCurrentUser(ref.read(appStateProvider).currentUserId);
-      
-      // Wait 2 seconds to show success state, then navigate to full beep
-      Future.delayed(const Duration(milliseconds: 2000), () async {
-        if (context.mounted) {
-          debugPrint('🚀🚀 NAVIGATING TO BEEP DETAIL - Widget will be disposed');
-          _log('Navigating to /beep/$sightingId');
-          context.go('/beep/$sightingId');
-        } else {
-          _log('Context not mounted, skipping navigation');
-        }
-      });
+
+      // Navigate immediately to beep detail - enrichment loading screen will show
+      if (context.mounted) {
+        debugPrint('🚀🚀 NAVIGATING TO BEEP DETAIL - Widget will be disposed');
+        _log('Navigating to /beep/$sightingId');
+        context.go('/beep/$sightingId');
+      } else {
+        _log('Context not mounted, skipping navigation');
+      }
     }
     wd.mark("submission completed successfully");
     } finally {
