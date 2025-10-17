@@ -446,11 +446,14 @@ class _BeepCompositionScreenState extends ConsumerState<BeepCompositionScreen> {
       try {
         wd.mark("processing file ${i + 1}/${_mediaFiles.length}");
         _log('Uploading file ${i + 1}/${_mediaFiles.length}: ${mediaFile.path}');
-        _log('File exists: ${await mediaFile.exists()}');
-        
-        wd.mark("checking file length for ${mediaFile.path}");
-        _log('File size: ${await mediaFile.length()} bytes');
-        
+
+        // Skip slow file validation on iOS (Photo Library files are slow to check)
+        if (!Platform.isIOS) {
+          _log('File exists: ${await mediaFile.exists()}');
+          wd.mark("checking file length for ${mediaFile.path}");
+          _log('File size: ${await mediaFile.length()} bytes');
+        }
+
         wd.mark("calling uploadMediaToSighting API");
         _log('Calling uploadMediaToSighting...');
         await ApiClient.instance.uploadMediaToSighting(
