@@ -113,8 +113,8 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
         final criticalComplete = hasWeather && hasGeocoding;
         final allComplete = _processorStatus.values.every((status) => status);
 
-        if (allComplete || (criticalComplete && attempts >= 20)) {
-          // All done or critical data ready and waited long enough
+        if (allComplete || (criticalComplete && attempts >= 8)) {
+          // All done or critical data ready and waited long enough (8s = 6s enrichment + 2s buffer)
           widget.onComplete();
           return;
         }
