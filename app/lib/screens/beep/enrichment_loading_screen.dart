@@ -109,12 +109,12 @@ class _EnrichmentLoadingScreenState extends ConsumerState<EnrichmentLoadingScree
           _markProcessorComplete('celestial');
         }
 
-        // Check if all critical processors completed (weather + geocoding minimum)
-        final criticalComplete = hasWeather && hasGeocoding;
+        // Check if all critical processors completed (weather + geocoding + celestial + aircraft)
+        final criticalComplete = hasWeather && hasGeocoding && hasCelestial && hasAircraft;
         final allComplete = _processorStatus.values.every((status) => status);
 
         if (allComplete || (criticalComplete && attempts >= 8)) {
-          // All done or critical data ready and waited long enough (8s = 6s enrichment + 2s buffer)
+          // All done, or critical data ready after 8s (satellites can take longer, show beep anyway)
           widget.onComplete();
           return;
         }
