@@ -470,9 +470,9 @@ class AlertsService:
     
     def _process_enrichment(self, row_data) -> Dict:
         """Build enrichment data from separate columns"""
-        # Debug: log what type of data we received
-        logger.info(f"🔄 ENRICHMENT DEBUG: Received row_data type: {type(row_data)}")
-        logger.info(f"🔄 ENRICHMENT DEBUG: Row data keys: {list(row_data.keys()) if hasattr(row_data, 'keys') else 'No keys method'}")
+        # Debug logging disabled - was causing 8-10s delay for 20 rows
+        # logger.info(f"🔄 ENRICHMENT DEBUG: Received row_data type: {type(row_data)}")
+        # logger.info(f"🔄 ENRICHMENT DEBUG: Row data keys: {list(row_data.keys()) if hasattr(row_data, 'keys') else 'No keys method'}")
 
         # Always use separate columns approach (row_data should be the database row)
         if not hasattr(row_data, 'get'):
@@ -604,7 +604,7 @@ class AlertsService:
                 sources_used.append('celestial_data')
         else:
             # No celestial_data in database - provide placeholder until background processing completes
-            logger.info("🔄 ENRICHMENT DEBUG: No celestial_data found, adding placeholder for background processing")
+            # logger.info("🔄 ENRICHMENT DEBUG: No celestial_data found, adding placeholder for background processing")
             enrichment['celestial'] = {
                 'processing': True,
                 'message': 'Celestial data is being calculated in the background'
@@ -640,8 +640,8 @@ class AlertsService:
                 enrichment['report_date'] = enrichment_base['report_date']
             sources_used.append('enrichment_data_mufon_metadata')
 
-        logger.info(f"🔄 ENRICHMENT DEBUG: Built enrichment from sources: {sources_used}")
-        logger.info(f"🔄 ENRICHMENT DEBUG: Final enrichment keys: {list(enrichment.keys())}")
+        # logger.info(f"🔄 ENRICHMENT DEBUG: Built enrichment from sources: {sources_used}")
+        # logger.info(f"🔄 ENRICHMENT DEBUG: Final enrichment keys: {list(enrichment.keys())}")
 
         return enrichment
     
