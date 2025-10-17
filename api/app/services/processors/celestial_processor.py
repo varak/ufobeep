@@ -93,16 +93,18 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
         # Use the dedicated celestial calculation script
         import os
 
-        # Determine correct working directory
+        # Determine correct working directory and Python path
         if os.path.exists('/home/ufobeep/ufobeep'):
             cwd = '/home/ufobeep/ufobeep'
+            python_path = '/home/ufobeep/ufobeep/venv/bin/python3'
             script_path = '/home/ufobeep/ufobeep/api/scripts/calc_celestial.py'
         else:
             cwd = '/home/mike/D/ufobeep'
+            python_path = '/home/mike/D/ufobeep/venv/bin/python3'
             script_path = '/home/mike/D/ufobeep/api/scripts/calc_celestial.py'
 
         cmd = [
-            'python3', script_path,
+            python_path, script_path,
             '--lat', str(context.latitude),
             '--lon', str(context.longitude),
             '--time', context.timestamp.isoformat() + 'Z'
