@@ -1006,6 +1006,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get aircraftTrackingTitle => 'Ilma-alusten seuranta';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'Sääolosuhteet';
 
   @override

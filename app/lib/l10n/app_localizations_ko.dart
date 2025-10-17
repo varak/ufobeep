@@ -988,6 +988,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get aircraftTrackingTitle => '항공기 추적';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => '기상 조건';
 
   @override

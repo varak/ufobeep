@@ -1010,6 +1010,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get aircraftTrackingTitle => 'Uçak Takipi';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'Hava Koşulları';
 
   @override

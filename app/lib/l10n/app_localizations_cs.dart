@@ -1006,6 +1006,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get aircraftTrackingTitle => 'Sledování letadel';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'Podmínky počasí';
 
   @override

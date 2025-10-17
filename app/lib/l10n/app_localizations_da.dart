@@ -1008,6 +1008,10 @@ class AppLocalizationsDa extends AppLocalizations {
   String get aircraftTrackingTitle => 'Flysporing';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'Vejrforhold';
 
   @override

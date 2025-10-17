@@ -1009,6 +1009,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get aircraftTrackingTitle => 'Tracking van luchtvaartuigen';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'Weersomstandigheden';
 
   @override

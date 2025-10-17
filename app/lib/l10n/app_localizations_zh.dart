@@ -985,6 +985,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aircraftTrackingTitle => '飞机跟踪';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => '天气条件';
 
   @override

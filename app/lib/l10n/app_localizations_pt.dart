@@ -1013,6 +1013,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get aircraftTrackingTitle => 'Rastreamento de aeronaves';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'Condições meteorológicas';
 
   @override

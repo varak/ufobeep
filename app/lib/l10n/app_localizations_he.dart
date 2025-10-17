@@ -997,6 +997,10 @@ class AppLocalizationsHe extends AppLocalizations {
   String get aircraftTrackingTitle => 'מעקב מטוסים';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'תנאי מזג אוויר';
 
   @override

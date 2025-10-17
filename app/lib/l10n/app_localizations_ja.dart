@@ -987,6 +987,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get aircraftTrackingTitle => '航空機の追跡';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => '気象条件';
 
   @override

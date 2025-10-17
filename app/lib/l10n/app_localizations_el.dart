@@ -1013,6 +1013,10 @@ class AppLocalizationsEl extends AppLocalizations {
   String get aircraftTrackingTitle => 'Παρακολούθηση αεροσκαφών';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'Καιρικές συνθήκες';
 
   @override

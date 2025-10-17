@@ -1017,6 +1017,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get aircraftTrackingTitle => 'Отслеживание самолетов';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'Погодные условия';
 
   @override

@@ -1005,6 +1005,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get aircraftTrackingTitle => 'विमान ट्रैकिंग';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'मौसम की स्थिति';
 
   @override

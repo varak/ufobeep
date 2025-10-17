@@ -1992,6 +1992,12 @@ abstract class AppLocalizations {
   /// **'Aircraft Tracking'**
   String get aircraftTrackingTitle;
 
+  /// No description provided for @aircraftTrackingUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Aircraft tracking temporarily unavailable'**
+  String get aircraftTrackingUnavailable;
+
   /// No description provided for @weatherConditionsTitle.
   ///
   /// In en, this message translates to:

@@ -1000,6 +1000,10 @@ class AppLocalizationsAr extends AppLocalizations {
   String get aircraftTrackingTitle => 'تعقب الطائرات';
 
   @override
+  String get aircraftTrackingUnavailable =>
+      'Aircraft tracking temporarily unavailable';
+
+  @override
   String get weatherConditionsTitle => 'أحوال الطقس';
 
   @override
