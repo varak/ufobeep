@@ -117,7 +117,7 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=30,
+                timeout=5,
                 cwd=cwd
             )
 
@@ -141,7 +141,7 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             return self._transform_to_structured_format(celestial_data, context)
 
         except subprocess.TimeoutExpired:
-            logger.error(f"🌌 SKYFIELD: Calculation timed out after 30 seconds")
+            logger.error(f"🌌 SKYFIELD: Calculation timed out after 5 seconds")
             raise Exception("Celestial calculation timed out")
         except json.JSONDecodeError as e:
             logger.error(f"🌌 SKYFIELD: Invalid JSON response: {e}")
