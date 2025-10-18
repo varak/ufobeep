@@ -247,20 +247,19 @@ class PushNotificationService {
     // Handle messages when app is in foreground
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('🔔 FOREGROUND FCM: Received message ${message.messageId}');
-      print('🔔 FOREGROUND FCM: App is in foreground - must manually show notification');
 
-      // For foreground notifications, show via bootstrap service
-      _showForegroundNotification(message);
-
-      // Store the message data for later navigation when notification is tapped
-      // but DON'T show another notification (would be duplicate)
       final notificationType = message.data['type'] ?? 'general';
-      if (notificationType == 'comment') {
-        // Comments need special handling for navigation
-        _handleCommentNotification(message, showNotification: false);
+      print('🔔 FOREGROUND FCM: Type: $notificationType');
+
+      // Route to specific handler based on type - avoid duplicate notifications
+      if (notificationType == 'sighting_alert') {
+        _handleSightingAlert(message);
+      } else if (notificationType == 'comment') {
+        _handleCommentNotification(message, showNotification: true);
+      } else {
+        // Only use bootstrap for other notification types
+        _showForegroundNotification(message);
       }
-      // For sighting alerts, the notification tap will be handled by the local notification's
-      // onDidReceiveNotificationResponse callback which has the data stored
     });
 
     // Handle messages when app is in background but not terminated
