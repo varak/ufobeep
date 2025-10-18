@@ -101,8 +101,15 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                 eph["saturn barycenter"], eph["uranus barycenter"], eph["neptune barycenter"]
             )
 
-            # Create observer
-            t = ts.from_datetime(context.timestamp)
+            # Create observer - ensure timestamp has timezone
+            if context.timestamp.tzinfo is None:
+                # Assume UTC if no timezone
+                from datetime import timezone as tz
+                timestamp = context.timestamp.replace(tzinfo=tz.utc)
+            else:
+                timestamp = context.timestamp
+
+            t = ts.from_datetime(timestamp)
             observer = earth + wgs84.latlon(context.latitude, context.longitude)
 
             # Calculate sun and moon
