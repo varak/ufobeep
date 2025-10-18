@@ -82,85 +82,111 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
             )
 
     async def _calculate_celestial_data_skyfield(self, context: EnrichmentContext) -> Dict[str, Any]:
-        """Calculate celestial data using proper Skyfield astronomy library"""
+        """Calculate celestial data using Skyfield directly (no subprocess)"""
 
         logger.info(f"🌌 SKYFIELD: Calculating for timestamp {context.timestamp}")
 
-        # Import here to avoid startup delays
-        import json
-        import os
-
-        # Determine correct working directory and Python path
-        if os.path.exists('/home/ufobeep/ufobeep'):
-            cwd = '/home/ufobeep/ufobeep'
-            python_path = '/home/ufobeep/ufobeep/venv/bin/python3'
-            script_path = '/home/ufobeep/ufobeep/api/scripts/calc_celestial.py'
-        else:
-            cwd = '/home/mike/D/ufobeep'
-            python_path = '/home/mike/D/ufobeep/venv/bin/python3'
-            script_path = '/home/mike/D/ufobeep/api/scripts/calc_celestial.py'
-
-        cmd = [
-            python_path, script_path,
-            '--lat', str(context.latitude),
-            '--lon', str(context.longitude),
-            '--time', context.timestamp.isoformat() + 'Z'
-        ]
-
-        logger.info(f"🌌 SKYFIELD: Running command: {' '.join(cmd)} in {cwd}")
-
         try:
-            # Use async subprocess to avoid blocking event loop
-            process = await asyncio.create_subprocess_exec(
-                *cmd,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE,
-                cwd=cwd
+            from skyfield.api import load, wgs84
+            from skyfield import almanac
+
+            # Load ephemeris and timescale
+            ts = load.timescale()
+            eph = load("de421.bsp")
+            earth, sun, moon = eph["earth"], eph["sun"], eph["moon"]
+
+            # Load planets
+            mercury, venus, mars, jupiter, saturn, uranus, neptune = (
+                eph["mercury"], eph["venus"], eph["mars"], eph["jupiter barycenter"],
+                eph["saturn barycenter"], eph["uranus barycenter"], eph["neptune barycenter"]
             )
 
-            # Wait for completion with timeout
-            try:
-                stdout, stderr = await asyncio.wait_for(
-                    process.communicate(),
-                    timeout=5.0
-                )
-                stdout_text = stdout.decode('utf-8')
-                stderr_text = stderr.decode('utf-8')
-                returncode = process.returncode
-            except asyncio.TimeoutError:
-                # Kill the process if it times out
+            # Create observer
+            t = ts.from_datetime(context.timestamp)
+            observer = earth + wgs84.latlon(context.latitude, context.longitude)
+
+            # Calculate sun and moon
+            sun_app = observer.at(t).observe(sun).apparent()
+            moon_app = observer.at(t).observe(moon).apparent()
+
+            sun_alt, sun_az, _ = sun_app.altaz()
+            moon_alt, moon_az, _ = moon_app.altaz()
+            k = float(almanac.fraction_illuminated(eph, "moon", t))
+
+            # Calculate planets
+            planets = []
+            planet_objects = [
+                ("Mercury", mercury), ("Venus", venus), ("Mars", mars),
+                ("Jupiter", jupiter), ("Saturn", saturn), ("Uranus", uranus), ("Neptune", neptune)
+            ]
+
+            for planet_name, planet_obj in planet_objects:
                 try:
-                    process.kill()
-                    await process.wait()
-                except:
-                    pass
-                logger.error(f"🌌 SKYFIELD: Calculation timed out after 5 seconds")
-                raise Exception("Celestial calculation timed out")
+                    planet_app = observer.at(t).observe(planet_obj).apparent()
+                    planet_alt, planet_az, _ = planet_app.altaz()
 
-            logger.info(f"🌌 SKYFIELD: Return code: {returncode}")
-            logger.info(f"🌌 SKYFIELD: Stdout: {stdout_text[:200]}...")
-            logger.info(f"🌌 SKYFIELD: Stderr: {stderr_text}")
+                    if planet_alt.degrees > 5:
+                        planets.append({
+                            "name": planet_name,
+                            "altitude": float(planet_alt.degrees),
+                            "azimuth": float(planet_az.degrees),
+                            "magnitude": None
+                        })
+                except Exception as e:
+                    logger.warning(f"Error calculating {planet_name}: {e}")
 
-            if returncode != 0:
-                logger.error(f"🌌 SKYFIELD: Calculation failed - {stderr_text}")
-                raise Exception(f"Celestial calculation failed: {stderr_text}")
+            # Stars disabled (catalog loading too slow)
+            bright_stars = []
 
-            if not stdout_text.strip():
-                logger.error(f"🌌 SKYFIELD: Empty output received")
-                raise Exception("Celestial calculation returned empty output")
+            # Twilight classification
+            sun_alt_deg = float(sun_alt.degrees)
+            if sun_alt_deg > 0:
+                twilight = "day"
+            elif sun_alt_deg > -6:
+                twilight = "civil_twilight"
+            elif sun_alt_deg > -12:
+                twilight = "nautical_twilight"
+            elif sun_alt_deg > -18:
+                twilight = "astronomical_twilight"
+            else:
+                twilight = "night"
 
-            # Parse JSON result
-            celestial_data = json.loads(stdout_text)
-            logger.info(f"🌌 SKYFIELD: Raw calculation successful")
+            # Moon phase
+            illumination_pct = k * 100.0
+            if illumination_pct < 5:
+                phase_name = "New Moon"
+            elif illumination_pct < 45:
+                phase_name = "Crescent"
+            elif illumination_pct < 55:
+                phase_name = "Quarter"
+            elif illumination_pct < 95:
+                phase_name = "Gibbous"
+            else:
+                phase_name = "Full Moon"
 
-            # Transform to our structured format
+            celestial_data = {
+                "sun": {
+                    "altitude": float(sun_alt.degrees),
+                    "azimuth": float(sun_az.degrees),
+                    "is_visible": sun_alt_deg > -6,
+                },
+                "moon": {
+                    "altitude": float(moon_alt.degrees),
+                    "azimuth": float(moon_az.degrees),
+                    "is_visible": float(moon_alt.degrees) > 0,
+                    "illumination": illumination_pct,
+                    "phase": phase_name,
+                },
+                "visible_planets": planets,
+                "bright_stars_visible": bright_stars,
+                "summary": {"twilight": twilight},
+            }
+
+            logger.info(f"🌌 SKYFIELD: Direct calculation successful")
             return self._transform_to_structured_format(celestial_data, context)
 
-        except json.JSONDecodeError as e:
-            logger.error(f"🌌 SKYFIELD: Invalid JSON response: {e}")
-            raise Exception(f"Invalid celestial calculation response: {e}")
         except Exception as e:
-            logger.error(f"🌌 SKYFIELD: Unexpected error: {e}")
+            logger.error(f"🌌 SKYFIELD: Direct calculation failed: {e}")
             raise
 
     def _transform_to_structured_format(self, celestial_data: Dict[str, Any], context: EnrichmentContext) -> Dict[str, Any]:
