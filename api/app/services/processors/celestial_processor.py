@@ -101,10 +101,9 @@ class CelestialEnrichmentProcessor(EnrichmentProcessor):
                 eph["saturn barycenter"], eph["uranus barycenter"], eph["neptune barycenter"]
             )
 
-            # Create observer - ensure timestamp has timezone
+            # Create observer - timestamp from worker is UTC but naive, make it aware
+            from datetime import timezone as tz
             if context.timestamp.tzinfo is None:
-                # Assume UTC if no timezone
-                from datetime import timezone as tz
                 timestamp = context.timestamp.replace(tzinfo=tz.utc)
             else:
                 timestamp = context.timestamp
