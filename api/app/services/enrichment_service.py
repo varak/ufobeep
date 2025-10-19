@@ -1526,7 +1526,8 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
             headers['Authorization'] = f'Bearer {access_token}'
             logger.info("Using OAuth2 token for OpenSky API request")
         else:
-            logger.warning("No OAuth2 token available, making unauthenticated request")
+            logger.error("FAILED TO GET OPENSKY OAUTH2 TOKEN - CANNOT PROCEED WITH AIRCRAFT TRACKING")
+            raise Exception("OpenSky OAuth2 authentication failed - aircraft tracking unavailable")
 
         async with aiohttp.ClientSession() as session:
             params = {
