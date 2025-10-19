@@ -1490,9 +1490,7 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                     'client_secret': self.client_secret
                 }
 
-                headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-
-                async with session.post(token_url, data=data, headers=headers, timeout=5) as response:
+                async with session.post(token_url, data=data, timeout=5) as response:
                     if response.status == 200:
                         token_data = await response.json()
                         access_token = token_data.get('access_token')
