@@ -1546,6 +1546,10 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                     elif response.status == 429:
                         logger.error("OpenSky API rate limited")
                         return {"aircraft": [], "total": 0, "summary": "Aircraft tracking rate limited"}
+                    elif response.status == 503:
+                        # OpenSky service unavailable - try adsb.lol fallback
+                        logger.warning(f"OpenSky API returned 503 - trying adsb.lol fallback")
+                        return await self._fetch_aircraft_data_adsbLol(context)
                     else:
                         # Check if it's a time-related issue (photos older than ~5 minutes)
                         time_diff = (datetime.utcnow() - context.timestamp).total_seconds() / 60
@@ -1622,6 +1626,105 @@ class AircraftTrackingProcessor(EnrichmentProcessor):
                     "total": len(aircraft),
                     "summary": f"{len(aircraft)} aircraft detected within 50km{summary_note}" if aircraft else f"No aircraft detected{summary_note}"
                 }
+
+    async def _fetch_aircraft_data_adsbLol(self, context: EnrichmentContext) -> Dict[str, Any]:
+        """Fetch aircraft data from adsb.lol API (fallback when OpenSky is down)"""
+        logger.info("[AIRCRAFT_FETCH_ADSBLOL] Starting adsb.lol fallback")
+        import aiohttp
+        import math
+
+        # 50km search radius (converted to nautical miles for API)
+        radius_nm = 27  # ~50km
+
+        async with aiohttp.ClientSession() as session:
+            # adsb.lol uses /v2/point/{lat}/{lon}/{radius_nm}
+            url = f"https://api.adsb.lol/v2/point/{context.latitude}/{context.longitude}/{radius_nm}"
+
+            try:
+                async with session.get(url, timeout=3) as response:
+                    if response.status != 200:
+                        logger.error(f"adsb.lol API returned status {response.status}")
+                        return {"aircraft": [], "total": 0, "summary": f"Aircraft tracking service error ({response.status})"}
+
+                    data = await response.json()
+
+                    # adsb.lol response format: {"ac": [...], "total": X, "now": timestamp, "msg": "ok"}
+                    aircraft_list = data.get('ac', [])
+
+                    if not aircraft_list:
+                        return {"aircraft": [], "total": 0, "summary": "No aircraft detected"}
+
+                    aircraft = []
+                    for ac in aircraft_list:
+                        # Skip aircraft without position data or on ground
+                        if not ac.get('lat') or not ac.get('lon') or ac.get('alt_baro') == 'ground':
+                            continue
+
+                        # Calculate distance
+                        lat1, lon1 = math.radians(context.latitude), math.radians(context.longitude)
+                        lat2, lon2 = math.radians(ac['lat']), math.radians(ac['lon'])
+                        dlat, dlon = lat2 - lat1, lon2 - lon1
+                        a = math.sin(dlat/2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon/2)**2
+                        distance_km = 6371 * 2 * math.asin(math.sqrt(a))
+
+                        if distance_km > 50:  # Skip if too far
+                            continue
+
+                        callsign = (ac.get('flight') or "").strip()
+
+                        # Lookup airline name
+                        airline_name = None
+                        if callsign:
+                            try:
+                                from app.services.catalog_service import catalog_service
+                                airline_name = catalog_service.get_airline_name(callsign)
+                            except:
+                                pass
+
+                        # adsb.lol altitude is in feet already
+                        altitude_ft = ac.get('alt_baro')
+                        if isinstance(altitude_ft, str):
+                            try:
+                                altitude_ft = float(altitude_ft)
+                            except:
+                                altitude_ft = None
+
+                        # Speed in knots
+                        speed_knots = ac.get('gs')  # ground speed in knots
+
+                        aircraft.append({
+                            "callsign": callsign,
+                            "airline": airline_name,
+                            "distance_km": round(distance_km, 1),
+                            "altitude_ft": round(altitude_ft) if altitude_ft else None,
+                            "speed_knots": round(speed_knots) if speed_knots else None,
+                            "heading": round(ac['track']) if ac.get('track') else None,
+                            "country": ac.get('r', ''),  # registration country
+                            "lat": round(ac['lat'], 4),
+                            "lon": round(ac['lon'], 4)
+                        })
+
+                    # Sort by distance
+                    aircraft.sort(key=lambda x: x['distance_km'])
+
+                    time_diff = (datetime.utcnow() - context.timestamp).total_seconds() / 60
+                    summary_note = ""
+                    if time_diff > 5:
+                        summary_note = f" (current positions, photo is {time_diff:.0f} minutes old)"
+                    elif aircraft:
+                        summary_note = " (current positions)"
+
+                    logger.info(f"[AIRCRAFT_FETCH_ADSBLOL] Success! Got {len(aircraft)} aircraft from adsb.lol")
+
+                    return {
+                        "aircraft": aircraft,
+                        "total": len(aircraft),
+                        "summary": f"{len(aircraft)} aircraft detected within 50km{summary_note}" if aircraft else f"No aircraft detected{summary_note}"
+                    }
+
+            except Exception as e:
+                logger.error(f"[AIRCRAFT_FETCH_ADSBLOL] Error: {e}")
+                return {"aircraft": [], "total": 0, "summary": "Aircraft tracking service error"}
 
 
 class ContentFilterProcessor(EnrichmentProcessor):
