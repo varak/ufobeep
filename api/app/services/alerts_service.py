@@ -192,7 +192,7 @@ class AlertsService:
             
             alerts = []
             for row in rows:
-                location = self._extract_location(row["sensor_data"], row["enrichment_data"])
+                location = self._extract_location(row["sensor_data"], row["enrichment_data"], row.get("geocoding_data"))
                 
                 # Debug logging disabled for production (was causing massive log spam)
                 # print(f"DEBUG: Alert {row['id'][:8]}... source={row['source']}, location={location}")
@@ -242,12 +242,12 @@ class AlertsService:
                 ) c ON s.id = c.sighting_id
                 WHERE s.id = $1 AND s.is_public = true
             """, uuid.UUID(alert_id))
-            
+
             if not row:
                 return None
-                
-            location = self._extract_location(row["sensor_data"], row["enrichment_data"])
-            
+
+            location = self._extract_location(row["sensor_data"], row["enrichment_data"], row.get("geocoding_data"))
+
             # Allow MUFON alerts without location data
             if not location and row["source"] == "mufon":
                 location = AlertLocation(latitude=0.0, longitude=0.0, name="")
@@ -295,12 +295,12 @@ class AlertsService:
                 ) c ON s.id = c.sighting_id
                 WHERE s.short_url = $1 AND s.is_public = true
             """, short_url)
-            
+
             if not row:
                 return None
-                
-            location = self._extract_location(row["sensor_data"], row["enrichment_data"])
-            
+
+            location = self._extract_location(row["sensor_data"], row["enrichment_data"], row.get("geocoding_data"))
+
             # Allow MUFON alerts without location data
             if not location and row["source"] == "mufon":
                 location = AlertLocation(latitude=0.0, longitude=0.0, name="")
@@ -329,7 +329,7 @@ class AlertsService:
                 short_url=row["short_url"]
             )
     
-    def _extract_location(self, sensor_data, enrichment_data) -> Optional[AlertLocation]:
+    def _extract_location(self, sensor_data, enrichment_data, geocoding_data=None) -> Optional[AlertLocation]:
         """Extract location from sensor/enrichment data - unified logic"""
 
         # For regular beeps: Use sensor data FIRST for accurate GPS coordinates
@@ -338,18 +338,24 @@ class AlertsService:
             sensor = self._parse_json(sensor_data)
             if sensor:
                 lat, lng = self._extract_coords_from_sensor(sensor)
-                
-                # Get location name from enrichment if available
+
+                # Get location name from geocoding_data column first (most reliable)
                 location_name = "Unknown Location"
-                if enrichment_data:
+                if geocoding_data:
+                    geocoding = self._parse_json(geocoding_data)
+                    if geocoding:
+                        location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name") or "Unknown Location"
+
+                # Fallback to enrichment_data if no geocoding_data
+                if location_name == "Unknown Location" and enrichment_data:
                     enrichment = self._parse_json(enrichment_data)
                     if enrichment and "geocoding" in enrichment:
                         geocoding = enrichment["geocoding"]
                         if geocoding:
-                            location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name") or ""
-                
+                            location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name") or "Unknown Location"
+
                 # Otherwise try to get from sensor data
-                if not location_name:
+                if location_name == "Unknown Location":
                     if sensor.get("location", {}).get("name"):
                         location_name = sensor["location"]["name"]
                     elif sensor.get("location_name"):
