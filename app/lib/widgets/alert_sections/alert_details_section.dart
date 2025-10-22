@@ -55,6 +55,8 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
               Text(
                 widget.alert.source == 'mufon' && widget.alert.enrichment?['mufon_case_number'] != null
                     ? AppLocalizations.of(context)!.mufonCaseTitle(widget.alert.enrichment!['mufon_case_number'])
+                    : widget.alert.source == 'nuforc' && widget.alert.enrichment?['nuforc_report_id'] != null
+                    ? 'NUFORC Report #${widget.alert.enrichment!['nuforc_report_id']}'
                     : AppLocalizations.of(context)!.detailsTitle,
                 style: const TextStyle(
                   color: AppColors.brandPrimary,

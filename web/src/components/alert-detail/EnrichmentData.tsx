@@ -20,10 +20,10 @@ interface EnrichmentDataProps {
 export default function EnrichmentData({ enrichment, alert, locale = 'en' }: EnrichmentDataProps) {
   const { t } = useClientTranslations('common', locale)
 
-  // Skip enrichment data display for MUFON cases
-  const isMufonCase = alert?.source === 'mufon' || alert?.reporter_username === 'MUFON_Database'
+  // Skip enrichment data display for MUFON/NUFORC cases (historical data)
+  const isHistoricalData = alert?.source === 'mufon' || alert?.source === 'nuforc' || alert?.reporter_username === 'MUFON_Database'
 
-  if (!enrichment || isMufonCase) return null
+  if (!enrichment || isHistoricalData) return null
 
   const { weather, satellites, aircraft_tracking, celestial, location, processing_summary, geocoding, blacksky, skyfi } = enrichment
 

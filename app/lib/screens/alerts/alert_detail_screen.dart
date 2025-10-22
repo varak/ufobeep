@@ -449,6 +449,95 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ),
                 const SizedBox(height: 16),
 
+                // NUFORC Observation Details - show all NUFORC-specific fields
+                if (alert.source == 'nuforc' && alert.enrichment != null) ...[
+                  GlassCard(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text('🔭', style: TextStyle(fontSize: 20)),
+                            const SizedBox(width: 8),
+                            Text(
+                              'Observation Details',
+                              style: const TextStyle(
+                                color: AppColors.brandPrimary,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+                        if (alert.enrichment!['color'] != null) ...[
+                          _buildDetailRow('Color', alert.enrichment!['color']),
+                        ],
+                        if (alert.enrichment!['shape'] != null) ...[
+                          _buildDetailRow('Shape', alert.enrichment!['shape']),
+                        ],
+                        if (alert.enrichment!['estimated_size'] != null) ...[
+                          _buildDetailRow('Estimated Size', alert.enrichment!['estimated_size']),
+                        ],
+                        if (alert.enrichment!['estimated_speed'] != null) ...[
+                          _buildDetailRow('Estimated Speed', alert.enrichment!['estimated_speed']),
+                        ],
+                        if (alert.enrichment!['direction_from_viewer'] != null) ...[
+                          _buildDetailRow('Direction', alert.enrichment!['direction_from_viewer']),
+                        ],
+                        if (alert.enrichment!['angle_of_elevation'] != null) ...[
+                          _buildDetailRow('Elevation Angle', '${alert.enrichment!['angle_of_elevation']}°'),
+                        ],
+                        if (alert.enrichment!['closest_distance'] != null) ...[
+                          _buildDetailRow('Distance', alert.enrichment!['closest_distance']),
+                        ],
+                        if (alert.enrichment!['duration'] != null) ...[
+                          _buildDetailRow('Duration', alert.enrichment!['duration']),
+                        ],
+                        if (alert.enrichment!['no_of_observers'] != null) ...[
+                          _buildDetailRow('Observers', alert.enrichment!['no_of_observers'].toString()),
+                        ],
+                        if (alert.enrichment!['viewed_from'] != null) ...[
+                          _buildDetailRow('Viewed From', alert.enrichment!['viewed_from']),
+                        ],
+                        if (alert.enrichment!['characteristics'] != null) ...[
+                          _buildDetailRow('Characteristics', alert.enrichment!['characteristics']),
+                        ],
+                        if (alert.enrichment!['external_url'] != null) ...[
+                          const SizedBox(height: 8),
+                          InkWell(
+                            onTap: () {
+                              // Open URL in browser
+                              launchUrl(Uri.parse(alert.enrichment!['external_url']));
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: AppColors.brandPrimary.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(color: AppColors.brandPrimary.withOpacity(0.3)),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.open_in_new, size: 16, color: AppColors.brandPrimary),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Text(
+                                      'View Original NUFORC Report',
+                                      style: TextStyle(color: AppColors.brandPrimary, fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                ],
 
                 // Direction and compass - hidden only for beep creators (show for all alerts including MUFON)
                 if (!_isOriginalCreator(alert)) ...[
@@ -1398,5 +1487,36 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
     return missingSections >= 2;
   }
 
+  /// Helper method to build a detail row for NUFORC observation fields
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: 140,
+            child: Text(
+              '$label:',
+              style: TextStyle(
+                color: AppColors.textSecondary,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 14,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
 }
