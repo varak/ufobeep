@@ -71,6 +71,7 @@ export default function MediaGalleryModal({
 
   const currentMedia = mediaFiles[currentIndex]
   const isVideo = currentMedia.type === 'video' || currentMedia.url?.toLowerCase().includes('.mp4')
+  const isMuseAiVideo = currentMedia.type === 'muse_ai_video'
 
   const getFullImageUrl = (media: MediaFile) => {
     return media.url?.startsWith('http') 
@@ -83,7 +84,7 @@ export default function MediaGalleryModal({
       {/* Header */}
       <div className="flex justify-between items-center p-6 bg-dark-surface/80 backdrop-blur-sm border-b border-dark-border/50">
         <div className="flex items-center gap-4">
-          <div className="text-2xl">{isVideo ? '🎥' : '📸'}</div>
+          <div className="text-2xl">{isVideo || isMuseAiVideo ? '🎥' : '📸'}</div>
           <div>
             <h3 className="text-xl font-bold text-text-primary flex items-center gap-2">
               Media Gallery
@@ -123,8 +124,16 @@ export default function MediaGalleryModal({
 
       {/* Media Display */}
       <div className="flex-1 flex items-center justify-center p-6 relative overflow-auto">
-        {isVideo ? (
-          <video 
+        {isMuseAiVideo ? (
+          <iframe
+            src={`https://muse.ai/embed/${currentMedia.url.split('/').pop()}`}
+            className="w-full max-w-4xl rounded-lg shadow-2xl"
+            style={{ height: '70vh' }}
+            allowFullScreen
+            title="NUFORC Video"
+          />
+        ) : isVideo ? (
+          <video
             src={getFullImageUrl(currentMedia)}
             controls
             className="max-w-[90vw] max-h-[70vh] rounded-lg shadow-2xl"
@@ -132,7 +141,7 @@ export default function MediaGalleryModal({
           />
         ) : (
           <div className="relative group">
-            <img 
+            <img
               src={getFullImageUrl(currentMedia)}
               alt={`Media ${currentIndex + 1}`}
               className="max-w-[90vw] max-h-[70vh] object-contain rounded-lg shadow-2xl cursor-zoom-in transition-all duration-200"

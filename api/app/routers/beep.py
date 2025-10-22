@@ -97,7 +97,11 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
         "bearing_deg": round(bearing_deg, 1),
         "view_count": 0,
         "verification_score": 0.0,
-        "media_files": alert.media_files or [],
+        "media_files": (alert.media_files or []) + (
+            # Add Muse.ai videos to media gallery for NUFORC reports
+            [{"type": "muse_ai_video", "url": video_url, "file_name": f"Video on Muse.ai"}
+             for video_url in (alert.enrichment.get('muse_ai_videos', []) if alert.enrichment else [])]
+        ),
         "tags": [],
         "is_public": True,
         "submitted_at": alert.created_at.isoformat(),

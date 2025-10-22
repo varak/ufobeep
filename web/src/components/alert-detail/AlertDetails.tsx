@@ -333,29 +333,6 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             )}
           </div>
 
-          {/* Muse.ai embedded videos */}
-          {alert.enrichment_data.muse_ai_videos && alert.enrichment_data.muse_ai_videos.length > 0 && (
-            <div className="mt-4">
-              <div className="text-brand-primary font-semibold mb-2">📹 Video Evidence</div>
-              {alert.enrichment_data.muse_ai_videos.map((videoUrl: string, idx: number) => {
-                // Extract video ID from URL (https://muse.ai/v/kamzZm8)
-                const videoId = videoUrl.split('/').pop()
-                return (
-                  <div key={idx} className="mb-4">
-                    <iframe
-                      src={`https://muse.ai/embed/${videoId}`}
-                      width="100%"
-                      height="360"
-                      style={{ border: 'none', borderRadius: '8px' }}
-                      allowFullScreen
-                      title={`NUFORC Video ${idx + 1}`}
-                    />
-                  </div>
-                )
-              })}
-            </div>
-          )}
-
           {/* Link to original NUFORC report */}
           {alert.enrichment_data.external_url && (
             <a
