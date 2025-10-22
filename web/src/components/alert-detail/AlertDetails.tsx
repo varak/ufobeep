@@ -223,100 +223,16 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             </div>
           )}
 
-          {/* NUFORC attribution with report ID and link */}
+          {/* NUFORC attribution with report ID - just the badge */}
           {alert.source === 'nuforc' && (
-            <div className="mb-4 space-y-3">
-              <div className="p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
-                <div className="flex items-center gap-2">
-                  <span className="text-green-400">🛸</span>
-                  <span className="text-green-300 font-medium">
-                    {alert.enrichment_data?.nuforc_report_id
-                      ? `NUFORC Report #${alert.enrichment_data.nuforc_report_id}`
-                      : 'NUFORC Database Report'}
-                  </span>
-                </div>
-              </div>
-
-              {/* NUFORC Observation Details */}
-              <div className="p-4 bg-dark-surface border border-dark-border rounded-lg">
-                <div className="text-brand-primary font-semibold mb-3">🔭 Observation Details</div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                  {alert.enrichment_data?.color && (
-                    <div>
-                      <span className="text-text-tertiary">Color:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.color}</span>
-                    </div>
-                  )}
-                  {alert.enrichment_data?.estimated_size && (
-                    <div>
-                      <span className="text-text-tertiary">Size:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.estimated_size}</span>
-                    </div>
-                  )}
-                  {alert.enrichment_data?.estimated_speed && (
-                    <div>
-                      <span className="text-text-tertiary">Speed:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.estimated_speed}</span>
-                    </div>
-                  )}
-                  {alert.enrichment_data?.direction_from_viewer && (
-                    <div>
-                      <span className="text-text-tertiary">Direction:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.direction_from_viewer}</span>
-                    </div>
-                  )}
-                  {alert.enrichment_data?.angle_of_elevation !== undefined && alert.enrichment_data?.angle_of_elevation !== null && (
-                    <div>
-                      <span className="text-text-tertiary">Elevation:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.angle_of_elevation}°</span>
-                    </div>
-                  )}
-                  {alert.enrichment_data?.closest_distance && (
-                    <div>
-                      <span className="text-text-tertiary">Distance:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.closest_distance}</span>
-                    </div>
-                  )}
-                  {alert.enrichment_data?.duration && (
-                    <div>
-                      <span className="text-text-tertiary">Duration:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.duration}</span>
-                    </div>
-                  )}
-                  {alert.enrichment_data?.no_of_observers && (
-                    <div>
-                      <span className="text-text-tertiary">Observers:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.no_of_observers}</span>
-                    </div>
-                  )}
-                  {alert.enrichment_data?.viewed_from && (
-                    <div>
-                      <span className="text-text-tertiary">Viewed From:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.viewed_from}</span>
-                    </div>
-                  )}
-                  {alert.enrichment_data?.characteristics && (
-                    <div className="md:col-span-2">
-                      <span className="text-text-tertiary">Characteristics:</span>{' '}
-                      <span className="text-text-primary">{alert.enrichment_data.characteristics}</span>
-                    </div>
-                  )}
-                </div>
-
-                {/* Link to original NUFORC report */}
-                {alert.enrichment_data?.external_url && (
-                  <a
-                    href={alert.enrichment_data.external_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-brand-primary/10 hover:bg-brand-primary/20 border border-brand-primary/30 rounded-lg text-brand-primary transition-colors"
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    View Original NUFORC Report
-                  </a>
-                )}
+            <div className="mb-4 p-3 bg-green-500/10 border border-green-500/20 rounded-lg">
+              <div className="flex items-center gap-2">
+                <span className="text-green-400">🛸</span>
+                <span className="text-green-300 font-medium">
+                  {alert.enrichment_data?.nuforc_report_id
+                    ? `NUFORC Report #${alert.enrichment_data.nuforc_report_id}`
+                    : 'NUFORC Database Report'}
+                </span>
               </div>
             </div>
           )}
@@ -350,6 +266,89 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
         </div>
       )}
 
+      {/* NUFORC Observation Details - shown after description */}
+      {alert.source === 'nuforc' && alert.enrichment_data && (
+        <div className="mb-6 p-4 bg-dark-surface border border-dark-border rounded-lg">
+          <div className="text-brand-primary font-semibold mb-3">🔭 Observation Details</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            {alert.enrichment_data.color && (
+              <div>
+                <span className="text-text-tertiary">Color:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.color}</span>
+              </div>
+            )}
+            {alert.enrichment_data.estimated_size && (
+              <div>
+                <span className="text-text-tertiary">Size:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.estimated_size}</span>
+              </div>
+            )}
+            {alert.enrichment_data.estimated_speed && (
+              <div>
+                <span className="text-text-tertiary">Speed:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.estimated_speed}</span>
+              </div>
+            )}
+            {alert.enrichment_data.direction_from_viewer && (
+              <div>
+                <span className="text-text-tertiary">Direction:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.direction_from_viewer}</span>
+              </div>
+            )}
+            {alert.enrichment_data.angle_of_elevation !== undefined && alert.enrichment_data.angle_of_elevation !== null && (
+              <div>
+                <span className="text-text-tertiary">Elevation:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.angle_of_elevation}°</span>
+              </div>
+            )}
+            {alert.enrichment_data.closest_distance && (
+              <div>
+                <span className="text-text-tertiary">Distance:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.closest_distance}</span>
+              </div>
+            )}
+            {alert.enrichment_data.duration && (
+              <div>
+                <span className="text-text-tertiary">Duration:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.duration}</span>
+              </div>
+            )}
+            {alert.enrichment_data.no_of_observers && (
+              <div>
+                <span className="text-text-tertiary">Observers:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.no_of_observers}</span>
+              </div>
+            )}
+            {alert.enrichment_data.viewed_from && (
+              <div>
+                <span className="text-text-tertiary">Viewed From:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.viewed_from}</span>
+              </div>
+            )}
+            {alert.enrichment_data.characteristics && (
+              <div className="md:col-span-2">
+                <span className="text-text-tertiary">Characteristics:</span>{' '}
+                <span className="text-text-primary">{alert.enrichment_data.characteristics}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Link to original NUFORC report */}
+          {alert.enrichment_data.external_url && (
+            <a
+              href={alert.enrichment_data.external_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-brand-primary/10 hover:bg-brand-primary/20 border border-brand-primary/30 rounded-lg text-brand-primary transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+              View Original NUFORC Report
+            </a>
+          )}
+        </div>
+      )}
 
       {/* Time - Show MUFON times if available, otherwise show UFOBeep time */}
       {(alert.source === 'mufon' || alert.username === 'MUFON') ? (
