@@ -105,6 +105,7 @@ dependencies:
   
   # Anonymous ID generation
   uuid: ^4.5.1
+  webview_flutter: ^4.13.0
 
 # ----------------------
 # DEV DEPENDENCIES

@@ -5,7 +5,7 @@
 
 export interface MediaItem {
   id: string;
-  type: 'image' | 'video';
+  type: 'image' | 'video' | 'muse_ai_video';
   url: string;
   thumbnail?: string;
   title?: string;

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:video_player/video_player.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import '../models/view_media.dart';
 
 class BeepMediaViewer extends StatefulWidget {
@@ -85,7 +86,9 @@ class _BeepMediaViewerState extends State<BeepMediaViewer> {
         itemCount: items.length,
         itemBuilder: (_, i) {
           final m = items[i];
-          if (m.isVideo) {
+          if (m.isMuseAiVideo) {
+            return _MuseAiVideoPage(url: m.url, caption: m.caption);
+          } else if (m.isVideo) {
             return _VideoPage(url: m.url, caption: m.caption);
           }
           return _ImagePage(url: m.url, thumbUrl: m.thumbUrl, caption: m.caption);
@@ -364,6 +367,68 @@ class _Caption extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         ),
       ),
+    );
+  }
+}
+/// Muse.ai Video Player Page (uses WebView to embed Muse.ai player)
+class _MuseAiVideoPage extends StatefulWidget {
+  final String url; // https://muse.ai/v/kamzZm8
+  final String? caption;
+
+  const _MuseAiVideoPage({
+    required this.url,
+    this.caption,
+  });
+
+  @override
+  State<_MuseAiVideoPage> createState() => _MuseAiVideoPageState();
+}
+
+class _MuseAiVideoPageState extends State<_MuseAiVideoPage> {
+  late final WebViewController _webViewController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Extract video ID from URL (https://muse.ai/v/kamzZm8 -> kamzZm8)
+    final videoId = widget.url.split('/').last;
+    final embedUrl = 'https://muse.ai/embed/$videoId';
+
+    _webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.black)
+      ..loadRequest(Uri.parse(embedUrl));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Center(
+          child: WebViewWidget(controller: _webViewController),
+        ),
+        if (widget.caption != null && widget.caption!.isNotEmpty)
+          Positioned(
+            bottom: 20,
+            left: 20,
+            right: 20,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                widget.caption!,
+                style: const TextStyle(color: Colors.white, fontSize: 14),
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
