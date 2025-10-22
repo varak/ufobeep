@@ -8,7 +8,7 @@ abstract class AlertTitleUtils {
   static String getDynamicTitle(AppLocalizations l10n, Alert alert) {
     // Check for NUFORC report first
     if (alert.source == 'nuforc') {
-      final reportId = alert.enrichment?['nuforc_report_id'] ?? alert.externalId?.replaceAll('nuforc_', '');
+      final reportId = alert.enrichment?['nuforc_report_id'];
       if (reportId != null) {
         return 'NUFORC Report #$reportId';
       }
