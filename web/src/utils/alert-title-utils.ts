@@ -28,6 +28,15 @@ export class AlertTitleUtils {
    * Generate a contextual title for an alert based on available data
    */
   static getContextualTitle(alert: Alert, t: (key: string) => string): string {
+    // Check for NUFORC alerts
+    if (alert.source === 'nuforc') {
+      const reportId = alert.enrichment_data?.nuforc_report_id || alert.external_id?.replace('nuforc_', '');
+      if (reportId) {
+        return `NUFORC Report #${reportId}`;
+      }
+      return 'NUFORC Sighting Report';
+    }
+
     // Check for MUFON alerts using both source and reporter_username
     const isMufonAlert = alert.source === 'mufon' || alert.reporter_username === 'MUFON';
 
