@@ -6,7 +6,16 @@ import '../providers/alerts_provider.dart';
 abstract class AlertTitleUtils {
   /// Generate dynamic title for mobile app using translations
   static String getDynamicTitle(AppLocalizations l10n, Alert alert) {
-    // Check for MUFON case with enrichment data first
+    // Check for NUFORC report first
+    if (alert.source == 'nuforc') {
+      final reportId = alert.enrichment?['nuforc_report_id'] ?? alert.externalId?.replaceAll('nuforc_', '');
+      if (reportId != null) {
+        return 'NUFORC Report #$reportId';
+      }
+      return 'NUFORC Sighting Report';
+    }
+
+    // Check for MUFON case with enrichment data
     final caseNumber = alert.enrichment?['mufon_case_number'];
     if (caseNumber != null) {
       // Try to get clean classification from enrichment data
