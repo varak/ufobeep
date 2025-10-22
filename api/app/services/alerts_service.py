@@ -652,6 +652,7 @@ class AlertsService:
                 'direction_from_viewer', 'angle_of_elevation', 'closest_distance',
                 'estimated_speed', 'no_of_observers', 'duration', 'location_raw',
                 'location_details', 'exact_latitude', 'exact_longitude', 'external_url',
+                'muse_ai_videos',  # Muse.ai embedded video player URLs
                 'hide_witness_widget', 'hide_location_widget', 'hide_environmental_analysis',
                 'hide_actions', 'is_historical_report', 'source_name'
             ]

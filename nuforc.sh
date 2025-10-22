@@ -469,6 +469,12 @@ def upload_media_to_beep(beep_id: str, media_files: List[Dict]):
             media_url = media['url']
             filename = media.get('filename', f"media_{i}.jpg")
 
+            # Skip Muse.ai videos - they're embedded players, not downloadable files
+            # Store the link in enrichment_data instead
+            if 'muse.ai' in media_url:
+                log(f"   ⏭️  Skipping Muse.ai video {i}/{len(media_files)} (embedded player, not downloadable)")
+                continue
+
             log(f"   📥 Downloading {i}/{len(media_files)}: {filename}")
 
             # Download from NUFORC
@@ -650,6 +656,9 @@ def extract_and_import_nuforc(date_str: str):
 
                     # Links and metadata
                     "external_url": report_url,
+
+                    # Muse.ai video links (embedded players, not downloaded)
+                    "muse_ai_videos": [m['url'] for m in report_data.get('media', []) if 'muse.ai' in m['url']],
 
                     # UI flags for mobile app
                     "hide_witness_widget": True,
