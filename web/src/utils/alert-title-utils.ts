@@ -4,6 +4,7 @@ interface Alert {
   description: string | null
   created_at: string
   reporter_username?: string | null
+  external_id?: string | null
   source?: string | null
   enrichment_data?: {
     classification?: {
