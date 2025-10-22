@@ -178,25 +178,28 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
 
   return (
     <div className="bg-dark-surface border border-dark-border rounded-lg p-6">
-      {alert.username !== 'MUFON' && (
+      {/* Hide Details header for MUFON/NUFORC (historical data) */}
+      {alert.username !== 'MUFON' && alert.source !== 'nuforc' && (
         <div className="flex items-center gap-2 mb-4">
           <span className="text-brand-primary">ℹ️</span>
           <h2 className="text-lg font-semibold text-brand-primary">{t('detailsTitle')}</h2>
         </div>
       )}
 
-      {/* Reporter section */}
-      <div className="flex items-start gap-3 mb-4">
-        <span className="text-text-tertiary mt-0.5">👤</span>
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <span className="text-text-tertiary text-sm font-medium">Reported by:</span>
-            <span className="text-text-primary text-sm">
-              {alert.username || alert.reporter_username}
-            </span>
+      {/* Reporter section - hide for MUFON/NUFORC (already shown in attribution badges) */}
+      {alert.source !== 'mufon' && alert.source !== 'nuforc' && (
+        <div className="flex items-start gap-3 mb-4">
+          <span className="text-text-tertiary mt-0.5">👤</span>
+          <div className="flex-1">
+            <div className="flex items-center gap-2">
+              <span className="text-text-tertiary text-sm font-medium">Reported by:</span>
+              <span className="text-text-primary text-sm">
+                {alert.username || alert.reporter_username}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
 
 
@@ -318,14 +321,31 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
             </div>
           )}
           <div className="text-text-primary leading-relaxed max-w-none space-y-4">
-            {getCleanDescription().split(/\n\n+/).map((paragraph, index) => (
-              <p key={index} className="mb-4 whitespace-pre-wrap">
-                {alert.source === 'nuforc' || alert.source === 'mufon'
-                  ? paragraph  // Preserve line breaks for NUFORC/MUFON (they have formatted reports)
-                  : paragraph.replace(/\n/g, ' ')  // Remove line breaks for UFOBeep reports
-                }
-              </p>
-            ))}
+            {getCleanDescription().split(/\n\n+/).map((paragraph, index) => {
+              // For NUFORC/MUFON, render markdown bold syntax and preserve line breaks
+              if (alert.source === 'nuforc' || alert.source === 'mufon') {
+                // Convert **text** to <b>text</b> and normalize line breaks
+                const formatted = paragraph
+                  .replace(/\r\n/g, '\n')  // Normalize Windows line breaks
+                  .replace(/\r/g, '\n')    // Normalize old Mac line breaks
+                  .split(/\*\*(.+?)\*\*/g)  // Split on **bold** markers
+
+                return (
+                  <p key={index} className="mb-4 whitespace-pre-wrap">
+                    {formatted.map((part, i) =>
+                      i % 2 === 1 ? <b key={i} className="font-semibold">{part}</b> : part
+                    )}
+                  </p>
+                )
+              }
+
+              // For UFOBeep reports, remove line breaks
+              return (
+                <p key={index} className="mb-4">
+                  {paragraph.replace(/\n/g, ' ')}
+                </p>
+              )
+            })}
           </div>
         </div>
       )}
