@@ -119,6 +119,7 @@ export default function MediaGallery({ items, className = '', baseUrl = '' }: Me
 
   const renderThumbnail = (item: MediaItem, index: number) => {
     const thumbnailUrl = item.thumbnail || item.url;
+    const isMuseAiVideo = item.type === 'muse_ai_video';
 
     return (
       <div
@@ -126,26 +127,40 @@ export default function MediaGallery({ items, className = '', baseUrl = '' }: Me
         className="relative aspect-square cursor-pointer group overflow-hidden rounded-lg bg-gray-200"
         onClick={() => openMedia(index)}
       >
-        {/* Lazy loaded thumbnail */}
-        <img
-          data-src={thumbnailUrl}
-          alt={item.alt || item.title || `Media ${index + 1}`}
-          className="w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:scale-105"
-          style={{ willChange: 'transform' }}
-        />
-
-        {/* Loading placeholder */}
-        <div className="absolute inset-0 bg-gray-300 animate-pulse" />
-
-        {/* Video overlay */}
-        {item.type === 'video' && (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="bg-black bg-opacity-50 rounded-full p-3">
-              <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+        {/* Muse.ai video - show video icon placeholder instead of trying to load as image */}
+        {isMuseAiVideo ? (
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-900 to-blue-900 flex items-center justify-center">
+            <div className="text-center">
+              <svg className="w-16 h-16 text-white mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
               </svg>
+              <div className="text-white text-xs font-medium">Click to Play Video</div>
             </div>
           </div>
+        ) : (
+          <>
+            {/* Lazy loaded thumbnail */}
+            <img
+              data-src={thumbnailUrl}
+              alt={item.alt || item.title || `Media ${index + 1}`}
+              className="w-full h-full object-cover transition-all duration-300 opacity-0 group-hover:scale-105"
+              style={{ willChange: 'transform' }}
+            />
+
+            {/* Loading placeholder */}
+            <div className="absolute inset-0 bg-gray-300 animate-pulse" />
+
+            {/* Video overlay for regular videos */}
+            {item.type === 'video' && (
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-black bg-opacity-50 rounded-full p-3">
+                  <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              </div>
+            )}
+          </>
         )}
 
         {/* Hover overlay */}
