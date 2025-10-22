@@ -87,6 +87,8 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
                 alert.enrichment.get("geocoding", {}).get("longitude", 0.0) if alert.enrichment else 0.0
             ),
             "name": alert.location.name if alert.location and alert.location.name != "Unknown Location" else (
+                # For NUFORC/MUFON, use location_raw from enrichment_data (they don't have geocoding enrichment)
+                alert.enrichment.get("location_raw") or
                 alert.enrichment.get("geocoding", {}).get("display_name") or
                 alert.enrichment.get("geocoding", {}).get("location", "Unknown Location") if alert.enrichment else "Unknown Location"
             )
@@ -116,8 +118,8 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
         "short_url": short_url
     }
     
-    # Add MUFON-specific UI widget hiding for frontend
-    if getattr(alert, 'source', None) == "mufon":
+    # Add MUFON/NUFORC-specific UI widget hiding for frontend (historical data)
+    if getattr(alert, 'source', None) in ["mufon", "nuforc"]:
         response.update({
             "hide_witness_section": True,
             "hide_witness_widget": True,
@@ -130,9 +132,11 @@ def format_alert_response(alert, user_lat=None, user_lon=None):
             "show_witness_count": False,
             "show_location_pin": False,
             "can_confirm_witness": False,
-            "comments_enabled": False
+            "comments_enabled": False,
+            "hide_environmental_analysis": True,  # Tell app to hide Environmental Analysis section
+            "hide_actions": True  # Tell app to hide Actions section
         })
-    
+
     return response
 
 # Alert endpoints
@@ -202,11 +206,18 @@ async def create_alert(request: dict, background_tasks: BackgroundTasks, idempot
             alert_result = {"total_alerts_sent": 0, "message": "MUFON imports don't send alerts"}
         
         # Don't close the pool - it's shared across the service
-        
+
         # Schedule enrichment as background task (runs after response sent)
-        from app.worker import enrich_sighting
-        background_tasks.add_task(enrich_sighting, alert_id)
-        logger.info(f"✅ Enrichment scheduled as background task for {alert_id}")
+        # Skip enrichment for historical data (MUFON/NUFORC) - they're already geocoded
+        print(f"DEBUG: Enrichment check - source='{source}', type={type(source)}, in list: {source in ['mufon', 'nuforc']}")
+        if source not in ["mufon", "nuforc"]:
+            from app.worker import enrich_sighting
+            background_tasks.add_task(enrich_sighting, alert_id)
+            logger.info(f"✅ Enrichment scheduled as background task for {alert_id}")
+            print(f"DEBUG: Enrichment SCHEDULED for source '{source}'")
+        else:
+            logger.info(f"⏭️  Skipping enrichment for {source.upper()} beep {alert_id} (historical data, already geocoded)")
+            print(f"DEBUG: Enrichment SKIPPED for source '{source}'")
 
         # Get the created alert to include short_url in response
         alert = await alerts_service.get_alert_by_id(alert_id)

@@ -349,10 +349,15 @@ class AlertsService:
                 # Fallback to enrichment_data if no geocoding_data
                 if location_name == "Unknown Location" and enrichment_data:
                     enrichment = self._parse_json(enrichment_data)
-                    if enrichment and "geocoding" in enrichment:
-                        geocoding = enrichment["geocoding"]
-                        if geocoding:
-                            location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name") or "Unknown Location"
+                    if enrichment:
+                        # Check for geocoding enrichment (regular beeps)
+                        if "geocoding" in enrichment:
+                            geocoding = enrichment["geocoding"]
+                            if geocoding:
+                                location_name = geocoding.get("location_name") or geocoding.get("location") or geocoding.get("formatted_address") or geocoding.get("display_name") or "Unknown Location"
+                        # Check for NUFORC/MUFON location_raw (historical data)
+                        elif "location_raw" in enrichment and enrichment["location_raw"]:
+                            location_name = enrichment["location_raw"]
 
                 # Otherwise try to get from sensor data
                 if location_name == "Unknown Location":
@@ -608,13 +613,7 @@ class AlertsService:
                 enrichment['celestial_v2'] = celestial_raw or {}
                 enrichment['celestial'] = {}
                 sources_used.append('celestial_data')
-        else:
-            # No celestial_data in database - provide placeholder until background processing completes
-            # logger.info("🔄 ENRICHMENT DEBUG: No celestial_data found, adding placeholder for background processing")
-            enrichment['celestial'] = {
-                'processing': True,
-                'message': 'Celestial data is being calculated in the background'
-            }
+        # Don't add placeholder - if no data, don't show the section
 
         if row_data.get('aircraft_data'):
             enrichment['aircraft_tracking'] = self._parse_json(row_data['aircraft_data'])
@@ -632,9 +631,10 @@ class AlertsService:
             enrichment['content_filter'] = self._parse_json(row_data['content_analysis_data'])
             sources_used.append('content_analysis_data')
 
-        # Start with enrichment_data as base (contains MUFON metadata)
+        # Start with enrichment_data as base (contains MUFON/NUFORC metadata)
         if row_data.get('enrichment_data'):
             enrichment_base = self._parse_json(row_data['enrichment_data']) or {}
+
             # Include MUFON metadata from enrichment_data
             if 'mufon_case_number' in enrichment_base:
                 enrichment['mufon_case_number'] = enrichment_base['mufon_case_number']
@@ -644,7 +644,25 @@ class AlertsService:
                 enrichment['sighting_datetime'] = enrichment_base['sighting_datetime']
             if 'report_date' in enrichment_base:
                 enrichment['report_date'] = enrichment_base['report_date']
-            sources_used.append('enrichment_data_mufon_metadata')
+
+            # Include ALL NUFORC fields from enrichment_data
+            nuforc_fields = [
+                'nuforc_report_id', 'summary', 'full_text', 'posted_date', 'reported_date',
+                'color', 'estimated_size', 'characteristics', 'viewed_from',
+                'direction_from_viewer', 'angle_of_elevation', 'closest_distance',
+                'estimated_speed', 'no_of_observers', 'duration', 'location_raw',
+                'location_details', 'exact_latitude', 'exact_longitude', 'external_url',
+                'hide_witness_widget', 'hide_location_widget', 'hide_environmental_analysis',
+                'hide_actions', 'is_historical_report', 'source_name'
+            ]
+            for field in nuforc_fields:
+                if field in enrichment_base:
+                    enrichment[field] = enrichment_base[field]
+
+            if any(field in enrichment_base for field in nuforc_fields):
+                sources_used.append('enrichment_data_nuforc_metadata')
+            elif 'mufon_case_number' in enrichment_base:
+                sources_used.append('enrichment_data_mufon_metadata')
 
         # logger.info(f"🔄 ENRICHMENT DEBUG: Built enrichment from sources: {sources_used}")
         # logger.info(f"🔄 ENRICHMENT DEBUG: Final enrichment keys: {list(enrichment.keys())}")

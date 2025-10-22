@@ -462,8 +462,9 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                   const SizedBox(height: 24),
                 ],
 
-                // Environmental context (if available) - hidden for MUFON alerts
-                if (alert.enrichment != null && alert.enrichment!.isNotEmpty && alert.source != 'mufon') ...[
+                // Environmental context (if available) - hidden for MUFON/NUFORC alerts (historical data)
+                if (alert.enrichment != null && alert.enrichment!.isNotEmpty &&
+                    alert.source != 'mufon' && alert.source != 'nuforc') ...[
                   EnrichmentSection(
                     enrichmentData: alert.enrichment,
                     alertCreatorDeviceId: alert.reporterId,
@@ -482,8 +483,8 @@ class _AlertDetailScreenState extends ConsumerState<AlertDetailScreen> {
                 ],
 
 
-                // Action buttons (including witness confirmation) - hidden for MUFON alerts
-                if (alert.source != 'mufon') ...[
+                // Action buttons (including witness confirmation) - hidden for MUFON/NUFORC alerts (historical data)
+                if (alert.source != 'mufon' && alert.source != 'nuforc') ...[
                   AlertActionsSection(
                     alert: alert,
                     currentUserDeviceId: _currentUserDeviceId,

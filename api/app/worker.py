@@ -117,6 +117,12 @@ async def enrich_sighting(sighting_id: str) -> bool:
                 logger.error(f"❌ Sighting {sighting_id} not found in database")
                 return False
 
+            # Skip enrichment for historical data (MUFON/NUFORC)
+            # These sources are already geocoded during import and don't need real-time enrichment
+            if sighting.get('source') in ['mufon', 'nuforc']:
+                logger.info(f"⏭️  Skipping enrichment for {sighting.get('source').upper()} sighting {sighting_id} (historical data, already geocoded)")
+                return True
+
             logger.info(f"✅ Sighting {sighting_id} loaded from database")
 
             # Extract coordinates from sensor_data
