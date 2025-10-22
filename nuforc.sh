@@ -320,6 +320,15 @@ def parse_nuforc_report(html_content: str, report_id: str, report_url: str) -> O
                     if text.startswith('Posted'):
                         report_data['posted'] = text.replace('Posted', '').strip()
                         break
+                    # Capture text from p/div tags after we've seen shape
+                    elif seen_shape and text and len(text) > 50:
+                        text_parts.append(text)
+
+                # Capture text from <br> tags (NUFORC puts bulk of report in br tags!)
+                elif sibling.name == 'br' and seen_shape:
+                    text = sibling.get_text().strip()
+                    if text and len(text) > 50:  # Skip small breaks
+                        text_parts.append(text)
 
         # Join text parts
         if text_parts:
@@ -386,6 +395,19 @@ def parse_nuforc_report(html_content: str, report_id: str, report_url: str) -> O
                         'url': full_url,
                         'filename': href.split('/')[-1]
                     })
+
+        # Check for Muse.ai embedded videos (used by NUFORC for video hosting)
+        html_str = str(html_content)
+        import re
+        muse_matches = re.findall(r'video:\s*"([^"]+)"', html_str)
+        for video_id in muse_matches:
+            muse_url = f"https://muse.ai/v/{video_id}"
+            if not any(m['url'] == muse_url for m in report_data['media']):
+                report_data['media'].append({
+                    'type': 'video',
+                    'url': muse_url,
+                    'filename': f"muse_{video_id}.mp4"
+                })
 
         return report_data
     except Exception as e:
