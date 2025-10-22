@@ -319,8 +319,11 @@ export default function AlertDetails({ alert, locale = 'en' }: AlertDetailsProps
           )}
           <div className="text-text-primary leading-relaxed max-w-none space-y-4">
             {getCleanDescription().split(/\n\n+/).map((paragraph, index) => (
-              <p key={index} className="mb-4">
-                {paragraph.replace(/\n/g, ' ')}
+              <p key={index} className="mb-4 whitespace-pre-wrap">
+                {alert.source === 'nuforc' || alert.source === 'mufon'
+                  ? paragraph  // Preserve line breaks for NUFORC/MUFON (they have formatted reports)
+                  : paragraph.replace(/\n/g, ' ')  // Remove line breaks for UFOBeep reports
+                }
               </p>
             ))}
           </div>
