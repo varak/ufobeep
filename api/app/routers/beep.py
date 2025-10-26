@@ -192,7 +192,8 @@ async def create_alert(request: dict, background_tasks: BackgroundTasks, idempot
             sensor_data=request.get('sensor_data'),
             enrichment_data=request.get('enrichment_data'),
             occurred_at=request.get('occurred_at'),
-            external_id=request.get('external_id')
+            external_id=request.get('external_id'),
+            external_url=request.get('external_url')
         )
         
         # Send proximity alerts (critical for notifying nearby devices)

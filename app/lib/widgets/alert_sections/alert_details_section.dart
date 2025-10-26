@@ -1,7 +1,9 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/gestures.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../providers/alerts_provider.dart';
 import '../../theme/app_theme.dart';
 import '../glass_card.dart';
@@ -82,14 +84,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      displayText,
-                      style: const TextStyle(
-                        color: AppColors.textSecondary,
-                        fontSize: 18,
-                        height: 1.5,
-                      ),
-                    ),
+                    _buildClickableText(displayText),
                     const SizedBox(height: 8),
                     if (needsTranslation) ...[
                       if (_isTranslating)
@@ -782,6 +777,79 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
 
     // Last resort
     return AppLocalizations.of(context)!.unknownLocation;
+  }
+
+  Widget _buildClickableText(String text) {
+    // Regular expression to detect URLs
+    final urlPattern = RegExp(r'https?://[^\s]+');
+    final matches = urlPattern.allMatches(text);
+
+    if (matches.isEmpty) {
+      // No URLs found, use regular text
+      return Text(
+        text,
+        style: const TextStyle(
+          color: AppColors.textSecondary,
+          fontSize: 18,
+          height: 1.5,
+        ),
+      );
+    }
+
+    // Build RichText with clickable URLs
+    List<TextSpan> spans = [];
+    int currentIndex = 0;
+
+    for (final match in matches) {
+      // Add text before URL
+      if (match.start > currentIndex) {
+        spans.add(TextSpan(
+          text: text.substring(currentIndex, match.start),
+          style: const TextStyle(
+            color: AppColors.textSecondary,
+            fontSize: 18,
+            height: 1.5,
+          ),
+        ));
+      }
+
+      // Add clickable URL
+      final url = text.substring(match.start, match.end);
+      spans.add(TextSpan(
+        text: url,
+        style: const TextStyle(
+          color: AppColors.primary,
+          fontSize: 18,
+          height: 1.5,
+          decoration: TextDecoration.underline,
+        ),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () async {
+            final uri = Uri.parse(url);
+            if (await canLaunchUrl(uri)) {
+              await launchUrl(uri, mode: LaunchMode.externalApplication);
+            }
+          },
+      ));
+
+      currentIndex = match.end;
+    }
+
+    // Add remaining text after last URL
+    if (currentIndex < text.length) {
+      spans.add(TextSpan(
+        text: text.substring(currentIndex),
+        style: const TextStyle(
+          color: AppColors.textSecondary,
+          fontSize: 18,
+          height: 1.5,
+        ),
+      ));
+    }
+
+    return RichText(
+      text: TextSpan(children: spans),
+    );
   }
 
   Future<void> _translateDescription(String targetLanguage) async {

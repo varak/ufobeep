@@ -69,11 +69,12 @@ export default function Home() {
         </div>
       </section>
 
+
       {/* Latest Updates Section */}
       <section className="py-16 px-6 md:px-24 bg-dark-surface border-t border-dark-border">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-8 text-text-primary">
-            🚀 Latest Updates (September 2025)
+            🚀 Latest Updates (October 2025)
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
@@ -88,6 +89,13 @@ export default function Home() {
               <h3 className="text-sm font-semibold mb-2 text-brand-primary">MUFON Integration</h3>
               <p className="text-xs text-text-secondary">
                 Professional UFO reports from MUFON database with media and enrichment data
+              </p>
+            </div>
+            <div className="bg-dark-background p-4 rounded-lg border border-green-500/20">
+              <div className="text-2xl mb-2">🤖</div>
+              <h3 className="text-sm font-semibold mb-2 text-green-400">Enhanced Data Quality</h3>
+              <p className="text-xs text-text-secondary">
+                Professional MUFON and NUFORC sources with AI analysis provide richer context when alerts happen
               </p>
             </div>
             <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
@@ -173,16 +181,17 @@ export default function Home() {
             Join the Community
           </h2>
           <p className="text-lg text-text-secondary mb-12">
-            Connect with observers worldwide through real-time comments, professional MUFON reports, 
-            and community verification. Access both user submissions and verified MUFON database cases.
+            Connect with observers worldwide through real-time alerts and community verification.
+            When sightings happen, get enhanced context from professional MUFON investigations
+            and comprehensive NUFORC data with AI analysis.
           </p>
           <div className="grid sm:grid-cols-3 gap-6 mb-12">
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">🛸</div>
-              <h3 className="text-lg font-semibold mb-2 text-brand-primary">MUFON Database</h3>
+              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Professional Data Sources</h3>
               <p className="text-text-secondary">
-                Professional UFO reports from MUFON&apos;s verified database with detailed 
-                case studies, witness accounts, and investigation findings.
+                Enhanced alerts backed by MUFON&apos;s verified database and NUFORC&apos;s daily reports
+                with AI-powered analysis for richer context when sightings occur.
               </p>
             </div>
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">

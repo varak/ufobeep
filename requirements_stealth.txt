@@ -1,0 +1,16 @@
+# NUFORC Stealth Scraper Dependencies
+# Install with: pip install -r requirements_stealth.txt
+
+# Core scraping
+playwright>=1.40.0
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+
+# AI summarization
+google-generativeai>=0.8.0
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Post-installation command needed:
+# playwright install chromium

@@ -830,7 +830,8 @@ class AlertsService:
                          description: str = None, username: str = None,
                          title: str = None, source: str = None,
                          sensor_data: Dict = None, enrichment_data: Dict = None,
-                         occurred_at: str = None, external_id: str = None) -> Tuple[str, Dict]:
+                         occurred_at: str = None, external_id: str = None,
+                         external_url: str = None) -> Tuple[str, Dict]:
         """Create beep with location privacy - single create_alert call"""
         
         # Handle location and jittering
@@ -889,7 +890,8 @@ class AlertsService:
             latitude=lat if location else None,
             longitude=lng if location else None,
             occurred_at=occurred_at,
-            external_id=external_id
+            external_id=external_id,
+            external_url=external_url
         )
         
         # Auto-follow the alert for the creator so they get notifications
