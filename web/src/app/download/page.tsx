@@ -43,7 +43,7 @@ export default function DownloadPage() {
           {/* Download Buttons */}
           <div className="grid md:grid-cols-2 gap-4">
             <a
-              href="https://play.google.com/store/apps/details?id=com.ufobeep"
+              href="https://play.google.com/apps/testing/com.ufobeep"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
@@ -78,7 +78,7 @@ export default function DownloadPage() {
               </p>
               <div className="grid md:grid-cols-2 gap-4">
                 <a
-                  href="https://play.google.com/store/apps/details?id=com.ufobeep"
+                  href="https://play.google.com/apps/testing/com.ufobeep"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block text-center bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
