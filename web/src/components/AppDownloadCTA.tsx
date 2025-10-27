@@ -72,38 +72,6 @@ export default function AppDownloadCTA() {
           ))}
         </div>
 
-        {/* Features teaser */}
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-          <div className="p-4 bg-dark-surface rounded-lg border border-dark-border">
-            <div className="text-2xl mb-2">🔔</div>
-            <div className="text-sm text-text-primary font-medium">Real-time Alerts</div>
-          </div>
-          <div className="p-4 bg-dark-surface rounded-lg border border-dark-border">
-            <div className="text-2xl mb-2">🧭</div>
-            <div className="text-sm text-text-primary font-medium">Assisted Navigation</div>
-          </div>
-          <div className="p-4 bg-dark-surface rounded-lg border border-dark-border">
-            <div className="text-2xl mb-2">💬</div>
-            <div className="text-sm text-text-primary font-medium">Live Comments</div>
-          </div>
-          <div className="p-4 bg-dark-surface rounded-lg border border-dark-border">
-            <div className="text-2xl mb-2">📊</div>
-            <div className="text-sm text-text-primary font-medium">Smart Analysis</div>
-          </div>
-        </div>
-
-        {/* Version & Compatibility Info */}
-        <div className="text-center">
-          <p className="text-sm text-text-tertiary mb-4">
-            Beta v1.0.0-beta.7 &quot;Website Refresh&quot; • Compatible with iOS 13+, Android 7+ • Free to download
-          </p>
-          <div className="flex justify-center gap-6 text-xs text-text-tertiary">
-            <span>🔒 Privacy-focused</span>
-            <span>📱 Real-time alerts</span>
-            <span>💬 Live comments</span>
-            <span>📸 Media sharing</span>
-          </div>
-        </div>
       </div>
     </section>
   )
