@@ -43,9 +43,9 @@ export default function AppDownloadCTA() {
         {/* Download Options */}
         <div className="grid sm:grid-cols-2 gap-6 mb-12 max-w-xl mx-auto">
           {stores.map((store) => (
-            <Link 
+            <Link
               key={store.id}
-              href="/app"
+              href="/download"
               className="block group"
               onMouseEnter={() => setHoveredStore(store.id)}
               onMouseLeave={() => setHoveredStore(null)}
