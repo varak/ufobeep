@@ -118,80 +118,29 @@ export default function DownloadPage() {
               <h3 className="font-semibold text-lg mb-2">iOS Users</h3>
               <p>Download the TestFlight app from the App Store, then use the iOS Beta link above to join the beta program.</p>
             </div>
-            <div className="border-l-4 border-purple-500 pl-4">
-              <h3 className="font-semibold text-lg mb-2">Mac Users</h3>
-              <p>The macOS version is currently under review by Apple. Sign up below to get notified when it&apos;s available.</p>
-            </div>
           </div>
         </div>
 
-        {/* Permissions */}
+        {/* App Features */}
         <div className="bg-gray-800 rounded-lg p-6 mb-8">
           <h2 className="text-2xl font-semibold mb-4 text-green-400">
-            🔒 Required Permissions
+            ✨ Key Features
           </h2>
           <div className="grid md:grid-cols-2 gap-4 text-gray-300">
             <div>
-              <p className="font-semibold mb-2">Essential:</p>
-              <ul className="space-y-1 text-sm">
-                <li>📍 <strong>Location (Always):</strong> Background monitoring for proximity alerts</li>
-                <li>📷 <strong>Camera:</strong> To capture sightings</li>
-                <li>🔔 <strong>Notifications:</strong> For UFO alerts</li>
+              <ul className="space-y-2 text-sm">
+                <li>📍 <strong>Real-time proximity alerts</strong> for nearby sightings</li>
+                <li>📷 <strong>Capture and share</strong> UFO sightings with photos/videos</li>
+                <li>🗺️ <strong>Interactive map</strong> of global sightings</li>
               </ul>
             </div>
             <div>
-              <p className="font-semibold mb-2">Optional:</p>
-              <ul className="space-y-1 text-sm">
-                <li>💾 <strong>Storage:</strong> Save photos/videos</li>
-                <li>🧭 <strong>Sensors:</strong> Compass navigation</li>
-                <li>🌐 <strong>Internet:</strong> Real-time updates</li>
+              <ul className="space-y-2 text-sm">
+                <li>🔔 <strong>Push notifications</strong> when activity happens near you</li>
+                <li>💬 <strong>Comment and discuss</strong> sightings with the community</li>
+                <li>🌐 <strong>Multi-language support</strong> in 22+ languages</li>
               </ul>
             </div>
-          </div>
-        </div>
-
-
-
-        {/* iOS TestFlight */}
-        <div className="bg-blue-900/30 border border-blue-600/50 rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-blue-400 text-center">
-            🍎 iOS Beta (TestFlight)
-          </h2>
-          <p className="text-center text-gray-300 mb-6">
-            The iOS version is now available for testing on TestFlight! Download it on your iPhone or iPad.
-          </p>
-          <center>
-            <a
-              href="https://testflight.apple.com/join/jJvBaWSa"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-all transform hover:scale-105"
-            >
-              📱 Join iOS Beta on TestFlight
-            </a>
-          </center>
-          <div className="bg-gray-800 rounded-lg p-4 mt-6">
-            <p className="text-center text-sm text-gray-400">
-              <strong>Note:</strong> TestFlight requires iOS 13.0 or later. You&apos;ll need the TestFlight app from the App Store.
-            </p>
-          </div>
-        </div>
-
-        {/* Mac Version Notice */}
-        <div className="bg-purple-900/30 border border-purple-600/50 rounded-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold mb-4 text-purple-400 text-center">
-            💻 macOS Version
-          </h2>
-          <p className="text-center text-gray-300 mb-6">
-            The macOS version is currently under review by Apple.
-            It will be available on the Mac App Store as soon as it receives approval.
-          </p>
-          <div className="bg-gray-800 rounded-lg p-6">
-            <h3 className="text-xl font-semibold mb-4 text-center text-purple-400">Get Notified When Available</h3>
-            <p className="text-center mb-6 text-gray-300">
-              Add your email below and we&apos;ll notify you as soon as the Mac version is approved.
-            </p>
-            <EmailNotifySignup />
           </div>
         </div>
 
