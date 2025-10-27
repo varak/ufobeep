@@ -69,50 +69,6 @@ export default function Home() {
         </div>
       </section>
 
-
-      {/* Latest Updates Section */}
-      <section className="py-16 px-6 md:px-24 bg-dark-surface border-t border-dark-border">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-text-primary">
-            🚀 Latest Updates (October 2025)
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">📸</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Media Upload Complete</h3>
-              <p className="text-xs text-text-secondary">
-                Single-press photo/video upload with progress indicators and seamless UX
-              </p>
-            </div>
-            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">🛸</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">MUFON Integration</h3>
-              <p className="text-xs text-text-secondary">
-                Professional UFO reports from MUFON database with media and enrichment data
-              </p>
-            </div>
-            <div className="bg-dark-background p-4 rounded-lg border border-green-500/20">
-              <div className="text-2xl mb-2">🤖</div>
-              <h3 className="text-sm font-semibold mb-2 text-green-400">Enhanced Data Quality</h3>
-              <p className="text-xs text-text-secondary">
-                Professional MUFON and NUFORC sources with AI analysis provide richer context when alerts happen
-              </p>
-            </div>
-            <div className="bg-dark-background p-4 rounded-lg border border-brand-primary/20">
-              <div className="text-2xl mb-2">⚡</div>
-              <h3 className="text-sm font-semibold mb-2 text-brand-primary">Performance Optimized</h3>
-              <p className="text-xs text-text-secondary">
-                Faster map loading, optimized imports, and streamlined user flows
-              </p>
-            </div>
-          </div>
-          <p className="text-sm text-brand-primary font-medium">
-            Build 100 now available with complete media upload feature!
-          </p>
-        </div>
-      </section>
-
-
       {/* Features Section */}
       <section id="how-it-works" className="py-20 px-6 md:px-24 bg-dark-surface">
         <div className="max-w-6xl mx-auto">
