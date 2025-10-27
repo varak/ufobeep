@@ -818,7 +818,7 @@ class _AlertDetailsSectionState extends State<AlertDetailsSection> {
       spans.add(TextSpan(
         text: url,
         style: const TextStyle(
-          color: AppColors.primary,
+          color: AppColors.brandPrimary,
           fontSize: 18,
           height: 1.5,
           decoration: TextDecoration.underline,

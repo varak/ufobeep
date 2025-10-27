@@ -91,7 +91,7 @@ class AlertCard extends ConsumerWidget {
           AlertTitleUtils.getDynamicTitle(l10n, alert),
           style: const TextStyle(
             color: AppColors.textPrimary,
-            fontSize: 20,
+            fontSize: 17,
             fontWeight: FontWeight.w600,
           ),
           maxLines: 2,
