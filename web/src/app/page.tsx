@@ -55,15 +55,11 @@ export default function Home() {
               </button>
             </Link>
           </div>
-          
+
           {/* Content navigation links */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm">
             <a href="#how-it-works" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
               {t('howItWorks')}
-            </a>
-            <span className="text-text-tertiary hidden sm:inline">|</span>
-            <a href="#share-to-beep" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
-              Share-to-Beep
             </a>
           </div>
         </div>
@@ -80,8 +76,8 @@ export default function Home() {
               <div className="text-4xl mb-4">👀</div>
               <h3 className="text-xl font-semibold mb-4 text-text-primary">See Something? Beep It!</h3>
               <p className="text-text-secondary">
-                Spot something unusual in the sky? Instantly alert everyone nearby to 
-                look up and see it too! Share photos/videos and get others looking 
+                Spot something unusual in the sky? Instantly alert everyone nearby to
+                look up and see it too! Share photos/videos and get others looking
                 at the same phenomenon in real-time.
               </p>
             </div>
@@ -89,8 +85,8 @@ export default function Home() {
               <div className="text-4xl mb-4">🚨</div>
               <h3 className="text-xl font-semibold mb-4 text-text-primary">Drop Everything & Look Up!</h3>
               <p className="text-text-secondary">
-                Get instant alerts when someone near you sees something weird in the sky. 
-                &quot;LOOK UP NOW!&quot; notifications help you catch sightings as they happen 
+                Get instant alerts when someone near you sees something weird in the sky.
+                &quot;LOOK UP NOW!&quot; notifications help you catch sightings as they happen
                 instead of hearing about them hours later.
               </p>
             </div>
@@ -98,8 +94,8 @@ export default function Home() {
               <div className="text-4xl mb-4">🧭</div>
               <h3 className="text-xl font-semibold mb-4 text-text-primary">Find It In The Sky</h3>
               <p className="text-text-secondary">
-                Point your phone toward the sighting and our compass shows you exactly 
-                where to look. No more &quot;it was over there somewhere&quot; - get precise 
+                Point your phone toward the sighting and our compass shows you exactly
+                where to look. No more &quot;it was over there somewhere&quot; - get precise
                 direction to spot what others are seeing.
               </p>
             </div>
@@ -107,63 +103,113 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Share-to-Beep Feature Info */}
-      <section id="share-to-beep" className="py-20 px-6 md:px-24 bg-dark-surface">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-text-primary">
-            Share-to-Beep: Mobile Feature
+      {/* Live Enrichment Section */}
+      <section className="py-20 px-6 md:px-24">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-8 text-text-primary">
+            Real-Time Sighting Enrichment
           </h2>
-          <p className="text-lg text-text-secondary mb-8 max-w-3xl mx-auto">
-            Got a great photo or video on your phone? Share it directly to UFOBeep from any app! 
-            This premium mobile feature makes reporting sightings incredibly easy.
+          <p className="text-lg text-text-secondary text-center mb-12 max-w-3xl mx-auto">
+            When a live sighting happens, UFOBeep instantly captures comprehensive environmental
+            data to help verify and understand what&apos;s being observed. Every beep is automatically
+            enriched with scientific context at the exact moment of the sighting.
           </p>
-          <div className="flex justify-center items-center gap-2 text-brand-primary mb-8">
-            <span className="text-2xl">✨</span>
-            <span className="font-semibold">Record natively → Share to beep → Instant alert</span>
-            <span className="text-2xl">✨</span>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-dark-surface p-8 rounded-lg border border-dark-border">
+              <div className="flex items-start gap-4">
+                <div className="text-3xl">☁️</div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-3 text-brand-primary">Weather Conditions</h3>
+                  <p className="text-text-secondary mb-3">
+                    Exact atmospheric conditions captured in real-time: cloud cover, visibility,
+                    temperature, wind speed, and precipitation. Helps rule out weather phenomena
+                    and validates witness observations.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-dark-surface p-8 rounded-lg border border-dark-border">
+              <div className="flex items-start gap-4">
+                <div className="text-3xl">✈️</div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-3 text-brand-primary">Aircraft & Satellites</h3>
+                  <p className="text-text-secondary mb-3">
+                    Real-time tracking of all aircraft and satellites in the sky above the sighting
+                    location. Automatically identifies and filters known objects to focus on
+                    truly unidentified phenomena.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-dark-surface p-8 rounded-lg border border-dark-border">
+              <div className="flex items-start gap-4">
+                <div className="text-3xl">🌙</div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-3 text-brand-primary">Celestial Objects</h3>
+                  <p className="text-text-secondary mb-3">
+                    Positions of the sun, moon, planets, and bright stars at the exact time and
+                    location. Rules out astronomical objects and provides context for what should
+                    naturally be visible in that part of the sky.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-dark-surface p-8 rounded-lg border border-dark-border">
+              <div className="flex items-start gap-4">
+                <div className="text-3xl">📍</div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-3 text-brand-primary">Precise Location & Time</h3>
+                  <p className="text-text-secondary mb-3">
+                    GPS coordinates, altitude, compass bearing, and exact timestamp. Enables
+                    multiple witnesses to correlate their observations and verify they saw
+                    the same object from different vantage points.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          <Link href="/app">
-            <button className="bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-all duration-300 shadow-glow hover:shadow-xl hover:scale-105 transform">
-              📱 Download to Try Share-to-Beep
-            </button>
-          </Link>
         </div>
       </section>
 
-      {/* Community Section */}
+
+      {/* Data & Community Section */}
       <section className="py-20 px-6 md:px-24">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-text-primary">
-            Join the Community
+            Powered by Professional UFO Research
           </h2>
           <p className="text-lg text-text-secondary mb-12">
-            Connect with observers worldwide through real-time alerts and community verification.
-            When sightings happen, get enhanced context from professional MUFON investigations
-            and comprehensive NUFORC data with AI analysis.
+            UFOBeep combines real-time community alerts with decades of professional UFO investigation data.
+            Our platform integrates reports from the Mutual UFO Network (MUFON), the world&apos;s largest
+            civilian UFO investigation organization, and the National UFO Reporting Center (NUFORC),
+            which has been collecting and documenting sighting reports since 1974. This gives you access
+            to both live alerts from nearby witnesses and historical context from thousands of verified investigations.
           </p>
           <div className="grid sm:grid-cols-3 gap-6 mb-12">
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">🛸</div>
-              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Professional Data Sources</h3>
+              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Historical Database</h3>
               <p className="text-text-secondary">
-                Enhanced alerts backed by MUFON&apos;s verified database and NUFORC&apos;s daily reports
-                with AI-powered analysis for richer context when sightings occur.
+                Access decades of UFO sighting reports from MUFON (Mutual UFO Network) and
+                NUFORC (National UFO Reporting Center), enriched with AI-powered analysis
+                to provide context and patterns for new sightings.
               </p>
             </div>
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">💬</div>
-              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Real-time Comments</h3>
+              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Live Community</h3>
               <p className="text-text-secondary">
-                Each sighting has live comment threads with auto-refresh updates 
-                and threaded discussions for community analysis.
+                Join real-time discussions with witnesses worldwide. Each sighting has live comment
+                threads with auto-refresh updates and threaded conversations for collaborative analysis.
               </p>
             </div>
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">🔬</div>
-              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Smart Enrichment</h3>
+              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Smart Data Capture</h3>
               <p className="text-text-secondary">
-                Every sighting automatically captures real-time environmental data: exact weather conditions,
-                celestial positions, nearby aircraft, and satellites visible overhead at that precise moment.
+                Every sighting automatically records environmental context: weather conditions,
+                celestial object positions, aircraft traffic, and visible satellites at the exact
+                time and location for scientific analysis.
               </p>
             </div>
           </div>
@@ -186,8 +232,8 @@ export default function Home() {
             <div>
               <h5 className="font-semibold mb-4 text-text-primary">Product</h5>
               <ul className="space-y-2 text-sm text-text-secondary">
-                <li><Link href="/app" className="hover:text-brand-primary transition-colors">Download</Link></li>
-                <li><Link href="#features" className="hover:text-brand-primary transition-colors">Features</Link></li>
+                <li><Link href="/download" className="hover:text-brand-primary transition-colors">Download</Link></li>
+                <li><Link href="#how-it-works" className="hover:text-brand-primary transition-colors">Features</Link></li>
                 <li><a href="/beep" className="hover:text-brand-primary transition-colors">Recent Alerts</a></li>
               </ul>
             </div>
@@ -202,9 +248,7 @@ export default function Home() {
             <div>
               <h5 className="font-semibold mb-4 text-text-primary">Community</h5>
               <ul className="space-y-2 text-sm text-text-secondary">
-                <li><a href="#" className="hover:text-brand-primary transition-colors">Discord</a></li>
                 <li><a href="https://github.com/varak/ufobeep" className="hover:text-brand-primary transition-colors">GitHub</a></li>
-                <li><a href="#" className="hover:text-brand-primary transition-colors">Support</a></li>
               </ul>
             </div>
           </div>
@@ -242,10 +286,8 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-8">
-          </div>
           <div className="border-t border-dark-border mt-8 pt-8 text-center text-sm text-text-tertiary">
-            <p>&copy; 2024 UFOBeep. All rights reserved.</p>
+            <p>&copy; 2025 UFOBeep. All rights reserved.</p>
           </div>
         </div>
       </footer>
