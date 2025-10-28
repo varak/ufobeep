@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:photo_manager/photo_manager.dart';
 import 'package:camera/camera.dart';
 
 class PermissionService {
@@ -136,23 +135,12 @@ class PermissionService {
   }
 
   /// Request photo library permission
+  /// Note: No longer needed - file_picker/image_picker handle this automatically
   Future<void> _requestPhotosPermission() async {
-    try {
-      final result = await PhotoManager.requestPermissionExtend(
-        requestOption: const PermissionRequestOption(
-          iosAccessLevel: IosAccessLevel.readWrite,
-          androidPermission: AndroidPermission(
-            type: RequestType.image,
-            mediaLocation: true,
-          ),
-        ),
-      );
-      _photosGranted = result.isAuth;
-      print('Photos permission: $_photosGranted');
-    } catch (e) {
-      print('Error requesting photos permission: $e');
-      _photosGranted = false;
-    }
+    // Photo permissions are now handled by file_picker/image_picker
+    // Android Photo Picker is used automatically (no permissions required)
+    _photosGranted = true;
+    print('Photos permission: using Android Photo Picker (no explicit permission needed)');
   }
 
   /// Request notification permission
@@ -258,34 +246,14 @@ class PermissionService {
   }
   
   /// Request photo library permission on-demand (when user wants to select from gallery)
+  /// Note: No longer needed - file_picker/image_picker handle this automatically
   Future<bool> requestPhotosForGallery() async {
-    if (_photosGranted) return true;
-    
-    print('Requesting photos permission for gallery access...');
-    try {
-      final result = await PhotoManager.requestPermissionExtend(
-        requestOption: const PermissionRequestOption(
-          iosAccessLevel: IosAccessLevel.readWrite,
-          androidPermission: AndroidPermission(
-            type: RequestType.image,
-            mediaLocation: true,
-          ),
-        ),
-      );
-      _photosGranted = result.isAuth;
-      
-      if (_photosGranted) {
-        await _cachePermissions();
-        print('Photos permission granted');
-      } else {
-        print('Photos permission denied');
-      }
-    } catch (e) {
-      print('Error requesting photos permission: $e');
-      _photosGranted = false;
-    }
-    
-    return _photosGranted;
+    // Photo permissions are now handled by file_picker/image_picker
+    // Android Photo Picker is used automatically (no permissions required)
+    print('Gallery access: using Android Photo Picker (no explicit permission needed)');
+    _photosGranted = true;
+    await _cachePermissions();
+    return true;
   }
   
   /// Request individual permission if missing

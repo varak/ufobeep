@@ -2661,7 +2661,7 @@ abstract class AppLocalizations {
   /// No description provided for @navRecentBeeps.
   ///
   /// In en, this message translates to:
-  /// **'Recent Beeps'**
+  /// **'Recent Beeps and Reports'**
   String get navRecentBeeps;
 
   /// No description provided for @navMap.

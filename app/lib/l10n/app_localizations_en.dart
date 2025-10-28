@@ -1359,7 +1359,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get follow => 'Follow';
 
   @override
-  String get navRecentBeeps => 'Recent Beeps';
+  String get navRecentBeeps => 'Recent Beeps and Reports';
 
   @override
   String get navMap => 'Map';
