@@ -33,7 +33,7 @@ export default function HowItWorks() {
           <div className="bg-dark-surface p-8 rounded-lg border border-dark-border">
             <p className="text-text-secondary text-lg leading-relaxed mb-4">
               UFOBeep is a real-time alert network that notifies nearby users when someone reports a UFO sighting.
-              Think of it as a "NOW" button for the sky - when something unexplained appears, witnesses can immediately
+              Think of it as a &ldquo;NOW&rdquo; button for the sky - when something unexplained appears, witnesses can immediately
               alert others in a 50-mile radius to look up and verify.
             </p>
             <p className="text-text-secondary text-lg leading-relaxed">
@@ -57,7 +57,7 @@ export default function HowItWorks() {
                 Step 1: Witness Reports a Sighting
               </h3>
               <p className="text-text-secondary">
-                User opens the app, captures photo/video (optional), and hits "Beep Now". The app records:
+                User opens the app, captures photo/video (optional), and hits &ldquo;Beep Now&rdquo;. The app records:
               </p>
               <ul className="list-disc list-inside text-text-secondary mt-2 space-y-1 ml-4">
                 <li>GPS coordinates (latitude/longitude)</li>
@@ -105,9 +105,9 @@ export default function HowItWorks() {
               </p>
               <div className="bg-dark-surface p-4 rounded border border-brand-primary">
                 <p className="text-text-primary font-mono text-sm">
-                  "UFO Sighting Alert! 🛸<br/>
+                  &ldquo;UFO Sighting Alert! 🛸<br/>
                   12.3 miles SW from you<br/>
-                  Tap to view and verify"
+                  Tap to view and verify&rdquo;
                 </p>
               </div>
               <p className="text-text-secondary mt-3">

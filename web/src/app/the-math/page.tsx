@@ -33,7 +33,7 @@ export default function TheMath() {
             <h2 className="text-2xl font-bold mb-4 text-brand-primary">The Question</h2>
             <p className="text-text-secondary text-lg">
               How many users does UFOBeep need in the United States for the network to be <em>effective</em> -
-              meaning when someone reports a UFO sighting, there's a high probability that at least one other
+              meaning when someone reports a UFO sighting, there&apos;s a high probability that at least one other
               nearby user receives the alert and can verify?
             </p>
           </div>
@@ -105,10 +105,10 @@ export default function TheMath() {
                 <strong className="text-brand-primary">What this means:</strong>
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>If λ = 0.69, there's a <strong>50%</strong> chance of reaching someone</li>
-                <li>If λ = 1.61, there's an <strong>80%</strong> chance</li>
-                <li>If λ = 2.30, there's a <strong>90%</strong> chance</li>
-                <li>If λ = 3.00, there's a <strong>95%</strong> chance</li>
+                <li>If λ = 0.69, there&apos;s a <strong>50%</strong> chance of reaching someone</li>
+                <li>If λ = 1.61, there&apos;s an <strong>80%</strong> chance</li>
+                <li>If λ = 2.30, there&apos;s a <strong>90%</strong> chance</li>
+                <li>If λ = 3.00, there&apos;s a <strong>95%</strong> chance</li>
               </ul>
             </div>
           </div>
@@ -184,7 +184,7 @@ export default function TheMath() {
               <p className="text-sm text-text-secondary">
                 <strong className="text-brand-primary">★ Sweet Spot:</strong> With 20,000 users distributed across
                 50 major metros, each metro has ~400 users. Accounting for 70% notification reach,
-                that's 280 reachable users per metro - virtually guaranteeing connections.
+                that&apos;s 280 reachable users per metro - virtually guaranteeing connections.
               </p>
             </div>
           </div>
@@ -200,7 +200,7 @@ export default function TheMath() {
             <div className="bg-dark-surface p-8 rounded-lg border-2 border-brand-primary">
               <h3 className="text-2xl font-bold mb-4 text-brand-primary">🎯 Target: 15,000 - 20,000 Users</h3>
               <p className="text-text-secondary text-lg mb-4">
-                This is the "magic number" where UFOBeep becomes an <strong>effective network</strong>:
+                This is the &ldquo;magic number&rdquo; where UFOBeep becomes an <strong>effective network</strong>:
               </p>
               <ul className="space-y-2 text-text-secondary">
                 <li className="flex items-start gap-2">
@@ -290,7 +290,7 @@ export default function TheMath() {
             <div className="bg-dark-background p-6 rounded-lg border border-dark-border">
               <h3 className="text-lg font-semibold mb-2 text-brand-primary">3. High Lambda Value</h3>
               <p>
-                With 20,000 users: λ = 280 reachable users per metro. When λ {">"} 100, the probability
+                With 20,000 users: λ = 280 reachable users per metro. When λ &gt; 100, the probability
                 of connection is essentially 100% (1 - e<sup>-280</sup> ≈ 1.0).
               </p>
             </div>

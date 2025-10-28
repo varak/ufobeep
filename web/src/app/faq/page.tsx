@@ -43,7 +43,7 @@ export default function FAQ() {
         <div className="space-y-2">
           <p>When you see something unusual in the sky:</p>
           <ol className="list-decimal list-inside space-y-1 ml-4">
-            <li>Open the app and hit "Beep Now"</li>
+            <li>Open the app and hit &ldquo;Beep Now&rdquo;</li>
             <li>Optionally capture a photo or video</li>
             <li>The app automatically records GPS, time, and environmental data</li>
             <li>Push notifications are sent to all users within 50 miles</li>
@@ -155,7 +155,7 @@ export default function FAQ() {
             for effective network coverage in major metropolitan areas.
           </p>
           <p>
-            At this threshold, there's a near 100% probability that when someone reports a sighting,
+            At this threshold, there&apos;s a near 100% probability that when someone reports a sighting,
             at least one other nearby user receives the alert.
           </p>
           <Link href="/the-math" className="text-brand-primary hover:underline">
@@ -257,7 +257,7 @@ export default function FAQ() {
           </p>
           <ol className="list-decimal list-inside space-y-1 ml-4">
             <li>Tap the three-dot menu on any beep or comment</li>
-            <li>Select "Report"</li>
+            <li>Select &ldquo;Report&rdquo;</li>
             <li>Choose a reason (spam, harassment, inappropriate, etc.)</li>
             <li>Our moderation team will review within 24 hours</li>
           </ol>
