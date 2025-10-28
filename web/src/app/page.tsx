@@ -222,7 +222,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-dark-surface border-t border-dark-border py-12 px-6 md:px-24">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-5 gap-8">
             <div>
               <h4 className="text-lg font-semibold mb-4 text-brand-primary">UFOBeep</h4>
               <p className="text-text-secondary text-sm">
@@ -235,6 +235,14 @@ export default function Home() {
                 <li><Link href="/download" className="hover:text-brand-primary transition-colors">Download</Link></li>
                 <li><Link href="#how-it-works" className="hover:text-brand-primary transition-colors">Features</Link></li>
                 <li><a href="/beep" className="hover:text-brand-primary transition-colors">Recent Alerts</a></li>
+              </ul>
+            </div>
+            <div>
+              <h5 className="font-semibold mb-4 text-text-primary">Learn</h5>
+              <ul className="space-y-2 text-sm text-text-secondary">
+                <li><Link href="/how-it-works" className="hover:text-brand-primary transition-colors">How It Works</Link></li>
+                <li><Link href="/the-math" className="hover:text-brand-primary transition-colors">The Math</Link></li>
+                <li><Link href="/faq" className="hover:text-brand-primary transition-colors">FAQ</Link></li>
               </ul>
             </div>
             <div>
