@@ -112,7 +112,7 @@ export default function FAQ() {
         <div className="space-y-2">
           <p>Yes! You can customize your alert radius in Settings. The default is 50 km, but you can adjust it to receive alerts from further away if you prefer.</p>
           <p className="mt-2">
-            A larger radius means you'll get more alerts (from a wider area), while a smaller radius keeps alerts very local. Choose what works best for your location:
+            A larger radius means you&apos;ll get more alerts (from a wider area), while a smaller radius keeps alerts very local. Choose what works best for your location:
           </p>
           <ul className="list-disc list-inside space-y-1 ml-4">
             <li><strong>Urban areas:</strong> Default 50 km usually works well</li>
