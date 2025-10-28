@@ -3,9 +3,9 @@
 import EmailNotifySignup from '@/components/EmailNotifySignup';
 
 export default function DownloadPage() {
-  const latestVersion = "v1.9.3+388";
-  const releaseDate = "October 26, 2025";
-  const apkSize = "73 MB";
+  const latestVersion = "v1.9.3+389";
+  const releaseDate = "October 28, 2025";
+  const apkSize = "74 MB";
   
   return (
     <div className="min-h-screen bg-gray-900 text-white">
