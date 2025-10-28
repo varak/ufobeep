@@ -91,14 +91,24 @@ export default function Home() {
               </p>
             </div>
             <div className="text-center p-6">
-              <div className="text-4xl mb-4">🧭</div>
-              <h3 className="text-xl font-semibold mb-4 text-text-primary">Find It In The Sky</h3>
+              <div className="text-4xl mb-4">🔬</div>
+              <h3 className="text-xl font-semibold mb-4 text-text-primary">Automatic Data Capture</h3>
               <p className="text-text-secondary">
-                Point your phone toward the sighting and our compass shows you exactly
-                where to look. No more &quot;it was over there somewhere&quot; - get precise
-                direction to spot what others are seeing.
+                Every beep automatically records weather conditions, aircraft positions,
+                satellite tracking, and celestial objects at the exact moment of the sighting.
+                No manual entry - just instant scientific context.
               </p>
             </div>
+          </div>
+
+          {/* Link to detailed page */}
+          <div className="text-center mt-12">
+            <Link
+              href="/how-it-works"
+              className="inline-block text-brand-primary hover:text-brand-primary-light font-semibold text-lg transition-colors"
+            >
+              Read the full technical deep-dive →
+            </Link>
           </div>
         </div>
       </section>

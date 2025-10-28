@@ -107,19 +107,20 @@ export default function FAQ() {
 
   const technicalFAQs: FAQItem[] = [
     {
-      question: "Why is the alert radius 50 miles?",
+      question: "Can I adjust my alert radius?",
       answer: (
         <div className="space-y-2">
-          <p>A 50-mile radius was chosen for several reasons:</p>
+          <p>Yes! You can customize your alert radius in Settings. The default is 50 km, but you can adjust it to receive alerts from further away if you prefer.</p>
+          <p className="mt-2">
+            A larger radius means you'll get more alerts (from a wider area), while a smaller radius keeps alerts very local. Choose what works best for your location:
+          </p>
           <ul className="list-disc list-inside space-y-1 ml-4">
-            <li><strong>Sky visibility:</strong> Objects in the sky are often visible from 50+ miles away</li>
-            <li><strong>Metro coverage:</strong> 50 miles typically covers an entire metropolitan area</li>
-            <li><strong>Network density:</strong> Balances reach with user density for effective alerts</li>
-            <li><strong>Practical distance:</strong> Close enough for quick verification, far enough for good coverage</li>
+            <li><strong>Urban areas:</strong> Default 50 km usually works well</li>
+            <li><strong>Rural areas:</strong> Consider increasing to 100-200 km for better coverage</li>
+            <li><strong>Sky visibility:</strong> Objects in the sky are often visible from 50+ km away</li>
           </ul>
           <p className="mt-3">
-            In rural areas, we may expand this radius in the future to improve coverage.
-            <Link href="/the-math" className="text-brand-primary hover:underline ml-1">
+            <Link href="/the-math" className="text-brand-primary hover:underline">
               See the mathematical analysis →
             </Link>
           </p>
@@ -206,10 +207,6 @@ export default function FAQ() {
 
   const dataFAQs: FAQItem[] = [
     {
-      question: "What historical UFO data does UFOBeep include?",
-      answer: "UFOBeep includes over 250,000 historical UFO reports from two major sources: MUFON (Mutual UFO Network) - the world's largest civilian UFO investigation organization with 150K+ reports, and NUFORC (National UFO Reporting Center) with 100K+ reports dating back to 1974. All reports are enriched with AI-powered analysis to identify patterns and provide context."
-    },
-    {
       question: "Can I search historical UFO sightings?",
       answer: "Yes! The website (ufobeep.com) has a full map interface where you can browse all historical sightings by location, date, and characteristics. You can filter by shape, time of day, weather conditions, and more. The mobile app also includes a map view for exploring nearby historical reports."
     },
@@ -261,17 +258,14 @@ export default function FAQ() {
         <div>
           <p className="mb-2">
             UFOBeep has a zero-tolerance policy for spam, harassment, or inappropriate content.
-            To report content:
+            To report content, please email: <a href="mailto:support@ufobeep.com" className="text-brand-primary hover:underline">support@ufobeep.com</a>
           </p>
-          <ol className="list-decimal list-inside space-y-1 ml-4">
-            <li>Tap the three-dot menu on any beep or comment</li>
-            <li>Select &ldquo;Report&rdquo;</li>
-            <li>Choose a reason (spam, harassment, inappropriate, etc.)</li>
-            <li>Our moderation team will review within 24 hours</li>
-          </ol>
           <p className="mt-3">
+            Include the beep ID or comment details, and our moderation team will review within 24 hours.
             Serious violations result in immediate account suspension.
-            <Link href="/safety" className="text-brand-primary hover:underline ml-1">
+          </p>
+          <p className="mt-3">
+            <Link href="/safety" className="text-brand-primary hover:underline">
               Read our Safety Guidelines →
             </Link>
           </p>
