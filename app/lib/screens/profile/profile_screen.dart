@@ -439,7 +439,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with WidgetsBindi
       Permission.location,
       Permission.camera,
       Permission.notification,
-      Permission.photos,
+      // Note: Permission.photos removed - Android Photo Picker is used automatically
     ];
   }
 
@@ -456,9 +456,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with WidgetsBindi
           break;
         case Permission.camera:
           permissionType = 'camera';
-          break;
-        case Permission.photos:
-          permissionType = 'photos';
           break;
         case Permission.notification:
           permissionType = 'notification';
@@ -524,8 +521,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with WidgetsBindi
         return Icons.camera_alt;
       case Permission.notification:
         return Icons.notifications;
-      case Permission.photos:
-        return Icons.photo_library;
       default:
         return Icons.security;
     }
@@ -541,8 +536,6 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> with WidgetsBindi
         return AppLocalizations.of(context)!.permissionCamera;
       case Permission.notification:
         return AppLocalizations.of(context)!.permissionNotifications;
-      case Permission.photos:
-        return AppLocalizations.of(context)!.permissionPhotos;
       default:
         return permission.toString().split('.').last;
     }
