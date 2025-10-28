@@ -198,6 +198,17 @@ export default function HowItWorks() {
                 <li><strong className="text-brand-primary">Skyfield:</strong> Celestial calculations</li>
               </ul>
             </div>
+
+            {/* Development */}
+            <div className="bg-dark-surface p-6 rounded-lg border border-dark-border">
+              <h3 className="text-xl font-semibold mb-4 text-text-primary">👨‍💻 Development</h3>
+              <ul className="space-y-2 text-text-secondary">
+                <li><strong className="text-brand-primary">Built by:</strong> Mike (creator) with AI assistance</li>
+                <li><strong className="text-brand-primary">Claude Code:</strong> Primary development AI</li>
+                <li><strong className="text-brand-primary">ChatGPT:</strong> Mathematical analysis & consulting</li>
+                <li><strong className="text-brand-primary">Open Source:</strong> Full codebase on GitHub</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
