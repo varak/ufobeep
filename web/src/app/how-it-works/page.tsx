@@ -93,8 +93,8 @@ export default function HowItWorks() {
                   <p className="text-sm text-text-secondary">Sun, moon, planets, bright stars positions</p>
                 </div>
                 <div className="bg-dark-surface p-4 rounded border border-dark-border">
-                  <div className="font-semibold text-brand-primary mb-1">🤖 AI Analysis</div>
-                  <p className="text-sm text-text-secondary">NUFORC reports summarized with Gemini AI for pattern recognition</p>
+                  <div className="font-semibold text-brand-primary mb-1">🤖 AI Summaries</div>
+                  <p className="text-sm text-text-secondary">NUFORC/MUFON reports summarized with Gemini AI for in-app readability</p>
                 </div>
               </div>
             </div>
@@ -188,13 +188,13 @@ export default function HowItWorks() {
 
             {/* Data Sources */}
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border">
-              <h3 className="text-xl font-semibold mb-4 text-text-primary">📊 Data Sources & AI</h3>
+              <h3 className="text-xl font-semibold mb-4 text-text-primary">📊 Data Sources</h3>
               <ul className="space-y-2 text-text-secondary">
                 <li><strong className="text-brand-primary">OpenWeather:</strong> Real-time weather</li>
                 <li><strong className="text-brand-primary">OpenSky Network:</strong> Aircraft tracking</li>
                 <li><strong className="text-brand-primary">CelesTrak:</strong> Satellite TLE data</li>
                 <li><strong className="text-brand-primary">NUFORC:</strong> Historical UFO reports (100K+)</li>
-                <li><strong className="text-brand-primary">Gemini AI:</strong> Summarizes NUFORC reports for pattern analysis</li>
+                <li><strong className="text-brand-primary">MUFON:</strong> Historical UFO reports</li>
                 <li><strong className="text-brand-primary">Skyfield:</strong> Celestial calculations</li>
               </ul>
             </div>
@@ -206,6 +206,7 @@ export default function HowItWorks() {
                 <li><strong className="text-brand-primary">Built by:</strong> Mike (creator) with AI assistance</li>
                 <li><strong className="text-brand-primary">Claude Code:</strong> Primary development AI</li>
                 <li><strong className="text-brand-primary">ChatGPT:</strong> Mathematical analysis & consulting</li>
+                <li><strong className="text-brand-primary">Gemini AI:</strong> In-app report summaries for brevity & readability</li>
                 <li><strong className="text-brand-primary">Open Source:</strong> Full codebase on GitHub</li>
               </ul>
             </div>
