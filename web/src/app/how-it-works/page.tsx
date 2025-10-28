@@ -203,7 +203,7 @@ export default function HowItWorks() {
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border">
               <h3 className="text-xl font-semibold mb-4 text-text-primary">👨‍💻 Development</h3>
               <ul className="space-y-2 text-text-secondary">
-                <li><strong className="text-brand-primary">Built by:</strong> Mike (creator) with AI assistance</li>
+                <li><strong className="text-brand-primary">Built by:</strong> <a href="mailto:mike@ufobeep.com" className="text-brand-primary hover:underline">Mike</a> (creator) with AI assistance</li>
                 <li><strong className="text-brand-primary">Claude Code:</strong> Primary development AI</li>
                 <li><strong className="text-brand-primary">ChatGPT:</strong> Mathematical analysis & consulting</li>
                 <li><strong className="text-brand-primary">Gemini AI:</strong> In-app report summaries for brevity & readability</li>
