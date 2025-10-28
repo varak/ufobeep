@@ -267,6 +267,7 @@ export default function Home() {
               <h5 className="font-semibold mb-4 text-text-primary">Community</h5>
               <ul className="space-y-2 text-sm text-text-secondary">
                 <li><a href="https://github.com/varak/ufobeep" className="hover:text-brand-primary transition-colors">GitHub</a></li>
+                <li><a href="mailto:support@ufobeep.com" className="hover:text-brand-primary transition-colors">Contact</a></li>
               </ul>
             </div>
           </div>
