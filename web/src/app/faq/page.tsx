@@ -225,6 +225,14 @@ export default function FAQ() {
 
   const usageFAQs: FAQItem[] = [
     {
+      question: "Can I filter alerts by location?",
+      answer: "Yes! The app has several filtering options: you can sort alerts by 'Newest' (most recent sightings) or 'Nearest' (closest to your current location). The map view also allows you to explore sightings by geographic area and zoom into specific regions."
+    },
+    {
+      question: "Can I set quiet hours or Do Not Disturb?",
+      answer: "Yes! In Settings, you can configure notification preferences including quiet hours (sleep hours) when you won't receive alerts. This is perfect if you don't want to be woken up by UFO sightings in the middle of the night. You can also completely disable notifications temporarily if needed."
+    },
+    {
       question: "Do I need to keep the app open to receive alerts?",
       answer: "No! UFOBeep uses push notifications, so you'll receive alerts even when the app is closed. Just make sure notifications are enabled in your device settings. You can customize notification preferences in the app to control which types of alerts you receive."
     },
