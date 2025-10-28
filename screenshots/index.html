@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UFOBeep Homepage Animation Demo</title>
+  <style>
+    :root {
+      --w: 360px;  /* phone width */
+      --h: 720px;  /* phone height */
+      --radius: 28px;
+      --shadow: 0 0 40px rgba(0, 255, 255, 0.15);
+      --caption-bg: rgba(0,0,0,0.35);
+      --duration: 12s; /* total loop time */
+    }
+
+    @media (min-width: 900px) {
+      :root { --w: 420px; --h: 840px; }
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: radial-gradient(circle at 50% 30%, #0b132b 0%, #050a16 45%, #000 100%);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+      color: #e8f1ff;
+    }
+
+    .wrap { position: relative; width: var(--w); height: var(--h); }
+
+    /* Phone frame */
+    .frame {
+      position: absolute; inset: 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      background: #000;
+      display: grid;
+    }
+
+    /* --- PRIMARY: video if present --- */
+    .hero-video { width: 100%; height: 100%; object-fit: cover; display: none; }
+    .has-video .hero-video { display: block; }
+
+    /* --- FALLBACK: CSS slideshow using screenshots --- */
+    .slideshow { position: relative; width: 100%; height: 100%; }
+    .slide {
+      position: absolute; inset: 0;
+      opacity: 0; transform: scale(1.02);
+      transition: opacity 700ms ease, transform 700ms ease;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Keyframes for crossfade + gentle zoom */
+    @keyframes fadeZoom {
+      0% { opacity: 0; transform: scale(1.02); }
+      6% { opacity: 1; transform: scale(1); }
+      20% { opacity: 1; transform: scale(1.03); }
+      25% { opacity: 0; transform: scale(1.03); }
+      100% { opacity: 0; transform: scale(1.03); }
+    }
+
+    /* Each slide runs over the full duration but offset in time */
+    .slide.s1 { animation: fadeZoom var(--duration) linear infinite; animation-delay: 0s; }
+    .slide.s2 { animation: fadeZoom var(--duration) linear infinite; animation-delay: calc(var(--duration) * 0.20); }
+    .slide.s3 { animation: fadeZoom var(--duration) linear infinite; animation-delay: calc(var(--duration) * 0.40); }
+    .slide.s4 { animation: fadeZoom var(--duration) linear infinite; animation-delay: calc(var(--duration) * 0.60); }
+    .slide.s5 { animation: fadeZoom var(--duration) linear infinite; animation-delay: calc(var(--duration) * 0.80); }
+
+    /* Captions overlay (editable via HTML, timed in JS) */
+    .caption {
+      position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%);
+      width: calc(100% - 32px);
+      text-align: center; font-size: 15px; line-height: 1.35; letter-spacing: 0.2px;
+      padding: 10px 14px; border-radius: 16px;
+      background: var(--caption-bg); backdrop-filter: blur(6px);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.35);
+      opacity: 0; transition: opacity 300ms ease;
+    }
+
+    .badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, #65e0ff, #6a8bff);
+      color: #051225; font-weight: 700; font-size: 11px;
+      padding: 6px 10px; border-radius: 999px; box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+    }
+
+    .credit { position: absolute; bottom: -36px; width: 100%; text-align: center; font-size: 12px; color: #8aa7ff; opacity: 0.85; }
+
+    /* Helper: show caption on hover so you know it's there even without JS */
+    .frame:hover .caption { opacity: 1; }
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="frame" id="frame">
+
+      <!-- PRIMARY: If you place the two files next to this HTML, the video will play -->
+      <video class="hero-video" id="heroVideo" autoplay loop muted playsinline>
+        <source src="ufobeep-home-portrait.webm" type="video/webm" />
+        <source src="ufobeep-home-portrait.mp4" type="video/mp4" />
+      </video>
+
+      <!-- FALLBACK SLIDESHOW (uses still images if video files are missing) -->
+      <div class="slideshow" id="slideshow">
+        <!-- Replace these src values with your real screenshot filenames in the same folder as this HTML -->
+        <div class="slide s1"><img src="screen1.png" alt="UFOBeep – Launch" /></div>
+        <div class="slide s2"><img src="screen2.png" alt="What do you see?" /></div>
+        <div class="slide s3"><img src="screen4.png" alt="Incoming Beep / details" /></div>
+        <div class="slide s4"><img src="screen3.png" alt="Satellites & Aircraft Overhead" /></div>
+        <div class="slide s5"><img src="screen5.png" alt="Community Beeps Feed" /></div>
+      </div>
+
+      <!-- Editable overlay caption (we'll update text on a timer in JS) -->
+      <div class="caption" id="caption">
+        <div class="badge">UFOBeep</div>
+        <div id="captionText">Open UFOBeep — your skywatch companion</div>
+      </div>
+
+    </div>
+    <div class="credit">Drop <strong>ufobeep-home-portrait.mp4</strong> & <strong>.webm</strong> next to this file to enable video. Otherwise the slideshow fallback will run using <em>screen1.png…screen5.png</em>.</div>
+  </div>
+
+  <script>
+    (function() {
+      const video = document.getElementById('heroVideo');
+      const frame = document.getElementById('frame');
+      const caption = document.getElementById('caption');
+      const captionText = document.getElementById('captionText');
+      const slideshow = document.getElementById('slideshow');
+
+      // Simple caption script: updates every ~2.4s (12s / 5 slides)
+      const lines = [
+        'Open UFOBeep — your skywatch companion',
+        'Report what you see — instantly',
+        'Get Beeps when something\'s spotted near you',
+        'See what\'s above — satellites & aircraft in real time',
+        'Join the skywatchers near you'
+      ];
+      let i = 0;
+      function tick() {
+        caption.style.opacity = 0;
+        setTimeout(() => {
+          captionText.textContent = lines[i % lines.length];
+          caption.style.opacity = 1;
+          i++;
+        }, 250);
+      }
+      setInterval(tick, 2400); // 2.4s per scene for a ~12s loop
+      tick();
+
+      // Detect if video sources are actually available; if play() fails, keep slideshow fallback
+      function enableVideoIfAvailable() {
+        if (!video) return;
+        video.play().then(() => {
+          // If video started playing, mark state and hide slideshow
+          frame.classList.add('has-video');
+          slideshow.style.display = 'none';
+        }).catch(() => {
+          // No video yet — stay on slideshow
+        });
+      }
+
+      // Try to start video after a short delay to allow source probing
+      setTimeout(enableVideoIfAvailable, 200);
+    })();
+  </script>
+</body>
+</html>

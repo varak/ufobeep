@@ -245,16 +245,6 @@ class PermissionService {
     return _cameraGranted;
   }
   
-  /// Request photo library permission on-demand (when user wants to select from gallery)
-  /// Note: No longer needed - file_picker/image_picker handle this automatically
-  Future<bool> requestPhotosForGallery() async {
-    // Photo permissions are now handled by file_picker/image_picker
-    // Android Photo Picker is used automatically (no permissions required)
-    print('Gallery access: using Android Photo Picker (no explicit permission needed)');
-    _photosGranted = true;
-    await _cachePermissions();
-    return true;
-  }
   
   /// Request individual permission if missing
   Future<bool> requestPermission(Permission permission) async {

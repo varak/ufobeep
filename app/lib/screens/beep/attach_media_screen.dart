@@ -185,18 +185,7 @@ class _AttachMediaScreenState extends ConsumerState<AttachMediaScreen> {
   Future<void> _pickFromGallery() async {
     if (_isCapturing) return;
 
-    final hasPermission = await permissionService.requestPhotosForGallery();
-    if (!hasPermission) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Photo library permission is required to select media'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
-      return;
-    }
+    // Note: No permission needed - Android Photo Picker is used automatically
 
     setState(() {
       _isCapturing = true;
