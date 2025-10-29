@@ -58,6 +58,9 @@ export default function Home() {
 
           {/* Content navigation links */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm">
+            <a href="/trailer" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
+              Watch the Trailer
+            </a>
             <a href="#how-it-works" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
               {t('howItWorks')}
             </a>
