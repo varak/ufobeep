@@ -58,12 +58,49 @@ export default function Home() {
 
           {/* Content navigation links */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-8 text-sm">
-            <a href="/trailer" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
+            <a href="#trailer" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
               Watch the Trailer
             </a>
             <a href="#how-it-works" className="text-brand-primary hover:text-brand-primary-light transition-colors font-medium">
               {t('howItWorks')}
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Trailer Section */}
+      <section id="trailer" className="py-20 px-6 md:px-24">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-text-primary">
+              See UFOBeep in Action
+            </h2>
+            <p className="text-lg text-text-secondary">
+              13 seconds that explain everything
+            </p>
+          </div>
+
+          <div className="bg-dark-surface rounded-lg border border-brand-primary overflow-hidden shadow-glow">
+            <video
+              controls
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full"
+            >
+              <source src="/trailer.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+
+          <div className="text-center mt-6">
+            <Link
+              href="/download"
+              className="inline-block bg-brand-primary text-text-inverse px-8 py-4 rounded-lg font-semibold hover:bg-brand-primary-dark transition-all shadow-glow hover:shadow-xl hover:scale-105 transform"
+            >
+              Download UFOBeep Now
+            </Link>
           </div>
         </div>
       </section>
