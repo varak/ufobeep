@@ -1,0 +1,103 @@
+# Cleanup Candidates for UFOBeep Repository
+# Review these files - they may be safe to delete or move
+
+## Old/Duplicate Scripts (verify not used in production first)
+./translate2.sh           # Duplicate of translate.sh?
+./trans.sh                # Another duplicate?
+./translate-hindi.js      # One-off script?
+./translate-legal.sh      # One-off script?
+
+## MUFON Import Scripts (check if still needed)
+./cleanup_mufon_temp.sh
+./cleanup_old_mufon.sh
+./cleanup_production_mufon.sh
+./import_mufon_batch.sh
+./setup-mufon-cron.sh
+./daily_mufon_import.sh
+
+## Email/DMARC Scripts (one-time setup?)
+./add_dmarc_alias.sh
+./fix_email_deliverability.sh
+./fix_postfix_config.sh
+./setup_dkim.py
+
+## Old Test/Debug Files
+./test_magic_link.py
+./test_mufon_ingestion.py
+./README.txt              # Duplicate of README.md?
+
+## Database Migration Scripts (already run?)
+./add_short_url_column.sql
+./migration_allow_null_user_id.sql
+./run_migration.py
+./populate_short_urls.py
+
+## Old User Email Scripts
+./send_beta_email.py
+./send_ios_beta_email.py
+./send_v369_update.py
+
+## Fix Scripts (one-time fixes?)
+./fix_arb_icu.py
+./fix-bad-translations.js
+./fix-critical-translations.js
+./fix_icu_placeholders.py
+./fix_mufon_slugs.py
+./fix_occurred_at.py
+./fix-placeholders.js
+
+## Large Binary Files
+./de421.bsp              # 16MB ephemeris file - in use?
+./mufon_detail_222814.mp4 # 157KB test video?
+
+## Old Credential Files (check if needed)
+./ufobeep.com            # 51KB - old cert?
+./ufobeep@ufobeep.com    # 51KB - duplicate?
+./AuthKey_CPVQJUL82Z.p8  # Apple key - still valid?
+
+## Environment Files (verify which are needed)
+./.env.azure
+./.env.mufon
+./.env.test
+
+## Config Files (verify needed)
+./codex.config.json
+./docker-compose.yml     # Using Docker?
+./next-env.d.ts          # Should be in web/?
+./tsconfig.json          # Should be in web/?
+./package.json           # Should be in web/ or scripts/?
+./package-lock.json      # Should be in web/ or scripts/?
+
+## KEEP IN ROOT (Active/Referenced by Cron or Deploy)
+# DO NOT MOVE THESE:
+./deploy.sh              # Used frequently
+./daily_nuforc.sh        # In cron
+./nuforc.sh              # Referenced by cron/scripts
+./nuforc-proxy.sh        # May be referenced
+./nuforc_smart.py        # Active script
+./nuforc_stealth.py      # Active script
+./requirements_stealth.txt
+./setup_stealth.sh
+./mufon.sh               # In production cron
+./delete.py              # Delete script per CLAUDE.md
+./delete_alerts.py       # Delete script
+./admin_delete_tool.py   # Admin tool
+./export_user_data.py    # GDPR export tool
+./cleanup_orphaned_media.py # Important cleanup
+./kill_orphans.sh        # Important cleanup
+./CLAUDE.md              # Project instructions
+./README.md              # Main readme
+./.gitignore
+./.gitattributes
+./.gitallowed
+
+## Recommended Actions:
+1. Verify all scripts in "Old/Duplicate Scripts" section aren't used
+2. Move one-time migration scripts to scripts/migrations/archive/
+3. Move one-time fix scripts to scripts/fixes/archive/
+4. Move old email scripts to scripts/email/archive/
+5. Delete test scripts if tests are passing
+6. Consolidate .env files (keep only .env and .env.example)
+7. Move web config files (next-env.d.ts, tsconfig.json, package*.json) to web/ if not already there
+8. Review large binaries (de421.bsp, old videos)
+9. Check if old credential files are still needed
