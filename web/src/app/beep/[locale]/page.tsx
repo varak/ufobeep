@@ -81,10 +81,10 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
         const response = await fetch(`/api/beep?limit=${beepsPerPage}&offset=${offset}`)
         const data = await response.json()
 
-        if (data.success && data.data?.alerts) {
-          setAlerts(data.data.alerts)
-          setTotalCount(data.data.total || data.data.alerts.length)
-          setTotalPages(Math.ceil((data.data.total || data.data.alerts.length) / beepsPerPage))
+        if (data.success && data.data?.beeps) {
+          setAlerts(data.data.beeps)
+          setTotalCount(data.data.total || data.data.beeps.length)
+          setTotalPages(Math.ceil((data.data.total || data.data.beeps.length) / beepsPerPage))
         }
       } catch (error) {
         console.error('Failed to fetch alerts:', error)
