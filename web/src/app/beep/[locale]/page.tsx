@@ -1,7 +1,7 @@
 'use client'
 
 import { notFound } from 'next/navigation'
-import { use, useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useClientTranslations } from '@/hooks/useClientTranslations'
 import AlertCard from '@/components/AlertCard'
 
