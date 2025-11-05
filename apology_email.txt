@@ -1,0 +1,16 @@
+Subject: Apology for Email Error - All MUFON Chapter Directors Visible
+
+Hey everyone,
+
+If you just got an email from me about UFOBeep where you could see everyone's email addresses in the body... yeah, that was a massive screw-up on my end.
+
+I was trying to BCC all the MUFON chapter directors so I could reach out about UFOBeep in one go. I'm a developer, not an email marketer, and I was using Claude (an AI) to help me set up the email system. Claude completely botched the sendmail script and put all your email addresses in the message body instead of the BCC headers where they belong.
+
+My apologies for the privacy slip-up. If you want your email removed from any future communications, just reply with "unsubscribe" and I'll make sure you don't hear from me again.
+
+The UFOBeep app itself is real and working - I just clearly need to stick to building apps instead of trying to send bulk emails.
+
+Sorry for the noise,
+Mike Emke
+MUFON Member ID: 60523
+mike@ufobeep.com

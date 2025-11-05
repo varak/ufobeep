@@ -1,0 +1,52 @@
+Subject: UFOBeep - Never Miss a Sighting Again
+
+Dear MUFON Director,
+
+**Quick context:** If you just got an apology email from me about a BCC error - ignore it. That email never actually went out. This is the REAL email I meant to send in the first place. (Yes, I'm clearly struggling with email systems.)
+
+I built UFOBeep to solve a problem we've all experienced: hearing about an incredible sighting hours after it happened. If 50 people saw something, why didn't anyone tell us to look up while it was still happening?
+
+**What UFOBeep Actually Does:**
+
+🚨 **Real-Time Proximity Alerts** - Get push notifications when someone within your area reports a sighting. Drop everything and look up while it's still happening.
+
+📸 **Photo/Video Sharing** - Multiple witnesses can document the same event from different angles.
+
+🔬 **Automatic Enrichment Data** - Every report captures:
+- Real-time weather conditions
+- Aircraft positions (filters known objects)
+- Satellite tracking (Starlink, ISS, etc.)
+- Celestial object positions (sun, moon, planets, bright stars)
+- Precise GPS, timestamp, altitude, compass bearing
+
+🗺️ **Historical Database** - This is where MUFON members will particularly appreciate it: We pull reports nightly from both **MUFON and NUFORC**. NUFORC's lengthy witness narratives get automatically summarized by Google Gemini AI for mobile viewing. Browse historical sightings, not just real-time alerts.
+
+💬 **Live Discussion** - Comment threads on each sighting with auto-refresh.
+
+🌐 **22+ Languages** - Full multi-language support.
+
+**This isn't a replacement for MUFON** - it's a companion app for real-time awareness and browsing historical records. MUFON handles formal investigations, UFOBeep handles "hey, look up right now!"
+
+**Just Released - Open Beta:**
+
+We just launched the open beta and anyone can download it today. The app will be in beta for a while as we gather feedback and continue improving it.
+
+**Download Links:**
+- Android: https://play.google.com/apps/testing/com.ufobeep
+- iOS: https://testflight.apple.com/join/jJvBaWSa
+- Website: https://ufobeep.com
+
+I'd love your feedback and encourage you to share with your chapter members if you find it useful.
+
+Clear skies! 🛸
+Mike Emke
+MUFON Member ID: 60523
+mike@ufobeep.com
+
+---
+UFOBeep
+4650 N. Rainbow Blvd. #1012
+Las Vegas, NV 89108
+Earth
+
+Reply with "unsubscribe" if you'd prefer not to hear from me.
