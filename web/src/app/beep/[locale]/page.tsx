@@ -33,12 +33,11 @@ interface Alert {
 }
 
 interface BeepPageProps {
-  params: Promise<{ locale: string }>
+  params: { locale: string }
 }
 
 export default function BeepLocalePage({ params }: BeepPageProps) {
-  // Unwrap promise params using React's use() hook (Next.js 15)
-  const { locale: urlLocale } = use(params)
+  const { locale: urlLocale } = params
 
   const [alerts, setAlerts] = useState<Alert[]>([])
   const [loading, setLoading] = useState(true)
