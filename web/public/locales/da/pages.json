@@ -1,7 +1,7 @@
 {
-  "welcomeTitle": "Velkommen til UFOBeep",
-  "settings": "Indstillinger",
-  "settingsTitle": "Indstillinger",
-  "pageOf": "Side _ _ PLACEREPORT _ 0 _ af _ _ PLACEREPORT _ 1 _ _ (_ _ PLACEREPORT _ 2 _ _ i alt bip)",
-  "settingUpLocalization": "Opsætning af lokalisering..."
+  "welcomeTitle": "Welcome to UFOBeep",
+  "settings": "Settings",
+  "settingsTitle": "Settings",
+  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)",
+  "settingUpLocalization": "Setting up localization..."
 }

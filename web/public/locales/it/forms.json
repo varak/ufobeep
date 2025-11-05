@@ -1,9 +1,9 @@
 {
-  "username": "Nome utente",
-  "usernameUpdated": "Nome utente aggiornato",
-  "submitBeep": "Invia a Beep",
-  "formalReportingTitle": "UFO formale Relazione",
-  "formalReporting": "Rapporto formale",
-  "formalReportingExplanation": "Per l'indagine ufficiale e la documentazione scientifica, è possibile presentare relazioni formali con organizzazioni di ricerca stabilite.",
-  "formalReportRequirements": "I rapporti formali richiedono tipicamente:\n• Ora, data e durata\n• Condizioni meteo e visibilità\n• Testimonianza completa\n• Foto o video se disponibili\n\nLe organizzazioni possono seguire per ulteriori dettagli. Il tuo rapporto contribuisce alla continua ricerca UFO."
+  "username": "Username",
+  "usernameUpdated": "Username updated",
+  "submitBeep": "Send Beep",
+  "formalReportingTitle": "Formal UFO Reporting",
+  "formalReporting": "Formal Reporting",
+  "formalReportingExplanation": "For official investigation and scientific documentation, you can file formal reports with established research organizations.",
+  "formalReportRequirements": "Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research."
 }

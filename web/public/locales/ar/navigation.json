@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "إنذار",
+  "tabAlerts": "Alerts",
   "tabBeep": "Beep",
   "tabChat": "Chat",
-  "tabMap": "خريطة",
-  "tabSettings": "التركيبات",
-  "mufonDatabaseEntryDate": "تاريخ دخوله قاعدة البيانات",
-  "databaseEntry": "دخول قاعدة البيانات",
-  "mufonDatabaseReport": "MUFON القضية رقم:"
+  "tabMap": "Map",
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry",
+  "mufonDatabaseReport": "MUFON Case Number:"
 }

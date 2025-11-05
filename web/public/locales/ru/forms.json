@@ -1,9 +1,9 @@
 {
-  "username": "Имя пользователя",
-  "usernameUpdated": "Имя пользователя обновлено",
-  "submitBeep": "Отправить Бип",
-  "formalReportingTitle": "Формальный НЛО Отчетность",
-  "formalReporting": "Формальный отчет",
-  "formalReportingExplanation": "Для официальной исследовательской и научной документации вы можете подать официальные отчеты в научно-исследовательские организации.",
-  "formalReportRequirements": "Формальные отчеты обычно требуют:\n• Подробное время, дата и продолжительность\n• Погодные условия и видимость\n• Полные свидетельские показания\n• Фото или видео, если есть\n\nОрганизации могут следить за дополнительной информацией. Ваш отчет способствует текущим исследованиям НЛО."
+  "username": "Username",
+  "usernameUpdated": "Username updated",
+  "submitBeep": "Send Beep",
+  "formalReportingTitle": "Formal UFO Reporting",
+  "formalReporting": "Formal Reporting",
+  "formalReportingExplanation": "For official investigation and scientific documentation, you can file formal reports with established research organizations.",
+  "formalReportRequirements": "Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research."
 }

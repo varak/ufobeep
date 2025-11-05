@@ -1,9 +1,9 @@
 {
-  "username": "Uživatelské jméno",
-  "usernameUpdated": "Uživatelské jméno aktualizováno",
-  "submitBeep": "Poslat Beep",
-  "formalReportingTitle": "Formální UFO Podávání zpráv",
-  "formalReporting": "Formální vykazování",
-  "formalReportingExplanation": "Pro oficiální vyšetřování a vědeckou dokumentaci můžete podat formální zprávy se zavedenými výzkumnými organizacemi.",
-  "formalReportRequirements": "Formální zprávy obvykle vyžadují:\n• Podrobná doba, datum a doba trvání\n• Podmínky a viditelnost počasí\n• Úplné svědectví svědka\n• Fotografie nebo video, pokud jsou k dispozici\n\nOrganizace mohou sledovat další podrobnosti. Vaše zpráva přispívá k probíhajícímu výzkumu UFO."
+  "username": "Username",
+  "usernameUpdated": "Username updated",
+  "submitBeep": "Send Beep",
+  "formalReportingTitle": "Formal UFO Reporting",
+  "formalReporting": "Formal Reporting",
+  "formalReportingExplanation": "For official investigation and scientific documentation, you can file formal reports with established research organizations.",
+  "formalReportRequirements": "Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research."
 }

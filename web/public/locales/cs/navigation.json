@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "Upozornění",
-  "tabBeep": "Píp",
+  "tabAlerts": "Alerts",
+  "tabBeep": "Beep",
   "tabChat": "Chat",
-  "tabMap": "Mapa",
-  "tabSettings": "Nastavení",
-  "mufonDatabaseEntryDate": "Datum zařazení do MUFON Databáze",
-  "databaseEntry": "Záznam databáze",
-  "mufonDatabaseReport": "MUFON Číslo případu:"
+  "tabMap": "Map",
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry",
+  "mufonDatabaseReport": "MUFON Case Number:"
 }

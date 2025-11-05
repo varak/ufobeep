@@ -1,9 +1,9 @@
 {
-  "username": "用户名",
-  "usernameUpdated": "用户名已更新",
-  "submitBeep": "发出哔声",
-  "formalReportingTitle": "正式的UFO组织 报告",
-  "formalReporting": "正式报告",
-  "formalReportingExplanation": "对于官方调查和科学文献,可以向已经成立的研究组织提交正式报告.",
-  "formalReportRequirements": "正式报告通常要求:\n• 支助 详细时间、日期和期限\n• 支助 天气条件和能见度\n• 完整的证人证词\n• 支助 照片或录像(如有)\n\n各组织可就其他细节采取后续行动。 你的报告有助于正在进行的UFO研究."
+  "username": "Username",
+  "usernameUpdated": "Username updated",
+  "submitBeep": "Send Beep",
+  "formalReportingTitle": "Formal UFO Reporting",
+  "formalReporting": "Formal Reporting",
+  "formalReportingExplanation": "For official investigation and scientific documentation, you can file formal reports with established research organizations.",
+  "formalReportRequirements": "Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research."
 }

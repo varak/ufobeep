@@ -1,7 +1,7 @@
 {
-  "welcomeTitle": "Willkommen bei UFOBeep",
-  "settings": "Einstellungen",
-  "settingsTitle": "Einstellungen",
-  "pageOf": "Seite {currentPage} von {totalPages} (___PLACEHOLDER_2_ insgesamt beeps)",
-  "settingUpLocalization": "Lokalisierung einrichten..."
+  "welcomeTitle": "Welcome to UFOBeep",
+  "settings": "Settings",
+  "settingsTitle": "Settings",
+  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)",
+  "settingUpLocalization": "Setting up localization..."
 }

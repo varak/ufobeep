@@ -1,12 +1,12 @@
 {
-  "errorGeneric": "Что-то пошло не так.",
-  "errorNoLocation": "Место недоступно. Попробуйте снова выйти на улицу с ясным видом на небо.",
-  "errorNoCamera": "Камера недоступна на этом устройстве.",
-  "errorUploadFailed": "Загрузить не удалось. Пожалуйста, попробуйте еще раз.",
-  "errorPermissionDenied": "Разрешение отказано.",
-  "errorInvalidUsername": "Это имя пользователя недоступно.",
-  "errorNotFound": "Бип не найден",
-  "errorLoadError": "Не удалось загрузить детали звукового сигнала",
-  "failed": "Неудачник",
-  "invalidRange": "Пожалуйста, введите номер от 1 до 99999"
+  "errorGeneric": "Something went wrong.",
+  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
+  "errorNoCamera": "Camera unavailable on this device.",
+  "errorUploadFailed": "Upload failed. Please try again.",
+  "errorPermissionDenied": "Permission denied.",
+  "errorInvalidUsername": "That username isn’t available.",
+  "errorNotFound": "Beep not found",
+  "errorLoadError": "Failed to load beep details",
+  "failed": "Failed",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

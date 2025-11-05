@@ -256,9 +256,9 @@
   "unknown": "Unknown",
   "report": "report",
   "mufon": "mufon",
-  "recentUfoBeepsTitle": "Recent UFO Beeps",
+  "recentUfoBeepsTitle": "Recent UFO Beeps and Reports",
   "recentUfoBeepsSubtitle": "Live UFO sighting reports from our global community",
-  "recentUfoBeepsDescription": "This feed combines real-time UFOBeep \"beeps\" from our mobile app users with historical reports from the MUFON database.",
+  "recentUfoBeepsDescription": "This feed combines real-time UFOBeep \"beeps\" from our mobile app users with professional reports from MUFON and NUFORC databases.",
   "loadingBeeps": "Loading recent beeps...",
   "noBeepsAvailable": "No beeps available at the moment.",
   "anomalyReported": "Anomaly reported",
@@ -271,7 +271,7 @@
   "lastPage": "Last",
   "jumpToPage": "Jump to page",
   "heroTagline": "Get alerts when to go outside and look up",
-  "heroDescription": "Never miss another UFO sighting in your area",
+  "heroDescription": "Never miss another UFO sighting in your area. Including nightly reports from UFO reporting institutions",
   "downloadApp": "📱 Download App",
   "viewAllBeeps": "📋 View All Beeps",
   "sightingsMap": "🗺️ Sightings Map",
@@ -327,7 +327,7 @@
   "logout": "Logout",
   "notFollowing": "Not following",
   "follow": "Follow",
-  "navRecentBeeps": "Recent Beeps",
+  "navRecentBeeps": "Recent Beeps and Reports",
   "navMap": "Map",
   "navDownloadApp": "Download App",
   "alertLevel": "Alert Level",
@@ -832,5 +832,6 @@
   "alertRadius": "Alert Radius",
   "signInSubtitle": "Real-time UFO sighting alerts and MUFON reports",
   "invalidRange": "Please enter a number between 1 and 99999",
-  "settingUpLocalization": "Setting up localization..."
+  "settingUpLocalization": "Setting up localization...",
+  "reportsFromCommunity": "Direkte UFO-observasjonsrapporter fra vårt globale fellesskap, National UFO Reporting Center og Mutual UFO Network."
 }

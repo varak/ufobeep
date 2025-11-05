@@ -1,7 +1,7 @@
 {
-  "welcomeTitle": "Vítejte v UFOBeepu",
-  "settings": "Nastavení",
-  "settingsTitle": "Nastavení",
-  "pageOf": "Page _ _ PLACETIER _ 0 _ _ _ _ PLACETIER _ 1 _ _ (_ _ PLACETIER _ 2 _ _ celkem pípnutí)",
-  "settingUpLocalization": "Nastavení lokalizace..."
+  "welcomeTitle": "Welcome to UFOBeep",
+  "settings": "Settings",
+  "settingsTitle": "Settings",
+  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)",
+  "settingUpLocalization": "Setting up localization..."
 }

@@ -1,7 +1,7 @@
 {
-  "welcomeTitle": "Bem-vindo ao OVNIBeep",
-  "settings": "Configurações",
-  "settingsTitle": "Configurações",
-  "pageOf": "Página __PACEVOLDER_________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________",
-  "settingUpLocalization": "A configurar a localização..."
+  "welcomeTitle": "Welcome to UFOBeep",
+  "settings": "Settings",
+  "settingsTitle": "Settings",
+  "pageOf": "Page {currentPage} of {totalPages} ({totalCount} total beeps)",
+  "settingUpLocalization": "Setting up localization..."
 }

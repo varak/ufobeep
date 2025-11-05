@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "アラート",
-  "tabBeep": "ビープ",
-  "tabChat": "チャット",
-  "tabMap": "サイトマップ",
-  "tabSettings": "コンテンツ",
-  "mufonDatabaseEntryDate": "MUFON に入力された日付 データベース",
-  "databaseEntry": "データベースのエントリ",
-  "mufonDatabaseReport": "MUFONについて 場合数:"
+  "tabAlerts": "Alerts",
+  "tabBeep": "Beep",
+  "tabChat": "Chat",
+  "tabMap": "Map",
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry",
+  "mufonDatabaseReport": "MUFON Case Number:"
 }

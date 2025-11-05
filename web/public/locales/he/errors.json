@@ -1,12 +1,12 @@
 {
-  "errorGeneric": "משהו השתבש.",
-  "errorNoLocation": "מיקום לא זמין נסה שוב בחוץ עם נוף השמיים ברור.",
-  "errorNoCamera": "המצלמה אינה זמינה במכשיר זה.",
-  "errorUploadFailed": "ההעלאה נכשלה. אנא נסה שוב.",
-  "errorPermissionDenied": "הכחשה.",
-  "errorInvalidUsername": "שם משתמש זה אינו זמין.",
-  "errorNotFound": "לא נמצא",
-  "errorLoadError": "נכשל לטעון פרטים",
-  "failed": "נכשל",
-  "invalidRange": "אנא הכנס מספר בין 1 ל 99999"
+  "errorGeneric": "Something went wrong.",
+  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
+  "errorNoCamera": "Camera unavailable on this device.",
+  "errorUploadFailed": "Upload failed. Please try again.",
+  "errorPermissionDenied": "Permission denied.",
+  "errorInvalidUsername": "That username isn’t available.",
+  "errorNotFound": "Beep not found",
+  "errorLoadError": "Failed to load beep details",
+  "failed": "Failed",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

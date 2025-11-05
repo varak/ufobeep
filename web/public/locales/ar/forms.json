@@ -1,9 +1,9 @@
 {
-  "username": "المستعمل",
-  "usernameUpdated": "تحديث لقب المستخدم",
-  "submitBeep": "إرسال Beep",
-  "formalReportingTitle": "نموذجي الإبلاغ",
-  "formalReporting": "الإبلاغ الرسمي",
-  "formalReportingExplanation": "بالنسبة للتحقيقات الرسمية والوثائق العلمية، يمكنك تقديم تقارير رسمية مع منظمات البحث المنشأة.",
-  "formalReportRequirements": "فالتقارير الرسمية تتطلب عادة ما يلي:\n• الوقت والتاريخ والمدة\n• ظروف الطقس والوضوح\n● شهادة الشهود الكاملة\n• الصور أو الفيديو إذا توافرت\n\nويجوز للمنظمات متابعة التفاصيل الإضافية. إن تقريركم يسهم في البحوث الجارية التي تجريها المنظمة."
+  "username": "Username",
+  "usernameUpdated": "Username updated",
+  "submitBeep": "Send Beep",
+  "formalReportingTitle": "Formal UFO Reporting",
+  "formalReporting": "Formal Reporting",
+  "formalReportingExplanation": "For official investigation and scientific documentation, you can file formal reports with established research organizations.",
+  "formalReportRequirements": "Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research."
 }

@@ -1,12 +1,12 @@
 {
-  "errorGeneric": "Etwas ging schief.",
-  "errorNoLocation": "Standort nicht verfügbar. Versuchen Sie wieder draußen mit klarem Himmelblick.",
-  "errorNoCamera": "Kamera auf diesem Gerät nicht verfügbar.",
-  "errorUploadFailed": "Hochladen versagt. Bitte versuchen Sie es noch mal.",
-  "errorPermissionDenied": "Erlaubnis verweigert.",
-  "errorInvalidUsername": "Dieser Benutzername ist nicht verfügbar.",
-  "errorNotFound": "Beep nicht gefunden",
-  "errorLoadError": "Versäumt, um Details zu laden",
-  "failed": "Versäumt",
-  "invalidRange": "Bitte geben Sie eine Nummer zwischen 1 und 99999 ein"
+  "errorGeneric": "Something went wrong.",
+  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
+  "errorNoCamera": "Camera unavailable on this device.",
+  "errorUploadFailed": "Upload failed. Please try again.",
+  "errorPermissionDenied": "Permission denied.",
+  "errorInvalidUsername": "That username isn’t available.",
+  "errorNotFound": "Beep not found",
+  "errorLoadError": "Failed to load beep details",
+  "failed": "Failed",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

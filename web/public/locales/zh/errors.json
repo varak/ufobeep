@@ -1,12 +1,12 @@
 {
-  "errorGeneric": "出了点问题.",
-  "errorNoLocation": "没有位置 。 再用清空的天眼试试看.",
-  "errorNoCamera": "此设备没有摄像头 .",
-  "errorUploadFailed": "上传失败 。 请再试一次.",
-  "errorPermissionDenied": "拒绝许可.",
-  "errorInvalidUsername": "这个用户名不可用 .",
-  "errorNotFound": "未找到哔声",
-  "errorLoadError": "装入哔声细节失败",
-  "failed": "失败",
-  "invalidRange": "请输入1到99999之间的数字"
+  "errorGeneric": "Something went wrong.",
+  "errorNoLocation": "Location unavailable. Try again outside with clear sky view.",
+  "errorNoCamera": "Camera unavailable on this device.",
+  "errorUploadFailed": "Upload failed. Please try again.",
+  "errorPermissionDenied": "Permission denied.",
+  "errorInvalidUsername": "That username isn’t available.",
+  "errorNotFound": "Beep not found",
+  "errorLoadError": "Failed to load beep details",
+  "failed": "Failed",
+  "invalidRange": "Please enter a number between 1 and 99999"
 }

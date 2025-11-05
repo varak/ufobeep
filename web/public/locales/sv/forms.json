@@ -1,9 +1,9 @@
 {
-  "username": "Användarnamn",
-  "usernameUpdated": "Användarnamn uppdaterat",
-  "submitBeep": "Skicka Beep",
-  "formalReportingTitle": "Formell UFO Rapportering",
-  "formalReporting": "Formell rapportering",
-  "formalReportingExplanation": "För officiell utredning och vetenskaplig dokumentation kan du lämna in formella rapporter med etablerade forskningsorganisationer.",
-  "formalReportRequirements": "Formella rapporter kräver vanligtvis:\n•• Detaljerad tid, datum och varaktighet\n•• Väderförhållanden och synlighet\n• Fullständig vittnesmål\n•• Bilder eller video om tillgängliga\n\nOrganisationer kan följa upp för ytterligare detaljer. Din rapport bidrar till pågående UFO-forskning."
+  "username": "Username",
+  "usernameUpdated": "Username updated",
+  "submitBeep": "Send Beep",
+  "formalReportingTitle": "Formal UFO Reporting",
+  "formalReporting": "Formal Reporting",
+  "formalReportingExplanation": "For official investigation and scientific documentation, you can file formal reports with established research organizations.",
+  "formalReportRequirements": "Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research."
 }

@@ -1,9 +1,9 @@
 {
   "username": "Username",
-  "usernameUpdated": "Username güncellendi",
-  "submitBeep": "Gönder",
-  "formalReportingTitle": "Formal UFO Raporlama",
-  "formalReporting": "Formal Raporlama",
-  "formalReportingExplanation": "Resmi araştırma ve bilimsel belgeler için, yerleşik araştırma kuruluşları ile resmi raporlar gönderebilirsiniz.",
-  "formalReportRequirements": "Formal raporlar genellikle gerektirir:\n• • • Detaylı zaman, tarih ve süresi\n• • • Hava koşulları ve görünürlük\n• Tam tanık ifadesi\n• • • Fotoğraflar veya video mevcutsa\n\nOrganizasyonlar ek ayrıntılar için takip edebilir. Raporunuz devam eden UFO araştırmalarına katkıda bulunur."
+  "usernameUpdated": "Username updated",
+  "submitBeep": "Send Beep",
+  "formalReportingTitle": "Formal UFO Reporting",
+  "formalReporting": "Formal Reporting",
+  "formalReportingExplanation": "For official investigation and scientific documentation, you can file formal reports with established research organizations.",
+  "formalReportRequirements": "Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research."
 }

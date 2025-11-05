@@ -1,10 +1,10 @@
 {
-  "tabAlerts": "Waarschuwingen",
-  "tabBeep": "Piep",
-  "tabChat": "Gesprek",
-  "tabMap": "Kaart",
-  "tabSettings": "Instellingen",
-  "mufonDatabaseEntryDate": "Datum ingevoerd in MUFON Database",
-  "databaseEntry": "Databaseinvoer",
-  "mufonDatabaseReport": "MUFON Zaaknummer:"
+  "tabAlerts": "Alerts",
+  "tabBeep": "Beep",
+  "tabChat": "Chat",
+  "tabMap": "Map",
+  "tabSettings": "Settings",
+  "mufonDatabaseEntryDate": "Date Entered into MUFON Database",
+  "databaseEntry": "Database Entry",
+  "mufonDatabaseReport": "MUFON Case Number:"
 }

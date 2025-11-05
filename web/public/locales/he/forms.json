@@ -1,9 +1,9 @@
 {
-  "username": "שם המשתמש",
-  "usernameUpdated": "שם המשתמש מעודכן",
-  "submitBeep": "שלח Beep",
-  "formalReportingTitle": "המונחים: UFO דיווח",
-  "formalReporting": "דוח פורמלי",
-  "formalReportingExplanation": "עבור חקירה רשמית ותיעוד מדעי, באפשרותך להגיש דוחות רשמיים עם ארגוני מחקר מבוססים.",
-  "formalReportRequirements": "דיווחים פורמליים בדרך כלל דורשים:\n• זמן מפורט, תאריך ומשך\n• מזג אוויר וחשיפה\nעדות שלמה\n• תמונות או וידאו אם זמין\n\nארגונים יכולים לעקוב אחר פרטים נוספים. הדו\"ח שלך תורם למחקר עב\"מים מתמשך."
+  "username": "Username",
+  "usernameUpdated": "Username updated",
+  "submitBeep": "Send Beep",
+  "formalReportingTitle": "Formal UFO Reporting",
+  "formalReporting": "Formal Reporting",
+  "formalReportingExplanation": "For official investigation and scientific documentation, you can file formal reports with established research organizations.",
+  "formalReportRequirements": "Formal reports typically require:\n• Detailed time, date, and duration\n• Weather conditions and visibility\n• Complete witness testimony\n• Photos or video if available\n\nOrganizations may follow up for additional details. Your report contributes to ongoing UFO research."
 }
