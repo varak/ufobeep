@@ -41,7 +41,7 @@ export default function Home() {
             {t('heroMainTagline')}
           </p>
           <p className="text-lg text-text-tertiary mb-12 max-w-2xl mx-auto">
-            {t('heroSecondaryTagline')}
+            Never miss another UFO sighting in your area.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-16">
             <Link href="/download">
