@@ -38,10 +38,10 @@ export default function Home() {
             UFOBeep
           </h1>
           <p className="text-xl md:text-2xl text-text-secondary mb-4">
-            {t('heroTagline')}
+            {t('heroMainTagline')}
           </p>
           <p className="text-lg text-text-tertiary mb-12 max-w-2xl mx-auto">
-            {t('heroDescription')}
+            {t('heroSecondaryTagline')}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center mb-16">
             <Link href="/download">
