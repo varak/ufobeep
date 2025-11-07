@@ -226,23 +226,22 @@ export default function Home() {
       <section className="py-20 px-6 md:px-24">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-8 text-text-primary">
-            Powered by Professional UFO Research
+            Real-Time Community UFO Alerts
           </h2>
           <p className="text-lg text-text-secondary mb-12">
-            UFOBeep combines real-time community alerts with decades of professional UFO investigation data.
-            Our platform integrates reports from the Mutual UFO Network (MUFON), the world&apos;s largest
-            civilian UFO investigation organization, and the National UFO Reporting Center (NUFORC),
-            which has been collecting and documenting sighting reports since 1974. This gives you access
-            to both live alerts from nearby witnesses and historical context from thousands of verified investigations.
+            UFOBeep empowers citizen scientists to document and share UFO sightings as they happen.
+            Our platform enables instant community alerts when someone near you witnesses something unusual
+            in the sky, creating a global network of real-time observers. Share your sightings, collaborate
+            with other witnesses, and access automatic scientific context for every reported phenomenon.
           </p>
           <div className="grid sm:grid-cols-3 gap-6 mb-12">
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">
               <div className="text-3xl mb-4 group-hover:scale-110 transition-transform">🛸</div>
-              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Historical Database</h3>
+              <h3 className="text-lg font-semibold mb-2 text-brand-primary">Community Reports</h3>
               <p className="text-text-secondary">
-                Access decades of UFO sighting reports from MUFON (Mutual UFO Network) and
-                NUFORC (National UFO Reporting Center), enriched with AI-powered analysis
-                to provide context and patterns for new sightings.
+                Browse and analyze UFO sighting reports from our growing community of observers.
+                Each report includes enriched environmental data and witness testimony to help
+                identify patterns and understand unexplained aerial phenomena.
               </p>
             </div>
             <div className="bg-dark-surface p-6 rounded-lg border border-dark-border hover:border-brand-primary transition-colors group">

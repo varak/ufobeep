@@ -76,6 +76,11 @@ export default function AlertsMap({
   disableGeolocation = false,
   locale = 'en'
 }: AlertsMapProps) {
+  // Filter out MUFON and NUFORC alerts (defensive client-side filter)
+  const filteredAlerts = alerts.filter(alert =>
+    !alert.source || (alert.source !== 'mufon' && alert.source !== 'nuforc')
+  )
+
   const mapRef = useRef<HTMLDivElement>(null)
   const [selectedAlert, setSelectedAlert] = useState<Alert | null>(null)
   const [mapError, setMapError] = useState(false)
@@ -476,7 +481,7 @@ export default function AlertsMap({
 
       // If map is already initialized, only update markers if alerts changed
       if (mapInitialized && mapInstanceRef.current) {
-        const alertsChanged = JSON.stringify(alerts) !== JSON.stringify(prevAlertsRef.current)
+        const alertsChanged = JSON.stringify(filteredAlerts) !== JSON.stringify(prevAlertsRef.current)
         if (!alertsChanged) return
         
         // Rebuild supercluster index and re-render
@@ -484,7 +489,7 @@ export default function AlertsMap({
           const leafletModule = await import('leaflet')
           const L: any = (leafletModule as any).default || leafletModule
           const { default: Supercluster } = await import('supercluster')
-          const allAlerts = [...alerts, ...liveAlerts]
+          const allAlerts = [...filteredAlerts, ...liveAlerts]
           const features = allAlerts
             .filter(a => isValidLatLng(a.location))
             .map(a => ({
@@ -501,7 +506,7 @@ export default function AlertsMap({
           console.error('Cluster rebuild failed', e)
         }
         
-        prevAlertsRef.current = alerts
+        prevAlertsRef.current = filteredAlerts
         return
       }
       
@@ -590,7 +595,7 @@ export default function AlertsMap({
         // Build cluster index and render, then listen to zoom/pan
         try {
           const { default: Supercluster } = await import('supercluster')
-          const allAlerts = [...alerts, ...liveAlerts]
+          const allAlerts = [...filteredAlerts, ...liveAlerts]
           const features = allAlerts
             .filter(a => isValidLatLng(a.location))
             .map(a => ({
@@ -628,7 +633,7 @@ export default function AlertsMap({
         // Initial markers rendered by clustering above
 
         // Fit map to show all alerts
-        const initialAlerts = [...alerts, ...liveAlerts]
+        const initialAlerts = [...filteredAlerts, ...liveAlerts]
         if (initialAlerts.length > 0) {
           const validAlerts = initialAlerts.filter(a => isValidLatLng(a.location))
           if (validAlerts.length > 0) {
@@ -681,7 +686,7 @@ export default function AlertsMap({
       }
     }
 
-  }, [alerts, mapCenter, exactUserLocation]) // Only re-run when alerts or center changes
+  }, [filteredAlerts, mapCenter, exactUserLocation]) // Only re-run when filtered alerts or center changes
 
   // Live updates: connect SSE only when visible and map is in view; throttle cluster rebuilds
   useEffect(() => {
@@ -778,7 +783,7 @@ export default function AlertsMap({
       if (es) es.close()
       if (timer) clearTimeout(timer)
     }
-  }, [alerts])
+  }, [filteredAlerts])
 
   // Handle window resize
   useEffect(() => {
@@ -815,7 +820,7 @@ export default function AlertsMap({
         if (debugEnabled) {
           const b2 = map.getBounds()
           let mufon = 0, ufobeep = 0, other = 0, total = 0
-          for (const a of alerts as any[]) {
+          for (const a of filteredAlerts as any[]) {
             if (!isValidLatLng(a.location)) continue
             const la = Number(a.location.latitude), lo = Number(a.location.longitude)
             if (!b2.contains({ lat: la, lng: lo })) continue

@@ -501,8 +501,13 @@ class AlertsList extends _$AlertsList {
         final alertsList = alertsData['alerts'] as List<dynamic>;
         final total = _safeInt(alertsData['total']) ?? alertsList.length;
         
-        // Filter out invalid coordinates like the website does
+        // Filter out invalid coordinates and MUFON/NUFORC sources (defensive client-side filter)
         final validAlerts = alertsList.where((alert) {
+          // Filter out MUFON and NUFORC beeps
+          final source = alert['source'] as String?;
+          if (source == 'mufon' || source == 'nuforc') return false;
+
+          // Filter out invalid coordinates
           final location = alert['location'] as Map<String, dynamic>?;
           if (location == null) return false;
           final lat = location['latitude'] as double?;

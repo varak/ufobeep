@@ -93,8 +93,8 @@ export default function HowItWorks() {
                   <p className="text-sm text-text-secondary">Sun, moon, planets, bright stars positions</p>
                 </div>
                 <div className="bg-dark-surface p-4 rounded border border-dark-border">
-                  <div className="font-semibold text-brand-primary mb-1">🤖 AI Summaries</div>
-                  <p className="text-sm text-text-secondary">NUFORC/MUFON reports summarized with Gemini AI for in-app readability</p>
+                  <div className="font-semibold text-brand-primary mb-1">🤖 AI Analysis</div>
+                  <p className="text-sm text-text-secondary">Gemini AI provides intelligent analysis and summaries of sighting reports for better understanding</p>
                 </div>
               </div>
             </div>
@@ -193,9 +193,8 @@ export default function HowItWorks() {
                 <li><strong className="text-brand-primary">OpenWeather:</strong> Real-time weather</li>
                 <li><strong className="text-brand-primary">OpenSky Network:</strong> Aircraft tracking</li>
                 <li><strong className="text-brand-primary">CelesTrak:</strong> Satellite TLE data</li>
-                <li><strong className="text-brand-primary">NUFORC:</strong> Historical UFO reports (100K+)</li>
-                <li><strong className="text-brand-primary">MUFON:</strong> Historical UFO reports</li>
                 <li><strong className="text-brand-primary">Skyfield:</strong> Celestial calculations</li>
+                <li><strong className="text-brand-primary">Community:</strong> User-submitted sighting reports</li>
               </ul>
             </div>
 

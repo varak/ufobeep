@@ -211,8 +211,8 @@ export default function FAQ() {
       answer: "Yes! The website (ufobeep.com) has a full map interface where you can browse all historical sightings by location, date, and characteristics. You can filter by shape, time of day, weather conditions, and more. The mobile app also includes a map view for exploring nearby historical reports."
     },
     {
-      question: "How is UFOBeep different from MUFON or NUFORC?",
-      answer: "MUFON and NUFORC are excellent historical databases, but reports are typically submitted hours or days after the sighting. UFOBeep adds real-time community alerts - when someone sees something NOW, nearby users are immediately notified while the object is still potentially visible. We also integrate MUFON and NUFORC data to provide historical context alongside live reports."
+      question: "How is UFOBeep different from traditional UFO reporting?",
+      answer: "Traditional UFO reporting typically happens hours or days after a sighting, when the object is long gone. UFOBeep enables real-time community alerts - when someone sees something NOW, nearby users are immediately notified while the object may still be visible. This creates a network of potential witnesses who can verify and document ongoing phenomena instead of relying on single-witness retrospective reports."
     },
     {
       question: "Can I contribute to UFOBeep's database?",

@@ -87,13 +87,18 @@ class AlertsService:
 
             # Source filtering
             if source == 'ufobeep':
-                where_conditions.append(f"(s.source IS NULL OR s.source != 'mufon')")
+                where_conditions.append(f"(s.source IS NULL OR s.source NOT IN ('mufon', 'nuforc'))")
             elif source == 'mufon':
                 where_conditions.append(f"s.source = 'mufon'")
+            elif source == 'nuforc':
+                where_conditions.append(f"s.source = 'nuforc'")
             elif source:
                 where_conditions.append(f"s.source = ${param_index}")
                 params.append(source)
                 param_index += 1
+            else:
+                # DEFAULT: Exclude MUFON and NUFORC when no source filter specified
+                where_conditions.append(f"(s.source IS NULL OR s.source NOT IN ('mufon', 'nuforc'))")
 
             # Distance filtering (if user location provided)
             if max_distance_km and user_latitude and user_longitude:
@@ -124,13 +129,18 @@ class AlertsService:
 
             # Source filtering
             if source == 'ufobeep':
-                where_conditions.append("(s.source IS NULL OR s.source != 'mufon')")
+                where_conditions.append("(s.source IS NULL OR s.source NOT IN ('mufon', 'nuforc'))")
             elif source == 'mufon':
                 where_conditions.append("s.source = 'mufon'")
+            elif source == 'nuforc':
+                where_conditions.append("s.source = 'nuforc'")
             elif source:
                 where_conditions.append(f"s.source = ${param_index}")
                 params.append(source)
                 param_index += 1
+            else:
+                # DEFAULT: Exclude MUFON and NUFORC when no source filter specified
+                where_conditions.append("(s.source IS NULL OR s.source NOT IN ('mufon', 'nuforc'))")
 
             # Distance filtering (if user location provided)
             if max_distance_km and user_latitude and user_longitude:

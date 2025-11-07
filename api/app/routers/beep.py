@@ -346,6 +346,7 @@ async def get_map_points(minimal: bool = False):
                     WHERE (public_latitude != 0 OR public_longitude != 0)
                     AND public_latitude IS NOT NULL
                     AND public_longitude IS NOT NULL
+                    AND (source IS NULL OR source NOT IN ('mufon', 'nuforc'))
                     ORDER BY created_at DESC
                 """
             else:
@@ -372,6 +373,7 @@ async def get_map_points(minimal: bool = False):
                     WHERE (public_latitude != 0 OR public_longitude != 0)
                     AND public_latitude IS NOT NULL
                     AND public_longitude IS NOT NULL
+                    AND (source IS NULL OR source NOT IN ('mufon', 'nuforc'))
                     ORDER BY created_at DESC
                 """
 
