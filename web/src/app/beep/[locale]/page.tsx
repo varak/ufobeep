@@ -124,7 +124,7 @@ export default function BeepLocalePage({ params }: BeepPageProps) {
             {t('recentUfoBeepsTitle', 'Recent Beeps')}
           </h1>
           <p className="text-text-secondary mb-8">
-            {t('reportsFromCommunity', 'Live UFO sighting reports from our global community, the National UFO Reporting Center and the Mutual UFO Network.')}
+            {t('recentUfoBeepsSubtitle', 'Live UFO sighting reports from our global community')}
           </p>
           
           {loading ? (
